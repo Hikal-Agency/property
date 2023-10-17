@@ -12,12 +12,11 @@ import {
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../axoisConfig";
 import AddUserModel from "../../Components/addUser/AddUserModel";
 import SecondaryListings from "../../Components/Listings/SecondaryListings";
 import AddNewListingModal from "../../Components/Listings/AddNewListingModal";
-import { Link } from "react-router-dom";
 import { BsBuildingAdd, BsSearch } from "react-icons/bs";
 import { toast } from "react-toastify";
 import moment from "moment";
@@ -25,14 +24,9 @@ import moment from "moment";
 const Listings = () => {
   const {
     currentMode,
-    DataGridStyles,
     BACKEND_URL,
-    pageState,
-    setpageState,
-    User,
-    darkModeColors,
+    darkModeColors, t
   } = useStateContext();
-  const { hasPermission } = usePermission();
 
   const [value, setValue] = useState(0);
   const [listing, setListings] = useState([]);
@@ -45,7 +39,6 @@ const Listings = () => {
   const [pageBeingScrolled, setPageBeingScrolled] = useState(1);
   const [listingModalOpen, setListingModalOpen] = useState(false);
   const handleCloseListingModal = () => setListingModalOpen(false);
-  const [open, setOpen] = useState(false);
   const token = localStorage.getItem("auth-token");
 
   const [filters, setFilters] = useState({
@@ -116,18 +109,6 @@ const Listings = () => {
       console.log("all listings: ", all_listings);
       let filteredListings = all_listings?.data?.data?.data || [];
 
-      // // sort by sold status
-      // if (filters?.sold) {
-      //   filteredListings = filteredListings?.filter((listing) => {
-      //     return listing?.listing_status.toLowerCase() === "sold";
-      //   });
-      // } else {
-      //   // default sorting listing status = New
-      //   filteredListings = filteredListings?.filter((listing) => {
-      //     return listing?.listing_status.toLowerCase() === "new";
-      //   });
-      // }
-
       console.log("sold: ", filters?.sold);
 
       // sort by price
@@ -170,7 +151,6 @@ const Listings = () => {
       setLastPage(all_listings?.data?.last_page);
       setTotal(all_listings?.data?.data?.total);
       setbtnloading(false);
-      //   console.log("All Offers: ",all_listings)
     } catch (error) {
       console.log("listings not fetched. ", error);
       toast.error("Unable to fetch listings.", {
@@ -186,7 +166,6 @@ const Listings = () => {
     }
   };
 
-  // open listing modal
   const handleOpenListingModal = () => {
     setListingModalOpen(true);
   };
@@ -229,7 +208,7 @@ const Listings = () => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Listings{" "}
+                  {t("listings")}{" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {total}
                   </span>
@@ -259,7 +238,7 @@ const Listings = () => {
                   onClick={handleOpenListingModal}
                 >
                   <BsBuildingAdd size={16} />
-                  Add New Listing
+                 {t("btn_add_new_listing")}
                 </Button>
               </div>
 
@@ -300,7 +279,7 @@ const Listings = () => {
                     className="w-[250px]"
                     // label="Search"
                     size="small"
-                    placeholder="Search.."
+                    placeholder={t("search")}
                     sx={{
                       ".css-2ehmn7-MuiInputBase-root-MuiOutlinedInput-root": {
                         paddingLeft: "0px !important",
@@ -329,11 +308,11 @@ const Listings = () => {
                           displayEmpty
                         >
                           <MenuItem value="" sx={{ fontSize: "x-small" }}>
-                            SELECT
+                            {t("label_select")}
                           </MenuItem>
-                          <MenuItem value="project">Project</MenuItem>
-                          <MenuItem value="city">City</MenuItem>
-                          <MenuItem value="area">Area</MenuItem>
+                          <MenuItem value="project">{t("label_project")}</MenuItem>
+                          <MenuItem value="city">{t("label_city")}</MenuItem>
+                          <MenuItem value="area">{t("label_area")}</MenuItem>
                           {/* <MenuItem value="neighborhood">Neighborhood</MenuItem> */}
                         </Select>
                       ),
@@ -378,7 +357,7 @@ const Listings = () => {
                   <TextField
                     id="property"
                     value={filters?.property}
-                    label="Property"
+                    label={t("label_property")}
                     onChange={(e) => {
                       e.preventDefault();
                       setFilters({
@@ -397,14 +376,14 @@ const Listings = () => {
                     }}
                     select
                   >
-                    <MenuItem value={"apartment"}>Apartment</MenuItem>
-                    <MenuItem value={"villa"}>Villa</MenuItem>
-                    <MenuItem value={"retail"}>Retail</MenuItem>
+                    <MenuItem value={"apartment"}>{t("property_apartment")}</MenuItem>
+                    <MenuItem value={"villa"}>{t("property_villa")}</MenuItem>
+                    <MenuItem value={"retail"}>{t("property_retail")}</MenuItem>
                   </TextField>
                   <TextField
                     id="category"
                     value={filters?.category}
-                    label="Category"
+                    label={t("label_category")}
                     onChange={(e) => {
                       e.preventDefault();
                       setFilters({
@@ -423,13 +402,13 @@ const Listings = () => {
                     }}
                     select
                   >
-                    <MenuItem value={"Secondary"}>Secondary</MenuItem>
-                    <MenuItem value={"Off-plan"}>Off Plan</MenuItem>
+                    <MenuItem value={"Secondary"}>{t("category_secondary")}</MenuItem>
+                    <MenuItem value={"Off-plan"}>{t("category_off_plan")}</MenuItem>
                   </TextField>
                   <TextField
                     id="bedrooms"
                     value={filters?.bedrooms}
-                    label="Beds"
+                    label={t("label_beds")}
                     onChange={(e) => {
                       e.preventDefault();
                       setFilters({
@@ -448,15 +427,15 @@ const Listings = () => {
                     }}
                     select
                   >
-                    <MenuItem value={"Studio"}>Studio</MenuItem>
-                    <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
-                    <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
-                    <MenuItem value={"10 Bedrooms"}> upto 10 Bedrooms</MenuItem>
+                    <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
+                    <MenuItem value={"1 Bedroom"}>{t("enquiry_1bed")}</MenuItem>
+                    <MenuItem value={"2 Bedrooms"}>{t("enquiry_2bed")}</MenuItem>
+                    <MenuItem value={"10 Bedrooms"}>{t("enquiry_upto_10")}</MenuItem>
                   </TextField>
                   <TextField
                     id="bathrooms"
                     value={filters?.bathrooms}
-                    label="Baths"
+                    label={t("label_baths")}
                     onChange={(e) => {
                       e.preventDefault();
                       setFilters({
@@ -475,18 +454,18 @@ const Listings = () => {
                     }}
                     select
                   >
-                    <MenuItem value={"1 Bathroom"}>1 Bathroom</MenuItem>
-                    <MenuItem value={"2 Bathrooms"}>2 Bathrooms</MenuItem>
+                    <MenuItem value={"1 Bathroom"}>{t("bathroom_1")}</MenuItem>
+                    <MenuItem value={"2 Bathrooms"}>{t("bathroom_2")}</MenuItem>
                     <MenuItem value={"10 Bathrooms"}>
                       {" "}
-                      upto 10 Bathrooms
+                      {t("upto_10_bathrooms")}
                     </MenuItem>
-                    <MenuItem value={"Unavailabe"}>Unavailabe</MenuItem>
+                    <MenuItem value={"Unavailabe"}>{t("label_unavailable")}</MenuItem>
                   </TextField>
                   <TextField
                     id="sortby"
                     value={filters?.sort}
-                    label="Sort by"
+                    label={t("label_sort_by")}
                     onChange={(e) => {
                       e.preventDefault();
                       setFilters({
@@ -505,33 +484,21 @@ const Listings = () => {
                     }}
                     select
                   >
-                    <MenuItem value="latest">Latest</MenuItem>
-                    <MenuItem value="sortByHigh">Price High to Low</MenuItem>
-                    <MenuItem value="sortByLow">Price Low to High</MenuItem>
+                    <MenuItem value="latest">{t("label_latest")}</MenuItem>
+                    <MenuItem value="sortByHigh">{t("label_price_high_to_low")}</MenuItem>
+                    <MenuItem value="sortByLow">{t("label_price_low_to_high")}</MenuItem>
                   </TextField>
                   {(isFilterApplied || searchCriteria || searchQuery) && (
                     <Button
                       onClick={clearFilter}
                       className="w-max btn py-2 px-3 bg-btn-primary"
                     >
-                      Clear
+                      {t("clear")}
                     </Button>
                   )}
                 </Box>
               </Box>
 
-              {/* <div className="flex space-x-3">
-                <AiOutlineFilter
-                  color={currentMode == "dark" ? "#ffffff" : "#000000"}
-                />
-                <h2
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-dark"
-                  }`}
-                >
-                  All Filters (0)
-                </h2>
-              </div> */}
             </div>
             <SecondaryListings
               listing={listing}
