@@ -186,6 +186,107 @@ const Listings = () => {
     }
   };
 
+  const SearchListings = async (token, page = 1) => {
+    setLoading(true);
+    if (page > 1) {
+      setbtnloading(true);
+    }
+    let url = `${BACKEND_URL}/search-listings?page=${page}&listing_status=New`;
+    if (filters?.bedrooms) url += `&bedrooms=${filters?.bedrooms}`;
+    if (filters?.bathrooms) url += `&bathrooms=${filters?.bathrooms}`;
+    if (filters?.property) url += `&property_type=${filters?.property}`;
+    if (filters?.category) url += `&listing_type=${filters?.category}`;
+    if (filters?.sold) url += `&listing_status=Sold`;
+
+    if (searchCriteria === "city") url += `&city=${searchQuery}`;
+    if (searchCriteria === "project") url += `&project=${searchQuery}`;
+    if (searchCriteria === "area") url += `&area=${searchQuery}`;
+
+    try {
+      const all_listings = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("all listings: ", all_listings);
+      let filteredListings = all_listings?.data?.data?.data || [];
+
+      // // sort by sold status
+      // if (filters?.sold) {
+      //   filteredListings = filteredListings?.filter((listing) => {
+      //     return listing?.listing_status.toLowerCase() === "sold";
+      //   });
+      // } else {
+      //   // default sorting listing status = New
+      //   filteredListings = filteredListings?.filter((listing) => {
+      //     return listing?.listing_status.toLowerCase() === "new";
+      //   });
+      // }
+
+      console.log("sold: ", filters?.sold);
+
+      // sort by price
+      if (filters?.sort == "sortByHigh") {
+        filteredListings = filteredListings.sort((a, b) =>
+          a.price > b.price ? -1 : 1
+        );
+      } else if (filters?.sort == "sortByLow") {
+        filteredListings = filteredListings?.sort((a, b) =>
+          a.price < b.price ? -1 : 1
+        );
+      } else if (filters?.sort === "latest") {
+        filteredListings = filteredListings.sort((a, b) =>
+          moment(b.created_at).isBefore(moment(a.created_at)) ? -1 : 1
+        );
+      }
+      console.log("filtered listings: ", filteredListings);
+
+      if (page > 1) {
+        setListings((prevOffers) => {
+          return [
+            ...prevOffers,
+            ...filteredListings?.map((listing) => ({
+              ...listing,
+              page: page,
+            })),
+          ];
+        });
+      } else {
+        setListings(() => {
+          return [
+            ...filteredListings?.map((listing) => ({
+              ...listing,
+              page: page,
+            })),
+          ];
+        });
+      }
+      setLoading(false);
+      setLastPage(all_listings?.data?.last_page);
+      setTotal(all_listings?.data?.data?.total);
+      setbtnloading(false);
+      //   console.log("All Offers: ",all_listings)
+    } catch (error) {
+      console.log("listings not fetched. ", error);
+      toast.error("Unable to fetch listings.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  useEffect(() => {
+    SearchListings(token, currentPage);
+  }, [searchQuery]);
+
   // open listing modal
   const handleOpenListingModal = () => {
     setListingModalOpen(true);
@@ -204,7 +305,7 @@ const Listings = () => {
 
   useEffect(() => {
     FetchListings(token, currentPage);
-  }, [currentPage, value, filters, searchQuery]);
+  }, [currentPage, value, filters]);
 
   return (
     <>
