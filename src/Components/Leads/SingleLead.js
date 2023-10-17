@@ -34,6 +34,7 @@ import {
   BsPersonPlus,
   BsBookmarkFill,
   BsPersonGear,
+  BsChatLeftText
 } from "react-icons/bs";
 import AddNewListingModal from "../Listings/AddNewListingModal";
 
@@ -772,14 +773,24 @@ const SingleLead = ({
                     </h1>
                     <hr className="my-4" />
                     <div className="w-full">
+                      {LeadData?.notes === null || LeadData?.notes === "" || LeadData?.notes === "null" || LeadData?.notes === "-" ? (
+                        <></>
+                      ) : (
+                        <div class="flex items-center gap-5 my-4 md:px-5">
+                          <BsChatLeftText size={16} className="text-primary mx-2" />
+                          <div className="text-start" style={{ fontFamily: isArabic(LeadData?.notes) ? "Noto Kufi Arabic" : "inherit"}}>
+                            {LeadData?.notes}
+                          </div>
+                        </div>
+                      )}
                       <div class="flex items-center gap-5 my-4 md:px-5">
-                        <BsPersonPlus size={16} className="text-primary" />
+                        <BsPersonPlus size={16} className="text-primary mx-2" />
                         <div className="text-start">
                           {t("lead_added_on")} {" "}{datetimeLong(LeadData?.creationDate)}
                         </div>
                       </div>
                       <div class="flex items-center gap-5 my-4 md:px-5">
-                        <BsPersonGear size={16} className="text-primary" />
+                        <BsPersonGear size={16} className="text-primary mx-2" />
                         <div className="text-start">
                           {t("last_updated_on")}{" "}
                           {LeadData?.lastEdited === ""

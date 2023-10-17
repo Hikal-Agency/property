@@ -253,7 +253,7 @@ const TodayCallLogs = () => {
                                     </h6>
                                     <hr></hr>
                                     <div className="block gap-3 mt-2">
-                                      <div>
+                                      {/* <div>
                                         <h1 className="text-lg">
                                           DIALED&nbsp;
                                           <span
@@ -263,7 +263,7 @@ const TodayCallLogs = () => {
                                             {call?.dialed || 0}
                                           </span>
                                         </h1>
-                                      </div>
+                                      </div> */}
                                       <div>
                                         <h1 className="text-lg">
                                           ANSWERED&nbsp;
@@ -280,9 +280,20 @@ const TodayCallLogs = () => {
                                           NOT ANSWERED&nbsp;
                                           <span
                                             className="font-bold float-right"
-                                            style={{ color: "#DF2938" }}
+                                            style={{ color: "#df2938" }}
                                           >
                                             {call?.notanswered || 0}
+                                          </span>
+                                        </h1>
+                                      </div>
+                                      <div>
+                                        <h1 className="text-lg">
+                                          REJECTED&nbsp;
+                                          <span
+                                            className="font-bold float-right"
+                                            style={{ color: "#DF2938" }}
+                                          >
+                                            {call?.rejected || 0}
                                           </span>
                                         </h1>
                                       </div>
@@ -327,9 +338,27 @@ const TodayCallLogs = () => {
                                       </div>
                                     </div>
                                   </div>
+                                  <div
+                                    className={`bg-[#DA1F26] text-white font-bold
+                                    border-[#AAAAAA] border
+                                    rounded-md shadow-sm p-2`}
+                                  >
+                                    <div>
+                                      <h1 className="text-lg">
+                                        Total Leads&nbsp;
+                                        <span
+                                          className="font-bold float-right"
+                                          style={{ color: "#DF2938" }}
+                                        >
+                                          {call.unique_lead_contacts || 0}
+                                        </span>
+                                      </h1>
+                                    </div>
+                                  </div>
                                 </div>
                               );
-                            })}
+                            })
+                          }
                         </div>
                         {noData === true && (
                           <div className="flex flex-col items-center justify-center h-[80vh] ">

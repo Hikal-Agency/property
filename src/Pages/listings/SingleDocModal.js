@@ -1,71 +1,64 @@
 import {
   Modal,
   Backdrop,
-  Menu,
-  MenuItem,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { GiShare } from "react-icons/gi";
-import { AiOutlineDownload } from "react-icons/ai";
-import { FiTrash } from "react-icons/fi";
 import axios from "axios";
-
 import { toast } from "react-toastify";
-
 import { useStateContext } from "../../context/ContextProvider";
-
-import { MdClose } from "react-icons/md";
+import { IoMdClose } from "react-icons/io";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
 
 const SingleDocModal = ({
   singleImageModal,
   handleClose,
   fetchSingleListing,
 }) => {
-  const { BACKEND_URL } = useStateContext();
+  const { BACKEND_URL, currentMode } = useStateContext();
+  const style = {
+    transform: "translate(-50%, -50%)",
+    boxShadow: 24,
+  };
+
+  const [numPages, setNumPages] = useState();
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [deleteBtnLoading, setDeleteBtnLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [singleDoc, setSingleDoc] = useState();
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
 
-  const handleDelete = async () => {
+  const pdfUrl = singleDoc?.document_url;
+  console.log("Dcoument: ", pdfUrl);
+
+  // fetch single document
+  const fetchDocument = async () => {
     try {
-      setDeleteBtnLoading(true);
+      setLoading(true);
       const token = localStorage.getItem("auth-token");
-      console.log("TOken: ", singleImageModal?.id);
-      await axios.delete(
-        `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images`,
-
+      const singleDoc = await axios.get(
+        `${BACKEND_URL}/view-document/${singleImageModal?.id}`,
         {
-          data: JSON.stringify({
-            image_ids: [singleImageModal?.id],
-          }),
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
         }
       );
-      toast.success("Image deleted succesfuly!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      fetchSingleListing();
-      handleClose();
+
+      console.log("SINGLE Dcoument: ", singleDoc);
+      setSingleDoc(singleDoc?.data);
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      console.log("Error", error);
+
       toast.error("Something went wrong!", {
         position: "top-right",
         autoClose: 3000,
@@ -77,27 +70,17 @@ const SingleDocModal = ({
         theme: "light",
       });
     }
-    setDeleteBtnLoading(false);
   };
 
-  const handleCopyLink = async () => {
-    await navigator.clipboard.writeText(singleImageModal?.url);
+  useEffect(() => {
+    fetchDocument();
+  }, []);
 
-    toast.success("Image URL is copied", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
+  console.log("single doc props: ", singleImageModal);
 
   return (
     <Modal
-       keepMounted
+      keepMounted
       open={singleImageModal?.isOpen}
       onClose={handleClose}
       aria-labelledby="keep-mounted-modal-title"
@@ -108,43 +91,49 @@ const SingleDocModal = ({
         timeout: 500,
       }}
     >
-      {/* <div className="fixed inset-0 flex items-center justify-center z-50">
-        <div className="fixed inset-0 bg-black opacity-75"></div>
-        <div className="relative z-10 bg-white">
-          <img src={singleImageModal?.url} alt="overlay" className="h-[90vh]" />
-          <button
-            onClick={handleClose}
-            className="absolute top-4 right-4 text-2xl text-white bg-[#AAAAAA] p-2 rounded-full m-0"
-          >
-            <MdClose />
-          </button>
-          <div className="absolute bottom-4 right-4">
-            <div className="flex items-center">
-              <button
-                onClick={handleCopyLink}
-                className="text-white bg-primary p-2 rounded-full mx-2"
-              >
-                <GiShare size={19} />
-              </button>
-              <button
-                onClick={handleDelete}
-                className="text-white bg-primary p-2 rounded-full mx-2"
-              >
-                {deleteBtnLoading ? (
-                  <CircularProgress
-                    size={14}
-                    sx={{ color: "white" }}
-                    className="text-white"
-                  />
-                ) : (
-                  <FiTrash size={19} />
-                )}
-              </button>
-            </div>
+      <div
+        style={style}
+        className={`w-[calc(100%-30px)] md:w-[85%]  ${
+          currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+        } absolute top-1/2 left-1/2 p-5 rounded-md border boder-[#AAAAAA]`}
+      >
+        {loading ? (
+          <div className="w-full flex items-center justify-center space-x-1">
+            <CircularProgress size={20} />
+            <span className="font-semibold text-lg"> Fetching Your Lead</span>
           </div>
-        </div>
-      </div> */}
-
+        ) : (
+          <>
+            <IconButton
+              sx={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                color: (theme) => theme.palette.grey[500],
+              }}
+              onClick={handleClose}
+            >
+              <IoMdClose size={18} />
+            </IconButton>
+            <h1
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              } text-center font-semibold text-lg pb-10`}
+            >
+              Update lead details
+            </h1>
+            <div className="w-full flex justify-center  h-[700px]">
+              {/* <iframe src={pdfUrl} title="Document Viewer"></iframe> */}
+              <Worker
+                workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js
+"
+              >
+                <Viewer fileUrl={pdfUrl} />
+              </Worker>
+            </div>
+          </>
+        )}
+      </div>
     </Modal>
   );
 };

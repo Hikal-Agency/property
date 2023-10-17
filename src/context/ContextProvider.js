@@ -49,6 +49,9 @@ export const ContextProvider = ({ children }) => {
   const [permits, setPermits] = useState("");
   const [primaryColor, setPrimaryColor] = useState("default");
   const [themeBgImg, setThemeBgImg] = useState("");
+  const [blurDarkColor, setBlurDarkColor] = useState("rgba(28,28,28,0.5)");
+  const [blurLightColor, setBlurLightColor] = useState("rgba(238,238,238,0.5)");
+  const [blurWhiteColor, setBlurWhiteColor] = useState("rgba(255,255,255,0.5)");
   const [session, setSession] = useState({
     expiresIn: localStorage.getItem("expires_in"),
     accessToken: localStorage.getItem("access_token"),
@@ -92,7 +95,8 @@ export const ContextProvider = ({ children }) => {
     },
 
     // Background color of header of data grid
-    "& .MuiDataGrid-columnHeaders": { // css-s3ulew-
+    "& .MuiDataGrid-columnHeaders": {
+      // css-s3ulew-
       border: "none",
       backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
@@ -104,12 +108,14 @@ export const ContextProvider = ({ children }) => {
       overflowY: "inherit !important",
     },
     // DATATABLE BORDER - DARK
-    "& .MuiDataGrid-root": { //css-h0wcjk-
+    "& .MuiDataGrid-root": {
+      //css-h0wcjk-
       border: "none !important",
       boxShadow: "none !important",
     },
     // DATATABLE BORDER - LIGHT
-    "& .MuiDataGrid-root": { //css-hgxfug-
+    "& .MuiDataGrid-root": {
+      //css-hgxfug-
       border: "none !important",
       boxShadow: "none !important",
     },
@@ -122,16 +128,19 @@ export const ContextProvider = ({ children }) => {
       color: currentMode === "dark" ? "white" : "black",
     },
     // changing rows hover color
-    "& .MuiDataGrid-row:hover": { //css-1uhmucx-
+    "& .MuiDataGrid-row:hover": {
+      //css-1uhmucx-
       backgroundColor: currentMode === "dark" && "#1C1C1C",
       border: "none !important",
       boxShadow: "none !important",
     },
-    "& .MuiDataGrid-root": { //css-s3ulew-
+    "& .MuiDataGrid-root": {
+      //css-s3ulew-
       border: "none !important",
       boxShadow: "none !important",
     },
-    "& .MuiDataGrid-root": { //css-otzuo3-
+    "& .MuiDataGrid-root": {
+      //css-otzuo3-
       border: "none !important",
       boxShadow: "none !important",
     },
@@ -141,7 +150,7 @@ export const ContextProvider = ({ children }) => {
     },
     // changing rows right border
     // "& .MuiDataGrid-cell": {
-      // borderRight: "1px solid rgb(240, 240, 240)",
+    // borderRight: "1px solid rgb(240, 240, 240)",
     // },
 
     // BACKGROUND COLOR OF FOOTER
@@ -154,14 +163,14 @@ export const ContextProvider = ({ children }) => {
     "& .MuiTablePagination-selectLabel": {
       color: currentMode === "dark" ? "white" : "black",
     },
-    "& .MuiTablePagination-select ": { 
+    "& .MuiTablePagination-select ": {
       color: currentMode === "dark" ? "white" : "black",
     },
-    "& .MuiSvgIcon-fontSizeMedium ": { 
+    "& .MuiSvgIcon-fontSizeMedium ": {
       color: currentMode === "dark" ? "white" : "black",
       // TODO: For Pagination SVG, white
     },
-    "& .MuiTablePagination-displayedRows": { 
+    "& .MuiTablePagination-displayedRows": {
       color: currentMode === "dark" ? "white" : "black",
     },
   };
@@ -228,26 +237,26 @@ export const ContextProvider = ({ children }) => {
 
   function formatTime(dateStr) {
     let date;
-    if(dateStr === "now") {
+    if (dateStr === "now") {
       date = new Date();
     } else {
-     date = new Date(dateStr);
+      date = new Date(dateStr);
     }
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const amOrPm = hours >= 12 ? 'pm' : 'am';
-  const formattedHours = ((hours % 12) || 12).toString().padStart(2, '0'); // Convert 0 to 12
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  return `${formattedHours}:${formattedMinutes} ${amOrPm}`;
-}
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const amOrPm = hours >= 12 ? "pm" : "am";
+    const formattedHours = (hours % 12 || 12).toString().padStart(2, "0"); // Convert 0 to 12
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    return `${formattedHours}:${formattedMinutes} ${amOrPm}`;
+  }
 
   const handleClick = (clicked) =>
     setIsClicked({ ...initialState, [clicked]: true });
 
   function formatNum(value) {
-    if(value === 0) {
+    if (value === 0) {
       return 0;
-    }else if (value < 10) {
+    } else if (value < 10) {
       return "0" + value;
     } else {
       return value;
@@ -255,6 +264,9 @@ export const ContextProvider = ({ children }) => {
   }
 
   const fetchSidebarData = async () => {
+    if (User?.role === 6) {
+      return;
+    }
     try {
       const token = localStorage.getItem("auth-token");
       const response = await axios.get(`${BACKEND_URL}/sidebar/1`, {
@@ -283,31 +295,34 @@ export const ContextProvider = ({ children }) => {
     }
   };
 
-    const getNotifCounts = async () => {
+  const getNotifCounts = async () => {
     try {
-     const token = localStorage.getItem("auth-token");
-        const response = await axios.get(`${BACKEND_URL}/unreadCount?user_id=${User?.id}`, {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.get(
+        `${BACKEND_URL}/unreadCount?user_id=${User?.id}`,
+        {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
-        });
-        const notifsCount = response.data?.count || 0;
-        setUnreadNotifsCount(notifsCount);
+        }
+      );
+      const notifsCount = response.data?.count || 0;
+      setUnreadNotifsCount(notifsCount);
     } catch (error) {
       console.log(error);
-        toast.error("Sorry, couldn't fetch notifications count!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+      toast.error("Sorry, couldn't fetch notifications count!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
-  }
+  };
 
   const isArabic = (text) => {
     const regex = new RegExp(
@@ -323,9 +338,7 @@ export const ContextProvider = ({ children }) => {
   };
 
   const isEnglish = (text) => {
-    const regex = new RegExp(
-      "^[\u0000-\u007F]+$", "g"
-    );
+    const regex = new RegExp("^[\u0000-\u007F]+$", "g");
 
     if (text) {
       return text.match(regex);
@@ -334,10 +347,10 @@ export const ContextProvider = ({ children }) => {
     }
   };
   useEffect(() => {
-      document.documentElement.style.setProperty('--primary-color', primaryColor);
-      // if(primaryColor) {
-      //   localStorage.setItem("theme", primaryColor);
-      // }
+    document.documentElement.style.setProperty("--primary-color", primaryColor);
+    // if(primaryColor) {
+    //   localStorage.setItem("theme", primaryColor);
+    // }
   }, [primaryColor]);
 
   useEffect(() => {
@@ -347,68 +360,66 @@ export const ContextProvider = ({ children }) => {
     document.body.style.backgroundPosition = "center";
     document.body.style.backgroundAttachment = "fixed";
     document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
-    document.body.style.backgroundBlendMode =  "overlay";
-
-}, [themeBgImg]);
+    document.body.style.backgroundBlendMode = "overlay";
+  }, [themeBgImg]);
 
   const withOpacity = (rgb, opacity) => {
-    return rgb.replace('rgb', 'rgba').replace(')', `, ${opacity})`);
-  }
+    return rgb.replace("rgb", "rgba").replace(")", `, ${opacity})`);
+  };
 
   const ReFetchProfile = () => {
     const token = localStorage.getItem("auth-token");
     axios
-        .get(`${BACKEND_URL}/profile`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-        .then((result) => {
+      .get(`${BACKEND_URL}/profile`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        // Create a new object with only the specific fields you want to store
+        const user = {
+          permissions: result.data.roles.permissions,
+          addedBy: result.data.user[0].addedBy,
+          addedFor: result.data.user[0].addedFor,
+          agency: result.data.user[0].agency,
+          created_at: result.data.user[0].created_at,
+          creationDate: result.data.user[0].creationDate,
+          displayImg: result.data.user[0].profile_picture,
+          expiry_date: result.data.user[0].expiry_date,
+          credits: result.data.user[0].credits,
+          gender: result.data.user[0].gender,
+          id: result.data.user[0].id,
+          idExpiryDate: result.data.user[0].idExpiryDate,
+          isParent: result.data.user[0].isParent,
+          is_online: result.data.user[0].is_online,
+          joiningDate: result.data.user[0].joiningDate,
+          loginId: result.data.user[0].loginId,
+          loginStatus: result.data.user[0].loginStatus,
+          master: result.data.user[0].master,
+          nationality: result.data.user[0].nationality,
+          notes: result.data.user[0].notes,
+          old_password: result.data.user[0].old_password,
 
-          // Create a new object with only the specific fields you want to store
-          const user = {
-            permissions: result.data.roles.permissions,
-            addedBy: result.data.user[0].addedBy,
-            addedFor: result.data.user[0].addedFor,
-            agency: result.data.user[0].agency,
-            created_at: result.data.user[0].created_at,
-            creationDate: result.data.user[0].creationDate,
-            displayImg: result.data.user[0].profile_picture,
-            expiry_date: result.data.user[0].expiry_date,
-            credits: result.data.user[0].credits,
-            gender: result.data.user[0].gender,
-            id: result.data.user[0].id,
-            idExpiryDate: result.data.user[0].idExpiryDate,
-            isParent: result.data.user[0].isParent,
-            is_online: result.data.user[0].is_online,
-            joiningDate: result.data.user[0].joiningDate,
-            loginId: result.data.user[0].loginId,
-            loginStatus: result.data.user[0].loginStatus,
-            master: result.data.user[0].master,
-            nationality: result.data.user[0].nationality,
-            notes: result.data.user[0].notes,
-            old_password: result.data.user[0].old_password,
+          package_name: result.data.user[0].package_name,
+          plusSales: result.data.user[0].plusSales,
+          position: result.data.user[0].position,
+          profile_picture: result.data.user[0].profile_picture,
+          role: result.data.user[0].role,
+          status: result.data.user[0].status,
+          target: result.data.user[0].target,
+          uid: result.data.user[0].uid,
+          updated_at: result.data.user[0].updated_at,
+          userEmail: result.data.user[0].userEmail,
+          userContact: result.data.user[0].userContact,
+          userName: result.data.user[0].userName,
+          userType: result.data.user[0].userType,
+          is_alert: result.data.user[0].is_alert,
+        };
 
-            package_name: result.data.user[0].package_name,
-            plusSales: result.data.user[0].plusSales,
-            position: result.data.user[0].position,
-            profile_picture: result.data.user[0].profile_picture,
-            role: result.data.user[0].role,
-            status: result.data.user[0].status,
-            target: result.data.user[0].target,
-            uid: result.data.user[0].uid,
-            updated_at: result.data.user[0].updated_at,
-            userEmail: result.data.user[0].userEmail,
-            userContact: result.data.user[0].userContact,
-            userName: result.data.user[0].userName,
-            userType: result.data.user[0].userType,
-            is_alert: result.data.user[0].is_alert,
-          };
-
-          setUser(user);
-        })
-  }
+        setUser(user);
+      });
+  };
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
@@ -485,19 +496,25 @@ export const ContextProvider = ({ children }) => {
         setAppLoading,
         sidebarData,
         fetchSidebarData,
-        unreadNotifsCount, 
-        notifIconAnimating, 
-        setNotifIconAnimating, 
-        setUnreadNotifsCount, 
-        getNotifCounts, 
+        unreadNotifsCount,
+        notifIconAnimating,
+        setNotifIconAnimating,
+        setUnreadNotifsCount,
+        getNotifCounts,
         ReFetchProfile,
         userCredits,
-        setUserCredits, 
-        primaryColor, 
+        setUserCredits,
+        primaryColor,
         setPrimaryColor,
         themeBgImg, 
         setThemeBgImg, 
-        t, i18n
+        t, i18n,
+        blurDarkColor,
+        setBlurDarkColor,
+        blurLightColor,
+        setBlurLightColor,
+        blurWhiteColor,
+        setBlurWhiteColor,
       }}
     >
       {children}

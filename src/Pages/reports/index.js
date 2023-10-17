@@ -6,11 +6,17 @@ import ReportClosedMeetingDoughnut from "../../Components/charts/ReportClosedMee
 import { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
 import axios from "../../axoisConfig";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress, TextField } from "@mui/material";
 import SocialChart from "../../Components/charts/SocialChart";
 import { toast } from "react-toastify";
 import moment from "moment";
 import SaleBubbleChart from "../../Components/charts/SaleBubbleChart";
+import { MdCampaign } from "react-icons/md";
+import { FaFacebookF } from "react-icons/fa";
+import usePermission from "../../utils/usePermission";
+import { BiMessageRoundedDots } from "react-icons/bi";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const Reports = () => {
   const {
@@ -18,8 +24,10 @@ const Reports = () => {
     DashboardData,
     setDashboardData,
     setSales_chart_data,
-    BACKEND_URL, t
+    BACKEND_URL,
+    pageState, t
   } = useStateContext();
+
   const [saleschart_loading, setsaleschart_loading] = useState(true);
   const [loading, setloading] = useState(true);
   const [socialChartData, setSocialChartData] = useState([]);
@@ -27,6 +35,9 @@ const Reports = () => {
   const [selectedMonthSocial, setSelectedMonthSocial] = useState();
   const [selectedMonthProject, setSelectedMonthProject] = useState();
   const [selectedMonthSales, setSelectedMonthSales] = useState();
+  const [counters, setCounter] = useState([]);
+  const { hasPermission } = usePermission();
+  const [countFilter, setCountFilter] = useState();
 
   const FetchProfile = (token) => {
     let params = {
@@ -188,12 +199,56 @@ const Reports = () => {
     }
   };
 
+  const sourceCounters = {
+    "Campaign Facebook": <FaFacebookF size={16} color={"#0e82e1"} />,
+    "Property Finder": <MdCampaign size={20} color={"#696969"} />,
+  };
+
+  const fetchCounter = async (token) => {
+    const currentDate = moment(countFilter).format("YYYY-MM-DD");
+    try {
+      const callCounter = await axios.get(
+        `${BACKEND_URL}/totalSource?date=${currentDate}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("counter===> :", callCounter);
+
+      setCounter(callCounter?.data?.data?.query_result);
+    } catch (error) {
+      console.log("Error::: ", error);
+      toast.error("Unable to fetch count.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchData();
     fetchSocialChart();
+
     const token = localStorage.getItem("auth-token");
     FetchProfile(token);
+    fetchCounter(token);
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+
+    fetchCounter(token);
+  }, [countFilter]);
 
   useEffect(() => {
     // fetchData();
@@ -229,6 +284,112 @@ const Reports = () => {
             }`}
           >
             <div className="mb-10">
+              <div className="mb-5 ">
+                <div className="flex justify-center items-center bg-primary py-2 mb-4 rounded-full">
+                  <h1 className={`text-white text-lg font-semibold`}>
+                    Lead Sources
+                  </h1>
+
+                  <div className="m-2">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        value={countFilter}
+                        views={["year", "month", "day"]}
+                        format="yyyy-MM-dd"
+                        onChange={(newValue) => {
+                          const formattedDate = moment(newValue?.$d).format(
+                            "YYYY-MM-DD"
+                          );
+                          setCountFilter(formattedDate);
+
+                          // FetchLastLocation(token, formattedDate);
+                          // FetchLocation(token, formattedDate);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            size="small"
+                            sx={{
+                              "& input": {
+                                color: "#ffffff",
+                              },
+                              "&": {
+                                borderRadius: "4px",
+                                border: "1px solid #AAAAAA",
+                              },
+                              "& .MuiSvgIcon-root": {
+                                color: "#AAAAAA",
+                              },
+                            }}
+                            label="Date"
+                            {...params}
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                </div>
+
+                {hasPermission("leadSource_counts") && (
+                  <div className="my-7">
+                    <div className="px-4">
+                      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
+                        {counters && counters?.length > 0
+                          ? counters?.map((counter) => (
+                              <Box
+                                sx={{
+                                  padding: "5px 7px",
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                  background:
+                                    currentMode === "dark"
+                                      ? "#000000"
+                                      : "#FFFFFF",
+                                  color:
+                                    currentMode === "dark" ? "white" : "black",
+                                  boxShadow:
+                                    currentMode === "dark"
+                                      ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                      : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                                  height: "30px",
+                                  minWidth: "60px",
+                                  maxWidth: "100px",
+                                }}
+                              >
+                                {sourceCounters[counter?.leadSource]}
+                                <span className="px-2">{counter?.count}</span>
+                              </Box>
+                            ))
+                          : ""}
+                        {/* MESSAGE  */}
+                        <Box
+                          sx={{
+                            padding: "5px 7px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            background:
+                              currentMode === "dark" ? "#000000" : "#FFFFFF",
+                            color: currentMode === "dark" ? "white" : "black",
+                            boxShadow:
+                              currentMode === "dark"
+                                ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                            height: "30px",
+                            minWidth: "60px",
+                            maxWidth: "100px",
+                          }}
+                        >
+                          <BiMessageRoundedDots size={18} color={"#6A5ACD"} />
+                          <span className="px-2">{pageState?.mCount}</span>
+                        </Box>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className="mb-5">
                 <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
                   <h1 className={`text-white text-lg font-semibold`}>
@@ -450,7 +611,6 @@ const Reports = () => {
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
       </>

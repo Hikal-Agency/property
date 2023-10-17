@@ -1306,6 +1306,8 @@ const BookedDeals = ({
               columns: {
                 columnVisibilityModel: {
                   creationDate: false,
+                  otp: false,
+                  language: false,
                 },
               },
             }}

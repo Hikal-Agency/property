@@ -10,9 +10,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";
 
+import {
+  FaRegHandshake,
+  FaRegMoneyBillAlt
+} from "react-icons/fa";
+
 
 const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, t } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, themeBgImg , t} = useStateContext();
   const [loading, setLoading] = useState(false);
 
   const handleChange = (event, newValue) => {
@@ -138,7 +143,6 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
         <Loader />
       ) : (
         <Box
-          className="mt-1 p-5"
           sx={
             isLoading && {
               opacity: 0.3,
@@ -153,254 +157,218 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                 <Tab label={t("this_month")} />
               </Tabs>
             </Box>
-            {/* <Box sx={SelectStyles}>
-              <FormControl fullWidth>
-                <TextField
-                  id="demo-simple-select"
-                  value={period}
-                  label="Select a time period"
-                  onChange={handlePeriod}
-                  displayEmtpy
-                  select
-                  variant="standard"
-                >
-                  <MenuItem value="last_month">Last Month</MenuItem>
-                  <MenuItem value="current_month">Current Month</MenuItem>
-                  <MenuItem value="">All time</MenuItem>
-                </TextField>
-              </FormControl>
-            </Box> */}
           </div>
-          <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-3 ">
-            <div
-              className={`${
-                currentMode === "dark"
-                  ? "bg-[#1c1c1c] text-white"
-                  : "bg-gray-200 text-black"
-              } p-3 rounded-md h-[450px] overflow-auto`}
+          <div className={` ${currentMode === "dark" ? "text-white" : "text-black"}
+            grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-3`} >
+            <div className={`p-1 rounded-md h-fit overflow-auto hide-scrollbar`}
             >
               {/* MANAGER  */}
               <div
-                className={`${
-                  currentMode === "dark"
-                    ? "text-primary"
-                    : "text-primary"
-                } text-lg font-bold my-2 text-center`}
+                className={`text-lg font-bold text-center uppercase`}
               >
                 {t("label_manager")}
               </div>
-              <div className="grid  gap-4">
-                <div className="rounded-md px-2 mb-2 w-full">
-                  <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-2 gap-4">
-                    {manager?.length > 0 ? (
-                      manager?.map((item, index) => (
-                        <div
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black"
-                          } ${
-                            active === item?.id ? "border border-primary" : ""
-                          } rounded-md p-2 w-full`}
-                          onClick={(e) => handleClick(item?.id, e)}
-                          key={index}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <div className="flex items-center">
+              <div className="grid gap-4 p-3">
+                {manager?.length > 0 ? (
+                  manager?.map((item, index) => (
+                    <div
+                      className={`${
+                        !themeBgImg 
+                        ? (currentMode === "dark"
+                        ? "bg-[#1C1C1C]"
+                        : "bg-[#EBEBEB]") 
+                        : (currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light")
+                      } 
+                      ${active === item?.id ? "border-2 border-primary" : ""} 
+                      card-hover shadow-sm rounded-lg p-3 w-full`}
+                      onClick={(e) => handleClick(item?.id, e)}
+                      key={index}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="grid grid-cols-8 flex items-center gap-4">
+                        <div className="w-full px-1">
+                          {/* User Image */}
+                          {item?.profile_picture ? (
+                            <img
+                              src={item?.profile_picture}
+                              alt=""
+                              className="w-full rounded-lg"
+                            />
+                          ) : (
+                            <img
+                              src="/favicon.png"
+                              alt=""
+                              className="w-full rounded-lg"
+                            />
+                          )}
+                        </div>
+                        <div className="col-span-4 px-1">
+                          <h2 className="text-lg font-bold">
+                            {item?.userName}
+                          </h2>
+                        </div>
+                        <div className="col-span-1 px-1 w-full h-full flex justify-center items-center">
+                          <div class="flex flex-col items-center">
+                            <FaRegHandshake size={20} className="text-primary" />
+                            <div className="font-bold">
+                              {item?.total_closed_deals}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-2 px-1 w-full h-full flex justify-center items-center">
+                          <div class="flex flex-col items-center">
+                            <FaRegMoneyBillAlt size={20} className="text-primary" />
+                            <div className="font-bold">
+                              AED{" "}{item?.total_sales}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex justify-center">
+                    <img src="./no_data.png" alt="" className="w-[300px] h-[300px]"   />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className={`p-1 rounded-md h-fit overflow-auto hide-scrollbar`} >
+              {/* AGENT  */}
+              <div className={`text-lg font-bold text-center uppercase`} >
+                Agent
+              </div>
+              <div className="grid gap-4 p-3">
+                {active === false ? (
+                  agents?.length > 0 ? (
+                    agents?.map((item, index) => (
+                      <div
+                        className={`${
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EBEBEB]") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light")
+                        } 
+                        ${active === item?.id ? "border-2 border-primary" : ""} 
+                        card-hover shadow-sm rounded-lg p-3 w-full`}
+                        onClick={(e) => handleClick(item?.id, e)}
+                        key={index}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <div className="grid grid-cols-8 flex items-center gap-4">
+                          <div className="w-full px-1">
                             {/* User Image */}
                             {item?.profile_picture ? (
                               <img
                                 src={item?.profile_picture}
-                                alt="User Image"
-                                className="w-16 h-16 rounded-full mr-4"
+                                alt=""
+                                className="w-full rounded-lg"
                               />
                             ) : (
                               <img
                                 src="/favicon.png"
-                                alt="User Image"
-                                className="w-16 h-16 rounded-full mr-4"
+                                alt=""
+                                className="w-full rounded-lg"
                               />
                             )}
-
-                            {/* User Details */}
-                            <div>
-                              <h2 className="text-lg font-bold">
-                                {item?.userName}
-                              </h2>
-                              {item?.total_closed_deals > 0 && (
-                                <p className="text-gray-500">
-                                  {t("deals_closed")}:{" "}
-                                  <span className="text-primary">
-                                    {item?.total_closed_deals}
-                                  </span>
-                                </p>
-                              )}
-                              {item?.total_closed_deals > 0 &&
-                                item?.total_closed_deals !== null && (
-                                  <p className="text-gray-500">
-                                    {t("total_sales")}:{" "}
-                                    <span className="text-primary">
-                                      {item?.total_sales}
-                                    </span>
-                                  </p>
-                                )}
-                              {/* Additional user details */}
-                              {/* ... */}
-                            </div>
                           </div>
-                        </div>
-                      ))
-                    ) : (
-                      <>
-                        {/* <h2
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-red"
-                          } text-center`}
-                        >
-                          No data found
-                        </h2> */}
-                        <img src="./no_data.png" alt="No data Illustration" />
-                      </>
-                    )}
-                  </div>
-                  <div></div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              className={`${
-                currentMode === "dark"
-                  ? "bg-[#1c1c1c] text-white"
-                  : "bg-gray-200 text-black"
-              } p-3 rounded-md h-[450px] overflow-auto`}
-            >
-              {/* MANAGER  */}
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "text-primary"
-                    : "text-primary"
-                } text-lg font-bold my-2 text-center`}
-              >
-                {t("label_agent")}
-              </div>
-              <div className="grid  gap-4">
-                <div className="rounded-md px-2 mb-2 w-full">
-                  <div className="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-2 gap-4">
-                    {active === false ? (
-                      agents?.length > 0 ? (
-                        agents?.map((item, index) => (
-                          <div
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
-                            } rounded-md p-2 w-full`}
-                            key={index}
-                          >
-                            <div className="flex items-start">
-                              {/* User Image */}
-                              {item?.img ? (
-                                <img
-                                  src={item?.img}
-                                  alt="User Image"
-                                  className="w-16 h-16 rounded-full mr-4"
-                                />
-                              ) : (
-                                <img
-                                  src="/favicon.png"
-                                  alt="User Image"
-                                  className="w-16 h-16 rounded-full mr-4"
-                                />
-                              )}
-
-                              {/* User Details */}
-
-                              <div>
-                                <h2 className="text-lg font-bold">
-                                  {item?.userName}
-                                </h2>
-                                <p className="text-gray-500">
-                                  {t("deals_closed")}:{" "}
-                                  <span className="text-primary">
-                                    {item?.total_closed_deals}
-                                  </span>
-                                </p>
-                                <p className="text-gray-500">
-                                  {t("total_sales")}:{" "}
-                                  <span className="text-primary">
-                                    {item?.total_sales || 0} AED
-                                  </span>
-                                </p>
-                                {/* Additional user details */}
-                                {/* ... */}
+                          <div className="col-span-4 px-1">
+                            <h2 className="text-lg font-bold">
+                              {item?.userName}
+                            </h2>
+                          </div>
+                          <div className="col-span-1 px-1 w-full h-full flex justify-center items-center">
+                            <div class="flex flex-col items-center">
+                              <FaRegHandshake size={20} className="text-primary" />
+                              <div className="font-bold">
+                                {item?.total_closed_deals}
                               </div>
                             </div>
                           </div>
-                        ))
-                      ) : (
-                        <h2
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-red"
-                          } text-center`}
-                        >
-                          {t("no_data_found")}
-                        </h2>
-                      )
-                    ) : (
-                      filteredAgent?.map((item, index) => (
-                        <div
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black"
-                          } rounded-md p-2 w-full`}
-                          key={index}
-                        >
-                          <div className="flex items-start">
+                          <div className="col-span-2 px-1 w-full h-full flex justify-center items-center">
+                            <div class="flex flex-col items-center">
+                              <FaRegMoneyBillAlt size={20} className="text-primary" />
+                              <div className="font-bold">
+                                AED{" "}{item?.total_sales}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex justify-center">
+                      <img src="./no_data.png" alt="" className="w-[300px] h-[300px]"   />
+                    </div>
+                  )
+                ) : (
+                  filteredAgent?.length > 0 ? (
+                    filteredAgent?.map((item, index) => (
+                      <div
+                        className={`${
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EBEBEB]") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light")
+                        }  card-hover shadow-sm rounded-lg p-3 w-full`}
+                        key={index}
+                      >
+                        <div className="grid grid-cols-8 flex items-center gap-4">
+                          <div className="w-full px-1">
                             {/* User Image */}
-                            {item?.img ? (
+                            {item?.profile_picture ? (
                               <img
-                                src={item?.img}
-                                alt="User Image"
-                                className="w-16 h-16 rounded-full mr-4"
+                                src={item?.profile_picture}
+                                alt=""
+                                className="w-full rounded-lg"
                               />
                             ) : (
                               <img
                                 src="/favicon.png"
-                                alt="User Image"
-                                className="w-16 h-16 rounded-full mr-4"
+                                alt=""
+                                className="w-full rounded-lg"
                               />
                             )}
-
-                            {/* User Details */}
-                            <div>
-                              <h2 className="text-lg font-bold">
-                                {item?.userName}
-                              </h2>
-                              <p className="text-gray-500">
-                               {t("deals_closed")}:{" "}
-                                <span className="text-primary">
-                                  {item?.total_closed_deals}
-                                </span>
-                              </p>
-                              <p className="text-gray-500">
-                                {t("total_sales")}:{" "}
-                                <span className="text-primary">
-                                  {item?.total_sales || 0} AED
-                                </span>
-                              </p>
-                              {/* Additional user details */}
-                              {/* ... */}
+                          </div>
+                          <div className="col-span-4 px-1">
+                            <h2 className="text-lg font-bold">
+                              {item?.userName}
+                            </h2>
+                          </div>
+                          <div className="col-span-1 px-1 w-full h-full flex justify-center items-center">
+                            <div class="flex flex-col items-center">
+                              <FaRegHandshake size={20} className="text-primary" />
+                              <div className="font-bold">
+                                {item?.total_closed_deals}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-span-2 px-1 w-full h-full flex justify-center items-center">
+                            <div class="flex flex-col items-center">
+                              <FaRegMoneyBillAlt size={20} className="text-primary" />
+                              <div className="font-bold">
+                                AED{" "}{item?.total_sales}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      ))
-                    )}
-                  </div>
-                  <div></div>
-                </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex justify-center">
+                      <img src="./no_data.png" alt="" className="w-[300px] h-[300px]"   />
+                    </div>
+                  )
+                )}
               </div>
             </div>
           </div>

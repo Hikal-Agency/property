@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 
 const Leaderboard = () => {
-  const { currentMode, darkModeColors, t } = useStateContext();
+  const { currentMode, darkModeColors, themeBgImg, t } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -23,99 +23,100 @@ const Leaderboard = () => {
     <>
       <div className="min-h-screen">
         <div
-          className={`w-full  ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+          className={`w-full p-4 ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")}
+            ${currentMode === "dark" ? "text-white" : "text-black"
           }`}
         >
-          <div className="pl-3">
-            <div className="mt-5 md:mt-2">
-              <h1
-                className={`font-semibold ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                } text-lg ml-2 mb-3 mt-5 auto-cols-max gap-x-3`}
+          <div className={`w-full flex items-center pb-3`}>
+            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+            <h1
+              className={`text-lg font-semibold ${
+                currentMode === "dark"
+                  ? "text-white"
+                  : "text-black"
+              }`}
+            >
+              {t("leaderboard")}
+            </h1>
+          </div>
+          
+          {/* TABS */}
+          <div className="grid grid-cols-1">
+            <div className={``}>
+              <Box
+                sx={{
+                  ...darkModeColors,
+                  "& .MuiTabs-indicator": {
+                    height: "100%",
+                    borderRadius: "5px",
+                  },
+                  "& .Mui-selected": {
+                    color: "white !important",
+                    zIndex: "1",
+                  },
+                }}
+                className={`w-full rounded-md overflow-hidden ${
+                  !themeBgImg ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                }`}
               >
-               {t("menu_leaderboard")}
-              </h1>
-              {/* TABS */}
-              <div className="grid grid-cols-1 pb-3">
-                {/* <Task call_logs={DashboardData?.call_logs} /> */}
-                <div className={`p-5 rounded-md`}>
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiTabs-indicator": {
-                        height: "100%",
-                        borderRadius: "5px",
-                      },
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        zIndex: "1",
-                      },
-                    }}
-                    className={`w-full rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
-                    }`}
+                <div className="flex justify-between">
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    variant="standard"
+                    className="w-full px-1 m-1"
                   >
-                    <div className="flex justify-between">
-                      <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        variant="standard"
-                        className="w-full px-1 m-1"
-                      >
-                        <Tab label={t("call_logs")} />
-                        <Tab label={t("menu_closed_deals")} />
-                        <Tab label={t("label_target")} />
-                      </Tabs>
-                      <Link
-                        className="bg-primary w-[250px] text-white rounded-lg pl-2 py-3 font-semibold  flex items-center justify-center space-x-2"
-                        style={{ color: "#ffffff" }}
-                        to="/fresh-logs"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <span>{t("call_logs_full_view")}</span>
-                        <BsFillArrowUpRightCircleFill />
-                      </Link>
-                    </div>
-                  </Box>
-                  <div className="mt-3 pb-3">
-                    <TabPanel value={value} index={0}>
-                      <CallLogBoard
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                      <ClosedealsboardUpdated
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={2}>
-                      <TargetBoard
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={3}>
-                      <Scoreboard
-                        isLoading={loading}
-                        tabValue={tabValue}
-                        setTabValue={setTabValue}
-                      />
-                    </TabPanel>
-                  </div>
+                    <Tab label={t("call_logs")} />
+                    <Tab label={t("menu_closed_deals")} />
+                    <Tab label={t("label_target")}/>
+                  </Tabs>
+                  <Link
+                    className="bg-primary w-[250px] text-white rounded-lg pl-2 py-3 font-semibold  flex items-center justify-center space-x-2"
+                    style={{ color: "#ffffff" }}
+                    to="/fresh-logs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>{t("call_logs_full_view")}</span>
+                    <BsFillArrowUpRightCircleFill />
+                  </Link>
                 </div>
+              </Box>
+              <div className="pb-5">
+                <TabPanel value={value} index={0}>
+                  <CallLogBoard
+                    isLoading={loading}
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <ClosedealsboardUpdated
+                    isLoading={loading}
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  <TargetBoard
+                    isLoading={loading}
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                  <Scoreboard
+                    isLoading={loading}
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                  />
+                </TabPanel>
               </div>
-              {/* TABS END */}
             </div>
           </div>
+          {/* TABS END */}
         </div>
-        {/* <Footer /> */}
       </div>
     </>
   );

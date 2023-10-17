@@ -1,21 +1,22 @@
-import { Button } from "@material-tailwind/react";
 
-import { Box, Tab, Tabs } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button } from "@material-tailwind/react";
+import { Box, Tab, Tabs, Tooltip } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
-
-import {
-  AiOutlineEdit,
-  AiOutlinePlus
-} from "react-icons/ai";
-import { useEffect, useState } from "react";
-
-import axios from "../../axoisConfig";
-import { toast } from "react-toastify";
-import { FaBan } from "react-icons/fa";
 import RolesComponent from "../../Components/Roles-Permissions/RolesComponent";
 import DeleteComponent from "../../Components/Roles-Permissions/DeleteComponent";
 import UpdateComponent from "../../Components/Roles-Permissions/UpdateComponent";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
+import { FaBan } from "react-icons/fa";
+
+import {
+  BsTrash,
+  BsPen,
+  BsPlus
+} from "react-icons/bs";
+
 
 const Role = () => {
   const {
@@ -25,7 +26,8 @@ const Role = () => {
     pageState,
     setpageState,
     User,
-    darkModeColors, t
+    darkModeColors,
+    themeBgImg, t
   } = useStateContext();
 
   const [user, setUser] = useState([]);
@@ -217,36 +219,44 @@ const Role = () => {
       renderCell: (cellValues) => {
         console.log("action data: ", cellValues);
         return (
-          <div className=" space-x-2 w-full flex items-center justify-center ">
-            <Button
-              onClick={() =>
-                handleDelete(cellValues?.row?.role_id, cellValues?.row?.role)
-              }
-              className={`editUserBtn ${
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {/* EDIT ROLE  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } editUserBtn hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              {currentMode === "dark" ? (
-                <FaBan style={{ color: "white" }} />
-              ) : (
-                <FaBan style={{ color: "black" }} />
-              )}
-            </Button>
-            <Button
-              title="Edit Role"
-              className={`editUserBtn ${
+              <Tooltip title="Edit Role" arrow>
+                <button onClick={() =>
+                  handleUpdate(cellValues?.row?.role_id, cellValues?.row?.role)
+                }>
+                  <BsPen size={16} />
+                </button>
+              </Tooltip>
+            </p>
+            {/* DELETE ROLE  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-              onClick={() =>
-                handleUpdate(cellValues?.row?.role_id, cellValues?.row?.role)
-              }
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } editUserBtn hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <AiOutlineEdit size={20} />
-            </Button>
+              <Tooltip title="Delete Role" arrow>
+                <button onClick={() =>
+                  handleDelete(cellValues?.row?.role_id, cellValues?.row?.role)
+                  }
+                >
+                  <BsTrash size={16} />
+                </button>
+              </Tooltip>
+            </p>
           </div>
         );
       },
@@ -290,44 +300,51 @@ const Role = () => {
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className=" space-x-2 w-full flex items-center justify-center ">
-            <Button
-              onClick={() =>
-                handleDelete(
-                  cellValues?.row?.permission_id,
-                  cellValues?.row?.permission
-                )
-              }
-              className={`editUserBtn ${
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {/* EDIT PERMISSION  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } editUserBtn hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              {currentMode === "dark" ? (
-                <FaBan style={{ color: "white" }} />
-              ) : (
-                <FaBan style={{ color: "black" }} />
-              )}
-            </Button>
-            <Button
-              title="Edit Permission"
-              className={`editUserBtn ${
+              <Tooltip title="Edit Permission" arrow>
+                <button onClick={() =>
+                  handleUpdate(
+                    cellValues?.row?.permission_id,
+                    value === 0
+                      ? cellValues?.row?.role
+                      : cellValues?.row?.permission
+                  )
+                }>
+                  <BsPen size={16} />
+                </button>
+              </Tooltip>
+            </p>
+            {/* DELETE PERMISSION  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-              onClick={() =>
-                handleUpdate(
-                  cellValues?.row?.permission_id,
-                  value === 0
-                    ? cellValues?.row?.role
-                    : cellValues?.row?.permission
-                )
-              }
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } editUserBtn hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <AiOutlineEdit size={20} />
-            </Button>
+              <Tooltip title="Delete Permission" arrow>
+                <button onClick={() =>
+                  handleDelete(
+                    cellValues?.row?.permission_id,
+                    cellValues?.row?.permission
+                  )
+                }>
+                  <BsTrash size={16} />
+                </button>
+              </Tooltip>
+            </p>
           </div>
         );
       },
@@ -338,231 +355,222 @@ const Role = () => {
     <>
       <div className="flex min-h-screen">
         <div
-          className={`w-full ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+          className={`w-full p-4 ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
-          <div className={`w-full `}>
-            <div className="pl-3">
-              <div className="my-5 mb-10">
-                <div className="mt-3 flex justify-between items-center">
-                  <h1
-                    className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-primary font-bold border-primary"
-                    }`}
-                  >
-                    {t("title_roles_permissions")}{" "}
-                    {/* <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                      <span>{pageState?.total}</span>
-                    </span> */}
-                  </h1>
-                </div>
-                <div className="flex items-center justify-between">
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiTabs-indicator": {
-                        height: "100%",
-                        borderRadius: "5px",
-                      },
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        zIndex: "1",
-                      },
-                    }}
-                    className={`w-full rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-black" : "bg-white"
-                    } `}
-                  >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      variant="standard"
-                      className="w-full px-1 m-1"
-                    >
-                      <Tab label={t("menu_roles")} />
-                      <Tab label={t("permissions")}/>
-                    </Tabs>
-                  </Box>
-                  <div className="w-max">
-                    <Button
-                      className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
-                      onClick={HandleOpenModel}
-                    >
-                      <span className="flex justify-between items-center ">
-                        <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                        {value === 0 ? t("add_role") : t("add_permission")}
-                      </span>
-                    </Button>
-                  </div>
-                </div>
-                <div className="mt-3 pb-3">
-                  <TabPanel value={value} index={0}>
-                    <Box
-                      className={`${currentMode}-mode-datatable`}
-                      // width={"100%"}
-                      sx={DataGridStyles}
-                    >
-                      <DataGrid
-                        autoHeight
-                        disableDensitySelector
-                        disableSelectionOnClick
-                        rowHeight={45}
-                        rows={pageState.data}
-                        columns={columns}
-                        rowCount={pageState.total}
-                        loading={pageState.isLoading}
-                        rowsPerPageOptions={[]}
-                        pagination
-                        // width="auto"
-                        // getRowHeight={() => "auto"}
-                        paginationMode="server"
-                        page={pageState.page - 1}
-                        pageSize={pageState.pageSize}
-                        componentsProps={{
-                          toolbar: {
-                            printOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            csvOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            showQuickFilter: true,
-                          },
-                        }}
-                        onPageChange={(newPage) => {
-                          setpageState((old) => ({
-                            ...old,
-                            page: newPage + 1,
-                          }));
-                        }}
-                        onPageSizeChange={(newPageSize) =>
-                          setpageState((old) => ({
-                            ...old,
-                            pageSize: newPageSize,
-                          }))
-                        }
-                        sx={{
-                          boxShadow: 2,
-                          "& .MuiDataGrid-cell:hover": {
-                            cursor: "pointer",
-                          },
-                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                            color:
-                              currentMode === "dark"
-                                ? "white !important"
-                                : "black !important",
-                          },
-                        }}
-                        getRowClassName={(params) =>
-                          params.indexRelativeToCurrentPage % 2 === 0
-                            ? "even"
-                            : "odd"
-                        }
-                      />
-                    </Box>
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <Box
-                      className={`${currentMode}-mode-datatable`}
-                      // width={"100%"}
-                      sx={DataGridStyles}
-                    >
-                      <DataGrid
-                        disableDensitySelector
-                        autoHeight
-                        disableSelectionOnClick
-                        rows={pageState.data}
-                        columns={permissionsColumns}
-                        rowCount={pageState.total}
-                        loading={pageState.isLoading}
-                        rowsPerPageOptions={[30, 50, 75, 100]}
-                        pagination
-                        // width="auto"
-                        // getRowHeight={() => "auto"}
-                        rowHeight={45}
-                        paginationMode="server"
-                        page={pageState.page - 1}
-                        pageSize={pageState.pageSize}
-                        componentsProps={{
-                          toolbar: {
-                            printOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            csvOptions: {
-                              disableToolbarButton: User?.role !== 1,
-                            },
-                            showQuickFilter: true,
-                          },
-                        }}
-                        onPageChange={(newPage) => {
-                          setpageState((old) => ({
-                            ...old,
-                            page: newPage + 1,
-                          }));
-                        }}
-                        onPageSizeChange={(newPageSize) =>
-                          setpageState((old) => ({
-                            ...old,
-                            pageSize: newPageSize,
-                          }))
-                        }
-                        sx={{
-                          boxShadow: 2,
-                          "& .MuiDataGrid-cell:hover": {
-                            cursor: "pointer",
-                          },
-                          "& .MuiDataGrid-cell[data-field='edit'] svg": {
-                            color:
-                              currentMode === "dark"
-                                ? "white !important"
-                                : "black !important",
-                          },
-                        }}
-                        getRowClassName={(params) =>
-                          params.indexRelativeToCurrentPage % 2 === 0
-                            ? "even"
-                            : "odd"
-                        }
-                      />
-                    </Box>
-                  </TabPanel>
-                </div>
-                {openDeleteModel && (
-                  <DeleteComponent
-                    UserModelOpen={handleDelete}
-                    handleUserModelClose={handleDeleteModelClose}
-                    UserData={userID}
-                    fetchData={fetchData}
-                    value={value}
-                    DataName={DataName}
-                  />
-                )}
-
-                {openUpdateModel && (
-                  <UpdateComponent
-                    handleOpenModel={HandleOpenModel}
-                    addUserModelClose={handleCloseUpdateModel}
-                    UserData={userID}
-                    fetchData={fetchData}
-                    value={value}
-                    DataName={DataName}
-                  />
-                )}
-                {model && (
-                  <RolesComponent
-                    handleOpenModel={HandleOpenModel}
-                    addUserModelClose={HandleModelClose}
-                    value={value}
-                    fetchData={fetchData}
-                  />
-                )}
-              </div>
+          <div className="w-full flex items-center justify-between pb-3">
+            <div className="flex items-center">
+              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+              <h1
+                className={`text-lg font-semibold ${
+                  currentMode === "dark"
+                    ? "text-white"
+                    : "text-black"
+                }`}
+              >
+                {t("title_roles_permissions")}
+              </h1>
             </div>
+            <button
+              className="card-hover bg-primary text-white px-3 py-2 rounded-md"
+              onClick={HandleOpenModel}
+            >
+              <span className="flex justify-between items-center gap-1 uppercase font-semibold text-sm">
+                <BsPlus size={18} />
+                {value === 0 ? t("create_new_role") : t("create_new_permission")}
+              </span>
+            </button>
           </div>
-          {/* <Footer /> */}
+          <div className="flex items-center justify-between">
+            <Box
+              sx={{
+                ...darkModeColors,
+                "& .MuiTabs-indicator": {
+                  height: "100%",
+                  borderRadius: "5px",
+                },
+                "& .Mui-selected": {
+                  color: "white !important",
+                  zIndex: "1",
+                },
+              }}
+              className={`w-full rounded-lg overflow-hidden ${
+                !themeBgImg 
+                ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+              } `}
+            >
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                variant="standard"
+                className="w-full m-1"
+              >
+                <Tab label={t("roles")}/>
+                <Tab label={t("permissions")}/>
+              </Tabs>
+            </Box>
+          </div>
+          <div className="mt-3 pb-3">
+            <TabPanel value={value} index={0}>
+              <Box
+                className={`${currentMode}-mode-datatable`}
+                sx={DataGridStyles}
+              >
+                <DataGrid
+                  autoHeight
+                  disableDensitySelector
+                  disableSelectionOnClick
+                  rowHeight={45}
+                  rows={pageState.data}
+                  columns={columns}
+                  rowCount={pageState.total}
+                  loading={pageState.isLoading}
+                  rowsPerPageOptions={[]}
+                  pagination
+        
+                  paginationMode="server"
+                  page={pageState.page - 1}
+                  pageSize={pageState.pageSize}
+                  componentsProps={{
+                    toolbar: {
+                      printOptions: {
+                        disableToolbarButton: User?.role !== 1,
+                      },
+                      csvOptions: {
+                        disableToolbarButton: User?.role !== 1,
+                      },
+                      showQuickFilter: true,
+                    },
+                  }}
+                  onPageChange={(newPage) => {
+                    setpageState((old) => ({
+                      ...old,
+                      page: newPage + 1,
+                    }));
+                  }}
+                  onPageSizeChange={(newPageSize) =>
+                    setpageState((old) => ({
+                      ...old,
+                      pageSize: newPageSize,
+                    }))
+                  }
+                  sx={{
+                    boxShadow: 2,
+                    "& .MuiDataGrid-cell:hover": {
+                      cursor: "pointer",
+                    },
+                    "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                      color:
+                        currentMode === "dark"
+                          ? "white !important"
+                          : "black !important",
+                    },
+                  }}
+                  getRowClassName={(params) =>
+                    params.indexRelativeToCurrentPage % 2 === 0
+                      ? "even"
+                      : "odd"
+                  }
+                />
+              </Box>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <Box
+                className={`${currentMode}-mode-datatable`}
+                // width={"100%"}
+                sx={DataGridStyles}
+              >
+                <DataGrid
+                  disableDensitySelector
+                  autoHeight
+                  disableSelectionOnClick
+                  rows={pageState.data}
+                  columns={permissionsColumns}
+                  rowCount={pageState.total}
+                  loading={pageState.isLoading}
+                  rowsPerPageOptions={[30, 50, 75, 100]}
+                  pagination
+                  // width="auto"
+                  // getRowHeight={() => "auto"}
+                  rowHeight={45}
+                  paginationMode="server"
+                  page={pageState.page - 1}
+                  pageSize={pageState.pageSize}
+                  componentsProps={{
+                    toolbar: {
+                      printOptions: {
+                        disableToolbarButton: User?.role !== 1,
+                      },
+                      csvOptions: {
+                        disableToolbarButton: User?.role !== 1,
+                      },
+                      showQuickFilter: true,
+                    },
+                  }}
+                  onPageChange={(newPage) => {
+                    setpageState((old) => ({
+                      ...old,
+                      page: newPage + 1,
+                    }));
+                  }}
+                  onPageSizeChange={(newPageSize) =>
+                    setpageState((old) => ({
+                      ...old,
+                      pageSize: newPageSize,
+                    }))
+                  }
+                  sx={{
+                    boxShadow: 2,
+                    "& .MuiDataGrid-cell:hover": {
+                      cursor: "pointer",
+                    },
+                    "& .MuiDataGrid-cell[data-field='edit'] svg": {
+                      color:
+                        currentMode === "dark"
+                          ? "white !important"
+                          : "black !important",
+                    },
+                  }}
+                  getRowClassName={(params) =>
+                    params.indexRelativeToCurrentPage % 2 === 0
+                      ? "even"
+                      : "odd"
+                  }
+                />
+              </Box>
+            </TabPanel>
+          </div>
+          {openDeleteModel && (
+            <DeleteComponent
+              UserModelOpen={handleDelete}
+              handleUserModelClose={handleDeleteModelClose}
+              UserData={userID}
+              fetchData={fetchData}
+              value={value}
+              DataName={DataName}
+            />
+          )}
+
+          {openUpdateModel && (
+            <UpdateComponent
+              handleOpenModel={HandleOpenModel}
+              addUserModelClose={handleCloseUpdateModel}
+              UserData={userID}
+              fetchData={fetchData}
+              value={value}
+              DataName={DataName}
+            />
+          )}
+          {model && (
+            <RolesComponent
+              handleOpenModel={HandleOpenModel}
+              addUserModelClose={HandleModelClose}
+              value={value}
+              fetchData={fetchData}
+            />
+          )}
         </div>
       </div>
     </>

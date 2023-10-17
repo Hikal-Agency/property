@@ -227,14 +227,17 @@ const Navbar = () => {
   return (
     <>
       <div
-        className="flex justify-between items-center p-2 relative "
+        className={` ${themeBgImg 
+          ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+          : (currentMode === "dark" ? "bg-black" : "bg-white") 
+        } flex justify-between items-center p-2 relative`}
         style={{
           position: "fixed",
           top: 0,
           left: !isCollapsed ? 65 : 200,
           right: 0,
           zIndex: "20",
-          backgroundColor: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
+          // backgroundColor: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
           boxShadow:
             currentMode !== "dark"
               ? "0 2px 4px rgba(0, 0, 0, 0.1)"

@@ -9,11 +9,12 @@ import {
   Tab,
   Tabs,
   TextField,
+  Tooltip
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
-import {GiTwoCoins} from "react-icons/gi";
+import EditUserModal from "../../Components/Users/EditUserModal";
 
 import {
   AiOutlineEdit,
@@ -21,17 +22,21 @@ import {
   AiOutlineTable,
   AiOutlineAppstore,
 } from "react-icons/ai";
-import { useEffect, useState, useRef } from "react";
+import { RiCoinsFill } from "react-icons/ri";
+import React, { useEffect, useState, useRef } from "react";
 
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import UserTable from "../../Components/Users/UserTable";
 import AddUserModel from "../../Components/addUser/AddUserModel";
-import { FaUnlock } from "react-icons/fa";
-import { HiOutlineBan } from "react-icons/hi";
+import { FaBan, FaUnlock } from "react-icons/fa";
 import DeleteUser from "../../Components/Users/DeleteUser";
-import { BsPersonFillLock, BsSearch } from "react-icons/bs";
+import { 
+  BsPersonFillGear, 
+  BsSearch,
+  BsPersonFillSlash 
+} from "react-icons/bs";
 import UpdateUserPermissions from "../../Components/addUser/UpdateUserPermissions";
 import ShareCreditsModal from "../../Components/addUser/ShareCreditsModal";
 
@@ -43,7 +48,8 @@ const Users = () => {
     pageState,
     setpageState,
     User,
-    darkModeColors, t
+    darkModeColors,
+    themeBgImg, t
   } = useStateContext();
   const { hasPermission } = usePermission();
 
@@ -62,6 +68,14 @@ const Users = () => {
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [openPermissionModel, setOpenPermissionModel] = useState(false);
   const token = localStorage.getItem("auth-token");
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const handleCloseEditModal = () => setEditModalOpen(false);
+  const handleEditModal = (id) => {
+    setUserId(id);
+    setEditModalOpen(true);
+    // handleLeadModelClose();
+  };
 
   const searchRef = useRef("");
 
@@ -455,7 +469,7 @@ const Users = () => {
       },
     },
     {
-      field: "",
+      field: "notes",
       headerName: t("label_action"),
       minwidth: 100,
       flex: 1,
@@ -464,105 +478,126 @@ const Users = () => {
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className=" space-x-2 w-full flex items-center justify-center ">
-            {hasPermission("users_delete") ? (
+          <div className="space-x-2 w-full flex items-center justify-start mx-2">
+
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
+            >
+              <Tooltip title="Edit User" arrow>
+                <button className="editUserBtn"
+                  onClick={() =>
+                    handleEditModal(
+                      cellValues?.id
+                    )
+                  }
+                >
+                  {/* <Link to={`/updateuser/${cellValues?.id}`}> */}
+                    <AiOutlineEdit size={16} />
+                  {/* </Link> */}
+                </button>
+              </Tooltip>
+            </p>
+
+            {cellValues?.row?.status === 1 && (
               <>
-                {cellValues.row.status === 1 ? (
-                  <Button
-                    onClick={() =>
-                      handleDelete(
-                        cellValues?.id,
-                        cellValues.row.status,
-                        cellValues?.row?.userName
-                      )
-                    }
-                    className={`editUserBtn ${
-                      currentMode === "dark"
-                        ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                        : "text-black bg-transparent rounded-md p-1 shadow-none "
-                    }`}
-                  >
-                    {currentMode === "dark" ? (
-                      <HiOutlineBan style={{ color: "white" }} size={16} />
-                    ) : (
-                      <HiOutlineBan style={{ color: "black" }} size={16} />
-                    )}
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() =>
-                      handleDelete(
-                        cellValues?.id,
-                        cellValues.row.status,
-                        cellValues?.row?.userName
-                      )
-                    }
-                    className={`editUserBtn ${
-                      currentMode === "dark"
-                        ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                        : "text-black bg-transparent rounded-md p-1 shadow-none "
-                    }`}
-                  >
-                    {currentMode === "dark" ? (
-                      <FaUnlock style={{ color: "white" }} size={16} />
-                    ) : (
-                      <FaUnlock style={{ color: "black" }} size={16} />
-                    )}
-                  </Button>
+                {/* SEND CREDIT  */}
+                <p
+                  style={{ cursor: "pointer" }}
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-[#FFFFFF] bg-[#262626]"
+                      : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  } hover:bg-yellow-500 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
+                >
+                  <Tooltip title="Share Credits" arrow>
+                    <button onClick={() => setShareCreditsModal({
+                        open: true, 
+                        data: cellValues?.row
+                      })}
+                    >
+                      {/* <GiTwoCoins size={16} /> */}
+                      <RiCoinsFill size={16} />
+                    </button>
+                  </Tooltip>
+                </p>
+                
+                {/* UPDATE ROLE  */}
+                {cellValues.row.role !== 1 && (
+                  hasPermission("role_update") ? (
+                    <p
+                      style={{ cursor: "pointer" }}
+                      className={`${
+                        currentMode === "dark"
+                          ? "text-[#FFFFFF] bg-[#262626]"
+                          : "text-[#1C1C1C] bg-[#EEEEEE]"
+                      } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
+                    >
+                      <Tooltip title="Update Role" arrow>
+                        <button onClick={() =>
+                          HandlePermissionModel(
+                            cellValues?.id,
+                            cellValues.row.status,
+                            cellValues?.row?.userName,
+                            cellValues?.row?.role
+                          )
+                        }>
+                          <BsPersonFillGear size={16} />
+                        </button>
+                      </Tooltip>
+                    </p>
+                  ) : null
                 )}
+
+                {/* DELETE USER  */}
+                {hasPermission("users_delete") ? (
+                  <>
+                    <p
+                      style={{ cursor: "pointer" }}
+                      className={`${
+                        currentMode === "dark"
+                          ? "text-[#FFFFFF] bg-[#262626]"
+                          : "text-[#1C1C1C] bg-[#EEEEEE]"
+                      } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
+                    >
+                      <Tooltip title="Deactivate User" arrow>
+                        <button onClick={() =>
+                          handleDelete(
+                            cellValues?.id,
+                            cellValues.row.status,
+                            cellValues?.row?.userName
+                          )
+                        }>
+                          <BsPersonFillSlash size={16} />
+                        </button>
+                      </Tooltip>
+                    </p>
+
+                    {/* <Button
+                      onClick={() =>
+                        
+                      }
+                      className={`editUserBtn ${
+                        currentMode === "dark"
+                          ? "text-white bg-transparent rounded-md p-1 shadow-none "
+                          : "text-black bg-transparent rounded-md p-1 shadow-none "
+                      }`}
+                    >
+                      {currentMode === "dark" ? (
+                        <FaUnlock style={{ color: "white" }} size={16} />
+                      ) : (
+                        <FaUnlock style={{ color: "black" }} size={16} />
+                      )}
+                    </Button> */}
+                  </>
+                ) : null}
               </>
-            ) : null}
-            <Button
-              title="Edit User"
-              className={`editUserBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-              <Link to={`/updateuser/${cellValues?.id}`}>
-                {" "}
-                <AiOutlineEdit size={16} />
-              </Link>
-            </Button>
-
-            {hasPermission("role_update") ? (
-              <Button
-                onClick={() =>
-                  HandlePermissionModel(
-                    cellValues?.id,
-                    cellValues.row.status,
-                    cellValues?.row?.userName,
-                    cellValues?.row?.role
-                  )
-                }
-                className={`editUserBtn ${
-                  currentMode === "dark"
-                    ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                    : "text-black bg-transparent rounded-md p-1 shadow-none "
-                }`}
-              >
-                <BsPersonFillLock
-                  style={{ color: currentMode === "dark" ? "white" : "black" }}
-                  size={16}
-                />
-              </Button>
-            ) : null}
-
-            <Button
-            onClick={() => setShareCreditsModal({
-              open: true, 
-              data: cellValues?.row
-            })}
-              title="Share Credits"
-              className={`editUserBtn ${
-                currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-            >
-                <GiTwoCoins size={16} />
-            </Button>
+            )}
+            
           </div>
         );
       },
@@ -574,7 +609,7 @@ const Users = () => {
       <div className="flex min-h-screen">
         <div
           className={`w-full p-4 ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+            !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
           <div className="mb-10">
@@ -621,11 +656,6 @@ const Users = () => {
                     <TextField
                       placeholder={`${t("search")}...`}
                       ref={searchRef}
-                      sx={{
-                        "& input": {
-                          borderBottom: "2px solid #ffffff6e",
-                        },
-                      }}
                       variant="standard"
                       onKeyUp={handleKeyUp}
                       onInput={handleSearch}
@@ -633,7 +663,7 @@ const Users = () => {
                         startAdornment: (
                           <InputAdornment position="start">
                             <IconButton sx={{ padding: 1 }}>
-                              <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                              <BsSearch className={`${currentMode === "dark" ? "text-white" : "text-black"}`} size={18} />
                             </IconButton>
                           </InputAdornment>
                         ),
@@ -647,7 +677,7 @@ const Users = () => {
                 sx={{
                   ...darkModeColors,
                   "& .MuiTabs-indicator": {
-                    // height: "100%",
+                    // height: "20%",
                     borderRadius: "5px",
                   },
                   "& .Mui-selected": {
@@ -655,9 +685,7 @@ const Users = () => {
                     zIndex: "1",
                   },
                 }}
-                className={`mx-5 rounded-md overflow-hidden ${
-                  currentMode === "dark" ? "bg-black" : "bg-white"
-                } `}
+                className={`rounded-md overflow-hidden`}
               >
                 <Tabs
                   value={value}
@@ -701,7 +729,10 @@ const Users = () => {
                     autoHeight
                     disableSelectionOnClick
                     rows={pageState.data}
-                    columns={columns}
+                    // columns={columns}
+                    columns={columns?.filter((c) =>
+                      hasPermission("users_col_" + c?.field)
+                    )}
                     rowCount={pageState.total}
                     loading={pageState.isLoading}
                     rowsPerPageOptions={[30, 50, 75, 100]}
@@ -783,10 +814,19 @@ const Users = () => {
               />
             )}
 
-                {shareCreditsModal && (
+            {shareCreditsModal && (
               <ShareCreditsModal
                 shareCreditsModal={shareCreditsModal}
                 handleClose={() => setShareCreditsModal({open: false, data: {}})}
+              />
+            )}
+
+            {editModalOpen && (
+              <EditUserModal
+                UserData={userID}
+                handleCloseEditModal={handleCloseEditModal}
+                setEditModalOpen={setEditModalOpen}
+                fetchUser={fetchUsers}
               />
             )}
           </div>

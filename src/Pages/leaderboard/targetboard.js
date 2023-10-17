@@ -4,9 +4,10 @@ import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import Loader from "../../Components/Loader";
+import ProgressBar from "../../Components/_elements/Progressbar";
 
 const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, t } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, primaryColor, themeBgImg, t} = useStateContext();
 
   const [noData, setNoData] = useState(false);
 
@@ -91,10 +92,8 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
     setTabValue(newValue);
   };
 
-
   return (
     <div>
-      
       <Box sx={darkModeColors} className="font-semibold">
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
           <Tab label={t("this_month")} />
@@ -104,8 +103,8 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
       {loading ? (
         <Loader />
       ) : (
-        <Box
-          className="mt-1 p-5"
+        <Box 
+          className="mb-3 font-semibold"
           sx={
             isLoading && {
               opacity: 0.3,
@@ -116,85 +115,119 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
           <TabPanel
             value={tabValue}
             index={0}
-            className="h-[100px] overflow-y-scroll"
+            className=""
           >
-            <div className="mb-10 mx-3">
-              {/* <h1
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            }  font-semibold text-center`}
-          >
-            <span className="font-bold">{count?.total_closed_deals}</span>
-            &nbsp;&nbsp;Closed Deals of&nbsp;
-            <span className="font-bold">AED {count?.total_sales}</span>
-          </h1> */}
-            </div>
-            <div
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              } p-3 rounded-md`}
-            >
-              <div
-                className={`${
-                  currentMode === "dark" ? "text-primary" : "text-primary"
-                } text-lg font-bold`}
+            <div className={` ${currentMode === "dark" ? "text-white" : "text-black"}
+              grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-3`} >
+              <div className={`p-1 rounded-md h-fit overflow-auto hide-scrollbar`}
               >
-               {t("label_sales_manager")}
+                {/* MANAGER  */}
+                <div
+                  className={`text-lg font-bold text-center uppercase`}
+                >
+                  {t("label_sales_manager")}
+                </div>
+                {/*  */}
+                <div className="grid gap-4 p-3">
+                  {!noData && manager?.length > 0
+                    ? manager?.map((item, index) => {
+                        let totalSales = item.total_sales
+                          ? parseInt(item.total_sales)
+                          : 0;
+                        let target = item.target ? parseInt(item.target) : 0;
+                        let percentageSales = (totalSales / target) * 100;
+                        percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+
+                        return (
+                          <div
+                            key={index}
+                            className={` ${
+                              !themeBgImg 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                            }
+                            rounded-lg shadow-sm card-hover p-4 `}
+                          >
+                            <div className="flex items-center gap-3 h-full w-full ">
+                              {item?.profile_picture ? (
+                                <img
+                                  src={item?.profile_picture}
+                                  height={50}
+                                  width={50}
+                                  className="rounded-lg cursor-pointer"
+                                  alt=""
+                                />
+                              ) : (
+                                <img
+                                  src="./favicon.png"
+                                  height={50}
+                                  width={50}
+                                  className="rounded-lg cursor-pointer"
+                                  alt=""
+                                />
+                              )}
+                              <div className="flex flex-col h-full w-full justify-between">
+                                <h4 className="font-semibold uppercase my-1">{item?.userName}</h4>
+                                <ProgressBar
+                                  bgcolor={primaryColor}
+                                  height="20px"
+                                  progress={(
+                                    (totalSales / target) *
+                                    100
+                                  ).toFixed(1)}
+                                  progresswidth={
+                                    totalSales >= target
+                                      ? 100.0
+                                      : (totalSales / target) *
+                                        100
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    : ""}
+                  {noData && (
+                    <div className="flex justify-center">
+                      <img src="./no_data.png" alt="" className="w-[300px] h-[300px]"   />
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className={`${!noData && "h-[300px]"} overflow-y-scroll`}>
-                {!noData && manager?.length > 0
-                  ? manager?.map((item, index) => {
+
+              <div className={`p-1 rounded-md h-fit overflow-auto hide-scrollbar`} >
+                {/* AGENT  */}
+                <div className={`text-lg font-bold text-center uppercase`} >
+                  {t("label_sales_agent")}
+                </div>
+                <div className="grid gap-4 p-3">
+                  {!noData && agents?.length > 0
+                    ? agents?.map((item, index) => {
                       let totalSales = item.total_sales
                         ? parseInt(item.total_sales)
                         : 0;
                       let target = item.target ? parseInt(item.target) : 0;
                       let percentageSales = (totalSales / target) * 100;
                       percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
-                      const barWidth = `${percentageSales}%`;
-                      const barColor =
-                        percentageSales >= 50 ? "bg-primary" : "bg-gray-800";
 
                       return (
                         <div
                           key={index}
-                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                          className={` ${
+                            !themeBgImg 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                          }
+                          rounded-lg shadow-sm card-hover p-4 `}
                         >
-                          <div className="col-span-2">
-                            <h4 className="font-bold my-1">{item?.userName}</h4>
-                          </div>
-                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                            <div className="relative flex-1">
-                              <div
-                                className={`absolute left-0 top-0 h-5 text-white ${barColor}`}
-                                style={{ width: barWidth }}
-                              ></div>
-                              <div
-                                className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
-                                  currentMode === "dark"
-                                    ? "text-white"
-                                    : "text-dark-600"
-                                }`}
-                              >
-                                {/* Total Closed Deals: {item?.total_closed_deals} /
-                          Direct deals:{" "}
-                          <span
-                            className={
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-dark-600"
-                            }
-                          >
-                            {item?.total_sales || 0}
-                          </span> */}
-                                {percentageSales?.toFixed(2)}% {t("of_target_achieved")}
-                              </div>
-                            </div>
+                          <div className="flex items-center gap-3 h-full w-full ">
                             {item?.profile_picture ? (
                               <img
                                 src={item?.profile_picture}
                                 height={50}
                                 width={50}
-                                className="rounded-full cursor-pointer"
+                                className="rounded-lg cursor-pointer"
                                 alt=""
                               />
                             ) : (
@@ -202,128 +235,37 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                                 src="./favicon.png"
                                 height={50}
                                 width={50}
-                                className="rounded-full cursor-pointer"
+                                className="rounded-lg cursor-pointer"
                                 alt=""
                               />
                             )}
-                          </div>
-                          <div></div>
-                        </div>
-                      );
-                    })
-                  : ""}
-                {noData && (
-                  <div className="flex flex-col items-center justify-center ">
-                    {/* <h1
-                      className={
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      }
-                    >
-                      No data available.
-                    </h1> */}
-                    <img
-                      src="./no_data.png"
-                      alt="No data Illustration"
-                      className="w-[600px] h-[600px] object-cover"
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <hr
-              className="mb-3"
-              style={{
-                color: currentMode === "dark" ? "#ffffff" : "#000000",
-                height: "5px !important",
-              }}
-            />
-
-            <div
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              } p-3 rounded-md`}
-            >
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "text-primary"
-                    : "text-primary"
-                } text-lg font-bold`}
-              >
-               {t("label_sales_agent")}
-              </div>
-              <div className="h-[300px] overflow-y-scroll">
-                {!noData && agents?.length > 0
-                  ? agents?.map((item, index) => {
-                      let totalSales = item.total_sales
-                        ? parseInt(item.total_sales)
-                        : 0;
-                      let target = item.target ? parseInt(item.target) : 0;
-                      let percentageSales = (totalSales / target) * 100;
-                      percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
-                      const barWidth = `${percentageSales}%`;
-                      const barColor =
-                        percentageSales >= 50 ? "bg-primary" : "bg-gray-800";
-
-                      return (
-                        <div
-                          key={index}
-                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                        >
-                          <div className="col-span-2">
-                            <h4 className="font-bold my-1">{item?.userName}</h4>
-                          </div>
-                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                            <div className="relative flex-1">
-                              <div
-                                className={`absolute left-0 top-0 h-5 ${barColor}`}
-                                style={{ width: barWidth }}
-                              ></div>
-                              <div
-                                className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
-                                  currentMode === "dark"
-                                    ? "text-white"
-                                    : "text-dark-600"
-                                }`}
-                              >
-                                {/* Total Closed Deals: {item?.total_closed_deals} /
-                          Direct deals:{" "}
-                          <span
-                            className={
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-dark-600"
-                            }
-                          >
-                            {item?.total_sales || 0}
-                          </span> */}
-                                {percentageSales?.toFixed(2)}% {t("of_target_achieved")}
-                              </div>
+                            <div className="flex flex-col h-full w-full justify-between">
+                              <h4 className="font-semibold uppercase my-1">{item?.userName}</h4>
+                              <ProgressBar
+                                bgcolor={primaryColor}
+                                height="20px"
+                                progress={(
+                                  (totalSales / target) *
+                                  100
+                                ).toFixed(1)}
+                                progresswidth={
+                                  totalSales >= target
+                                    ? 100.0
+                                    : (totalSales / target) *
+                                      100
+                                }
+                              />
                             </div>
-                            {item?.profile_picture ? (
-                              <img
-                                src={item?.profile_picture}
-                                height={50}
-                                width={50}
-                                className="rounded-full cursor-pointer"
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                src="./favicon.png"
-                                height={50}
-                                width={50}
-                                className="rounded-full cursor-pointer"
-                                alt=""
-                              />
-                            )}
                           </div>
-                          <div></div>
                         </div>
                       );
-                    })
-                  : ""}
+                    }) : (
+                      <div className="flex justify-center">
+                        <img src="./no_data.png" alt="" className="w-[300px] h-[300px]"   />
+                      </div>
+                    )
+                  }
+                </div>
               </div>
             </div>
           </TabPanel>
@@ -332,85 +274,119 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
           <TabPanel
             value={tabValue}
             index={1}
-            className="h-[100px] overflow-y-scroll"
+            className=""
           >
-            <div className="mb-10 mx-3">
-              {/* <h1
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            }  font-semibold text-center`}
-          >
-            <span className="font-bold">{count?.total_closed_deals}</span>
-            &nbsp;&nbsp;Closed Deals of&nbsp;
-            <span className="font-bold">AED {count?.total_sales}</span>
-          </h1> */}
-            </div>
-            <div
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              } p-3 rounded-md`}
-            >
-              <div
-                className={`${
-                  currentMode === "dark" ? "text-primary" : "text-primary"
-                } text-lg font-bold`}
+            <div className={` ${currentMode === "dark" ? "text-white" : "text-black"}
+              grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-3`} >
+              <div className={`p-1 rounded-md h-fit overflow-auto hide-scrollbar`}
               >
-                {t("label_sales_manager")}
+                {/* MANAGER  */}
+                <div
+                  className={`text-lg font-bold text-center uppercase`}
+                >
+      {t("label_sales_manager")}
+                </div>
+                {/*  */}
+                <div className="grid gap-4 p-3">
+                  {!noData && manager?.length > 0
+                    ? manager?.map((item, index) => {
+                        let totalSales = item.total_sales
+                          ? parseInt(item.total_sales)
+                          : 0;
+                        let target = item.target ? parseInt(item.target) : 0;
+                        let percentageSales = (totalSales / target) * 100;
+                        percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
+
+                        return (
+                          <div
+                            key={index}
+                            className={` ${
+                              !themeBgImg 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                            }
+                            rounded-lg shadow-sm card-hover p-4 `}
+                          >
+                            <div className="flex items-center gap-3 h-full w-full ">
+                              {item?.profile_picture ? (
+                                <img
+                                  src={item?.profile_picture}
+                                  height={50}
+                                  width={50}
+                                  className="rounded-lg cursor-pointer"
+                                  alt=""
+                                />
+                              ) : (
+                                <img
+                                  src="./favicon.png"
+                                  height={50}
+                                  width={50}
+                                  className="rounded-lg cursor-pointer"
+                                  alt=""
+                                />
+                              )}
+                              <div className="flex flex-col h-full w-full justify-between">
+                                <h4 className="font-semibold uppercase my-1">{item?.userName}</h4>
+                                <ProgressBar
+                                  bgcolor={primaryColor}
+                                  height="20px"
+                                  progress={(
+                                    (totalSales / target) *
+                                    100
+                                  ).toFixed(1)}
+                                  progresswidth={
+                                    totalSales >= target
+                                      ? 100.0
+                                      : (totalSales / target) *
+                                        100
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    : ""}
+                  {noData && (
+                    <div className="flex justify-center">
+                      <img src="./no_data.png" alt="" className="w-[300px] h-[300px]"   />
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="h-[300px] overflow-y-scroll">
-                {manager?.length > 0
-                  ? manager?.map((item, index) => {
+
+              <div className={`p-1 rounded-md h-fit overflow-auto hide-scrollbar`} >
+                {/* AGENT  */}
+                <div className={`text-lg font-bold text-center uppercase`} >
+                  {t("label_sales_agent")}
+                </div>
+                <div className="grid gap-4 p-3">
+                  {!noData && agents?.length > 0
+                    ? agents?.map((item, index) => {
                       let totalSales = item.total_sales
                         ? parseInt(item.total_sales)
                         : 0;
                       let target = item.target ? parseInt(item.target) : 0;
                       let percentageSales = (totalSales / target) * 100;
                       percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
-                      const barWidth = `${percentageSales}%`;
-                      const barColor =
-                        percentageSales >= 50 ? "bg-primary" : "bg-gray-800";
 
                       return (
                         <div
                           key={index}
-                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
+                          className={` ${
+                            !themeBgImg 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                          }
+                          rounded-lg shadow-sm card-hover p-4 `}
                         >
-                          <div className="col-span-2">
-                            <h4 className="font-bold my-1">{item?.userName}</h4>
-                          </div>
-                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                            <div className="relative flex-1">
-                              <div
-                                className={`absolute left-0 top-0 h-5 ${barColor}`}
-                                style={{ width: barWidth }}
-                              ></div>
-                              <div
-                                className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
-                                  currentMode === "dark"
-                                    ? "text-white"
-                                    : "text-dark-600"
-                                }`}
-                              >
-                                {/* Total Closed Deals: {item?.total_closed_deals} /
-                          Direct deals:{" "}
-                          <span
-                            className={
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-dark-600"
-                            }
-                          >
-                            {item?.total_sales || 0}
-                          </span> */}
-                                {percentageSales?.toFixed(2)}% {t("of_target_achieved")}
-                              </div>
-                            </div>
+                          <div className="flex items-center gap-3 h-full w-full ">
                             {item?.profile_picture ? (
                               <img
                                 src={item?.profile_picture}
                                 height={50}
                                 width={50}
-                                className="rounded-full cursor-pointer"
+                                className="rounded-lg cursor-pointer"
                                 alt=""
                               />
                             ) : (
@@ -418,104 +394,37 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                                 src="./favicon.png"
                                 height={50}
                                 width={50}
-                                className="rounded-full cursor-pointer"
+                                className="rounded-lg cursor-pointer"
                                 alt=""
                               />
                             )}
-                          </div>
-                          <div></div>
-                        </div>
-                      );
-                    })
-                  : ""}
-              </div>
-            </div>
-
-            <div
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              } p-3 rounded-md`}
-            >
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "text-primary"
-                    : "text-primary"
-                } text-lg font-bold`}
-              >
-                {t("label_sales_agent")}
-              </div>
-              <div className="h-[300px] overflow-y-scroll">
-                {agents?.length > 0
-                  ? agents?.map((item, index) => {
-                      let totalSales = item.total_sales
-                        ? parseInt(item.total_sales)
-                        : 0;
-                      let target = item.target ? parseInt(item.target) : 0;
-                      let percentageSales = (totalSales / target) * 100;
-                      percentageSales = Math.min(percentageSales, 100); // Ensure percentage is not more than 100
-                      const barWidth = `${percentageSales}%`;
-                      const barColor =
-                        percentageSales >= 50 ? "bg-primary" : "bg-gray-800";
-
-                      return (
-                        <div
-                          key={index}
-                          className="grid grid-cols-11 gap-x-5 rounded-md my-3 content-center align-center items-center"
-                        >
-                          <div className="col-span-2">
-                            <h4 className="font-bold my-1">{item?.userName}</h4>
-                          </div>
-                          <div className="col-span-9 flex gap-x-3 align-center content-center items-center">
-                            <div className="relative flex-1">
-                              <div
-                                className={`absolute left-0 top-0 h-5 ${barColor}`}
-                                style={{ width: barWidth }}
-                              ></div>
-                              <div
-                                className={`p-x-2 h-5 font-semibold text-xs flex justify-center items-center px-5 relative z-10 ${
-                                  currentMode === "dark"
-                                    ? "text-white"
-                                    : "text-dark-600"
-                                }`}
-                              >
-                                {/* Total Closed Deals: {item?.total_closed_deals} /
-                          Direct deals:{" "}
-                          <span
-                            className={
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-dark-600"
-                            }
-                          >
-                            {item?.total_sales || 0}
-                          </span> */}
-                                {percentageSales?.toFixed(2)}% {t("of_target_achieved")}
-                              </div>
+                            <div className="flex flex-col h-full w-full justify-between">
+                              <h4 className="font-semibold uppercase my-1">{item?.userName}</h4>
+                              <ProgressBar
+                                bgcolor={primaryColor}
+                                height="20px"
+                                progress={(
+                                  (totalSales / target) *
+                                  100
+                                ).toFixed(1)}
+                                progresswidth={
+                                  totalSales >= target
+                                    ? 100.0
+                                    : (totalSales / target) *
+                                      100
+                                }
+                              />
                             </div>
-                            {item?.profile_picture ? (
-                              <img
-                                src={item?.profile_picture}
-                                height={50}
-                                width={50}
-                                className="rounded-full cursor-pointer"
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                src="./favicon.png"
-                                height={50}
-                                width={50}
-                                className="rounded-full cursor-pointer"
-                                alt=""
-                              />
-                            )}
                           </div>
-                          <div></div>
                         </div>
                       );
-                    })
-                  : ""}
+                    }) : (
+                      <div className="flex justify-center">
+                        <img src="./no_data.png" alt="" className="w-[300px] h-[300px]"   />
+                      </div>
+                    )
+                  }
+                </div>
               </div>
             </div>
           </TabPanel>

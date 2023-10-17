@@ -14,7 +14,7 @@ const OffersList = ({
   setCurrentPage,
   setPageBeingScrolled
 }) => {
-  const { currentMode, isArabic, primaryColor, t } = useStateContext();
+  const { currentMode, isArabic, primaryColor, t, themeBgImg } = useStateContext();
 
   const imagePaths = ["../assets/offers_static_img.png"];
 
@@ -109,12 +109,16 @@ const OffersList = ({
           {offersArr?.map((offer, index) => {
             return (
               <div
-                className={`card-hover relative overflow-hidden rounded-md shadow-sm offers-page-${
+                className={`card-hover relative overflow-hidden rounded-lg shadow-sm offers-page-${
                   offer?.page
                 } ${
-                  currentMode === "dark"
+                  !themeBgImg 
+                  ? (currentMode === "dark"
                     ? "bg-[#1c1c1c] text-white"
-                    : "bg-gray-100 text-black"
+                    : "bg-gray-100 text-black")
+                  : (currentMode === "dark"
+                    ? "blur-bg-dark text-white"
+                    : "blur-bg-light text-black")
                 } `}
               >
                 {offer?.status?.toLowerCase() === "expired" && (

@@ -49,6 +49,18 @@ axiosInstance.interceptors.response.use(
           continueURL: continueURL,
         },
       });
+
+      // Build the URL with query parameters
+      // const url = new URL("/", window.location.origin);
+      // url.searchParams.append(
+      //   "error",
+      //   "System updated. Kindly logout and login again."
+      // );
+      // url.searchParams.append("continueURL", continueURL);
+
+      // // Navigate to the new URL
+      // window.location.href = url.toString();
+      // window.location.href = "/";
     }
     return Promise.reject(error);
   }

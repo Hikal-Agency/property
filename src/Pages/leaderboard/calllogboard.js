@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import Loader from "../../Components/Loader";
 
 const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, t } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, themeBgImg , t} = useStateContext();
   const [callLogs, setCallLogs] = useState();
   const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -74,8 +74,6 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
     }
   };
 
-
-
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchCallLogs(token);
@@ -92,7 +90,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
         </Tabs>
       </Box>
       <Box
-        className="mt-1 p-5"
+        className="p-2"
         sx={
           isLoading && {
             opacity: 0.3,
@@ -105,57 +103,63 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3 ">
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 pb-3 ">
                 {!noData &&
                   callLogs?.length > 0 &&
                   callLogs?.map((call, index) => {
                     return (
                       <div
                         className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-gray-200 text-black"
-                        } p-3 rounded-md`}
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EBEBEB] text-black") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black")
+                        } p-3 rounded-md shadow-md card-hover`}
                       >
-                        <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                          <h5 className="font-bold text-primary col-span-5">
-                            {call?.userName}
-                          </h5>
-                        </div>
+                        <h6 className="font-bold px-2 mb-2">
+                          {call?.userName}
+                        </h6>
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
-                            <h6 className="text-center text-xs font-semibold">
-                             {t("outgoing")}
+                            <h6 className="text-center text-sm uppercase">
+                              Outgoing
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  {t("dialed")}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
-                                    {call?.dialed || 0}
-                                  </span>
-                                </h1>
-                              </div>
-                              <div>
-                                <h1 className="text-sm">
-                                  {t("answered")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  ANSWERED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
                                 </h1>
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  {t("not_answered")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  NOT ANSWERED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call?.notanswered || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                              <div>
+                                <h1 className="text-sm">
+                                  REJECTED&nbsp;
+                                  <span className="font-bold text-primary float-right">
+                                    {call?.rejected || 0}
                                   </span>
                                 </h1>
                               </div>
@@ -163,32 +167,49 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
-                            <h6 className="text-center text-xs font-semibold">
-                              {t("incoming")}
+                            <h6 className="text-center text-sm uppercase">
+                              Incoming
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  {t("received")}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  RECEIVED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call.received || 0}
                                   </span>
                                 </h1>
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  {t("missed")}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  MISSED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
                                 </h1>
                               </div>
+                            </div>
+                          </div>
+
+                          <div
+                            className={`bg-primary text-white rounded-md p-2`}
+                          >
+                            <div>
+                              <h1 className="font-semibold">
+                                Total Leads&nbsp;
+                                <span className="font-bold float-right">
+                                  {call?.unique_lead_contacts || 0}
+                                </span>
+                              </h1>
                             </div>
                           </div>
                         </div>
@@ -199,12 +220,12 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                
               </div>
               {noData && (
-                <div className="flex flex-col items-center justify-center h-screen ">
+                <div className="flex flex-col items-center justify-center">
            
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
-                    className="w-[600px] h-[600px] object-cover"
+                    className="w-[300px] h-[300px] object-cover"
                   />
                 </div>
               )}
@@ -218,57 +239,63 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 pb-3">
                 {!noData &&
                   callLogs?.length > 0 &&
                   callLogs?.map((call, index) => {
                     return (
                       <div
                         className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-gray-200 text-black"
-                        } p-3 rounded-md`}
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EBEBEB] text-black") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black")
+                        } p-3 rounded-md shadow-md card-hover`}
                       >
-                        <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                          <h5 className="font-bold text-primary col-span-5">
-                            {call?.userName}
-                          </h5>
-                        </div>
+                        <h6 className="font-bold px-2 mb-2">
+                          {call?.userName}
+                        </h6>
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
-                            <h6 className="text-center text-xs font-semibold">
+                            <h6 className="text-center text-sm font-bold">
                             {t("outgoing")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  {t("dialed")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
-                                    {call?.dialed || 0}
-                                  </span>
-                                </h1>
-                              </div>
-                              <div>
-                                <h1 className="text-sm">
-                                  {t("answered")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  ANSWERED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
                                 </h1>
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  {t("not_answered")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  NOT ANSWERED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call?.notanswered || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                              <div>
+                                <h1 className="text-sm">
+                                  REJECTED&nbsp;
+                                  <span className="font-bold text-primary float-right">
+                                    {call?.rejected || 0}
                                   </span>
                                 </h1>
                               </div>
@@ -276,32 +303,49 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
-                            <h6 className="text-center text-xs font-semibold">
-                              {t("incoming")}
+                            <h6 className="text-center text-sm uppercase">
+                              Incoming
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                  {t("received")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  RECEIVED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call.received || 0}
                                   </span>
                                 </h1>
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  {t("missed")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  MISSED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
                                 </h1>
                               </div>
+                            </div>
+                          </div>
+
+                          <div
+                            className={`bg-primary text-white rounded-md p-2`}
+                          >
+                            <div>
+                              <h1 className="font-semibold">
+                                Total Leads&nbsp;
+                                <span className="font-bold float-right">
+                                  {call?.unique_lead_contacts || 0}
+                                </span>
+                              </h1>
                             </div>
                           </div>
                         </div>
@@ -316,7 +360,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
-                    className="w-[600px] h-[600px] object-cover"
+                    className="w-[300px] h-[300px] object-cover"
                   />
                 </div>
               )}
@@ -330,57 +374,63 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 pb-3">
                 {!noData &&
                   callLogs?.length > 0 &&
                   callLogs?.map((call, index) => {
                     return (
                       <div
                         className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-gray-200 text-black"
-                        } p-3 rounded-md`}
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EBEBEB] text-black") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black")
+                        } p-3 rounded-md shadow-md card-hover`}
                       >
-                        <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                          <h5 className="font-bold text-primary col-span-5">
-                            {call?.userName}
-                          </h5>
-                        </div>
+                        <h6 className="font-bold px-2 mb-2">
+                          {call?.userName}
+                        </h6>
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
-                            <h6 className="text-center text-xs font-semibold">
-                              {t("outgoing")}
+                            <h6 className="text-center text-sm uppercase">
+                              Outgoing
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  {t("dialed")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
-                                    {call?.dialed || 0}
-                                  </span>
-                                </h1>
-                              </div>
-                              <div>
-                                <h1 className="text-sm">
-                                  {t("answered")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  ANSWERED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
                                 </h1>
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  {t("not_answered")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  NOT ANSWERED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call?.notanswered || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                              <div>
+                                <h1 className="text-sm">
+                                  REJECTED&nbsp;
+                                  <span className="font-bold text-primary float-right">
+                                    {call?.rejected || 0}
                                   </span>
                                 </h1>
                               </div>
@@ -388,12 +438,16 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
-                            <h6 className="text-center text-xs font-semibold">
+                            <h6 className="text-center text-xs font-semibold uppercase">
                               {t("incoming")}
                             </h6>
                             <hr></hr>
@@ -401,7 +455,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                  {t("received")?.toUpperCase()} &nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  <span className="font-bold text-primary float-right">
                                     {call.received || 0}
                                   </span>
                                 </h1>
@@ -409,11 +463,24 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                               <div>
                                 <h1 className="text-sm">
                                   {t("missed")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  <span className="font-bold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
                                 </h1>
                               </div>
+                            </div>
+                          </div>
+
+                          <div
+                            className={`bg-primary text-white rounded-md p-2`}
+                          >
+                            <div>
+                              <h1 className="font-semibold">
+                                Total Leads&nbsp;
+                                <span className="font-bold float-right">
+                                  {call?.unique_lead_contacts || 0}
+                                </span>
+                              </h1>
                             </div>
                           </div>
                         </div>
@@ -428,7 +495,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
-                    className="w-[600px] h-[600px] object-cover"
+                    className="w-[300px] h-[300px] object-cover"
                   />
                 </div>
               )}
@@ -441,57 +508,63 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
             <Loader />
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3">
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 pb-3">
                 {!noData &&
                   callLogs?.length > 0 &&
                   callLogs?.map((call, index) => {
                     return (
                       <div
                         className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-gray-200 text-black"
-                        } p-3 rounded-md`}
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EBEBEB] text-black") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black")
+                        } p-3 rounded-md shadow-md card-hover`}
                       >
-                        <div className="grid grid-cols-6 gap-3 rounded-md px-2 mb-2">
-                          <h5 className="font-bold text-primary col-span-5">
-                            {call?.userName}
-                          </h5>
-                        </div>
+                        <h6 className="font-bold px-2 mb-2">
+                          {call?.userName}
+                        </h6>
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
-                            <h6 className="text-center text-xs font-semibold">
-                              {t("outgoing")}
+                            <h6 className="text-center text-sm uppercase">
+                              Outgoing
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  {t("dialed")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
-                                    {call?.dialed || 0}
-                                  </span>
-                                </h1>
-                              </div>
-                              <div>
-                                <h1 className="text-sm">
-                                  {t("answered")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  ANSWERED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call?.answered || 0}
                                   </span>
                                 </h1>
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  {t("not_answered")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  NOT ANSWERED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call?.notanswered || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                              <div>
+                                <h1 className="text-sm">
+                                  REJECTED&nbsp;
+                                  <span className="font-bold text-primary float-right">
+                                    {call?.rejected || 0}
                                   </span>
                                 </h1>
                               </div>
@@ -499,32 +572,49 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
-                            <h6 className="text-center text-xs font-semibold">
-                              {t("incoming")}
+                            <h6 className="text-center text-sm uppercase">
+                              Incoming
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                  {t("received")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  RECEIVED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call.received || 0}
                                   </span>
                                 </h1>
                               </div>
                               <div>
                                 <h1 className="text-sm">
-                                  {t("missed")?.toUpperCase()}&nbsp;
-                                  <span className="font-semibold text-primary float-right">
+                                  MISSED&nbsp;
+                                  <span className="font-bold text-primary float-right">
                                     {call.missed || 0}
                                   </span>
                                 </h1>
                               </div>
+                            </div>
+                          </div>
+
+                          <div
+                            className={`bg-primary text-white rounded-md p-2`}
+                          >
+                            <div>
+                              <h1 className="font-semibold">
+                                Total Leads&nbsp;
+                                <span className="font-bold float-right">
+                                  {call?.unique_lead_contacts || 0}
+                                </span>
+                              </h1>
                             </div>
                           </div>
                         </div>
@@ -539,7 +629,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
-                    className="w-[600px] h-[600px] object-cover"
+                    className="w-[300px] h-[300px] object-cover"
                   />
                 </div>
               )}

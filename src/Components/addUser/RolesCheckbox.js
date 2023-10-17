@@ -16,7 +16,7 @@ const RolesCheckbox = ({ role, defaultRole, formData, setFormData }) => {
     console.log("radio: ", role.id);
     const check = e.target.checked;
     const id = e.target.value;
-    setChecked((prevCheck) => (prevCheck ? false : check));
+    // setChecked((prevCheck) => (prevCheck ? false : check));
     setFormData(id);
   };
 
@@ -35,6 +35,7 @@ const RolesCheckbox = ({ role, defaultRole, formData, setFormData }) => {
           value={role.id.toString()}
           control={<Radio onChange={handleClick} />}
           label={role.role}
+          checked={formData === role.id.toString()}
         />
       </RadioGroup>
       {/* <FormControlLabel

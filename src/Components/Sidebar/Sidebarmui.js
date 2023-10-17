@@ -244,6 +244,10 @@ const Sidebarmui = () => {
             console.log("specificWord: ", specificWord); // Output: "cherry"
           } else {
             console.log("Word not found in the string.");
+
+            if (result?.data?.user[0]?.role === 6) {
+              navigate("/attendance_self");
+            }
             // if (result?.data?.user[0]?.role !== 1) {
             //   // navigate("/attendance_self");
             // }
@@ -252,7 +256,10 @@ const Sidebarmui = () => {
           setUserCredits(result.data?.user[0]?.credits);
           setPermits(allPermissions);
 
-          if(!result.data?.user[0]?.theme || result.data?.user[0]?.theme === "default") {
+          if (
+            !result.data?.user[0]?.theme ||
+            result.data?.user[0]?.theme === "default"
+          ) {
             setPrimaryColor("rgb(218,31,38)");
           } else {
             setPrimaryColor(result.data?.user[0]?.theme);
@@ -399,8 +406,13 @@ const Sidebarmui = () => {
   };
 
   useEffect(() => {
+    console.log("User role 6===> ", User);
+
+    if (User?.role === 6) {
+      return;
+    }
     fetchSidebarData();
-  }, []);
+  }, [User]);
 
   useEffect(() => {
     const setUnreadCount = async (isNoToast = false) => {
@@ -634,8 +646,7 @@ const Sidebarmui = () => {
           submenu: [
             {
               name: t("menu_live_call"),
-              link: "/unassigned/livecall",
-              // count: sidebarData?.UNASSIGNED?.fresh,
+              link: "/unassigned/liveleads",
             },
             {
               name: t("menu_fresh"),
@@ -664,8 +675,8 @@ const Sidebarmui = () => {
             },
           ],
         },
-        
-        // FRESH 
+
+        // FRESH
         {
           name: t("menu_live_call"),
           icon: <RiLiveFill />,
@@ -697,22 +708,22 @@ const Sidebarmui = () => {
             },
             {
               name: t("feedback_no_answer"),
-              count: sidebarData?.HotLeadsCount?.no_nswer,
+              // count: sidebarData?.HotLeadsCount?.no_nswer,
               link: "/freshleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
-              count: sidebarData?.HotLeadsCount?.not_interested,
+              // count: sidebarData?.HotLeadsCount?.not_interested,
               link: "/freshleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
-              count: sidebarData?.HotLeadsCount?.unreachable,
+              // count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/freshleads/unreachable",
             },
           ],
         },
-        // FRESH 
+        // FRESH
         {
           name: t("menu_fresh"),
           icon: <SiHotjar />,
@@ -759,7 +770,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-        // THIRD PARTY 
+        // THIRD PARTY
         {
           name: t("menu_thirdparty"),
           icon: <FaLink />,
@@ -806,7 +817,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-        // COLD 
+        // COLD
         {
           name: t("menu_cold"),
           icon: <FaSnowflake />,
@@ -874,7 +885,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-        // RESHUFFLED 
+        // RESHUFFLED
         {
           name: t("menu_reshuffled"),
           icon: <FaRandom />,
@@ -922,7 +933,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-        // ARCHIVED 
+        // ARCHIVED
         {
           name: t("menu_archived"),
           icon: <FaArchive />,
@@ -969,7 +980,7 @@ const Sidebarmui = () => {
             },
           ],
         },
-        // PERSONAL 
+        // PERSONAL
         {
           name: t("menu_personal"),
           icon: <HiUsers />,
@@ -1102,11 +1113,11 @@ const Sidebarmui = () => {
           icon: <ImUsers />,
           link: "/users",
         },
-        {
-          name: t("menu_clients"),
-          icon: <ImUsers />,
-          link: "/clients",
-        },
+        // {
+        //   name: t("menu_clients"),
+        //   icon: <ImUsers />,
+        //   link: "/clients",
+        // },
         // {
         //   name: "Contacts",
         //   icon: <MdContactPage />,
@@ -1422,19 +1433,22 @@ const Sidebarmui = () => {
         />
       )}
 
-      <Box 
-      sx={{
-        "& .ps-sidebar-container": {
-          backgroundColor: !themeBgImg ? 'rgb(249, 249, 249, 0.7)' : 'rgb(249, 249, 249, 0.4)'
-        }
-      }}
+      <Box
+        sx={{
+          "& .ps-sidebar-container": {
+            backgroundColor: !themeBgImg
+              ? "rgb(249, 249, 249, 0.7)"
+              : "rgb(249, 249, 249, 0.4)",
+          },
+        }}
         style={{ display: "flex", height: "100%" }}
         className={`max-w-[200px] sticky top-0 left-0 `}
       >
-        <Sidebar 
+        <Sidebar
           rootStyles={{
             [`.${sidebarClasses.container}`]: {
-              backgroundColor: !themeBgImg && (currentMode === "dark" ? "#000000" : "#ffffff"),
+              backgroundColor:
+                !themeBgImg && (currentMode === "dark" ? "#000000" : "#ffffff"),
             },
           }}
           className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
@@ -1445,7 +1459,8 @@ const Sidebarmui = () => {
               style={{
                 position: !themeBgImg && "sticky",
                 top: !themeBgImg && 0,
-                background: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
+                background:
+                  !themeBgImg && (currentMode === "dark" ? "black" : "white"),
                 zIndex: 1000,
               }}
             >
