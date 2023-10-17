@@ -1,21 +1,22 @@
-import { Button } from "@material-tailwind/react";
 
-import { Box, Tab, Tabs } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Button } from "@material-tailwind/react";
+import { Box, Tab, Tabs, Tooltip } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStateContext } from "../../context/ContextProvider";
-
-import {
-  AiOutlineEdit,
-  AiOutlinePlus
-} from "react-icons/ai";
-import { useEffect, useState } from "react";
-
-import axios from "../../axoisConfig";
-import { toast } from "react-toastify";
-import { FaBan } from "react-icons/fa";
 import RolesComponent from "../../Components/Roles-Permissions/RolesComponent";
 import DeleteComponent from "../../Components/Roles-Permissions/DeleteComponent";
 import UpdateComponent from "../../Components/Roles-Permissions/UpdateComponent";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
+import { FaBan } from "react-icons/fa";
+
+import {
+  BsTrash,
+  BsPen,
+  BsPlus
+} from "react-icons/bs";
+
 
 const Role = () => {
   const {
@@ -218,36 +219,44 @@ const Role = () => {
       renderCell: (cellValues) => {
         console.log("action data: ", cellValues);
         return (
-          <div className=" space-x-2 w-full flex items-center justify-center ">
-            <Button
-              onClick={() =>
-                handleDelete(cellValues?.row?.role_id, cellValues?.row?.role)
-              }
-              className={`editUserBtn ${
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {/* EDIT ROLE  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } editUserBtn hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              {currentMode === "dark" ? (
-                <FaBan style={{ color: "white" }} />
-              ) : (
-                <FaBan style={{ color: "black" }} />
-              )}
-            </Button>
-            <Button
-              title="Edit Role"
-              className={`editUserBtn ${
+              <Tooltip title="Edit Role" arrow>
+                <button onClick={() =>
+                  handleUpdate(cellValues?.row?.role_id, cellValues?.row?.role)
+                }>
+                  <BsPen size={16} />
+                </button>
+              </Tooltip>
+            </p>
+            {/* DELETE ROLE  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-              onClick={() =>
-                handleUpdate(cellValues?.row?.role_id, cellValues?.row?.role)
-              }
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } editUserBtn hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <AiOutlineEdit size={20} />
-            </Button>
+              <Tooltip title="Delete Role" arrow>
+                <button onClick={() =>
+                  handleDelete(cellValues?.row?.role_id, cellValues?.row?.role)
+                  }
+                >
+                  <BsTrash size={16} />
+                </button>
+              </Tooltip>
+            </p>
           </div>
         );
       },
@@ -291,44 +300,51 @@ const Role = () => {
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className=" space-x-2 w-full flex items-center justify-center ">
-            <Button
-              onClick={() =>
-                handleDelete(
-                  cellValues?.row?.permission_id,
-                  cellValues?.row?.permission
-                )
-              }
-              className={`editUserBtn ${
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {/* EDIT PERMISSION  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } editUserBtn hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              {currentMode === "dark" ? (
-                <FaBan style={{ color: "white" }} />
-              ) : (
-                <FaBan style={{ color: "black" }} />
-              )}
-            </Button>
-            <Button
-              title="Edit Permission"
-              className={`editUserBtn ${
+              <Tooltip title="Edit Permission" arrow>
+                <button onClick={() =>
+                  handleUpdate(
+                    cellValues?.row?.permission_id,
+                    value === 0
+                      ? cellValues?.row?.role
+                      : cellValues?.row?.permission
+                  )
+                }>
+                  <BsPen size={16} />
+                </button>
+              </Tooltip>
+            </p>
+            {/* DELETE PERMISSION  */}
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
                 currentMode === "dark"
-                  ? "text-white bg-transparent rounded-md p-1 shadow-none "
-                  : "text-black bg-transparent rounded-md p-1 shadow-none "
-              }`}
-              onClick={() =>
-                handleUpdate(
-                  cellValues?.row?.permission_id,
-                  value === 0
-                    ? cellValues?.row?.role
-                    : cellValues?.row?.permission
-                )
-              }
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } editUserBtn hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <AiOutlineEdit size={20} />
-            </Button>
+              <Tooltip title="Delete Permission" arrow>
+                <button onClick={() =>
+                  handleDelete(
+                    cellValues?.row?.permission_id,
+                    cellValues?.row?.permission
+                  )
+                }>
+                  <BsTrash size={16} />
+                </button>
+              </Tooltip>
+            </p>
           </div>
         );
       },
@@ -343,17 +359,28 @@ const Role = () => {
             !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
-          <div className="w-full flex items-center pb-3">
-            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-            <h1
-              className={`text-lg font-semibold ${
-                currentMode === "dark"
-                  ? "text-white"
-                  : "text-black"
-              }`}
+          <div className="w-full flex items-center justify-between pb-3">
+            <div className="flex items-center">
+              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+              <h1
+                className={`text-lg font-semibold ${
+                  currentMode === "dark"
+                    ? "text-white"
+                    : "text-black"
+                }`}
+              >
+                Roles and Permissions
+              </h1>
+            </div>
+            <button
+              className="card-hover bg-primary text-white px-3 py-2 rounded-md"
+              onClick={HandleOpenModel}
             >
-              Roles and Permissions
-            </h1>
+              <span className="flex justify-between items-center gap-1 uppercase font-semibold text-sm">
+                <BsPlus size={18} />
+                {value === 0 ? "Role" : "Permission"}
+              </span>
+            </button>
           </div>
           <div className="flex items-center justify-between">
             <Box
@@ -368,31 +395,20 @@ const Role = () => {
                   zIndex: "1",
                 },
               }}
-              className={`w-full rounded-md overflow-hidden ${
-                currentMode === "dark" ? "bg-black" : "bg-white"
+              className={`w-full rounded-lg overflow-hidden ${
+                currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
               } `}
             >
               <Tabs
                 value={value}
                 onChange={handleChange}
                 variant="standard"
-                className="w-full px-1 m-1"
+                className="w-full m-1"
               >
                 <Tab label="Roles" />
                 <Tab label="Permissions" />
               </Tabs>
             </Box>
-            <div className="w-max">
-              <Button
-                className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
-                onClick={HandleOpenModel}
-              >
-                <span className="flex justify-between items-center ">
-                  <AiOutlinePlus style={{ marginRight: "0.5em" }} />
-                  {value === 0 ? "Add Role" : "Add Permissions"}
-                </span>
-              </Button>
-            </div>
           </div>
           <div className="mt-3 pb-3">
             <TabPanel value={value} index={0}>

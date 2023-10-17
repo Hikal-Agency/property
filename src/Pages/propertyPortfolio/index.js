@@ -1,16 +1,28 @@
 import React, { useEffect } from "react";
 
 import axios from "../../axoisConfig";
-import { Button } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
-import { Md360 } from "react-icons/md";
-import { BiCheckboxChecked, BiCheckboxMinus } from "react-icons/bi";
 import { toast } from "react-toastify";
 
+import { Md360 } from "react-icons/md";
+import { 
+  FaCheck, 
+  FaMinus 
+} from "react-icons/fa";
+import {
+  BsPatchQuestionFill
+} from "react-icons/bs";
+
 const PropertyPortfolio = () => {
-  const { currentMode, DevProData, setDevProData, BACKEND_URL } =
-    useStateContext();
+  const { 
+    currentMode, 
+    DevProData, 
+    setDevProData, 
+    BACKEND_URL,
+    themeBgImg 
+  } = useStateContext();
   const navigate = useNavigate();
 
   const FetchProperty = async (token) => {
@@ -51,11 +63,11 @@ const PropertyPortfolio = () => {
       <div className="min-h-screen">
         <div
           className={`w-full p-4  ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+            !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
           <div className="w-full flex items-center pb-3">
-            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-2"></div>
             <h1
               className={`text-lg font-semibold ${
                 currentMode === "dark"
@@ -79,10 +91,10 @@ const PropertyPortfolio = () => {
                     <div
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-black"
-                      } w-full p-3 rounded-md space-y-3`}
+                      } w-full shadow-sm rounded-lg p-4 space-y-5`}
                     >
-                      <div className="font-semibold text-md">
-                        <p className="text-lg">{developer.developer}</p>
+                      <div className="font-semibold text-white text-center w-full bg-primary p-2 uppercase rounded-lg shadow-sm">
+                        {developer.developer}
                       </div>
                       {developer?.projects.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
@@ -91,153 +103,163 @@ const PropertyPortfolio = () => {
                               <div
                                 className={`${
                                   currentMode === "dark"
-                                    ? "bg-[#1c1c1c]"
-                                    : "bg-gray-200"
-                                } w-full h-full p-3 rounded-md space-y-1 border-t-2
-                                ${project.projectStatus === "Available" ? "border-t-[#4CAF50]" : project.projectStatus === "Sold Out" ? "border-t-[#DC2626]" : "border-t-[#edb92b]"}
+                                    ? "blur-bg-dark"
+                                    : "blur-bg-light"
+                                } card-hover w-full h-full rounded-md space-y-1 border-t-2
+                                ${project.projectStatus === "Available" ? "border-green-600" : project.projectStatus === "Sold Out" ? "border-red-600" : "border-yellow-600"}
                                 `}
                               >
-                                <div className="uppercase font-semibold text-center mb-5">
-                                  {project.project}
-                                </div>
+                                <div className={`
+                                  fixed top-0 right-5 w-4 h-8 rounded-br-full
+                                  ${project.projectStatus === "Available" ? "bg-green-600" : project.projectStatus === "Sold Out" ? "bg-red-600" : "bg-yellow-600"}  
+                                `}></div>
+                                <div className={`
+                                  fixed -top-1 right-3 w-4 h-8 rounded-bl-full
+                                  ${project.projectStatus === "Available" ? "bg-green-600" : project.projectStatus === "Sold Out" ? "bg-red-600" : "bg-yellow-600"}  
+                                `}></div>
 
-                                <div className="flex items-center gap-3">
-                                  {project.studio === 1 ? (
-                                    <BiCheckboxChecked
-                                      size={"30px"}
-                                      className="text-[#4CAF50]"
-                                    />
-                                  ) : (
-                                    <BiCheckboxMinus
-                                      size={"30px"}
-                                      className="text-[#DC2626]"
-                                    />
-                                  )}
-                                  <p>Studio</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                  {project.onebed === 1 ? (
-                                    <BiCheckboxChecked
-                                      size={"30px"}
-                                      className="text-[#4CAF50]"
-                                    />
-                                  ) : (
-                                    <BiCheckboxMinus
-                                      size={"30px"}
-                                      className="text-[#DC2626]"
-                                    />
-                                  )}
-                                  <p>1 Bedroom</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                  {project.twobed === 1 ? (
-                                    <BiCheckboxChecked
-                                      size={"30px"}
-                                      className="text-[#4CAF50]"
-                                    />
-                                  ) : (
-                                    <BiCheckboxMinus
-                                      size={"30px"}
-                                      className="text-[#DC2626]"
-                                    />
-                                  )}
-                                  <p>2 Bedrooms</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                  {project.threebed === 1 ? (
-                                    <BiCheckboxChecked
-                                      size={"30px"}
-                                      className="text-[#4CAF50]"
-                                    />
-                                  ) : (
-                                    <BiCheckboxMinus
-                                      size={"30px"}
-                                      className="text-[#DC2626]"
-                                    />
-                                  )}
-                                  <p>3 Bedrooms</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                  {project.fourbed === 1 ? (
-                                    <BiCheckboxChecked
-                                      size={"30px"}
-                                      className="text-[#4CAF50]"
-                                    />
-                                  ) : (
-                                    <BiCheckboxMinus
-                                      size={"30px"}
-                                      className="text-[#DC2626]"
-                                    />
-                                  )}
-                                  <p>4 Bedrooms</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                  {project.fivebed === 1 ? (
-                                    <BiCheckboxChecked
-                                      size={"30px"}
-                                      className="text-[#4CAF50]"
-                                    />
-                                  ) : (
-                                    <BiCheckboxMinus
-                                      size={"30px"}
-                                      className="text-[#DC2626]"
-                                    />
-                                  )}
-                                  <p>5 Bedrooms</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                  {project.sixbed === 1 ? (
-                                    <BiCheckboxChecked
-                                      size={"30px"}
-                                      className="text-[#4CAF50]"
-                                    />
-                                  ) : (
-                                    <BiCheckboxMinus
-                                      size={"30px"}
-                                      className="text-[#DC2626]"
-                                    />
-                                  )}
-                                  <p>6 Bedrooms</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                  {project.retail === 1 ? (
-                                    <BiCheckboxChecked
-                                      size={"30px"}
-                                      className="text-[#4CAF50]"
-                                    />
-                                  ) : (
-                                    <BiCheckboxMinus
-                                      size={"30px"}
-                                      className="text-[#DC2626]"
-                                    />
-                                  )}
-                                  <p>Retail</p>
-                                </div>
-                                {project.tour360 === 1 ? (
-                                  <div className="flex items-center justify-end gap-3 text-white text-sm">
-                                    <button
-                                      onClick={() =>
-                                        navigate(
-                                          `/propertyPortfolio/tour360/${project.proId}`
-                                        )
-                                      }
-                                      className="bg-primary text-white rounded-md gap-2 px-3 py-2 flex items-center"
-                                    >
-                                      <Md360 size={"16"} />
-                                      <span className="uppercase font-semibold">
-                                        360 View
-                                      </span>
-                                    </button>
+                                <div className="p-3">
+                                  <div className="uppercase font-semibold mb-3">
+                                    <div>{project.project}</div>
                                   </div>
-                                ) : (
-                                  <></>
-                                )}
+                                  <div className="flex items-center gap-3 my-2">
+                                    {project.studio === 1 ? (
+                                      <FaCheck
+                                        size={14}
+                                        className="text-green-600"
+                                      />
+                                    ) : (
+                                      <FaMinus
+                                        size={14}
+                                        className="text-red-600"
+                                      />
+                                    )}
+                                    <p>Studio</p>
+                                  </div>
+                                  <div className="flex items-center gap-3 my-2">
+                                    {project.onebed === 1 ? (
+                                      <FaCheck
+                                        size={14}
+                                        className="text-green-600"
+                                      />
+                                    ) : (
+                                      <FaMinus
+                                        size={14}
+                                        className="text-red-600"
+                                      />
+                                    )}
+                                    <p>1 Bedroom</p>
+                                  </div>
+                                  <div className="flex items-center gap-3 my-2">
+                                    {project.twobed === 1 ? (
+                                      <FaCheck
+                                        size={14}
+                                        className="text-green-600"
+                                      />
+                                    ) : (
+                                      <FaMinus
+                                        size={14}
+                                        className="text-red-600"
+                                      />
+                                    )}
+                                    <p>2 Bedrooms</p>
+                                  </div>
+                                  <div className="flex items-center gap-3 my-2">
+                                    {project.threebed === 1 ? (
+                                      <FaCheck
+                                        size={14}
+                                        className="text-green-600"
+                                      />
+                                    ) : (
+                                      <FaMinus
+                                        size={14}
+                                        className="text-red-600"
+                                      />
+                                    )}
+                                    <p>3 Bedrooms</p>
+                                  </div>
+                                  <div className="flex items-center gap-3 my-2">
+                                    {project.fourbed === 1 ? (
+                                      <FaCheck
+                                        size={14}
+                                        className="text-green-600"
+                                      />
+                                    ) : (
+                                      <FaMinus
+                                        size={14}
+                                        className="text-red-600"
+                                      />
+                                    )}
+                                    <p>4 Bedrooms</p>
+                                  </div>
+                                  <div className="flex items-center gap-3 my-2">
+                                    {project.fivebed === 1 ? (
+                                      <FaCheck
+                                        size={14}
+                                        className="text-green-600"
+                                      />
+                                    ) : (
+                                      <FaMinus
+                                        size={14}
+                                        className="text-red-600"
+                                      />
+                                    )}
+                                    <p>5 Bedrooms</p>
+                                  </div>
+                                  <div className="flex items-center gap-3 my-2">
+                                    {project.sixbed === 1 ? (
+                                      <FaCheck
+                                        size={14}
+                                        className="text-green-600"
+                                      />
+                                    ) : (
+                                      <FaMinus
+                                        size={14}
+                                        className="text-red-600"
+                                      />
+                                    )}
+                                    <p>6 Bedrooms</p>
+                                  </div>
+                                  <div className="flex items-center gap-3 my-2">
+                                    {project.retail === 1 ? (
+                                      <FaCheck
+                                        size={14}
+                                        className="text-green-600"
+                                      />
+                                    ) : (
+                                      <FaMinus
+                                        size={14}
+                                        className="text-red-600"
+                                      />
+                                    )}
+                                    <p>Retail</p>
+                                  </div>
+                                  {project.tour360 === 1 ? (
+                                    <div className="flex items-center justify-end gap-3 text-white text-sm">
+                                      <button
+                                        onClick={() =>
+                                          navigate(
+                                            `/propertyPortfolio/tour360/${project.proId}`
+                                          )
+                                        }
+                                        className="bg-primary text-white rounded-md gap-2 px-3 py-2 flex items-center"
+                                      >
+                                        <Md360 size={"16"} />
+                                        <span className="uppercase font-semibold">
+                                          360 View
+                                        </span>
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <></>
+                                  )}
+                                </div>
                               </div>
                             );
                           })}
                         </div>
                       ) : (
-                        <p className="italic text-sm text-primary">
+                        <p className="italic text-sm text-center">
                           No projects to show
                         </p>
                       )}

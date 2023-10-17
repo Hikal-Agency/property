@@ -18,7 +18,7 @@ import {
 } from "react-icons/bi";
 
 const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, themeBgImg } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [IPLeadsModalOpen, setIPLeadsModalOpen] = useState(false);
 
@@ -160,7 +160,11 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
       }}
       className={`relative sm:w-[100%] md:w-[50%] lg:w-[33%] p-3`}
     >
-      <div className={`p-3 rounded-md ${currentMode === "dark" ? "bg-[#000000] text-white" : "bg-[#FFFFFF] text-black"}`}>
+      <div className={`p-3 card-hover shadow-md rounded-lg 
+        ${!themeBgImg 
+          ? (currentMode === "dark" ? "bg-black text-white" : "bg-white text-black") 
+          : (currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-white text-black")}
+      `}>
         {loading ? (
           <div className="flex py-4 justify-center items-center">
             <CircularProgress size={22} />
