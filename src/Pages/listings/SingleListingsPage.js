@@ -33,15 +33,15 @@ const SingleListingsPage = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [singleImageModal, setSingleImageModal] = useState({
-    isOpen: false, 
-    url: "", 
-    id: null
-  })
+    isOpen: false,
+    url: "",
+    id: null,
+  });
   const [singleDocModal, setSingleDocModal] = useState({
-    isOpen: false, 
-    url: "", 
-    id: null
-  })
+    isOpen: false,
+    url: "",
+    id: null,
+  });
   const [selectImagesModal, setSelectImagesModal] = useState({
     isOpen: false,
     listingId: null,
@@ -141,12 +141,14 @@ const SingleListingsPage = () => {
                   {listData?.images?.map((pic) =>
                     pic?.img_url ? (
                       <img
-                        onClick={() => setSingleImageModal({
-                          isOpen: true, 
-                          url: pic?.img_url, 
-                          id: pic?.id, 
-                          listingId: listData?.id
-                        })}
+                        onClick={() =>
+                          setSingleImageModal({
+                            isOpen: true,
+                            url: pic?.img_url,
+                            id: pic?.id,
+                            listingId: listData?.id,
+                          })
+                        }
                         src={pic?.img_url}
                         alt={pic?.img_alt}
                         className="w-auto h-[200px] object-cover m-1 rounded-md"
@@ -400,7 +402,16 @@ const SingleListingsPage = () => {
                           <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
                             {listData?.documents?.map((l) => {
                               return l?.doc_url ? (
-                                <div onClick={() => setSingleDocModal({isOpen: true, url: l?.doc_url, id: l?.id})} className="p-2 flex items-center justify-center">
+                                <div
+                                  onClick={() =>
+                                    setSingleDocModal({
+                                      isOpen: true,
+                                      url: l?.doc_url,
+                                      id: l?.id,
+                                    })
+                                  }
+                                  className="p-2 flex items-center justify-center"
+                                >
                                   <div className="w-full text-center">
                                     {/* <div className="w-full flex justify-center"> */}
                                     <BsFileEarmarkText
@@ -436,7 +447,7 @@ const SingleListingsPage = () => {
               />
             )}
 
-                {singleDocModal?.isOpen && (
+            {singleDocModal?.isOpen && (
               <SingleDocModal
                 singleImageModal={singleDocModal}
                 handleClose={() => setSingleDocModal({ isOpen: false })}
