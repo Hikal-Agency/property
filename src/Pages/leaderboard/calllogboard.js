@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import Loader from "../../Components/Loader";
 
 const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, themeBgImg } = useStateContext();
   const [callLogs, setCallLogs] = useState();
   const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -110,9 +110,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     return (
                       <div
                         className={`${
-                          currentMode === "dark"
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EBEBEB] text-black") 
+                          : (currentMode === "dark"
                           ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black"
+                          : "blur-bg-light text-black")
                         } p-3 rounded-md shadow-md card-hover`}
                       >
                         <h6 className="font-bold px-2 mb-2">
@@ -121,9 +125,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "blur-bg-dark text-white"
-                                : "blur-bg-light text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -159,9 +167,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              currentMode === "dark"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
                               ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -234,9 +246,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     return (
                       <div
                         className={`${
-                          currentMode === "dark"
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EBEBEB] text-black") 
+                          : (currentMode === "dark"
                           ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black"
+                          : "blur-bg-light text-black")
                         } p-3 rounded-md shadow-md card-hover`}
                       >
                         <h6 className="font-bold px-2 mb-2">
@@ -245,9 +261,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "blur-bg-dark text-white"
-                                : "blur-bg-light text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -283,9 +303,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              currentMode === "dark"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
                               ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -357,9 +381,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     return (
                       <div
                         className={`${
-                          currentMode === "dark"
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EBEBEB] text-black") 
+                          : (currentMode === "dark"
                           ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black"
+                          : "blur-bg-light text-black")
                         } p-3 rounded-md shadow-md card-hover`}
                       >
                         <h6 className="font-bold px-2 mb-2">
@@ -368,9 +396,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "blur-bg-dark text-white"
-                                : "blur-bg-light text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -406,9 +438,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              currentMode === "dark"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
                               ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -479,9 +515,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     return (
                       <div
                         className={`${
-                          currentMode === "dark"
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EBEBEB] text-black") 
+                          : (currentMode === "dark"
                           ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black"
+                          : "blur-bg-light text-black")
                         } p-3 rounded-md shadow-md card-hover`}
                       >
                         <h6 className="font-bold px-2 mb-2">
@@ -490,9 +530,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              currentMode === "dark"
-                                ? "blur-bg-dark text-white"
-                                : "blur-bg-light text-black"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -528,9 +572,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              currentMode === "dark"
+                              !themeBgImg 
+                              ? (currentMode === "dark"
+                              ? "bg-black text-white"
+                              : "bg-white text-black") 
+                              : (currentMode === "dark"
                               ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black"
+                              : "blur-bg-light text-black")
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">

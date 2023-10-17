@@ -7,7 +7,7 @@ import Loader from "../../Components/Loader";
 import ProgressBar from "../../Components/_elements/Progressbar";
 
 const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, primaryColor } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, primaryColor, themeBgImg } = useStateContext();
 
   const [noData, setNoData] = useState(false);
 
@@ -141,7 +141,11 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                         return (
                           <div
                             key={index}
-                            className={` ${currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"}
+                            className={` ${
+                              !themeBgImg 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                            }
                             rounded-lg shadow-sm card-hover p-4 `}
                           >
                             <div className="flex items-center gap-3 h-full w-full ">
@@ -210,7 +214,11 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                       return (
                         <div
                           key={index}
-                          className={` ${currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"}
+                          className={` ${
+                            !themeBgImg 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                          }
                           rounded-lg shadow-sm card-hover p-4 `}
                         >
                           <div className="flex items-center gap-3 h-full w-full ">
@@ -292,7 +300,11 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                         return (
                           <div
                             key={index}
-                            className={` ${currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"}
+                            className={` ${
+                              !themeBgImg 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                            }
                             rounded-lg shadow-sm card-hover p-4 `}
                           >
                             <div className="flex items-center gap-3 h-full w-full ">
@@ -361,7 +373,11 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                       return (
                         <div
                           key={index}
-                          className={` ${currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"}
+                          className={` ${
+                            !themeBgImg 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                          }
                           rounded-lg shadow-sm card-hover p-4 `}
                         >
                           <div className="flex items-center gap-3 h-full w-full ">

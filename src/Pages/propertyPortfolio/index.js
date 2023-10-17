@@ -91,7 +91,7 @@ const PropertyPortfolio = () => {
                     <div
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-black"
-                      } w-full shadow-sm rounded-lg p-4 space-y-5`}
+                      } w-full p-4 space-y-5`}
                     >
                       <div className="font-semibold text-white text-center w-full bg-primary p-2 uppercase rounded-lg shadow-sm">
                         {developer.developer}
@@ -102,9 +102,12 @@ const PropertyPortfolio = () => {
                             return (
                               <div
                                 className={`${
-                                  currentMode === "dark"
+                                  !themeBgImg ? (currentMode === "dark"
+                                  ? "bg-[#1C1C1C]"
+                                  : "bg-[#EBEBEB]") 
+                                  : (currentMode === "dark"
                                     ? "blur-bg-dark"
-                                    : "blur-bg-light"
+                                    : "blur-bg-light")
                                 } card-hover w-full h-full rounded-md space-y-1 border-t-2
                                 ${project.projectStatus === "Available" ? "border-green-600" : project.projectStatus === "Sold Out" ? "border-red-600" : "border-yellow-600"}
                                 `}
@@ -118,7 +121,7 @@ const PropertyPortfolio = () => {
                                   ${project.projectStatus === "Available" ? "bg-green-600" : project.projectStatus === "Sold Out" ? "bg-red-600" : "bg-yellow-600"}  
                                 `}></div>
 
-                                <div className="p-3">
+                                <div className="p-4">
                                   <div className="uppercase font-semibold mb-3">
                                     <div>{project.project}</div>
                                   </div>
@@ -264,7 +267,6 @@ const PropertyPortfolio = () => {
                         </p>
                       )}
                     </div>
-                    <hr></hr>
                   </>
                 );
               }

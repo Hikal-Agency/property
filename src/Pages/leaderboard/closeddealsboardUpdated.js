@@ -17,7 +17,7 @@ import {
 
 
 const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, themeBgImg } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [callLogs, setCallLogs] = useState();
 
@@ -174,9 +174,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                   manager?.map((item, index) => (
                     <div
                       className={`${
-                        currentMode === "dark"
+                        !themeBgImg 
+                        ? (currentMode === "dark"
+                        ? "bg-[#1C1C1C]"
+                        : "bg-[#EBEBEB]") 
+                        : (currentMode === "dark"
                           ? "blur-bg-dark"
-                          : "blur-bg-light"
+                          : "blur-bg-light")
                       } 
                       ${active === item?.id ? "border-2 border-primary" : ""} 
                       card-hover shadow-sm rounded-lg p-3 w-full`}
@@ -244,9 +248,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                     agents?.map((item, index) => (
                       <div
                         className={`${
-                          currentMode === "dark"
-                            ? "blur-bg-dark"
-                            : "blur-bg-light"
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EBEBEB]") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light")
                         } 
                         ${active === item?.id ? "border-2 border-primary" : ""} 
                         card-hover shadow-sm rounded-lg p-3 w-full`}
@@ -305,9 +313,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                     filteredAgent?.map((item, index) => (
                       <div
                         className={`${
-                          currentMode === "dark"
-                            ? "blur-bg-dark"
-                            : "blur-bg-light"
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EBEBEB]") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light")
                         }  card-hover shadow-sm rounded-lg p-3 w-full`}
                         key={index}
                       >

@@ -57,7 +57,7 @@ const Leaderboard = () => {
                   },
                 }}
                 className={`w-full rounded-md overflow-hidden ${
-                  currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
+                  !themeBgImg ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
                 }`}
               >
                 <div className="flex justify-between">

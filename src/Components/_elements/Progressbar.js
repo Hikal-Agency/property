@@ -9,13 +9,14 @@ const ProgressBar = ({
     progresswidth
 }) => {
     const { 
-        currentMode
+        currentMode,
+        themeBgImg
     } = useStateContext();
      
     const Parentdiv = {
         height: height,
         width: '100%',
-        backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+        backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#424242" : "#DDDDDD") : (currentMode === "dark" ? "#1C1C1C" : "#EBEBEB"),
         borderRadius: 40,
     }
       
