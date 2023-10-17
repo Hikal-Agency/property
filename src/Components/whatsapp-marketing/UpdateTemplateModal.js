@@ -10,7 +10,7 @@ import {
 import { IoMdClose } from "react-icons/io";
 
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import RichEditor from "./richEditorComp/RichEditor";
 
@@ -24,7 +24,7 @@ const UpdateTemplateModal = ({
   setUpdateTemplateModal,
   fetchTemplates,
 }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, t } = useStateContext();
   const [templateTitle, setTemplateTitle] = useState(
     updateTemplateModal?.template?.name
   );
@@ -112,12 +112,12 @@ const UpdateTemplateModal = ({
           >
             <IoMdClose size={18} />
           </IconButton>
-          <strong className="text-lg">Update Template</strong>
+          <strong className="text-lg">{t("update_template")}</strong>
           <form onSubmit={handleSubmit} className="mt-8">
             <TextField
               id="templateTitle"
               type={"text"}
-              label="Template Name"
+              label={t("template_name")}
               className="w-full mb-5"
               style={{ marginBottom: "10px" }}
               variant="outlined"
@@ -166,7 +166,7 @@ const UpdateTemplateModal = ({
               {btnloading ? (
                 <CircularProgress size={18} sx={{ color: "white"}} />
               ) : (
-                <span>Update Template</span>
+                <span>{t("update_template")}</span>
               )}
             </Button>
           </form>

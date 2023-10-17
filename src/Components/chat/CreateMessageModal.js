@@ -25,7 +25,7 @@ const CreateMessageModal = ({
   setActiveChat,
   handleCloseCreateMessageModal,
 }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, t } = useStateContext();
   const [userSearchVal, setUserSearchVal] = useState("");
   const [loading, setLoading] = useState(false);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -126,7 +126,7 @@ const CreateMessageModal = ({
           <IoMdClose size={18} />
         </IconButton>
 
-        <h1 className="font-bold text-xl mb-5">Create Message</h1>
+        <h1 className="font-bold text-xl mb-5">{t("create_message")}</h1>
         <TextField
           fullWidth
           variant="standard"
@@ -148,7 +148,7 @@ const CreateMessageModal = ({
               </InputAdornment>
             ),
           }}
-          placeholder="Search users.."
+          placeholder={t("search_users") + ".."}
         />
 
         <div className="flex-1 overflow-y-scroll mt-3">
@@ -162,7 +162,7 @@ const CreateMessageModal = ({
                 <div>
                   <div className="flex mb-3 mt-6 px-5 items-center text-sm font-bold text-[#a4a6a8]">
                     <BsFillChatLeftTextFill />{" "}
-                    <p className="uppercase ml-2">Search Results</p>
+                    <p className="uppercase ml-2">{t("search_results")}</p>
                   </div>
                   {searchedUsers?.length > 0 ? (
                     [
@@ -180,14 +180,14 @@ const CreateMessageModal = ({
                       }),
                     ]
                   ) : (
-                    <p className="px-5 text-[#da1f26]">No results found</p>
+                    <p className="px-5 text-[#da1f26]">{t("no_results_found")}</p>
                   )}
                 </div>
               ) : (
                 <div>
                   <div className="flex mb-3 mt-6 px-5 items-center text-sm font-bold text-[#a4a6a8]">
                     <BsFillChatLeftTextFill />{" "}
-                    <p className="uppercase ml-2">Recent Chats</p>
+                    <p className="uppercase ml-2">{t("recent_chats")}</p>
                   </div>
                   {recentChats?.length > 0 ? (
                     [
@@ -208,7 +208,7 @@ const CreateMessageModal = ({
                     ]
                   ) : (
                     <p className="px-5 text-[#da1f26]">
-                      You dont have any recent chat with anyone!
+                      {t("no_recent_chat_note")}
                     </p>
                   )}
                 </div>

@@ -1,12 +1,7 @@
 
 import { HiBars3BottomLeft } from "react-icons/hi2";
-
-
 import { useStateContext } from "../../context/ContextProvider";
-
-
 import React, { useState, useEffect } from "react";
-
 import axios from "../../axoisConfig";
 import { CSVLink } from "react-csv";
 import {
@@ -23,7 +18,7 @@ import { FaFileDownload } from "react-icons/fa";
 import Pagination from "@mui/material/Pagination";
 
 const ListQa = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL, primaryColor } = useStateContext();
+  const { currentMode, BACKEND_URL, primaryColor, t } = useStateContext();
   const [row, setRow] = useState([]);
   const [exportData, setExportData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -113,9 +108,6 @@ const ListQa = ({ pageState, setpageState }) => {
     FetchQA(token, currentPage);
   }, [currentPage]);
 
-  const handleRowClick = async (params) => {
-    console.log(params);
-  };
 
   return (
     <div>
@@ -134,7 +126,7 @@ const ListQa = ({ pageState, setpageState }) => {
                   onClick={getExportData}
                   sx={{ marginBottom: "10px" }}
                 >
-                  Export Data
+                  {t("export_data")}
                   <FaFileDownload className="ml-2" />
                 </Button>
               </CSVLink>
@@ -171,23 +163,14 @@ const ListQa = ({ pageState, setpageState }) => {
                       </React.Fragment>
                     ))
                   ) : (
-                    <span>No answer.</span>
+                    <span>{t("no_answer")}.</span>
                   )}
                 </Typography>
               </AccordionDetails>
             </Accordion>
           ))}
 
-          {/* <Pagination
-            count={data?.links?.last_page}
-            page={currentPage}
-            onChange={handlePageChange}
-            color={currentMode === "dark" ? "primary" : "secondary"}
-            sx={{
-              color: currentMode === "dark" ? "white" : "gray",
-            }}
-          /> */}
-
+  
           <Pagination
             count={data?.links?.last_page}
             page={currentPage}
@@ -214,7 +197,7 @@ const ListQa = ({ pageState, setpageState }) => {
         <p
           className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
         >
-          No data to display.
+          {t("no_data_to_display")}
         </p>
       )}
     </div>
@@ -223,4 +206,3 @@ const ListQa = ({ pageState, setpageState }) => {
 
 export default ListQa;
 
-// export default ListQa;

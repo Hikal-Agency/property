@@ -12,7 +12,7 @@ import {
 } from "react-icons/bs";
 
 const LocationComponent = ({ upcoming_meetings }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, t } = useStateContext();
   const [selectedMeeting, setSelectedMeeting] = React.useState(null);
 
   const handleMeetingClick = (meeting) => {
@@ -40,7 +40,7 @@ const LocationComponent = ({ upcoming_meetings }) => {
               : "text-black"
           }`}
         >
-          Upcoming Meeting Locations
+         {t("upcoming_meeting_locations")}
         </h1>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 h-[85vh]">

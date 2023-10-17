@@ -13,7 +13,7 @@ const DeleteTemplateModal = ({
     deleteTemplate, 
     deletebtnloading
 }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, t } = useStateContext();
 
   return (
     <Modal
@@ -37,7 +37,7 @@ const DeleteTemplateModal = ({
         <div className="flex flex-col justify-center items-center">
           <IoIosAlert size={50} className="text-main-red-color text-2xl" />
           <h1 className="font-semibold pt-3 text-lg">
-              Do You Really Want to delete this template?
+              {t("want_to_delete_template")}
           </h1>
         </div>
 
@@ -53,7 +53,7 @@ const DeleteTemplateModal = ({
             {deletebtnloading ? (
               <CircularProgress size={18} sx={{ color: "blue" }} />
             ) : (
-              <span>Delete</span>
+              <span>{t("btn_delete")}</span>
             )}
           </Button>
 
@@ -67,7 +67,7 @@ const DeleteTemplateModal = ({
                 : "text-primary border-primary"
             }`}
           >
-            Cancel
+            {t("cancel")}
           </Button>
         </div>
       </div>

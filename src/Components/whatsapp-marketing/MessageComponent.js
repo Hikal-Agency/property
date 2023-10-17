@@ -1,76 +1,36 @@
-import { Button } from "@material-tailwind/react";
 import {
   Box,
-  CircularProgress,
-  Dialog,
-  IconButton,
+
   MenuItem,
   Select,
-  InputAdornment,
-  TextField,
-  FormControl,
-  Tooltip,
+
 } from "@mui/material";
 import usePermission from "../../utils/usePermission";
 import {
   DataGrid,
   gridPageCountSelector,
   gridPageSelector,
-  GridToolbar,
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { socket } from "../../Pages/App";
+
 
 import Pagination from "@mui/material/Pagination";
-import { langs } from "../../langCodes";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { toast } from "react-toastify";
-import { useNavigate, Link } from "react-router-dom";
+
 
 import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 
 import {
-  FaSnapchatGhost,
-  FaFacebookF,
-  FaTiktok,
-  FaRegComments,
-  FaUser,
-  FaWhatsapp,
-  FaYoutube,
-  FaTwitter,
+
   FaSms,
 } from "react-icons/fa";
-import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
-import {
-  BsPersonCircle,
-  BsSnow2,
-  BsShieldX,
-  BsShieldCheck,
-  BsShieldMinus,
-} from "react-icons/bs";
-import {
-  BiSearch,
-  BiImport,
-  BiArchive,
-  BiMessageRoundedDots,
-} from "react-icons/bi";
-import { IoIosAlert, IoMdClose } from "react-icons/io";
-import { FcGoogle } from "react-icons/fc";
-import { GiMagnifyingGlass } from "react-icons/gi";
-import { MdCampaign } from "react-icons/md";
-import {
-  RxCheckCircled,
-  RxCrossCircled,
-  RxQuestionMarkCircled,
-} from "react-icons/rx";
-import { TbWorldWww } from "react-icons/tb";
+
+
+
 import moment from "moment";
 import { RiWhatsappFill } from "react-icons/ri";
 import SingleSMSModal from "./SingleSMSModal";
@@ -86,38 +46,30 @@ const MessagesComponent = ({
   const { screenWidth, screenHeight } = useWindowSize();
 
   const token = localStorage.getItem("auth-token");
-  const [singleLeadData, setsingleLeadData] = useState();
   const [filt, setFilt] = useState([]);
   const { hasPermission } = usePermission();
 
   //eslint-disable-next-line
   const [deleteloading, setdeleteloading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   //eslint-disable-next-line
   const [deletebtnloading, setdeletebtnloading] = useState(false);
 
   const dataTableRef = useRef();
-  const searchRef = useRef();
 
   const {
     currentMode,
     pageState,
     setpageState,
-    reloadDataGrid,
-    setreloadDataGrid,
     DataGridStyles,
     setopenBackDrop,
     User,
-    BACKEND_URL,
+    BACKEND_URL, t
   } = useStateContext();
   //eslint-disable-next-line
   //eslint-disable-next-line
   const [openDialog, setopenDialog] = useState(false);
   const [pageRange, setPageRange] = useState();
 
-  const handleCloseDialog = () => {
-    setopenDialog(false);
-  };
 
   const handleRangeChange = (e) => {
     const value = e.target.value;
@@ -140,24 +92,6 @@ const MessagesComponent = ({
 
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
-  const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
-
-  const SelectStyles = {
-    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
-      {
-        color: currentMode === "dark" ? "white" : "black",
-        // borderColor: currentMode === "dark" ? "white" : "black",
-        fontSize: "0.9rem",
-        fontWeight: "500",
-        // borderLeft: currentMode === "dark" ? "1px solid white" : "1px solid black",
-        // borderRight: currentMode === "dark" ? "1px solid white" : "1px solid black",
-        border: "none",
-      },
-    "& .MuiOutlinedInput-notchedOutline": {
-      // borderColor: currentMode === "dark" ? "white" : "black",
-      border: "none",
-    },
-  };
 
   const typeIcon = {
     sms: <FaSms color="#aaaaaa" size={22} />,
@@ -183,7 +117,7 @@ const MessagesComponent = ({
     {
       field: "type",
       headerAlign: "center",
-      headerName: "Type",
+      headerName: t("type"),
       maxWidth: 40,
       flex: 1,
       renderCell: (cellValues) => {
@@ -200,7 +134,7 @@ const MessagesComponent = ({
     },
     {
       field: "message",
-      headerName: "Message",
+      headerName: t("message"),
       minWidth: 250,
       headerAlign: "center",
       flex: 1,
@@ -214,7 +148,7 @@ const MessagesComponent = ({
     },
     {
       field: "user_name",
-      headerName: "User",
+      headerName: t("user"),
       headerAlign: "center",
       minWidth: 60,
       flex: 1,
@@ -225,7 +159,7 @@ const MessagesComponent = ({
     {
       headerAlign: "center",
       field: "date",
-      headerName: "Date",
+      headerName: t("date"),
       minWidth: 50,
       flex: 1,
       renderCell: (cellValues) => {
@@ -239,7 +173,7 @@ const MessagesComponent = ({
 
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("status"),
       minWidth: 30,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
@@ -249,11 +183,11 @@ const MessagesComponent = ({
         let status = cellValues?.formattedValue;
         if (status === "success") {
           <div className="bg-[#4ade80]">
-            <p>Success</p>
+            <p>{t("status_success")}</p>
           </div>;
         } else {
           <div className="bg-danger">
-            <p>Failed</p>
+            <p>{t("status_failed")}</p>
           </div>;
         }
       },
@@ -261,7 +195,7 @@ const MessagesComponent = ({
 
     {
       field: "recipientCount",
-      headerName: "Recipients",
+      headerName: t("label_recipients"),
       flex: 1,
       minWidth: 50,
       headerAlign: "center",
@@ -277,18 +211,11 @@ const MessagesComponent = ({
     },
     {
       field: "credits",
-      headerName: "Credits",
+      headerName: t("credits"),
       headerAlign: "center",
       minWidth: 70,
       flex: 1,
     },
-    // {
-    //   field: "edit",
-    //   headerName: "Edit",
-    //   headerAlign: "center",
-    //   maxWidth: 10,
-    //   flex: 1,
-    // },
   ];
 
   const FetchMessages = async (token) => {
@@ -469,7 +396,7 @@ const MessagesComponent = ({
             {pageState.from}-{pageState.to}
           </p>
 
-          <p className="mr-3">Rows Per Page</p>
+          <p className="mr-3">{t("rows_per_page")}</p>
 
           <Select
             labelId="select-page-size-label"

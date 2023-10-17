@@ -1212,7 +1212,7 @@ const AllLeads = () => {
             <></>
           ) : (
             <Alert color="success" sx={{ mr: 2, padding: "0px 10px" }}>
-              <p className="mt-1">{selectedRows.length} rows selected</p>
+              <p className="mt-1">{t("rows_selected", {n: selectedRows?.length})}</p>
             </Alert>
           )}
 
@@ -1336,7 +1336,7 @@ const AllLeads = () => {
                 />
               </Button>
               <div className="text-white bg-[#1c1c1c] absolute w-[89%] rounded-sm text-xs top-7 left-0 right-0 p-1">
-                Coming soon
+                {t("coming_soon")}
               </div>
             </div>
           </Tooltip>

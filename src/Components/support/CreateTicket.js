@@ -20,7 +20,7 @@ import { socket } from "../../Pages/App";
 import axios from "../../axoisConfig";
 
 const CreateTicket = ({ categories, setCategories }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, User } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, User, t } = useStateContext();
   const [newCategory, setNewCategory] = useState();
   const [showTextInput, setShowTextInput] = useState(false);
   const [values, setValues] = useState({
@@ -207,7 +207,7 @@ const CreateTicket = ({ categories, setCategories }) => {
           } rounded-md space-3 p-7`}
         >
           <h3 className="mb-3 font-semibold text-primary text-center">
-            Ticket Details
+            {t("ticket_details")}
           </h3>
           <hr className="mb-5"></hr>
 
@@ -215,7 +215,7 @@ const CreateTicket = ({ categories, setCategories }) => {
             <Box sx={darkModeColors}>
               {/* TICKET CATEGORY  */}
               <FormControl fullWidth>
-                <InputLabel>Ticket Category</InputLabel>
+                <InputLabel>{t("ticket_category")}</InputLabel>
                 {/* <Select
                   label="Ticket Category"
                   size="medium"
@@ -240,7 +240,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                   })}
                 </Select> */}
                 <Select
-                  label="Ticket Category"
+                  label={t("ticket_category")}
                   size="medium"
                   onChange={(e) =>
                     setValues({ ...values, ticketCategory: e.target.value })
@@ -250,7 +250,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                   required
                 >
                   <MenuItem disabled selected value="">
-                    Select Category
+                    {t("select_category")}
                   </MenuItem>
                   {categories?.map((category) => {
                     if (category.catName) {
@@ -265,7 +265,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                     <>
                       <MenuItem onKeyDown={(e) => e.stopPropagation()}>
                         <TextField
-                          placeholder="New Category"
+                          placeholder={t("new_category")}
                           value={newCategory}
                           onChange={handleCreateCategory}
                           fullWidth
@@ -286,7 +286,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                             className="text-white"
                           />
                         ) : (
-                          <span> Add</span>
+                          <span>{t("btn_add")}</span>
                         )}
                       </Button>
                     </>
@@ -305,7 +305,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                           onClick={handleAddCategory}
                           sx={{ marginLeft: "200px" }}
                         >
-                          + Add Category
+                          + {t("add_category")}
                         </span>
                       )}
                     </>
@@ -316,7 +316,7 @@ const CreateTicket = ({ categories, setCategories }) => {
               <TextField
                 id="issue"
                 type={"text"}
-                label="Ticket Issue"
+                label={t("ticket_issue")}
                 className="w-full mb-5"
                 style={{ marginBottom: "20px" }}
                 variant="outlined"
@@ -330,7 +330,7 @@ const CreateTicket = ({ categories, setCategories }) => {
               <TextField
                 id="ticket"
                 type={"text"}
-                label="Ticket Description"
+                label={t("ticket_description")}
                 className="w-full mb-5"
                 style={{ marginBottom: "20px" }}
                 variant="outlined"
@@ -345,7 +345,7 @@ const CreateTicket = ({ categories, setCategories }) => {
               <FormControl fullWidth>
                 <InputLabel>Support Source</InputLabel>
                 <Select
-                  label="Support Source"
+                  label={t("support_source")}
                   size="medium"
                   className="w-full mb-5"
                   onChange={(e) =>
@@ -355,19 +355,19 @@ const CreateTicket = ({ categories, setCategories }) => {
                   required
                 >
                   <MenuItem disabled value="">
-                    Select Support Source
+                   {t("select_support_source")}
                   </MenuItem>
-                  <MenuItem value={"Email"}>Email</MenuItem>
-                  <MenuItem value={"Video Call"}>Video Call</MenuItem>
-                  <MenuItem value={"Phone Call"}>Phone Call</MenuItem>
-                  <MenuItem value={"WhatsApp Chat"}>WhatsApp Chat</MenuItem>
+                  <MenuItem value={"Email"}>{t("support_via_email")}</MenuItem>
+                  <MenuItem value={"Video Call"}>{t("support_via_video_call")}</MenuItem>
+                  <MenuItem value={"Phone Call"}>{t("support_via_call")}</MenuItem>
+                  <MenuItem value={"WhatsApp Chat"}>{t("support_via_whatsapp")}</MenuItem>
                 </Select>
               </FormControl>
               {/* Status */}
               <FormControl fullWidth>
-                <InputLabel>Ticket Status</InputLabel>
+                <InputLabel>{t("ticket_status")}</InputLabel>
                 <Select
-                  label="Ticket Status"
+                  label={t("ticket_status")}
                   size="medium"
                   className="w-full mb-5"
                   onChange={(e) =>
@@ -377,31 +377,31 @@ const CreateTicket = ({ categories, setCategories }) => {
                   required
                 >
                   <MenuItem disabled value="">
-                    Select Ticket Status
+                    {t('ticket_status')}
                   </MenuItem>
                   <MenuItem value={"open"}>
                     <div className="bg-green-400 h-[100%] py-2 rounded px-3 w-[100%]">
-                      Open
+                      {t("status_open")}
                     </div>
                   </MenuItem>
                   <MenuItem value={"pending"}>
                     <div className="bg-blue-400 h-[100%] py-2 rounded px-3 w-[100%]">
-                      Pending
+                     {t("status_pending")}
                     </div>
                   </MenuItem>
                   <MenuItem value={"in process"}>
                     <div className="bg-slate-400 h-[100%] py-2 rounded px-3 w-[100%]">
-                      In Process
+                      {t("status_in_process")}
                     </div>
                   </MenuItem>
                   <MenuItem value={"resolved"}>
                     <div className="bg-purple-400 h-[100%] py-2 rounded px-3 w-[100%]">
-                      Resolved
+                      {t("status_resolved")}
                     </div>
                   </MenuItem>
                   <MenuItem value={"closed"}>
                     <div className="bg-red-400 h-[100%] py-2 rounded px-3 w-[100%]">
-                      Closed
+                      {t("status_closed")}
                     </div>
                   </MenuItem>
                 </Select>
@@ -415,7 +415,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                 {btnloading ? (
                   <CircularProgress size={18} sx={{ color: "white" }} />
                 ) : (
-                  <span>Submit</span>
+                  <span>{t("btn_submit")}</span>
                 )}
               </Button>
             </Box>
@@ -423,11 +423,10 @@ const CreateTicket = ({ categories, setCategories }) => {
         </div>
         <div className="space-3 p-1 sm:pb-1 sm:pt-5 md:pb-1 md:pt-5 lg:pb-3 lg:pt-5 xl:p-5">
           <h3 className="mb-3 font-semibold text-primary text-center">
-            24x7 Real-time Support
+            {t("24x7_note")}
           </h3>
           <h6 className="mb-3 text-center">
-            Need help with our system? Contact our support team or create ticket
-            for prompt assistance.
+            {t("24x7_subnote")}
           </h6>
           {/* <h6 className="mb-3 text-center">For any questions or issues related to our website or services, please feel free to contact our friendly support team at support@hikalcrm.com, and we will do our best to assist you as soon as possible.</h6> */}
           <hr className="mb-5"></hr>
@@ -447,7 +446,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                   />
                 </div>
                 <h3 className="flex justify-center flex-wrap">
-                  Support via Email
+                  {t("support_email")}
                 </h3>
               </div>
             </div>
@@ -465,7 +464,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                     className="bg-primary p-3 rounded-full"
                   />
                 </div>
-                <h3 className="col-span-3">Support via Call</h3>
+                <h3 className="col-span-3">{t("support_call")}</h3>
               </div>
             </div>
             {/* WHATSAPP CHAT  */}
@@ -482,7 +481,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                     className="bg-primary p-3 rounded-full"
                   />
                 </div>
-                <h3 className="col-span-3">Support via WhatsApp</h3>
+                <h3 className="col-span-3">{t("support_whatsapp")}</h3>
               </div>
             </div>
             {/* VIDEO CALL */}
@@ -499,7 +498,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                     className="bg-primary p-3 rounded-full"
                   />
                 </div>
-                <h3 className="col-span-3">Support via Video Call</h3>
+                <h3 className="col-span-3">{t("support_video_call")}</h3>
               </div>
             </div>
           </div>

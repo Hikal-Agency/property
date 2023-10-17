@@ -6,7 +6,6 @@ import {
   FormControl,
   IconButton,
   MenuItem,
-  // Select,
 } from "@mui/material";
 import Select from "@mui/material/Select";
 import { socket } from "../../Pages/App";
@@ -17,21 +16,17 @@ import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
-import { TbFlag3Filled, TbFlag3 } from "react-icons/tb";
-
 const UpdateTicketSelect = ({ cellValues }) => {
   const [btnloading, setbtnloading] = useState(false);
   const [Priority, setPriority] = useState(cellValues?.row?.status);
   const [newPriority, setnewPriority] = useState("");
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
-  // eslint-disable-next-line
   const {
     currentMode,
     setreloadDataGrid,
     reloadDataGrid,
     BACKEND_URL,
-    User,
-    Managers,
+    User, t
   } = useStateContext();
 
   const [selectedPriority, setSelectedPriority] = useState(Priority);
@@ -48,10 +43,6 @@ const UpdateTicketSelect = ({ cellValues }) => {
 
   console.log("Priority: ", Priority);
 
-  const ChangePriority = (e) => {
-    setnewPriority(e.target.value);
-    setPriorityDialogue(true);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -150,19 +141,6 @@ const UpdateTicketSelect = ({ cellValues }) => {
     Low: "gray",
   };
 
-  const getFlagIcon = () => {
-    if (!Priority) {
-      return <TbFlag3 size={20} className="text-[#AAAAAA]" />;
-    } else {
-      return (
-        <TbFlag3Filled
-          size={20}
-          className={`text-${priorityColors[selectedPriority]}-500`}
-        />
-      );
-    }
-  };
-
   return (
     <div className="w-full h-full">
       <Box
@@ -195,12 +173,12 @@ const UpdateTicketSelect = ({ cellValues }) => {
               },
             }}
           >
-            <MenuItem value={"select"}>Select Status</MenuItem>
-            <MenuItem value={"pending"}>Pending</MenuItem>
-            <MenuItem value={"open"}>Open</MenuItem>
-            <MenuItem value={"in process"}>In Process</MenuItem>
-            <MenuItem value={"closed"}>Closed</MenuItem>
-            <MenuItem value={"resolved"}>Resolved</MenuItem>
+            <MenuItem value={"select"}>{t("select_status")}</MenuItem>
+            <MenuItem value={"pending"}>{t("status_pending")}</MenuItem>
+            <MenuItem value={"open"}>{t("status_open")}</MenuItem>
+            <MenuItem value={"in process"}>{t("status_in_process")}</MenuItem>
+            <MenuItem value={"closed"}>{t("status_closed")}</MenuItem>
+            <MenuItem value={"resolved"}>{t("status_resolved")}</MenuItem>
           </Select>
         </FormControl>
       </Box>
@@ -275,11 +253,11 @@ const UpdateTicketSelect = ({ cellValues }) => {
                     className="text-primary text-2xl"
                   />
                   <h1 className="font-semibold pt-3 text-lg text-center">
-                    Do You Really Want Change the Priority from{" "}
+                    {t("want_to_change_priority")} {t("from")}{" "}
                     <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                       {Priority === null ? "Null" : Priority}
                     </span>{" "}
-                    to{" "}
+                    {t("to")}{" "}
                     <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                       {newPriority}
                     </span>{" "}
@@ -296,7 +274,7 @@ const UpdateTicketSelect = ({ cellValues }) => {
                     {btnloading ? (
                       <CircularProgress size={18} sx={{ color: "white" }} />
                     ) : (
-                      <span>Confirm</span>
+                      <span>{t("confirm")}</span>
                     )}
                   </Button>
 
@@ -310,7 +288,7 @@ const UpdateTicketSelect = ({ cellValues }) => {
                         : "text-primary border-primary"
                     }`}
                   >
-                    Cancel
+                    {t("cancel")}
                   </Button>
                 </div>
               </div>

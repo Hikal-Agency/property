@@ -27,7 +27,7 @@ import Loader from "../Loader";
 import TemplatesCountCard from "./TemplatesCountCard";
 
 const TemplatesComponent = () => {
-  const { BACKEND_URL, currentMode } = useStateContext();
+  const { BACKEND_URL, currentMode, t } = useStateContext();
   const [createTemplateModal, setCreateTemplateModal] = useState({
     isOpen: false,
   });
@@ -125,7 +125,7 @@ const TemplatesComponent = () => {
                   : "text-primary font-bold border-primary"
               }`}
             >
-              ● Message Templates
+              ● {t("title_message_templates")}
             </h1>
             <Button
               className="bg-btn-primary"
@@ -142,7 +142,7 @@ const TemplatesComponent = () => {
               variant="contained"
             >
               <BiPlus size={16} style={{ marginRight: 5 }} />
-              Add Template
+              {t("button_add_template")}
             </Button>
           </Box>
           <Box
@@ -151,22 +151,22 @@ const TemplatesComponent = () => {
           >
             <TemplatesCountCard
               icon={<HiTemplate size={18} />}
-              type="All Templates"
+              type={t("all_templates")}
               count={templates?.length}
             />
             <TemplatesCountCard
               icon={<MdEmail size={18} />}
-              type="Email Templates"
+              type={t("email_templates")}
               count={templates?.map((temp) => temp?.type === "email")?.length}
             />
             <TemplatesCountCard
               icon={<BsWhatsapp size={18} />}
-              type="Whatsapp Templates"
+              type={t("whatsapp_templates")}
               count={templates?.map((temp) => temp?.type === "whatsapp")?.length}
             />
             <TemplatesCountCard
               icon={<MdSms size={18} />}
-              type="SMS Templates"
+              type={t("sms_templates")}
               count={templates?.map((temp) => temp?.type === "sms")?.length}
             />
           </Box>
@@ -222,17 +222,17 @@ const TemplatesComponent = () => {
                       <TableRow>
                         <TableCell>
                           <Box className="flex items-center">
-                            <strong className="text-xl">Name</strong>
+                            <strong className="text-xl">{t("name")}</strong>
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Box className="flex items-center">
-                              <strong className="text-xl">Type</strong>
+                              <strong className="text-xl">{t("type")}</strong>
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Box className="flex items-center">
-                              <strong className="text-xl">Edit</strong>
+                              <strong className="text-xl">{t("edit")}</strong>
                           </Box>
                         </TableCell>
                       </TableRow>
@@ -284,7 +284,7 @@ const TemplatesComponent = () => {
               </>
             ) : (
               <p style={{ color: "red", textAlign: "center" }}>
-                Nothing to show
+                {t("nothing_to_show")}
               </p>
             )}
           </Box>

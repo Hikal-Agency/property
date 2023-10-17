@@ -6,7 +6,6 @@ import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 
 import axios from "../../axoisConfig";
-import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -18,7 +17,7 @@ const EmployeesList = ({ user }) => {
     pageState,
     setpageState,
     darkModeColors,
-    User,
+    t,
     primaryColor,
   } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
@@ -28,7 +27,6 @@ const EmployeesList = ({ user }) => {
   // const [selectedDay, setSelectedDay] = useState("");
 
   const token = localStorage.getItem("auth-token");
-  const navigate = useNavigate();
 
   console.log("employess data:: ", userData);
 
@@ -46,11 +44,6 @@ const EmployeesList = ({ user }) => {
     // fetchUsers();
   };
 
-  // const handleClick = (e, user_id) => {
-  //   e.preventDefault();
-
-  //   navigate(`/attendance/singleEmployee/${user_id}`);
-  // };
   const handleClick = (e, user_id) => {
     console.log("id: ", user_id);
     e.preventDefault();
@@ -161,9 +154,9 @@ const EmployeesList = ({ user }) => {
                       Select a day
                     </MenuItem> */}
                     <MenuItem selected value="today">
-                      Today
+                      {t("today")}
                     </MenuItem>
-                    <MenuItem value="yesterday">Yesterday</MenuItem>
+                    <MenuItem value="yesterday">{t("yesterday")}</MenuItem>
                   </Select>
                 </div>
               </Box>
@@ -253,7 +246,7 @@ const EmployeesList = ({ user }) => {
                           currentMode === "dark" ? "text-white" : "text-dark"
                         }`}
                       >
-                        No data available.
+                        {t("no_data_available")}.
                       </p>
                     </div>
                   )}

@@ -1,4 +1,3 @@
-// import Image from "next/image";
 import React, { useEffect } from "react";
 import { useState } from "react";
 
@@ -10,7 +9,7 @@ import axios from "../../axoisConfig";
 import moment from "moment";
 
 const OfficeSettings = () => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, t } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
   const [settings, setSettings] = useState({
@@ -25,9 +24,6 @@ const OfficeSettings = () => {
 
   console.log("settings: ", settings);
 
-  const handleEventClick = (eventClickInfo) => {
-    console.log("Event clicked:", eventClickInfo.event);
-  };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -50,13 +46,6 @@ const OfficeSettings = () => {
     }
 
     const formData = new FormData();
-    // formData.append("in_time", settings?.in_time);
-    // formData.append("out_time", settings?.out_time);
-    // formData.append("out_late_time", settings?.out_late_time);
-    // formData.append("in_late_time", settings?.in_late_time);
-    // formData.append("off_day", settings?.off_day);
-
-    // Convert and append in_time in 12-hour format with AM/PM
     formData.append(
       "in_time",
       settings?.in_time
@@ -190,7 +179,7 @@ const OfficeSettings = () => {
   return (
     <>
       <h4 className="text-primary py-5 font-bold text-xl text-center">
-        Office Time Settings
+        {t("office_time_settings")}
       </h4>
   
 
@@ -199,7 +188,6 @@ const OfficeSettings = () => {
           className={`${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
           } w-full col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 p-5`}
-          //   style={{ height: "700px" }}
         >
           <div
             className={`${currentMode === "dark" ? "text-white" : "text-dark"}`}
@@ -221,7 +209,7 @@ const OfficeSettings = () => {
                       currentMode === "dark" ? "text-white" : "text-center"
                     }`}
                   >
-                    Start Time
+                    {t("start_time")}
                   </p>
                   {isEditing ? (
                     <input
@@ -252,7 +240,7 @@ const OfficeSettings = () => {
                       currentMode === "dark" ? "text-white" : "text-center"
                     }`}
                   >
-                    End Time
+                    {t("end_time")}
                   </p>
                   {isEditing ? (
                     <input
@@ -282,7 +270,7 @@ const OfficeSettings = () => {
                       currentMode === "dark" ? "text-white" : "text-center"
                     }`}
                   >
-                    Off Day
+                   {t("off_day")}
                   </p>
                   {isEditing ? (
                     <input
@@ -320,7 +308,7 @@ const OfficeSettings = () => {
                       currentMode === "dark" ? "text-white" : "text-center"
                     }`}
                   >
-                    Maximum Late Time
+                   {t("maximum_late_time")}
                   </p>
                   {isEditing ? (
                     <input
@@ -350,7 +338,7 @@ const OfficeSettings = () => {
                       currentMode === "dark" ? "text-white" : "text-center"
                     }`}
                   >
-                    Overtime After
+                   {t("overtime_after")}
                   </p>
                   {isEditing ? (
                     <input
@@ -385,7 +373,7 @@ const OfficeSettings = () => {
                   style={{color: "#ffffff" }}
                   onClick={handleEditClick}
                 >
-                  Modify Settings
+                  {t("button_modify_settings")}
                 </Button>
               ) : (
                 <Button
@@ -402,7 +390,7 @@ const OfficeSettings = () => {
                       className="text-white"
                     />
                   ) : (
-                    <span>Update Settings</span>
+                    <span>{t("btn_update_settings")}</span>
                   )}
                 </Button>
               )}

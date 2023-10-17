@@ -12,7 +12,7 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 
 const QAForm = () => {
-  const { darkModeColors, currentMode, setopenBackDrop, BACKEND_URL } =
+  const { darkModeColors, currentMode, setopenBackDrop, BACKEND_URL, t} =
     useStateContext();
 
   const [value, setValue] = useState(0);
@@ -87,7 +87,7 @@ const QAForm = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Add Questions And Relative Answers For Customer Support.
+                {t("qa_page_headline")}.
               </h4>
               <div
                 className={`${
@@ -119,9 +119,9 @@ const QAForm = () => {
                     // centered
                     className="w-full px-1 m-1"
                   >
-                    <Tab label="Add QA" />
-                    <Tab label="ALL QA" />
-                    <Tab label="Filter QA"></Tab>
+                    <Tab label={t("add_qa")} />
+                    <Tab label={t("all_qa")} />
+                    <Tab label={t("filter_qa")}></Tab>
                   </Tabs>
                 </Box>
                 <div className="mt-3 pb-3">
@@ -145,7 +145,7 @@ const QAForm = () => {
                       <Select
                         id="user"
                         value={selectUserId?.id}
-                        label="Select User"
+                        label={t("select_user")}
                         onChange={handleUser}
                         size="medium"
                         className="w-full mb-4"
@@ -153,7 +153,7 @@ const QAForm = () => {
                         required
                       >
                         <MenuItem value="" disabled>
-                          Select User
+                          {t("select_user")}
                         </MenuItem>
                         {users && users.length > 0 ? (
                           users.map((user) => (
@@ -163,7 +163,7 @@ const QAForm = () => {
                           ))
                         ) : (
                           <MenuItem value="" disabled>
-                            No Users
+                            {t("no_users")}
                           </MenuItem>
                         )}
                       </Select>
@@ -174,7 +174,7 @@ const QAForm = () => {
                         currentMode === "dark" ? "text-white" : "text-black"
                       } mb-5`}
                     >
-                      Data of :{" "}
+                     {t("data_of")} :{" "}
                       <span className="text-primary">
                         {" "}
                         {selectUserId?.userName || "No User"}
