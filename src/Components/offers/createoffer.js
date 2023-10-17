@@ -24,8 +24,15 @@ import { Textarea } from "@material-tailwind/react";
 const currentDate = dayjs();
 
 const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, formatNum, BACKEND_URL, User, primaryColor } =
-    useStateContext();
+  const { 
+    currentMode, 
+    darkModeColors, 
+    formatNum, 
+    BACKEND_URL, 
+    User, 
+    primaryColor,
+    themeBgImg
+  } = useStateContext();
   const [validFromDate, setValidFromDate] = useState("");
   const [validFromDateValue, setValidFromDateValue] = useState({});
   const [validToDate, setValidToDate] = useState("");
@@ -193,7 +200,9 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
   //   setValidToDateValue(dayjs("2023-01-01"));
   // }, []);
   return (
-    <div>
+    <div className={`p-3 rounded-lg ${
+      themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+    }`}>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
         <Box sx={darkModeColors} className="p-2">
           <TextField
@@ -290,8 +299,8 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
           {User?.role !== 3 && (
             <div
               className={`${
-                currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-100"
-              } rounded-md p-5`}
+                !themeBgImg && (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EBEBEB]")}
+              } rounded-lg p-5`}
             >
               <Box sx={darkModeColors}>
                 <label className="font-semibold mb-1">
