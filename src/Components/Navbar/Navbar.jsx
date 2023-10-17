@@ -78,7 +78,7 @@ const Navbar = () => {
     allRoutes,
     primaryColor,
     setIsCollapsed,
-    themeBgImg
+    themeBgImg, t
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -280,7 +280,7 @@ const Navbar = () => {
               >
                 <Link to="/marketing/payments" className="flex items-center">
                   <MdStars className="mr-2" size={18} />
-                  <span className="mt-[2px]">Upgrade</span>
+                  <span className="mt-[2px]">{t("upgrade")}</span>
                 </Link>
               </Button>
             ) : (
@@ -507,7 +507,7 @@ const Navbar = () => {
                             }}
                             className={`text-sm rounded-full border px-2 py-1`}
                           >
-                            Profile
+                            {t("profile")}
                           </div>
                         </div>
                       </div>
@@ -588,7 +588,7 @@ const Navbar = () => {
                       <div className="flex justify-between items-center w-full h-full">
                         <div className="flex items-center">
                           <p className="font-semibold mx-1 mr-2">
-                            Login history
+                            {t("login_history")}
                           </p>
                           <VscLock
                             size={14}
@@ -603,7 +603,7 @@ const Navbar = () => {
                           }}
                           className="rounded-full text-white px-2 py-1 font-bold"
                         >
-                          SOON
+                          {t("soon")?.toUpperCase()}
                         </div>
                       </div>
                     </div>
@@ -631,7 +631,7 @@ const Navbar = () => {
                           <VscShield size={18} color={"#AAAAAA"} />
                         </div>
                         <p className="mx-1 mr-2 font-semibold">
-                          Change password
+                          {t("change_password")}
                         </p>
                       </div>
                     </Link>
@@ -657,7 +657,7 @@ const Navbar = () => {
                           <VscExclude size={18} color={"#AAAAAA"} />
                         </div>
                         <p className="mx-1 mr-2 font-semibold">
-                          Unsubscribe package
+                          {t("unsubscribe_package")}
                         </p>
                         <VscLock
                           size={14}
@@ -689,7 +689,7 @@ const Navbar = () => {
                           <VscExclude size={18} color={"#AAAAAA"} />
                         </div>
                         <p className="mx-1 mr-2 font-semibold">
-                          Unsubscribe package
+                          {t("unsubscribe_package")}
                         </p>
                         <VscLock size={14} color={"#DA1F26"} className="mr-2" />
                       </div>
@@ -714,7 +714,7 @@ const Navbar = () => {
                       >
                         <VscSignOut size={18} color={"#AAAAAA"} />
                       </div>
-                      <p className="mx-1 mr-2 font-semibold">Log out</p>
+                      <p className="mx-1 mr-2 font-semibold">{t("log_out")}</p>
                     </div>
                   </div>
                 </div>

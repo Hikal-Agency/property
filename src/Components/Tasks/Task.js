@@ -5,7 +5,7 @@ import Calls from "./Calls";
 // eslint-disable-next-line
 
 const Task = () => {
-  const { currentMode, darkModeColors, BACKEND_URL, primaryColor, themeBgImg } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, primaryColor, themeBgImg, t } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -78,7 +78,7 @@ const Task = () => {
           className={`w-full overflow-hidden `}
         >
           <div className="flex justify-between items-center">
-            <h4 className="font-semibold p-5">SUMMARY</h4>
+            <h4 className="font-semibold p-5">{t("summary")}</h4>
             <Tabs
               value={value}
               onChange={handleChange}
@@ -86,7 +86,7 @@ const Task = () => {
               // centered
               className="w-full m-1 px-1"
             >
-              <Tab label="Calls Count" />
+              <Tab label={t("calls_count")} />
             </Tabs>
           </div>
         </Box>
@@ -101,7 +101,7 @@ const Task = () => {
             />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            COMING SOON...
+            {t("coming_soon")?.toUpperCase()}
           </TabPanel>
         </div>
       </div>

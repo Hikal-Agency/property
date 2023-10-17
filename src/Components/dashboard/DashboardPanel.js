@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { CircularProgress } from "@mui/material";

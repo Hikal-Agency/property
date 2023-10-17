@@ -7,7 +7,7 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 
 export const ChangePassword = () => {
-  const { darkModeColors, BACKEND_URL, User } = useStateContext();
+  const { darkModeColors, BACKEND_URL, User, t } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [SamePasswordError, setSamePasswordError] = useState(false);
   const [passwordData, setPasswordData] = useState({
@@ -87,7 +87,7 @@ export const ChangePassword = () => {
               <TextField
                 id="old-password"
                 type={"password"}
-                label="Old Password"
+                label={t("label_old_password")}
                 className="w-full"
                 variant="outlined"
                 size="medium"
@@ -105,7 +105,7 @@ export const ChangePassword = () => {
               <TextField
                 id="new-password"
                 type={"password"}
-                label="New Password"
+                label={t("label_new_password")}
                 className="w-full"
                 variant="outlined"
                 size="medium"
@@ -124,7 +124,7 @@ export const ChangePassword = () => {
               <TextField
                 id="confirm-password"
                 type={"password"}
-                label="Confirm Password"
+                label={t("label_confirm_password")}
                 className="w-full"
                 variant="outlined"
                 size="medium"
@@ -141,7 +141,7 @@ export const ChangePassword = () => {
               {SamePasswordError && (
                 <div className="col-span-6">
                   <p className="italic text-red-500">
-                    Password & Confirm Password must be Same
+                    {t("passwords_must_be_same")}
                   </p>
                 </div>
               )}
@@ -163,7 +163,7 @@ export const ChangePassword = () => {
                   className="text-white"
                 />
               ) : (
-                <span>Update Password</span>
+                <span>{t("update_password")}</span>
               )}
             </Button>
           </Box>

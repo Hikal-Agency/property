@@ -13,7 +13,7 @@ export const GeneralInfo = ({
   const [emailError, setEmailError] = useState(false);
   const [contactError, setContactError] = useState(false);
   const [GeneralInfo, setGeneralInfo] = useState(GeneralInfoData);
-  const { currentMode, darkModeColors } = useStateContext();
+  const { currentMode, darkModeColors, t } = useStateContext();
   // eslint-disable-next-line
   const ResetGeneralInfo = () => {
     setGeneralInfo({
@@ -98,7 +98,7 @@ export const GeneralInfo = ({
               <TextField
                 id="contact-number"
                 type={"tel"}
-                label="Contact Number"
+                label={t("label_contact_number")}
                 className="w-full"
                 variant="outlined"
                 size="medium"
@@ -111,7 +111,7 @@ export const GeneralInfo = ({
               <TextField
                 id="alternative-contact-number"
                 type={"tel"}
-                label="Alternative Contact Number"
+                label={t("label_alt_contact_number")}
                 className="w-full"
                 variant="outlined"
                 size="medium"
@@ -131,7 +131,7 @@ export const GeneralInfo = ({
               <TextField
                 id="email"
                 type={"email"}
-                label="Email Address"
+                label={t("label_email_address")}
                 className="w-full"
                 variant="outlined"
                 size="medium"
@@ -149,7 +149,7 @@ export const GeneralInfo = ({
               <TextField
                 id="alternative-email"
                 type={"email"}
-                label="AlternativeEmail Address"
+                label={t("label_alt_email_address")}
                 className="w-full"
                 variant="outlined"
                 size="medium"
@@ -192,7 +192,7 @@ export const GeneralInfo = ({
                     className="text-white"
                   />
                 ) : (
-                  <span>Update Profile</span>
+                  <span>{t("update_profile")}</span>
                 )}
               </Button>
             </div>
@@ -208,7 +208,7 @@ export const GeneralInfo = ({
                     : "text-primary border-primary"
                 }`}
               >
-                Reset
+                {t("btn_reset")}
               </Button>
             </div>
           </Box>
@@ -220,7 +220,7 @@ export const GeneralInfo = ({
             }`}
           >
             <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-              <h1>Created</h1>
+              <h1>{t("created")}</h1>
             </div>
             {User?.creationDate}
           </div>
@@ -230,7 +230,7 @@ export const GeneralInfo = ({
             }`}
           >
             <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-              <h1>Last Updated</h1>
+              <h1>{t("last_updated")}</h1>
             </div>
             {User?.lastEdited}
           </div>
