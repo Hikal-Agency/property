@@ -378,7 +378,7 @@ const SingleListingsPage = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="sm:col-span-1 md:col-span-3 lg:col-span-4">
+                      <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
                         <div
                           className={`${
                             currentMode === "dark"
@@ -410,9 +410,9 @@ const SingleListingsPage = () => {
                                       id: l?.id,
                                     })
                                   }
-                                  className="p-2 flex items-center justify-center"
+                                  className="p-2 flex items-center justify-center hover:shadow-lg hover:cursor-pointer"
                                 >
-                                  <div className="w-full text-center">
+                                  <div className="w-full text-center ">
                                     {/* <div className="w-full flex justify-center"> */}
                                     <BsFileEarmarkText
                                       size={70}

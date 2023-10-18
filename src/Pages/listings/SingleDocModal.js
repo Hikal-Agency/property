@@ -1,9 +1,4 @@
-import {
-  Modal,
-  Backdrop,
-  CircularProgress,
-  IconButton,
-} from "@mui/material";
+import { Modal, Backdrop, CircularProgress, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -120,16 +115,16 @@ const SingleDocModal = ({
                 currentMode === "dark" ? "text-white" : "text-black"
               } text-center font-semibold text-lg pb-10`}
             >
-              Update lead details
+              Full view of document
             </h1>
             <div className="w-full flex justify-center  h-[700px]">
-              {/* <iframe src={pdfUrl} title="Document Viewer"></iframe> */}
-              <Worker
+              <iframe src={pdfUrl} title="Document Viewer"></iframe>
+              {/* <Worker
                 workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js
 "
               >
                 <Viewer fileUrl={pdfUrl} />
-              </Worker>
+              </Worker> */}
             </div>
           </>
         )}
