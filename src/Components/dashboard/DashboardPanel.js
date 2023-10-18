@@ -35,7 +35,8 @@ const DashboardPanel = ({ setloading }) => {
     Sales_chart_data,
     setSales_chart_data,
     BACKEND_URL,
-    t
+    t,
+    themeBgImg
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -197,21 +198,24 @@ const DashboardPanel = ({ setloading }) => {
       >
         {t("overview")?.toUpperCase()}
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-5 gap-y-5 pb-2">
         <motion.div
           transition={{ duration: 0.6 }}
           initial={{ y: -120 }}
           animate={{ y: [20, 30, 0] }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 text-center"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5 text-center pb-2"
         >
           {/* {DashboardData?.designation === "Head" && ( */}
           <Link
             to={"/freshleads/all"}
             className={`card-hover  ${
-              currentMode === "dark"
+              !themeBgImg ? (currentMode === "dark"
+              ? "bg-black text-white "
+              : "bg-white text-main-dark-bg")
+              : (currentMode === "dark"
                 ? "blur-bg-dark text-white "
-                : "blur-bg-light text-main-dark-bg"
-            }  h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
+                : "blur-bg-light text-main-dark-bg")
+            }  h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
             onClick={() => setopenBackDrop(true)}
           >
             <div>
@@ -258,10 +262,13 @@ const DashboardPanel = ({ setloading }) => {
                   key={index}
                   to={item?.link}
                   className={`card-hover ${
-                    currentMode === "dark"
-                      ? "blur-bg-dark text-white "
-                      : "blur-bg-light text-main-dark-bg"
-                  } h-auto w-full p-5 rounded-xl grid content-center`}
+                      !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+                  } h-auto w-full p-5 rounded-xl shadow-sm grid content-center`}
                 >
                   <p
                     className={`text-2xl font-bold pb-3 text-primary`}
@@ -289,10 +296,13 @@ const DashboardPanel = ({ setloading }) => {
                     to={item?.link}
                     key={index}
                     className={`card-hover ${
-                      currentMode === "dark"
+                      !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
                         ? "blur-bg-dark text-white "
-                        : "blur-bg-light text-main-dark-bg"
-                    } h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
+                        : "blur-bg-light text-main-dark-bg")
+                    } h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
@@ -324,10 +334,13 @@ const DashboardPanel = ({ setloading }) => {
                     to={item.link}
                     key={index}
                     className={`card-hover ${
-                      currentMode === "dark"
+                      !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
                         ? "blur-bg-dark text-white "
-                        : "blur-bg-light text-main-dark-bg"
-                    }  h-auto w-full p-5 rounded-xl cursor-pointer grid content-center`}
+                        : "blur-bg-light text-main-dark-bg")
+                    }  h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
@@ -357,47 +370,56 @@ const DashboardPanel = ({ setloading }) => {
         {/* CHART  */}
         <>
           {User?.role === 1 || User?.role === 2 || User?.role === 8 ? (
-            <>
+            <div className="mb-2">
               <motion.div
                 initial={{ x: 120 }}
                 transition={{ duration: 0.7 }}
                 animate={{ x: [-20, 30, 0] }}
                 className={`card-hover ${
-                  currentMode === "dark"
-                    ? "blur-bg-dark text-white "
-                    : "blur-bg-light text-black"
-                } h-full rounded-xl p-5 cursor-pointer w-full`}
+                  !themeBgImg ? (currentMode === "dark"
+                    ? "bg-black text-white "
+                    : "bg-white text-main-dark-bg")
+                    : (currentMode === "dark"
+                      ? "blur-bg-dark text-white "
+                      : "blur-bg-light text-main-dark-bg")
+                } h-full rounded-xl shadow-sm hover:-mt-1 hover:mb-1 p-5 cursor-pointer w-full`}
               >
                 <div className="justify-between items-center w-full">
                   <h6 className="font-semibold">{t("performance")}</h6>
                   <CombinationChart />
                 </div>
               </motion.div>
-            </>
+            </div>
           ) : User?.role === 3 ? (
-            <>
+            <div className="mb-2">
               <div
                 className={`card-hover ${
-                  currentMode === "dark"
-                    ? "blur-bg-dark text-white "
-                    : "blur-bg-light"
-                } h-full w-full rounded-xl p-5 cursor-pointer`}
+                  !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+                } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
               >
                 <div className="justify-between items-center">
                   <h6 className="font-semibold">Performance</h6>
                   <CombinationChart />
                 </div>
               </div>
-            </>
+            </div>
           ) : (
-            <>
+            <div className="mb-2">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
                 <div
                   className={`card-hover ${
-                    currentMode === "dark"
-                      ? "blur-bg-dark text-white "
-                      : "blur-bg-light"
-                  } h-full w-full rounded-xl p-5 cursor-pointer`}
+                    !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+                  } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
                     <h6 className="font-semibold">Target</h6>
@@ -409,10 +431,13 @@ const DashboardPanel = ({ setloading }) => {
                 </div>
                 <div
                   className={`card-hover ${
-                    currentMode === "dark"
-                      ? "blur-bg-dark text-white "
-                      : "blur-bg-light"
-                  } h-full w-full rounded-xl p-5 cursor-pointer`}
+                    !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+                  } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
                     <h6 className="font-semibold">Project</h6>
@@ -422,7 +447,7 @@ const DashboardPanel = ({ setloading }) => {
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </>
       </div>
@@ -430,13 +455,16 @@ const DashboardPanel = ({ setloading }) => {
       {/* 2ND ROW [CHARTS FOR ADMIN ONLY] */}
       {User?.role === 1 || User?.role === 2 || User?.role === 8 ? (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-5 pb-2">
             <div
               className={`card-hover ${
-                currentMode === "dark"
-                  ? "blur-bg-dark text-white"
-                  : "blur-bg-light text-black"
-              } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
+                !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">{t("sales")}</h6>
@@ -446,10 +474,13 @@ const DashboardPanel = ({ setloading }) => {
 
             <div
               className={`card-hover ${
-                currentMode === "dark"
-                  ? "blur-bg-dark text-white "
-                  : "blur-bg-light text-black"
-              } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer `}
+                !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer `}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">{`${t("closed")} ${t("projects")}`}</h6>
@@ -467,10 +498,13 @@ const DashboardPanel = ({ setloading }) => {
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3">
             <div
               className={`card-hover ${
-                currentMode === "dark"
-                  ? "blur-bg-dark text-white "
-                  : "blur-bg-light text-black"
-              } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
+                !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Sales</h6>
@@ -485,10 +519,13 @@ const DashboardPanel = ({ setloading }) => {
             </div>
             <div
               className={`card-hover ${
-                currentMode === "dark"
-                  ? "blur-bg-dark text-white "
-                  : "blur-bg-light text-black"
-              } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
+                !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">Monthly Target</h6>
@@ -502,10 +539,13 @@ const DashboardPanel = ({ setloading }) => {
 
             <div
               className={`card-hover ${
-                currentMode === "dark"
-                  ? "blur-bg-dark text-white "
-                  : "blur-bg-light text-black"
-              } col-span-1 h-full w-full rounded-xl p-5 cursor-pointer`}
+                !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">{`${t("project")} ${t("chart")}`}</h6>
@@ -609,8 +649,13 @@ const DashboardPanel = ({ setloading }) => {
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
         className={`${
-          currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
-        } grid grid-cols-1 pb-3 my-3 rounded-md`}
+          !themeBgImg ? (currentMode === "dark"
+            ? "bg-black text-white "
+            : "bg-white text-main-dark-bg")
+            : (currentMode === "dark"
+              ? "blur-bg-dark text-white "
+              : "blur-bg-light text-main-dark-bg")
+        } grid grid-cols-1 pb-3 my-3 rounded-xl shadow-md`}
       >
         <Task />
       </motion.div>

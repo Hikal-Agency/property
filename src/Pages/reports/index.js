@@ -15,12 +15,23 @@ import axios from "../../axoisConfig";
 import SocialChart from "../../Components/charts/SocialChart";
 import SaleBubbleChart from "../../Components/charts/SaleBubbleChart";
 
-import { MdCampaign } from "react-icons/md";
+import {
+  BiImport,
+  BiArchive,
+  BiMessageRoundedDots
+} from "react-icons/bi";
+import {
+  BsSnow2,
+  BsPersonCircle
+} from "react-icons/bs";
 import { 
   FaFacebookF,
   FaSnapchatGhost,
   FaTiktok,
-  FaYoutube
+  FaYoutube,
+  FaTwitter,
+  FaWhatsapp,
+  FaRegComments
 } from "react-icons/fa";
 import {
   FcGoogle
@@ -28,6 +39,12 @@ import {
 import {
   GiMagnifyingGlass
 } from "react-icons/gi";
+import { 
+  MdCampaign 
+} from "react-icons/md";
+import {
+  TbWorldWww
+} from "react-icons/tb";
 
 const Reports = () => {
   const {
@@ -38,7 +55,8 @@ const Reports = () => {
     BACKEND_URL,
     pageState, 
     t,
-    themeBgImg
+    themeBgImg,
+    primaryColor
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -224,10 +242,20 @@ const Reports = () => {
   const sourceCounters = {
     "Campaign Facebook": <FaFacebookF size={14} color={"#0e82e1"} />,
     "Campaign Snapchat": <FaSnapchatGhost size={16} color={"#f6d80a"} />,
-    "Campaign TikTok": <FaTiktok size={16} color={currentMode === "dark" ? "white" : "black"} />,
+    "Campaign TikTok": <FaTiktok size={14} color={currentMode === "dark" ? "white" : "black"} />,
     "Campaign YouTube": <FaYoutube size={18} color={"#c4302b"} />,
     "Campaign GoogleAds": <FcGoogle size={18} />,
+    "Campaign Twitter": <FaTwitter size={16} color={"#00acee"} />,
+    "Campaign": <MdCampaign size={16} color={"#696969"} />,
+    "WhatsApp": <FaWhatsapp size={16} color={"#53cc60"} />,
+    "Message": <BiMessageRoundedDots size={16} color={"#6A5ACD"} />,
+    "Comment": <FaRegComments size={16} color={"#a9b3c6"} />,
+    "Website": <TbWorldWww size={16} color={"#AED6F1"} />,
     "Property Finder": <GiMagnifyingGlass size={16} color={"#ef5e4e"} />,
+    "Bulk Import": <BiImport size={16} color={primaryColor} />,
+    "Warm": <BiArchive size={16} color={"#AEC6CF"} />,
+    "Cold": <BsSnow2 size={16} color={"#0ec7ff"} />,
+    "Personal": <BsPersonCircle size={16} color={"#6C7A89"} />,
   };
 
   const fetchCounter = async (token) => {
@@ -305,78 +333,79 @@ const Reports = () => {
         {/* <ToastContainer/> */}
         <div className="flex min-h-screen">
           <div
-            className={`w-full p-4 ${
+            className={`w-full ${
               !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
-            <div className="mb-10">
-              {hasPermission("leadSource_counts") && (
-                <div className="bg-primary p-3 mb-5 rounded-lg shadow-sm">
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5 flex justify-between">
-                    <div className="w-full flex items-center gap-5">
-                      <h1 className={`text-white uppercase font-semibold`}>
-                        Lead Source
-                      </h1>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={countFilter}
-                          views={["year", "month", "day"]}
-                          format="yyyy-MM-dd"
-                          onChange={(newValue) => {
-                            const formattedDate = moment(newValue?.$d).format(
-                              "YYYY-MM-DD"
-                            );
-                            setCountFilter(formattedDate);
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              size="small"
-                              sx={{
-                                "& input": {
-                                  color: "#ffffff",
-                                },
-                                "&": {
-                                  borderRadius: "4px",
-                                  border: "1px solid #AAAAAA",
-                                },
-                                "& .MuiSvgIcon-root": {
-                                  color: "#AAAAAA",
-                                },
-                              }}
-                              label="Date"
-                              {...params}
-                              onKeyDown={(e) => e.preventDefault()}
-                              readOnly={true}
-                            />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </div>
-                    <div className="lg:col-span-2 gap-4 flex flex-wrap justify-end">
-                      {counters && counters?.length > 0
-                        ? counters?.map((counter) => (
-                          <Tooltip title={counter?.leadSource} arrow>
-                            <Box
-                              className={`
-                                ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"}
-                                card-hover p-0.5 flex justify-between items-center shadow-md rounded-sm w-fit
-                              `}
-                              sx={{
-                                // height: "30px",
-                                // minWidth: "60px",
-                                // maxWidth: "100px",
-                              }}
-                            >
-                              <div className="px-2">{sourceCounters[counter?.leadSource]}</div>
-                              <div className="px-2 font-semibold">{counter?.count}</div>
-                            </Box>
-                          </Tooltip>
-                        )) : ""
-                      }
-                    </div>
+            {hasPermission("leadSource_counts") && (
+              <div className="bg-primary p-4 rounded-b-lg shadow-md">
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5 flex justify-between">
+                  <div className="w-full flex items-center gap-5">
+                    <h1 className={`text-white uppercase font-semibold`}>
+                      Lead Source
+                    </h1>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        value={countFilter}
+                        views={["year", "month", "day"]}
+                        format="yyyy-MM-dd"
+                        onChange={(newValue) => {
+                          const formattedDate = moment(newValue?.$d).format(
+                            "YYYY-MM-DD"
+                          );
+                          setCountFilter(formattedDate);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            size="small"
+                            sx={{
+                              "& input": {
+                                color: "#ffffff",
+                              },
+                              "&": {
+                                borderRadius: "4px",
+                                border: "1px solid #AAAAAA",
+                              },
+                              "& .MuiSvgIcon-root": {
+                                color: "#AAAAAA",
+                              },
+                            }}
+                            label="Date"
+                            {...params}
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <div className="lg:col-span-2 gap-4 flex flex-wrap justify-end">
+                    {counters && counters?.length > 0
+                      ? counters?.map((counter) => (
+                        <Tooltip title={counter?.leadSource} arrow>
+                          <Box
+                            className={`
+                              ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"}
+                              card-hover p-0.5 flex justify-between items-center shadow-md rounded-sm w-fit
+                            `}
+                            sx={{
+                              // height: "30px",
+                              // minWidth: "60px",
+                              // maxWidth: "100px",
+                            }}
+                          >
+                            <div className="px-2">{sourceCounters[counter?.leadSource]}</div>
+                            <div className="px-2 font-semibold">{counter?.count}</div>
+                          </Box>
+                        </Tooltip>
+                      )) : ""
+                    }
                   </div>
                 </div>
-              )}
+              </div>
+            )}
+
+            <div className="mb-10 p-4">
               <div className="mb-5">
                 <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
                   <h1 className={`text-white text-lg font-semibold`}>
@@ -386,10 +415,13 @@ const Reports = () => {
                 <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
                   <div
                     className={`${
-                      currentMode === "dark"
+                      !themeBgImg ? (currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    } rounded-md p-2 h-auto`}
+                        : "bg-[#EEEEEE] text-black")
+                        : (currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black")
+                    } rounded-lg p-2 h-auto`}
                   >
                     <h6 className="mb-2 p-2">
                       <span className="font-semibold">
@@ -398,10 +430,13 @@ const Reports = () => {
                       <span className="float-right">
                         <select
                           className={`${
-                            currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black"
-                          } text-xs rounded-md p-1`}
+                            !themeBgImg ? (currentMode === "dark"
+                            ? "bg-[#1c1c1c] text-white"
+                            : "bg-[#EEEEEE] text-black")
+                            : (currentMode === "dark"
+                            ? "blur-bg-dark text-white"
+                            : "blur-bg-light text-black")
+                          } text-xs rounded-lg p-1`}
                           value={selectedMonthSales}
                           onChange={(e) => {
                             setSelectedMonthSales(e.target.value);
@@ -432,7 +467,7 @@ const Reports = () => {
                     <div
                       className={`${
                         currentMode === "dark" ? " text-white" : "text-black"
-                      } rounded-md p-2`}
+                      } rounded-lg p-2`}
                     >
                       <h6 className="mb-2 p-2">
                         <span className="font-semibold">
@@ -454,7 +489,7 @@ const Reports = () => {
                     <div
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-black"
-                      } rounded-md p-2`}
+                      } rounded-lg p-2`}
                     >
                       <h6 className="mb-2 p-2">
                         <span className="font-semibold">
@@ -483,20 +518,26 @@ const Reports = () => {
                 <div className="grid grid-cols-1 gap-3">
                   <div
                     className={`${
-                      currentMode === "dark"
+                        !themeBgImg ? (currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    } rounded-md p-2`}
+                        : "bg-[#EEEEEE] text-black")
+                        : (currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black")
+                    } rounded-lg p-2`}
                   >
                     <h6 className="mb-2 p-2">
                       <span className="font-semibold">{t("performance")?.toUpperCase()}</span>
                       <span className="float-right">
                         <select
                           className={`${
-                            currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black"
-                          } text-xs rounded-md p-1`}
+                            !themeBgImg ? (currentMode === "dark"
+                            ? "bg-[#1c1c1c] text-white"
+                            : "bg-[#EEEEEE] text-black")
+                            : (currentMode === "dark"
+                            ? "blur-bg-dark text-white"
+                            : "blur-bg-light text-black")
+                          } text-xs rounded-lg p-1`}
                           value={selectedMonth}
                           onChange={(e) => {
                             setSelectedMonth(e.target.value);
@@ -514,10 +555,13 @@ const Reports = () => {
                   </div>
                   <div
                     className={`${
-                      currentMode === "dark"
+                      !themeBgImg ? (currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    } rounded-md  p-2`}
+                        : "bg-[#EEEEEE] text-black")
+                        : (currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black")
+                    } rounded-lg  p-2`}
                   >
                     <h6 className="mb-2 p-2">
                       <span className="font-semibold">{t("lead_source")?.toUpperCase()}</span>
@@ -527,7 +571,7 @@ const Reports = () => {
                             currentMode === "dark"
                               ? "bg-black text-white"
                               : "bg-white text-black"
-                          } text-xs rounded-md p-1`}
+                          } text-xs rounded-lg p-1`}
                           value={selectedMonthSocial}
                           onChange={(e) => {
                             setSelectedMonthSocial(e.target.value);
@@ -564,20 +608,26 @@ const Reports = () => {
                 </div>
                 <div
                   className={`${
-                    currentMode === "dark"
-                      ? "bg-[#1c1c1c] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  } rounded-md p-3`}
+                    !themeBgImg ? (currentMode === "dark"
+                        ? "bg-[#1c1c1c] text-white"
+                        : "bg-[#EEEEEE] text-black")
+                        : (currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black")
+                  } rounded-lg p-3`}
                 >
                   <h6 className="mb-2 p-2">
                     <span className="font-semibold">{t("project")?.toUpperCase()}</span>
                     <span className="float-right">
                       <select
                         className={`${
-                          currentMode === "dark"
-                            ? "bg-black text-white"
-                            : "bg-white text-black"
-                        } text-xs rounded-md p-1`}
+                          !themeBgImg ? (currentMode === "dark"
+                          ? "bg-[#1c1c1c] text-white"
+                          : "bg-[#EEEEEE] text-black")
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black")
+                        } text-xs rounded-lg p-1`}
                         value={selectedMonthProject}
                         onChange={(e) => {
                           setSelectedMonthProject(e.target.value);

@@ -16,7 +16,7 @@ const ProgressBar = ({
     const Parentdiv = {
         height: height,
         width: '100%',
-        backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#424242" : "#DDDDDD") : (currentMode === "dark" ? "#1C1C1C" : "#EBEBEB"),
+        backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#424242" : "#DDDDDD") : (currentMode === "dark" ? "#1C1C1C" : "#EEEEEE"),
         borderRadius: 40,
     }
       

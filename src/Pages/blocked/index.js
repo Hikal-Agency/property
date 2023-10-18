@@ -86,7 +86,7 @@ const BlockedIps = () => {
             expanded={expanded === 'panel1'} 
             onChange={handleChange('panel1')}
             sx={{
-              backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EBEBEB") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+              backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
               color: currentMode === "dark" ? "#FFFFFF" : "#000000",
               borderRadius: "10px",
               marginBottom: "20px",
@@ -115,7 +115,7 @@ const BlockedIps = () => {
 
           <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}
             sx={{
-              backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EBEBEB") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+              backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
               color: currentMode === "dark" ? "#FFFFFF" : "#000000",
               borderRadius: "10px",
               marginBottom: "20px",
@@ -141,7 +141,7 @@ const BlockedIps = () => {
 
           <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}
             sx={{
-              backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EBEBEB") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+              backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
               color: currentMode === "dark" ? "#FFFFFF" : "#000000",
               borderRadius: "10px",
               marginBottom: "20px",

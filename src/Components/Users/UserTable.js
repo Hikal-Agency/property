@@ -153,7 +153,7 @@ const UserTable = ({}) => {
                           !themeBgImg 
                             ? (currentMode === "dark"
                               ? "bg-[#1c1c1c] text-white"
-                              : "bg-[#EBEBEB] text-black")
+                              : "bg-[#EEEEEE] text-black")
                             : (currentMode === "dark"
                               ? "blur-bg-dark text-white"
                               : "blur-bg-light text-black")

@@ -113,7 +113,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           !themeBgImg 
                           ? (currentMode === "dark"
                           ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EBEBEB] text-black") 
+                          : "bg-[#EEEEEE] text-black") 
                           : (currentMode === "dark"
                           ? "blur-bg-dark text-white"
                           : "blur-bg-light text-black")
@@ -249,7 +249,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           !themeBgImg 
                           ? (currentMode === "dark"
                           ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EBEBEB] text-black") 
+                          : "bg-[#EEEEEE] text-black") 
                           : (currentMode === "dark"
                           ? "blur-bg-dark text-white"
                           : "blur-bg-light text-black")
@@ -384,7 +384,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           !themeBgImg 
                           ? (currentMode === "dark"
                           ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EBEBEB] text-black") 
+                          : "bg-[#EEEEEE] text-black") 
                           : (currentMode === "dark"
                           ? "blur-bg-dark text-white"
                           : "blur-bg-light text-black")
@@ -518,7 +518,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           !themeBgImg 
                           ? (currentMode === "dark"
                           ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EBEBEB] text-black") 
+                          : "bg-[#EEEEEE] text-black") 
                           : (currentMode === "dark"
                           ? "blur-bg-dark text-white"
                           : "blur-bg-light text-black")

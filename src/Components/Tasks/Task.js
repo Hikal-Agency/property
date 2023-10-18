@@ -90,8 +90,14 @@ const Task = () => {
             </Tabs>
           </div>
         </Box>
-        <div className={`${!themeBgImg && (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#CCCCCC]")} rounded-md`}>
-          <TabPanel value={value} index={0}>
+        {/* !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg") */}
+        <div>
+          <TabPanel value={value} index={0} >
             <Calls
               isLoading={loading}
               setCallLogs={setCallLogs}

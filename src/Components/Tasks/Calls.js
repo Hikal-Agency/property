@@ -24,12 +24,10 @@ const Calls = ({
 
   return (
     <div
-      className={`${
-        !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-      } py-3 w-full rounded-md`}
+      className={`py-3 w-full rounded-md`}
     >
       <div>
-        <Box sx={darkModeColors} className="font-semibold">
+        <Box sx={darkModeColors} className={`font-semibold ${!themeBgImg ? (currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#EEEEEE] text-black") : (currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black")}`}>
           <Tabs value={tabValue} onChange={handleChange} variant="standard">
             <Tab label={t("today")} />
             <Tab label={t("yesterday")}/>
@@ -46,7 +44,7 @@ const Calls = ({
           }
         >
           <TabPanel value={tabValue} index={0}>
-            <div className={` w-full  p-1 mb-5`}>
+            <div className={` w-full  p-1 my-5`}>
               <h1 className="text-center font-bold mb-6">
                 {callLogsData?.all_calls < 2 ? (
                   <>
@@ -141,7 +139,7 @@ const Calls = ({
             </div>
           </TabPanel>
           <TabPanel value={tabValue} index={1}>
-            <div className={` w-full  p-1 mb-5`}>
+            <div className={` w-full  p-1 my-5`}>
               <h1 className="text-center  font-bold mb-6">
                 {callLogsData?.all_calls < 2 ? (
                   <>
@@ -237,7 +235,7 @@ const Calls = ({
             </div>
           </TabPanel>
           <TabPanel value={tabValue} index={2}>
-            <div className={` w-full  p-1 mb-5`}>
+            <div className={` w-full  p-1 my-5`}>
               <h1 className="text-center  font-bold mb-6">
                 {callLogsData?.all_calls < 2 ? (
                   <>

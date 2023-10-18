@@ -176,7 +176,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                         !themeBgImg 
                         ? (currentMode === "dark"
                         ? "bg-[#1C1C1C]"
-                        : "bg-[#EBEBEB]") 
+                        : "bg-[#EEEEEE]") 
                         : (currentMode === "dark"
                           ? "blur-bg-dark"
                           : "blur-bg-light")
@@ -250,7 +250,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                           !themeBgImg 
                           ? (currentMode === "dark"
                           ? "bg-[#1C1C1C]"
-                          : "bg-[#EBEBEB]") 
+                          : "bg-[#EEEEEE]") 
                           : (currentMode === "dark"
                           ? "blur-bg-dark"
                           : "blur-bg-light")
@@ -315,7 +315,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                           !themeBgImg 
                           ? (currentMode === "dark"
                           ? "bg-[#1C1C1C]"
-                          : "bg-[#EBEBEB]") 
+                          : "bg-[#EEEEEE]") 
                           : (currentMode === "dark"
                           ? "blur-bg-dark"
                           : "blur-bg-light")

@@ -13,7 +13,7 @@ import {AiOutlineHistory} from "react-icons/ai";
 import Timeline from "../../Pages/timeline";
 
 const UpcomingMeeting = ({ upcoming_meetings }) => {
-  const { currentMode, primaryColor } = useStateContext();
+  const { currentMode, primaryColor, themeBgImg } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [meetingNote, setMeetingNote] = useState(null);
   const [meetingLocation, setMeetingLocation] = useState({
@@ -59,8 +59,13 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
               }}
             key={index}
             className={`card-hover w-[350px] flex flex-col justify-between ${
-              currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black" // ${ currentMode === "dark" ? "bg- text-white " : "bg-" } 
-            } rounded-xl my-2 `}
+              !themeBgImg ? (currentMode === "dark"
+                      ? "bg-black text-white "
+                      : "bg-white text-main-dark-bg")
+                      : (currentMode === "dark"
+                        ? "blur-bg-dark text-white "
+                        : "blur-bg-light text-main-dark-bg")
+            } rounded-xl shadow-sm my-2 `}
           >
             <div className="px-5 py-5 space-y-3">
             

@@ -288,7 +288,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
           {User?.role !== 3 && (
             <div
               className={`${
-                !themeBgImg && (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EBEBEB]")}
+                !themeBgImg && (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")}
               } rounded-lg p-5`}
             >
               <Box sx={darkModeColors}>

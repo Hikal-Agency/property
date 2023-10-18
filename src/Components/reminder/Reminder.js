@@ -6,7 +6,7 @@ import SingleLead from "../Leads/SingleLead";
 import ReminderComponent from "./ReminderComponent";
 
 const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
-  const { BACKEND_URL, User } = useStateContext();
+  const { BACKEND_URL, User, themeBgImg } = useStateContext();
   const [btnLoading, setbtnLoading] = useState(false);
   const [openleadModel, setOpenLeadModel] = useState(false);
   const [leadData, setLeadData] = useState(null);
