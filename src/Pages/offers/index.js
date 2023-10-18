@@ -14,7 +14,8 @@ const Offers = () => {
     darkModeColors, 
     setopenBackDrop, 
     BACKEND_URL,
-    themeBgImg, t
+    themeBgImg, 
+    t
   } = useStateContext();
   const [value, setValue] = useState(0);
   const { hasPermission } = usePermission();

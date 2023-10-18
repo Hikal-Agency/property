@@ -30,8 +30,9 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     darkModeColors, 
     formatNum, 
     BACKEND_URL, 
-    User, 
+    User,
     t,
+    primaryColor,
     themeBgImg
   } = useStateContext();
   const [validFromDate, setValidFromDate] = useState("");
