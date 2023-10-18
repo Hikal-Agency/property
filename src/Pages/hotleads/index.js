@@ -21,6 +21,7 @@ import { MdCampaign } from "react-icons/md";
 import { TbWorldWww } from "react-icons/tb";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { GiMagnifyingGlass } from "react-icons/gi";
 
 const AllHotLeads = () => {
   const { currentMode, setopenBackDrop, pageState, BACKEND_URL, t } =
@@ -35,8 +36,14 @@ const AllHotLeads = () => {
   const [counters, setCounter] = useState([]);
 
   const sourceCounters = {
-    "Campaign Facebook": <FaFacebookF size={16} color={"#0e82e1"} />,
-    "Property Finder": <MdCampaign size={20} color={"#696969"} />,
+    "Campaign Facebook": <FaFacebookF size={14} color={"#0e82e1"} />,
+    "Campaign Snapchat": <FaSnapchatGhost size={16} color={"#f6d80a"} />,
+    "Campaign TikTok": (
+      <FaTiktok size={16} color={currentMode === "dark" ? "white" : "black"} />
+    ),
+    "Campaign YouTube": <FaYoutube size={18} color={"#c4302b"} />,
+    "Campaign GoogleAds": <FcGoogle size={18} />,
+    "Property Finder": <GiMagnifyingGlass size={16} color={"#ef5e4e"} />,
   };
 
   const fetchCounter = async () => {
@@ -102,7 +109,14 @@ const AllHotLeads = () => {
                   }`}
                 >
                   {`${t("fresh")} ${t("leads")}`}{" "}
-                  <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
+                  <span className="capitalize">
+                    (
+                    {t(
+                      "feedback_" +
+                        lead_type?.toLowerCase()?.replaceAll(" ", "_")
+                    )}
+                    )
+                  </span>{" "}
                   <span className="bg-primary text-white px-3 py-1 ml-2 rounded-sm my-auto">
                     {pageState?.total}
                   </span>

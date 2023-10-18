@@ -147,10 +147,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     isArabic,
     darkModeColors,
     primaryColor,
-    t
+    t,
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
+
+  const [counters, setCounter] = useState([]);
+
+  const sourceCounters = {
+    "Campaign Facebook": <FaFacebookF size={14} color={"#0e82e1"} />,
+    "Campaign Snapchat": <FaSnapchatGhost size={16} color={"#f6d80a"} />,
+    "Campaign TikTok": (
+      <FaTiktok size={16} color={currentMode === "dark" ? "white" : "black"} />
+    ),
+    "Campaign YouTube": <FaYoutube size={18} color={"#c4302b"} />,
+    "Campaign GoogleAds": <FcGoogle size={18} />,
+    "Property Finder": <GiMagnifyingGlass size={16} color={"#ef5e4e"} />,
+  };
 
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
@@ -432,7 +445,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
     {
       field: "otp",
-      headerName: lead_origin === "transfferedleads" ? t("label_ex_agent") : t("label_otp"),
+      headerName:
+        lead_origin === "transfferedleads"
+          ? t("label_ex_agent")
+          : t("label_otp"),
       minWidth: 30,
       headerAlign: "center",
       headerClassName: "break-normal",
@@ -618,7 +634,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "creationDate",
       headerName:
-        lead_origin === "transfferedleads" ? t("label_transferred_date") : t("date"),
+        lead_origin === "transfferedleads"
+          ? t("label_transferred_date")
+          : t("date"),
       minWidth: 50,
       headerAlign: "center",
       flex: 1,
@@ -640,7 +658,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         }
       },
     },
-    
+
     {
       field: "notes",
       headerName: "Note",
@@ -649,9 +667,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="p-3" style={{
-            fontFamily: "Noto Kufi Arabic"
-          }}>
+          <div
+            className="p-3"
+            style={{
+              fontFamily: "Noto Kufi Arabic",
+            }}
+          >
             {cellValues.row.notes}
           </div>
         );
@@ -673,36 +694,37 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             className={`w-full h-full px-1 flex items-center justify-center`}
           >
             {/* MEET LINK  */}
-            {lead_origin === "liveleads" && (
-              cellValues.row.notes.startsWith('Live') && (
-                cellValues.row.meet_link === null || cellValues.row.meet_link === "" || cellValues.row.meet_link === "null" ? (
-                  <p
-                    style={{ cursor: "pointer" }}
-                    className={`text-white bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}>
-                    <Tooltip title="Send Link" arrow>
-                      <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
-                        <SiGooglemeet size={16} />
-                      </button>
-                    </Tooltip>
-                  </p>
-                ) : (
-                  <p
-                    style={{ cursor: "pointer" }}
-                    className={`${
-                      currentMode === "dark"
-                        ? "text-[#FFFFFF] bg-[#262626]"
-                        : "text-[#1C1C1C] bg-[#EEEEEE]"
-                    } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
-                  >
-                    <Tooltip title="Send Link" arrow>
-                      <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
-                        <SiGooglemeet size={16} />
-                      </button>
-                    </Tooltip>
-                  </p>
-                )
-              )
-            )}
+            {lead_origin === "liveleads" &&
+              cellValues.row.notes.startsWith("Live") &&
+              (cellValues.row.meet_link === null ||
+              cellValues.row.meet_link === "" ||
+              cellValues.row.meet_link === "null" ? (
+                <p
+                  style={{ cursor: "pointer" }}
+                  className={`text-white bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
+                >
+                  <Tooltip title="Send Link" arrow>
+                    <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
+                      <SiGooglemeet size={16} />
+                    </button>
+                  </Tooltip>
+                </p>
+              ) : (
+                <p
+                  style={{ cursor: "pointer" }}
+                  className={`${
+                    currentMode === "dark"
+                      ? "text-[#FFFFFF] bg-[#262626]"
+                      : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
+                >
+                  <Tooltip title="Send Link" arrow>
+                    <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
+                      <SiGooglemeet size={16} />
+                    </button>
+                  </Tooltip>
+                </p>
+              ))}
 
             {/* CALL  */}
             <p
@@ -1538,9 +1560,42 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       .catch((err) => console.log(err));
   };
 
+  const fetchCounter = async () => {
+    const currentDate = moment().format("YYYY-MM-DD");
+    // const currentDate = "2023-01-01";
+    try {
+      const callCounter = await axios.get(
+        `${BACKEND_URL}/totalSource?date=${currentDate}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("counter===> :", callCounter);
+
+      setCounter(callCounter?.data?.data?.query_result);
+    } catch (error) {
+      console.log("Error::: ", error);
+      toast.error("Unable to fetch count.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchLeads(token);
+    fetchCounter(token);
   }, [unassignedFeedback]);
 
   useEffect(() => {
@@ -1586,7 +1641,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     // setUpdateLeadModelOpen(true);
   };
 
-  // MEET LINK BUTTON CLICK 
+  // MEET LINK BUTTON CLICK
   const HandleAddMeetLinkBtn = async (params) => {
     console.log("LEADID: ", params);
     setsingleLeadData(params.row);
@@ -1836,190 +1891,36 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     <div className="justify-self-end">
                       <div className="px-4">
                         <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
-                          {/* FACEBOOK  */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                            // md:flex md:justify-between
-                          >
-                            <FaFacebookF size={16} color={"#0e82e1"} />
-                            <span className="px-2">{pageState?.fbCounts}</span>
-                          </Box>
-
-                          {/* SNAPCHAT */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                          >
-                            <FaSnapchatGhost size={16} color={"#f6d80a"} />
-                            <span className="px-2">{pageState?.spCount}</span>
-                          </Box>
-
-                          {/* TIKTOK  */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                          >
-                            <FaTiktok
-                              size={16}
-                              color={currentMode === "dark" ? "white" : "black"}
-                            />
-                            <span className="px-2">{pageState?.ttCount}</span>
-                          </Box>
-
-                          {/* YOUTUBE  */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                          >
-                            <FaYoutube size={18} color={"#c4302b"} />
-                            <span className="px-2">{pageState?.yCount}</span>
-                          </Box>
-
-                          {/* GOOGLE ADS  */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                          >
-                            <FcGoogle size={18} />
-                            <span className="px-2">{pageState?.gCount}</span>
-                          </Box>
-                          {/* CAMPAIGNS  */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                          >
-                            <MdCampaign size={20} color={"#696969"} />
-                            <span className="px-2">{pageState?.cCount}</span>
-                          </Box>
-                          {/* WEBSITE  */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                          >
-                            <TbWorldWww size={18} color={"#AED6F1"} />
-                            <span className="px-2">{pageState?.webCount}</span>
-                          </Box>
-                          {/* WHATSAPP  */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                          >
-                            <FaWhatsapp size={18} color={"#46c254"} />
-                            <span className="px-2">{pageState?.wCount}</span>
-                          </Box>
+                          {counters && counters?.length > 0
+                            ? counters?.map((counter) => (
+                                <Box
+                                  sx={{
+                                    padding: "5px 7px",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    background:
+                                      currentMode === "dark"
+                                        ? "#000000"
+                                        : "#FFFFFF",
+                                    color:
+                                      currentMode === "dark"
+                                        ? "white"
+                                        : "black",
+                                    boxShadow:
+                                      currentMode === "dark"
+                                        ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                        : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                                    height: "30px",
+                                    minWidth: "60px",
+                                    maxWidth: "100px",
+                                  }}
+                                >
+                                  {sourceCounters[counter?.leadSource]}
+                                  <span className="px-2">{counter?.count}</span>
+                                </Box>
+                              ))
+                            : ""}
                           {/* MESSAGE  */}
                           <Box
                             sx={{
@@ -2114,7 +2015,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               onClick={handleClickBulkUpdate}
             >
               <AiFillEdit size={20} />{" "}
-              <span style={{ paddingLeft: "5px" }}>{t("table_bulk_update")}</span>
+              <span style={{ paddingLeft: "5px" }}>
+                {t("table_bulk_update")}
+              </span>
             </MuiButton>
           )}
           {selectedRows.length > 0 && hasPermission("leads_bulk_delete") && (
@@ -2129,7 +2032,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               onClick={handleClickBulkDelete}
             >
               <BsTrash size={18} />{" "}
-              <span style={{ paddingLeft: "5px" }}>{t("table_bulk_delete")}</span>
+              <span style={{ paddingLeft: "5px" }}>
+                {t("table_bulk_delete")}
+              </span>
             </MuiButton>
           )}
           <label htmlFor="bulkImport">
@@ -2143,7 +2048,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               variant="text"
             >
               <TbFileImport size={18} />{" "}
-              <span style={{ paddingLeft: "5px" }}>{t("table_bulk_import")}</span>
+              <span style={{ paddingLeft: "5px" }}>
+                {t("table_bulk_import")}
+              </span>
             </MuiButton>
           </label>
           <input
