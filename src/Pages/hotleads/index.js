@@ -24,7 +24,7 @@ import moment from "moment";
 import { GiMagnifyingGlass } from "react-icons/gi";
 
 const AllHotLeads = () => {
-  const { currentMode, setopenBackDrop, pageState, BACKEND_URL, t } =
+  const { currentMode, setopenBackDrop, pageState, BACKEND_URL, t, themeBgImg } =
     useStateContext();
   const location = useLocation();
   const { hasPermission } = usePermission();
@@ -97,7 +97,7 @@ const AllHotLeads = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">

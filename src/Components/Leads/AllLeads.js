@@ -1854,145 +1854,125 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     <>
       <div className="pb-10">
         {lead_origin === "unassigned" && lead_type === "fresh" && (
-          <Box
-            sx={{
-              ...darkModeColors,
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "end",
-              "& .MuiSelect-select": {
-                padding: "1px",
-                paddingX: "5px !important",
-                // paddingRight: "5px",
-              },
-              "& .MuiInputBase-root": {
-                marginTop: "5px",
-              },
-              "& input": {
-                paddingTop: "0",
-              },
-              "& .applied-filter": {
-                width: "max-content",
-              },
-              "& .MuiDataGrid-main .MuiDataGrid-overlay": {
-                backgroundColor:
-                  currentMode === "dark"
-                    ? "black !important"
-                    : "white !important",
-                color: "#AAAAAA !important",
-              },
-            }}
-            className={"items-center mb-2 sm:-mt-0 md:-mt-0 lg:-mt-6"}
-          >
-            <div className="justify-end">
-              <Box>
-                <div className="grid-cols-1 mb-7 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
-                  {hasPermission("leadSource_counts") && (
-                    <div className="justify-self-end">
-                      <div className="px-4">
-                        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
-                          {counters && counters?.length > 0
-                            ? counters?.map((counter) => (
-                                <Box
-                                  sx={{
-                                    padding: "5px 7px",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    background:
-                                      currentMode === "dark"
-                                        ? "#000000"
-                                        : "#FFFFFF",
-                                    color:
-                                      currentMode === "dark"
-                                        ? "white"
-                                        : "black",
-                                    boxShadow:
-                                      currentMode === "dark"
-                                        ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                        : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                                    height: "30px",
-                                    minWidth: "60px",
-                                    maxWidth: "100px",
-                                  }}
-                                >
-                                  {sourceCounters[counter?.leadSource]}
-                                  <span className="px-2">{counter?.count}</span>
-                                </Box>
-                              ))
-                            : ""}
-                          {/* MESSAGE  */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                          >
-                            <BiMessageRoundedDots size={18} color={"#6A5ACD"} />
-                            <span className="px-2">{pageState?.mCount}</span>
-                          </Box>
+          hasPermission("leadSource_counts") && (
+            <Box
+              sx={{
+                ...darkModeColors,
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "end",
+                "& .MuiSelect-select": {
+                  padding: "1px",
+                  paddingX: "5px !important",
+                  // paddingRight: "5px",
+                },
+                "& .MuiInputBase-root": {
+                  marginTop: "5px",
+                },
+                "& input": {
+                  paddingTop: "0",
+                },
+                "& .applied-filter": {
+                  width: "max-content",
+                },
+                "& .MuiDataGrid-main .MuiDataGrid-overlay": {
+                  backgroundColor:
+                    currentMode === "dark"
+                      ? "black !important"
+                      : "white !important",
+                  color: "#AAAAAA !important",
+                },
+              }}
+              className={"items-center mb-2 sm:-mt-0 md:-mt-0 lg:-mt-6"}
+            >
+              <div className="justify-end">
+                <Box>
+                  <div className="grid-cols-1 mb-7 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
+                    {/* {hasPermission("leadSource_counts") && ( */}
+                      <div className="justify-self-end">
+                        <div className="px-4">
+                          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
+                            {counters && counters?.length > 0
+                              ? counters?.map((counter) => (
+                                  <Box
+                                    sx={{
+                                      padding: "5px 7px",
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                      background:
+                                        currentMode === "dark"
+                                          ? "#000000"
+                                          : "#FFFFFF",
+                                      color:
+                                        currentMode === "dark"
+                                          ? "white"
+                                          : "black",
+                                      boxShadow:
+                                        currentMode === "dark"
+                                          ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                          : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                                      height: "30px",
+                                      minWidth: "60px",
+                                      maxWidth: "100px",
+                                    }}
+                                  >
+                                    {sourceCounters[counter?.leadSource]}
+                                    <span className="px-2">{counter?.count}</span>
+                                  </Box>
+                                ))
+                              : ""}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </Box>
-              <div className="w-full flex justify-end">
-                <Box
-                  sx={{
-                    width: "120px",
-                  }}
-                >
-                  <FormControl fullWidth>
-                    <InputLabel>{t("label_feedback")}</InputLabel>
-                    <Select
-                      label={t("label_feedback")}
-                      id="un-feedback"
-                      value={unassignedFeedback}
-                      className={`w-full py-2 px-3`}
-                      onChange={(event) => {
-                        setUnassignedFeedback(event.target.value);
-                      }}
-                      displayEmpty
-                      size="small"
-                      required
-                      sx={{
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor:
-                            currentMode === "dark" ? "white" : "black",
-                        },
-                        "& .MuiSelect-select": {
-                          color: currentMode === "dark" ? "white" : "black",
-                        },
-                        "&:hover:not (.Mui-disabled):before": {
-                          borderColor:
-                            currentMode === "dark" ? "white" : "black",
-                        },
-                      }}
-                    >
-                      {feedbacks?.map((feedback, index) => (
-                        <MenuItem key={index} value={feedback || ""}>
-                          {feedback}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                    {/* )} */}
+                  </div>
                 </Box>
+                <div className="w-full flex justify-end">
+                  <Box
+                    sx={{
+                      width: "120px",
+                    }}
+                  >
+                    <FormControl fullWidth>
+                      <InputLabel>{t("label_feedback")}</InputLabel>
+                      <Select
+                        label={t("label_feedback")}
+                        id="un-feedback"
+                        value={unassignedFeedback}
+                        className={`w-full py-2 px-3`}
+                        onChange={(event) => {
+                          setUnassignedFeedback(event.target.value);
+                        }}
+                        displayEmpty
+                        size="small"
+                        required
+                        sx={{
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor:
+                              currentMode === "dark" ? "white" : "black",
+                          },
+                          "& .MuiSelect-select": {
+                            color: currentMode === "dark" ? "white" : "black",
+                          },
+                          "&:hover:not (.Mui-disabled):before": {
+                            borderColor:
+                              currentMode === "dark" ? "white" : "black",
+                          },
+                        }}
+                      >
+                        {feedbacks?.map((feedback, index) => (
+                          <MenuItem key={index} value={feedback || ""}>
+                            {feedback}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </div>
               </div>
-            </div>
-          </Box>
+            </Box>
+          )
         )}
 
         <Box

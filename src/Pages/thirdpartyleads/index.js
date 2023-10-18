@@ -23,7 +23,8 @@ const ThirdPartyLeads = () => {
     currentMode,
     pageState,
     setopenBackDrop,
-    BACKEND_URL, t
+    BACKEND_URL, t,
+    themeBgImg
   } = useStateContext();
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const ThirdPartyLeads = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="w-full flex items-center pb-3">

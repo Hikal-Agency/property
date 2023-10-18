@@ -17,7 +17,7 @@ const ColdLeads = () => {
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
   const [loading, setloading] = useState(true);
-  const { currentMode, pageState, setopenBackDrop, BACKEND_URL, t } =
+  const { currentMode, pageState, setopenBackDrop, BACKEND_URL, t, themeBgImg } =
     useStateContext();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const ColdLeads = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="w-full flex items-center pb-3">

@@ -17,7 +17,8 @@ const AllWarmLeads = () => {
     currentMode,
     setopenBackDrop,
     pageState,
-    BACKEND_URL,t
+    BACKEND_URL,t,
+    themeBgImg
   } = useStateContext();
   const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
@@ -43,7 +44,7 @@ const AllWarmLeads = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="w-full flex items-center pb-3">
