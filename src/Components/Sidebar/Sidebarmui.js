@@ -95,7 +95,9 @@ const Sidebarmui = () => {
     themeBgImg,
     setUserCredits,
     primaryColor,
-    setPrimaryColor,t
+    setPrimaryColor,t,
+    blurDarkColor,
+    blurLightColor
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -1436,13 +1438,16 @@ const Sidebarmui = () => {
       <Box
         sx={{
           "& .ps-sidebar-container": {
+            // backgroundColor: !themeBgImg
+            //   ? "rgb(249, 249, 249, 0.7)"
+            //   : "rgb(249, 249, 249, 0.5)",
             backgroundColor: !themeBgImg
-              ? "rgb(249, 249, 249, 0.7)"
-              : "rgb(249, 249, 249, 0.4)",
+              ? (currentMode === "dark" ? "rgb(249, 249, 249, 0.7)" : "rgb(249, 249, 249, 0.7)")
+              : (currentMode === "dark" ? blurDarkColor : blurLightColor),
           },
         }}
         style={{ display: "flex", height: "100%" }}
-        className={`max-w-[200px] sticky top-0 left-0 `}
+        className={`max-w-[200px] sticky top-0 left-0`}
       >
         <Sidebar
           rootStyles={{
