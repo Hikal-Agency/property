@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
 
 const Footer = () => {
-  const { currentMode } = useStateContext();
+  const { currentMode, themeBgImg } = useStateContext();
   return (
     <div
       className={`border-t border-t-1 text-sm border-primary flex justify-between items-center px-5 py-3 ${
-        currentMode === "dark" ? "bg-black" : "bg-white"
+        !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
+        : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
       }`}
       style={{
         bottom: 0,
@@ -27,7 +28,7 @@ const Footer = () => {
           to={"https://hikalagency.com/"}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-main-red-color"
+          className="font-bold"
         >
           HIKAL
         </Link>

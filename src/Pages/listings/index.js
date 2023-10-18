@@ -532,7 +532,14 @@ const Listings = () => {
                     <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
                     <MenuItem value={"1 Bedroom"}>{t("enquiry_1bed")}</MenuItem>
                     <MenuItem value={"2 Bedrooms"}>{t("enquiry_2bed")}</MenuItem>
-                    <MenuItem value={"10 Bedrooms"}>{t("enquiry_upto_10")}</MenuItem>
+                    <MenuItem value={"3 Bedrooms"}>{t("enquiry_3bed")}</MenuItem>
+                    <MenuItem value={"4 Bedrooms"}>{t("enquiry_4bed")}</MenuItem>
+                    <MenuItem value={"5 Bedrooms"}>{t("enquiry_5bed")}</MenuItem>
+                    <MenuItem value={"6 Bedrooms"}>{t("enquiry_6bed")}</MenuItem>
+                    <MenuItem value={"7 Bedrooms"}>{t("enquiry_7bed")}</MenuItem>
+                    <MenuItem value={"8 Bedrooms"}>{t("enquiry_8bed")}</MenuItem>
+                    <MenuItem value={"9 Bedrooms"}>{t("enquiry_9bed")}</MenuItem>
+                    <MenuItem value={"10 Bedrooms"}>{t("enquiry_10bed")}</MenuItem>
                   </TextField>
                   <TextField
                     id="bathrooms"
@@ -558,10 +565,14 @@ const Listings = () => {
                   >
                     <MenuItem value={"1 Bathroom"}>{t("bathroom_1")}</MenuItem>
                     <MenuItem value={"2 Bathrooms"}>{t("bathroom_2")}</MenuItem>
-                    <MenuItem value={"10 Bathrooms"}>
-                      {" "}
-                      {t("upto_10_bathrooms")}
-                    </MenuItem>
+                    <MenuItem value={"3 Bathroom"}>{t("bathroom_3")}</MenuItem>
+                    <MenuItem value={"4 Bathrooms"}>{t("bathroom_4")}</MenuItem>
+                    <MenuItem value={"5 Bathroom"}>{t("bathroom_5")}</MenuItem>
+                    <MenuItem value={"6 Bathrooms"}>{t("bathroom_6")}</MenuItem>
+                    <MenuItem value={"7 Bathroom"}>{t("bathroom_7")}</MenuItem>
+                    <MenuItem value={"8 Bathrooms"}>{t("bathroom_8")}</MenuItem>
+                    <MenuItem value={"9 Bathroom"}>{t("bathroom_9")}</MenuItem>
+                    <MenuItem value={"10 Bathrooms"}>{t("bathroom_10")}</MenuItem>
                     <MenuItem value={"Unavailabe"}>{t("label_unavailable")}</MenuItem>
                   </TextField>
                   <TextField
