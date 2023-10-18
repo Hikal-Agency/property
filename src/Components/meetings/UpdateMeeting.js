@@ -32,7 +32,7 @@ const UpdateMeeting = ({
   const id = meetingData?.meetingId;
   console.log("Update lead: ", meetingModalOpen);
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum, isArabic } =
+  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum, isArabic, t } =
     useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(
@@ -152,32 +152,6 @@ const UpdateMeeting = ({
         }
       );
       console.log("Response: ", response);
-
-      // if (!response.data.meeting) {
-      //   toast.error("Error in Updating the Meeting", {
-      //     position: "top-right",
-      //     autoClose: 3000,
-      //     hideProgressBar: false,
-      //     closeOnClick: true,
-      //     pauseOnHover: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //     theme: "light",
-      //   });
-      // } else {
-      //   toast.success("Meeting Updated Successfully", {
-      //     position: "top-right",
-      //     autoClose: 3000,
-      //     hideProgressBar: false,
-      //     closeOnClick: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //     theme: "light",
-      //   });
-      //   FetchLeads(token);
-      //   handleMeetingModalClose();
-      // }
-
       if (!response.data.meeting) {
         toast.error("Error in Updating the Meeting", {
           position: "top-right",
@@ -264,7 +238,7 @@ const UpdateMeeting = ({
                     : "text-black"
                 }`}
               >
-                Update Meeting details
+                {t("update_meeting_details")}
               </h1>
             </div>
             <form
@@ -278,17 +252,10 @@ const UpdateMeeting = ({
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       value={meetingDateValue}
-                      label="Meeting Date"
+                      label={t("label_meeting_date")}
                       views={["year", "month", "day"]}
                       onChange={(newValue) => {
                         setMeetingDateValue(newValue);
-                        // setMeetingDate(
-                        //   formatNum(newValue?.$d?.getUTCFullYear()) +
-                        //     "-" +
-                        //     formatNum(newValue?.$d?.getUTCMonth() + 1) +
-                        //     "-" +
-                        //     formatNum(newValue?.$d?.getUTCDate() + 1)
-                        // );
                         const formattedDate = moment(newValue?.$d).format(
                           "YYYY-MM-DD"
                         );
@@ -307,7 +274,7 @@ const UpdateMeeting = ({
                           }}
                           fullWidth
                           size="small"
-                          label="Meeting Date"
+                          label={t("label_meeting_date")}
                           {...params}
                           onKeyDown={(e) => e.preventDefault()}
                           readOnly={true}
@@ -333,7 +300,7 @@ const UpdateMeeting = ({
                         <TextField
                           {...params}
                           fullWidth
-                          label="Meeting Time"
+                          label={t("label_meeting_time")}
                           size="small"
                           sx={{
                             "& .MuiFormLabel-root": {
@@ -379,16 +346,16 @@ const UpdateMeeting = ({
                       select
                       size="small"
                       labelId="meeting-status"
-                      label="Meeting Status"
+                      label={t("label_meeting_status")}
                       value={meetingStatus}
                       onChange={(e) => {
                         setMeetingStatus(e.target.value);
                       }}
                     >
-                      <MenuItem value={"Pending"}>Pending</MenuItem>
-                      <MenuItem value={"Postponed"}>Postponed</MenuItem>
-                      <MenuItem value={"Attended"}>Attended</MenuItem>
-                      <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+                      <MenuItem value={"Pending"}>{t("status_pending")}</MenuItem>
+                      <MenuItem value={"Postponed"}>{t("status_postponed")}</MenuItem>
+                      <MenuItem value={"Attended"}>{t("status_attended")}</MenuItem>
+                      <MenuItem value={"Cancelled"}>{t("status_cancelled")}</MenuItem>
                     </TextField>
                   </FormControl>
                   <Box sx={darkModeColors} className="w-full">
@@ -396,7 +363,7 @@ const UpdateMeeting = ({
                       <TextField
                         id="text"
                         type={"text"}
-                        label="Meeting Notes"
+                        label={t("label_meeting_notes")}
                         size="small"
                         className="w-full"
                         variant="outlined"
@@ -435,7 +402,7 @@ const UpdateMeeting = ({
                     <CircularProgress size={18} sx={{ color: "white" }} />
                   </div>
                 ) : (
-                  <span> Update Meeting</span>
+                  <span> {t("btn_update_meeting")}</span>
                 )}
               </Button>
             </form>

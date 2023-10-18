@@ -17,7 +17,7 @@ const ConfirmBulkDelete = ({
     selectionModelRef,
     lids,
 }) => {
-  const { currentMode, fetchSidebarData, BACKEND_URL } = useStateContext();
+  const { currentMode, fetchSidebarData, BACKEND_URL, t } = useStateContext();
   const [deletebtnloading, setdeletebtnloading] = useState(false);
 
   const handleDelete = async (lids) => {
@@ -86,13 +86,13 @@ const ConfirmBulkDelete = ({
         <div className="flex flex-col justify-center items-center">
           <IoIosAlert size={50} className="text-primary text-2xl" />
           <h1 className="font-semibold pt-3 text-lg">
-              Do You Really Want to delete these Leads?
+              {t("want_to_delete_these_leads")}
           </h1>
         </div>
 
         <div className="action buttons mt-5 flex items-center justify-center space-x-2">
           <Button
-            className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-primary shadow-none`}
+            className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
             ripple="true"
             size="lg"
             style={{
@@ -105,7 +105,7 @@ const ConfirmBulkDelete = ({
             {deletebtnloading ? (
               <CircularProgress size={18} sx={{ color: "blue" }} />
             ) : (
-              <span>Delete</span>
+              <span>{t("btn_delete")}</span>
             )}
           </Button>
 
@@ -119,7 +119,7 @@ const ConfirmBulkDelete = ({
                 : "text-primary border-primary"
             }`}
           >
-            Cancel
+            {t("cancel")}
           </Button>
         </div>
       </div>

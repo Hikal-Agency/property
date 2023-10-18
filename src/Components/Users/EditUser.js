@@ -18,7 +18,7 @@ const EditUser = ({
 }) => {
   console.log("Edit User: ", user);
   const [loading, setloading] = useState(false);
-  const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, t, BACKEND_URL } = useStateContext();
   const { hasPermission } = usePermission();
 
   const [userData, setUserData] = useState({

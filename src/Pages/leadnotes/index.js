@@ -13,7 +13,7 @@ const LeadNotesPage = (props) => {
     pageSize: 15,
   });
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop } = useStateContext();
+  const { currentMode, setopenBackDrop, t } = useStateContext();
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -40,7 +40,7 @@ const LeadNotesPage = (props) => {
                     : "text-black"
                 }`}
               >
-                Lead Notes {" "}
+                {t("lead_notes")} {" "}  
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>

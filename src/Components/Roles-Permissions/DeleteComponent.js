@@ -2,17 +2,14 @@
 import {
   Backdrop,
   Modal,
-  IconButton,
   CircularProgress,
   Button,
-  TextField,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 // import LeadNotes from "../LeadNotes/LeadNotes";
-import { ToastContainer, toast } from "react-toastify";
-import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
 import { IoIosAlert } from "react-icons/io";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "../../axoisConfig";
 
 const DeleteComponent = ({
@@ -23,7 +20,7 @@ const DeleteComponent = ({
   value,
   DataName,
 }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, t } = useStateContext();
   const [deletebtnloading, setdeleteBtnLoading] = useState(false);
 
   console.log("delete model: ", UserData);
@@ -114,7 +111,7 @@ const DeleteComponent = ({
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              {`Do you really want to delete ${DataName}?`}
+              {t("want_to_delete", {DataName})}
             </h1>
           </div>
 
@@ -130,7 +127,7 @@ const DeleteComponent = ({
               {deletebtnloading ? (
                 <CircularProgress size={18} sx={{ color: "blue" }} />
               ) : (
-                <span>Delete</span>
+                <span>{t("btn_delete")}</span>
               )}
             </Button>
 
@@ -144,7 +141,7 @@ const DeleteComponent = ({
                   : "text-primary border-primary"
               }`}
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </div>
         </div>

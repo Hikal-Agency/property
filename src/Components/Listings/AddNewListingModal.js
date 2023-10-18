@@ -20,7 +20,6 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useEffect, useState } from "react";
 import ListingLocation from "../Leads/listings/ListingLocation";
 import { MdFileUpload } from "react-icons/md";
-import { CiMapPin } from "react-icons/ci";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import AddImageModal from "../../Pages/listings/AddImageModal";
@@ -36,7 +35,7 @@ const AddNewListingModal = ({
   setListingModalOpen,
   handleCloseListingModal,
 }) => {
-  const { currentMode, darkModeColors, User, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, User, BACKEND_URL, t } = useStateContext();
   const [loading, setloading] = useState(false);
   const [displayMap, setDisplayMap] = useState(false);
   const [country, setCountry] = useState("");
@@ -159,37 +158,7 @@ const AddNewListingModal = ({
     return value;
   }
 
-  // const handleImgUpload = (e) => {
-  //   const files = e.target.files;
-
-  //   const filesArray = Array.from(files);
-
-  //   setOtherDetails((prev) => ({
-  //     ...prev,
-  //     picture: [...prev.picture, ...filesArray],
-  //   }));
-
-  //   // Clear the file input to allow selecting more files if needed
-  //   e.target.value = null;
-
-  //   console.log("Updated otherDetails.picture:", otherDetails.picture);
-  // };
-
-  const handleDocumentUpload = (e) => {
-    const documentFiles = e.target.files;
-
-    const documentFilesArray = Array.from(documentFiles);
-
-    setOtherDetails((prev) => ({
-      ...prev,
-      document: [...prev.document, ...documentFilesArray],
-    }));
-
-    // Clear the file input to allow selecting more files if needed
-    e.target.value = null;
-
-    console.log("Updated otherDetails.document:", otherDetails.document);
-  };
+ 
 
   const submitListing = async (e) => {
     setloading(true);
@@ -422,7 +391,7 @@ const AddNewListingModal = ({
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              Add New Listing
+              {t("btn_add_new_listing")}
             </h1>
           </div>
 
@@ -430,7 +399,6 @@ const AddNewListingModal = ({
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                // AddLead();
               }}
               disabled={loading ? true : false}
             >
@@ -442,13 +410,13 @@ const AddNewListingModal = ({
                         currentMode === "dark" ? "text-primary" : "text-black"
                       } text-center font-semibold pb-5`}
                     >
-                      Seller Details
+                      {t("label_seller_details")}
                     </h4>
 
                     <TextField
                       id="legalName"
                       type={"text"}
-                      label="Legal Name"
+                      label={t("label_legal_name")}
                       name="leadName"
                       className="w-full"
                       sx={{
@@ -464,7 +432,7 @@ const AddNewListingModal = ({
                     />
 
                     <PhoneInput
-                      placeholder="Contact number *"
+                      placeholder={t("label_contact_number")}
                       onChange={(value) => setValue(value)}
                       onKeyUp={handleContact}
                       error={error}
@@ -501,28 +469,10 @@ const AddNewListingModal = ({
                       </Typography>
                     )}
 
-                    {/* <TextField
-                      id="notes"
-                      type={"text"}
-                      label="Contacts"
-                      className="w-full"
-                      name="leadContact"
-                      sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                        },
-                      }}
-                      variant="outlined"
-                      size="small"
-                      required
-                      value={removeNull(sellerDetails?.leadContact)}
-                      onChange={handleChange}
-                    /> */}
-
                     <TextField
                       id="notes"
                       type={"text"}
-                      label="Email"
+                      label={t("label_email")}
                       name="leadEmail"
                       className="w-full"
                       sx={{
@@ -538,7 +488,7 @@ const AddNewListingModal = ({
                     <TextField
                       id="notes"
                       type={"text"}
-                      label="Property Price"
+                      label={t("label_property_price")}
                       className="w-full"
                       name="propertyPrice"
                       sx={{
@@ -562,13 +512,13 @@ const AddNewListingModal = ({
                         currentMode === "dark" ? "text-primary" : "text-black"
                       } text-center font-semibold pb-5`}
                     >
-                      Project details
+                      {t("project_details")}
                     </h4>
 
                     <TextField
                       id="property-type"
                       value={projectDetails?.property_type}
-                      label="Property type"
+                      label={t("label_property_type")}
                       onChange={handleProjectDetails}
                       size="small"
                       className="w-full mb-5"
@@ -582,20 +532,20 @@ const AddNewListingModal = ({
                       select
                     >
                       <MenuItem value="" disabled>
-                        Property type
+                        {t("label_property_type")}
                         <span className="ml-1" style={{ color: "red" }}>
                           *
                         </span>
                       </MenuItem>
-                      <MenuItem value={"Apartment"}>Apartment</MenuItem>
-                      <MenuItem value={"Villa"}>Villa</MenuItem>
-                      <MenuItem value={"Rental"}>Rental</MenuItem>
+                      <MenuItem value={"Apartment"}>{t("property_apartment")}</MenuItem>
+                      <MenuItem value={"Villa"}>{t("property_villa")}</MenuItem>
+                      <MenuItem value={"Rental"}>{t("property_rental")}</MenuItem>
                     </TextField>
 
                     <TextField
                       id="notes"
                       type={"text"}
-                      label="Project/Name of Building"
+                      label={t("project_name_of_building")}
                       className="w-full"
                       name="project"
                       sx={{
@@ -612,7 +562,7 @@ const AddNewListingModal = ({
 
                     <TextField
                       id="enquiry"
-                      label="Number Of Bedrooms"
+                      label={t("number_of_bedrooms")}
                       value={projectDetails?.bedrooms}
                       onChange={handleProjectDetails}
                       size="small"
@@ -627,29 +577,29 @@ const AddNewListingModal = ({
                       select
                     >
                       <MenuItem value="" disabled>
-                        Number of Bedrooms
+                        {t("number_of_bedrooms")}
                         <span className="ml-1" style={{ color: "red" }}>
                           *
                         </span>
                       </MenuItem>
-                      <MenuItem value={"Studio"}>Studio</MenuItem>
-                      <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
-                      <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
-                      <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
-                      <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
-                      <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
-                      <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
-                      <MenuItem value={"7 Bedrooms"}>7 Bedrooms</MenuItem>
-                      <MenuItem value={"8 Bedrooms"}>8 Bedrooms</MenuItem>
-                      <MenuItem value={"9 Bedrooms"}>9 Bedrooms</MenuItem>
-                      <MenuItem value={"10 Bedrooms"}>10 Bedrooms</MenuItem>
-                      <MenuItem value={"Retail"}>Retail</MenuItem>
+                      <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
+                      <MenuItem value={"1 Bedroom"}>{t("enquiry_1bed")}</MenuItem>
+                      <MenuItem value={"2 Bedrooms"}>{t("enquiry_2bed")}</MenuItem>
+                      <MenuItem value={"3 Bedrooms"}>{t("enquiry_3bed")}</MenuItem>
+                      <MenuItem value={"4 Bedrooms"}>{t("enquiry_4bed")}</MenuItem>
+                      <MenuItem value={"5 Bedrooms"}>{t("enquiry_5bed")}</MenuItem>
+                      <MenuItem value={"6 Bedrooms"}>{t("enquiry_6bed")}</MenuItem>
+                      <MenuItem value={"7 Bedrooms"}>{t("enquiry_7bed")}</MenuItem>
+                      <MenuItem value={"8 Bedrooms"}>{t("enquiry_8bed")}</MenuItem>
+                      <MenuItem value={"9 Bedrooms"}>{t("enquiry_9bed")}</MenuItem>
+                      <MenuItem value={"10 Bedrooms"}>{t("enquiry_10bed")}</MenuItem>
+                      <MenuItem value={"Retail"}>{t("enquiry_retail")}</MenuItem>
                     </TextField>
 
                     <TextField
                       id="for"
                       value={projectDetails?.bathrooms}
-                      label="Number of Bathrooms"
+                      label={t("number_of_bathrooms")}
                       onChange={handleProjectDetails}
                       size="small"
                       className="w-full"
@@ -663,22 +613,22 @@ const AddNewListingModal = ({
                       select
                     >
                       <MenuItem value="" disabled>
-                        Number of Bathrooms
+                       {t("number_of_bathrooms")}
                         <span className="ml-1" style={{ color: "red" }}>
                           *
                         </span>
                       </MenuItem>
-                      <MenuItem value={"1 Bathroom"}>1 Bathroom</MenuItem>
-                      <MenuItem value={"2 Bathrooms"}>2 Bathrooms</MenuItem>
-                      <MenuItem value={"3 Bathrooms"}>3 Bathrooms</MenuItem>
-                      <MenuItem value={"4 Bathrooms"}>4 Bathrooms</MenuItem>
-                      <MenuItem value={"5 Bathrooms"}>5 Bathrooms</MenuItem>
-                      <MenuItem value={"6 Bathrooms"}>6 Bathrooms</MenuItem>
-                      <MenuItem value={"7 Bathrooms"}>7 Bathrooms</MenuItem>
-                      <MenuItem value={"8 Bathrooms"}>8 Bathrooms</MenuItem>
-                      <MenuItem value={"9 Bathrooms"}>9 Bathrooms</MenuItem>
-                      <MenuItem value={"10 Bathrooms"}>10 Bathrooms</MenuItem>
-                      <MenuItem value={"Unavailabe"}>Unavailabe</MenuItem>
+                      <MenuItem value={"1 Bathroom"}>{t("bathroom_1")}</MenuItem>
+                      <MenuItem value={"2 Bathrooms"}>{t("bathroom_2")}</MenuItem>
+                      <MenuItem value={"3 Bathrooms"}>{t("bathroom_3")}</MenuItem>
+                      <MenuItem value={"4 Bathrooms"}>{t("bathroom_4")}</MenuItem>
+                      <MenuItem value={"5 Bathrooms"}>{t("bathroom_5")}</MenuItem>
+                      <MenuItem value={"6 Bathrooms"}>{t("bathroom_6")}</MenuItem>
+                      <MenuItem value={"7 Bathrooms"}>{t("bathroom_7")}</MenuItem>
+                      <MenuItem value={"8 Bathrooms"}>{t("bathroom_8")}</MenuItem>
+                      <MenuItem value={"9 Bathrooms"}>{t("bathroom_9")}</MenuItem>
+                      <MenuItem value={"10 Bathrooms"}>{t("bathroom_10")}</MenuItem>
+                      <MenuItem value={"Unavailabe"}>{t("label_unavailable")}</MenuItem>
                     </TextField>
                   </Box>
                 </div>
@@ -690,13 +640,13 @@ const AddNewListingModal = ({
                         currentMode === "dark" ? "text-primary" : "text-black"
                       } text-center font-semibold pb-5`}
                     >
-                      Other Details
+                      {t("label_other_details")}
                     </h4>
 
                     <TextField
                       id="type"
                       value={otherDetails?.listingType}
-                      label="Listing Type"
+                      label={t("label_listing_type")}
                       onChange={handleOtherDetails}
                       size="small"
                       className="w-full"
@@ -711,15 +661,15 @@ const AddNewListingModal = ({
                       required
                     >
                       <MenuItem value={"Secondary"}>
-                        Secondary
+                        {t("menu_secondary")}
                       </MenuItem>
-                      <MenuItem value={"Off-plan"}>Off-plan</MenuItem>
+                      <MenuItem value={"Off-plan"}>{t("category_off_plan")}</MenuItem>
                     </TextField>
                     <TextField
                     
                       id="leadCity"
                       type={"text"}
-                      label="City"
+                      label={t("label_city")}
                       className="w-full"
                       name="city"
                       sx={{
@@ -736,7 +686,7 @@ const AddNewListingModal = ({
                     <TextField
                       id="leadCountry"
                       type={"text"}
-                      label="Country"
+                      label={t("label_country")}
                       className="w-full"
                       name="country"
                       sx={{
@@ -754,7 +704,7 @@ const AddNewListingModal = ({
                     <TextField
                       id="LeadEmailAddress"
                       type={"text"}
-                      label="Address"
+                      label={t("label_address")}
                       className="w-full"
                       sx={{
                         "&": {
@@ -770,7 +720,7 @@ const AddNewListingModal = ({
                     <TextField
                       id="LeadEmailAddress"
                       type={"text"}
-                      label="Area"
+                      label={t("label_area")}
                       className="w-full"
                       name="area"
                       sx={{
@@ -805,7 +755,7 @@ const AddNewListingModal = ({
                         disabled={loading ? true : false}
                         startIcon={loading ? null : <MdFileUpload />}
                       >
-                        <span>Upload Image</span>
+                        <span>{t("button_upload_image")}</span>
                       </Button>
                       <p className="text-primary mt-2 italic">
                         {allImages?.length > 0
@@ -820,9 +770,7 @@ const AddNewListingModal = ({
                         size="medium"
                         className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
                         style={{
-                          // backgroundColor: "#111827",
                           color: "#ffffff",
-                          // border: "1px solid ",
                         }}
                         onClick={() => {
                           setDocumentModal(true);
@@ -831,7 +779,7 @@ const AddNewListingModal = ({
                         disabled={loading ? true : false}
                         startIcon={loading ? null : <MdFileUpload />}
                       >
-                        <span>Upload Document</span>
+                        <span>{t("button_upload_document")}</span>
                       </Button>
                       <p className="text-primary mt-2 italic">
                         {allDocs?.length > 0
@@ -845,26 +793,7 @@ const AddNewListingModal = ({
 
               <div className="w-full grid grid-cols-1 gap-5 pt-5 px-4 md:px-10">
                 <Box sx={darkModeColors}>
-                  {/* {!displayMap && (
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-                      style={{
-                        // backgroundColor: "#111827",
-                        color: "#ffffff",
-                        // border: "1px solid #DA1F26",
-                      }}
-                      onClick={() => setDisplayMap(true)}
-                      component="span"
-                      disabled={loading ? true : false}
-                      startIcon={loading ? null : <CiMapPin />}
-                    >
-                      <span>Select location in map *</span>
-                    </Button>
-                  )}
-
-                  {displayMap && ( */}
+                  
                   <ListingLocation
                     listingLocation={listingLocation}
                     currLocByDefault={true}
@@ -960,7 +889,7 @@ const AddNewListingModal = ({
                       className="text-white"
                     />
                   ) : (
-                    <span>Add property for secondary market</span>
+                    <span>{t("add_property_to_secondary")}</span>
                   )}
                 </Button>
               </div>

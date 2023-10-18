@@ -27,7 +27,7 @@ const Role = () => {
     setpageState,
     User,
     darkModeColors,
-    themeBgImg
+    themeBgImg, t
   } = useStateContext();
 
   const [user, setUser] = useState([]);
@@ -184,7 +184,7 @@ const Role = () => {
   const columns = [
     {
       field: "role",
-      headerName: "Role",
+      headerName: t("role"),
       headerAlign: "center",
       editable: false,
       minwidth: 130,
@@ -192,7 +192,7 @@ const Role = () => {
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("label_status"),
       headerAlign: "center",
       editable: false,
       minwidth: 150,
@@ -210,7 +210,7 @@ const Role = () => {
 
     {
       field: "",
-      headerName: "Action",
+      headerName: t("label_action"),
       minwidth: 90,
       flex: 1,
       headerAlign: "center",
@@ -266,7 +266,7 @@ const Role = () => {
   const permissionsColumns = [
     {
       field: "permission",
-      headerName: "Permission",
+      headerName: t("permission"),
       headerAlign: "center",
       editable: false,
       minwidth: 130,
@@ -274,7 +274,7 @@ const Role = () => {
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("label_status"),
       headerAlign: "center",
       editable: false,
       minwidth: 150,
@@ -292,7 +292,7 @@ const Role = () => {
 
     {
       field: "",
-      headerName: "Action",
+      headerName: t("label_action"),
       minwidth: 90,
       flex: 1,
       headerAlign: "center",
@@ -369,7 +369,7 @@ const Role = () => {
                     : "text-black"
                 }`}
               >
-                Roles and Permissions
+                {t("title_roles_permissions")}
               </h1>
             </div>
             <button
@@ -378,7 +378,7 @@ const Role = () => {
             >
               <span className="flex justify-between items-center gap-1 uppercase font-semibold text-sm">
                 <BsPlus size={18} />
-                {value === 0 ? "Role" : "Permission"}
+                {value === 0 ? t("create_new_role") : t("create_new_permission")}
               </span>
             </button>
           </div>
@@ -396,7 +396,9 @@ const Role = () => {
                 },
               }}
               className={`w-full rounded-lg overflow-hidden ${
-                currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
+                !themeBgImg 
+                ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
               } `}
             >
               <Tabs
@@ -405,8 +407,8 @@ const Role = () => {
                 variant="standard"
                 className="w-full m-1"
               >
-                <Tab label="Roles" />
-                <Tab label="Permissions" />
+                <Tab label={t("roles")}/>
+                <Tab label={t("permissions")}/>
               </Tabs>
             </Box>
           </div>
@@ -414,7 +416,6 @@ const Role = () => {
             <TabPanel value={value} index={0}>
               <Box
                 className={`${currentMode}-mode-datatable`}
-                // width={"100%"}
                 sx={DataGridStyles}
               >
                 <DataGrid
@@ -428,8 +429,7 @@ const Role = () => {
                   loading={pageState.isLoading}
                   rowsPerPageOptions={[]}
                   pagination
-                  // width="auto"
-                  // getRowHeight={() => "auto"}
+        
                   paginationMode="server"
                   page={pageState.page - 1}
                   pageSize={pageState.pageSize}

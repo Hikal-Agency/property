@@ -130,16 +130,11 @@ const BookedDeals = ({
     User,
     Managers,
     primaryColor,
+    t
   } = useStateContext();
-  const [searchText, setSearchText] = useState("");
-  const [openDialog, setopenDialog] = useState(false);
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
-  const [deleteModelOpen, setDeleteModelOpen] = useState(false);
 
-  const handleCloseDeleteModel = () => {
-    setDeleteModelOpen(false);
-  };
 
   const handleRangeChange = (e) => {
     const value = e.target.value;
@@ -298,7 +293,7 @@ const BookedDeals = ({
           <Select
             id="feedback"
             value={Feedback}
-            label="Feedback"
+            label={t("label_feedback")}
             onChange={ChangeFeedback}
             size="medium"
             className="w-[100%] h-[75%] border-none"
@@ -318,11 +313,11 @@ const BookedDeals = ({
             required
           >
             <MenuItem value={null} disabled>
-              ---SELECT---
+              ---{t("label_select")?.toUpperCase()}---
             </MenuItem>
-            <MenuItem value={"Booked"}>Booked</MenuItem>
-            <MenuItem value={"Closed Deal"}>Closed Deal</MenuItem>
-            <MenuItem value={"Dead"}>Cancelled</MenuItem>
+            <MenuItem value={"Booked"}>{t("feedback_booked")}</MenuItem>
+            <MenuItem value={"Closed Deal"}>{t("feedback_closed")}</MenuItem>
+            <MenuItem value={"Dead"}>{t("feedback_cancelled")}</MenuItem>
           </Select>
         </FormControl>
         {DialogueVal && (
@@ -358,13 +353,13 @@ const BookedDeals = ({
                   <div className="flex flex-col justify-center items-center">
                     <IoIosAlert size={50} className="text-primary text-2xl" />
                     <h1 className="font-semibold pt-3 text-lg text-center">
-                      Do You Really Want Change the Feedback from{" "}
+                    {t("want_to_change_feedback")}{" "} {t("from")}
                       <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                        {Feedback}
+                      {Feedback ? t("feedback_" + Feedback?.toLowerCase()?.replaceAll(" ", "_")) : t("no_feedback")}
                       </span>{" "}
-                      to{" "}
+                      {t("to")}{" "}
                       <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                        {newFeedback === "Closed" ? "Closed Deal" : newFeedback}
+                        {newFeedback ? t("feedback_" + newFeedback?.toLowerCase()?.replaceAll(" ", "_")) : t("no_feedback")}
                       </span>{" "}
                       ?
                     </h1>
@@ -373,29 +368,21 @@ const BookedDeals = ({
                         <div className="flex flex-col justify-center items-center gap-4">
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
-                              label="Deal Date"
+                              label={t("label_deal_date")}
                               value={leadDateValue}
                               views={["year", "month", "day"]}
                               required
                               maxDate={new Date()}
                               onChange={(newValue) => {
                                 setLeadDateValue(newValue);
-                                // setLeadDate(
-                                //   format(newValue.$d.getUTCFullYear()) +
-                                //     "-" +
-                                //     format(newValue.$d.getUTCMonth() + 1) +
-                                //     "-" +
-                                //     format(newValue.$d.getUTCDate() + 1)
-                                // );
+             
                                 const formattedDate = moment(
                                   newValue?.$d
                                 ).format("YYYY-MM-DD");
                                 setLeadDate(formattedDate);
                               }}
                               format="yyyy-MM-dd"
-                              // renderInput={(params) => (
-                              //   <TextField {...params} fullWidth />
-                              // )}
+                  
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
@@ -410,7 +397,7 @@ const BookedDeals = ({
                           <TextField
                             required
                             fullWidth
-                            label="Closed Amount"
+                            label={t("label_closed_amount")}
                             size="small"
                             value={leadAmount}
                             onChange={(e) => {
@@ -431,7 +418,7 @@ const BookedDeals = ({
                       {btnloading ? (
                         <CircularProgress size={18} sx={{ color: "white" }} />
                       ) : (
-                        <span>Confirm</span>
+                        <span>{t("confirm")}</span>
                       )}
                     </Button>
                     <Button
@@ -444,7 +431,7 @@ const BookedDeals = ({
                           : "text-primary border-primary"
                       }`}
                     >
-                      Cancel
+                      {t("cancel")}
                     </Button>
                   </div>
                 </div>
@@ -520,7 +507,7 @@ const BookedDeals = ({
     {
       field: "leadName",
       headerAlign: "center",
-      headerName: "Lead name",
+      headerName: t("label_lead_name"),
       minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
@@ -541,7 +528,7 @@ const BookedDeals = ({
     },
     {
       field: "leadContact",
-      headerName: "Contact",
+      headerName: t("label_contact"),
       minWidth: 100,
       headerAlign: "center",
       flex: 1,
@@ -569,7 +556,7 @@ const BookedDeals = ({
     },
     {
       field: "project",
-      headerName: "Project",
+      headerName: t("label_project"),
       headerAlign: "center",
       minWidth: 80,
       flex: 1,
@@ -596,7 +583,7 @@ const BookedDeals = ({
     {
       headerAlign: "center",
       field: "leadType",
-      headerName: "Property",
+      headerName: t("label_property"),
       minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
@@ -619,7 +606,7 @@ const BookedDeals = ({
     {
       headerAlign: "center",
       field: "assignedToManager",
-      headerName: "Manager",
+      headerName: t("label_manager"),
       minWidth: 100,
       flex: 1,
       hideable: false,
@@ -628,7 +615,7 @@ const BookedDeals = ({
     {
       headerAlign: "center",
       field: "assignedToSales",
-      headerName: "Agent",
+      headerName: t("label_agent"),
       minWidth: 100,
       flex: 1,
       hideable: false,
@@ -637,7 +624,7 @@ const BookedDeals = ({
     {
       field: "feedback",
       headerAlign: "center",
-      headerName: "Feedback",
+      headerName: t("label_feedback"),
       minWidth: 100,
       flex: 1,
 
@@ -646,7 +633,7 @@ const BookedDeals = ({
     },
     {
       field: "priority",
-      headerName: "Priority",
+      headerName: t("label_priority"),
       minWidth: 90,
       headerAlign: "center",
       flex: 1,
@@ -656,7 +643,7 @@ const BookedDeals = ({
     {
       field: "booked_amount",
       headerAlign: "center",
-      headerName: "Amount",
+      headerName: t("label_amount_aed"),
       minWidth: 90,
       flex: 1,
       renderCell: (cellValues) => {
@@ -676,7 +663,7 @@ const BookedDeals = ({
     {
       field: "otp",
       headerName:
-        lead_origin === "transfferedleads" ? "Transferred From" : "OTP",
+        lead_origin === "transfferedleads" ? t("label_transferred_from") : t("label_otp"),
       minWidth: 30,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
@@ -736,7 +723,7 @@ const BookedDeals = ({
 
     {
       field: "leadSource",
-      headerName: "Src",
+      headerName: t("lead_source"),
       flex: 1,
       minWidth: 30,
       headerAlign: "center",
@@ -845,7 +832,7 @@ const BookedDeals = ({
     },
     {
       field: "language",
-      headerName: "Lang",
+      headerName: t("label_language"),
       headerAlign: "center",
       minWidth: 30,
       flex: 1,
@@ -853,7 +840,7 @@ const BookedDeals = ({
 
     {
       field: "edit",
-      headerName: "Action",
+      headerName: t("label_action"),
       flex: 1,
       minWidth: 100,
       sortable: false,

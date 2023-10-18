@@ -27,7 +27,7 @@ const LocationPicker = ({
   showOnly = false,
   currLocByDefault,
 }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode} = useStateContext();
   const geocoder = new window.google.maps.Geocoder();
 
   const [map, setMap] = useState({

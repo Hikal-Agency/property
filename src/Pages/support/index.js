@@ -10,7 +10,7 @@ import axios from "../../axoisConfig";
 import { useSearchParams } from "react-router-dom";
 
 const Tickets = () => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, t } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -68,11 +68,11 @@ const Tickets = () => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Welcome to{" "}
+                  {t("welcome_to")}{" "}
                   <span className="text-primary font-bold">
                     HIKAL CRM
                   </span>
-                  ! We are here to assist you.
+                  ! {t("here_to_assist")}.
                 </h4>
                 <div
                   className={`${
@@ -104,11 +104,9 @@ const Tickets = () => {
                       // centered
                       className="w-full px-1 m-1"
                     >
-                      <Tab label="CREATE NEW TICKET" />
-                      <Tab label="ALL TICKETS" />
-                      {/* <Tab label="UPGRADE" />
-                      <Tab label="RENEWAL" />
-                      <Tab label="CANCELLATION" /> */}
+                      <Tab label={t("create_new_ticket")} />
+                      <Tab label={t("all_tickets")} />
+        
                     </Tabs>
                   </Box>
                   <div className="mt-3 pb-3">

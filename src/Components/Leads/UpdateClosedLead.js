@@ -17,7 +17,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
-import { width } from "@mui/system";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -28,7 +27,7 @@ const UpdateLead = ({
   LeadData,
 }) => {
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum } =
+  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum, t} =
     useStateContext();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
@@ -252,7 +251,7 @@ const UpdateLead = ({
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
-              <span className="font-semibold text-lg"> Fetching Your Lead</span>
+              <span className="font-semibold text-lg">{t("fetching_your_lead")}</span>
             </div>
           ) : (
             <>
@@ -261,7 +260,7 @@ const UpdateLead = ({
                   currentMode === "dark" ? "text-white" : "text-black"
                 } text-center font-bold text-lg pb-10`}
               >
-                Update closed deal details
+               {t("update_closed_details")}
               </h1>
               <form
                 onSubmit={(e) => {
@@ -274,7 +273,7 @@ const UpdateLead = ({
                     <Box sx={darkModeColors} className="w-full" >
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          label="Closed Deal Date"
+                          label={t("closed_deal_date")}
                           value={leadDateValue}
                           views={["year", "month", "day"]}
                           required
@@ -309,7 +308,7 @@ const UpdateLead = ({
                       <TextField
                         required
                         fullWidth
-                        label="Closed Deal Amount"
+                        label={t("closed_amount")}
                         value={leadAmount}
                         size="small"
                         onChange={(e) => {
@@ -332,7 +331,7 @@ const UpdateLead = ({
                       <CircularProgress size={18} sx={{ color: "white" }} />
                     </div>
                   ) : (
-                    <span> Update Lead</span>
+                    <span> {t("btn_update_lead")}</span>
                   )}
                 </Button>
               </form>

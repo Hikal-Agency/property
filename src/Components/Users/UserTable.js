@@ -27,7 +27,7 @@ const UserTable = ({}) => {
     pageState, 
     setpageState, 
     primaryColor,
-    themeBgImg
+    themeBgImg, t
   } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
@@ -153,7 +153,7 @@ const UserTable = ({}) => {
                           !themeBgImg 
                             ? (currentMode === "dark"
                               ? "bg-[#1c1c1c] text-white"
-                              : "bg-gray-200 text-black")
+                              : "bg-[#EBEBEB] text-black")
                             : (currentMode === "dark"
                               ? "blur-bg-dark text-white"
                               : "blur-bg-light text-black")

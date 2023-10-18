@@ -41,6 +41,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     Managers,
     fetchSidebarData,
     User,
+    t
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -269,7 +270,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
             width: "85%",
           }}
         >
-          No Agents
+          {t("no_agents")}
         </p>
       ) : (
         <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
@@ -281,7 +282,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
                 : SalesPerson2
             }
             name="salesperson"
-            label="Salesperson"
+            label={t("label_sales_agent")}
             onChange={ChangeSalesPerson}
             size="medium"
             className="w-[100%] h-[75%]"
@@ -305,7 +306,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
           >
             <MenuItem value={"selected_agent"} selected>
               {" "}
-              ---Agent---
+              ---{t("label_agent")}---
             </MenuItem>
 
             {SalesPersonsList?.length > 0 &&
@@ -360,11 +361,11 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
                   className="text-primary text-2xl"
                 />
                 <h1 className="font-semibold pt-3 text-lg text-center">
-                  Do You Really Want Change the Agent from{" "}
+                  {t("want_to_change_agent")}{" "}{t("from")}{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {SalesPerson3?.userName ?? "No Agent"}
                   </span>{" "}
-                  to{" "}
+                  {t("to")}{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {newSalesPerson?.userName}
                   </span>{" "}
@@ -381,7 +382,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
                   {btnloading ? (
                     <CircularProgress size={18} sx={{ color: "white" }} />
                   ) : (
-                    <span>Confirm</span>
+                    <span>{t("confirm")}</span>
                   )}
                 </Button>
 

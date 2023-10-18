@@ -28,7 +28,7 @@ const RolesComponent = ({
   value,
   fetchData,
 }) => {
-  const { BACKEND_URL, User } = useStateContext();
+  const { BACKEND_URL, User, t} = useStateContext();
   const [formdata, setformdata] = useState({ user_id: User?.id, status: 1 });
 
   const [allChecked, setAllChecked] = useState(true);
@@ -197,7 +197,7 @@ const RolesComponent = ({
 
                 <div>
                   <h2 className="text-center text-xl font-bold text-[#1c1c1c] mt-4">
-                    Create New {value === 0 ? " Role" : " Permissions"}
+                  {value === 0 ? t("create_new_role") : t("create_new_permission")}
                   </h2>
                 </div>
 
@@ -214,7 +214,7 @@ const RolesComponent = ({
                       <TextField
                         id=""
                         type="text"
-                        label={`${value === 0 ? "Role" : "Permissions"}`}
+                        label={`${value === 0 ? t("role") : t("permissions")}`}
                         className="w-full"
                         variant="outlined"
                         size="medium"
@@ -258,7 +258,7 @@ const RolesComponent = ({
                                   />
                                 ))
                               ) : (
-                                <p>No permissions found.</p>
+                                <p>{t("no_permissions_found")}</p>
                               )
                             ) : (
                               <div
@@ -289,7 +289,7 @@ const RolesComponent = ({
                           className="text-white"
                         />
                       ) : (
-                        <span>Create</span>
+                        <span>{t("create")}</span>
                       )}
                     </button>
                   </div>

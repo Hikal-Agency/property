@@ -2,19 +2,15 @@ import {
   CircularProgress,
   Modal,
   Backdrop,
-  Button,
   IconButton,
 } from "@mui/material";
-import { IoIosAlert } from "react-icons/io";
 import { useStateContext } from "../../context/ContextProvider";
-import { Select, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, { useState } from "react";
-import MenuItem from "@mui/material/MenuItem";
 import "../../styles/app.css";
 
 import axios from "../../axoisConfig";
-import { toast, ToastContainer } from "react-toastify";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
 import UpdatePermissionsCheckbox from "../addUser/UpdatePermissionCheckbox";
 import { GridCloseIcon } from "@mui/x-data-grid";
@@ -32,7 +28,7 @@ const UpdateComponent = ({
   DataName,
   UserData,
 }) => {
-  const { BACKEND_URL, User } = useStateContext();
+  const { BACKEND_URL, User, t } = useStateContext();
 
   const [data, setRole] = useState(DataName);
   const [loading, setloading] = useState(false);
@@ -240,7 +236,7 @@ const UpdateComponent = ({
                 </IconButton>
                 <div>
                   <h2 className="text-center text-xl font-bold text-[#1c1c1c] mt-4">
-                    Update {value === 0 ? " Role" : " Permissions"}
+                    {value === 0 ? t("update_role") : t("update_permission")}
                   </h2>
                 </div>
 
@@ -257,7 +253,7 @@ const UpdateComponent = ({
                       <TextField
                         id=""
                         type="text"
-                        label={value === 0 ? "Role" : "Permission"}
+                        label={value === 0 ? t("role") : t("permission")}
                         className="w-full"
                         variant="outlined"
                         size="medium"
@@ -328,7 +324,7 @@ const UpdateComponent = ({
                           />
                         </div>
                       ) : (
-                        <span>Update</span>
+                        <span>{t("btn_update")}</span>
                       )}
                     </button>
                   </div>

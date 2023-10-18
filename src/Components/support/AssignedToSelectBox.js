@@ -1,13 +1,12 @@
 import {
   Box,
-  CircularProgress,
   FormControl,
   MenuItem,
   Select,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { ToastContainer, toast } from "react-toastify";
+import {  toast } from "react-toastify";
 import axios from "../../axoisConfig";
 
 const AssignedToSelectBox = ({
@@ -20,7 +19,7 @@ const AssignedToSelectBox = ({
   console.log("ticketId:: ", ticketId);
   console.log("assignedTo:: ", assignedTo);
 
-  const { currentMode, BACKEND_URL, pageState, setpageState } =
+  const { currentMode, BACKEND_URL,t } =
     useStateContext();
   const token = localStorage.getItem("auth-token");
   const [loading, setLoading] = useState(false);
@@ -106,7 +105,7 @@ const AssignedToSelectBox = ({
           <Select
             id="feedback"
             value={assignedTo ?? "selected"}
-            label="Feedback"
+            label={t("label_feedback")}
             onChange={(e) => {
               //   setAssigned_to(e.target.value);
               updateTickets(e.target.value);
@@ -125,7 +124,7 @@ const AssignedToSelectBox = ({
           >
             {!assignedTo ? (
               <MenuItem value={"selected"} selected>
-                ---Assign To---
+                ---{t("assign_to")}---
               </MenuItem>
             ) : null}
 

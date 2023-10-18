@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import BookedDeals from "../../Components/Leads/BookedDeals";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import MessagesComponent from "../../Components/whatsapp-marketing/MessageComponent";
-import usePermission from "../../utils/usePermission";
 import {
   Button,
   CircularProgress,
@@ -26,8 +23,6 @@ import { toast } from "react-toastify";
 import moment from "moment";
 
 const MessagesDashboar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const [loading, setloading] = useState(true);
   const [userLoading, setUserLoading] = useState(true);
   const [showFilter, setShowFilter] = useState(false);
@@ -35,9 +30,8 @@ const MessagesDashboar = () => {
   const [date_filter, setDateFilter] = useState();
   const [date, setDate] = useState();
   const [sender_id_filter, setSenderIDFitler] = useState();
-  const { currentMode, setopenBackDrop, BACKEND_URL, pageState, formatNum } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, pageState,t } =
     useStateContext();
-  const { hasPermission } = usePermission();
   const token = localStorage.getItem("auth-token");
   const searchRef = useRef("");
   const [user, setUser] = useState([]);
@@ -68,46 +62,27 @@ const MessagesDashboar = () => {
 
   const campaignCount = [
     {
-      text: "Sent SMS",
+      text: t("sms_sent"),
       count: pageState?.sentSMS,
     },
     {
-      text: "SMS Campaign",
+      text: t("sms_campaigns"),
       count: pageState?.smsCount,
     },
     {
-      text: "Sent Whatsapp",
+      text: t("whatsapp_sent"),
       count: pageState?.sentWhatsapp,
     },
     {
-      text: "Whatsapp Campaign",
+      text: t("whatsapp_campaigns"),
       count: pageState?.whatsappCount,
     },
     {
-      text: "Credits Used",
+      text: t("credits_used"),
       count: pageState?.credit_used,
     },
   ];
 
-  const handleKeyUp = (e) => {
-    console.log("handle key: ", e.target.value);
-    e.preventDefault();
-    // e.stopPropagation();
-    if (searchRef.current.querySelector("input").value) {
-      // if (e.key === "Enter" || e.keyCode === 13) {
-      fetchUsers(e.target.value);
-      // }
-    }
-  };
-  const handleSearch = (e) => {
-    console.log("handle search: ", e.target.value);
-
-    // e.preventDefault();
-    // e.stopPropagation();
-    if (e.target.value === "") {
-      fetchUsers();
-    }
-  };
 
   const toggleFilter = () => {
     setShowFilter(!showFilter);
@@ -178,7 +153,7 @@ const MessagesDashboar = () => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Campaigns Dashboard{" "}
+                  {t("campaigns_dashboard")}{" "}
                   <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
                     {pageState?.total}
                   </span>
@@ -216,7 +191,7 @@ const MessagesDashboar = () => {
                         </div>
                       ) : (
                         <>
-                          <h3 className="font-bold">Messages Type</h3>
+                          <h3 className="font-bold">{t("messages_type")}</h3>
                           <div>
                             <FormControl>
                               <RadioGroup
@@ -230,23 +205,23 @@ const MessagesDashboar = () => {
                                 <FormControlLabel
                                   value="all"
                                   control={<Radio />}
-                                  label="All"
+                                  label={t("all")}
                                 />
                                 <FormControlLabel
                                   value="sms"
                                   control={<Radio />}
-                                  label="SMS"
+                                  label={t("sms")}
                                 />
                                 <FormControlLabel
                                   value="whatsapp"
                                   control={<Radio />}
-                                  label="Whatsapp"
+                                  label={t("whatsapp")}
                                 />
                               </RadioGroup>
                             </FormControl>
                           </div>
 
-                          <h3 className=" my-4 font-bold">Message Date</h3>
+                          <h3 className=" my-4 font-bold">{t("message_date")}</h3>
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                               value={date}
@@ -296,7 +271,7 @@ const MessagesDashboar = () => {
                                   }}
                                   size="small"
                                   fullWidth
-                                  label="Filter By Date"
+                                  label={t("filter_by_date")}
                                   {...params}
                                   onKeyDown={(e) => e.preventDefault()}
                                   readOnly={true}
@@ -307,7 +282,7 @@ const MessagesDashboar = () => {
                           </LocalizationProvider>
 
                           <div>
-                            <h3 className=" my-4 font-bold">Sender ID</h3>
+                            <h3 className=" my-4 font-bold">{t("sender_id")}</h3>
                             <FormControl
                               className={`${
                                 currentMode === "dark"
@@ -323,7 +298,7 @@ const MessagesDashboar = () => {
                               <Select
                                 id="feedback"
                                 value={sender_id_filter || "selected"}
-                                label="Filter By User"
+                                label={t("filter_by_user")}
                                 onChange={(e) => {
                                   setSenderIDFitler(e.target.value);
                                 }}
@@ -341,7 +316,7 @@ const MessagesDashboar = () => {
                                 }}
                               >
                                 <MenuItem selected value="selected">
-                                  ---Select Sender ID----
+                                  ---{t("select_sender_id")}----
                                 </MenuItem>
 
                                 {senderID?.length > 0 ? (
@@ -351,7 +326,7 @@ const MessagesDashboar = () => {
                                     </MenuItem>
                                   ))
                                 ) : (
-                                  <h2 className="text-center">No ID</h2>
+                                  <h2 className="text-center">{t("no_id")}</h2>
                                 )}
                               </Select>
                             </FormControl>
@@ -359,7 +334,7 @@ const MessagesDashboar = () => {
 
                           {/* {hasPermission("filter_user_notifs") && ( */}
                           <div>
-                            <h3 className=" my-4 font-bold">Filter By User</h3>
+                            <h3 className=" my-4 font-bold">{t("filter_by_user")}</h3>
                             <FormControl
                               className={`${
                                 currentMode === "dark"
@@ -375,7 +350,7 @@ const MessagesDashboar = () => {
                               <Select
                                 id="feedback"
                                 value={selectedUser || "selected"}
-                                label="Filter By User"
+                                label={t("filter_by_user")}
                                 // onChange={(e) => handleFilter(e, 2)}
                                 onChange={(e) => {
                                   e.stopPropagation();
@@ -396,7 +371,7 @@ const MessagesDashboar = () => {
                                 }}
                               >
                                 <MenuItem selected value="selected">
-                                  ---Select User----
+                                  ---{t("select_user")}----
                                 </MenuItem>
                                 <MenuItem
                                   onKeyDown={(e) => {
@@ -406,7 +381,7 @@ const MessagesDashboar = () => {
                                 >
                                   {/* <Box sx={darkModeColors}> */}
                                   <TextField
-                                    placeholder="Search users"
+                                    placeholder={t("search_users")}
                                     ref={searchRef}
                                     sx={{
                                       "& input": {
@@ -455,7 +430,7 @@ const MessagesDashboar = () => {
                                     </MenuItem>
                                   ))
                                 ) : (
-                                  <h2 className="text-center">No Users</h2>
+                                  <h2 className="text-center">{t("no_users")}</h2>
                                 )}
                               </Select>
                             </FormControl>
@@ -473,7 +448,7 @@ const MessagesDashboar = () => {
                             }}
                             onClick={clearFilteration}
                           >
-                            <span>Clear All</span>
+                            <span>{t("clear_all")}</span>
                           </Button>
                         </>
                       )}

@@ -2,7 +2,6 @@ import { useStateContext } from "../../context/ContextProvider";
 import ReportProjectBar from "../../Components/charts/ReportProjectBar";
 import ReportMeetingsClosed from "../../Components/charts/ReportMeetingsClosed";
 import DoughnutChart from "../../Components/charts/DoughnutChart";
-import SalesAmountChartAdmin from "../../Components/charts/SalesAmountChartAdmin";
 import ReportClosedMeetingDoughnut from "../../Components/charts/ReportClosedMeetingDoughnut";
 import { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
@@ -26,7 +25,7 @@ const Reports = () => {
     setDashboardData,
     setSales_chart_data,
     BACKEND_URL,
-    pageState,
+    pageState, t
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -394,7 +393,7 @@ const Reports = () => {
               <div className="mb-5">
                 <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
                   <h1 className={`text-white text-lg font-semibold`}>
-                    TURNOVER
+                    {t("label_turnover")?.toUpperCase()}
                   </h1>
                 </div>
                 <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
@@ -406,7 +405,9 @@ const Reports = () => {
                     } rounded-md p-2 h-auto`}
                   >
                     <h6 className="mb-2 p-2">
-                      <span className="font-semibold">SALES</span>
+                      <span className="font-semibold">
+                        {t("sales")}
+                      </span>
                       <span className="float-right">
                         <select
                           className={`${
@@ -419,9 +420,9 @@ const Reports = () => {
                             setSelectedMonthSales(e.target.value);
                           }}
                         >
-                          <option value="alltime">All-Time</option>
-                          <option value="lastmonth">Last Month</option>
-                          <option value="thismonth">This Month</option>
+                          <option value="alltime">{t("all_time")}</option>
+                          <option value="lastmonth">{t("last_month")}</option>
+                          <option value="thismonth">{t("this_month")}</option>
                         </select>
                       </span>
                     </h6>
@@ -447,7 +448,9 @@ const Reports = () => {
                       } rounded-md p-2`}
                     >
                       <h6 className="mb-2 p-2">
-                        <span className="font-semibold">TARGET</span>
+                        <span className="font-semibold">
+                          {t("label_target")?.toUpperCase()}
+                        </span>
                       </h6>
                       <div className="justify-between items-center mb-3">
                         {/* MONTHLY  */}
@@ -458,8 +461,7 @@ const Reports = () => {
                         />
                       </div>
                       <h6 className="text-xs text-center mt-3 italic">
-                        Total revenue achieved with respect to addressed target
-                        for the month.
+                        {t("target_graph_caption")}
                       </h6>
                     </div>
                     <div
@@ -469,7 +471,7 @@ const Reports = () => {
                     >
                       <h6 className="mb-2 p-2">
                         <span className="font-semibold">
-                          CLOSED OVER MEETING
+                        {t("closed_over_meeting")?.toUpperCase()}
                         </span>
                       </h6>
                       <div className="justify-between items-center mb-3">
@@ -477,8 +479,7 @@ const Reports = () => {
                         <ReportClosedMeetingDoughnut />
                       </div>
                       <h6 className="text-xs text-center mt-3 italic">
-                        Number of total deals closed in comparison to total
-                        attended meetings.
+                        {t("closedovermeeting_graph_caption")}
                       </h6>
                     </div>
                   </div>
@@ -488,7 +489,7 @@ const Reports = () => {
               <div class="mb-5">
                 <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
                   <h1 className={`text-white text-lg font-semibold`}>
-                    ACHIEVEMENT
+                    {t("achievement")?.toUpperCase()}
                   </h1>
                 </div>
 
@@ -501,7 +502,7 @@ const Reports = () => {
                     } rounded-md p-2`}
                   >
                     <h6 className="mb-2 p-2">
-                      <span className="font-semibold">PERFORMANCE</span>
+                      <span className="font-semibold">{t("performance")?.toUpperCase()}</span>
                       <span className="float-right">
                         <select
                           className={`${
@@ -514,9 +515,9 @@ const Reports = () => {
                             setSelectedMonth(e.target.value);
                           }}
                         >
-                          <option value="alltime">All-Time</option>
-                          <option value="lastmonth">Last Month</option>
-                          <option value="thismonth">This Month</option>
+                          <option value="alltime">{t("all_time")}</option>
+                          <option value="lastmonth">{t("last_month")}</option>
+                          <option value="thismonth">{t("this_month")}</option>
                         </select>
                       </span>
                     </h6>
@@ -532,7 +533,7 @@ const Reports = () => {
                     } rounded-md  p-2`}
                   >
                     <h6 className="mb-2 p-2">
-                      <span className="font-semibold">LEAD SOURCE</span>
+                      <span className="font-semibold">{t("lead_source")?.toUpperCase()}</span>
                       <span className="float-right">
                         <select
                           className={`${
@@ -545,16 +546,17 @@ const Reports = () => {
                             setSelectedMonthSocial(e.target.value);
                           }}
                         >
-                          <option value="alltime">All-Time</option>
-                          <option value="lastmonth">Last Month</option>
-                          <option value="thismonth">This Month</option>
+                          <option value="alltime">{t("all_time")}</option>
+                          <option value="lastmonth">{t("last_month")}</option>
+                          <option value="thismonth">{t("this_month")}</option>
                         </select>
                       </span>
                     </h6>
                     <div className="justify-between items-center">
                       {saleschart_loading ? (
                         <div className="flex items-center space-x-2">
-                          <CircularProgress size={20} /> <span>Loading</span>
+                          <CircularProgress size={20} />{" "}
+                          <span>{t("loading")}</span>
                         </div>
                       ) : (
                         <SocialChart
@@ -570,7 +572,7 @@ const Reports = () => {
               <div className="mb-5">
                 <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
                   <h1 className={`text-white text-lg font-semibold`}>
-                    PROJECTS
+                    {t("projects")?.toUpperCase()}
                   </h1>
                 </div>
                 <div
@@ -581,7 +583,7 @@ const Reports = () => {
                   } rounded-md p-3`}
                 >
                   <h6 className="mb-2 p-2">
-                    <span className="font-semibold">PROJECT</span>
+                    <span className="font-semibold">{t("project")?.toUpperCase()}</span>
                     <span className="float-right">
                       <select
                         className={`${
@@ -594,9 +596,9 @@ const Reports = () => {
                           setSelectedMonthProject(e.target.value);
                         }}
                       >
-                        <option value="alltime">All-Time</option>
-                        <option value="lastmonth">Last Month</option>
-                        <option value="thismonth">This Month</option>
+                        <option value="alltime">{t("all_time")}</option>
+                        <option value="lastmonth">{t("last_month")}</option>
+                        <option value="thismonth">{t("this_month")}</option>
                       </select>
                     </span>
                   </h6>

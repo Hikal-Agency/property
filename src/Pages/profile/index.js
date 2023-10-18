@@ -23,7 +23,7 @@ const ProfilePage = () => {
     darkModeColors,
     setopenBackDrop,
     BACKEND_URL,
-    setUser,
+    setUser, t
   } = useStateContext();
   const [GeneralInfoData, setGeneralInfo] = useState({
     userAltContact: "",
@@ -262,7 +262,7 @@ const ProfilePage = () => {
                   >
                     <div className="col-span-2 border-r-2 border-gray-400  py-10 ">
                       <h1 className="text-lg font-semibold pb-10 text-center">
-                        User Account
+                        {t("user_account")}
                       </h1>
                       <div className="accountinfo border-t-2 border-gray-400 px-5 pt-10 ">
                         <div className="flex justify-center flex-col items-center">
@@ -325,7 +325,7 @@ const ProfilePage = () => {
                           >
                             <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
                               <MdEmail size={25} className="block" />
-                              <h1>Email Address</h1>
+                              <h1>{t("label_email_address")}</h1>
                             </div>
                             {User?.userEmail}
                           </div>
@@ -337,11 +337,11 @@ const ProfilePage = () => {
                             }`}
                           >
                             <div className="flex items-center justify-center font-semibold mb-1">
-                              <h1 className="block">Status: </h1>{" "}
-                              <p className="font-bold">Active</p>
+                              <h1 className="block">{t("status")}: </h1>{" "}
+                              <p className="font-bold">{t("status_active")}</p>
                             </div>
                             <div className="mt-3">
-                              <h1>Profile Created on: </h1>
+                              <h1>{t("profile_created_on")}: </h1>
                               <p className="font-bold">{User?.creationDate}</p>
                             </div>
                           </div>
@@ -360,9 +360,9 @@ const ProfilePage = () => {
                           onChange={handleChange}
                           variant="standard"
                         >
-                          <Tab label="General Info" />
-                          <Tab label="Personal Info " />
-                          <Tab label="Change Password" />
+                          <Tab label={t("general_info")?.toUpperCase()} />
+                          <Tab label={t("personal_info")?.toUpperCase()}/>
+                          <Tab label={t("change_password")?.toUpperCase()} />
                         </Tabs>
                       </Box>
                       <div className="px-7 pt-12">

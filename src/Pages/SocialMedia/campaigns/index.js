@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import Navbar from "../../../Components/Navbar/Navbar";
 import { useStateContext } from "../../../context/ContextProvider";
-import Footer from "../../../Components/Footer/Footer";
 import { useEffect } from "react";
 import Loader from "../../../Components/Loader";
 import AllCampaigns from "../../../Components/campaigns/AllCampaigns";
 
 const Campaigns = () => {
-  const { currentMode, setopenBackDrop } = useStateContext();
+  const { currentMode, setopenBackDrop, t } = useStateContext();
   const [loading, setloading] = useState(true);
 
   const [pageState, setpageState] = useState({
@@ -26,10 +24,7 @@ const Campaigns = () => {
 
   return (
     <>
-      {/* <Head>
-        <title>HIKAL CRM - Lead Notes</title>
-        <meta name="description" content="Meetings - HIKAL CRM" />
-      </Head> */}
+  
       <div className="flex min-h-screen mb-[60px]">
         {loading ? (
           <Loader />
@@ -67,10 +62,8 @@ const Campaigns = () => {
                         : "text-primary font-bold border-primary"
                     }`}
                   >
-                  ● Campaigns
-                    {/* <span className="bg-main-red-color text-white px-2 py-1 rounded-sm my-auto">
-                        <span>{pageState?.total}</span>
-                      </span> */}
+                  ● {t("campaigns")}
+       
                   </h1>
                 </div>
                 <AllCampaigns

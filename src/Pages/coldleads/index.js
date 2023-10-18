@@ -17,7 +17,7 @@ const ColdLeads = () => {
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
   const [loading, setloading] = useState(true);
-  const { currentMode, pageState, setopenBackDrop, BACKEND_URL } =
+  const { currentMode, pageState, setopenBackDrop, BACKEND_URL, t } =
     useStateContext();
 
   useEffect(() => {
@@ -49,8 +49,8 @@ const ColdLeads = () => {
                     : "text-black"
                 }`}
               >
-                Cold Leads {" "}
-                <span className="capitalize">({lead_type})</span>{" "}
+                {`${t("cold")} ${t("leads")}`} {" "}
+                <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>

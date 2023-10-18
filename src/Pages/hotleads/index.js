@@ -23,7 +23,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 
 const AllHotLeads = () => {
-  const { currentMode, setopenBackDrop, pageState, BACKEND_URL } =
+  const { currentMode, setopenBackDrop, pageState, BACKEND_URL, t } =
     useStateContext();
   const location = useLocation();
   const { hasPermission } = usePermission();
@@ -101,7 +101,8 @@ const AllHotLeads = () => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Fresh Leads <span className="capitalize">({lead_type})</span>{" "}
+                  {`${t("fresh")} ${t("leads")}`}{" "}
+                  <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
                   <span className="bg-primary text-white px-3 py-1 ml-2 rounded-sm my-auto">
                     {pageState?.total}
                   </span>

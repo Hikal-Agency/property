@@ -24,7 +24,6 @@ import moment from "moment";
 import {
   RiCheckLine as CheckIcon,
   RiCloseLine as CloseIcon,
-  RiEyeCloseFill,
 } from "react-icons/ri";
 import SalaryDeductDailogue from "./SalaryDeductDailogue";
 import PasswordDialogue from "./PasswordDialogue";
@@ -39,7 +38,7 @@ const SingleEmployee = ({ user }) => {
     BACKEND_URL,
     DataGridStyles,
     pageState,
-    setpageState,
+    setpageState, t
   } = useStateContext();
 
   const path = window.location.pathname;
@@ -86,11 +85,10 @@ const SingleEmployee = ({ user }) => {
   };
 
   const columns = [
-    // { field: "id", headerAlign: "center", headerName: "Sr.No", minWidth: 60 },
     {
       field: "check_datetime",
       headerAlign: "center",
-      headerName: "Date",
+      headerName: t("date"),
       minWidth: 70,
       flex: 1,
       renderCell: (cellValues) => {
@@ -101,28 +99,28 @@ const SingleEmployee = ({ user }) => {
     {
       field: "checkIns",
       headerAlign: "center",
-      headerName: "In-time",
+      headerName: t("in_time"),
       minWidth: 90,
       flex: 1,
     },
     {
       field: "attendanceSourcesForCheckIn",
       headerAlign: "center",
-      headerName: "In-source",
+      headerName: t("in_source"),
       minWidth: 80,
       flex: 1,
     },
     {
       field: "checkOuts",
       headerAlign: "center",
-      headerName: "Out-time",
+      headerName: t("out_time"),
       minWidth: 90,
       flex: 1,
     },
     {
       field: "attendanceSourcesForCheckOut",
       headerAlign: "center",
-      headerName: "Out-source",
+      headerName: t("out_source"),
       minWidth: 80,
       flex: 1,
     },
@@ -130,7 +128,7 @@ const SingleEmployee = ({ user }) => {
     {
       field: "default_datetime",
       headerAlign: "center",
-      headerName: "Office time",
+      headerName: t("office_time"),
       minWidth: 70,
       flex: 1,
     },
@@ -138,46 +136,58 @@ const SingleEmployee = ({ user }) => {
     {
       field: "late_minutes",
       headerAlign: "center",
-      headerName: "Late",
+      headerName: t("late"),
       minWidth: 80,
       flex: 1,
       renderCell: (params) => {
-        if (params.row.is_late === 1 || params.row.is_late === 2) {
-          return params.row.late_minutes + " minutes";
+        if (params?.row?.is_late === 1 || params.row.is_late === 2) {
+          return params?.row?.late_minutes + " minutes";
         } else if (hasPermission("mark_late")) {
           // If there are no late minutes, return the buttons wrapped in a component
-          return (
-            <div className="flex justify-between px-5 py-3">
-              <Tooltip title="Yes" arrow>
-                <IconButton
-                  style={{
-                    backgroundColor: "#4CAF50",
-                    color: "white",
-                    fontSize: "1rem",
-                  }}
-                  className="rounded-full"
-                  onClick={(event) => lateSalary(event, 1, params?.row.id)}
-                >
-                  <CheckIcon />
-                </IconButton>
-              </Tooltip>
+          const checkTime = moment(params?.row?.check_datetime).format("HH:mm");
 
-              <Tooltip title="No" arrow>
-                <IconButton
-                  style={{
-                    backgroundColor: "#DC2626",
-                    color: "white",
-                    fontSize: "1rem",
-                    marginLeft: "5%",
-                  }}
-                  className="rounded-full"
-                  onClick={(event) => lateSalary(event, 2, params?.row.id)}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
+          let lateMinutes = moment(checkTime, "HH:mm").diff(
+            moment(params?.row?.default_datetime || "09:30 AM", "HH:mm"),
+            "minutes"
           );
+
+          if(lateMinutes > 0) {
+            return (
+              <div className="flex justify-between px-5 py-3">
+                <Tooltip title="Yes" arrow>
+                  <IconButton
+                    style={{
+                      backgroundColor: "#4CAF50",
+                      color: "white",
+                      fontSize: "1rem",
+                    }}
+                    className="rounded-full"
+                    onClick={(event) => lateSalary(event, 1, params?.row.id)}
+                  >
+                    <CheckIcon />
+                  </IconButton>
+                </Tooltip>
+  
+                <Tooltip title="No" arrow>
+                  <IconButton
+                    style={{
+                      backgroundColor: "#DC2626",
+                      color: "white",
+                      fontSize: "1rem",
+                      marginLeft: "5%",
+                    }}
+                    className="rounded-full"
+                    onClick={(event) => lateSalary(event, 2, params?.row.id)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            );
+
+          } else {
+            return "-";
+          }
         } else {
           return "-";
         }
@@ -187,14 +197,39 @@ const SingleEmployee = ({ user }) => {
     {
       field: "extra_minutes",
       headerAlign: "center",
-      headerName: "Extra",
+      headerName: t("extra"),
       minWidth: 80,
       flex: 1,
       renderCell: (params) => {
-        if(params.row.late_minutes <= 0) {
-          return params.row.late_minutes?.slice(1) + " minutes";
-        } else {
+        console.log("Params:", params);
+        const checkTime = moment(params?.row?.check_datetime).format("HH:mm");
+        const checkoutTime = moment(`${params?.row?.date} ${moment(params?.row?.checkOuts?.split(",")[0], "hh:mm A").format("HH:mm:ss")}`).format("HH:mm");
+        const extraMinutes = moment(checkoutTime, "HH:mm").diff(
+          moment(params?.row?.defaultCheckout || "06:30 PM", "HH:mm"),
+          "minutes"
+        );
+
+        let lateMinutes = moment(checkTime, "HH:mm").diff(
+          moment(params?.row?.default_datetime || "09:30 AM", "HH:mm"),
+          "minutes"
+        );
+
+        if(isNaN(lateMinutes) || isNaN(extraMinutes)) {
           return "-";
+        } else {
+          let totalMinutes = 0;
+          if(lateMinutes < 0) {
+            totalMinutes += lateMinutes; 
+          }
+          if(extraMinutes > 0) {
+            totalMinutes += extraMinutes;
+          }
+
+          if(totalMinutes > 0) {
+            return totalMinutes?.toString()?.slice(1) + " minutes"
+          } else {
+            return "-";
+          }
         }
       },
     },
@@ -204,7 +239,7 @@ const SingleEmployee = ({ user }) => {
     {
       field: "late_reason",
       headerAlign: "center",
-      headerName: "Note/Reason",
+      headerName: t("note/reason"),
       minWidth: 120,
       flex: 1,
     },
@@ -212,7 +247,7 @@ const SingleEmployee = ({ user }) => {
 
     {
       field: "cut_salary",
-      headerName: "Deduct",
+      headerName: t("deduct"),
       headerAlign: "center",
       minWidth: 80,
       flex: 1,
@@ -227,7 +262,7 @@ const SingleEmployee = ({ user }) => {
     // ACTION
     {
       field: "deduct_salary",
-      headerName: "Action",
+      headerName: t("label_action"),
       headerAlign: "center",
       minWidth: 100,
       sortable: false,
@@ -720,7 +755,7 @@ const SingleEmployee = ({ user }) => {
     const checkTime = moment(employeeData?.check_datetime).format("HH:mm");
 
     let lateMinutes = moment(checkTime, "HH:mm").diff(
-      moment(employeeData?.default_datetime, "HH:mm"),
+      moment(employeeData?.default_datetime || "09:30 AM", "HH:mm"),
       "minutes"
     );
 
@@ -745,7 +780,7 @@ const SingleEmployee = ({ user }) => {
     if (btn === 1) {
       console.log("deducted salary: ", deduted_salary);
       UpdateData.append("is_late", 1);
-      UpdateData.append("late_minutes", lateMinutes);
+      UpdateData.append("late_minutes", Number(lateMinutes) <= 0 ? 0 : lateMinutes);
       UpdateData.append("deduct_salary", 1);
       UpdateData.append("notify_status", "Direct");
       UpdateData.append("cut_salary", deduted_salary.toString());
@@ -789,7 +824,7 @@ const SingleEmployee = ({ user }) => {
       ) {
         console.log("lates::::::::::::::");
         UpdateData.append("is_late", 1);
-        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("late_minutes",  Number(lateMinutes) <= 0 ? 0 : lateMinutes);
         UpdateData.append("deduct_salary", 2);
       } else if (
         // moment(pageState?.first_check?.check_datetime, "HH:mm") >
@@ -798,7 +833,7 @@ const SingleEmployee = ({ user }) => {
       ) {
         console.log("lates::::::::::::::");
         UpdateData.append("is_late", 2);
-        UpdateData.append("late_minutes", lateMinutes);
+        UpdateData.append("late_minutes",  Number(lateMinutes) <= 0 ? 0 : lateMinutes);
         UpdateData.append("deduct_salary", 2);
       } else if (
         moment(pageState?.first_check?.check_datetime, "HH:mm") <=
@@ -1140,19 +1175,19 @@ const SingleEmployee = ({ user }) => {
       // Define the right side fields and their labels
       const rightSideFields = [
         {
-          label: "Working days",
+          label: t("working_days"),
           value: `${pageState?.workingDays || "0"}`,
         },
         {
-          label: "Attended days",
+          label: t("attended_days"),
           value: `${pageState?.attended_count || "0"}`,
         },
         {
-          label: "Leave days",
+          label: t("leave_days"),
           value: `${pageState?.leave_count || "0"}`,
         },
         {
-          label: "Late attended days",
+          label: t("late_attendance_days"),
           value: `${pageState?.late_count || "0"}`,
         },
       ];
@@ -1452,7 +1487,7 @@ const SingleEmployee = ({ user }) => {
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <h1 className="font-semibold">Monthly salary</h1>
+                          <h1 className="font-semibold">{t("monthly_salary")}</h1>
                         </div>
                         {empData[0]?.salary
                           ? `${empData[0]?.currency} ${empData[0]?.salary} `
@@ -1460,7 +1495,7 @@ const SingleEmployee = ({ user }) => {
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <h1 className="font-semibold">Salary per day</h1>
+                          <h1 className="font-semibold">{t("salary_per_day")}</h1>
                         </div>
                         {empData[0]?.salary && empData[0]?.salary !== null
                           ? `${empData[0]?.currency} ${pageState?.perDaySalary}`
@@ -1484,7 +1519,7 @@ const SingleEmployee = ({ user }) => {
                           </p>
                           {"  "}
                           <h1 className="font-semibold text-sm">
-                            working days
+                            {t("working_days")}
                           </h1>
                         </div>
                       </div>
@@ -1495,7 +1530,7 @@ const SingleEmployee = ({ user }) => {
                           </p>
                           {"  "}
                           <h1 className="font-semibold text-sm">
-                            attended days
+                            {t("attended_days")}
                           </h1>
                         </div>
                       </div>
@@ -1505,7 +1540,7 @@ const SingleEmployee = ({ user }) => {
                             {"  "} {pageState?.leave_count || "0"}
                           </p>
                           {"  "}
-                          <h1 className="font-semibold">leave days</h1>
+                          <h1 className="font-semibold">{t("leave_days")}</h1>
                         </div>
                       </div>
                       <div className="text-center">
@@ -1515,7 +1550,7 @@ const SingleEmployee = ({ user }) => {
                           </p>
                           {"  "}
                           <h1 className="font-semibold text-sm">
-                            late attendance days
+                           {t("late_attendance_days")}
                           </h1>
                         </div>
                       </div>
@@ -1531,7 +1566,7 @@ const SingleEmployee = ({ user }) => {
                       <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                         <div className="text-center">
                           <div className="flex items-center justify-center">
-                            <h1 className="font-semibold">Leave days salary</h1>
+                            <h1 className="font-semibold">{t("leave_days_salary")}</h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
                           {empData[0]?.salary
@@ -1540,7 +1575,7 @@ const SingleEmployee = ({ user }) => {
                         </div>
                         <div className="text-center">
                           <div className="flex items-center justify-center">
-                            <h1 className="font-semibold">Late days salary</h1>
+                            <h1 className="font-semibold">{t("late_days_salary")}</h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
                           {empData[0]?.salary && empData[0]?.salary !== null
@@ -1562,9 +1597,8 @@ const SingleEmployee = ({ user }) => {
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <h1 className="font-semibold">Total salary</h1>
+                          <h1 className="font-semibold">{t("total_salary")}</h1>
                         </div>
-                        {/* MONTHLY_SALARY - (LEAVE_DAY_SALARY + LATE_DAYA_SALARY) */}
                         {empData[0]?.salary
                           ? `${empData[0]?.currency} ${pageState?.totalSalary} `
                           : "-"}
@@ -1587,7 +1621,6 @@ const SingleEmployee = ({ user }) => {
                       disableSelectionOnClick
                       rows={pageState.data}
                       columns={columns}
-                      // rowCount={pageState.total}
                       loading={pageState.isLoading}
                       rowsPerPageOptions={[]}
                       pagination
@@ -1600,8 +1633,7 @@ const SingleEmployee = ({ user }) => {
                           csvOptions: {
                             disableToolbarButton: User?.role !== 1,
                           },
-                          // value: searchText,
-                          // onChange: HandleQuicSearch,
+         
                         },
                       }}
                       width="auto"
@@ -1661,23 +1693,6 @@ const SingleEmployee = ({ user }) => {
       )}
     </>
   );
-
-  function convertTo12HourFormat(time24Hour) {
-    const [hours, minutes] = time24Hour.split(":");
-    const parsedHours = parseInt(hours, 10);
-
-    let meridiem = "AM";
-    let formattedHours = parsedHours;
-
-    if (parsedHours === 0) {
-      formattedHours = 12;
-    } else if (parsedHours > 12) {
-      formattedHours = parsedHours - 12;
-      meridiem = "PM";
-    }
-
-    return `${formattedHours}:${minutes} ${meridiem}`;
-  }
 };
 
 export default SingleEmployee;

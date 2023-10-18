@@ -1,9 +1,6 @@
 import { Avatar, Box } from "@mui/material";
-import { useStateContext } from "../../context/ContextProvider";
-import { useState } from "react";
 
 const TemplatesCountCard = ({ count, type, icon }) => {
-  const { currentMode } = useStateContext();
   return (
     <>
       <Box

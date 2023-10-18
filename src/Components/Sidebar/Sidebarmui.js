@@ -70,7 +70,6 @@ import ReminderToast from "./ReminderToast";
 import DealClosedAlert from "./DealClosedAlert";
 import ReactConfetti from "react-confetti";
 
-// import { Link as NextLink } from "next/link";
 
 const Sidebarmui = () => {
   const {
@@ -96,7 +95,7 @@ const Sidebarmui = () => {
     themeBgImg,
     setUserCredits,
     primaryColor,
-    setPrimaryColor,
+    setPrimaryColor,t
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -346,7 +345,7 @@ const Sidebarmui = () => {
           localStorage.setItem("user", JSON.stringify(user));
         })
         .catch((err) => {
-          console.log(err);
+          console.log("response:", err);
           if (err.response?.status === 401) {
             setopenBackDrop(false);
             // setloading(false);
@@ -622,10 +621,10 @@ const Sidebarmui = () => {
 
   let links = [
     {
-      title: "Dashboard",
+      title: t("menu_dashboard"),
       links: [
         {
-          name: "Dashboard",
+          name: t("menu_dashboard"),
           icon: <RiDashboardFill />,
           link: "/dashboard",
         },
@@ -633,45 +632,44 @@ const Sidebarmui = () => {
     },
 
     {
-      title: "Leads",
+      title: t("leads"),
       icon: <FaUsers />,
       links: [
         {
-          name: "Add lead",
+          name: t("menu_add_lead"),
           icon: <MdPersonAdd />,
           link: "/addlead",
         },
         {
-          name: "Unassigned",
+          name: t("menu_unassigned"),
           icon: <BsStopCircleFill />,
           submenu: [
             {
-              name: "LIVE CALL",
+              name: t("menu_live_call"),
               link: "/unassigned/liveleads",
-              // count: sidebarData?.UNASSIGNED?.fresh,
             },
             {
-              name: "Fresh",
+              name: t("menu_fresh"),
               link: "/unassigned/fresh",
               count: sidebarData?.UNASSIGNED?.fresh,
             },
             {
-              name: "Third Party",
+              name: t("menu_thirdparty"),
               count: sidebarData?.UNASSIGNED?.third_party,
               link: "/unassigned/thirdpartyleads",
             },
             {
-              name: "Cold",
+              name: t("menu_cold"),
               count: sidebarData?.UNASSIGNED?.cold,
               link: "/unassigned/coldleads",
             },
             {
-              name: "Archived",
+              name: t("menu_archived"),
               count: sidebarData?.UNASSIGNED?.warm,
               link: "/unassigned/archive",
             },
             {
-              name: "Personal",
+              name: t("menu_personal"), 
               count: sidebarData?.UNASSIGNED?.personal,
               link: "/unassigned/personalleads",
             },
@@ -680,46 +678,46 @@ const Sidebarmui = () => {
 
         // FRESH
         {
-          name: "Live Call",
+          name: t("menu_live_call"),
           icon: <RiLiveFill />,
           submenu: [
             {
-              name: "All",
+              name: t("feedback_all"),
               // count: sidebarData?.HotLeadsCount?.hot,
               link: "/liveleads/all",
             },
             {
-              name: "New",
+              name: t("feedback_new"),
               // count: sidebarData?.HotLeadsCount?.new,
               link: "/liveleads/new",
             },
             {
-              name: "Follow Up",
+              name: t("feedback_follow_up"),
               // count: sidebarData?.HotLeadsCount?.follow_up,
               link: "/liveleads/follow up",
             },
             {
-              name: "Meeting",
+              name:t("feedback_meeting"),
               // count: sidebarData?.HotLeadsCount?.Meeting,
               link: "/liveleads/meeting",
             },
             {
-              name: "Low Budget",
+              name: t("feedback_low_budget"),
               // count: sidebarData?.HotLeadsCount?.low_budget,
               link: "/liveleads/low budget",
             },
             {
-              name: "No Answer",
+              name: t("feedback_no_answer"),
               // count: sidebarData?.HotLeadsCount?.no_nswer,
               link: "/freshleads/no answer",
             },
             {
-              name: "Not Interested",
+              name: t("feedback_not_interested"),
               // count: sidebarData?.HotLeadsCount?.not_interested,
               link: "/freshleads/not interested",
             },
             {
-              name: "Unreachable",
+              name: t("feedback_unreachable"),
               // count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/freshleads/unreachable",
             },
@@ -727,46 +725,46 @@ const Sidebarmui = () => {
         },
         // FRESH
         {
-          name: "Fresh",
+          name: t("menu_fresh"),
           icon: <SiHotjar />,
           submenu: [
             {
-              name: "All",
+              name: t("feedback_all"),
               count: sidebarData?.HotLeadsCount?.hot,
               link: "/freshleads/all",
             },
             {
-              name: "New",
+              name: t("feedback_new"),
               count: sidebarData?.HotLeadsCount?.new,
               link: "/freshleads/new",
             },
             {
-              name: "Follow Up",
+              name: t("feedback_follow_up"),
               count: sidebarData?.HotLeadsCount?.follow_up,
               link: "/freshleads/follow up",
             },
             {
-              name: "Meeting",
+              name: t("feedback_meeting"),
               count: sidebarData?.HotLeadsCount?.Meeting,
               link: "/freshleads/meeting",
             },
             {
-              name: "Low Budget",
+              name: t("feedback_low_budget"),
               count: sidebarData?.HotLeadsCount?.low_budget,
               link: "/freshleads/low budget",
             },
             {
-              name: "No Answer",
+              name: t("feedback_no_answer"),
               count: sidebarData?.HotLeadsCount?.no_nswer,
               link: "/freshleads/no answer",
             },
             {
-              name: "Not Interested",
+              name: t("feedback_not_interested"),
               count: sidebarData?.HotLeadsCount?.not_interested,
               link: "/freshleads/not interested",
             },
             {
-              name: "Unreachable",
+              name: t("feedback_unreachable"),
               count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/freshleads/unreachable",
             },
@@ -774,46 +772,46 @@ const Sidebarmui = () => {
         },
         // THIRD PARTY
         {
-          name: "Third party",
+          name: t("menu_thirdparty"),
           icon: <FaLink />,
           submenu: [
             {
-              name: "All",
+              name: t("feedback_all"),
               count: sidebarData?.ThirdPartyLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
-              name: "New",
+              name: t("feedback_new"),
               count: sidebarData?.ThirdPartyLeadsCount?.new,
               link: "/thirdpartyleads/new",
             },
             {
-              name: "Follow Up",
+              name: t("feedback_follow_up"),
               count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
               link: "/thirdpartyleads/follow up",
             },
             {
-              name: "Meeting",
+              name: t("feedback_meeting"),
               count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
               link: "/thirdpartyleads/meeting",
             },
             {
-              name: "Low Budget",
+              name: t("feedback_low_budget"),
               count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
               link: "/thirdpartyleads/low budget",
             },
             {
-              name: "No Answer",
+              name: t("feedback_no_answer"),
               count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
               link: "/thirdpartyleads/no answer",
             },
             {
-              name: "Not Interested",
+              name: t("feedback_not_interested"),
               count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
               link: "/thirdpartyleads/not interested",
             },
             {
-              name: "Unreachable",
+              name: t("feedback_unreachable"),
               count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
               link: "/thirdpartyleads/unreachable",
             },
@@ -821,67 +819,67 @@ const Sidebarmui = () => {
         },
         // COLD
         {
-          name: "Cold",
+          name: t("menu_cold"),
           icon: <FaSnowflake />,
           submenu: [
             {
-              name: "All",
+              name: t("feedback_all"),
               count: sidebarData?.ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
-              name: "Verified",
+              name: t("menu_verified"),
               count: sidebarData?.ColdLeadsCount?.verified, //TODO
               link: "/coldleads/coldLeadsVerified",
               icon: <RiRadioButtonLine style={{ color: "#40B74F" }} />,
               countColor: "#008000",
             },
             {
-              name: "Invalid",
+              name: t("menu_invalid"),
               count: sidebarData?.ColdLeadsCount?.unverified, //TODO
               link: "/coldleads/coldLeadsInvalid",
               icon: <RiRadioButtonLine style={{ color: primaryColor }} />,
               countColor: "#FF0000",
             },
             {
-              name: "Not Checked",
+              name: t("menu_not_checked"),
               count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
               link: "/coldleads/coldLeadsNotChecked",
               icon: <RiRadioButtonLine style={{ color: "#FFCF49" }} />,
               countColor: "#FFA500",
             },
             {
-              name: "New",
+              name: t("feedback_new"),
               count: sidebarData?.ColdLeadsCount?.new,
               link: "/coldleads/new",
             },
             {
-              name: "Follow Up",
+              name: t('feedback_follow_up'),
               count: sidebarData?.ColdLeadsCount?.follow_up,
               link: "/coldleads/follow up",
             },
             {
-              name: "Meeting",
+              name: t("feedback_meeting"),
               count: sidebarData?.ColdLeadsCount?.Meeting,
               link: "/coldleads/meeting",
             },
             {
-              name: "Low Budget",
+              name: t("feedback_low_budget"),
               count: sidebarData?.ColdLeadsCount?.low_budget,
               link: "/coldleads/low budget",
             },
             {
-              name: "No Answer",
+              name: t("feedback_no_answer"),
               count: sidebarData?.ColdLeadsCount?.no_nswer,
               link: "/coldleads/no answer",
             },
             {
-              name: "Not Interested",
+              name: t("feedback_not_interested"),
               count: sidebarData?.ColdLeadsCount?.not_interested,
               link: "/coldleads/not interested",
             },
             {
-              name: "Unreachable",
+              name: t("feedback_unreachable"),
               count: sidebarData?.ColdLeadsCount?.unreachable,
               link: "/coldleads/unreachable",
             },
@@ -889,47 +887,47 @@ const Sidebarmui = () => {
         },
         // RESHUFFLED
         {
-          name: "Reshuffled",
+          name: t("menu_reshuffled"),
           icon: <FaRandom />,
           // link: "/reshuffleleads",
           submenu: [
             {
-              name: "All",
+              name: t("feedback_all"),
               count: sidebarData?.Reshuffle?.fresh,
               link: "/reshuffleleads/all",
             },
             {
-              name: "New",
+              name: t("feedback_new"),
               count: sidebarData?.Reshuffle?.new,
               link: "/reshuffleleads/new",
             },
             {
-              name: "Follow Up",
+              name: t("feedback_follow_up"),
               count: sidebarData?.Reshuffle?.follow_up,
               link: "/reshuffleleads/follow up",
             },
             {
-              name: "Meeting",
+              name: t("feedback_meeting"),
               count: sidebarData?.Reshuffle?.meeting,
               link: "/reshuffleleads/meeting",
             },
             {
-              name: "Low Budget",
+              name: t("feedback_low_budget"),
               count: sidebarData?.Reshuffle?.low_budget,
               link: "/reshuffleleads/low budget",
             },
             {
-              name: "No Answer",
+              name: t("feedback_no_answer"),
               count: sidebarData?.Reshuffle?.no_answer,
               link: "/reshuffleleads/no answer",
             },
             {
-              name: "Not Interested",
+              name: t("feedback_not_interested"),
               count: sidebarData?.Reshuffle?.not_interested,
               link: "/reshuffleleads/not interested",
             },
             {
-              name: "Unreachable",
+              name: t("feedback_unreachable"),
               count: sidebarData?.Reshuffle?.unreachable,
               link: "/reshuffleleads/unreachable",
             },
@@ -937,46 +935,46 @@ const Sidebarmui = () => {
         },
         // ARCHIVED
         {
-          name: "Archived",
+          name: t("menu_archived"),
           icon: <FaArchive />,
           submenu: [
             {
-              name: "All Leads",
+              name: t("menu_all_leads"),
               count: sidebarData?.WarmLeadCount?.all,
               link: "/archive/all",
             },
             {
-              name: "New Leads",
+              name: t("menu_new_leads"),
               count: sidebarData?.WarmLeadCount?.new,
               link: "/archive/new",
             },
             {
-              name: "Follow Up",
+              name: t("feedback_follow_up"),
               count: sidebarData?.WarmLeadCount?.follow_up,
               link: "/archive/follow up",
             },
             {
-              name: "Meeting",
+              name: t("feedback_meeting"),
               count: sidebarData?.WarmLeadCount?.Meeting,
               link: "/archive/meeting",
             },
             {
-              name: "Low Budget",
+              name: t("feedback_low_budget"),
               count: sidebarData?.WarmLeadCount?.low_budget,
               link: "/archive/low budget",
             },
             {
-              name: "No Answer",
+              name: t("feedback_no_answer"),
               count: sidebarData?.WarmLeadCount?.no_nswer,
               link: "/archive/no answer",
             },
             {
-              name: "Not Intrested",
+              name: t("feedback_not_interested"),
               count: sidebarData?.WarmLeadCount?.not_interested,
               link: "/archive/not interested",
             },
             {
-              name: "Unreachable",
+              name: t("feedback_unreachable"),
               count: sidebarData?.WarmLeadCount?.unreachable,
               link: "/archive/unreachable",
             },
@@ -984,46 +982,46 @@ const Sidebarmui = () => {
         },
         // PERSONAL
         {
-          name: "Personal",
+          name: t("menu_personal"),
           icon: <HiUsers />,
           submenu: [
             {
-              name: "All",
+              name: t("feedback_all"),
               count: sidebarData?.PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
-              name: "New",
+              name: t("feedback_new"),
               count: sidebarData?.PersonalLeadsCount?.new,
               link: "/personalleads/new",
             },
             {
-              name: "Follow Up",
+              name: t("feedback_follow_up"),
               count: sidebarData?.PersonalLeadsCount?.follow_up,
               link: "/personalleads/follow up",
             },
             {
-              name: "Meeting",
+              name: t("feedback_meeting"),
               count: sidebarData?.PersonalLeadsCount?.Meeting,
               link: "/personalleads/meeting",
             },
             {
-              name: "Low Budget",
+              name: t("feedback_low_budget"),
               count: sidebarData?.PersonalLeadsCount?.low_budget,
               link: "/personalleads/low budget",
             },
             {
-              name: "No Answer",
+              name: t("feedback_no_answer"),
               count: sidebarData?.PersonalLeadsCount?.no_nswer,
               link: "/personalleads/no answer",
             },
             {
-              name: "Not Interested",
+              name: t("feedback_not_interested"),
               count: sidebarData?.PersonalLeadsCount?.not_interested,
               link: "/personalleads/not interested",
             },
             {
-              name: "Unreachable",
+              name: t("feedback_unreachable"),
               count: sidebarData?.PersonalLeadsCount?.unreachable,
               link: "/personalleads/unreachable",
             },
@@ -1031,49 +1029,44 @@ const Sidebarmui = () => {
         },
 
         {
-          name: "Notes",
+          name: t("menu_notes"),
           icon: <MdSpeakerNotes />,
           link: "/leadnotes",
         },
         {
-          name: "Search",
+          name: t("menu_search"),
           icon: <HiSearch />,
           link: "/search",
         },
       ],
     },
     {
-      title: "Deals",
+      title: t("menu_deals"),
       icon: <FaHandshake />,
       links: [
         {
-          name: "Booked deals",
+          name: t("menu_booked_deals"),
           icon: <ImBookmark />,
           link: "/booked",
         },
         {
-          name: "Closed deals",
+          name: t("menu_closed_deals"),
           icon: <ImLock />,
           link: "/closedeals",
         },
       ],
     },
     {
-      title: "Secondary",
+      title: t("menu_secondary"),
       icon: <BsBuildingGear />,
       links: [
         {
-          name: "Listings",
+          name: t("menu_listings"),
           icon: <FaTags />,
           link: "/secondaryListings",
         },
-        // {
-        //   name: "Sellers",
-        //   icon: <FaUserTag />,
-        //   link: "/sellers",
-        // },
         {
-          name: "buyers",
+          name: t("menu_buyers"),
           icon: <FaUserFriends />,
           link: "/buyers/buyers",
         },
@@ -1081,16 +1074,16 @@ const Sidebarmui = () => {
     },
 
     {
-      title: "Apps",
+      title: t("menu_apps"),
       icon: <MdApps />,
       links: [
         {
-          name: "Meetings",
+          name: t("menu_meetings"),
           icon: <BsCalendarWeekFill />,
           link: "/meetings",
         },
         {
-          name: "Appointments",
+          name: t("menu_appointments"),
           icon: <BsCalendarWeekFill />,
           link: "/appointments",
         },
@@ -1101,27 +1094,27 @@ const Sidebarmui = () => {
         // },
 
         {
-          name: "Reports",
+          name: t("menu_reports"),
           icon: <HiDocumentReport />,
           link: "/reports",
         },
         {
-          name: "Offers",
+          name: t("menu_offers"),
           icon: <AiFillGift />,
           link: "/offers",
         },
         {
-          name: "Newsletter",
+          name: t("menu_newsletter"),
           icon: <BsEnvelopeFill />,
           link: "/newsletter",
         },
         {
-          name: "Users",
+          name: t("menu_users"),
           icon: <ImUsers />,
           link: "/users",
         },
         // {
-        //   name: "Clients",
+        //   name: t("menu_clients"),
         //   icon: <ImUsers />,
         //   link: "/clients",
         // },
@@ -1131,22 +1124,22 @@ const Sidebarmui = () => {
         //   link: "/contacts",
         // },
         {
-          name: "Blocked IPs",
+          name: t("menu_blocked_ips"),
           icon: <BiBlock />,
           link: "/blocked",
         },
         {
-          name: "Property Portfolio",
+          name: t("menu_property_portfolio"),
           icon: <RiBuilding2Fill />,
           link: "/propertyPortfolio",
         },
         {
-          name: "Leaderboard",
+          name: t("menu_leaderboard"),
           icon: <MdLeaderboard />,
           link: "/leaderboard",
         },
         {
-          name: "Roles",
+          name: t("menu_roles"),
           icon: <BsPersonFillLock />,
           link: "/roles",
         },
@@ -1154,11 +1147,11 @@ const Sidebarmui = () => {
     },
     // SOCIAL MEDIA
     {
-      title: "Social Media",
+      title: t("menu_social_media"),
       icon: <GoBrowser />,
       links: [
         {
-          name: "Facebook",
+          name: t("menu_facebook"),
           // icon: <FaChartLine />,
           icon: <FaFacebookSquare />,
           link: "/facebook",
@@ -1173,16 +1166,16 @@ const Sidebarmui = () => {
     },
     // LOCATION
     {
-      title: "LOCATION",
+      title: t("menu_location"),
       icon: <MdLocationOn />,
       links: [
         {
-          name: "Meetings",
+          name: t("menu_location_meetings"),
           icon: <ImLocation />,
           link: "/location/meetinglocation",
         },
         {
-          name: "Live",
+          name: t("menu_location_live"),
           icon: <MdPersonPinCircle />,
           link: "/location/userlocation",
         },
@@ -1190,21 +1183,21 @@ const Sidebarmui = () => {
     },
     // ATTENDANCE
     {
-      title: "ATTENDANCE",
+      title: t("menu_attendance"),
       icon: <AiTwotoneCalendar />,
       links: [
         {
-          name: "Office Settings ",
+          name: t("menu_office_settings"),
           icon: <BiCalendar />,
           link: "/attendance/officeSettings",
         },
         {
-          name: "Employees List",
+          name: t("menu_employee_list"),
           icon: <FiUsers />,
           link: "/attendance/employeesList",
         },
         {
-          name: "My Attendance",
+          name: t("menu_my_attendance"),
           icon: <FiUsers />,
           link: "/attendance_self",
         },
@@ -1212,12 +1205,12 @@ const Sidebarmui = () => {
     },
     // MESSAGING
     {
-      title: "Messaging",
+      title: t("menu_messaging"),
       icon: <MdApps />,
 
       links: [
         {
-          name: "Chat",
+          name: t("menu_chat"),
           icon: <BsCircleFill />,
           link: "/chat",
         },
@@ -1225,11 +1218,11 @@ const Sidebarmui = () => {
     },
     // BILLINGS
     {
-      title: "BILLINGS",
+      title: t("menu_billings"),
       icon: <MdOutlinePayment />,
       links: [
         {
-          name: "Payments",
+          name: t("menu_payments"),
           icon: <BsFillCreditCard2FrontFill />,
           link: "/marketing/payments",
         },
@@ -1237,26 +1230,26 @@ const Sidebarmui = () => {
     },
     // SUPPORT
     {
-      title: "SUPPORT",
+      title: t("menu_support"),
       icon: <BiSupport />,
 
       links: [
         {
-          name: "QA ",
+          name: t("menu_qa"),
           icon: <AiOutlineQuestionCircle />,
           submenu: [
             {
-              name: "QA Form",
+              name: t("menu_qa_form"),
               link: "/trainer",
             },
             {
-              name: "All QA",
+              name: t("menu_qa_all"),
               link: "/qa",
             },
           ],
         },
         {
-          name: "Tickets",
+          name: t("menu_tickets"),
           icon: <HiTicket />,
           link: "/support",
         },
@@ -1264,11 +1257,11 @@ const Sidebarmui = () => {
     },
     // MISC
     {
-      title: "MISC",
+      title: t("menu_misc"),
       icon: <MdSettings />,
       links: [
         {
-          name: "Settings",
+          name: t("menu_settings"),
           icon: <FiSettings />,
           submenu: [
             // {
@@ -1276,11 +1269,11 @@ const Sidebarmui = () => {
             //   link: "/integrations",
             // },
             {
-              name: "Notifications Settings",
+              name: t("menu_notification_settings"),
               link: "/notifications",
             },
             {
-              name: "Notifications History",
+              name: t("menu_notification_history"),
               link: "/notificationsList",
             },
           ],
@@ -1292,31 +1285,31 @@ const Sidebarmui = () => {
   if (isUserSubscribed !== null && isUserSubscribed === true) {
     if (User?.role === 1) {
       links.splice(5, 0, {
-        title: "MARKETING",
+        title: t("menu_marketing"),
         icon: <MdCampaign />,
         links: [
           {
-            name: "Instances",
+            name: t("menu_instances"),
             icon: <BsFillLayersFill />,
             link: "/instances",
           },
           {
-            name: "WhatsApp",
+            name: t("menu_whatsapp"),
             icon: <RiWhatsappFill />,
             link: "/marketing/chat",
           },
           {
-            name: "SMS",
+            name: t("menu_sms"),
             icon: <FaSms />,
             link: "/marketing/contacts",
           },
           {
-            name: "Templates",
+            name: t("menu_templates"),
             icon: <FaMobile />,
             link: "/marketing/templates",
           },
           {
-            name: "Campaigns",
+            name: t("menu_campaigns"),
             icon: <MdOutlineCampaign />,
             link: "/marketing/messages",
           },
@@ -1324,21 +1317,21 @@ const Sidebarmui = () => {
       });
     } else {
       links.splice(5, 0, {
-        title: "MARKETING",
+        title:  t("menu_marketing"),
         icon: <MdCampaign />,
         links: [
           {
-            name: "WhatsApp",
+            name: t("menu_whatsapp"),
             icon: <RiWhatsappFill />,
             link: "/marketing/chat",
           },
           {
-            name: "Contacts",
+            name: t("menu_sms"),
             icon: <MdContactPage />,
             link: "/marketing/contacts",
           },
           {
-            name: "Templates",
+            name: t("menu_templates"),
             icon: <FaMobile />,
             link: "/marketing/templates",
           },
@@ -1548,7 +1541,7 @@ const Sidebarmui = () => {
                           className={`rounded-md object-cover relative`}
                           alt=""
                         />
-
+{/* 
                         <div
                           onClick={() =>
                             setAnimateProfilePic(!animateProfilePic)
@@ -1564,7 +1557,7 @@ const Sidebarmui = () => {
                           >
                             View
                           </p>
-                        </div>
+                        </div> */}
                       </Box>
 
                       <h1

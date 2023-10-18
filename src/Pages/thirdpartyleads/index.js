@@ -14,18 +14,16 @@ import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
 
 const ThirdPartyLeads = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
   const [loading, setloading] = useState(true);
   const {
-    setUser,
     currentMode,
     pageState,
     setopenBackDrop,
-    BACKEND_URL,
+    BACKEND_URL, t
   } = useStateContext();
 
   useEffect(() => {
@@ -57,8 +55,8 @@ const ThirdPartyLeads = () => {
                     : "text-black"
                 }`}
               >
-                Third Party Leads {" "}
-                <span className="capitalize">({lead_type})</span>{" "}
+                {`${t("thirdparty")} ${t("leads")}`} {" "}
+                <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>

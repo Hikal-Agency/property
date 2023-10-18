@@ -1,18 +1,12 @@
 import React, { useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { useState } from "react";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Card,
   CardContent,
   Typography,
   styled,
 } from "@mui/material";
-import { BsChevronCompactDown } from "react-icons/bs";
 import { Editor } from "@tinymce/tinymce-react";
-import { useLocation } from "react-router-dom";
 
 const useStyles = styled({
   root: {
@@ -68,7 +62,6 @@ const SingleTickt = ({ ticketData }) => {
       const reader = new FileReader();
 
       reader.onload = async () => {
-        const base64 = reader.result.split(",")[1];
 
         const formData = new FormData();
         formData.append("file", file);
@@ -109,9 +102,8 @@ const SingleTickt = ({ ticketData }) => {
     }
   };
 
-  const { currentMode } = useStateContext();
+  const { currentMode, t } = useStateContext();
 
-  const [loading, setloading] = useState(false);
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
@@ -126,7 +118,7 @@ const SingleTickt = ({ ticketData }) => {
           >
             <CardContent className={classes.content}>
               <h3 className={` text-xl font-bold text-center text-black mb-3`}>
-                Description
+                {t("description")}
               </h3>
               <hr />
               <h3 className="text-xl font-bold text-gray-700">
@@ -216,15 +208,15 @@ const SingleTickt = ({ ticketData }) => {
           <div className="grid grid-cols-1 gap-5 ">
             <div className="mb-2">Ticket details</div>
             <Typography sx={{ wordWrap: "break-word" }}>
-              <b> Ticket ID: </b>
+              <b> {t("ticket_id")}: </b>
               {ticketData?.id} <br />
-              <b>Created: </b> {ticketData?.created_ad} <br />
-              <b>Status: </b>
+              <b>{t("created")}: </b> {ticketData?.created_ad} <br />
+              <b>{t("status")}: </b>
               <span className={getStatusColorClass(ticketData?.status)}>
                 {ticketData?.status}
               </span>
               <br />
-              <b> Source: </b> {ticketData?.source}
+              <b> {t("label_source")}: </b> {ticketData?.source}
               <br />
             </Typography>
             {/* <Accordion className="mb-4">
@@ -248,21 +240,10 @@ const SingleTickt = ({ ticketData }) => {
               </AccordionDetails>
             </Accordion> */}
             <Typography sx={{ wordWrap: "break-word" }}>
-              <b> Added By: </b> {ticketData?.added_by} <br />
-              <b> Assigned to: </b> {ticketData?.assigned_to || "No one"}
+              <b> {t("label_added_by")}: </b> {ticketData?.added_by} <br />
+              <b> {t("assigned_to")}: </b> {ticketData?.assigned_to || "No one"}
             </Typography>
-            {/* <Accordion className="mb-4">
-              <AccordionSummary expandIcon={<BsChevronCompactDown />}>
-                <Typography>Responsibility</Typography>
-              </AccordionSummary>
-
-              <AccordionDetails>
-                <Typography sx={{ wordWrap: "break-word" }}>
-                  <b> Added By: </b> {ticketData?.added_by} <br />
-                  <b> Assigned to: </b> {ticketData?.assigned_to || "No one"}
-                </Typography>
-              </AccordionDetails>
-            </Accordion> */}
+    
           </div>
         </div>
       </div>

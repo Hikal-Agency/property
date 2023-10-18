@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
-import GoogleCalendarAppointment from "../../Components/appointments/GoogleCalendarAppointment";
-import { Box, InputAdornment, TextField } from "@mui/material";
-import styled from "@emotion/styled";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import { BsSearch } from "react-icons/bs";
+import axios from "../../axoisConfig";
+import md5 from "md5";
 
 const CreateAppointment = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, User, darkModeColors } =
+  const { currentMode, setopenBackDrop, User, darkModeColors, primaryColor } =
     useStateContext();
   const [meetingsCount, setMeetingCount] = useState({
     pendingMeeting: null,
@@ -22,6 +28,38 @@ const CreateAppointment = () => {
     // eslint-disable-next-line
   }, []);
 
+  const handleCreateMeeting = async () => {
+    // const token = localStorage.getItem("auth-token");
+    // try {
+    //   const Data = {};
+    //   const apiObj = {
+    //     meetingId: "random-4451041",
+    //     server: "https://meet.hikalcrm.com/bigbluebutton/",
+    //     sharedSecret: "FQXivXsHx9eWxTV8AU0bUb6jDQqioRdOviG5gr14vos",
+    //     name: "random-4451041",
+    //     callName: "create",
+    //   };
+    //   const queryString = `allowStartStopRecording=true&attendeePW=ap&autoStartRecording=false&meetingID=${apiObj?.meetingId}&moderatorPW=mp&name=${apiObj?.name}&record=false&voiceBridge=75977&welcome=Welcome to Hikal Meet`;
+
+    //   const checkSum = `${apiObj?.callName}${queryString}${apiObj.sharedSecret}`;
+    //   console.log("Checksum::", checkSum);
+    //   await axios.post(
+    //     `https://meet.hikalcrm.com/bigbluebutton/api/create?${queryString}&checksum=${md5(
+    //       checkSum
+    //     )}`,
+    //     JSON.stringify(Data),
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: "Bearer " + token,
+    //       },
+    //     }
+    //   );
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
+
   return (
     <>
       <div className="flex min-h-screen">
@@ -34,6 +72,28 @@ const CreateAppointment = () => {
             }`}
           >
             <div className="mt-3">
+              <Button
+                onClick={handleCreateMeeting}
+                className={`mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
+                ripple={true}
+                style={{
+                  background: `${primaryColor}`,
+                  color: "white",
+                }}
+                size="lg"
+                type="submit"
+                disabled={loading ? true : false}
+              >
+                {loading ? (
+                  <CircularProgress
+                    size={20}
+                    sx={{ color: "white" }}
+                    className="text-white"
+                  />
+                ) : (
+                  <span>Create Meeting</span>
+                )}
+              </Button>
               <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-5 flex justify-between">
                 <Box
                   sx={{
@@ -42,10 +102,12 @@ const CreateAppointment = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     fontWeight: "bold",
-                    background:
-                      currentMode === "dark" ? "#333333" : "#EEEEEE",
+                    background: currentMode === "dark" ? "#333333" : "#EEEEEE",
                     color: currentMode === "dark" ? "white" : "black",
-                    boxShadow: currentMode === "dark" ? "3px 3px 3px rgba(255, 255, 255, 0.35)" : "3px 3px 3px rgba(0, 0, 0, 0.25)",
+                    boxShadow:
+                      currentMode === "dark"
+                        ? "3px 3px 3px rgba(255, 255, 255, 0.35)"
+                        : "3px 3px 3px rgba(0, 0, 0, 0.25)",
                     height: "165px",
                     // minWidth: "300px !important",
                   }}
@@ -74,9 +136,7 @@ const CreateAppointment = () => {
                 </Box>
 
                 <div className="p-5 mt-2 w-full lg:col-span-2">
-                  <Box 
-                    sx={darkModeColors}
-                  >
+                  <Box sx={darkModeColors}>
                     <TextField
                       className="w-full"
                       placeholder="search.."
@@ -87,9 +147,7 @@ const CreateAppointment = () => {
                           <InputAdornment position="start">
                             <BsSearch
                               color={
-                                currentMode == "dark"
-                                  ? "#AAAAAA"
-                                  : "#AAAAAA"
+                                currentMode == "dark" ? "#AAAAAA" : "#AAAAAA"
                               }
                             />
                           </InputAdornment>
@@ -110,7 +168,10 @@ const CreateAppointment = () => {
                         background:
                           currentMode === "dark" ? "#333333" : "#EEEEEE",
                         color: currentMode === "dark" ? "white" : "black",
-                        boxShadow: currentMode === "dark" ? "3px 3px 3px rgba(255, 255, 255, 0.35)" : "3px 3px 3px rgba(0, 0, 0, 0.25)",
+                        boxShadow:
+                          currentMode === "dark"
+                            ? "3px 3px 3px rgba(255, 255, 255, 0.35)"
+                            : "3px 3px 3px rgba(0, 0, 0, 0.25)",
                       }}
                       className="p-5"
                     >
@@ -132,7 +193,10 @@ const CreateAppointment = () => {
                         background:
                           currentMode === "dark" ? "#333333" : "#EEEEEE",
                         color: currentMode === "dark" ? "white" : "black",
-                        boxShadow: currentMode === "dark" ? "3px 3px 3px rgba(255, 255, 255, 0.35)" : "3px 3px 3px rgba(0, 0, 0, 0.25)",
+                        boxShadow:
+                          currentMode === "dark"
+                            ? "3px 3px 3px rgba(255, 255, 255, 0.35)"
+                            : "3px 3px 3px rgba(0, 0, 0, 0.25)",
                       }}
                       className="p-5"
                     >

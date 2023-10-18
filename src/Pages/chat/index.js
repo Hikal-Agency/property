@@ -1,14 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import ChatConversation from "../../Components/chat/ChatConversation";
-import { useProSidebar } from "react-pro-sidebar";
 import { socket } from "../App";
-import { toast } from "react-toastify";
-import axios from "../../axoisConfig";
 
 const ChatPage = () => {
-  const { currentMode, isCollapsed, formatTime, setIsCollapsed, User } = useStateContext();
-  const { collapseSidebar } = useProSidebar();
+  const { currentMode, User } = useStateContext();
   const [activeChat, setActiveChat] = useState(null);
   const [loadingConversations, setLoadingConversation] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);

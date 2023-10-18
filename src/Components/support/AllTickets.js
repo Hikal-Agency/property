@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import UpdateTicketSelect from "./UpdateTicketSelect";
 
 const AllTickets = () => {
-  const { currentMode, DataGridStyles, BACKEND_URL, User } = useStateContext();
+  const { currentMode, DataGridStyles, BACKEND_URL, User,t } = useStateContext();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const AllTickets = () => {
   const columns = [
     {
       field: "creationDate",
-      headerName: "Ticket Date",
+      headerName: t("ticket_date"),
       headerAlign: "center",
       editable: false,
       minWidth: 60,
@@ -31,7 +31,7 @@ const AllTickets = () => {
     },
     {
       field: "userName",
-      headerName: "User Name",
+      headerName: t("label_user_name"),
       headerAlign: "center",
       editable: false,
       minWidth: 120,
@@ -48,7 +48,7 @@ const AllTickets = () => {
     },
     {
       field: "category",
-      headerName: "Category",
+      headerName: t("label_category"),
       headerAlign: "center",
       editable: false,
       minWidth: 40,
@@ -65,7 +65,7 @@ const AllTickets = () => {
     },
     {
       field: "description",
-      headerName: "Description",
+      headerName: t("description"),
       headerAlign: "center",
       editable: false,
       minWidth: 150,
@@ -82,7 +82,7 @@ const AllTickets = () => {
     },
     {
       field: "issue",
-      headerName: "Issue",
+      headerName: t("label_issue"),
       headerAlign: "center",
       editable: false,
       minWidth: 130,

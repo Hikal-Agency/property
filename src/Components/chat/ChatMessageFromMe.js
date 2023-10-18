@@ -1,9 +1,8 @@
 import { Avatar } from "@mui/material";
-// import {format} from "timeago.js";
 import { useStateContext } from "../../context/ContextProvider";
 
 const ChatMessageFromMe = ({ message, data }) => {
-  const { formatTime } = useStateContext();
+  const { formatTime, t } = useStateContext();
 
   return (
     <div className="flex items-start mt-4">
@@ -38,7 +37,7 @@ const ChatMessageFromMe = ({ message, data }) => {
             className="max-w-[600px] bg-primary rounded-lg rounded-tr-none mr-2 p-4"
           >
             {message.type === "revoked" ? (
-              <i className="text-gray-200">This message was deleted</i>
+              <i className="text-gray-200">{t("message_was_deleted")}</i>
             ) : (
               <span className="text-white">{message.content}</span>
             )}

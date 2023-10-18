@@ -25,17 +25,11 @@
 // export default axiosInstance;
 
 import axios from "axios";
-import { useStateContext } from "./context/ContextProvider";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 // const { BACKEND_URL } = useStateContext;
 const axiosInstance = axios.create();
-
-const showToastMessage = (message) => {
-  toast.error(message);
-};
 
 let isRedirecting = false; // Flag to check if redirection is already in progress
 
@@ -54,7 +48,6 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem("access_token");
       localStorage.removeItem("expires_in");
 
-      // Redirect the user to the "/" route
       isRedirecting = true;
       window.open("/", "_self");
       // const navigate = useNavigate();

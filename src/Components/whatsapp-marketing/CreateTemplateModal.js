@@ -26,7 +26,7 @@ const CreateTemplateModal = ({
   setCreateTemplateModal,
   fetchTemplates,
 }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, t } = useStateContext();
   const [templateTitle, setTemplateTitle] = useState("");
   const [templateBody, setTemplateBody] = useState("");
   const [imageURL, setImageURL] = useState("");
@@ -134,7 +134,7 @@ const CreateTemplateModal = ({
                 },
               }}
               value={templateType}
-              label="Template Type"
+              label={t("template_type")}
               required
               onChange={(e) => setTemplateType(e.target.value)}
               size="medium"
@@ -142,20 +142,20 @@ const CreateTemplateModal = ({
               displayEmpty
             >
               <MenuItem disabled selected value="">
-                Select Template Type
+                {`${t("label_select")} ${t("template_type")}`}
                 <span className="ml-1 text-primary">
                   *
                 </span>
               </MenuItem>
 
-              <MenuItem value="whatsapp">Whatsapp Message</MenuItem>
-              <MenuItem value="sms">SMS</MenuItem>
-              <MenuItem value="email">Email</MenuItem>
+              <MenuItem value="whatsapp">{t("whatsapp_message")}</MenuItem>
+              <MenuItem value="sms">{t("sms")}</MenuItem>
+              <MenuItem value="email">{t("label_email")}</MenuItem>
             </TextField>
             {templateType && (
               <TextField
                 type={"text"}
-                label="Template Name"
+                label={t("template_name")}
                 className="w-full mb-5"
                 style={{ marginBottom: "10px" }}
                 variant="outlined"
@@ -188,7 +188,7 @@ const CreateTemplateModal = ({
                   <div className="flex items-center justify-between px-3 py-2 border-b">
                     <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
                       <div className="flex flex-wrap items-center">
-                        {templateBody?.trim()?.length} characters
+                        {templateBody?.trim()?.length} {t("characters")}
                       </div>
                     </div>
                     <button
@@ -210,7 +210,7 @@ const CreateTemplateModal = ({
                           d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
                         />
                       </svg>
-                      <span className="sr-only">Full screen</span>
+                      <span className="sr-only">{t("full_screen")}</span>
                     </button>
                   </div>
                   <div className="px-4 h-full py-2 bg-white rounded-b-lg">
@@ -218,14 +218,14 @@ const CreateTemplateModal = ({
                       value={templateBody}
                       onInput={(e) => setTemplateBody(e.target.value)}
                       className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
-                      placeholder="Type the message..."
+                      placeholder={t("type_the_message")}
                       required
                     ></textarea>
                   </div>
                 </div>
               </div>
             ) : templateType === "email" ? (
-              <h1>Email</h1>
+              <h1>{t("label_email")}</h1>
             ) : (
               <></>
             )}
@@ -234,14 +234,14 @@ const CreateTemplateModal = ({
                 <div className="flex items-center text-center">
                   <Button>
                     <ImAttachment />
-                    <span class="ml-1">Attach File</span>
+                    <span class="ml-1">{t("attach_file")}</span>
                   </Button>
-                  <span className="ml-3 mr-5">OR</span>
+                  <span className="ml-3 mr-5">{t("or")}</span>
                   <div className="flex items-center">
                     <TextField
                       id="imageURL"
                       type={"text"}
-                      label="Image URL"
+                      label={t("image_url")}
                       variant="outlined"
                       sx={{ width: "400px" }}
                       size="small"
@@ -262,7 +262,7 @@ const CreateTemplateModal = ({
                 {btnloading ? (
                   <CircularProgress size={18} sx={{ color: "white" }} />
                 ) : (
-                  <span>Create Template</span>
+                  <span>{t("create_template")}</span>
                 )}
               </Button>
               )}

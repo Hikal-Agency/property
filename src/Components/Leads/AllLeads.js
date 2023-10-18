@@ -147,6 +147,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     isArabic,
     darkModeColors,
     primaryColor,
+    t
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -267,7 +268,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "leadName",
       headerAlign: "center",
-      headerName: "Lead name",
+      headerName: t("label_lead_name"),
       minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
@@ -295,7 +296,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     },
     {
       field: "leadContact",
-      headerName: "Contact",
+      headerName: t("label_contact"),
       minWidth: 100,
       headerAlign: "center",
       flex: 1,
@@ -328,7 +329,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
     {
       field: "project",
-      headerName: "Project",
+      headerName: t("label_project"),
       headerAlign: "center",
       minWidth: 80,
       flex: 1,
@@ -367,7 +368,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       headerAlign: "center",
       field: "leadType",
-      headerName: "Property",
+      headerName: t("label_property"),
       minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
@@ -390,7 +391,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       headerAlign: "center",
       field: "assignedToManager",
-      headerName: "Manager",
+      headerName: t("label_manager"),
       minWidth: 100,
       flex: 1,
       hideable: false,
@@ -401,7 +402,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       headerAlign: "center",
       field: "assignedToSales",
-      headerName: "Agent",
+      headerName: t("label_agent"),
       minWidth: 100,
       flex: 1,
       hideable: false,
@@ -412,7 +413,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "feedback",
       headerAlign: "center",
-      headerName: "Feedback",
+      headerName: t("label_feedback"),
       minWidth: 100,
       flex: 1,
       hideable: false,
@@ -421,7 +422,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
     {
       field: "priority",
-      headerName: "Priority",
+      headerName: t("label_priority"),
       minWidth: 80,
       headerAlign: "center",
       flex: 1,
@@ -431,10 +432,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
     {
       field: "otp",
-      headerName: lead_origin === "transfferedleads" ? "Ex-Agent" : "OTP",
+      headerName: lead_origin === "transfferedleads" ? t("label_ex_agent") : t("label_otp"),
       minWidth: 30,
       headerAlign: "center",
-      // headerClassName: headerClasses.header,
       headerClassName: "break-normal",
       hide: true,
       flex: 1,
@@ -491,7 +491,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     },
     {
       field: "leadSource",
-      headerName: "Src",
+      headerName: t("label_source"),
       flex: 1,
       minWidth: 40,
       headerAlign: "center",
@@ -600,7 +600,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     },
     {
       field: "language",
-      headerName: "Lang",
+      headerName: t("label_language"),
       headerAlign: "center",
       minWidth: 40,
       flex: 1,
@@ -618,7 +618,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     {
       field: "creationDate",
       headerName:
-        lead_origin === "transfferedleads" ? "Transferred Date" : "Date",
+        lead_origin === "transfferedleads" ? t("label_transferred_date") : t("date"),
       minWidth: 50,
       headerAlign: "center",
       flex: 1,
@@ -660,10 +660,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
     {
       field: "edit",
-      headerName: "Action",
+      headerName: t("label_action"),
       flex: 1,
       minWidth: 130,
-      // maxWidth:200,
       sortable: false,
       filterable: false,
       headerAlign: "center",
@@ -1703,7 +1702,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             {pageState.from}-{pageState.to}
           </p>
 
-          <p className="mr-3">Rows Per Page</p>
+          <p className="mr-3">{t("rows_per_page")}</p>
 
           <Select
             labelId="select-page-size-label"
@@ -2056,9 +2055,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   }}
                 >
                   <FormControl fullWidth>
-                    <InputLabel>Feedback</InputLabel>
+                    <InputLabel>{t("label_feedback")}</InputLabel>
                     <Select
-                      label="Feedback"
+                      label={t("label_feedback")}
                       id="un-feedback"
                       value={unassignedFeedback}
                       className={`w-full py-2 px-3`}
@@ -2115,7 +2114,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               onClick={handleClickBulkUpdate}
             >
               <AiFillEdit size={20} />{" "}
-              <span style={{ paddingLeft: "5px" }}>Bulk Update</span>
+              <span style={{ paddingLeft: "5px" }}>{t("table_bulk_update")}</span>
             </MuiButton>
           )}
           {selectedRows.length > 0 && hasPermission("leads_bulk_delete") && (
@@ -2130,7 +2129,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               onClick={handleClickBulkDelete}
             >
               <BsTrash size={18} />{" "}
-              <span style={{ paddingLeft: "5px" }}>Bulk Delete</span>
+              <span style={{ paddingLeft: "5px" }}>{t("table_bulk_delete")}</span>
             </MuiButton>
           )}
           <label htmlFor="bulkImport">
@@ -2144,7 +2143,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               variant="text"
             >
               <TbFileImport size={18} />{" "}
-              <span style={{ paddingLeft: "5px" }}>Bulk Import</span>
+              <span style={{ paddingLeft: "5px" }}>{t("table_bulk_import")}</span>
             </MuiButton>
           </label>
           <input
@@ -2160,7 +2159,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             className="absolute top-[7px] right-[10px] z-[5]"
           >
             <TextField
-              placeholder="Search..."
+              placeholder={t("search")}
               ref={searchRef}
               sx={{
                 "& input": {

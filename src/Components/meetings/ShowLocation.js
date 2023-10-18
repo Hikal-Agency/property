@@ -16,7 +16,7 @@ const ShowLocation = ({
   meetingLocation,
   meetingNote,
 }) => {
-  const { currentMode, darkModeColors, isArabic } = useStateContext();
+  const { currentMode, darkModeColors, isArabic, t } = useStateContext();
 
   console.log("meeting note: ", meetingNote);
 
@@ -56,7 +56,7 @@ const ShowLocation = ({
                   : "text-black"
               }`}
             >
-              Meeting details
+              {t("meeting_details")}
             </h1>
           </div>
 
@@ -68,7 +68,7 @@ const ShowLocation = ({
                 sx={{"& input": {
                   fontFamily: isArabic(meetingNote) ? "Noto Kufi Arabic" : "inherit"
                 }}}
-                label="Meeting Note"
+                label={t("label_meeting_note")}
                 className="w-full"
                 style={{ marginBottom: "20px" }}
                 variant="outlined"
@@ -89,7 +89,7 @@ const ShowLocation = ({
                 />
               ) : (
                 <div className="mt-8 text-center text-[#da1f26]">
-                  <p>Location for this meeting is not set</p>
+                  <p>{t("location_not_set_for_meeting")}</p>
                 </div>
               ),
             ]}

@@ -2,7 +2,7 @@ import { Box, Avatar } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 
 const ChatMessageFromOther = ({ message, data }) => {
-  const { formatTime } = useStateContext();
+  const { formatTime, t } = useStateContext();
   return (
     <>
       <div className="flex items-start self-start mt-4">
@@ -49,7 +49,7 @@ const ChatMessageFromOther = ({ message, data }) => {
             >
               <Box>
                 {message.type === "revoked" ? (
-                  <i className="text-black">This message was deleted</i>
+                  <i className="text-black">{t("message_was_deleted")}</i>
                 ) : (
                   <span className="text-black">{message.content}</span>
                 )}

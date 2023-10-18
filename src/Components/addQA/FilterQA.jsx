@@ -8,23 +8,18 @@ import {
 } from "@mui/material";
 import { HiBars3BottomLeft } from "react-icons/hi2";
 
-import {
-  gridPageCountSelector,
-  gridPageSelector, useGridApiContext,
-  useGridSelector
-} from "@mui/x-data-grid";
 import { BsChevronCompactDown, BsTrash } from "react-icons/bs";
 
 import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CSVLink } from "react-csv";
 import { FaFileDownload } from "react-icons/fa";
 
 const FitlerQA = ({ pageState, setpageState, user }) => {
   console.log("User id : ", user);
-  const { currentMode, BACKEND_URL, primaryColor } = useStateContext();
+  const { currentMode, BACKEND_URL, t } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
 
@@ -127,77 +122,6 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
     // eslint-disable-next-line
   }, [user, currentPage]);
 
-  // ROW CLICK FUNCTION
-  //   const handleRowClick = async (params) => {
-  //     window.open(`/newsletters/${params.row.leadId}`);
-  //   };
-
-  const DataGridStyles = {
-    "& .MuiButtonBase-root": {
-      color: "white",
-    },
-    // TOOLBAR
-    "& .MuiDataGrid-toolbarContainer": {
-      backgroundColor: currentMode === "dark" ? "#212121" : "#000000",
-      paddingTop: "10px",
-      paddingBottom: "10px",
-      paddingLeft: "20px",
-      paddingRight: "20px",
-    },
-
-    "& .MuiInputBase-root": {
-      color: "white",
-    },
-    "& .MuiInputBase-root::before": {
-      color: "white",
-    },
-    "& .MuiInputBase-root:hover::before": {
-      color: "white",
-    },
-
-    // Background color of header of data grid
-    "& .MuiDataGrid-columnHeaders": {
-      backgroundColor: primaryColor,
-      color: currentMode === "dark" ? "white" : "white",
-    },
-    "& .MuiIconButton-sizeSmall": {
-      color: currentMode === "dark" ? "white" : "white",
-    },
-    // background color of main table content
-    "& .MuiDataGrid-virtualScroller": {
-      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
-      color: currentMode === "dark" ? "white" : "black",
-    },
-    // changing rows hover color
-    "& .css-1uhmucx-MuiDataGrid-root .MuiDataGrid-row:hover .MuiDataGrid-row": {
-      backgroundColor: currentMode === "dark" && "#000000",
-      border: "none",
-    },
-    // changing row colors
-    " .even": {
-      backgroundColor: currentMode === "dark" ? "#212121" : "#ffffff",
-    },
-    // changing rows right border
-    // "& .MuiDataGrid-cell": {
-    //   borderRight: "1px solid rgb(240, 240, 240)",
-    // },
-    // BACKGROUND COLOR OF FOOTER
-    "& .MuiDataGrid-footerContainer": {
-      borderTop: "none",
-      backgroundColor: primaryColor,
-      color: "white",
-    },
-    "& .MuiTablePagination-selectLabel": {
-      color: "white",
-    },
-    "& .MuiTablePagination-select ": { color: "white" },
-    "& .MuiSvgIcon-fontSizeMedium ": { color: "white" },
-    "& .MuiTablePagination-displayedRows": { color: "white" },
-    // For inner data styling
-    "& .MuiDataGrid-virtualScrollerRenderZone": {
-      // backgroundColor: "red",
-    },
-  };
   return (
     <div className="pb-10 h-[500px] overflow-y-scroll">
       {loading && (
@@ -246,7 +170,7 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
               onClick={getExportData}
               sx={{ marginBottom: "10px" }}
             >
-              Export Data <FaFileDownload className="ml-2" />
+              {t("export_data")} <FaFileDownload className="ml-2" />
             </Button>
           </CSVLink>
 
@@ -321,19 +245,14 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
                       </div>
                     ))
                   ) : (
-                    <span>No answer.</span>
+                    <span>{t("no_answer")}.</span>
                   )}
                 </Typography>
               </AccordionDetails>
             </Accordion>
           ))}
 
-          {/* <Pagination
-            count={data?.links?.last_page}
-            page={currentPage}
-            onChange={handlePageChange}
-            color={currentMode === "dark" ? "primary" : "secondary"}
-          /> */}
+     
           <Pagination
             count={data?.links?.last_page}
             page={currentPage}
@@ -359,7 +278,7 @@ const FitlerQA = ({ pageState, setpageState, user }) => {
         <p
           className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
         >
-          No data to display.
+         {t("no_data_to_display")}
         </p>
       )}
     </div>

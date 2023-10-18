@@ -9,7 +9,7 @@ import Loader from "../../Components/Loader";
 
 const Instances = () => {
   const [allUsersInstances, setAllUsersInstances] = useState([]);
-  const { BACKEND_URL, currentMode } = useStateContext();
+  const { BACKEND_URL, currentMode, t } = useStateContext();
   const [loading, setLoading] = useState(true);
 
   const fetchInstances = async () => {
@@ -50,11 +50,11 @@ const Instances = () => {
               : "text-primary font-bold border-primary"
           }`}
         >
-          ● Instances
+          {t("instances")}
         </h1>
 
       <Box className="mt-4">
-      {allUsersInstances?.length === 0 ? <p className="text-red-600 text-sm">Nothing to show</p> :
+      {allUsersInstances?.length === 0 ? <p className="text-red-600 text-sm">{t("nothing_to_show")}</p> :
         [allUsersInstances?.map((item) => {
             return <UserInstances fetchInstances={fetchInstances} user={item?.instances[0]?.user_name || item?.instances[0]?.user_id} instances={item?.instances}/>
         })]

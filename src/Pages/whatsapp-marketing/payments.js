@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import Subscriber from "../../Components/whatsapp-marketing/Subscriber";
 
 const Payments = () => {
-  const { BACKEND_URL, currentMode, darkModeColors, isUserSubscribed, User } =
+  const { BACKEND_URL, currentMode, darkModeColors, isUserSubscribed, User, t } =
     useStateContext();
   const [value, setValue] = useState(0);
   const [subscribers, setSubscribers] = useState([]);
@@ -97,7 +97,7 @@ const Payments = () => {
               : "text-primary font-bold border-primary"
           }`}
         >
-          ● All Subscribers
+          ● {t("title_all_subscribers")}
         </h1>
         <Box className="mb-16 mt-4 items-start flex flex-wrap">
           {subscribers.map((sub, index) => {
@@ -118,7 +118,7 @@ const Payments = () => {
               : "text-primary font-bold border-primary"
           }`}
         >
-          ● Upgrade
+          ● {t("upgrade")}
         </h1>
         <div
           className={`${
@@ -151,7 +151,7 @@ const Payments = () => {
                   padding: "0 5px",
                 }}
               >
-                Subscribed
+                {t("status_subscribed")}
               </span>
               <h2 className="text-white font-bold" style={{ fontSize: "18px" }}>
                 {User?.package_name}
@@ -161,8 +161,8 @@ const Payments = () => {
                   US$_
                 </h1>
                 <Box className="text-white font-light ml-2">
-                  <p>per</p>
-                  <p style={{ lineHeight: 1, fontSize: 13 }}>year</p>
+                  <p>{t("per")}</p>
+                  <p style={{ lineHeight: 1, fontSize: 13 }}>{t("year")}</p>
                 </Box>
               </Box>
               <Box className="h-[45%] flex flex-col justify-end">
@@ -178,7 +178,7 @@ const Payments = () => {
                       <CircularProgress size={18} sx={{ color: "blue" }} />
                     </div>
                   ) : (
-                    <span>Unsubscribe</span>
+                    <span>{t("btn_unsubscribe")}</span>
                   )}
                 </Button>
               </Box>
@@ -207,7 +207,7 @@ const Payments = () => {
                   padding: "0 5px",
                 }}
               >
-                Recommended
+                {t("recommended")}
               </span>
               <h2
                 className="text-slate-600 font-bold"
@@ -223,8 +223,8 @@ const Payments = () => {
                   US$_
                 </h1>
                 <Box className="text-slate-600 font-light ml-2">
-                  <p>per</p>
-                  <p style={{ lineHeight: 1, fontSize: 13 }}>year</p>
+                  <p>{t("per")}</p>
+                  <p style={{ lineHeight: 1, fontSize: 13 }}>{t("year")}</p>
                 </Box>
               </Box>
               <Box className="h-[45%] flex flex-col justify-end">
@@ -236,7 +236,7 @@ const Payments = () => {
                   fullWidth
                   sx={{ padding: "12px 0" }}
                 >
-                  Upgrade
+                  {t("upgrade")}
                 </Button>
               </Box>
             </Box>
@@ -254,7 +254,7 @@ const Payments = () => {
               : "text-primary font-bold border-primary"
           }`}
         >
-          ● Payments
+          ● {t("payments")}
         </h1>
         <div
           className={`${
@@ -283,7 +283,7 @@ const Payments = () => {
               // centered
               className="w-full px-1 m-1"
             >
-              <Tab label="NEW PAYMENT " />
+              <Tab label={t("new_payment")} />
               {/* <Tab label="ALL TRANSACTIONS" /> */}
             </Tabs>
           </Box>
@@ -295,13 +295,7 @@ const Payments = () => {
                 setTabValue={setTabValue}
               />
             </TabPanel>
-            {/* <TabPanel value={value} index={1}>
-              <Transactions
-                isLoading={loading}
-                tabValue={tabValue}
-                setTabValue={setTabValue}
-              />
-            </TabPanel> */}
+
           </div>
         </div>
       </>

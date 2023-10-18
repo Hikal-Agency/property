@@ -19,7 +19,7 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
   });
   const {
     currentMode, 
-    isArabic
+    isArabic, t
   } = useStateContext();
   const ref = useOnclickOutside(() => {
     clearSuggestions();
@@ -77,8 +77,8 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
             disabled={isDisabled ? true : !ready}
             onChange={handleInput}
             required
-            placeholder="Search Location"
-            label="Location"
+            placeholder={t("search_location")}
+            label={t("location")}
             size="small"
             value={value}
         />

@@ -15,7 +15,7 @@ const Calls = ({
   callLogsData,
   isLoading,
 }) => {
-  const { darkModeColors, currentMode, primaryColor, themeBgImg } = useStateContext();
+  const { darkModeColors, currentMode, primaryColor, themeBgImg, t } = useStateContext();
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -31,9 +31,9 @@ const Calls = ({
       <div>
         <Box sx={darkModeColors} className="font-semibold">
           <Tabs value={tabValue} onChange={handleChange} variant="standard">
-            <Tab label="TODAY" />
-            <Tab label="YESTERDAY" />
-            <Tab label="THIS MONTH" />
+            <Tab label={t("today")} />
+            <Tab label={t("yesterday")}/>
+            <Tab label={t("this_month")} />
           </Tabs>
         </Box>
         <Box
@@ -50,11 +50,11 @@ const Calls = ({
               <h1 className="text-center font-bold mb-6">
                 {callLogsData?.all_calls < 2 ? (
                   <>
-                    <span>{callLogsData?.all_calls}</span> CALL TODAY
+                    <span>{callLogsData?.all_calls}</span> {t("call_today")?.toUpperCase()}
                   </>
                 ) : (
                   <>
-                    <span>{callLogsData?.all_calls}</span> CALLS TODAY
+                    <span>{callLogsData?.all_calls}</span> {t("call_today")?.toUpperCase()}
                   </>
                 )}
               </h1>
@@ -67,7 +67,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Outgoing calls:</h2>
+                  <h2>{t("outgoing_calls")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.dialed}</span>
@@ -80,7 +80,7 @@ const Calls = ({
                     size={20}
                     className=" mr-3"
                   />
-                  <h2>Answered:</h2>
+                  <h2>{t("answered")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.answered}</span>
@@ -93,7 +93,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Not answered:</h2>
+                  <h2>{t("not_answered")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.notanswered}</span>
@@ -106,7 +106,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Incoming calls:</h2>
+                  <h2>{t("incoming_calls")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.recieved}</span>
@@ -119,10 +119,9 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Recieved:</h2>
+                  <h2>{t("received")}:</h2>
                 </div>
                 <p className="font-bold">
-                  {/* {call_logs?.recieved - call_logs?.missed} */}
                   <span>{callLogsData?.recieved}</span>
                 </p>
               </div>
@@ -133,7 +132,7 @@ const Calls = ({
                     size={20}
                     className=" mr-3"
                   />
-                  <h2>Missed:</h2>
+                  <h2>{t("missed")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.missed}</span>
@@ -146,11 +145,11 @@ const Calls = ({
               <h1 className="text-center  font-bold mb-6">
                 {callLogsData?.all_calls < 2 ? (
                   <>
-                    <span>{callLogsData?.all_calls}</span> CALL YESTERDAY
+                    <span>{callLogsData?.all_calls}</span> {t("call_yesterday")?.toUpperCase()}
                   </>
                 ) : (
                   <>
-                    <span>{callLogsData?.all_calls}</span> CALLS YESTERDAY
+                    <span>{callLogsData?.all_calls}</span> {t("call_yesterday")?.toUpperCase()}
                   </>
                 )}
               </h1>
@@ -163,7 +162,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Outgoing calls:</h2>
+                  <h2>{t("outgoing_calls")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.dialed}</span>
@@ -176,7 +175,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Answered:</h2>
+                  <h2>{t("answered")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.answered}</span>
@@ -189,7 +188,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Not answered:</h2>
+                  <h2>{t("not_answered")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.notanswered}</span>
@@ -202,7 +201,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Incoming calls:</h2>
+                  <h2>{t("incoming_calls")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.recieved}</span>
@@ -215,7 +214,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Recieved:</h2>
+                  <h2>{t("received")}:</h2>
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
@@ -229,7 +228,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Missed:</h2>
+                  <h2>{t("missed")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.missed}</span>
@@ -242,11 +241,11 @@ const Calls = ({
               <h1 className="text-center  font-bold mb-6">
                 {callLogsData?.all_calls < 2 ? (
                   <>
-                    <span>{callLogsData?.all_calls}</span> CALL THIS MONTH
+                    <span>{callLogsData?.all_calls}</span> {t("call_this_month")?.toUpperCase()}
                   </>
                 ) : (
                   <>
-                    <span>{callLogsData?.all_calls}</span> CALLS THIS MONTH
+                    <span>{callLogsData?.all_calls}</span> {t("call_this_month")?.toUpperCase()}
                   </>
                 )}
               </h1>
@@ -259,7 +258,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Outgoing calls:</h2>
+                  <h2>{t("outgoing_calls")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.dialed}</span>
@@ -272,7 +271,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Answered:</h2>
+                  <h2>{t("answered")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.answered}</span>
@@ -285,7 +284,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Not answered:</h2>
+                  <h2>{t("not_answered")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.notanswered}</span>
@@ -298,7 +297,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Incoming calls:</h2>
+                  <h2>{t("incoming_calls")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.recieved}</span>
@@ -311,7 +310,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Recieved:</h2>
+                  <h2>{t("received")}:</h2>
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
@@ -325,7 +324,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Missed:</h2>
+                  <h2>{t("missed")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.missed}</span>
@@ -336,7 +335,7 @@ const Calls = ({
           <TabPanel value={tabValue} index={3}>
             <div className="mb-10 mx-3">
               <h1 className="font-semibold text-center">
-                All-time total calls: <span>{callLogsData?.all_calls}</span>
+                {t("all_time_total_calls")}: <span>{callLogsData?.all_calls}</span>
               </h1>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-y-5 gap-x-5">
@@ -347,7 +346,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Outgoing calls:</h2>
+                  <h2>{t("outgoing_calls")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.dialed}</span>
@@ -360,7 +359,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Answered:</h2>
+                  <h2>{t("answered")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.answered}</span>
@@ -373,7 +372,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Not answered:</h2>
+                  <h2>{t("not_answered")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.notanswered}</span>
@@ -386,7 +385,7 @@ const Calls = ({
                     size={20}
                     className=" mr-3"
                   />
-                  <h2>Incoming calls:</h2>
+                  <h2>{t("incoming_calls")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.recieved}</span>
@@ -399,7 +398,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Recieved:</h2>
+                  <h2>{t("received")}:</h2>
                 </div>
                 <p className="font-bold">
                   {/* {call_logs?.recieved - call_logs?.missed} */}
@@ -413,7 +412,7 @@ const Calls = ({
                     style={{ color: primaryColor }}
                     className=" mr-3"
                   />
-                  <h2>Missed:</h2>
+                  <h2>{t("missed")}:</h2>
                 </div>
                 <p className="font-bold">
                   <span>{callLogsData?.missed}</span>

@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import MessagesComponent from "./messages";
-import TransactionsComponent from "./transactions";
 import TemplatesComponent from "../../Components/whatsapp-marketing/TemplatesComponent";
 import { useStateContext } from "../../context/ContextProvider";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import AllMessages from "./AllMessages";
 import Payments from "./payments";
 import Chat from "./Chat";

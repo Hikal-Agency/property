@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { Textarea } from "@material-tailwind/react";
 
 const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
-  const { darkModeColors, BACKEND_URL } =
+  const { darkModeColors, BACKEND_URL, t } =
     useStateContext();
   const [loading, setloading] = useState(false);
 
@@ -188,7 +188,7 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
       <Box sx={darkModeColors}>
         <TextField
           type={"text"}
-          label="Question "
+          label={t("question")}
           className="w-full mb-3"
           style={{ marginBottom: "20px" }}
           variant="outlined"
@@ -204,10 +204,9 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
             sx={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
             <Textarea
-              // label={`Answer ${answerIndex + 1}`}
               value={answer}
               onChange={handleChange}
-              placeholder="Enter your answer here"
+              placeholder={t("enter_your_answer")}
               className="w-full mb-3"
               style={{ marginBottom: "20px", height: "150px" }}
               variant="outlined"
@@ -262,7 +261,7 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
               className="text-white"
             />
           ) : (
-            <span> Add</span>
+            <span>{t("btn_add")}</span>
           )}
         </Button>
       </Box>

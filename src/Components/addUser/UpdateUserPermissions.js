@@ -28,7 +28,7 @@ const UpdateUserPermissions = ({
   const [loading, setloading] = useState(false);
   const [dataLoading, setDataLoading] = useState(false);
   const [UserRole, setUserRole] = useState([]);
-  const { BACKEND_URL } = useStateContext();
+  const { BACKEND_URL, t } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
   console.log("user role list:  ", UserRole);
@@ -142,7 +142,6 @@ const UpdateUserPermissions = ({
                   <IconButton
                     sx={{
                       position: "absolute",
-                      // right: 4,
                       top: 10,
                       color: "#000000",
                     }}
@@ -151,7 +150,7 @@ const UpdateUserPermissions = ({
                     <GridCloseIcon size={18} />
                   </IconButton>
                   <h2 className="text-center mt-3 text-xl font-bold text-[#1c1c1c] py-4">
-                    Update Role of{" "}
+                    {t("update_role_of")}{" "}
                     <span className="text-primary" style={{fontWeight: "700" }}>
                       {UserName}
                     </span>
@@ -188,7 +187,7 @@ const UpdateUserPermissions = ({
                         </div>
                       ))
                     ) : (
-                      "No Roles"
+                      t("no_roles")
                     )}
                   </div>
 
@@ -205,7 +204,7 @@ const UpdateUserPermissions = ({
                           className="text-white"
                         />
                       ) : (
-                        <span>Update</span>
+                        <span>{t("btn_update")}</span>
                       )}
                     </button>
                   </div>

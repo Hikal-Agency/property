@@ -15,7 +15,7 @@ const BlockedIps = () => {
     BACKEND_URL,
     themeBgImg,
     blurDarkColor,
-    blurLightColor
+    blurLightColor, t
   } = useStateContext();
   const [loading, setLoading] = useState(true);
   const [IPs, setIPs] = useState([]);
@@ -78,7 +78,7 @@ const BlockedIps = () => {
                 : "text-black"
             }`}
           >
-            IP Blocking
+            {t("ip_blocking")}
           </h1>
         </div>
 
@@ -98,14 +98,14 @@ const BlockedIps = () => {
               id="panel1bh-header"
             >
               <p className="font-semibold text-lg" sx={{ width: '33%', flexShrink: 0 }}>
-                Requested IPs to block
+                {t("requested_ips_to_block")}
               </p>
             </AccordionSummary>
             <AccordionDetails>
                   <div>
                   <IPsList
                     isRequest={true}
-                    heading="Requests"
+                    heading={t("requests")}
                     ips={IPs?.filter((ip) => !Number(ip?.status))}
                     fetchBlockedIPs={fetchBlockedIPs}
                   />
@@ -126,12 +126,12 @@ const BlockedIps = () => {
               aria-controls="panel2bh-content"
               id="panel2bh-header"
             >
-              <p className="font-semibold text-lg"  sx={{ width: '33%', flexShrink: 0 }}>Blocked</p>
+              <p className="font-semibold text-lg"  sx={{ width: '33%', flexShrink: 0 }}>{t("blocked")}</p>
             </AccordionSummary>
             <AccordionDetails>
                     <div>
                   <IPsList
-                    heading="Blocked"
+                    heading={t("blocked")}
                     fetchBlockedIPs={fetchBlockedIPs}
                     ips={IPs?.filter((ip) => Number(ip?.status) === 1)}
                   />
@@ -153,14 +153,14 @@ const BlockedIps = () => {
               id="panel3bh-header"
             >
               <p className="font-semibold text-lg"  sx={{ width: '33%', flexShrink: 0 }}>
-                Rejected
+                {t("rejected")}
               </p>
             </AccordionSummary>
             <AccordionDetails>
                         <div>
                   <IPsList
                     isRejected={true}
-                    heading="Rejected"
+                    heading={t("rejected")}
                     ips={IPs?.filter((ip) => Number(ip?.status) === 2)}
                     fetchBlockedIPs={fetchBlockedIPs}
                   />

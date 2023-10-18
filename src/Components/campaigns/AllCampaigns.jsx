@@ -2,7 +2,6 @@ import {
   Box,
   CircularProgress,
   MenuItem,
-  Pagination,
   Select,
 } from "@mui/material";
 import {
@@ -17,10 +16,10 @@ import {
 import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AllCampaigns = ({ pageState, setpageState }) => {
-  const { currentMode, User, darkModeColors, graph_api_token, primaryColor } =
+  const { currentMode, User, darkModeColors, graph_api_token, primaryColor, t } =
     useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -29,14 +28,6 @@ const AllCampaigns = ({ pageState, setpageState }) => {
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line
   const navigate = useNavigate();
-  const location = useLocation();
-
-  console.log("Ads: ", ads);
-
-  // Model Variables
-  // const [LeadModelOpen, setLeadModelOpen] = useState(false);
-  // const handleLeadModelOpen = () => setLeadModelOpen(true);
-  // const handleLeadModelClose = () => setLeadModelOpen(false);
 
   // TOOLBAR SEARCH FUNC
   const HandleQuicSearch = (e) => {
@@ -46,14 +37,14 @@ const AllCampaigns = ({ pageState, setpageState }) => {
   const columns = [
     {
       field: "campaignName",
-      headerName: "Ad Name",
+      headerName: t("label_ad_name"),
       minWidth: 150,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName:t("label_status"),
       minWidth: 60,
       flex: 1,
       headerAlign: "center",
@@ -73,34 +64,34 @@ const AllCampaigns = ({ pageState, setpageState }) => {
 
     {
       field: "adset",
-      headerName: "Adset",
+      headerName: t("label_adset"),
       minWidth: 150,
       flex: 1,
     },
     {
       field: "dailyBudget",
-      headerName: "Daily Budget",
+      headerName: t("label_daily_budget"),
       minWidth: 80,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "spend",
-      headerName: "Spend",
+      headerName: t("label_spend"),
       minWidth: 80,
       flex: 1,
       headerAlign: "center",
     },
     {
       field: "cpc",
-      headerName: "Cost Per Click",
+      headerName: t("label_cost_per_click"),
       minWidth: 80,
       headerAlign: "center",
       flex: 1,
     },
     {
       field: "cpm",
-      headerName: "CPM",
+      headerName: t("label_cpm"),
       minWidth: 80,
       headerAlign: "center",
       flex: 1,
@@ -359,7 +350,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
               currentMode === "dark" ? "text-white" : "text-dark"
             } capitalize `}
           >
-            Select a campaign
+           {t("select_campaign")}
           </label>
           {loading ? (
             <>
@@ -385,7 +376,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
               }}
             >
               <MenuItem value="0" disabled>
-                Select Campaign
+                {t("select_campaign")}
               </MenuItem>
               {campaigns?.length > 0 ? (
                 campaigns?.map((campaign, index) => (
@@ -394,7 +385,7 @@ const AllCampaigns = ({ pageState, setpageState }) => {
                   </MenuItem>
                 ))
               ) : (
-                <MenuItem>No Campaigns found.</MenuItem>
+                <MenuItem>{t("no_campaigns")}</MenuItem>
               )}
             </Select>
           )}

@@ -25,7 +25,7 @@ const SingleSMSModal = ({
   singleMsg,
 }) => {
   console.log("sms details: ", singleMsg);
-  const { currentMode, darkModeColors } = useStateContext();
+  const { currentMode, darkModeColors, t } = useStateContext();
 
   return (
     <>
@@ -95,12 +95,12 @@ const SingleSMSModal = ({
                     currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#1C1C1C]"
                   }  font-semibold pb-4`}
                 >
-                  Message
+                  {t("message")}
                 </h4>
 
                 <TextField
                   id="Manager"
-                  placeholder="Recipients"
+                  placeholder={t("label_recipients")}
                   multiline
                   minRows={2}
                   value={singleMsg?.message || "No Message"}
@@ -120,7 +120,7 @@ const SingleSMSModal = ({
                           : "text-[#1C1C1C]"
                       }  font-semibold pb-4`}
                     >
-                      Recipients
+                      {t("label_recipients")}
                     </h4>
                     <h4
                       className={`${
@@ -135,7 +135,7 @@ const SingleSMSModal = ({
 
                   <TextField
                     id="Manager"
-                    label="Message"
+                    label={t("message")}
                     size="small"
                     minRows={3}
                     value={singleMsg?.recipients || "No recipients"}

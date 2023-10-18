@@ -1,7 +1,6 @@
 import { useStateContext } from "../../context/ContextProvider";
 import { Modal, Backdrop, IconButton } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
-import AddLeadComponent from "../Leads/AddLeadComponent";
 import BulkSMSModal from "./BulkSMSModal";
 
 const style = {

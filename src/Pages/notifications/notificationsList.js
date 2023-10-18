@@ -1,5 +1,4 @@
-// import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, {  useRef, useState } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -52,7 +51,7 @@ const NotificationsList = () => {
     formatNum,
     setUnreadNotifsCount,
     getNotifCounts,
-    unreadNotifsCount,
+    unreadNotifsCount, t
   } = useStateContext();
   console.log("unread count ::: ", unreadNotifsCount);
   const token = localStorage.getItem("auth-token");
@@ -214,7 +213,7 @@ const NotificationsList = () => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Notification History
+                 {t("notification_history")}
                 </h1>
               </div>
 
@@ -262,7 +261,7 @@ const NotificationsList = () => {
                       style={{
                         color: currentMode === "dark" ? "#ffffff" : "#000000",
                       }}
-                      label="All"
+                      label={t("all")}
                     />
                   </Tabs>
                 </Box>
@@ -332,7 +331,7 @@ const NotificationsList = () => {
                             </div>
                           ) : (
                             <>
-                              <h3 className="font-bold">Notification Type</h3>
+                              <h3 className="font-bold">{t("notification_type")}</h3>
                               <div>
                                 <FormControl>
                                   <RadioGroup
@@ -346,24 +345,24 @@ const NotificationsList = () => {
                                     <FormControlLabel
                                       value="all"
                                       control={<Radio />}
-                                      label="All"
+                                      label={t("all")}
                                     />
                                     <FormControlLabel
                                       value="1"
                                       control={<Radio />}
-                                      label="Read"
+                                      label={t("read")}
                                     />
                                     <FormControlLabel
                                       value="0"
                                       control={<Radio />}
-                                      label="Unread"
+                                      label={t("unread")}
                                     />
                                   </RadioGroup>
                                 </FormControl>
                               </div>
 
                               <h3 className="mt-5 font-bold">
-                                Notifications About
+                                {t("notifications_about")}
                               </h3>
                               <div className="">
                                 <FormControl>
@@ -377,44 +376,44 @@ const NotificationsList = () => {
                                     <FormControlLabel
                                       value="Lead"
                                       control={<Radio />}
-                                      label="Lead Assignment"
+                                      label={t("lead_assignment")}
                                     />
                                     <FormControlLabel
                                       value="Feedback"
                                       control={<Radio />}
-                                      label="Feedback Updation"
+                                      label={t("feedback_updates")}
                                     />
                                     <FormControlLabel
                                       value="Priority"
                                       control={<Radio />}
-                                      label="Priority Updation"
+                                      label={t("priority_updates")}
                                     />
                                     <FormControlLabel
                                       value="Reminder"
                                       control={<Radio />}
-                                      label="Follow-up Reminder"
+                                      label={t("followup_reminder")}
                                     />
                                     <FormControlLabel
                                       value="Meeting"
                                       control={<Radio />}
-                                      label="Schedule Meetings"
+                                      label={t("scheduled_meeting")}
                                     />
                                     <FormControlLabel
                                       value="Billings"
                                       control={<Radio />}
-                                      label="Billings And Payments"
+                                      label={t("subscription_and_billings")}
                                     />
                                     <FormControlLabel
                                       value="Support"
                                       control={<Radio />}
-                                      label="Support"
+                                      label={t("support_notify")}
                                     />
                                   </RadioGroup>
                                 </FormControl>
                               </div>
 
                               <h3 className=" my-4 font-bold">
-                                Notification Date
+                                {t("notification_date")}
                               </h3>
                               <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
@@ -460,20 +459,19 @@ const NotificationsList = () => {
                                       }}
                                       size="small"
                                       fullWidth
-                                      label="Filter By Date"
+                                      label={t("filter_by_date")}
                                       {...params}
                                       onKeyDown={(e) => e.preventDefault()}
                                       readOnly={true}
                                     />
                                   )}
-                                  // minDate={dayjs().startOf("day").toDate()}
                                 />
                               </LocalizationProvider>
 
                               {hasPermission("filter_user_notifs") && (
                                 <div>
                                   <h3 className=" my-4 font-bold">
-                                    Filter By User
+                                   {t("filter_by_user")}
                                   </h3>
                                   <FormControl
                                     className={`${
@@ -490,7 +488,7 @@ const NotificationsList = () => {
                                     <Select
                                       id="feedback"
                                       value={selectedUser || "selected"}
-                                      label="Filter By User"
+                                      label={t("filter_by_user")}
                                       // onChange={(e) => handleFilter(e, 2)}
                                       onChange={(e) => {
                                         setSelectedUSer(e.target.value);
@@ -510,7 +508,7 @@ const NotificationsList = () => {
                                       }}
                                     >
                                       <MenuItem selected value="selected">
-                                        ---Select User----
+                                        ---{t("select_user")}----
                                       </MenuItem>
                                       <MenuItem
                                         onKeyDown={(e) => {
@@ -520,7 +518,7 @@ const NotificationsList = () => {
                                       >
                                         {/* <Box sx={darkModeColors}> */}
                                         <TextField
-                                          placeholder="Search users"
+                                          placeholder={t("search_users")}
                                           ref={searchRef}
                                           sx={{
                                             "& input": {
@@ -528,9 +526,7 @@ const NotificationsList = () => {
                                             },
                                           }}
                                           variant="standard"
-                                          // onKeyUp={handleKeyUp}
-                                          // onInput={handleSearch}
-                                          // onChange={handleSearch}
+                          
                                           InputProps={{
                                             startAdornment: (
                                               <InputAdornment position="start">
@@ -570,7 +566,7 @@ const NotificationsList = () => {
                                         ))
                                       ) : (
                                         <h2 className="text-center">
-                                          No Users
+                                          {t("no_users")}
                                         </h2>
                                       )}
                                     </Select>
@@ -588,7 +584,7 @@ const NotificationsList = () => {
                                 }}
                                 onClick={clearFilteration}
                               >
-                                <span>Clear All</span>
+                                <span>{t("clear_all")}</span>
                               </Button>
                             </>
                           )}

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../Components/Navbar/Navbar";
-import Sidebarmui from "../../Components/Sidebar/Sidebarmui";
 import { useStateContext } from "../../context/ContextProvider";
-import Footer from "../../Components/Footer/Footer";
 import SingleTickt from "../../Components/support/SingleTickt";
 import { useLocation } from "react-router-dom";
 
@@ -16,7 +13,7 @@ const SingleTicket = () => {
 
   console.log("Ticket Id: ", id);
 
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, t, BACKEND_URL } = useStateContext();
 
   const [tickeData, setTicketData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -63,7 +60,7 @@ const SingleTicket = () => {
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                Issue :{" "}
+                {t("label_issue")} :{" "}
                 <span className="text-primary font-bold">
                   {tickeData?.issue &&
                     tickeData.issue.charAt(0).toUpperCase() +

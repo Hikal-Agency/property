@@ -18,7 +18,7 @@ const PersonaLeads = () => {
   const pathname2 = location.pathname.split("/")[1];
   console.log("PathName: ", pathname2);
   const [loading, setloading] = useState(true);
-  const { currentMode, pageState, setopenBackDrop, BACKEND_URL } =
+  const { currentMode, pageState, setopenBackDrop, BACKEND_URL, t } =
     useStateContext();
 
   useEffect(() => {
@@ -51,8 +51,8 @@ const PersonaLeads = () => {
                 }`}
               >
                 {/* ●  */}
-                Personal Leads {" "}
-                <span className="capitalize">({lead_type})</span>{" "}
+                {`${t("type_personal")} ${t("leads")}`} {" "}
+                <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", '_'))})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>

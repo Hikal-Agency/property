@@ -1,4 +1,3 @@
-// import { Button } from "@material-tailwind/react";
 import {
   Backdrop,
   CircularProgress,
@@ -59,6 +58,7 @@ const SingleLead = ({
     BACKEND_URL,
     isArabic,
     primaryColor,
+    t
   } = useStateContext();
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
@@ -648,7 +648,7 @@ const SingleLead = ({
                         }}
                         size="medium"
                       >
-                        View Lead Details
+                        {t("view_lead_details")?.toUpperCase()}
                       </Button>
 
                       {/* <Tooltip title="View Lead Dettails" arrow>
@@ -681,7 +681,7 @@ const SingleLead = ({
                     }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
-                      User details
+                        {t("user_details")?.toUpperCase()}
                     </h1>
                     <hr className="my-4" />
                     <div className="w-full">
@@ -721,7 +721,7 @@ const SingleLead = ({
                     }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
-                      Enquiry details
+                      {t("enquiry_details")?.toUpperCase()}
                     </h1>
                     <hr className="my-4" />
                     <div className="w-full">
@@ -766,9 +766,9 @@ const SingleLead = ({
                   >
                     <h1 className="text-center uppercase flex items-center justify-center">
                       <BsBookmarkFill size={16} className="mx-2 text-primary" />
-                      Feedback
+                      {t("label_feedback")?.toUpperCase()}
                       <span className="mx-2  font-semibold">
-                        {LeadData?.feedback ?? "---"}
+                        {t("feedback_" + LeadData?.feedback?.toLowerCase()?.replaceAll(" ", "_")) ?? "---"}
                       </span>
                     </h1>
                     <hr className="my-4" />
@@ -786,13 +786,13 @@ const SingleLead = ({
                       <div class="flex items-center gap-5 my-4 md:px-5">
                         <BsPersonPlus size={16} className="text-primary mx-2" />
                         <div className="text-start">
-                          Lead added on {datetimeLong(LeadData?.creationDate)}
+                          {t("lead_added_on")} {" "}{datetimeLong(LeadData?.creationDate)}
                         </div>
                       </div>
                       <div class="flex items-center gap-5 my-4 md:px-5">
                         <BsPersonGear size={16} className="text-primary mx-2" />
                         <div className="text-start">
-                          Last updated on{" "}
+                          {t("last_updated_on")}{" "}
                           {LeadData?.lastEdited === ""
                             ? "-"
                             : datetimeLong(LeadData?.lastEdited)}
@@ -846,7 +846,7 @@ const SingleLead = ({
                         </div>
                       ) : (
                         <div className="italic text-xs text-primary text-center">
-                          No notes available
+                          {t("no_notes_available")}
                         </div>
                       )}
                     </div>
@@ -866,7 +866,7 @@ const SingleLead = ({
                           }}
                           id="note"
                           type={"text"}
-                          label="Note"
+                          label={t("label_note")}
                           className="w-full"
                           variant="outlined"
                           size="small"
@@ -889,7 +889,7 @@ const SingleLead = ({
                               className="text-white"
                             />
                           ) : (
-                            <span>Add New Note</span>
+                            <span>{t("add_new_note")?.toUpperCase()}</span>
                           )}
                         </button>
                       </form>

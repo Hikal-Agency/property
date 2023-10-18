@@ -36,6 +36,7 @@ const RenderManagers = ({ cellValues }) => {
     Managers,
     fetchSidebarData,
     User,
+    t
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -248,7 +249,7 @@ const RenderManagers = ({ cellValues }) => {
               ? "select_manager"
               : manager2
           }
-          label="Manager"
+          label={t("label_manager")}
           onChange={ChangeManager}
           size="medium"
           className="w-full border border-gray-300 rounded "
@@ -263,7 +264,7 @@ const RenderManagers = ({ cellValues }) => {
           }}
         >
           <MenuItem value="select_manager" selected>
-            ---Manager---
+            ---{t("label_manager")}---
           </MenuItem>
           {Managers?.length > 0 &&
             Managers?.map((manager, index) => (
@@ -309,12 +310,12 @@ const RenderManagers = ({ cellValues }) => {
                   className="text-primary text-2xl"
                 />
                 <h1 className="font-semibold pt-3 text-lg text-center">
-                  Do You Really Want Change the Manager from{" "}
+                  {t("want_to_change_manager")}{" "}{t("from")}{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {Managers.find((item) => item.id === Number(manager2))
                       ?.userName ?? "No manager"}
                   </span>{" "}
-                  to{" "}
+                  {t("to")}{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {newManager?.userName}
                     {/* //{" "}
@@ -345,7 +346,7 @@ const RenderManagers = ({ cellValues }) => {
                   {btnloading ? (
                     <CircularProgress size={18} sx={{ color: "white" }} />
                   ) : (
-                    <span>Confirm</span>
+                    <span>{t("confirm")}</span>
                   )}
                 </Button>
 
@@ -359,7 +360,7 @@ const RenderManagers = ({ cellValues }) => {
                       : "text-primary border-primary"
                   }`}
                 >
-                  Cancel
+                  {t("cancel")}
                 </Button>
               </div>
             </div>

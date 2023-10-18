@@ -21,7 +21,7 @@ const PropertyPortfolio = () => {
     DevProData, 
     setDevProData, 
     BACKEND_URL,
-    themeBgImg 
+    themeBgImg, t
   } = useStateContext();
   const navigate = useNavigate();
 
@@ -75,10 +75,7 @@ const PropertyPortfolio = () => {
                   : "text-black"
               }`}
             >
-              Property Portfolio
-              {/* <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                {pageState?.total}
-              </span> */}
+              {t("menu_property_portfolio")}
             </h1>
           </div>
 
@@ -91,7 +88,7 @@ const PropertyPortfolio = () => {
                     <div
                       className={`${
                         currentMode === "dark" ? "text-white" : "text-black"
-                      } w-full shadow-sm rounded-lg p-4 space-y-5`}
+                      } w-full p-4 space-y-5`}
                     >
                       <div className="font-semibold text-white text-center w-full bg-primary p-2 uppercase rounded-lg shadow-sm">
                         {developer.developer}
@@ -102,9 +99,12 @@ const PropertyPortfolio = () => {
                             return (
                               <div
                                 className={`${
-                                  currentMode === "dark"
+                                  !themeBgImg ? (currentMode === "dark"
+                                  ? "bg-[#1C1C1C]"
+                                  : "bg-[#EBEBEB]") 
+                                  : (currentMode === "dark"
                                     ? "blur-bg-dark"
-                                    : "blur-bg-light"
+                                    : "blur-bg-light")
                                 } card-hover w-full h-full rounded-md space-y-1 border-t-2
                                 ${project.projectStatus === "Available" ? "border-green-600" : project.projectStatus === "Sold Out" ? "border-red-600" : "border-yellow-600"}
                                 `}
@@ -118,7 +118,7 @@ const PropertyPortfolio = () => {
                                   ${project.projectStatus === "Available" ? "bg-green-600" : project.projectStatus === "Sold Out" ? "bg-red-600" : "bg-yellow-600"}  
                                 `}></div>
 
-                                <div className="p-3">
+                                <div className="p-4">
                                   <div className="uppercase font-semibold mb-3">
                                     <div>{project.project}</div>
                                   </div>
@@ -134,7 +134,7 @@ const PropertyPortfolio = () => {
                                         className="text-red-600"
                                       />
                                     )}
-                                    <p>Studio</p>
+                                    <p>{t("enquiry_studio")}</p>
                                   </div>
                                   <div className="flex items-center gap-3 my-2">
                                     {project.onebed === 1 ? (
@@ -148,7 +148,7 @@ const PropertyPortfolio = () => {
                                         className="text-red-600"
                                       />
                                     )}
-                                    <p>1 Bedroom</p>
+                                    <p>{t("enquiry_1bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3 my-2">
                                     {project.twobed === 1 ? (
@@ -162,7 +162,7 @@ const PropertyPortfolio = () => {
                                         className="text-red-600"
                                       />
                                     )}
-                                    <p>2 Bedrooms</p>
+                                    <p>{t("enquiry_2bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3 my-2">
                                     {project.threebed === 1 ? (
@@ -176,7 +176,7 @@ const PropertyPortfolio = () => {
                                         className="text-red-600"
                                       />
                                     )}
-                                    <p>3 Bedrooms</p>
+                                    <p>{t("enquiry_3bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3 my-2">
                                     {project.fourbed === 1 ? (
@@ -190,7 +190,7 @@ const PropertyPortfolio = () => {
                                         className="text-red-600"
                                       />
                                     )}
-                                    <p>4 Bedrooms</p>
+                                    <p>{t("enquiry_4bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3 my-2">
                                     {project.fivebed === 1 ? (
@@ -204,7 +204,7 @@ const PropertyPortfolio = () => {
                                         className="text-red-600"
                                       />
                                     )}
-                                    <p>5 Bedrooms</p>
+                                    <p>{t("enquiry_5bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3 my-2">
                                     {project.sixbed === 1 ? (
@@ -218,7 +218,7 @@ const PropertyPortfolio = () => {
                                         className="text-red-600"
                                       />
                                     )}
-                                    <p>6 Bedrooms</p>
+                                    <p>{t("enquiry_6bed")}</p>
                                   </div>
                                   <div className="flex items-center gap-3 my-2">
                                     {project.retail === 1 ? (
@@ -232,7 +232,7 @@ const PropertyPortfolio = () => {
                                         className="text-red-600"
                                       />
                                     )}
-                                    <p>Retail</p>
+                                    <p>{t("enquiry_retail")}</p>
                                   </div>
                                   {project.tour360 === 1 ? (
                                     <div className="flex items-center justify-end gap-3 text-white text-sm">
@@ -244,9 +244,9 @@ const PropertyPortfolio = () => {
                                         }
                                         className="bg-primary text-white rounded-md gap-2 px-3 py-2 flex items-center"
                                       >
-                                        <Md360 size={"16"} />
-                                        <span className="uppercase font-semibold">
-                                          360 View
+                                        <Md360 size={"25px"} />
+                                        <span className="text-xs uppercase">
+                                          {t("360_view")}
                                         </span>
                                       </button>
                                     </div>
@@ -260,17 +260,14 @@ const PropertyPortfolio = () => {
                         </div>
                       ) : (
                         <p className="italic text-sm text-center">
-                          No projects to show
+                          {t("no_projects")}
                         </p>
                       )}
                     </div>
-                    <hr></hr>
                   </>
                 );
               }
-              // })
-              // ) : (
-              //     <p className="italic text-sm">Nothing to show</p>
+      
             )}
           </div>
         </div>

@@ -17,7 +17,7 @@ export const PersonalInfo = ({
   btnloading,
   UpdateProfile,
 }) => {
-  const { currentMode, darkModeColors } = useStateContext();
+  const { currentMode, darkModeColors, t } = useStateContext();
   console.log(PersonalInfoData);
   const [PersonalInfo, setPersonalInfo] = useState(PersonalInfoData);
   const [Datevalue, setDatevalue] = useState(PersonalInfoData.dob);
@@ -81,7 +81,7 @@ export const PersonalInfo = ({
             </LocalizationProvider> */}
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Date of Birth"
+                label={t("label_dob")}
                 value={Datevalue}
                 onChange={(newValue) => {
                   console.log(newValue);
@@ -119,7 +119,7 @@ export const PersonalInfo = ({
             <FormControl className="w-full">
               <TextField
                 id="gender"
-                label="Gender"
+                label={t("label_gender")}
                 value={PersonalInfo?.gender}
                 onChange={(event) =>
                   setPersonalInfo({
@@ -134,34 +134,19 @@ export const PersonalInfo = ({
                 required
               >
                 <MenuItem value="" disabled>
-                  Select Gender
+                {t("select_gender")}
                 </MenuItem>
-                <MenuItem value={"Male"}>Male</MenuItem>
-                <MenuItem value={"Female"}>Female</MenuItem>
+                <MenuItem value={"Male"}>{t("label_male")}</MenuItem>
+                <MenuItem value={"Female"}>{t("label_female")}</MenuItem>
               </TextField>
             </FormControl>
           </div>
           <div className="col-span-3 w-full">
-            {/* <TextField
-              id="country"
-              type={"text"}
-              label="Country"
-              className="w-full"
-              variant="outlined"
-              size="medium"
-              required
-              value={PersonalInfo?.nationality}
-              onInput={(e) =>
-                setPersonalInfo({
-                  ...PersonalInfo,
-                  nationality: e.target.value,
-                })
-              }
-            /> */}
+  
             <TextField
               id="country"
               type={"text"}
-              label="Country"
+              label={t("label_country")}
               className="w-full"
               variant="outlined"
               size="medium"
@@ -176,7 +161,7 @@ export const PersonalInfo = ({
             <TextField
               id="address"
               type={"text"}
-              label="Address"
+              label={t("label_address")}
               className="w-full"
               variant="outlined"
               size="medium"
@@ -208,20 +193,11 @@ export const PersonalInfo = ({
                   className="text-white"
                 />
               ) : (
-                <span>Update Profile</span>
+                <span>{t("update_profile")}</span>
               )}
             </Button>
           </div>
-          {/* <div className="col-span-3 w-full">
-            <Button
-              ripple={true}
-              variant="outlined"
-              type="reset"
-              className="shadow-none w-full rounded-md text-sm  text-main-red-color border-main-red-color"
-            >
-              Reset
-            </Button>
-          </div> */}
+ 
         </Box>
       </form>
       <div className="flex justify-between px-10 w-full pt-10">
@@ -231,7 +207,7 @@ export const PersonalInfo = ({
           }`}
         >
           <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-            <h1>Created</h1>
+            <h1>{t("created")}</h1>
           </div>
           {User?.creationDate}
         </div>
@@ -241,7 +217,7 @@ export const PersonalInfo = ({
           }`}
         >
           <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-            <h1>Last Updated</h1>
+            <h1>{t("last_updated")}</h1>
           </div>
           {User?.lastEdited}
         </div>

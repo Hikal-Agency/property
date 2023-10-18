@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 import BookedDeals from "../../Components/Leads/BookedDeals";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 
 const Booked = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, BACKEND_URL, pageState } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, pageState, t } =
     useStateContext();
 
   console.log("Booked State: ", pageState);
@@ -38,7 +36,7 @@ const Booked = () => {
                     : "text-black"
                 }`}
               >
-                Booked Deals {" "}
+                {`${t("booked")} ${t("deals")}`} {" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>

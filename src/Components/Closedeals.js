@@ -1,8 +1,6 @@
-import { Button } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../context/ContextProvider";
 import moment from "moment/moment";
-import { useNavigate } from "react-router-dom";
 
 import { MenuItem, Pagination, Select, Tooltip } from "@mui/material";
 import { Box } from "@mui/system";
@@ -50,7 +48,7 @@ import { TbWorldWww } from "react-icons/tb";
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
-  const { currentMode, DataGridStyles, BACKEND_URL, User, isArabic, primaryColor } =
+  const { currentMode, DataGridStyles, BACKEND_URL, User, isArabic, primaryColor, t } =
     useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -89,7 +87,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     // SOURCE
     {
       field: "leadSource",
-      headerName: "Src",
+      headerName: t("label_source"),
       flex: 1,
       minWidth: 40,
       headerAlign: "center",
@@ -198,7 +196,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     // LEAD NAME
     {
       field: "leadName",
-      headerName: "Lead name",
+      headerName: t("label_lead_name"),
       minWidth: 100,
       flex: 1,
       headerAlign: "center",
@@ -221,7 +219,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     // PROJECT
     {
       field: "project",
-      headerName: "Project",
+      headerName: t("label_project"),
       headerAlign: "center",
       minWidth: 80,
       flex: 1,
@@ -245,7 +243,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     {
       headerAlign: "center",
       field: "leadType",
-      headerName: "Property",
+      headerName: t("label_property"),
       minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
@@ -261,7 +259,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     {
       field: "amount",
       headerAlign: "center",
-      headerName: "Amount (AED)",
+      headerName: t("label_amount_aed"),
       minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
@@ -275,7 +273,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     // DEAL DATE
     {
       field: "dealDate",
-      headerName: "Deal date",
+      headerName: t("label_deal_date"),
       minWidth: 50,
       headerAlign: "center",
       flex: 1,
@@ -285,7 +283,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     {
       field: "userName",
       headerAlign: "center",
-      headerName: "Consultant",
+      headerName: t("label_consultant"),
       minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
@@ -297,7 +295,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     // OTP
     {
       field: "otp",
-      headerName: "OTP",
+      headerName: t("label_otp"),
       minWidth: 30,
       headerAlign: "center",
       flex: 1,
@@ -346,7 +344,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     },
     {
       field: "",
-      headerName: "Action",
+      headerName: t("label_action"),
       minWidth: 50,
       flex: 1,
       sortable: false,
@@ -417,7 +415,7 @@ const Closedeals = ({ pageState, setpageState }) => {
   const otherColumns = [
     {
       field: "dealDate",
-      headerName: "Deal date",
+      headerName: t("label_deal_date"),
       minWidth: 50,
       headerAlign: "center",
       flex: 1,
@@ -425,7 +423,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     },
     {
       field: "leadName",
-      headerName: "Lead name",
+      headerName: t("label_lead_name"),
       minWidth: 60,
       flex: 1,
       headerAlign: "center",
@@ -447,7 +445,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     },
     {
       field: "project",
-      headerName: "Project",
+      headerName: t("label_project"),
       headerAlign: "center",
 
       minWidth: 60,
@@ -471,7 +469,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     },
     {
       field: "enquiryType",
-      headerName: "Enquiry",
+      headerName: t("label_enquiry"),
       headerAlign: "center",
 
       minWidth: 60,
@@ -481,7 +479,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       field: "leadType",
       headerAlign: "center",
 
-      headerName: "Property",
+      headerName: t("label_property"),
       minWidth: 60,
       flex: 1,
     },
@@ -489,14 +487,14 @@ const Closedeals = ({ pageState, setpageState }) => {
     {
       field: "amount",
       headerAlign: "center",
-      headerName: "Amount in AED",
+      headerName: t("label_amount_aed"),
       minWidth: 40,
       flex: 1,
     },
     {
       field: "userName",
       headerAlign: "center",
-      headerName: "Property Consultant",
+      headerName: t("label_property_consultant"),
       minWidth: 40,
       flex: 1,
     },
@@ -516,7 +514,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     // },
     {
       field: "",
-      headerName: "Action",
+      headerName: t("label_action"),
       minWidth: 80,
       flex: 1,
       sortable: false,

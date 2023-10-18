@@ -140,7 +140,7 @@ const FiltersDropdown = ({
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [rangeData, setRangeData] = useState([]);
-  const { currentMode, darkModeColors, BACKEND_URL, pageState, formatNum } =
+  const { currentMode, darkModeColors, BACKEND_URL, pageState, formatNum, t } =
     useStateContext();
   const token = localStorage.getItem("auth-token");
   const formatDate = (dateObj) => {
@@ -319,7 +319,7 @@ const FiltersDropdown = ({
             </div>
           ) : (
             <div className="flex items-center">
-              <span>Filters</span> <BiFilter size={19} />
+              <span>{t("btn_filters")}</span> <BiFilter size={19} />
             </div>
           )}
         </Button>
@@ -395,7 +395,7 @@ const FiltersDropdown = ({
                       setAgentSelected("");
                     }}
                   >
-                    Clear
+                    {t("clear")}
                   </strong>
                 ) : (
                   ""
@@ -456,7 +456,7 @@ const FiltersDropdown = ({
                       setAgents([]);
                     }}
                   >
-                    Clear
+                    {t("clear")}
                   </strong>
                 ) : (
                   ""
@@ -484,7 +484,7 @@ const FiltersDropdown = ({
                   }}
                 >
                   <MenuItem selected value="" disabled>
-                    Agent
+                    {t("label_agent")}
                   </MenuItem>
                   {agents[`manager-${managerSelected}`]?.map((agent, index) => (
                     <MenuItem key={index} value={agent?.id || ""}>
@@ -522,7 +522,7 @@ const FiltersDropdown = ({
                 }}
               >
                 <MenuItem value="0" disabled>
-                  Lead Origin
+                  {t("label_lead_origin")}
                 </MenuItem>
                 {leadOrigins?.map((origin, index) => (
                   <MenuItem key={index} value={origin?.id || ""}>
@@ -555,7 +555,7 @@ const FiltersDropdown = ({
                 }}
               >
                 <MenuItem value="0" disabled>
-                  --- Feedback ---
+                  --- {t("label_feedback")} ---
                 </MenuItem>
                 {leadTypes?.map((type, index) => (
                   <MenuItem key={index} value={type?.id || ""}>
@@ -585,7 +585,7 @@ const FiltersDropdown = ({
                     className="ml-4 text-primary cursor-pointer"
                     onClick={() => setEnquiryTypeSelected({ id: 0 })}
                   >
-                    Clear
+                    {t("clear")}
                   </strong>
                 ) : (
                   ""
@@ -619,7 +619,7 @@ const FiltersDropdown = ({
                   }}
                 >
                   <MenuItem value="0" disabled>
-                    Enquiry
+                    {t("label_enquiry")}
                   </MenuItem>
                   {enquiryTypes?.map((type, index) => (
                     <MenuItem key={index} value={type?.id || ""}>
@@ -636,7 +636,7 @@ const FiltersDropdown = ({
                   id="Project"
                   type={"text"}
                   value={projectNameTyped}
-                  label="Project Name"
+                  label={t("label_project_name")}
                   variant="outlined"
                   fullWidth
                   size="small"
@@ -665,7 +665,7 @@ const FiltersDropdown = ({
                     className="ml-4 text-primary cursor-pointer"
                     onClick={() => setOtpSelected({ id: 0 })}
                   >
-                    Clear
+                    {t("clear")}
                   </strong>
                 ) : (
                   ""
@@ -697,7 +697,7 @@ const FiltersDropdown = ({
                   }}
                 >
                   <MenuItem value="0" disabled>
-                    OTP
+                    {t("label_otp")?.toUpperCase()}
                   </MenuItem>
                   {otpTypes?.map((type, index) => (
                     <MenuItem key={index} value={type?.id || ""}>
@@ -714,7 +714,7 @@ const FiltersDropdown = ({
                   id="language"
                   type={"text"}
                   value={languageFilter}
-                  label="Language"
+                  label={t("label_language")}
                   variant="outlined"
                   fullWidth
                   size="small"
@@ -743,7 +743,7 @@ const FiltersDropdown = ({
                   className="ml-4 text-primary cursor-pointer"
                   onClick={() => setPhoneNumberFilter("")}
                 >
-                  Clear
+                  {t("clear")}
                 </strong>
               ) : (
                 ""
@@ -755,7 +755,7 @@ const FiltersDropdown = ({
                 currentMode === "dark" ? "text-white" : "text-black"
               } flex items-center`}
             >
-              <p className={`w-[25%]`}>Phone</p>
+              <p className={`w-[25%]`}>{t("label_phone")}</p>
               <div className="flex flex-1 pr-6 justify-between items-center">
                 <label className="mr-4">
                   <input
@@ -765,7 +765,7 @@ const FiltersDropdown = ({
                     checked={phoneNumberFilter === "with"}
                     onChange={(e) => setPhoneNumberFilter(e.target.value)}
                   />
-                  Available
+                  {t("available")}
                 </label>
                 <label>
                   <input
@@ -775,7 +775,7 @@ const FiltersDropdown = ({
                     checked={phoneNumberFilter === "without"}
                     onChange={(e) => setPhoneNumberFilter(e.target.value)}
                   />
-                  Unavailable
+                  {t("unavailable")}
                 </label>
               </div>
             </div>
@@ -799,7 +799,7 @@ const FiltersDropdown = ({
                   className="ml-4 text-primary cursor-pointer"
                   onClick={() => setEmailFilter("")}
                 >
-                  Clear
+                  {t("clear")}
                 </strong>
               ) : (
                 ""
@@ -821,7 +821,7 @@ const FiltersDropdown = ({
                     checked={emailFilter === "with"}
                     onChange={(e) => setEmailFilter(e.target.value)}
                   />
-                  Available
+                  {t("available")}
                 </label>
                 <label>
                   <input
@@ -831,7 +831,7 @@ const FiltersDropdown = ({
                     checked={emailFilter === "without"}
                     onChange={(e) => setEmailFilter(e.target.value)}
                   />
-                  Unavailable
+                  {t("unavailable")}
                 </label>
               </div>
             </div>
@@ -842,7 +842,7 @@ const FiltersDropdown = ({
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-            <strong className=" ">Date Range</strong>
+            <strong className=" ">{t("label_data_range")}</strong>
           </label>
           <div className="flex flex-row justify-between mt-3">
             <div className="flex flex-col" style={{ marginRight: "15px" }}>
@@ -864,7 +864,7 @@ const FiltersDropdown = ({
                       className="ml-4  text-red-600 cursor-pointer"
                       onClick={() => setStartDate("")}
                     >
-                      Clear
+                      {t("clear")}
                     </strong>
                   ) : (
                     ""
@@ -874,14 +874,13 @@ const FiltersDropdown = ({
                 <Box sx={darkModeColors}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                      label="Start Date"
+                      label={t("start_date")}
                       value={startDate}
                       views={["year", "month", "day"]}
                       onChange={(newValue) => {
                         const formattedDate = moment(newValue?.$d).format(
                           "YYYY-MM-DD"
                         );
-                        console.log("start date: ", formattedDate);
                         setStartDate(formattedDate);
                       }}
                       onClick={(e) => e.stopPropagation()}
@@ -921,7 +920,7 @@ const FiltersDropdown = ({
                       className="ml-4 text-red-600 cursor-pointer"
                       onClick={() => setEndDate("")}
                     >
-                      Clear
+                      {t("clear")}
                     </strong>
                   ) : (
                     ""
@@ -930,7 +929,7 @@ const FiltersDropdown = ({
                 <Box sx={darkModeColors}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                      label="End Date"
+                      label={t("end_date")}
                       value={endDate}
                       views={["year", "month", "day"]}
                       onChange={(newValue) => {
@@ -962,7 +961,7 @@ const FiltersDropdown = ({
               currentMode === "dark" ? "text-white" : "text-dark"
             } `}
           >
-            <strong className=" ">Lead Range</strong>
+            <strong className=" ">{t("lead_range")}</strong>
           </label>
 
           <div className="flex flex-row justify-between mb-4">
@@ -988,7 +987,7 @@ const FiltersDropdown = ({
               <Box sx={darkModeColors}>
                 <TextField
                   onClick={(e) => e.stopPropagation()}
-                  label="From"
+                  label={t("from")}
                   size="small"
                   type="number"
                   value={fromRange}
@@ -1033,7 +1032,7 @@ const FiltersDropdown = ({
               </label> */}
               <Box sx={darkModeColors}>
                 <TextField
-                  label="To"
+                  label={t("to")}
                   onClick={(e) => e.stopPropagation()}
                   size="small"
                   value={toRange}
@@ -1063,7 +1062,7 @@ const FiltersDropdown = ({
               onClick={getNumbers}
               className="text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary"
             >
-              {btnLoading ? <CircularProgress /> : <span>SEND</span>}
+              {btnLoading ? <CircularProgress /> : <span>{t("send")?.toUpperCase()}</span>}
             </Button>
           )}
         </div>

@@ -1,15 +1,10 @@
 import {
   Modal,
   Backdrop,
-  Menu,
-  MenuItem,
   CircularProgress,
   IconButton,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { GiShare } from "react-icons/gi";
-import { AiOutlineDownload } from "react-icons/ai";
-import { FiTrash } from "react-icons/fi";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
@@ -29,7 +24,6 @@ const SingleDocModal = ({
   };
 
   const [numPages, setNumPages] = useState();
-  const [pageNumber, setPageNumber] = useState(1);
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };

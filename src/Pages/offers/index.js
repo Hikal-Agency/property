@@ -9,8 +9,13 @@ import OffersList from "../../Components/offers/OffersList";
 import usePermission from "../../utils/usePermission";
 
 const Offers = () => {
-  const { currentMode, darkModeColors, setopenBackDrop, BACKEND_URL } =
-    useStateContext();
+  const { 
+    currentMode, 
+    darkModeColors, 
+    setopenBackDrop, 
+    BACKEND_URL,
+    themeBgImg, t
+  } = useStateContext();
   const [value, setValue] = useState(0);
   const { hasPermission } = usePermission();
 
@@ -88,8 +93,9 @@ const Offers = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
-            }`}
+              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
+            }
+            ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
             <div className="w-full flex items-center pb-3">
               <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
@@ -100,7 +106,7 @@ const Offers = () => {
                     : "text-black"
                 }`}
               >
-                Offers
+                {t("offers")}
               </h1>
             </div>
 
@@ -116,25 +122,27 @@ const Offers = () => {
                   zIndex: "1",
                 },
               }}
-              className={`w-full rounded-md overflow-hidden ${
-                currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-100"
+              className={`w-full rounded-lg overflow-hidden ${
+                !themeBgImg 
+                ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EBEBEB]")
+                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
               } `}
             >
               <Tabs
                 value={value}
                 onChange={handleChange}
                 variant="variant"
-                className="w-full px-1 m-1"
+                className="w-full m-1"
               >
                 {hasPermission("offers_create") ? (
-                  <Tab label="CREATE NEW OFFER" />
+                  <Tab label={t("create_new_offer")?.toUpperCase()} />
                 ) : (
                   ""
                 )}
                 {hasPermission("offers_manager_tab") && (
-                  <Tab label="OFFERS FOR MANAGERS" />
+                  <Tab label={t("offers_for_managers")?.toUpperCase()} />
                 )}
-                <Tab label="OFFERS FOR AGENTS" />
+                <Tab label={t("offers_for_agents")?.toUpperCase()} />
               </Tabs>
             </Box>
             <div className="mt-3 pb-3">

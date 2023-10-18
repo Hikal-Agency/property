@@ -1,4 +1,3 @@
-//import { useState } from "react";
 import { useState, useEffect, useRef } from "react";
 import {
   Modal,
@@ -44,7 +43,7 @@ const SendMessageModal = ({
     setUserCredits,
     isArabic,
     isEnglish,
-    formatNum,
+    formatNum, t
   } = useStateContext();
 
   const [messageValue, setMessageValue] = useState("");
@@ -170,23 +169,6 @@ const SendMessageModal = ({
     }
   }
 
-  const saveMessages = async (allSentMessages) => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      await Promise.all(
-        allSentMessages.map((msg) => {
-          return axios.post(`${BACKEND_URL}/messages`, JSON.stringify(msg), {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          });
-        })
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   async function sendWhatsappMessage(messageText, contactList) {
     try {
@@ -384,7 +366,7 @@ const SendMessageModal = ({
           {messagesSent ? (
             <div>
               <p className="text-2xl mb-4">
-                Messages are being sent to these contacts:
+                {t("messages_being_sent")}:
               </p>
               <ul className="ml-5">
                 {selectedContacts?.map((contact) => {
@@ -406,7 +388,7 @@ const SendMessageModal = ({
                   select
                   id="senderAdd"
                   type={"text"}
-                  label="Sender Address"
+                  label={t("sender_address")}
                   variant="outlined"
                   size="small"
                   sx={{ marginTop: "20px" }}
@@ -418,7 +400,7 @@ const SendMessageModal = ({
                   }}
                 >
                   <MenuItem value="" disabled>
-                    Select Sender Address
+                    {t("select_sender_address")}
                   </MenuItem>
 
                   {senderAddresses?.map((address) => {
@@ -438,8 +420,8 @@ const SendMessageModal = ({
                 onChange={handleChange}
                 variant="standard"
               >
-                <Tab label="Custom Message" />
-                <Tab label="Templates" />
+                <Tab label={t("custom_messsage")} />
+                <Tab label={t("templates")} />
               </Tabs>
               <form onSubmit={handleSendMessage} action="">
                 {sendMessageModal.isWhatsapp && !imgBinary && (
@@ -451,7 +433,7 @@ const SendMessageModal = ({
                     color="error"
                     size="small"
                   >
-                    Upload Image{" "}
+                    {t("button_upload_image")}{" "}
                     <AiOutlineCloudUpload className="ml-2" size={20} />
                   </Button>
                 )}
@@ -524,7 +506,7 @@ const SendMessageModal = ({
                                   d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
                                 />
                               </svg>
-                              <span className="sr-only">Full screen</span>
+                              <span className="sr-only">{t("full_screen")}</span>
                             </button>
                           </div>
                           <div className="px-4 h-full py-2 bg-white rounded-b-lg">
@@ -534,7 +516,7 @@ const SendMessageModal = ({
                                 setsmsTextValue(e.target.value?.toString())
                               }
                               className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
-                              placeholder="Type the message ..."
+                              placeholder={t("type_the_message")}
                               required
                             ></textarea>
                           </div>
@@ -566,7 +548,7 @@ const SendMessageModal = ({
                             <div className="flex items-center justify-between px-3 py-2 border-b">
                               <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
                                 <div className="flex flex-wrap items-center">
-                                  {smsTextValue?.trim()?.length} characters
+                                  {smsTextValue?.trim()?.length} {t("characters")}
                                 </div>
                               </div>
                               <button
@@ -588,7 +570,7 @@ const SendMessageModal = ({
                                     d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
                                   />
                                 </svg>
-                                <span className="sr-only">Full screen</span>
+                                <span className="sr-only">{t("full_screen")}</span>
                               </button>
                             </div>
                             <div className="px-4 h-full py-2 bg-white rounded-b-lg">
@@ -596,7 +578,7 @@ const SendMessageModal = ({
                                 value={smsTextValue}
                                 onInput={(e) => setsmsTextValue(e.target.value)}
                                 className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
-                                placeholder="Type the message..."
+                                placeholder={t("type_the_message")}
                                 required
                               ></textarea>
                             </div>
@@ -619,7 +601,7 @@ const SendMessageModal = ({
                           );
                         })
                       ) : (
-                        <p>No templates found!</p>
+                        <p>{t("no_templates_found")}</p>
                       )}
                     </Box>
                   ),
@@ -670,8 +652,8 @@ const SendMessageModal = ({
                           color="white"
                         />{" "}
                         {selectedContacts?.length === 1
-                          ? "Send Message"
-                          : `Send Message to ${selectedContacts.length} contacts`}
+                          ? t("send_message")
+                          : t("send_message_to", {n: selectedContacts?.length})}
                       </>
                     )}
                   </Button>

@@ -19,7 +19,7 @@ const DeleteUser = ({
   UserName,
   fetchUser,
 }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, t } = useStateContext();
   const [deletebtnloading, setdeleteBtnLoading] = useState(false);
   const [randNumbers, setRandNumbers] = useState({
     firstNumber: null,
@@ -194,13 +194,12 @@ const DeleteUser = ({
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              {`Do you really want to ${
-                UserStatus === 1 ? "De-activate" : "Re-activate"
+              {`${t("do_you_really_want_to")}${
+                UserStatus === 1 ? t("de_activate") : t("re_activate")
               } ${UserName}?`}
             </h1>
             <small className="text-center w-[80%] mx-auto text-gray-500">
-              All the leads assigned to {UserName} will be unassigned
-              automatically and can be found in Reshuffled leads.
+              {t("delete_user_description", {UserName})}
             </small>
 
             <div className="bg-primary text-center rounded p-3 mb-3 mt-4 w-full text-white">
@@ -211,7 +210,7 @@ const DeleteUser = ({
             <TextField
               onInput={(e) => setAnswerVal(e.target.value)}
               value={answerVal}
-              label="Type your answer here.."
+              label={`${t("type_your_answer")}..`}
               type="number"
               fullWidth
             />
@@ -231,7 +230,7 @@ const DeleteUser = ({
               {deletebtnloading ? (
                 <CircularProgress size={18} sx={{ color: "blue" }} />
               ) : (
-                <span>{UserStatus === 1 ? "deactivate" : "reactivate"}</span>
+                <span>{UserStatus === 1 ? t("de_activate") : t("re_activate")}</span>
               )}
             </Button>
 
@@ -245,7 +244,7 @@ const DeleteUser = ({
                   : "text-primary border-primary"
               }`}
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </div>
         </div>

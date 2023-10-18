@@ -7,20 +7,13 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { socket } from "../../Pages/App";
-import { Button, Textarea } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 
-import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import "react-phone-number-input/style.css";
 
-import PhoneInput, {
-  formatPhoneNumberIntl,
-  isValidPhoneNumber,
-  isPossiblePhoneNumber,
-} from "react-phone-number-input";
-import classNames from "classnames";
+
 import Loader from "../Loader";
 import { useFilterContext } from "../../context/FilterContextProvider";
 
@@ -50,50 +43,30 @@ const BulkSMSModal = ({
   const token = localStorage.getItem("auth-token");
   const {
     emailFilter,
-    setEmailFilter,
     phoneNumberFilter,
-    setPhoneNumberFilter,
     otpSelected,
-    setOtpSelected,
     startDate,
-    setStartDate,
     endDate,
-    setEndDate,
     languageFilter,
-    setLanguageFilter,
     leadOriginSelected,
-    setLeadOriginSelected,
-    leadTypeSelected,
-    setLeadTypeSelected,
-    enquiryTypeSelected,
-    setEnquiryTypeSelected,
-    managerSelected,
-    setManagerSelected,
-    agentSelected,
-    setAgentSelected,
-    projectNameTyped,
-    setProjectNameTyped,
-  } = useFilterContext();
 
-  const handleMsg = (e) => {
-    setSmsTextValue(e.target.value);
-  };
+    enquiryTypeSelected,
+    managerSelected,
+    agentSelected,
+    projectNameTyped,
+  } = useFilterContext();
 
   const {
     currentMode,
     darkModeColors,
     User,
     BACKEND_URL,
-    fetchSidebarData,
-    SalesPerson,
-    Managers,
+
     isArabic,
     isEnglish,
-    formatNum,
+    formatNum, t
   } = useStateContext();
-  console.log("Salesperson: ", SalesPerson);
-  console.log("MAnagers: ", Managers);
-  console.log("Range Data : ", rangeData);
+
   const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM"];
 
   const [contactsList, setContactsList] = useState(
@@ -316,23 +289,8 @@ const BulkSMSModal = ({
     }
   };
 
-  const [Manager2, setManager2] = useState([]);
-  // const [SalesPerson, setSalesPerson] = useState([]);
-
-  const [PropertyType, setPropertyType] = useState("");
-  const [EnquiryType, setEnquiryType] = useState("");
-  const [ForType, setForType] = useState("");
-  const [LanguagePrefered, setLanguagePrefered] = useState("");
-  const [LeadStatus, setLeadStatus] = useState("");
-  const [LeadSource, setLeadSource] = useState("");
   const [Manager, setManager] = useState("");
-  const [SalesPerson2, setSalesPerson2] = useState("");
-  const [LeadName, setLeadName] = useState("");
-  const [LeadContact, setLeadContact] = useState("");
-  const [LeadEmail, setLeadEmail] = useState();
-  const [emailError, setEmailError] = useState(false);
-  const [LeadProject, setLeadProject] = useState("");
-  const [LeadNotes, setLeadNotes] = useState("");
+
 
 
   // eslint-disable-next-line
@@ -365,7 +323,7 @@ const BulkSMSModal = ({
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                Send Bulk SMS
+                {t("btn_send_bulk_sms")}
               </h1>
             </div>
 
@@ -376,7 +334,7 @@ const BulkSMSModal = ({
                     currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#1C1C1C]"
                   } text-center font-semibold pb-4`}
                 >
-                  SMS Recipients
+                  {t("sms_recipients")}
                 </h4>
 
                 <TextField
@@ -389,7 +347,7 @@ const BulkSMSModal = ({
                   placeholder="Recipients"
                   multiline
                   minRows={2}
-                  label="Recipients"
+                  label={t("label_recipients")}
                   value={contactsList?.join(",")}
                   onChange={handleContacts}
                   size="small"
@@ -460,7 +418,7 @@ const BulkSMSModal = ({
                       </label> */}
                       <Box sx={darkModeColors}>
                         <TextField
-                          label="To"
+                          label={t("to")}
                           value={toRange}
                           type="number"
                           size="small"
@@ -510,7 +468,7 @@ const BulkSMSModal = ({
                         className="text-white"
                       />
                     ) : (
-                      <span>Add More</span>
+                      <span>{t("add_more")}</span>
                     )}
                   </Button>
                 </div>
@@ -540,7 +498,7 @@ const BulkSMSModal = ({
                           className="text-white"
                         />
                       ) : (
-                        <span>Select</span>
+                        <span>{t("label_select")}</span>
                       )}
                     </Button>
                   </div>
@@ -556,7 +514,7 @@ const BulkSMSModal = ({
                         : "text-[#1C1C1C]"
                     } text-center font-semibold pb-4`}
                   >
-                    SMS Message
+                   {t("sms_message")}
                   </h4>
 
                   <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
@@ -650,7 +608,7 @@ const BulkSMSModal = ({
                         : "text-[#1C1C1C]"
                     } text-center font-semibold pb-4`}
                   >
-                    SMS Send Configurations
+                    {t("sms_send_configs")}
                   </h4>
 
                   <TextField
@@ -661,7 +619,7 @@ const BulkSMSModal = ({
                     }}
                     size="small"
                     className="w-full p-2"
-                    label="Send From"
+                    label={t("send_from")}
                     // sx={{
                     //   "&": {
                     //     marginBottom: "1.25rem !important",
@@ -703,7 +661,7 @@ const BulkSMSModal = ({
                       className="text-white"
                     />
                   ) : (
-                    <span>Send</span>
+                    <span>{t("send")}</span>
                   )}
                 </Button>
               </div>

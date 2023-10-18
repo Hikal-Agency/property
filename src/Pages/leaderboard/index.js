@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 
 const Leaderboard = () => {
-  const { currentMode, darkModeColors, themeBgImg } = useStateContext();
+  const { currentMode, darkModeColors, themeBgImg, t } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -37,7 +37,7 @@ const Leaderboard = () => {
                   : "text-black"
               }`}
             >
-              Leaderboard
+              {t("leaderboard")}
             </h1>
           </div>
           
@@ -57,7 +57,7 @@ const Leaderboard = () => {
                   },
                 }}
                 className={`w-full rounded-md overflow-hidden ${
-                  currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
+                  !themeBgImg ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
                 }`}
               >
                 <div className="flex justify-between">
@@ -67,9 +67,9 @@ const Leaderboard = () => {
                     variant="standard"
                     className="w-full px-1 m-1"
                   >
-                    <Tab label="Call Logs" />
-                    <Tab label="Closed Deals" />
-                    <Tab label="Target" />
+                    <Tab label={t("call_logs")} />
+                    <Tab label={t("menu_closed_deals")} />
+                    <Tab label={t("label_target")}/>
                   </Tabs>
                   <Link
                     className="bg-primary w-[250px] text-white rounded-lg pl-2 py-3 font-semibold  flex items-center justify-center space-x-2"
@@ -78,7 +78,7 @@ const Leaderboard = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <span>Call Logs Full View</span>
+                    <span>{t("call_logs_full_view")}</span>
                     <BsFillArrowUpRightCircleFill />
                   </Link>
                 </div>

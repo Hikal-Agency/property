@@ -7,7 +7,7 @@ import NotificationsGridComponent from "../../Components/notificationsUi/Notific
 
 const Notifications = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, BACKEND_URL, User, darkModeColors } =
+  const { currentMode, setopenBackDrop, t } =
     useStateContext();
 
   const [pageState, setpageState] = useState({
@@ -21,7 +21,6 @@ const Notifications = () => {
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);
-    const token = localStorage.getItem("auth-token");
     // eslint-disable-next-line
   }, [pageState.page]);
 
@@ -45,7 +44,7 @@ const Notifications = () => {
                     : "text-black"
                 }`}
               >
-                Notification Settings
+               {t("notification_settings")}
               </h1>
             </div>
             <NotificationsGridComponent />

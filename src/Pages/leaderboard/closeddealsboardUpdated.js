@@ -17,9 +17,8 @@ import {
 
 
 const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, themeBgImg , t} = useStateContext();
   const [loading, setLoading] = useState(false);
-  const [callLogs, setCallLogs] = useState();
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -153,9 +152,9 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
           <div className="mb-3">
             <Box sx={darkModeColors} className="font-semibold">
               <Tabs value={tabValue} onChange={handleChange} variant="standard">
-                <Tab label="All TIME" />
-                <Tab label="LAST MONTH" />
-                <Tab label="THIS MONTH" />
+                <Tab label={t("all_time")} />
+                <Tab label={t("last_month")} />
+                <Tab label={t("this_month")} />
               </Tabs>
             </Box>
           </div>
@@ -167,16 +166,20 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
               <div
                 className={`text-lg font-bold text-center uppercase`}
               >
-                Manager
+                {t("label_manager")}
               </div>
               <div className="grid gap-4 p-3">
                 {manager?.length > 0 ? (
                   manager?.map((item, index) => (
                     <div
                       className={`${
-                        currentMode === "dark"
+                        !themeBgImg 
+                        ? (currentMode === "dark"
+                        ? "bg-[#1C1C1C]"
+                        : "bg-[#EBEBEB]") 
+                        : (currentMode === "dark"
                           ? "blur-bg-dark"
-                          : "blur-bg-light"
+                          : "blur-bg-light")
                       } 
                       ${active === item?.id ? "border-2 border-primary" : ""} 
                       card-hover shadow-sm rounded-lg p-3 w-full`}
@@ -244,9 +247,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                     agents?.map((item, index) => (
                       <div
                         className={`${
-                          currentMode === "dark"
-                            ? "blur-bg-dark"
-                            : "blur-bg-light"
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EBEBEB]") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light")
                         } 
                         ${active === item?.id ? "border-2 border-primary" : ""} 
                         card-hover shadow-sm rounded-lg p-3 w-full`}
@@ -305,9 +312,13 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
                     filteredAgent?.map((item, index) => (
                       <div
                         className={`${
-                          currentMode === "dark"
-                            ? "blur-bg-dark"
-                            : "blur-bg-light"
+                          !themeBgImg 
+                          ? (currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EBEBEB]") 
+                          : (currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light")
                         }  card-hover shadow-sm rounded-lg p-3 w-full`}
                         key={index}
                       >

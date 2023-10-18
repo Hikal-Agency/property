@@ -47,7 +47,7 @@ const ChatConversation = ({
   const [createMessageModal, setCreateMessageModal] = useState({
     isOpened: false,
   });
-  const { User, primaryColor } = useStateContext();
+  const { User, primaryColor, t } = useStateContext();
 
   const handleChangeImage = (e) => {
     e.preventDefault();
@@ -105,7 +105,7 @@ const ChatConversation = ({
           <Box className="w-[30%] relative">
             <div className="flex items-center px-5 justify-between">
               <p style={{ paddingBottom: "1.2rem" }} className="text-2xl pt-5">
-                <strong>Messages</strong>
+                <strong>{t("messages")}</strong>
               </p>
               <IconButton
                 onClick={() => setCreateMessageModal({ isOpened: true })}
@@ -135,7 +135,7 @@ const ChatConversation = ({
                     </InputAdornment>
                   ),
                 }}
-                placeholder="Search.."
+                placeholder={t("search") + ".."}
               />
             </div>
 
@@ -151,7 +151,7 @@ const ChatConversation = ({
                   padding: "10px 0",
                 }}
               >
-                Recent Chats
+                {t("recent_chats")}
               </Button>
               <Button
                 onClick={() => setActiveTab("online")}
@@ -164,14 +164,14 @@ const ChatConversation = ({
                   padding: "10px 0",
                 }}
               >
-                Online Users
+                {t("online_users")}
               </Button>
             </div>
             <div className="h-[70%]">
               {loadingConversations ? (
                 <div className="flex h-full flex-col items-center justify-center">
                   <CircularProgress className="text-primary" size={18} />
-                  <p className="mt-3">Loading Conversations..</p>
+                  <p className="mt-3">{t("loading_conversations")}..</p>
                 </div>
               ) : (
                 <div className="h-full overflow-y-scroll">
@@ -199,7 +199,7 @@ const ChatConversation = ({
                       ) : (
                         <div className="mt-4 flex justify-center items-center">
                           <p className="font-bold text-[#da1f26]">
-                            Seems ilke no one is Online at this moment.
+                      {t("no_one_is_online")}.
                           </p>
                         </div>
                       ),
@@ -246,7 +246,7 @@ const ChatConversation = ({
                       ) : (
                         <div className="mt-4 flex justify-center items-center">
                           <p className="font-bold text-[#da1f26]">
-                            You dont have any recent chat with anyone!
+                            {t("no_recent_chat_note")}!
                           </p>
                         </div>
                       ),
@@ -285,15 +285,15 @@ const ChatConversation = ({
                     </p>
                     <p>
                       {isTyping ? (
-                        <span>Typing..</span>
+                        <span>{t("typing")}..</span>
                       ) : (
                         [
                           onlineChats?.some(
                             (chat) => chat?.loginId === activeChat?.loginId
                           ) ? (
-                            <span className="text-green-600">Online</span>
+                            <span className="text-green-600">{t("status_online")}</span>
                           ) : (
-                            <span className="text-[#838383]">Offline</span>
+                            <span className="text-[#838383]">{t("status_offline")}</span>
                           ),
                         ]
                       )}
@@ -311,7 +311,7 @@ const ChatConversation = ({
               {chatLoading ? (
                 <div className="bg-gray-100 flex-1 flex flex-col items-center justify-center">
                   <CircularProgress color="error" size={18} />
-                  <p className="mt-3">Loading the chat..</p>
+                  <p className="mt-3">{t('loading_the_chat')}..</p>
                 </div>
               ) : chatMessages.length > 0 ? (
                 <div
@@ -373,7 +373,7 @@ const ChatConversation = ({
                       currentMode === "dark" ? "text-white" : "text-dark"
                     }`}
                   >
-                    Start the Conversation!
+                    {t("start_the_conversation")}!
                   </p>
                 </div>
               )}
@@ -419,7 +419,7 @@ const ChatConversation = ({
                           </InputAdornment>
                         ),
                       }}
-                      placeholder="Type something.."
+                      placeholder={t("type_something") + ".."}
                     />
                     <input
                       onInput={handleChangeImage}
@@ -455,7 +455,7 @@ const ChatConversation = ({
                 )}
                 <div className="mb-3">
                   <div className="flex mt-6 mb-1 items-center text-sm font-bold text-[#a4a6a8]">
-                    <CgDetailsMore /> <p className="uppercase ml-2">Email</p>
+                    <CgDetailsMore /> <p className="uppercase ml-2">{t("label_email")}</p>
                   </div>
                   <p>
                     {activeChat?.userEmail || activeChat?.userAltEmail || "-"}
@@ -463,13 +463,13 @@ const ChatConversation = ({
                 </div>
                 <div className="mb-3">
                   <div className="flex mb-1 mt-6 items-center text-sm font-bold text-[#a4a6a8]">
-                    <BsPhone /> <p className="uppercase ml-2">Phone Number</p>
+                    <BsPhone /> <p className="uppercase ml-2">{t("label_phone_number")}</p>
                   </div>
                   <p>{activeChat?.userContact || "-"}</p>
                 </div>
                 <div className="mb-3">
                   <div className="flex mb-1 mt-6 items-center text-sm font-bold text-[#a4a6a8]">
-                    <BsPersonFill /> <p className="uppercase ml-2">Position</p>
+                    <BsPersonFill /> <p className="uppercase ml-2">{t("label_position")}</p>
                   </div>
                   <p>{activeChat?.position}</p>
                 </div>

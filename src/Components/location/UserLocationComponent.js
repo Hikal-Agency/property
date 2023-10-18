@@ -1,4 +1,3 @@
-// import Image from "next/image";
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -12,12 +11,11 @@ import { BsPinMap } from "react-icons/bs";
 import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Box, IconButton, TextField, Tooltip } from "@mui/material";
-// import { toPng } from "html-to-image";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const UserLocationComponent = () => {
-  const { currentMode, LastLocationData, setLastLocationData, BACKEND_URL } =
+  const { currentMode, LastLocationData, setLastLocationData, BACKEND_URL, t } =
     useStateContext();
 
   const [loading, setloading] = useState(true);
@@ -71,8 +69,6 @@ const UserLocationComponent = () => {
         },
       })
       .then((result) => {
-        // console.log("user location data is");
-        // console.log(result.data);
         setLastLocationData(result.data);
         setloading(false);
       })
@@ -105,15 +101,7 @@ const UserLocationComponent = () => {
     FetchLastLocation(filterDate);
   }, [filterDate]);
 
-  // const generateCompositeImage = () => {
-  //   if(imageContainerRef.current) {
-  //     toPng(imageContainerRef.current).then(function (dataUrl) {
-  //       return dataUrl;
-  //     });
-  //   }
-  // };
 
-  // generateCompositeImage();
 
   return (
     <>
@@ -168,7 +156,7 @@ const UserLocationComponent = () => {
               currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
-            Last Location
+            {t("last_location")}
           </h1>
         </div>
 
@@ -202,7 +190,7 @@ const UserLocationComponent = () => {
                       color: "#AAAAAA",
                     },
                   }}
-                  label="Date"
+                  label={t("date")}
                   {...params}
                   onKeyDown={(e) => e.preventDefault()}
                   readOnly={true}
@@ -222,7 +210,7 @@ const UserLocationComponent = () => {
           >
             {/* MAP */}
             {!load?.isLoaded ? (
-              <div>Your map is loading...</div>
+              <div>{t("map_is_loading")}...</div>
             ) : (
               <>
                 {LastLocationData ? (
@@ -254,18 +242,7 @@ const UserLocationComponent = () => {
                               selectedLocation.user_id === user.user_id
                                 ? user?.profile_picture //CHANGE FOR SELECTED
                                 : "/userpin.svg",
-                            // scaledSize: window.google
-                            //   ? new window.google.maps.Size(
-                            //       selectedLocation &&
-                            //       selectedLocation.user_id === user.user_id
-                            //         ? 70
-                            //         : 50,
-                            //       selectedLocation &&
-                            //       selectedLocation.user_id === user.user_id
-                            //         ? 70
-                            //         : 50
-                            //     )
-                            //   : null,
+              
                             scaledSize: window.google
                               ? new window.google.maps.Size(
                                   selectedLocation &&
@@ -311,7 +288,7 @@ const UserLocationComponent = () => {
                                 {selectedLocation.longitude}
                               </h1>
                               <h1>
-                                Last updated:{" "}
+                                {t("last_updated")}:{" "}
                                 {selectedLocation.latest_recorded_at}
                               </h1>
                             </div>
@@ -386,7 +363,7 @@ const UserLocationComponent = () => {
             ) : (
               <div className="my-5">
                 <h2 className={`text-primary text-center italic text-lg`}>
-                  No location for selected date.
+                  {t("no_location_for_date")}.
                 </h2>
               </div>
             )}
