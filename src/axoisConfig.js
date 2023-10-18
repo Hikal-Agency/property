@@ -47,19 +47,26 @@ axiosInstance.interceptors.response.use(
       console.log("Unauth::::::::");
       // showToastMessage("System updated. Kindly logout and login again.");
 
+      localStorage.removeItem("auth-token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("leadsData");
+      localStorage.removeItem("fb_token");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("expires_in");
+
       // Redirect the user to the "/" route
       isRedirecting = true;
-      // window.location.href = "/";
-      const navigate = useNavigate();
-      const location = useLocation();
-      const continueURL = location.pathname;
+      window.open("/", "_self");
+      // const navigate = useNavigate();
+      // const location = useLocation();
+      // const continueURL = location.pathname;
 
-      navigate("/", {
-        state: {
-          error: "System updated. Kindly logout and login again.",
-          continueURL: continueURL,
-        },
-      });
+      // navigate("/", {
+      //   state: {
+      //     error: "System updated. Kindly logout and login again.",
+      //     continueURL: continueURL,
+      //   },
+      // });
 
       // Build the URL with query parameters
       // const url = new URL("/", window.location.origin);
