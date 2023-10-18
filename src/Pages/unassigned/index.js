@@ -11,7 +11,8 @@ const AllUnassignedLeads = () => {
     setopenBackDrop,
     pageState,
     BACKEND_URL,
-    t
+    t,
+    themeBgImg
   } = useStateContext();
   const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
@@ -32,7 +33,7 @@ const AllUnassignedLeads = () => {
   return (
     <div>
       <div className={`w-full p-4 flex min-h-screen ${
-        currentMode === "dark" ? "bg-black" : "bg-white"
+        !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
         }`}
       >
         {loading ? (

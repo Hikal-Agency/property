@@ -456,12 +456,14 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .phone-input-light .PhoneInputInput {
-  background-color: #fff;
+  /* background-color: #fff; */
+  background-color: transparent;
   color: "#000 !important";
 }
 
 .phone-input-dark .PhoneInputInput {
-  background-color: #000;
+  /* background-color: #000; */
+  background-color: transparent;
   color: "white !important";
 }
 
