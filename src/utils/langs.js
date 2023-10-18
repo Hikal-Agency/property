@@ -10,22 +10,25 @@ const langs = [
   }, 
   {
     code: "cn", 
-    title: "Chinese"
+    title: "中文"
   }, 
   {
     code: "fr", 
-    title: "French"
+    title: "Français"
   }, 
   {
     code: "he", 
-    title: "Hebrew"
-  }, {
+    title: "עִבְרִית",
+    rtl: true
+  }, 
+  {
     code: "pk", 
     title: "اردو", 
     rtl: true
-  }, {
+  }, 
+  {
     code: "ru", 
-    title: "Russian"
+    title: "Русский"
   }
 ];
 

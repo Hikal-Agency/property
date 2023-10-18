@@ -304,7 +304,9 @@ const Navbar = () => {
           i18n.changeLanguage(e.target.value)
         }
       >
-      {langs?.map((lang) => <MenuItem value={lang?.code} key={lang?.code}>{lang?.title}</MenuItem>)}
+      {langs?.map((lang) => 
+        <MenuItem value={lang?.code} key={lang?.code}>{lang?.title}</MenuItem>
+      )}
       </Select>
 
           {/* MEETINGS  */}

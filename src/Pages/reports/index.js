@@ -1,22 +1,33 @@
+import React, { useEffect, useState } from "react";
+import { Box, CircularProgress, TextField, Tooltip } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { toast } from "react-toastify";
+import moment from "moment";
+import usePermission from "../../utils/usePermission";
 import { useStateContext } from "../../context/ContextProvider";
 import ReportProjectBar from "../../Components/charts/ReportProjectBar";
 import ReportMeetingsClosed from "../../Components/charts/ReportMeetingsClosed";
 import DoughnutChart from "../../Components/charts/DoughnutChart";
 import ReportClosedMeetingDoughnut from "../../Components/charts/ReportClosedMeetingDoughnut";
-import { useEffect, useState } from "react";
 import Loader from "../../Components/Loader";
 import axios from "../../axoisConfig";
-import { Box, CircularProgress, TextField } from "@mui/material";
 import SocialChart from "../../Components/charts/SocialChart";
-import { toast } from "react-toastify";
-import moment from "moment";
 import SaleBubbleChart from "../../Components/charts/SaleBubbleChart";
+
 import { MdCampaign } from "react-icons/md";
-import { FaFacebookF } from "react-icons/fa";
-import usePermission from "../../utils/usePermission";
-import { BiMessageRoundedDots } from "react-icons/bi";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { 
+  FaFacebookF,
+  FaSnapchatGhost,
+  FaTiktok,
+  FaYoutube
+} from "react-icons/fa";
+import {
+  FcGoogle
+} from "react-icons/fc";
+import {
+  GiMagnifyingGlass
+} from "react-icons/gi";
 
 const Reports = () => {
   const {
@@ -25,7 +36,9 @@ const Reports = () => {
     setDashboardData,
     setSales_chart_data,
     BACKEND_URL,
-    pageState, t
+    pageState, 
+    t,
+    themeBgImg
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -50,15 +63,18 @@ const Reports = () => {
           .startOf("month")
           .format("YYYY-MM-DD");
         const lastMonthEndDate = moment()
-          .subtract(1, "months")
-          .endOf("month")
+          .subtract(2, "months")
+          .startOf("month")
           .format("YYYY-MM-DD");
         params.date_range = `${lastMonthStartDate},${lastMonthEndDate}`;
       } else if (selectedMonthProject === "thismonth") {
         const thisMonthStartDate = moment()
           .startOf("month")
           .format("YYYY-MM-DD");
-        const thisMonthEndDate = moment().endOf("month").format("YYYY-MM-DD");
+        const thisMonthEndDate = moment()
+          .subtract(1, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD");
         params.date_range = `${thisMonthStartDate},${thisMonthEndDate}`;
       }
     }
@@ -103,15 +119,18 @@ const Reports = () => {
           .startOf("month")
           .format("YYYY-MM-DD");
         const lastMonthEndDate = moment()
-          .subtract(1, "months")
-          .endOf("month")
+          .subtract(2, "months")
+          .startOf("month")
           .format("YYYY-MM-DD");
         params.date_range = `${lastMonthStartDate},${lastMonthEndDate}`;
       } else if (selectedMonthSales === "thismonth") {
         const thisMonthStartDate = moment()
           .startOf("month")
           .format("YYYY-MM-DD");
-        const thisMonthEndDate = moment().endOf("month").format("YYYY-MM-DD");
+        const thisMonthEndDate = moment()
+          .subtract(1, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD");
         params.date_range = `${thisMonthStartDate},${thisMonthEndDate}`;
       }
     }
@@ -148,15 +167,18 @@ const Reports = () => {
           .startOf("month")
           .format("YYYY-MM-DD");
         const lastMonthEndDate = moment()
-          .subtract(1, "months")
-          .endOf("month")
+          .subtract(2, "months")
+          .startOf("month")
           .format("YYYY-MM-DD");
         params.date_range = `${lastMonthStartDate},${lastMonthEndDate}`;
       } else if (selectedMonthSocial === "thismonth") {
         const thisMonthStartDate = moment()
           .startOf("month")
           .format("YYYY-MM-DD");
-        const thisMonthEndDate = moment().endOf("month").format("YYYY-MM-DD");
+        const thisMonthEndDate = moment()
+          .subtract(1, "months")
+          .startOf("month")
+          .format("YYYY-MM-DD");
         params.date_range = `${thisMonthStartDate},${thisMonthEndDate}`;
       }
     }
@@ -200,8 +222,12 @@ const Reports = () => {
   };
 
   const sourceCounters = {
-    "Campaign Facebook": <FaFacebookF size={16} color={"#0e82e1"} />,
-    "Property Finder": <MdCampaign size={20} color={"#696969"} />,
+    "Campaign Facebook": <FaFacebookF size={14} color={"#0e82e1"} />,
+    "Campaign Snapchat": <FaSnapchatGhost size={16} color={"#f6d80a"} />,
+    "Campaign TikTok": <FaTiktok size={16} color={currentMode === "dark" ? "white" : "black"} />,
+    "Campaign YouTube": <FaYoutube size={18} color={"#c4302b"} />,
+    "Campaign GoogleAds": <FcGoogle size={18} />,
+    "Property Finder": <GiMagnifyingGlass size={16} color={"#ef5e4e"} />,
   };
 
   const fetchCounter = async (token) => {
@@ -280,116 +306,77 @@ const Reports = () => {
         <div className="flex min-h-screen">
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="mb-10">
-              <div className="mb-5 ">
-                <div className="flex justify-center items-center bg-primary py-2 mb-4 rounded-full">
-                  <h1 className={`text-white text-lg font-semibold`}>
-                    Lead Sources
-                  </h1>
-
-                  <div className="m-2">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        value={countFilter}
-                        views={["year", "month", "day"]}
-                        format="yyyy-MM-dd"
-                        onChange={(newValue) => {
-                          const formattedDate = moment(newValue?.$d).format(
-                            "YYYY-MM-DD"
-                          );
-                          setCountFilter(formattedDate);
-
-                          // FetchLastLocation(token, formattedDate);
-                          // FetchLocation(token, formattedDate);
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            size="small"
-                            sx={{
-                              "& input": {
-                                color: "#ffffff",
-                              },
-                              "&": {
-                                borderRadius: "4px",
-                                border: "1px solid #AAAAAA",
-                              },
-                              "& .MuiSvgIcon-root": {
-                                color: "#AAAAAA",
-                              },
-                            }}
-                            label="Date"
-                            {...params}
-                            onKeyDown={(e) => e.preventDefault()}
-                            readOnly={true}
-                          />
-                        )}
-                      />
-                    </LocalizationProvider>
-                  </div>
-                </div>
-
-                {hasPermission("leadSource_counts") && (
-                  <div className="my-7">
-                    <div className="px-4">
-                      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
-                        {counters && counters?.length > 0
-                          ? counters?.map((counter) => (
-                              <Box
-                                sx={{
-                                  padding: "5px 7px",
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                  background:
-                                    currentMode === "dark"
-                                      ? "#000000"
-                                      : "#FFFFFF",
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                  boxShadow:
-                                    currentMode === "dark"
-                                      ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                      : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                                  height: "30px",
-                                  minWidth: "60px",
-                                  maxWidth: "100px",
-                                }}
-                              >
-                                {sourceCounters[counter?.leadSource]}
-                                <span className="px-2">{counter?.count}</span>
-                              </Box>
-                            ))
-                          : ""}
-                        {/* MESSAGE  */}
-                        <Box
-                          sx={{
-                            padding: "5px 7px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            background:
-                              currentMode === "dark" ? "#000000" : "#FFFFFF",
-                            color: currentMode === "dark" ? "white" : "black",
-                            boxShadow:
-                              currentMode === "dark"
-                                ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                            height: "30px",
-                            minWidth: "60px",
-                            maxWidth: "100px",
+              {hasPermission("leadSource_counts") && (
+                <div className="bg-primary p-3 mb-5 rounded-lg shadow-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5 flex justify-between">
+                    <div className="w-full flex items-center gap-5">
+                      <h1 className={`text-white uppercase font-semibold`}>
+                        Lead Source
+                      </h1>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          value={countFilter}
+                          views={["year", "month", "day"]}
+                          format="yyyy-MM-dd"
+                          onChange={(newValue) => {
+                            const formattedDate = moment(newValue?.$d).format(
+                              "YYYY-MM-DD"
+                            );
+                            setCountFilter(formattedDate);
                           }}
-                        >
-                          <BiMessageRoundedDots size={18} color={"#6A5ACD"} />
-                          <span className="px-2">{pageState?.mCount}</span>
-                        </Box>
-                      </div>
+                          renderInput={(params) => (
+                            <TextField
+                              size="small"
+                              sx={{
+                                "& input": {
+                                  color: "#ffffff",
+                                },
+                                "&": {
+                                  borderRadius: "4px",
+                                  border: "1px solid #AAAAAA",
+                                },
+                                "& .MuiSvgIcon-root": {
+                                  color: "#AAAAAA",
+                                },
+                              }}
+                              label="Date"
+                              {...params}
+                              onKeyDown={(e) => e.preventDefault()}
+                              readOnly={true}
+                            />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </div>
+                    <div className="lg:col-span-2 gap-4 flex flex-wrap justify-end">
+                      {counters && counters?.length > 0
+                        ? counters?.map((counter) => (
+                          <Tooltip title={counter?.leadSource} arrow>
+                            <Box
+                              className={`
+                                ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"}
+                                card-hover p-0.5 flex justify-between items-center shadow-md rounded-sm w-fit
+                              `}
+                              sx={{
+                                // height: "30px",
+                                // minWidth: "60px",
+                                // maxWidth: "100px",
+                              }}
+                            >
+                              <div className="px-2">{sourceCounters[counter?.leadSource]}</div>
+                              <div className="px-2 font-semibold">{counter?.count}</div>
+                            </Box>
+                          </Tooltip>
+                        )) : ""
+                      }
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
               <div className="mb-5">
                 <div className="flex justify-center bg-primary py-2 mb-4 rounded-full">
                   <h1 className={`text-white text-lg font-semibold`}>
