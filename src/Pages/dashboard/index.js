@@ -73,7 +73,7 @@ const Dashboard = () => {
         ) : (
           <div
             className={`w-full p-4 overflow-x-hidden ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+              !themeBgImg && (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
             }`}
           >
             <DashboardPanel />

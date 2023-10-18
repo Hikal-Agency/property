@@ -19,7 +19,7 @@ const ReminderComponent = ({
   fetchRminders,
 }) => {
   console.log("reminders component: ", reminder);
-  const { currentMode, BACKEND_URL, isArabic } = useStateContext();
+  const { currentMode, BACKEND_URL, isArabic, themeBgImg } = useStateContext();
   const [completeLoading, setCompletebtnLoading] = useState(false);
   const [cancleLoading, setCanclebtnLoading] = useState(false);
   // const [reminder, setReminder] = useState([]);
@@ -108,8 +108,13 @@ const ReminderComponent = ({
       <div
         key={reminder.id}
         className={`card-hover w-[350px] flex flex-col justify-between ${
-          currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
-        } rounded-xl my-2 cursor-pointer `}
+          !themeBgImg ? (currentMode === "dark"
+          ? "bg-black text-white "
+          : "bg-white text-main-dark-bg")
+          : (currentMode === "dark"
+            ? "blur-bg-dark text-white "
+            : "blur-bg-light text-main-dark-bg")
+        } rounded-xl shadow-sm my-2 cursor-pointer `}
         onClick={() => handleClick(reminder?.lead_id)}
       >
         <div className="p-5 grid grid-cols-9">

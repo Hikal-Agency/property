@@ -125,7 +125,7 @@ const Offers = () => {
               }}
               className={`w-full rounded-lg overflow-hidden ${
                 !themeBgImg 
-                ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EBEBEB]")
+                ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
                 : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
               } `}
             >

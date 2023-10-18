@@ -143,7 +143,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                             key={index}
                             className={` ${
                               !themeBgImg 
-                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]") 
                               : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
                             }
                             rounded-lg shadow-sm card-hover p-4 `}
@@ -216,7 +216,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           key={index}
                           className={` ${
                             !themeBgImg 
-                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]") 
                               : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
                           }
                           rounded-lg shadow-sm card-hover p-4 `}
@@ -302,7 +302,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                             key={index}
                             className={` ${
                               !themeBgImg 
-                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]") 
                               : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
                             }
                             rounded-lg shadow-sm card-hover p-4 `}
@@ -375,7 +375,7 @@ const TargetBoard = ({ tabValue, setTabValue, isLoading }) => {
                           key={index}
                           className={` ${
                             !themeBgImg 
-                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EBEBEB]") 
+                              ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]") 
                               : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
                           }
                           rounded-lg shadow-sm card-hover p-4 `}
