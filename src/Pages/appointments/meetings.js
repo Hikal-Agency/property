@@ -27,7 +27,17 @@ import Timeline from "../timeline";
 
 const Meetings = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, BACKEND_URL, User, darkModeColors, DataGridStyles, primaryColor, t } =
+  const { 
+    currentMode, 
+    setopenBackDrop, 
+    BACKEND_URL, 
+    User, 
+    darkModeColors, 
+    DataGridStyles, 
+    primaryColor, 
+    t,
+    themeBgImg 
+  } =
     useStateContext();
   const [locationModalOpen, setLocationModalOpen] = useState(false);
   const [meetingNote, setMeetingNote] = useState(null);
@@ -519,7 +529,7 @@ const Meetings = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="flex justify-between">
@@ -554,9 +564,7 @@ const Meetings = () => {
                     color: primaryColor,
                   },
                 }}
-                className={`rounded-md overflow-hidden ${
-                  currentMode === "dark" ? "bg-black" : "bg-white"
-                }`}
+                className={`rounded-md overflow-hidden`}
               >
                 <Tabs
                   value={value}

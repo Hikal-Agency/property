@@ -83,7 +83,9 @@ const AllLeads = () => {
     formatNum,
     User,
     userCredits,
-    isArabic,t
+    isArabic,
+    t,
+    themeBgImg
   } = useStateContext();
   const {
     toRange,
@@ -1155,8 +1157,8 @@ const AllLeads = () => {
   return (
     <div className="pb-10 filters-dropdown">
       <div className="flex items-center justify-between">
-        <div className="w-full flex items-center py-4">
-          <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+        <div className="w-full flex items-center pb-4">
+          <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
               currentMode === "dark" ? "text-white" : "text-black"

@@ -14,7 +14,7 @@ import md5 from "md5";
 
 const CreateAppointment = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, User, darkModeColors, primaryColor } =
+  const { currentMode, setopenBackDrop, User, darkModeColors, primaryColor, themeBgImg, blurDarkColor, blurLightColor } =
     useStateContext();
   const [meetingsCount, setMeetingCount] = useState({
     pendingMeeting: null,
@@ -68,7 +68,7 @@ const CreateAppointment = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="mt-3">
@@ -102,7 +102,7 @@ const CreateAppointment = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     fontWeight: "bold",
-                    background: currentMode === "dark" ? "#333333" : "#EEEEEE",
+                    background: !themeBgImg ? (currentMode === "dark" ? "#333333" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
                     color: currentMode === "dark" ? "white" : "black",
                     boxShadow:
                       currentMode === "dark"
@@ -165,8 +165,7 @@ const CreateAppointment = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         fontWeight: "bold",
-                        background:
-                          currentMode === "dark" ? "#333333" : "#EEEEEE",
+                        background: !themeBgImg ? (currentMode === "dark" ? "#333333" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
                         color: currentMode === "dark" ? "white" : "black",
                         boxShadow:
                           currentMode === "dark"
@@ -190,8 +189,7 @@ const CreateAppointment = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         fontWeight: "bold",
-                        background:
-                          currentMode === "dark" ? "#333333" : "#EEEEEE",
+                        background: !themeBgImg ? (currentMode === "dark" ? "#333333" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
                         color: currentMode === "dark" ? "white" : "black",
                         boxShadow:
                           currentMode === "dark"

@@ -14,7 +14,14 @@ import { ToastContainer, toast } from "react-toastify";
 import IntegrationComponent from "../../Components/integrationComponent/IntegrationComponent";
 
 const Integrations = () => {
-  const { darkModeColors, SalesPerson, currentMode, Managers, BACKEND_URL } =
+  const { 
+    darkModeColors, 
+    SalesPerson, 
+    currentMode, 
+    Managers, 
+    BACKEND_URL,
+    themeBgImg
+  } =
     useStateContext();
 
  
@@ -23,24 +30,21 @@ const Integrations = () => {
     <>
       <div className="flex min-h-screen">
         <div
-          className={`w-full ${
+          className={`w-full p-4 ${
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className="w-full pl-3">
-            <div className={`w-full `}>
-              <div className="pl-3">
-                <h1
-                  className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
-                    currentMode === "dark"
-                      ? "text-white border-white"
-                      : "text-primary font-bold border-primary"
-                  }`}
-                >
-                  ● Integrations
-                </h1>
-              </div>
-            </div>
+          <div className="w-full flex items-center pb-3">
+            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+            <h1
+              className={`text-lg font-semibold ${
+                currentMode === "dark"
+                  ? "text-white"
+                  : "text-black"
+              }`}
+            >
+              Integrations
+            </h1>
           </div>
           <IntegrationComponent />
         </div>

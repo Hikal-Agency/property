@@ -30,7 +30,7 @@ const MessagesDashboar = () => {
   const [date_filter, setDateFilter] = useState();
   const [date, setDate] = useState();
   const [sender_id_filter, setSenderIDFitler] = useState();
-  const { currentMode, setopenBackDrop, BACKEND_URL, pageState,t } =
+  const { currentMode, setopenBackDrop, primaryColor, BACKEND_URL, pageState,t, themeBgImg } =
     useStateContext();
   const token = localStorage.getItem("auth-token");
   const searchRef = useRef("");
@@ -141,20 +141,20 @@ const MessagesDashboar = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full pl-3 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+            className={`w-full ${
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="w-full flex items-center justify-between py-1">
               <div className="flex items-center">
-                <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
                   className={`text-lg font-semibold ${
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
                   {t("campaigns_dashboard")}{" "}
-                  <span className="bg-main-red-color text-white px-3 py-1 rounded-sm my-auto">
+                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {pageState?.total}
                   </span>
                 </h1>
@@ -443,7 +443,7 @@ const MessagesDashboar = () => {
                             className="disabled:opacity-50 disabled:cursor-not-allowed group   w-max  rounded-md border border-transparent  py-3 px-4 text-white text-md font-bold uppercase mt-3 bg-[#DA1F26]"
                             style={{
                               marginTop: "20px",
-                              background: "#DA1F26",
+                              background: primaryColor,
                               color: "#ffffff",
                             }}
                             onClick={clearFilteration}
@@ -462,8 +462,9 @@ const MessagesDashboar = () => {
               {campaignCount && campaignCount?.length > 0
                 ? campaignCount?.map((campaign, index) => (
                     <div
-                      className={`p-6  rounded-md ${
-                        currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                      className={`card-hover p-6 rounded-xl shadow-sm ${
+                        !themeBgImg ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                        : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
                       }  flex flex-col justify-center items-center w-64`}
                       key={index}
                     >

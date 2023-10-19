@@ -13,7 +13,7 @@ import { BiRefresh } from "react-icons/bi";
 import AllMessagesItem from "../../Components/whatsapp-marketing/AllMessagesItem";
 
 const AllMessages = () => {
-  const { BACKEND_URL } = useStateContext();
+  const { BACKEND_URL, themeBgImg } = useStateContext();
   const [allMessages, setAllMessages] = useState([]);
   const [alignment, setAlignment] = useState("whatsapp");
   const [loading, setLoading] = useState(false);

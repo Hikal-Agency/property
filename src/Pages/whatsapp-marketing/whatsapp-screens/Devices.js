@@ -7,11 +7,11 @@ const Devices = ({ handleCreateSession, fetchDevices, devices }) => {
   const [createDeviceModal, setCreateDeviceModal] = useState(false);
   return (
     <>
-      <div className="flex p-4 h-[90vh] flex-col">
-        <h1>
-          <strong>Devices</strong>
+      <div className="w-full">
+        <h1 className="uppercase font-semibold">
+          Devices
         </h1>
-        <Box className="flex mt-3">
+        <Box className="flex flex-wrap mt-3">
           {devices?.map((device) => {
             return (
               <DeviceCard

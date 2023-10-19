@@ -50,7 +50,7 @@ const SingleListingsPage = () => {
     isOpen: false,
     listingId: null,
   });
-  const { currentMode, setopenBackDrop, BACKEND_URL, isArabic } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, isArabic, themeBgImg } =
     useStateContext();
 
   const handleEdit = () => {
@@ -125,7 +125,9 @@ const SingleListingsPage = () => {
     <>
       <div
         className={`flex min-h-screen w-full p-4 ${
-          currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
+          !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+        } ${
+          currentMode === "dark" ? "text-white" : "text-black"
         }`}
       >
         {loading ? (
@@ -158,96 +160,93 @@ const SingleListingsPage = () => {
                     )
                   )}
                 </div>
-
-                <div className="grid sm:grid-cols-1 md:grid-cols-2">
-                  <div className="w-full p-2">
-                    <div className="flex items-center">
-                      <div className="bg-primary rounded-md text-white p-2 mr-2 font-semibold">
-                        {listData?.price}
-                      </div>
-                      <h1
-                        className={`text-lg font-bold mr-2 ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
-                        style={{
-                          fontFamily: isArabic(listData?.project)
-                            ? "Noto Kufi Arabic"
-                            : "inherit",
-                        }}
-                      >
-                        {listData?.project}
-                      </h1>
-                    </div>
-                  </div>
-                  <div className="w-full p-2">
-                    <div className="flex items-center gap-1 justify-end">
-                      {/* EDIT DETAILS  */}
-                      <Tooltip title="Edit Listing Details" arrow>
-                        <IconButton
-                          className={`rounded-full`}
-                          onClick={handleEdit}
+                
+                <div className={`${
+                  themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                } rounded-xl w-full p-4`}>
+                  <div className="grid sm:grid-cols-1 md:grid-cols-2">
+                    <div className="w-full p-1">
+                      <div className="flex items-center">
+                        <div className="bg-primary rounded-lg text-white p-2 mr-2 font-semibold">
+                          {listData?.price}
+                        </div>
+                        <h1
+                          className={`text-lg font-bold mr-2 ${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                          style={{
+                            fontFamily: isArabic(listData?.project)
+                              ? "Noto Kufi Arabic"
+                              : "inherit",
+                          }}
                         >
-                          <BsPen size={20} color={"#AAAAAA"} />
-                        </IconButton>
-                      </Tooltip>
-
-                      {/* UPLOAD PICTURES  */}
-                      <Tooltip title="Upload Pictures" arrow>
-                        <IconButton
-                          onClick={() =>
-                            setSelectImagesModal({
-                              isOpen: true,
-                              listingId: lid,
-                            })
-                          }
-                          className={`rounded-full`}
-                        >
-                          <BsImages size={20} color={"#AAAAAA"} />
-                        </IconButton>
-                      </Tooltip>
-
-                      {/* UPLOAD DOCUMENTS  */}
-                      <Tooltip title="Upload Documents" arrow>
-                        <IconButton
-                          onClick={() =>
-                            setSelectDocumentModal({
-                              isOpen: true,
-                              listingId: lid,
-                            })
-                          }
-                          className={`rounded-full`}
-                        >
-                          <BsFiles size={20} color={"#AAAAAA"} />
-                        </IconButton>
-                      </Tooltip>
-
-                      <div className="mx-1"></div>
-
-                      <div className="border border-primary p-2 font-semibold rounded-md shadow-sm">
-                        {listData?.listing_type}
+                          {listData?.project}
+                        </h1>
                       </div>
                     </div>
-                  </div>
-                </div>
+                    <div className="w-full p-1">
+                      <div className="flex items-center gap-1 justify-end">
+                        {/* EDIT DETAILS  */}
+                        <Tooltip title="Edit Listing Details" arrow>
+                          <IconButton
+                            className={`rounded-full bg-btn-primary`}
+                            onClick={handleEdit}
+                          >
+                            <BsPen size={16} color={"#FFFFFF"} />
+                          </IconButton>
+                        </Tooltip>
 
-                <div
-                  className={`${
-                    currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#1C1C1C]"
-                  } p-2 text-base`}
-                >
-                  <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
+                        {/* UPLOAD PICTURES  */}
+                        <Tooltip title="Upload Pictures" arrow>
+                          <IconButton
+                            onClick={() =>
+                              setSelectImagesModal({
+                                isOpen: true,
+                                listingId: lid,
+                              })
+                            }
+                            className={`rounded-full bg-btn-primary`}
+                          >
+                            <BsImages size={16} color={"#FFFFFF"} />
+                          </IconButton>
+                        </Tooltip>
+
+                        {/* UPLOAD DOCUMENTS  */}
+                        <Tooltip title="Upload Documents" arrow>
+                          <IconButton
+                            onClick={() =>
+                              setSelectDocumentModal({
+                                isOpen: true,
+                                listingId: lid,
+                              })
+                            }
+                            className={`rounded-full bg-btn-primary`}
+                          >
+                            <BsFiles size={16} color={"#FFFFFF"} />
+                          </IconButton>
+                        </Tooltip>
+
+                        <div className="mx-1"></div>
+
+                        <div className="border border-primary p-2 font-semibold rounded-md shadow-sm">
+                          {listData?.listing_type}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
                     <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
                       {/* ADDRESS  */}
                       <div className="flex space-x-3">
                         <TbCurrentLocation
                           size={18}
-                          className="mr-2 text-[#AAAAAA]"
+                          className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`}
                         />
                         <h6>{listData?.address} </h6>
                       </div>
                       {/* Bedrooms  */}
                       <div className="flex space-x-3">
-                        <BiBed size={18} className="mr-2 text-[#AAAAAA]" />
+                        <BiBed size={18} className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`} />
                         <h6>{listData?.bedrooms}</h6>
                         <h6>
                           {listData?.property_type === "null"
@@ -257,7 +256,7 @@ const SingleListingsPage = () => {
                       </div>
                       {/* baths  */}
                       <div className="flex space-x-3">
-                        <BiBath size={18} className="mr-2 text-[#AAAAAA]" />
+                        <BiBath size={18} className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`} />
                         <h6>
                           {listData?.bathrooms === "null"
                             ? "-"
@@ -284,7 +283,7 @@ const SingleListingsPage = () => {
                           <p className="text-sm my-2 flex items-center">
                             <FaUserPlus
                               size={16}
-                              color={"#AAAAAA"}
+                              color={`${currentMode === "dark" ? "#EEEEEE" : "#333333"}`}
                               className="mr-2"
                             />
                             {listData?.addedBy_name}
@@ -293,48 +292,52 @@ const SingleListingsPage = () => {
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* IN MAP  */}
+                {/* IN MAP  */}
 
-                  {listData?.latlong === null || listData?.latlong === "" ? (
-                    <></>
-                  ) : (
-                    <div className="w-full my-5 h-[50vh] border border-primary">
-                      {!load?.isLoaded ? (
-                        <div>Your map is loading...</div>
-                      ) : (
-                        <GoogleMap
-                          zoom={12}
-                          center={{
-                            lat: parseFloat(lat),
-                            lng: parseFloat(long),
+                {listData?.latlong === null || listData?.latlong === "" ? (
+                  <></>
+                ) : (
+                  <div className="w-full my-5 h-[50vh] border border-primary">
+                    {!load?.isLoaded ? (
+                      <div>Your map is loading...</div>
+                    ) : (
+                      <GoogleMap
+                        zoom={12}
+                        center={{
+                          lat: parseFloat(lat),
+                          lng: parseFloat(long),
+                        }}
+                        mapContainerStyle={mapContainerStyle}
+                        options={options}
+                      >
+                        <Marker
+                          key={listData?.id}
+                          position={{
+                            lat: Number(parseFloat(lat)),
+                            lng: Number(parseFloat(long)),
                           }}
-                          mapContainerStyle={mapContainerStyle}
-                          options={options}
-                        >
-                          <Marker
-                            key={listData?.id}
-                            position={{
-                              lat: Number(parseFloat(lat)),
-                              lng: Number(parseFloat(long)),
-                            }}
-                            icon={{
-                              url: (
-                                <MdLocationPin size={30} color={"#DA1F26"} />
-                              ),
-                              scaledSize: window.google.maps
-                                ? new window.google.maps.Size(50, 50)
-                                : null,
-                            }}
-                          />
-                        </GoogleMap>
-                      )}
-                    </div>
-                  )}
+                          icon={{
+                            url: (
+                              <MdLocationPin size={30} color={"#DA1F26"} />
+                            ),
+                            scaledSize: window.google.maps
+                              ? new window.google.maps.Size(50, 50)
+                              : null,
+                          }}
+                        />
+                      </GoogleMap>
+                    )}
+                  </div>
+                )}
 
-                  <div className="bg-primary h-0.5 w-full my-5"></div>
+                {/* <div className="bg-primary h-0.5 w-full my-5"></div> */}
 
-                  <div className="w-full p-2">
+                <div className={`${
+                  themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                } rounded-xl w-full p-4`}>
+                  <div className="w-full">
                     <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
                       <div className="sm:col-span-1 md:col-span-3 lg:col-span-2">
                         <div className="w-full flex items-center pb-3">
@@ -355,7 +358,7 @@ const SingleListingsPage = () => {
                           <div className="flex space-x-3">
                             <TbUserCircle
                               size={18}
-                              className="mr-2 text-[#AAAAAA]"
+                              className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`}
                             />
                             <h6>{listData?.seller_name}</h6>
                           </div>
@@ -363,13 +366,13 @@ const SingleListingsPage = () => {
                           <div className="flex space-x-3">
                             <TbPhone
                               size={18}
-                              className="mr-2 text-[#AAAAAA]"
+                              className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`}
                             />
                             <h6>{listData?.seller_contact}</h6>
                           </div>
                           {/* SELLER EMAIL  */}
                           <div className="flex space-x-3">
-                            <TbMail size={18} className="mr-2 text-[#AAAAAA]" />
+                            <TbMail size={18} className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`} />
                             <h6>
                               {listData?.seller_email === "null"
                                 ? ""
@@ -381,10 +384,15 @@ const SingleListingsPage = () => {
                       <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
                         <div
                           className={`${
-                            currentMode === "dark"
+                            !themeBgImg ? (currentMode === "dark"
                               ? "bg-[#1C1C1C]"
-                              : "bg-[#EEEEEE]"
-                          } rounded-md shadow-md p-5`}
+                              : "bg-[#EEEEEE]")
+                            : (
+                              currentMode === "dark"
+                              ? "blur-bg-dark"
+                              : "blur-bg-light"
+                            )
+                          } rounded-xl shadow-sm p-4`}
                         >
                           <div className="w-full flex items-center pb-3">
                             <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
@@ -410,16 +418,18 @@ const SingleListingsPage = () => {
                                       id: l?.id,
                                     })
                                   }
-                                  className="p-2 flex items-center justify-center hover:shadow-lg hover:cursor-pointer"
+                                  className="p-2 flex items-center justify-center hover:cursor-pointer"
+                                  // hover:rounded-full hover:shadow-lg
                                 >
                                   <div className="w-full text-center ">
-                                    {/* <div className="w-full flex justify-center"> */}
-                                    <BsFileEarmarkText
-                                      size={70}
-                                      color={"#AAAAAA"}
-                                      className="w-full flex justify-center"
-                                    />
-                                    <div className="mt-3">{l?.doc_name}</div>
+                                    <div className="w-full flex justify-center">
+                                      <BsFileEarmarkText
+                                        size={70}
+                                        color={"#AAAAAA"}
+                                        className="hover:-mt-1 hover:mb-1"
+                                      />
+                                    </div>
+                                    <div className="my-3">{l?.doc_name}</div>
                                   </div>
                                 </div>
                               ) : (

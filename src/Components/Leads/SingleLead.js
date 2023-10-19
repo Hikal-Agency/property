@@ -673,11 +673,11 @@ const SingleLead = ({
                 <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5 p-5">
                   {/* USER DETAILS  */}
                   <div
-                    className={`p-4 rounded-md card-hover
+                    className={`p-4 rounded-xl shadow-sm card-hover
                     ${
                       currentMode === "dark"
-                        ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black"
                     }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
@@ -713,11 +713,11 @@ const SingleLead = ({
 
                   {/* PROJECT DETAILS  */}
                   <div
-                    className={`p-4 rounded-md card-hover
+                    className={`p-4 rounded-xl shadow-sm card-hover
                     ${
                       currentMode === "dark"
-                        ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black"
                     }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
@@ -757,11 +757,11 @@ const SingleLead = ({
 
                   {/* STATUS  */}
                   <div
-                    className={`sm:col-span-1 md:col-span-2 p-4 rounded-md card-hover text-center
+                    className={`sm:col-span-1 md:col-span-2 p-4 rounded-xl shadow-sm card-hover text-center
                     ${
                       currentMode === "dark"
-                        ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black"
                     }`}
                   >
                     <h1 className="text-center uppercase flex items-center justify-center">
@@ -809,11 +809,11 @@ const SingleLead = ({
                 {/* LAST NOTE  */}
                 <div className="p-5">
                   <div
-                    className={`w-full p-4 rounded-md card-hover text-center
+                    className={`w-full text-center
                       ${
                         currentMode === "dark"
-                          ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black"
+                          ? "text-white"
+                          : "text-black"
                       }`}
                   >
                     <div className="w-full my-4">
@@ -823,7 +823,7 @@ const SingleLead = ({
                             currentMode === "dark"
                               ? "text-white bg-black border-gray-800"
                               : "text-black bg-[#EEEEEE] border-gray-300"
-                          } border-2 flex items-center my-2 gap-5 w-full rounded-md`}
+                          } border-2 flex items-center my-2 gap-5 w-full rounded-xl shadow-sm`}
                         >
                           <div className="p-3 text-center text-sm">
                             <div className="mb-1">{lastNoteAddedBy}</div>
@@ -880,7 +880,7 @@ const SingleLead = ({
                         <button
                           disabled={addNoteloading ? true : false}
                           type="submit"
-                          className="mt-4 disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary group relative flex w-full justify-center rounded-md border border-transparent p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
+                          className="mt-4 disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary group relative flex w-full justify-center rounded-xl shadow-sm border border-transparent p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
                         >
                           {addNoteloading ? (
                             <CircularProgress
@@ -932,7 +932,7 @@ const SingleLead = ({
             style={style}
             className={`w-[calc(100%-20px)] md:w-[40%]  ${
               currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-            } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+            } absolute top-1/2 left-1/2 p-5 pt-16 rounded-xl shadow-sm`}
           >
             <div className="flex flex-col justify-center items-center">
               <IoIosAlert size={50} className="text-main-red-color text-2xl" />
@@ -947,7 +947,7 @@ const SingleLead = ({
 
             <div className="action buttons mt-5 flex items-center justify-center space-x-2">
               <Button
-                className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                className={` text-white rounded-xl shadow-sm py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
                 ripple="true"
                 size="lg"
                 onClick={(e) => handleRequest(e, open[2])}
@@ -963,7 +963,7 @@ const SingleLead = ({
                 onClick={handleCloseRequestModel}
                 ripple="true"
                 variant="outlined"
-                className={`shadow-none  rounded-md text-sm  ${
+                className={`shadow-none  rounded-xl shadow-sm text-sm  ${
                   currentMode === "dark"
                     ? "text-white border-white"
                     : "text-main-red-color border-main-red-color"

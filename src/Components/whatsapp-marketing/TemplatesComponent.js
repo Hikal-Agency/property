@@ -9,7 +9,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  IconButton,
+  Tooltip
 } from "@mui/material";
 import CreateTemplateModal from "./CreateTemplateModal";
 import { useStateContext } from "../../context/ContextProvider";
@@ -27,7 +27,14 @@ import Loader from "../Loader";
 import TemplatesCountCard from "./TemplatesCountCard";
 
 const TemplatesComponent = () => {
-  const { BACKEND_URL, currentMode, t } = useStateContext();
+  const { 
+    BACKEND_URL, 
+    currentMode, 
+    t,
+    themeBgImg,
+    blurDarkColor,
+    blurLightColor
+  } = useStateContext();
   const [createTemplateModal, setCreateTemplateModal] = useState({
     isOpen: false,
   });
@@ -117,36 +124,41 @@ const TemplatesComponent = () => {
         <Loader />
       ) : (
         <Box className="min-h-screen">
-          <Box className="flex items-center justify-between mt-5">
-            <h1
-              className={`text-xl border-l-[4px] ml-1 pl-1 font-bold ${
-                currentMode === "dark"
-                  ? "text-white border-white"
-                  : "text-primary font-bold border-primary"
-              }`}
-            >
-              ● {t("title_message_templates")}
-            </h1>
-            <Button
-              className="bg-btn-primary"
-              style={{
-                color: "white"
-              }}
-              sx={{
-                ml: 1,
-                mr: 2,
-                padding: "5px 10px",
-                fontSize: 11,
-              }}
-              onClick={() => setCreateTemplateModal({ isOpen: true })}
-              variant="contained"
-            >
-              <BiPlus size={16} style={{ marginRight: 5 }} />
-              {t("button_add_template")}
-            </Button>
+          <Box className="flex items-center justify-between">
+            <div className="w-full flex items-center justify-between pb-3">
+              <div className="flex items-center">
+                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <h1
+                  className={`text-lg font-semibold ${
+                    currentMode === "dark"
+                      ? "text-white"
+                      : "text-black"
+                  }`}
+                >
+                  {t("title_message_templates")}
+                </h1>
+              </div>
+              <Button
+                className="bg-btn-primary"
+                style={{
+                  color: "white"
+                }}
+                sx={{
+                  ml: 1,
+                  mr: 2,
+                  padding: "5px 10px",
+                  fontSize: 11,
+                }}
+                onClick={() => setCreateTemplateModal({ isOpen: true })}
+                variant="contained"
+              >
+                <BiPlus size={16} style={{ marginRight: 5 }} />
+                {t("button_add_template")}
+              </Button>
+            </div>
           </Box>
           <Box
-            className="flex items-center justify-around my-6"
+            className="flex flex-wrap items-center justify-between my-3 gap-y-3 gap-x-1"
             sx={{ color: currentMode === "dark" ? "white" : "black" }}
           >
             <TemplatesCountCard
@@ -216,33 +228,33 @@ const TemplatesComponent = () => {
                   </>
                 );
               }) */}
-                <TableContainer component={Paper}>
+                <TableContainer component={Paper} className="bg-transparent">
                   <Table aria-label="simple table" sx={{ maxWidth: "100%" }}>
-                    <TableHead>
-                      <TableRow>
+                    <TableHead className="bg-primary">
+                      <TableRow className="uppercase font-semibold text-white">
                         <TableCell>
-                          <Box className="flex items-center">
-                            <strong className="text-xl">{t("name")}</strong>
+                          <Box className="flex items-center text-white">
+                            {t("name")}
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Box className="flex items-center">
-                              <strong className="text-xl">{t("type")}</strong>
+                          <Box className="flex items-center text-white">
+                              {t("type")}
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Box className="flex items-center">
-                              <strong className="text-xl">{t("edit")}</strong>
+                          <Box className="flex items-center text-white">
+                              {t("label_action")}
                           </Box>
                         </TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody className="bg-transparent">
                       {templates.map((template) => (
                         <TableRow
                           key={template?.id}
                           sx={{
-                            background: currentMode === "dark" ? "black" : "white",
+                            background: !themeBgImg ? (currentMode === "dark" ? "black" : "white") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
                         >
@@ -251,29 +263,35 @@ const TemplatesComponent = () => {
                           </TableCell>
                           <TableCell sx={{color: currentMode === "dark" ? "white" : "black"}}>plain-text</TableCell>
                           <TableCell sx={{color: currentMode === "dark" ? "white" : "black"}}>
-                            <Box className="flex items-center">
-                              <IconButton
-                              onClick={(e) => handleUpdateTemplate(e, template)}
-                                sx={{ padding: 0, mr: 1 }}
+                            <Box className="w-full flex items-center">
+                              <p
+                                style={{ cursor: "pointer" }}
+                                className={`${
+                                  currentMode === "dark"
+                                    ? "text-[#FFFFFF] bg-[#262626]"
+                                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                                } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
                               >
-                                <AiOutlineEdit
-                                  size={20}
-                                  style={{ color: currentMode === "dark" ? "white" : "black" }}
-                                />
-                              </IconButton>
-                              <IconButton
-                                onClick={() => setDeleteTemplateModal({isOpen: true, templateId: template?.id})}
-                                sx={{ padding: 0 }}
-                                color={
-                                  "red"
-                                }
+                                <Tooltip title="Edit Template" arrow>
+                                  <button onClick={(e) => handleUpdateTemplate(e, template)}>
+                                    <AiOutlineEdit size={16} />
+                                  </button>
+                                </Tooltip>
+                              </p>
+                              <p
+                                style={{ cursor: "pointer" }}
+                                className={`${
+                                  currentMode === "dark"
+                                    ? "text-[#FFFFFF] bg-[#262626]"
+                                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                                } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
                               >
-                                <BsTrash
-                                  size={18}
-                                  style={{ color: "red" }}
-
-                                />
-                              </IconButton>
+                                <Tooltip title="Delete Template" arrow>
+                                  <button onClick={() => setDeleteTemplateModal({isOpen: true, templateId: template?.id})}>
+                                    <BsTrash size={16} />
+                                  </button>
+                                </Tooltip>
+                              </p>
                             </Box>
                           </TableCell>
                         </TableRow>

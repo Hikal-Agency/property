@@ -6,7 +6,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AllStatistics from "../../../Components/campaigns/AllStatistics";
 
 const Statistics = () => {
-  const { User, setUser, currentMode, setopenBackDrop, } =
+  const { 
+    User, 
+    setUser, 
+    currentMode, 
+    setopenBackDrop,
+    themeBgImg, 
+  } =
     useStateContext();
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,26 +52,21 @@ const Statistics = () => {
 
   return (
     <>
-      {/* <Head>
-        <title>HIKAL CRM - Lead Notes</title>
-        <meta name="description" content="Meetings - HIKAL CRM" />
-      </Head> */}
-      <div className="flex min-h-screen p-3 mb-4">
+      <div className="flex min-h-screen">
         {loading ? (
           <Loader />
         ) : (
           <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+            className={`w-full p-4 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className={`w-full `}>
-                <AllStatistics
-                  pageState={pageState}
-                  setpageState={setpageState}
-                />
+              <AllStatistics
+                pageState={pageState}
+                setpageState={setpageState}
+              />
             </div>
-            {/* <Footer /> */}
           </div>
         )}
       </div>

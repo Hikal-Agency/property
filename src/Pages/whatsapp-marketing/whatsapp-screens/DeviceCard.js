@@ -22,7 +22,7 @@ const DeviceCard = ({
   setCreateDeviceModal = () => {},
 }) => {
   const [loading, setLoading] = useState(false);
-  const { BACKEND_URL, currentMode, t } = useStateContext();
+  const { BACKEND_URL, currentMode, t, themeBgImg } = useStateContext();
 
   const handleDeleteInstance = async (e, instance) => {
     if (e.target.closest(".delete-btn")) {
@@ -68,7 +68,7 @@ const DeviceCard = ({
     return (
       <Box
         onClick={() => setCreateDeviceModal(true)}
-        className="rounded-lg flex flex-col items-center justify-center cursor-pointer border-dashed border-2 border-[#B2B2B2] mr-[3%] p-3 w-[30%]"
+        className="rounded-xl shadow-sm flex flex-col items-center justify-center cursor-pointer border-dashed border-2 border-[#B2B2B2] mr-[3%] p-3 w-[30%]"
       >
         <Avatar
           className="mb-1"
@@ -83,7 +83,10 @@ const DeviceCard = ({
     return (
       <>
         {loading ? (
-          <Box className={`${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"} rounded-lg cursor-pointer m-1 p-5 w-[32%]`}>
+          <Box className={`${
+            !themeBgImg ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+            : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+            } card-hover rounded-xl shadow-sm cursor-pointer m-1 p-5 w-[32%]`}>
             <div className="flex h-full items-center justify-center">
               <CircularProgress size={20} />
             </div>
@@ -91,7 +94,10 @@ const DeviceCard = ({
         ) : (
           <Box
             onClick={onClick}
-            className={`${currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-gray-200 text-black"} rounded-lg cursor-pointer m-1 p-5 sm:w-full md:w-[50%] lg:w-[32%] `}
+            className={`${
+              !themeBgImg ? (currentMode === "dark" ? "bg-[#1c1c1c] text-white" : "bg-[#EEEEEE] text-black")
+              : (currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black")
+            } card-hover rounded-xl shadow-sm cursor-pointer m-1 p-5 sm:w-full md:w-[50%] lg:w-[32%] `}
           >
             <Box className="flex items-center justify-between">
               <Box>

@@ -6,7 +6,7 @@ import { useStateContext } from "../../context/ContextProvider";
 const Booked = () => {
 
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, BACKEND_URL, pageState, t } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, pageState, t, themeBgImg } =
     useStateContext();
 
   console.log("Booked State: ", pageState);
@@ -24,7 +24,7 @@ const Booked = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="w-full flex items-center pb-3">

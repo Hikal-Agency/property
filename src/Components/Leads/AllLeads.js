@@ -2159,7 +2159,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             />
           </div>
 
-          {!UpdateLeadModelOpen && !timelineModelOpen && (
+          {(!UpdateLeadModelOpen && !timelineModelOpen) && (
             <SingleLead
               LeadModelOpen={LeadModelOpen}
               FetchLeads={FetchLeads}

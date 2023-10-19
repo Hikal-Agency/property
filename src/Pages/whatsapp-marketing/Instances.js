@@ -9,7 +9,7 @@ import Loader from "../../Components/Loader";
 
 const Instances = () => {
   const [allUsersInstances, setAllUsersInstances] = useState([]);
-  const { BACKEND_URL, currentMode, t } = useStateContext();
+  const { BACKEND_URL, currentMode, t, themeBgImg } = useStateContext();
   const [loading, setLoading] = useState(true);
 
   const fetchInstances = async () => {
@@ -42,18 +42,21 @@ const Instances = () => {
     return <Loader/>;
   }
   return (
-    <div className="h-screen">
+    <div className={`w-full`}>
+      <div className="w-full flex items-center pb-3">
+        <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
         <h1
-          className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
+          className={`text-lg font-semibold ${
             currentMode === "dark"
-              ? "text-white border-white"
-              : "text-primary font-bold border-primary"
+              ? "text-white"
+              : "text-black"
           }`}
         >
           {t("instances")}
         </h1>
+      </div>
 
-      <Box className="mt-4">
+      <Box className="">
       {allUsersInstances?.length === 0 ? <p className="text-red-600 text-sm">{t("nothing_to_show")}</p> :
         [allUsersInstances?.map((item) => {
             return <UserInstances fetchInstances={fetchInstances} user={item?.instances[0]?.user_name || item?.instances[0]?.user_id} instances={item?.instances}/>

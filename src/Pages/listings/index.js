@@ -25,7 +25,9 @@ const Listings = () => {
   const {
     currentMode,
     BACKEND_URL,
-    darkModeColors, t
+    darkModeColors, 
+    t,
+    themeBgImg
   } = useStateContext();
 
   const [value, setValue] = useState(0);
@@ -292,7 +294,7 @@ const Listings = () => {
       <div className="flex min-h-screen ">
         <div
           className={`w-full p-4 ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
           <div className="">
@@ -354,9 +356,7 @@ const Listings = () => {
             </div>
             <div className={`flex items-center justify-between`}>
               <Box
-                className={`pt-3 border-t-1 overflow-hidden ${
-                  currentMode === "dark" ? "bg-black" : "bg-white"
-                } `}
+                className={`pt-3 border-t-1 overflow-hidden`}
               >
                 <Box sx={darkModeColors}>
                   {" "}
@@ -378,7 +378,7 @@ const Listings = () => {
                     }}
                   /> */}
                   <TextField
-                    className="w-[250px]"
+                    className={`${themeBgImg && (currentMode === "dark" ? "blur-bg-dark rounded-md" : "blur-bg-light rounded-md")} w-[250px]`}
                     // label="Search"
                     size="small"
                     placeholder={t("search")}
@@ -393,7 +393,7 @@ const Listings = () => {
                         <InputAdornment position="end">
                           <BsSearch
                             color={
-                              currentMode === "dark" ? "#AAAAAA" : "#AAAAAA"
+                              currentMode === "dark" ? "#EEEEEE" : "#333333"
                             }
                           />
                         </InputAdornment>
@@ -403,9 +403,12 @@ const Listings = () => {
                           value={searchCriteria}
                           onChange={handleSearchCriteriaChange}
                           className={`p-0 mr-3 ${
-                            currentMode === "dark"
+                            !themeBgImg ? (currentMode === "dark"
                               ? "bg-[#333333]"
-                              : "bg-[#DDDDDD]"
+                              : "bg-[#DDDDDD]")
+                            : (currentMode === "dark"
+                            ? "blur-bg-dark"
+                            : "blur-bg-light")
                           } `}
                           displayEmpty
                         >
@@ -476,6 +479,7 @@ const Listings = () => {
                         marginX: "5px !important",
                       },
                     }}
+                    className={`${themeBgImg && (currentMode === "dark" ? "blur-bg-dark rounded-md" : "blur-bg-light rounded-md")}`}
                     select
                   >
                     <MenuItem value={"apartment"}>{t("property_apartment")}</MenuItem>
@@ -502,6 +506,7 @@ const Listings = () => {
                         marginX: "5px !important",
                       },
                     }}
+                    className={`${themeBgImg && (currentMode === "dark" ? "blur-bg-dark rounded-md" : "blur-bg-light rounded-md")}`}
                     select
                   >
                     <MenuItem value={"Secondary"}>{t("category_secondary")}</MenuItem>
@@ -527,6 +532,7 @@ const Listings = () => {
                         marginX: "5px !important",
                       },
                     }}
+                    className={`${themeBgImg && (currentMode === "dark" ? "blur-bg-dark rounded-md" : "blur-bg-light rounded-md")}`}
                     select
                   >
                     <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
@@ -561,6 +567,7 @@ const Listings = () => {
                         marginX: "5px !important",
                       },
                     }}
+                    className={`${themeBgImg && (currentMode === "dark" ? "blur-bg-dark rounded-md" : "blur-bg-light rounded-md")}`}
                     select
                   >
                     <MenuItem value={"1 Bathroom"}>{t("bathroom_1")}</MenuItem>
@@ -595,6 +602,7 @@ const Listings = () => {
                         marginX: "5px !important",
                       },
                     }}
+                    className={`${themeBgImg && (currentMode === "dark" ? "blur-bg-dark rounded-md" : "blur-bg-light rounded-md")}`}
                     select
                   >
                     <MenuItem value="latest">{t("label_latest")}</MenuItem>
