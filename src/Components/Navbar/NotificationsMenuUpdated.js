@@ -22,7 +22,7 @@ import {
 
 const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   const token = localStorage.getItem("auth-token");
-  const { BACKEND_URL, User, getNotifCounts } = useStateContext();
+  const { BACKEND_URL, User, getNotifCounts, t } = useStateContext();
   const [notifications, setNotifications] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -149,7 +149,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
           cursor: "pointer",
         }}
       >
-        See All Notifications
+        {t("see_all_notifications")}
       </div>
       {loading && (
         <div

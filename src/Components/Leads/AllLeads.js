@@ -1984,7 +1984,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     >
                       {feedbacks?.map((feedback, index) => (
                         <MenuItem key={index} value={feedback || ""}>
-                          {feedback}
+                          {t("feedback_" + feedback?.toLowerCase()?.replaceAll(" ", "_"))}
                         </MenuItem>
                       ))}
                     </Select>

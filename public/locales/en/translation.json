@@ -706,5 +706,12 @@
     "select_category": "Select Category",
     "select_sender_id": "Select Sender ID",
     "clear": "Clear",
-    "clear_all": "Clear all"
+    "clear_all": "Clear all", 
+
+
+    "new_from_here": "",
+
+
+    "type_liveleads": "Livecall", 
+    "liveleads": "Livecall"
 }

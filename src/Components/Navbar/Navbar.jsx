@@ -6,7 +6,6 @@ import { MdStars } from "react-icons/md";
 
 import { Tooltip, Button, Badge, MenuItem, Select } from "@mui/material";
 import Menu from "@mui/material/Menu";
-import langs from "../../utils/langs.js";
 import Avatar from "@mui/material/Avatar";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -66,6 +65,10 @@ const NavButton = ({
   // </Tooltip>
 );
 
+const changeBodyDirection = (newDirection) => {
+  document.body.style.direction = newDirection;
+}
+
 const Navbar = () => {
   const token = localStorage.getItem("auth-token");
 
@@ -78,7 +81,7 @@ const Navbar = () => {
     allRoutes,
     primaryColor,
     setIsCollapsed,
-    themeBgImg, t
+    themeBgImg, t, langs, isLangRTL
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -234,8 +237,8 @@ const Navbar = () => {
         style={{
           position: "fixed",
           top: 0,
-          left: !isCollapsed ? 65 : 200,
-          right: 0,
+          left: isLangRTL(i18n.language) ? "0" : (!isCollapsed ? 65 : 200),
+          right: isLangRTL(i18n.language) ? (!isCollapsed ? 65 : 200) : 0,
           zIndex: "20",
           // backgroundColor: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
           boxShadow:
@@ -300,8 +303,15 @@ const Navbar = () => {
           }}
           size="small"
         value={i18n.language}
-        onChange={(e) =>
-          i18n.changeLanguage(e.target.value)
+        onChange={(e) => {
+
+          i18n.changeLanguage(e.target.value);
+          if(isLangRTL(e.target.value)){
+              changeBodyDirection("rtl");
+          } else {
+              changeBodyDirection("ltr");
+          }
+        }
         }
       >
       {langs?.map((lang) => 

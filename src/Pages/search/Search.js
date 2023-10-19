@@ -1767,7 +1767,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           {/* LEAD CATEGORY  */}
           <Box className="m-1" sx={{ minWidth: "90px" }}>
             <FormControl fullWidth>
-              <InputLabel>Category</InputLabel>
+              <InputLabel>{t("label_category")}</InputLabel>
               <Select
                 id="leadOrigin"
                 label={t("label_category")}
@@ -1814,7 +1814,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           {/* FEEDBACK  */}
           <Box className="m-1" sx={{ minWidth: "90px" }}>
             <FormControl fullWidth>
-              <InputLabel>Feedback</InputLabel>
+              <InputLabel>{t("label_feedback")}</InputLabel>
               <Select
                 id="leadType"
                 label={t("label_feedback")}
@@ -1881,7 +1881,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             </label>
             <Box className="m-1" sx={{ minWidth: "90px" }}>
               <FormControl fullWidth>
-                <InputLabel>Enquiry</InputLabel>
+                <InputLabel>{t("label_enquiry")}</InputLabel>
                 <Select
                   label={t("label_enquiry")}
                   id="enquiryType"

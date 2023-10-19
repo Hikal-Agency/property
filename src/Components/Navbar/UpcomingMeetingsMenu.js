@@ -10,7 +10,7 @@ import "../../styles/animation.css";
 import Timeline from "../../Pages/timeline";
 
 const UpcomingMeetingsMenu = ({ handleClose }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, t } = useStateContext();
   const [upcomingMeetings, setUpcomingMeetings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [timelinePopup, setTimelinePopup] = useState({ isOpen: false });
@@ -56,7 +56,7 @@ const UpcomingMeetingsMenu = ({ handleClose }) => {
             cursor: "pointer",
           }}
         >
-          View All Meetings
+          {t("view_all_meetings")}
         </div>
 
         {/* <Button

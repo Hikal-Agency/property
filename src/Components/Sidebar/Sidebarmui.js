@@ -95,7 +95,7 @@ const Sidebarmui = () => {
     themeBgImg,
     setUserCredits,
     primaryColor,
-    setPrimaryColor,t
+    setPrimaryColor,t, i18n, isLangRTL
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -1664,6 +1664,9 @@ const Sidebarmui = () => {
                       width: "18px",
                       minWidth: "18px",
                     },
+                    "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label": {
+                      paddingRight: isLangRTL(i18n?.language) ? "30px": "0"
+                    }
                   }}
                   className="my-1"
                 >

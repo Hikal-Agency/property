@@ -426,7 +426,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                         className="w-full"
                         displayEmpty
                       >
-                        <MenuItem value="">Select Agent</MenuItem>
+                        <MenuItem value="">{t("label_select_agent")}</MenuItem>
                         {User.role === 1
                           ? SalesPerson[`manager-${Manager}`]?.map(
                               (agent, index) => (

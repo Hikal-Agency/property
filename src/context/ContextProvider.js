@@ -367,6 +367,41 @@ export const ContextProvider = ({ children }) => {
     return rgb.replace("rgb", "rgba").replace(")", `, ${opacity})`);
   };
 
+  const langs = [
+  {
+    code: "en",
+    title: "English"
+  }, 
+  {
+    code: "ar", 
+    title: "عربي", 
+    rtl: true
+  }, 
+  {
+    code: "cn", 
+    title: "中文"
+  }, 
+  {
+    code: "fr", 
+    title: "Français"
+  }, 
+  {
+    code: "he", 
+    title: "עִבְרִית",
+    rtl: true
+  }, 
+  {
+    code: "pk", 
+    title: "اردو", 
+    rtl: true
+  }, 
+  {
+    code: "ru", 
+    title: "Русский"
+  }
+];
+
+
   const ReFetchProfile = () => {
     const token = localStorage.getItem("auth-token");
     axios
@@ -420,6 +455,19 @@ export const ContextProvider = ({ children }) => {
         setUser(user);
       });
   };
+
+  const isLangRTL = (langCode) => {
+    const language = langs?.find((lang) => lang?.code === langCode);
+    if(language) {
+      if(language?.rtl){
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
@@ -482,6 +530,7 @@ export const ContextProvider = ({ children }) => {
         setFBToken,
         // setMode,
         // setColor,
+        langs,
         themeSettings,
         setThemeSettings,
         formatNum,
@@ -491,6 +540,7 @@ export const ContextProvider = ({ children }) => {
         withOpacity,
         setIsUserSubscribed,
         permits,
+        isLangRTL,
         setPermits,
         appLoading,
         setAppLoading,

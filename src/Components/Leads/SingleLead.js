@@ -58,7 +58,7 @@ const SingleLead = ({
     BACKEND_URL,
     isArabic,
     primaryColor,
-    t
+    t, isLangRTL, i18n,
   } = useStateContext();
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
@@ -446,7 +446,7 @@ const SingleLead = ({
         <div className="modal-container w-[100vw] h-[100vh] flex items-start justify-end">
           <button onClick={handleLeadModelClose}
 
-            className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
+            className={`bg-primary w-fit h-fit p-3 ${isLangRTL(i18n.language) ? 'rounded-r-full' : 'rounded-l-full'} my-4 z-10`}
           >
             <MdClose
               size={18}
