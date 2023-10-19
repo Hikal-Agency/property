@@ -15,8 +15,14 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const UserLocationComponent = () => {
-  const { currentMode, LastLocationData, setLastLocationData, BACKEND_URL, t } =
-    useStateContext();
+  const { 
+    currentMode, 
+    LastLocationData, 
+    setLastLocationData, 
+    BACKEND_URL, 
+    t,
+    themeBgImg
+  } = useStateContext();
 
   const [loading, setloading] = useState(true);
   const [filterDate, setFilterDate] = useState(moment().format("YYYY-MM-DD"));
@@ -105,7 +111,7 @@ const UserLocationComponent = () => {
 
   return (
     <>
-      <Box
+      {/* <Box
       className="relative"
         sx={{
           "& .cls-1": {
@@ -147,7 +153,7 @@ const UserLocationComponent = () => {
           </g>
         </svg>
         <img className="absolute rounded-full top-[5px] left-[3px] w-[42px]" src="https://testing.hikalcrm.com/storage/profile-pictures/102.jpg" alt=""/>
-      </Box>
+      </Box> */}
       <div className="w-full flex items-center justify-between pb-3">
         <div className="flex items-center mb-2">
           <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
@@ -177,17 +183,18 @@ const UserLocationComponent = () => {
               }}
               renderInput={(params) => (
                 <TextField
+                  className={`${themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")}`}
                   size="small"
                   sx={{
                     "& input": {
-                      color: currentMode === "dark" ? "#EEEEEE" : "#424242",
+                      color: currentMode === "dark" ? "#EEEEEE" : "#333333",
                     },
                     "&": {
                       borderRadius: "4px",
-                      border: "1px solid #AAAAAA",
+                      border: currentMode === "dark" ? "1px solid #EEEEEE" : "1px solid #333333",
                     },
                     "& .MuiSvgIcon-root": {
-                      color: "#AAAAAA",
+                      color: currentMode === "dark" ? "#EEEEEE" : "#333333",
                     },
                   }}
                   label={t("date")}
@@ -202,11 +209,9 @@ const UserLocationComponent = () => {
       </div>
 
       {LastLocationData && (
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 h-[85vh]">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 h-screen">
           <div
-            className={`${
-              currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
-            } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
+            className={` w-full h-screen col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
           >
             {/* MAP */}
             {!load?.isLoaded ? (
@@ -278,6 +283,7 @@ const UserLocationComponent = () => {
                             onCloseClick={() => {
                               setSelectedLocation(null);
                             }}
+                            
                           >
                             <div>
                               <h1 className="font-semibold">
@@ -317,10 +323,13 @@ const UserLocationComponent = () => {
                 return (
                   <div
                     className={`${
-                      currentMode === "dark"
+                      !themeBgImg ? (currentMode === "dark"
                         ? "bg-[#424242] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    } rounded-md card-hover h-fit space-y-2 p-3 mb-3`}
+                        : "bg-[#EEEEEE] text-black")
+                        : (currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black")
+                    } rounded-xl shadow-sm card-hover h-fit space-y-2 p-3 my-1`}
                     onClick={() => handleCardclick(location)}
                   >
                     <h1 className="font-semibold capitalize">

@@ -20,6 +20,7 @@ const Userlocation = () => {
     BACKEND_URL,
     setUser,
     User,
+    themeBgImg
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
@@ -36,13 +37,13 @@ const Userlocation = () => {
 
   return (
     <>
-      <div className="min-h-screen">
+      <div className="h-screen">
         <div
           className={`w-full  ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
-          <div className="p-4">
+          <div className="p-4 pb-0">
             <UserLocationComponent />
           </div>
         </div>

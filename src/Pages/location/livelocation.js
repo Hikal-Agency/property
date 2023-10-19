@@ -11,7 +11,7 @@ const Livelocation = () => {
   const {
     currentMode,
     setopenBackDrop,
-
+    themeBgImg,
     BACKEND_URL,
   } = useStateContext();
   const [loading, setloading] = useState(false);
@@ -64,13 +64,13 @@ const Livelocation = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="min-h-screen">
+        <div className="h-screen">
           <div
             className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
-            <div className="p-4 ">
+            <div className="p-4 pb-0">
               <LocationComponent
                 upcoming_meetings={DashboardData?.upcoming_meetings}
               />

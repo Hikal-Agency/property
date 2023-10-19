@@ -31,7 +31,7 @@ const MapContainer = ({ location, selectedMeeting, clearSelectedMeeting }) => {
         <div>Your map is loading...</div>
       ) : (
         <GoogleMap
-          zoom={5}
+          zoom={selectedMeeting ? 14 : 10}
           center={{ lat: 25.22527310000002, lng: 55.280889615218406 }}
           mapContainerStyle={mapContainerStyle}
           options={options}

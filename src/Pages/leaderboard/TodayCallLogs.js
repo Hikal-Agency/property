@@ -348,7 +348,7 @@ const TodayCallLogs = () => {
                                         Total Leads&nbsp;
                                         <span
                                           className="font-bold float-right"
-                                          style={{ color: "#DF2938" }}
+                                          style={{ color: "#FFFFFF" }}
                                         >
                                           {call.unique_lead_contacts || 0}
                                         </span>
