@@ -331,9 +331,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
             color: primaryColor,
           },
         }}
-        className={`rounded-md overflow-hidden flex ${
-          currentMode === "dark" ? "bg-black" : "bg-white"
-        }`}
+        className={`rounded-md overflow-hidden flex`}
         style={{justifyContent: "flex-end"}}
       >
         <Tabs value={value} onClick={handleChange} variant="standard" >

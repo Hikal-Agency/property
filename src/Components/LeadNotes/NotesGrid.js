@@ -11,7 +11,7 @@ import { BiUserCircle, BiUser } from "react-icons/bi";
 const NotesGrid = ({ pageState, setpageState }) => {
   console.log("Notes state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode, isArabic, primaryColor } = useStateContext();
+  const { currentMode, isArabic, primaryColor, themeBgImg } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [notesData, setUserData] = useState([]);
 
@@ -45,9 +45,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
+            className={`w-full`}
           >
             <div className="px-1">
               <div className="mt-5 md:mt-2">
@@ -58,10 +56,14 @@ const NotesGrid = ({ pageState, setpageState }) => {
                         <div
                           key={index}
                           className={`${
-                            currentMode === "dark"
+                            !themeBgImg 
+                              ? (currentMode === "dark"
                               ? "bg-[#1C1C1C] text-white"
-                              : "bg-[#EEEEEE] text-black"
-                          } p-3 rounded-md cursor-pointer `}
+                              : "bg-[#EEEEEE] text-black")
+                              : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
+                          } p-3 rounded-lg shadow-sm card-hover cursor-pointer `}
                           onClick={(e) => handleNavigate(e, item?.leadId)}
                         >
                           <div className="my-1 space-y-1 overflow-hidden">

@@ -25,6 +25,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LocationPicker from "../meetings/LocationPicker";
 import dayjs from "dayjs";
+import moment from "moment";
 
 const RenderFeedback = ({ cellValues }) => {
   const [btnloading, setbtnloading] = useState(false);
@@ -49,7 +50,7 @@ const RenderFeedback = ({ cellValues }) => {
     fetchSidebarData,
     BACKEND_URL,
     User,
-    t
+    t,
   } = useStateContext();
   const ChangeFeedback = (e) => {
     setnewFeedback(e.target.value);
@@ -95,10 +96,11 @@ const RenderFeedback = ({ cellValues }) => {
         setbtnloading(false);
         return;
       }
-      UpdateLeadData.append(
-        "meetingDate",
-        meetingData.meetingDate.toISOString().split("T")[0]
-      );
+      // UpdateLeadData.append(
+      //   "meetingDate",
+      //   meetingData.meetingDate.toISOString().split("T")[0]
+      // );
+      UpdateLeadData.append("meetingDate", meetingData.meetingDate);
       UpdateLeadData.append(
         "meetingTime",
         new Date(meetingData.meetingTime).toLocaleTimeString("en-US", {
@@ -161,7 +163,8 @@ const RenderFeedback = ({ cellValues }) => {
           socket.emit("notification_meeting_schedule", {
             from: { id: User?.id },
             leadName: cellValues?.row?.leadName,
-            meetingDate: meetingData.meetingDate.toISOString().split("T")[0],
+            // meetingDate: meetingData.meetingDate.toISOString().split("T")[0],
+            meetingDate: meetingData.meetingDate,
             meetingTime: new Date(meetingData.meetingTime).toLocaleTimeString(
               "en-US",
               {
@@ -307,12 +310,16 @@ const RenderFeedback = ({ cellValues }) => {
           <MenuItem value={"Meeting"}>{t("feedback_meeting")}</MenuItem>
           <MenuItem value={"Booked"}>{t("feedback_booked")}</MenuItem>
           <MenuItem value={"Low Budget"}>{t("feedback_low_budget")}</MenuItem>
-          <MenuItem value={"Not Interested"}>{t("feedback_not_interested")}</MenuItem>
+          <MenuItem value={"Not Interested"}>
+            {t("feedback_not_interested")}
+          </MenuItem>
           <MenuItem value={"No Answer"}>{t("feedback_no_answer")}</MenuItem>
           <MenuItem value={"Unreachable"}>{t("feedback_unreachable")}</MenuItem>
           <MenuItem value={"Duplicate"}>{t("feedback_duplicate")}</MenuItem>
           <MenuItem value={"Dead"}>{t("feedback_dead")}</MenuItem>
-          <MenuItem value={"Wrong Number"}>{t("feedback_wrong_number")}</MenuItem>
+          <MenuItem value={"Wrong Number"}>
+            {t("feedback_wrong_number")}
+          </MenuItem>
         </Select>
       </FormControl>
 
@@ -349,13 +356,23 @@ const RenderFeedback = ({ cellValues }) => {
               <div className="flex flex-col justify-center items-center">
                 <IoIosAlert size={50} className="text-primary text-2xl" />
                 <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
-                  {t("want_to_change_feedback")}{" "} {t("from")}
+                  {t("want_to_change_feedback")} {t("from")}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {Feedback ? t("feedback_" + Feedback?.toLowerCase()?.replaceAll(" ", "_")) : t("no_feedback")}
+                    {Feedback
+                      ? t(
+                          "feedback_" +
+                            Feedback?.toLowerCase()?.replaceAll(" ", "_")
+                        )
+                      : t("no_feedback")}
                   </span>{" "}
                   {t("to")}{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                    {newFeedback ? t("feedback_" + newFeedback?.toLowerCase()?.replaceAll(" ", "_")) : t("no_feedback")}
+                    {newFeedback
+                      ? t(
+                          "feedback_" +
+                            newFeedback?.toLowerCase()?.replaceAll(" ", "_")
+                        )
+                      : t("no_feedback")}
                   </span>{" "}
                   ?
                 </h1>
@@ -374,9 +391,15 @@ const RenderFeedback = ({ cellValues }) => {
                         value={meetingData.meetingDate}
                         views={["year", "month", "day"]}
                         onChange={(newValue) => {
+                          console.log("meeting date: ", newValue);
+
+                          const formattedDate = moment(newValue?.$d).format(
+                            "YYYY-MM-DD"
+                          );
+
                           setMeetingData({
                             ...meetingData,
-                            meetingDate: newValue,
+                            meetingDate: formattedDate,
                           });
                         }}
                         format="yyyy-MM-dd"
@@ -436,10 +459,18 @@ const RenderFeedback = ({ cellValues }) => {
                         }}
                         required
                       >
-                        <MenuItem value={"Pending"}>{t("status_pending")}</MenuItem>
-                        <MenuItem value={"Postponed"}>{t("status_postponed")}</MenuItem>
-                        <MenuItem value={"Attended"}>{t("status_attended")}</MenuItem>
-                        <MenuItem value={"Cancelled"}>{t("status_cancelled")}</MenuItem>
+                        <MenuItem value={"Pending"}>
+                          {t("status_pending")}
+                        </MenuItem>
+                        <MenuItem value={"Postponed"}>
+                          {t("status_postponed")}
+                        </MenuItem>
+                        <MenuItem value={"Attended"}>
+                          {t("status_attended")}
+                        </MenuItem>
+                        <MenuItem value={"Cancelled"}>
+                          {t("status_cancelled")}
+                        </MenuItem>
                       </Select>
                     </FormControl>
                     <TextField

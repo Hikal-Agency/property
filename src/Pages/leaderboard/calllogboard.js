@@ -155,14 +155,14 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                                   </span>
                                 </h1>
                               </div>
-                              <div>
+                              {/* <div>
                                 <h1 className="text-sm">
                                   REJECTED&nbsp;
                                   <span className="font-bold text-primary float-right">
                                     {call?.rejected || 0}
                                   </span>
                                 </h1>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                           <div
@@ -291,14 +291,14 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                                   </span>
                                 </h1>
                               </div>
-                              <div>
+                              {/* <div>
                                 <h1 className="text-sm">
                                   REJECTED&nbsp;
                                   <span className="font-bold text-primary float-right">
                                     {call?.rejected || 0}
                                   </span>
                                 </h1>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                           <div
@@ -426,14 +426,14 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                                   </span>
                                 </h1>
                               </div>
-                              <div>
+                              {/* <div>
                                 <h1 className="text-sm">
                                   REJECTED&nbsp;
                                   <span className="font-bold text-primary float-right">
                                     {call?.rejected || 0}
                                   </span>
                                 </h1>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                           <div
@@ -560,14 +560,14 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                                   </span>
                                 </h1>
                               </div>
-                              <div>
+                              {/* <div>
                                 <h1 className="text-sm">
                                   REJECTED&nbsp;
                                   <span className="font-bold text-primary float-right">
                                     {call?.rejected || 0}
                                   </span>
                                 </h1>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                           <div

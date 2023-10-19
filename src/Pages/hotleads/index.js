@@ -24,7 +24,7 @@ import moment from "moment";
 import { GiMagnifyingGlass } from "react-icons/gi";
 
 const AllHotLeads = () => {
-  const { currentMode, setopenBackDrop, pageState, BACKEND_URL, t } =
+  const { currentMode, setopenBackDrop, pageState, BACKEND_URL, t, themeBgImg } =
     useStateContext();
   const location = useLocation();
   const { hasPermission } = usePermission();
@@ -97,7 +97,7 @@ const AllHotLeads = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
@@ -155,28 +155,6 @@ const AllHotLeads = () => {
                             </Box>
                           ))
                         : ""}
-                      {/* MESSAGE  */}
-                      <Box
-                        sx={{
-                          padding: "5px 7px",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          background:
-                            currentMode === "dark" ? "#000000" : "#FFFFFF",
-                          color: currentMode === "dark" ? "white" : "black",
-                          boxShadow:
-                            currentMode === "dark"
-                              ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                              : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                          height: "30px",
-                          minWidth: "60px",
-                          maxWidth: "100px",
-                        }}
-                      >
-                        <BiMessageRoundedDots size={18} color={"#6A5ACD"} />
-                        <span className="px-2">{pageState?.mCount}</span>
-                      </Box>
                     </div>
                   </div>
                 </div>

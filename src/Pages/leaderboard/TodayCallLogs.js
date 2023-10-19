@@ -41,9 +41,9 @@ const TodayCallLogs = () => {
     {
       heading: "CALL LOGS",
     },
-    {
-      heading: "MONTHLY TARGET",
-    },
+    // {
+    //   heading: "MONTHLY TARGET",
+    // },
   ];
 
   const monthNames = [
@@ -286,7 +286,7 @@ const TodayCallLogs = () => {
                                           </span>
                                         </h1>
                                       </div>
-                                      <div>
+                                      {/* <div>
                                         <h1 className="text-lg">
                                           REJECTED&nbsp;
                                           <span
@@ -296,7 +296,7 @@ const TodayCallLogs = () => {
                                             {call?.rejected || 0}
                                           </span>
                                         </h1>
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                   <div
@@ -372,142 +372,143 @@ const TodayCallLogs = () => {
                       </>
                     )}
                   </>
-                ) : item.heading === "MONTHLY TARGET" ? (
-                  <>
-                    {loading ? (
-                      <Loader />
-                    ) : (
-                      <>
-                      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-                        {noTargetData === false &&
-                        targetData?.length > 0 &&
-                        targetData?.map((target, index) => {
-                          return (
-                            <div
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-[#000000]"
-                                  : "bg-[#FFFFFF]"
-                              } p-3 rounded-lg shadow-md space-y-2`}
-                            >
-                              <div className="mb-2 flex">
-                                <div>
-                                  <img
-                                    src={
-                                      target?.profile_picture
-                                        ? target?.profile_picture
-                                        : "/assets/user.png"
-                                    }
-                                    height={80}
-                                    width={80}
-                                    className={`rounded-sm object-cover relative mr-3`}
-                                    alt=""
-                                  />
-                                </div>
-                                <div className="space-y-2 p-1">
-                                  <div className="font-semibold text-main-red-color">
-                                    {target.userName}
-                                  </div>
-                                  <div className="grid grid-cols-8 flex items-center">
-                                    <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
-                                      <BsFillBookmarkStarFill
-                                        size={20}
-                                        color={"#777777"}
-                                        className="p-1"
-                                      />
-                                    </div>
-                                    <div className="col-span-7">
-                                      {target.booked <= 1 ? (
-                                        <>
-                                          <span className="font-bold">
-                                            {target.booked}
-                                          </span>{" "}
-                                          booked unit
-                                        </>
-                                      ) : (
-                                        <>
-                                          <span className="font-bold">
-                                            {target.booked}
-                                          </span>{" "}
-                                          booked units
-                                        </>
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="grid grid-cols-8 flex items-center">
-                                    <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
-                                      <BsFillLockFill
-                                        size={20}
-                                        color={"#777777"}
-                                        className="p-1"
-                                      />
-                                    </div>
-                                    <div className="col-span-7">
-                                      {target.month_closed <= 1 ? (
-                                        <>
-                                          <span className="font-bold">
-                                            {target.month_closed}
-                                          </span>{" "}
-                                          deal in {monthNames[d.getMonth()]}{" "}
-                                        </>
-                                      ) : (
-                                        <>
-                                          <span className="font-bold">
-                                            {target.month_closed}
-                                          </span>{" "}
-                                          deals in {monthNames[d.getMonth()]}{" "}
-                                        </>
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="grid grid-cols-8 flex items-center">
-                                    <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
-                                      <BsFillStarFill
-                                        size={20}
-                                        color={"#777777"}
-                                        className="p-1"
-                                      />
-                                    </div>
-                                    <div className="col-span-7">
-                                      <span className="font-bold">
-                                        AED {formatNumber(Number(target.target))}
-                                      </span>{" "}
-                                      target
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <ProgressBar
-                                bgcolor="#DA1F26"
-                                height="25px"
-                                progress={(
-                                  (target.month_closed_amount / target.target) *
-                                  100
-                                ).toFixed(1)}
-                                progresswidth={
-                                  target.month_closed_amount >= target.target
-                                    ? 100.0
-                                    : (target.month_closed_amount / target.target) *
-                                      100
-                                }
-                              />
-                            </div>
-                          );
-                        })}
+                // ) : item.heading === "MONTHLY TARGET" ? (
+                //   <>
+                //     {loading ? (
+                //       <Loader />
+                //     ) : (
+                //       <>
+                //       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+                //         {noTargetData === false &&
+                //         targetData?.length > 0 &&
+                //         targetData?.map((target, index) => {
+                //           return (
+                //             <div
+                //               className={`${
+                //                 currentMode === "dark"
+                //                   ? "bg-[#000000]"
+                //                   : "bg-[#FFFFFF]"
+                //               } p-3 rounded-lg shadow-md space-y-2`}
+                //             >
+                //               <div className="mb-2 flex">
+                //                 <div>
+                //                   <img
+                //                     src={
+                //                       target?.profile_picture
+                //                         ? target?.profile_picture
+                //                         : "/assets/user.png"
+                //                     }
+                //                     height={80}
+                //                     width={80}
+                //                     className={`rounded-sm object-cover relative mr-3`}
+                //                     alt=""
+                //                   />
+                //                 </div>
+                //                 <div className="space-y-2 p-1">
+                //                   <div className="font-semibold text-main-red-color">
+                //                     {target.userName}
+                //                   </div>
+                //                   <div className="grid grid-cols-8 flex items-center">
+                //                     <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
+                //                       <BsFillBookmarkStarFill
+                //                         size={20}
+                //                         color={"#777777"}
+                //                         className="p-1"
+                //                       />
+                //                     </div>
+                //                     <div className="col-span-7">
+                //                       {target.booked <= 1 ? (
+                //                         <>
+                //                           <span className="font-bold">
+                //                             {target.booked}
+                //                           </span>{" "}
+                //                           booked unit
+                //                         </>
+                //                       ) : (
+                //                         <>
+                //                           <span className="font-bold">
+                //                             {target.booked}
+                //                           </span>{" "}
+                //                           booked units
+                //                         </>
+                //                       )}
+                //                     </div>
+                //                   </div>
+                //                   <div className="grid grid-cols-8 flex items-center">
+                //                     <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
+                //                       <BsFillLockFill
+                //                         size={20}
+                //                         color={"#777777"}
+                //                         className="p-1"
+                //                       />
+                //                     </div>
+                //                     <div className="col-span-7">
+                //                       {target.month_closed <= 1 ? (
+                //                         <>
+                //                           <span className="font-bold">
+                //                             {target.month_closed}
+                //                           </span>{" "}
+                //                           deal in {monthNames[d.getMonth()]}{" "}
+                //                         </>
+                //                       ) : (
+                //                         <>
+                //                           <span className="font-bold">
+                //                             {target.month_closed}
+                //                           </span>{" "}
+                //                           deals in {monthNames[d.getMonth()]}{" "}
+                //                         </>
+                //                       )}
+                //                     </div>
+                //                   </div>
+                //                   <div className="grid grid-cols-8 flex items-center">
+                //                     <div className="flex items-center justify-center bg-[#EEEEEE] rounded-full w-8 h-8 mr-2">
+                //                       <BsFillStarFill
+                //                         size={20}
+                //                         color={"#777777"}
+                //                         className="p-1"
+                //                       />
+                //                     </div>
+                //                     <div className="col-span-7">
+                //                       <span className="font-bold">
+                //                         AED {formatNumber(Number(target.target))}
+                //                       </span>{" "}
+                //                       target
+                //                     </div>
+                //                   </div>
+                //                 </div>
+                //               </div>
+                //               <ProgressBar
+                //                 bgcolor="#DA1F26"
+                //                 height="25px"
+                //                 progress={(
+                //                   (target.month_closed_amount / target.target) *
+                //                   100
+                //                 ).toFixed(1)}
+                //                 progresswidth={
+                //                   target.month_closed_amount >= target.target
+                //                     ? 100.0
+                //                     : (target.month_closed_amount / target.target) *
+                //                       100
+                //                 }
+                //               />
+                //             </div>
+                //           );
+                //         })}
 
-                      </div>
-                      {noTargetData === true && (
-                        <div className="flex flex-col items-center justify-center h-[80vh] ">
-                          <img
-                            src="./no_data.png"
-                            alt="No data Illustration"
-                            className="w-[500px] h-[500px] object-cover"
-                          />
-                        </div>
-                      )}
-                    </>
-                    )}
-                  </>
+                //       </div>
+                //       {noTargetData === true && (
+                //         <div className="flex flex-col items-center justify-center h-[80vh] ">
+                //           <img
+                //             src="./no_data.png"
+                //             alt="No data Illustration"
+                //             className="w-[500px] h-[500px] object-cover"
+                //           />
+                //         </div>
+                //       )}
+                //     </>
+                //     )}
+                //   </>
+
                 ) : (
                   <></>
                 )}

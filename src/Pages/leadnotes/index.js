@@ -13,7 +13,7 @@ const LeadNotesPage = (props) => {
     pageSize: 15,
   });
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, t } = useStateContext();
+  const { currentMode, setopenBackDrop, t, themeBgImg } = useStateContext();
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -28,7 +28,7 @@ const LeadNotesPage = (props) => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="flex items-center">

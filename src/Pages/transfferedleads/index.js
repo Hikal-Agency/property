@@ -19,7 +19,9 @@ const TransferredLeads = (props) => {
     currentMode,
     pageState,
     setopenBackDrop,
-    BACKEND_URL,t
+    BACKEND_URL,
+    t,
+    themeBgImg
   } = useStateContext();
 
   const lead_type2 = location.pathname.split("/")[2];
@@ -38,7 +40,7 @@ const TransferredLeads = (props) => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="w-full flex items-center pb-3">

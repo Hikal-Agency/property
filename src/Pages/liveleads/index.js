@@ -25,6 +25,7 @@ const AllLiveLeads = () => {
     setopenBackDrop,
     pageState,
     BACKEND_URL,
+    themeBgImg
   } = useStateContext();
   const location = useLocation();
   const {hasPermission} = usePermission();
@@ -52,7 +53,7 @@ const AllLiveLeads = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">

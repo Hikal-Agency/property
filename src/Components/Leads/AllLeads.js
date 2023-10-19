@@ -1922,27 +1922,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                               ))
                             : ""}
                           {/* MESSAGE  */}
-                          <Box
-                            sx={{
-                              padding: "5px 7px",
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                              background:
-                                currentMode === "dark" ? "#000000" : "#FFFFFF",
-                              color: currentMode === "dark" ? "white" : "black",
-                              boxShadow:
-                                currentMode === "dark"
-                                  ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                  : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                              height: "30px",
-                              minWidth: "60px",
-                              maxWidth: "100px",
-                            }}
-                          >
-                            <BiMessageRoundedDots size={18} color={"#6A5ACD"} />
-                            <span className="px-2">{pageState?.mCount}</span>
-                          </Box>
                         </div>
                       </div>
                     </div>
