@@ -286,7 +286,7 @@ const TodayCallLogs = () => {
                                           </span>
                                         </h1>
                                       </div>
-                                      <div>
+                                      {/* <div>
                                         <h1 className="text-lg">
                                           REJECTED&nbsp;
                                           <span
@@ -296,7 +296,7 @@ const TodayCallLogs = () => {
                                             {call?.rejected || 0}
                                           </span>
                                         </h1>
-                                      </div>
+                                      </div> */}
                                     </div>
                                   </div>
                                   <div
