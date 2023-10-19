@@ -67,7 +67,7 @@ const BulkSMSModal = ({
     formatNum, t
   } = useStateContext();
 
-  const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM"];
+  const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM", "AD-MARAHEB"];
 
   const [contactsList, setContactsList] = useState(
     rangeData?.map((contact) => contact?.leadContact)

@@ -27,7 +27,7 @@ const style = {
   boxShadow: 24,
 };
 
-const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM"];
+const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM", "AD-MARAHEB"];
 const charLimitForEnglish = 160;
 const charLimitForArabic = 70;
 
