@@ -15,7 +15,6 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import {BiBlock} from "react-icons/bi";
 import { useStateContext } from "../../context/ContextProvider";
 import "react-phone-number-input/style.css";
 import PhoneInput, {
@@ -24,7 +23,6 @@ import PhoneInput, {
   isPossiblePhoneNumber,
 } from "react-phone-number-input";
 import classNames from "classnames";
-import BlockIPModal from "./BlockIPModal";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -42,7 +40,8 @@ const UpdateLead = ({
     User,
     BACKEND_URL,
     setSalesPerson: setAllSalesPersons,
-    SalesPerson: AllSalesPersons,
+    SalesPerson: AllSalesPersons, 
+    t
   } = useStateContext();
   const [value, setValue] = useState();
   const [loading, setloading] = useState(true);
@@ -71,19 +70,6 @@ const UpdateLead = ({
   const [LeadNotes, setLeadNotes] = useState("");
 
   const [emailError, setEmailError] = useState(false);
-
-  // const handlePhone = (e) => {
-  //   console.log("Phone: ", e.target.value);
-  //   setValue(e.target.value);
-  //   if (isPossiblePhoneNumber(value)) {
-  //     console.log("Possible: ", e.target.value);
-  //     if (isValidPhoneNumber(value)) {
-  //       setValue(formatPhoneNumberIntl(value));
-  //       console.log("Valid: ", value);
-  //     }
-  //   }
-  // };
-
 
   const handlePhone = () => {
     setError(false);
@@ -123,40 +109,17 @@ const UpdateLead = ({
   const ChangeFeedback = (event) => {
     setFeedback(event.target.value);
   };
-  const ChangeManager = (event) => {
-    setManager(event.target.value);
-    setSalesPerson(AllSalesPersons[`manager-${event.target.value}`] || []);
-  };
-  const ChangeSalesPerson = (event) => {
-    setSalesPerson2(event.target.value);
-  };
-
-  console.log("salesperson: ", SalesPerson2);
-
-  const handleContact = (e) => {
-    const value = e.target.value;
-    const onlyDigitsAndPlus = /^[0-9+]*$/;
-    if (onlyDigitsAndPlus.test(value) && value.startsWith("+")) {
-      setLeadContact(value);
-    }
-  };
-
-  console.log("Time:", moment().format("YYYY/MM/DD HH:mm:ss"));
 
   const handleEmail = (e) => {
     setEmailError(false);
     const value = e.target.value;
     console.log(value);
-    // const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
     const emailRegex = /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
     if (emailRegex.test(value)) {
       setEmailError(false);
     } else {
       setEmailError("Kindly enter a valid email.");
-      // setLeadEmail("");
-      // return;
     }
     setLeadEmail(value);
     console.log("Email state: ", LeadEmail);
@@ -203,20 +166,6 @@ const UpdateLead = ({
         });
 
         setPersons(urls || []);
-
-        // if (User.role === 3) {
-        //   setfilter_manager(
-        //     result.data.team.filter((manager) => {
-        //       return manager.id === User?.id;
-        //     })
-        //   );
-        //   const SalesPerson = result.data.team.filter((manager) => {
-        //     return manager.id === User?.id;
-        //   });
-        //   setSalesPerson(SalesPerson[0]?.child ? SalesPerson[0].child : []);
-        //   console.log("filtyer manager is");
-        //   console.log(filter_manager);
-        // }
         setloading(false);
       })
       .catch((err) => {
@@ -284,21 +233,6 @@ const UpdateLead = ({
   const UpdateLeadFunc = async () => {
     setbtnloading(true);
 
-    // if (emailError !== false) {
-    //   toast.error("Kindly enter a valid email.", {
-    //     position: "top-right",
-    //     autoClose: 3000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //   });
-    //   setbtnloading(false);
-    //   setloading(false);
-    //   return;
-    // }
 
     if (!LeadContact) {
       setloading(false);
@@ -318,7 +252,6 @@ const UpdateLead = ({
     }
 
     const token = localStorage.getItem("auth-token");
-    const creationDate = new Date();
     const UpdateLeadData = new FormData();
     // UpdateLeadData.append("id", User.id);
     UpdateLeadData.append("id", LeadData.leadId);
@@ -400,7 +333,7 @@ const UpdateLead = ({
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
-              <span className="font-semibold text-lg"> Fetching Your Lead</span>
+              <span className="font-semibold text-lg"> {t("fetching_your_lead")}</span>
             </div>
           ) : (
             <>
@@ -420,7 +353,7 @@ const UpdateLead = ({
                   currentMode === "dark" ? "text-white" : "text-black"
                 } text-center font-semibold text-lg pb-10`}
               >
-                Update lead details
+                {t("update_lead_details")}
               </h1>
               <form
                 onSubmit={(e) => {
@@ -438,7 +371,7 @@ const UpdateLead = ({
                             : "text-primary"
                         } text-center font-semibold pb-5`}
                       >
-                        Agent details
+                        {t("agent_details")}
                       </h4>
 
                       <>
@@ -475,7 +408,7 @@ const UpdateLead = ({
                         <TextField
                           id="Manager"
                           type="text"
-                          label="Manager"
+                          label={t("label_manager")}
                           className="w-full"
                           sx={{
                             marginBottom: "1.25rem !important",
@@ -539,7 +472,7 @@ const UpdateLead = ({
                               <TextField
                                 id="Salesperson"
                                 type="text"
-                                label="Agent"
+                                label={t("label_agent")}
                                 className="w-full"
                                 style={{
                                   marginBottom: "1.25rem !important",
@@ -551,7 +484,7 @@ const UpdateLead = ({
                                 value={
                                   SalesPerson?.find(
                                     (person) => person?.id === SalesPerson2
-                                  )?.userName || "No Agent Assigned"
+                                  )?.userName || t("no_agent_assigned")
                                 }
                                 onChange={(e) => {
                                   e.preventDefault();
@@ -564,7 +497,7 @@ const UpdateLead = ({
                       {User.role === 7 && (
                         <TextField
                           id="Salesperson"
-                          label="Agent"
+                          label={t("label_agent")}
                           type="text"
                           className="w-full mb-5"
                           style={{
@@ -590,14 +523,14 @@ const UpdateLead = ({
                             : "text-primary"
                         } text-center font-semibold pb-5`}
                       >
-                        Project details
+                        {t("project_details")}
                       </h4>
                       <TextField
                         id="Project"
                         type={"text"}
                         className="w-full"
                         sx={{ marginBottom: "1.25rem !important" }}
-                        label="Project name"
+                        label={t("label_project_name")}
                         variant="outlined"
                         size="small"
                         value={LeadProject}
@@ -610,7 +543,7 @@ const UpdateLead = ({
                       <TextField
                         id="enquiry"
                         value={EnquiryType}
-                        label="Enquiry for"
+                        label={t("label_enquiry_for")}
                         onChange={ChangeEnquiryType}
                         size="small"
                         className="w-full"
@@ -620,16 +553,16 @@ const UpdateLead = ({
                         displayEmpty
                         select
                       >
-                        <MenuItem value="">Enquiry about</MenuItem>
-                        <MenuItem value={"Studio"}>Studio</MenuItem>
-                        <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
-                        <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
-                        <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
-                        <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
-                        <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
-                        <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
-                        <MenuItem value={"Retail"}>Retail</MenuItem>
-                        <MenuItem value={"Other"}>Others</MenuItem>
+                        <MenuItem value="">{t("label_enquiry_about")}</MenuItem>
+                        <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
+                        <MenuItem value={"1 Bedroom"}>{t("enquiry_1bed")}</MenuItem>
+                        <MenuItem value={"2 Bedrooms"}>{t("enquiry_2bed")}</MenuItem>
+                        <MenuItem value={"3 Bedrooms"}>{t("enquiry_3bed")}</MenuItem>
+                        <MenuItem value={"4 Bedrooms"}>{t("enquiry_4bed")}</MenuItem>
+                        <MenuItem value={"5 Bedrooms"}>{t("enquiry_5bed")}</MenuItem>
+                        <MenuItem value={"6 Bedrooms"}>{t("enquiry_6bed")}</MenuItem>
+                        <MenuItem value={"Retail"}>{t("enquiry_retail")}</MenuItem>
+                        <MenuItem value={"Other"}>{t("enquiry_others")}</MenuItem>
                       </TextField>
 
                       {/* <label className="text-sm text-gray-500">
@@ -638,7 +571,7 @@ const UpdateLead = ({
                       <TextField
                         id="property-type"
                         value={PropertyType}
-                        label="Property type"
+                        label={t("label_property_type")}
                         sx={{
                           marginBottom: "1.25rem !important",
                         }}
@@ -648,13 +581,13 @@ const UpdateLead = ({
                         displayEmpty
                         select
                       >
-                        <MenuItem value="">Property type</MenuItem>
-                        <MenuItem value={"Apartment"}>Apartment</MenuItem>
-                        <MenuItem value={"Villa"}>Villa</MenuItem>
-                        <MenuItem value={"penthouse"}>Penthouse</MenuItem>
-                        <MenuItem value={"mansion"}>Mansion</MenuItem>
-                        <MenuItem value={"Commercial"}>Commercial</MenuItem>
-                        <MenuItem value={"Townhouse"}>TownHouse</MenuItem>
+                        <MenuItem value="">{t("label_property_type")}</MenuItem>
+                        <MenuItem value={"Apartment"}>{t("property_apartment")}</MenuItem>
+                        <MenuItem value={"Villa"}>{t("property_villa")}</MenuItem>
+                        <MenuItem value={"penthouse"}>{t("property_penthouse")}</MenuItem>
+                        <MenuItem value={"mansion"}>{t("property_mansion")}</MenuItem>
+                        <MenuItem value={"Commercial"}>{t("property_commercial")}</MenuItem>
+                        <MenuItem value={"Townhouse"}>{t("property_townhouse")}</MenuItem>
                       </TextField>
 
                       {/* <label className="text-sm text-gray-500">For</label> */}
@@ -664,7 +597,7 @@ const UpdateLead = ({
                           marginBottom: "1.25rem !important",
                         }}
                         value={ForType}
-                        label="Purpose of enquiry"
+                        label={t("label_purpose_of_enquiry")}
                         onChange={ChangeForType}
                         size="small"
                         className="w-full"
@@ -674,8 +607,8 @@ const UpdateLead = ({
                         <MenuItem value="" selected>
                           For
                         </MenuItem>
-                        <MenuItem value={"Investment"}>Investment</MenuItem>
-                        <MenuItem value={"End-user"}>End-User</MenuItem>
+                        <MenuItem value={"Investment"}>{t("purpose_investment")}</MenuItem>
+                        <MenuItem value={"End-user"}>{t("purpose_end_user")}</MenuItem>
                       </TextField>
                     </Box>
                   </div>
@@ -689,12 +622,12 @@ const UpdateLead = ({
                             : "text-primary"
                         } text-center font-semibold pb-5`}
                       >
-                        Lead details
+                        {t("lead_details")}
                       </h4>
                       <TextField
                         id="LeadName"
                         type={"text"}
-                        label="Lead name"
+                        label={t("label_lead_name")}
                         className="w-full"
                         sx={{ marginBottom: "1.25rem !important" }}
                         variant="outlined"
@@ -705,12 +638,12 @@ const UpdateLead = ({
                       />
 
                       <PhoneInput
-                        placeholder="Contact number"
+                        placeholder={t("label_contact_number")}
                         value={LeadContact}
                         onChange={(value) => setValue(value)}
                         onKeyUp={handlePhone}
                         required
-                        labels={"Phone No"}
+                        labels={t("label_phone_number")}
                         error={error}
                         className={`${classNames({
                           "dark-mode": currentMode === "dark",
@@ -741,34 +674,13 @@ const UpdateLead = ({
                         </Typography>
                       )}
 
-                      {/* Possible{" "}
-                      {value && isPossiblePhoneNumber(value)
-                        ? value
-                        : "Invalid"} */}
-                      {/* <TextField
-                        sx={{
-                          color: "red",
-                        }}
-                        id="LeadContactNumber"
-                        type={"tel"}
-                        label="Contact number"
-                        className="w-full mb-5"
-                        style={{ marginBottom: "20px" }}
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={LeadContact}
-                        // onChange={(e) => setLeadContact(e.target.value)}
-                        helperText="Enter contact number starting with '+'  "
-                        onChange={handleContact}
-                        autoComplete
-                      /> */}
+
 
                       <TextField
                         id="LeadEmailAddress"
                         type={"email"}
                         className="w-full"
-                        label="Email address"
+                        label={t("label_email_address")}
                         sx={{ marginBottom: "1.25rem !important" }}
                         variant="outlined"
                         size="small"
@@ -786,14 +698,14 @@ const UpdateLead = ({
                         id="LanguagePrefered"
                         value={LanguagePrefered}
                         onChange={ChangeLanguagePrefered}
-                        label="Language"
+                        label={t("label_language")}
                         size="small"
                         className="w-full"
                         select
                         displayEmpty
                       >
                         <MenuItem value="" selected>
-                          Prefered language
+                          {t("label_language")}
                         </MenuItem>
                         <MenuItem value={"Arabic"}>Arabic</MenuItem>
                         <MenuItem value={"English"}>English</MenuItem>
@@ -819,7 +731,7 @@ const UpdateLead = ({
                       <CircularProgress size={18} sx={{ color: "white" }} />
                     </div>
                   ) : (
-                    <span> Update Lead</span>
+                    <span> {t("btn_update_lead")}</span>
                   )}
                 </Button>
               </form>

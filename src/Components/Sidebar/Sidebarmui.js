@@ -163,7 +163,7 @@ const Sidebarmui = () => {
     if (!e.target.closest(".view-image")) {
       navigate("/profile");
     }
-  };
+  }; 
 
   const setOpenedSubMenu = ({ menuIndex, linkIndex, sub = false }) => {
     if (sub) {
