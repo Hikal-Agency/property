@@ -38,7 +38,9 @@ const SingleEmployee = ({ user }) => {
     BACKEND_URL,
     DataGridStyles,
     pageState,
-    setpageState, t
+    setpageState, 
+    t,
+    themeBgImg
   } = useStateContext();
 
   const path = window.location.pathname;
@@ -1376,33 +1378,32 @@ const SingleEmployee = ({ user }) => {
 
   return (
     <>
-      <div className="flex min-h-screen">
+      <div className="flex h-screen ">
         {loading ? (
           <Loader />
         ) : (
-          <div className="w-full ">
+          <div className="w-full p-4">
             <Box
               sx={{
                 ...darkModeColors,
                 display: "flex",
                 justifyContent: "right",
-                marginTop: "5px",
               }}
             >
-            <div className="flex mx-2">
-              <Tooltip title="Export Attendance Logs" arrow>
-                <IconButton
-                  className={`p-1 disabled:opacity-50 disabled:cursor-not-allowed`}
-                  ripple={true}
-                  size="small"
-                  type="submit"
-                  onClick={() => setPasswordConfirm(true)}
-                  // sx={{ border: "1px solid #DA1F26" }}
-                >
-                  <FaDownload size={14} className="text-[#AAAAAA] hover:text-primary" />
-                </IconButton>
-              </Tooltip>
-            </div>
+              <div className="flex mx-2">
+                <Tooltip title="Export Attendance Logs" arrow>
+                  <IconButton
+                    className={`p-1 disabled:opacity-50 disabled:cursor-not-allowed`}
+                    ripple={true}
+                    size="small"
+                    type="submit"
+                    onClick={() => setPasswordConfirm(true)}
+                    // sx={{ border: "1px solid #DA1F26" }}
+                  >
+                    <FaDownload size={14} className={`${currentMode === "dark" ? "text-white" : "text-black"} hover:text-primary`} />
+                  </IconButton>
+                </Tooltip>
+              </div>
               <div className="flex">
                 <FormControl variant="outlined" sx={{ m: 1, minWidth: 30 }}>
                   <Select
@@ -1428,15 +1429,17 @@ const SingleEmployee = ({ user }) => {
             {/* SALARY CALC & TABLE  */}
             <div className="my-5 mb-10">
               <div
-                className={`grid grid-cols-1 md:grid-cols-12 ${
+                className={`grid grid-cols-1 md:grid-cols-12  ${
                   currentMode === "dark" ? "text-[#EEEEEE]" : "text-black"
                 }`}
               >
-                <div className="col-span-2 px-2 pb-2 text-sm">
+                <div className="col-span-2 px-2 pb-2 text-sm h-fit">
                   <div
                     className={`${
-                      currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-                    } rounded-md p-3 mb-1`}
+                     !themeBgImg 
+                     ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                     : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                    } rounded-xl shadow-sm p-3 mb-1`}
                   >
                     <label htmlFor="pick-image">
                       <div className="relative">
@@ -1470,7 +1473,7 @@ const SingleEmployee = ({ user }) => {
                         className={`${
                           currentMode === "dark"
                             ? "text-gray-50"
-                            : "text-gray-600"
+                            : "text-gray-800"
                         }  text-center text-sm`}
                       >
                         {empData[0]?.position || User?.position}
@@ -1481,25 +1484,31 @@ const SingleEmployee = ({ user }) => {
 
                   <div
                     className={`${
-                      currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-                    } rounded-md p-3 my-1`}
+                      !themeBgImg 
+                     ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                     : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                    } rounded-xl shadow-sm p-3 my-1`}
                   >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
                           <h1 className="font-semibold">{t("monthly_salary")}</h1>
                         </div>
-                        {empData[0]?.salary
+                        <div className="font-bold">
+                          {empData[0]?.salary
                           ? `${empData[0]?.currency} ${empData[0]?.salary} `
                           : "-"}
+                        </div>
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
                           <h1 className="font-semibold">{t("salary_per_day")}</h1>
                         </div>
-                        {empData[0]?.salary && empData[0]?.salary !== null
+                        <div className="font-bold">
+                          {empData[0]?.salary && empData[0]?.salary !== null
                           ? `${empData[0]?.currency} ${pageState?.perDaySalary}`
                           : "-"}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1507,13 +1516,15 @@ const SingleEmployee = ({ user }) => {
 
                   <div
                     className={`${
-                      currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-                    } rounded-md p-3 my-1`}
+                      !themeBgImg 
+                     ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                     : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                    } rounded-xl shadow-sm p-3 my-1`}
                   >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <p className="font-bold text-primary pr-2">
+                          <p className="font-bold pr-2">
                             {"  "} {pageState?.workingDays || "0"}{" "}
                             {/*CHANGE WORKING DAYS*/}
                           </p>
@@ -1525,7 +1536,7 @@ const SingleEmployee = ({ user }) => {
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <p className="font-bold text-primary pr-2">
+                          <p className="font-bold pr-2">
                             {"  "} {pageState?.attended_count || "0"}
                           </p>
                           {"  "}
@@ -1536,7 +1547,7 @@ const SingleEmployee = ({ user }) => {
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <p className="font-bold text-primary pr-2">
+                          <p className="font-bold pr-2">
                             {"  "} {pageState?.leave_count || "0"}
                           </p>
                           {"  "}
@@ -1545,7 +1556,7 @@ const SingleEmployee = ({ user }) => {
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <p className="font-bold text-primary pr-2">
+                          <p className="font-bold pr-2">
                             {"  "} {pageState?.late_count || "0"}
                           </p>
                           {"  "}
@@ -1560,8 +1571,10 @@ const SingleEmployee = ({ user }) => {
                   {empData[0]?.salary ? (
                     <div
                       className={`${
-                        currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-                      } rounded-md p-3 my-1`}
+                        !themeBgImg 
+                        ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                        : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                      } rounded-xl shadow-sm p-3 my-1`}
                     >
                       <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                         <div className="text-center">
@@ -1569,18 +1582,22 @@ const SingleEmployee = ({ user }) => {
                             <h1 className="font-semibold">{t("leave_days_salary")}</h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
-                          {empData[0]?.salary
+                          <div className="font-bold">
+                            {empData[0]?.salary
                             ? `${empData[0]?.currency} ${pageState?.leaveDaySalary} `
                             : "-"}
+                          </div>
                         </div>
                         <div className="text-center">
                           <div className="flex items-center justify-center">
                             <h1 className="font-semibold">{t("late_days_salary")}</h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
-                          {empData[0]?.salary && empData[0]?.salary !== null
+                          <div className="font-bold">
+                            {empData[0]?.salary && empData[0]?.salary !== null
                             ? `${empData[0]?.currency} ${pageState?.lateDaySalary}`
                             : "-"}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1591,17 +1608,21 @@ const SingleEmployee = ({ user }) => {
 
                   <div
                     className={`${
-                      currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-                    } rounded-md p-3 my-1`}
+                      !themeBgImg 
+                      ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                      : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                    } rounded-xl shadow-sm p-3 my-1`}
                   >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
                           <h1 className="font-semibold">{t("total_salary")}</h1>
                         </div>
-                        {empData[0]?.salary
+                        <div className="font-bold">
+                          {empData[0]?.salary
                           ? `${empData[0]?.currency} ${pageState?.totalSalary} `
                           : "-"}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1613,7 +1634,7 @@ const SingleEmployee = ({ user }) => {
                     width={"100%"}
                     height={"100%"}
                     className={`single-emp ${currentMode}-mode-datatable `}
-                    sx={{ ...DataGridStyles, marginLeft: "6px" }}
+                    sx={{ ...DataGridStyles, paddingLeft: "5px" }}
                   >
                     <DataGrid
                       disableDensitySelector

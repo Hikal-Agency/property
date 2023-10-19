@@ -32,8 +32,8 @@ const MyCalendar = ({ isOffDay }) => {
 
         if (isOffDay(dayDate)) {
           currentMode === "dark" 
-          ? dayElement.style.backgroundColor = "#946668"
-          : dayElement.style.backgroundColor = "#facdcf";
+          ? dayElement.style.backgroundColor = "rgba(255,0,0,0.3)"
+          : dayElement.style.backgroundColor = "rgba(255,0,0,0.3)";
         }
 
         if (
@@ -54,7 +54,8 @@ const MyCalendar = ({ isOffDay }) => {
   }, [isOffDay]);
 
   return (
-    <div ref={calendarRef} className={`${currentMode === "dark" ? "custom-dark-calendar" : ""}`}>
+    <div ref={calendarRef} >
+      {/* className={`${currentMode === "dark" ? "custom-dark-calendar" : ""}`} */}
       {selectedDate && 
         <AlterTimingPopup date={selectedDate} isOffDay={isOffDay} onClose={() => setSelectedDate(null)} />
       }

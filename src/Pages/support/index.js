@@ -10,7 +10,13 @@ import axios from "../../axoisConfig";
 import { useSearchParams } from "react-router-dom";
 
 const Tickets = () => {
-  const { currentMode, darkModeColors, BACKEND_URL, t } = useStateContext();
+  const { 
+    currentMode, 
+    darkModeColors, 
+    BACKEND_URL, 
+    t,
+    themeBgImg
+  } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -57,73 +63,71 @@ const Tickets = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+            className={`w-full p-4 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
-            <div className={`w-full `}>
-              <div className="pl-3">
-                <h4
-                  className={`font-semibold p-7 text-center text-2xl ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
+            <h4
+              className={`font-semibold p-5 text-center text-2xl ${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
+            >
+              {t("welcome_to")}{" "}
+              <span className={`${
+                !themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")
+              } font-bold`}>
+                HIKAL CRM
+              </span>
+              ! {t("here_to_assist")}.
+            </h4>
+            <div
+              className={`${
+                !themeBgImg ? (currentMode === "dark"
+                  ? "bg-[#1c1c1c] text-white"
+                  : "bg-gray-200 text-black")
+                : (currentMode === "dark"
+                  ? "blur-bg-dark text-white"
+                  : "blur-bg-light text-black")
+              } p-4 rounded-xl shadow-sm my-5 mb-10`}
+            >
+              <Box
+                sx={{
+                  ...darkModeColors,
+                  "& .MuiTabs-indicator": {
+                    height: "100%",
+                    borderRadius: "5px",
+                  },
+                  "& .Mui-selected": {
+                    color: "white !important",
+                    zIndex: "1",
+                  },
+                }}
+                className={`w-full rounded-md overflow-hidden`}
+              >
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  variant="standard"
+                  // centered
+                  className="w-full px-1 m-1"
                 >
-                  {t("welcome_to")}{" "}
-                  <span className="text-primary font-bold">
-                    HIKAL CRM
-                  </span>
-                  ! {t("here_to_assist")}.
-                </h4>
-                <div
-                  className={`${
-                    currentMode === "dark"
-                      ? "bg-[#1c1c1c] text-white"
-                      : "bg-gray-200 text-black"
-                  } p-5 rounded-md my-5 mb-10`}
-                >
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiTabs-indicator": {
-                        height: "100%",
-                        borderRadius: "5px",
-                      },
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        zIndex: "1",
-                      },
-                    }}
-                    className={`w-full rounded-md overflow-hidden ${
-                      currentMode === "dark" ? "bg-black" : "bg-white"
-                    } `}
-                  >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      variant="standard"
-                      // centered
-                      className="w-full px-1 m-1"
-                    >
-                      <Tab label={t("create_new_ticket")} />
-                      <Tab label={t("all_tickets")} />
-        
-                    </Tabs>
-                  </Box>
-                  <div className="mt-3 pb-3">
-                    <TabPanel value={value} index={0}>
-                      <CreateTicket
-                        categories={categories}
-                        setCategories={setCategories}
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                      <AllTickets />
-                    </TabPanel>
-                  </div>
-                </div>
+                  <Tab label={t("create_new_ticket")} />
+                  <Tab label={t("all_tickets")} />
+    
+                </Tabs>
+              </Box>
+              <div className="mt-3 pb-3">
+                <TabPanel value={value} index={0}>
+                  <CreateTicket
+                    categories={categories}
+                    setCategories={setCategories}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <AllTickets />
+                </TabPanel>
               </div>
             </div>
-            {/* <Footer /> */}
           </div>
         )}
       </div>

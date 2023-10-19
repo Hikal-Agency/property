@@ -9,7 +9,7 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 
 const NotificationsGridComponent = () => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, themeBgImg } = useStateContext();
   const [permitObj, setPermitObj] = useState(null);
 
   const notify_settings = [
@@ -104,21 +104,26 @@ const NotificationsGridComponent = () => {
 
   return (
     <>
-      <div className=" mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-x-8 gap-y-10 px-3 pl-4">
+      <div className="mt-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-8 px-3">
         {notify_settings?.length > 0 &&
           notify_settings?.map((call, index) => {
             return (
               <div
                 className={`${
-                  currentMode === "dark"
-                    ? "bg-dark text-white"
-                    : "bg-white text-black"
-                } rounded-md border broder-1 `}
+                  !themeBgImg ? (currentMode === "dark"
+                    ? "text-white"
+                    : "text-black")
+                    :(currentMode === "dark"
+                    ? "blur-bg-dark text-white"
+                    : "blur-bg-light text-black")
+                } rounded-xl border broder-2 `}
                 key={index}
               >
                 <div
-                  className={`rounded-md mb-2 p-2 ${
-                    currentMode === "dark" ? "bg-[#474747]" : "bg-[#eaeaea]"
+                  className={`rounded-t-xl mb-2 p-2 ${
+                    !themeBgImg 
+                    ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                    : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
                   }`}
                 >
                   <div className="flex items-center justify-between">

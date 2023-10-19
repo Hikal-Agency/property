@@ -203,16 +203,17 @@ const ADDQA = ({ tabValue, setTabValue, isLoading }) => {
             key={answerIndex}
             sx={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
-            <Textarea
+            <TextField
               value={answer}
               onChange={handleChange}
-              placeholder={t("enter_your_answer")}
+              label={t("enter_your_answer")}
               className="w-full mb-3"
-              style={{ marginBottom: "20px", height: "150px" }}
+              style={{ marginBottom: "20px" }}
               variant="outlined"
               name={`answer-${answerIndex}`}
               size="medium"
-              rows={6}
+              minRows={6}
+              multiline
             />
 
             <Button variant="outlined" size="small" onClick={handleAddAnswer}>
