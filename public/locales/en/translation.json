@@ -715,5 +715,9 @@
     "type_liveleads": "Livecall", 
     "liveleads": "Livecall", 
     "update_lead_details": "Update Lead details", 
-    "no_agent_assigned": "No Agent Assigned"
+    "no_agent_assigned": "No Agent Assigned", 
+    "no_manager" : "No manager", 
+    "sold_listings": "Sold Listings", 
+    "unknown" :"Unknown", 
+    "no_listings_available": "Ups!... no listings available"
 }

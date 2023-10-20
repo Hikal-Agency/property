@@ -97,7 +97,7 @@ const Sidebarmui = () => {
     primaryColor,
     setPrimaryColor,t, i18n, isLangRTL,
     blurDarkColor,
-    blurLightColor
+    blurLightColor, setThemeBgImg
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -258,13 +258,18 @@ const Sidebarmui = () => {
           setUserCredits(result.data?.user[0]?.credits);
           setPermits(allPermissions);
 
+          const bgColor = result.data?.user[0]?.theme;
           if (
-            !result.data?.user[0]?.theme ||
-            result.data?.user[0]?.theme === "default"
+            !bgColor || bgColor === "default"
           ) {
             setPrimaryColor("rgb(218,31,38)");
           } else {
-            setPrimaryColor(result.data?.user[0]?.theme);
+            setPrimaryColor(bgColor);
+          }
+
+          const bgTheme = result.data?.user[0]?.backgroundImg;
+          if( bgTheme && bgTheme !== "default") {
+            setThemeBgImg(bgTheme);
           }
         });
     } catch (error) {

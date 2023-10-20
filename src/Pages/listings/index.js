@@ -436,7 +436,7 @@ const Listings = () => {
                         sold: value === "sold" ? null : "sold",
                       });
                     }}
-                    label="Sold Listings"
+                    label={t("sold_listings")}
                     sx={{
                       marginX: "10px",
 

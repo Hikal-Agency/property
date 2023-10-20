@@ -1,8 +1,9 @@
-import { Box, Container } from "@mui/material";
+import { Box, Container, IconButton } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { BsCheck } from "react-icons/bs";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
+import {BiBlock} from "react-icons/bi";
 
 const colors = [
   "rgb(218,31,38)", // Main color
@@ -64,6 +65,38 @@ const ColorsPopup = ({ handleClose }) => {
       });
     }
   };
+
+
+  const handleSelectBgImg = async (bgImg) => {
+    setThemeBgImg(bgImg);
+    const token = localStorage.getItem("auth-token");
+    try {
+      await axios.post(
+        `${BACKEND_URL}/updateuser/${User.id}`,
+        JSON.stringify({
+          backgroundImg: bgImg || "default"
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
   return (
     <Container
       onMouseLeave={handleClose}
@@ -97,7 +130,12 @@ const ColorsPopup = ({ handleClose }) => {
 
       </Box>
         <div className="my-4 mx-auto place-items-center grid grid-cols-5 gap-y-5">
-            {images?.map((image) => <div onClick={() => setThemeBgImg(image)} className="cursor-pointer rounded-md w-[40px] h-[40px]" style={{
+        <div>
+            <IconButton onClick={() => handleSelectBgImg("")}>
+              <BiBlock size={18}/>
+            </IconButton>
+        </div>
+            {images?.map((image) => <div onClick={() => handleSelectBgImg(image)} className="cursor-pointer rounded-md w-[40px] h-[40px]" style={{
               backgroundImage: `url(${image})`, 
               backgroundRepeat: "no-repeat", 
               backgroundSize: "cover"

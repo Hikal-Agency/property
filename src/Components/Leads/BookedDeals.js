@@ -1275,7 +1275,7 @@ const BookedDeals = ({
       <Box sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}>
         <div className="absolute top-[7px] right-[20px] z-[5]">
           <TextField
-            placeholder="Search.."
+            placeholder={t("search") + ".."}
             ref={searchRef}
             sx={{
               "& input": {

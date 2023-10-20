@@ -420,7 +420,7 @@ const UpdateLead = ({
                           size="small"
                           value={
                             Manager2?.find((person) => person?.id === Manager)
-                              ?.userName || "No manager"
+                              ?.userName || t("no_manager")
                           }
                           onChange={(e) => {
                             e.preventDefault();

@@ -382,7 +382,7 @@ const SecondaryListings = ({
                               : "text-[#000000]"
                           }  my-2 font-semibold`}
                         >
-                          {listing?.project || "Project unknown"}
+                          {listing?.project || `${t("label_project")} ${t("unknown")}`}
                         </div>
                         <div
                           className={`${
@@ -391,7 +391,7 @@ const SecondaryListings = ({
                               : "text-[#000000]"
                           }  my-2`}
                         >
-                          {listing?.address || "Address unknown"}
+                          {listing?.address || `${t("label_area")} ${t("unknown")}`}
                         </div>
 
                         <div className="my-2">
@@ -447,7 +447,7 @@ const SecondaryListings = ({
         ) : (
           <div className="flex justify-center items-center col-span-3 h-[500px] w-full">
             <h2 className="text-primary font-bold text-2xl">
-              Ups!... no listings available
+              {t("no_listings_available")}
             </h2>
           </div>
         )}
@@ -457,7 +457,7 @@ const SecondaryListings = ({
             <Button
               disabled={btnloading}
               onClick={() => setCurrentPage((page) => page + 1)}
-              variant="contained"
+              variant="contained" 
               color="error"
             >
               {btnloading ? (
@@ -465,7 +465,7 @@ const SecondaryListings = ({
                   <CircularProgress size={18} sx={{ color: "blue" }} />
                 </div>
               ) : (
-                <span>Show More</span>
+                <span>{t("show_more")}</span>
               )}
             </Button>
           </div>
@@ -515,7 +515,7 @@ const SecondaryListings = ({
                   {btnLoading ? (
                     <CircularProgress size={18} sx={{ color: "blue" }} />
                   ) : (
-                    <span>Confirm</span>
+                    <span>{t("confirm")}</span>
                   )}
                 </Button>
 
@@ -529,7 +529,7 @@ const SecondaryListings = ({
                       : "text-main-red-color border-main-red-color"
                   }`}
                 >
-                  Cancel
+                  {t("cancel")}
                 </Button>
               </div>
             </div>
