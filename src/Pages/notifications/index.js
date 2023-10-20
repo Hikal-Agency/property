@@ -7,7 +7,7 @@ import NotificationsGridComponent from "../../Components/notificationsUi/Notific
 
 const Notifications = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, t } =
+  const { currentMode, setopenBackDrop, t, themeBgImg } =
     useStateContext();
 
   const [pageState, setpageState] = useState({
@@ -31,11 +31,11 @@ const Notifications = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full pl-3 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+            className={`w-full p-4 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
-            <div className="w-full flex items-center py-3">
+            <div className="w-full flex items-center pb-3">
               <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
               <h1
                 className={`text-lg font-semibold ${

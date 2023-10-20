@@ -295,29 +295,27 @@ const Navbar = () => {
           ]}
 
           <Select
-          sx={{
-            marginRight: "8px", 
-            "& fieldset": {
-              border: 0
-            }
-          }}
-          size="small"
-        value={i18n.language}
-        onChange={(e) => {
-
-          i18n.changeLanguage(e.target.value);
-          if(isLangRTL(e.target.value)){
-              changeBodyDirection("rtl");
-          } else {
-              changeBodyDirection("ltr");
-          }
-        }
-        }
-      >
-      {langs?.map((lang) => 
-        <MenuItem value={lang?.code} key={lang?.code}>{lang?.title}</MenuItem>
-      )}
-      </Select>
+            sx={{
+              marginRight: "8px", 
+              "& fieldset": {
+                border: 0
+              }
+            }}
+            size="small"
+            value={i18n.language}
+            onChange={(e) => {
+              i18n.changeLanguage(e.target.value);
+              if(isLangRTL(e.target.value)){
+                  changeBodyDirection("rtl");
+              } else {
+                  changeBodyDirection("ltr");
+              }
+            }}
+          >
+            {langs?.map((lang) => 
+              <MenuItem value={lang?.code} key={lang?.code}>{lang?.title}</MenuItem>
+            )}
+          </Select>
 
           {/* MEETINGS  */}
           <NavButton

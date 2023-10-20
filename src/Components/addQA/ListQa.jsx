@@ -18,7 +18,7 @@ import { FaFileDownload } from "react-icons/fa";
 import Pagination from "@mui/material/Pagination";
 
 const ListQa = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL, primaryColor, t } = useStateContext();
+  const { currentMode, themeBgImg, BACKEND_URL, primaryColor, t } = useStateContext();
   const [row, setRow] = useState([]);
   const [exportData, setExportData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,14 +39,14 @@ const ListQa = ({ pageState, setpageState }) => {
 
   const getSummaryBgClass = () => {
     return currentMode === "dark"
-      ? "bg-gray-800 text-white"
-      : "bg-gray-200 text-gray-800";
+      ? (themeBgImg ? "blur-bg-dark text-white" : "bg-[#1C1C1C] text-white")
+      : (themeBgImg ? "blur-bg-light text-gray-800" : "bg-[#EEEEEE] text-gray-800");
   };
 
   const getDetailBgClass = () => {
     return currentMode === "dark"
-      ? "bg-[#1c1c1c] text-white"
-      : "bg-gray-100 text-gray-800";
+      ? (themeBgImg ? "blur-bg-dark text-white" : "bg-[#1C1C1C] text-white")
+      : (themeBgImg ? "blur-bg-light text-gray-800" : "bg-[#EEEEEE] text-gray-800");
   };
 
 
@@ -134,7 +134,7 @@ const ListQa = ({ pageState, setpageState }) => {
           </div>
 
           {renderedData?.map((qa, index) => (
-            <Accordion key={index} className="mb-4">
+            <Accordion key={index} className={`mb-4`}>
               <AccordionSummary
                 expandIcon={<BsChevronCompactDown />}
                 className={getSummaryBgClass()}

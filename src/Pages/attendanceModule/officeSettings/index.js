@@ -9,6 +9,7 @@ const Settings = () => {
   const {
     currentMode,
     setopenBackDrop,
+    themeBgImg
   } = useStateContext();
 
   useEffect(() => {
@@ -20,15 +21,12 @@ const Settings = () => {
     <>
       <div className="min-h-screen">
         <div
-          className={`w-full  ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+          className={`w-full p-4  ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
-          <div className="px-5 ">
-            <OfficeSettings />
-          </div>
+          <OfficeSettings />
         </div>
-        {/* <Footer /> */}
       </div>
     </>
   );

@@ -5,7 +5,7 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 
 const AllQA = () => {
-  const {  t, currentMode, setopenBackDrop, BACKEND_URL } =
+  const {  t, currentMode, themeBgImg, setopenBackDrop, BACKEND_URL } =
     useStateContext();
   const [value, setValue] = useState(0);
   const [users, setUsers] = useState([]);
@@ -56,30 +56,27 @@ const AllQA = () => {
       
       <div className="flex min-h-screen">
         <div
-          className={`w-full ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+          className={`w-full p-4 ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
-          <div className={`w-full `}>
-            <div className="pl-3">
-              {/* <Navbar /> */}
-              <h4
-                className={`font-semibold p-7 text-center text-2xl ${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
-                {t("all_qa")}
-              </h4>
-              <div
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-[#1c1c1c] text-white"
-                    : "bg-gray-200 text-black"
-                } p-5 rounded-md my-5 mb-10`}
-              >
-                <ListQa />
-              </div>
-            </div>
+          <div className="w-full flex items-center pb-3">
+            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+            <h1
+              className={`text-lg font-semibold ${
+                currentMode === "dark"
+                  ? "text-white"
+                  : "text-black"
+              }`}
+            >
+              {t("all_qa")}
+            </h1>
+          </div>
+          
+          <div
+            className={` p-4 mb-5`}
+          >
+            <ListQa />
           </div>
         </div>
       </div>

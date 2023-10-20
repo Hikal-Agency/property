@@ -11,6 +11,7 @@ const Employee = () => {
   const {
     currentMode,
     setopenBackDrop,
+    themeBgImg
   } = useStateContext();
 
   useEffect(() => {
@@ -22,8 +23,8 @@ const Employee = () => {
     <>
       <div className="min-h-screen">
         <div
-          className={`w-full pl-3  ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+          className={`w-full p-4  ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
           <div className="w-full flex items-center py-3">

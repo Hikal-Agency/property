@@ -19,6 +19,7 @@ const EmployeesList = ({ user }) => {
     darkModeColors,
     t,
     primaryColor,
+    themeBgImg
   } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
@@ -135,122 +136,129 @@ const EmployeesList = ({ user }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+            className={`w-full p-4 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
-            <div className="px-5">
-              <Box sx={darkModeColors}>
-                <div className="flex justify-end">
-                  <Select
-                    id="monthSelect"
-                    size="small"
-                    className="w-[100px]"
-                    displayEmpty
-                    value={selectedDay || "Today"}
-                    onChange={handleDayFilter}
-                  >
-                    {/* <MenuItem selected value="selected">
-                      Select a day
-                    </MenuItem> */}
-                    <MenuItem selected value="today">
-                      {t("today")}
-                    </MenuItem>
-                    <MenuItem value="yesterday">{t("yesterday")}</MenuItem>
-                  </Select>
-                </div>
-              </Box>
-              <div className="my-3 md:mt-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 pb-3">
-                  {userData?.length > 0 ? (
-                    userData.map((item, index) => {
-                      let bgColor;
-                      if (
-                        item?.attendance_type?.toLowerCase() === "out" ||
-                        item?.attendance_type?.toLowerCase() === "check-out"
-                      ) {
-                        bgColor = "bg-blue-600";
-                      } else if (
-                        item?.attendance_type?.toLowerCase() === "in" ||
-                        item?.attendance_type?.toLowerCase() === "check-in"
-                      ) {
-                        bgColor = "bg-green-600";
-                      } else {
-                        bgColor = "bg-red-600";
-                      }
-                      return (
-                        <div
-                          key={index}
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-[#1c1c1c] text-white"
-                              : "bg-gray-200 text-black"
-                          }  rounded-md cursor-pointer gap-y-2`}
-                          onClick={(e) => handleClick(e, item?.user_id)}
-                        >
-                          {/* ATTENDANCE TYPE  */}
-                          <div
-                            className={`${bgColor} p-2 rounded-sm flex justify-between text-sm text-white font-semibold`}
-                          >
-                            <p className="text-left">{item?.attendance_type}</p>
-                            <p className="text-right">{item?.check_datetime}</p>
-                          </div>
-
-                          {/* IMAGE  */}
-                          <div className="flex justify-center items-center mt-2 p-1">
-                            {item?.profile_picture ? (
-                              <img
-                                src={item?.profile_picture}
-                                className="rounded-full cursor-pointer h-16 w-16 object-cover"
-                                alt="profile image"
-                              />
-                            ) : (
-                              <Avatar
-                                alt="User"
-                                variant="circular"
-                                style={{ width: "55px", height: "55px" }}
-                              />
-                            )}
-                          </div>
-
-                          {/* USER DETAIL  */}
-                          <div className="text-center my-1 p-1">
-                            <h4 className="font-bold text-base capitalize">
-                              {item?.userName}
-                            </h4>
-                            <p className="text-sm">{item?.position}</p>
-                            {/* <p className="text-sm">
-                              {item?.department === 1
-                                ? "Admin"
-                                : item?.department === 3
-                                ? "Manager"
-                                : item?.department === 7
-                                ? "Agent"
-                                : "No department"}
-                            </p> */}
-                          </div>
-
-                          {/* CHECK DATE TIME  */}
-                          {/* <div className={` ${bgColor} rounded-md p-1 text-center`} >
-                            <p className="text-xs text-white">
-                              {item?.check_datetime || "No Time"}
-                            </p>
-                          </div> */}
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="w-full text-center">
-                      <p
-                        className={`text-lg ${
-                          currentMode === "dark" ? "text-white" : "text-dark"
-                        }`}
+            <Box sx={darkModeColors}>
+              <div className="flex justify-end">
+                <Select
+                  id="monthSelect"
+                  size="small"
+                  className="w-[100px]"
+                  displayEmpty
+                  value={selectedDay || "Today"}
+                  onChange={handleDayFilter}
+                >
+                  {/* <MenuItem selected value="selected">
+                    Select a day
+                  </MenuItem> */}
+                  <MenuItem selected value="today">
+                    {t("today")}
+                  </MenuItem>
+                  <MenuItem value="yesterday">{t("yesterday")}</MenuItem>
+                </Select>
+              </div>
+            </Box>
+            <div className="my-3 md:mt-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 pb-3">
+                {userData?.length > 0 ? (
+                  userData.map((item, index) => {
+                    let bgColor;
+                    if (
+                      item?.attendance_type?.toLowerCase() === "out" ||
+                      item?.attendance_type?.toLowerCase() === "check-out"
+                    ) {
+                      bgColor = "bg-red-600";
+                    } else if (
+                      item?.attendance_type?.toLowerCase() === "in" ||
+                      item?.attendance_type?.toLowerCase() === "check-in"
+                    ) {
+                      bgColor = "bg-green-600";
+                    } else {
+                      bgColor = "bg-red-600";
+                    }
+                    return (
+                      <div
+                        key={index}
+                        className={`${
+                          !themeBgImg ? (currentMode === "dark"
+                            ? "bg-[#1c1c1c] text-white"
+                            : "bg-gray-200 text-black")
+                            : (currentMode === "dark"
+                            ? "blur-bg-dark text-white"
+                            : "blur-bg-light text-black")
+                        }  rounded-xl shadow-sm card-hover cursor-pointer gap-y-2`}
+                        onClick={(e) => handleClick(e, item?.user_id)}
                       >
-                        {t("no_data_available")}.
-                      </p>
-                    </div>
-                  )}
-                </div>
+                        <div
+                          className={`${bgColor} p-1 rounded-t-xl flex justify-between text-sm text-white font-semibold`}
+                        ></div>
+
+                        {/* IMAGE  */}
+                        <div className="flex justify-center items-center mt-2 p-1">
+                          {item?.profile_picture ? (
+                            <img
+                              src={item?.profile_picture}
+                              className="rounded-full cursor-pointer h-16 w-16 object-cover"
+                              alt="profile image"
+                            />
+                          ) : (
+                            <Avatar
+                              alt="User"
+                              variant="circular"
+                              style={{ width: "55px", height: "55px" }}
+                            />
+                          )}
+                        </div>
+
+                        {/* USER DETAIL  */}
+                        <div className="text-center my-1 p-1">
+                          <h4 className="font-bold text-base capitalize">
+                            {item?.userName}
+                          </h4>
+                          {/* <p className="text-sm">{item?.position}</p> */}
+                          {/* <p className="text-sm">
+                            {item?.department === 1
+                              ? "Admin"
+                              : item?.department === 3
+                              ? "Manager"
+                              : item?.department === 7
+                              ? "Agent"
+                              : "No department"}
+                          </p> */}
+                        </div>
+
+                        <hr className="my-1" />
+
+                        {/* ATTENDANCE TYPE  */}
+                        <div
+                          className={`p-2 text-center rounded-t-xl flex flex-col text-sm font-semibold`}
+                        >
+                          <p className="uppercase">{item?.attendance_type}</p>
+                          <p className="my-1">{item?.check_datetime}</p>
+                        </div>
+
+                        {/* CHECK DATE TIME  */}
+                        {/* <div className={` ${bgColor} rounded-md p-1 text-center`} >
+                          <p className="text-xs text-white">
+                            {item?.check_datetime || "No Time"}
+                          </p>
+                        </div> */}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="w-full text-center">
+                    <p
+                      className={`text-lg ${
+                        currentMode === "dark" ? "text-white" : "text-dark"
+                      }`}
+                    >
+                      {t("no_data_available")}.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 

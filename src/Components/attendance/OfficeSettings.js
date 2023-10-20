@@ -9,7 +9,12 @@ import axios from "../../axoisConfig";
 import moment from "moment";
 
 const OfficeSettings = () => {
-  const { currentMode, BACKEND_URL, t } = useStateContext();
+  const { 
+    currentMode, 
+    BACKEND_URL, 
+    t,
+    themeBgImg
+  } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
   const [settings, setSettings] = useState({
@@ -178,16 +183,26 @@ const OfficeSettings = () => {
 
   return (
     <>
-      <h4 className="text-primary py-5 font-bold text-xl text-center">
-        {t("office_time_settings")}
-      </h4>
+      <div className="w-full flex items-center pb-3">
+        <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+        <h1
+          className={`text-lg font-semibold ${
+            currentMode === "dark"
+              ? "text-white"
+              : "text-black"
+          }`}
+        >
+          {t("office_time_settings")}
+        </h1>
+      </div>
   
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 pb-3">
         <div
           className={`${
-            currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
-          } w-full col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 p-5`}
+            !themeBgImg ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+            : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+          } w-full col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 p-5 rounded-xl shadow-sm`}
         >
           <div
             className={`${currentMode === "dark" ? "text-white" : "text-dark"}`}
@@ -200,8 +215,9 @@ const OfficeSettings = () => {
             <div className="flex flex-col">
               <div
                 className={`${
-                  currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
-                } p-4 shadow-md rounded-md`}
+                  !themeBgImg ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+                  : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                } p-4 shadow-sm rounded-xl`}
               >
                 <div className="flex justify-between mb-3">
                   <p
@@ -299,8 +315,9 @@ const OfficeSettings = () => {
             <div className="flex flex-col">
               <div
                 className={`${
-                  currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
-                } p-4 shadow-md rounded-md`}
+                  !themeBgImg ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+                  : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                } p-4 shadow-sm rounded-xl`}
               >
                 <div className="flex justify-between mb-3">
                   <p

@@ -9,8 +9,15 @@ import { toast } from "react-toastify";
 import Subscriber from "../../Components/whatsapp-marketing/Subscriber";
 
 const Payments = () => {
-  const { BACKEND_URL, currentMode, darkModeColors, isUserSubscribed, User, t } =
-    useStateContext();
+  const { 
+    BACKEND_URL, 
+    currentMode, 
+    darkModeColors, 
+    isUserSubscribed, 
+    User, 
+    t,
+    themeBgImg 
+  } = useStateContext();
   const [value, setValue] = useState(0);
   const [subscribers, setSubscribers] = useState([]);
   const [btnloading, setbtnloading] = useState(false);
@@ -90,16 +97,20 @@ const Payments = () => {
   if (User?.role === 1) {
     return (
       <Box>
-        <h1
-          className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-            currentMode === "dark"
-              ? "text-white border-white"
-              : "text-primary font-bold border-primary"
-          }`}
-        >
-          ● {t("title_all_subscribers")}
-        </h1>
-        <Box className="mb-16 mt-4 items-start flex flex-wrap">
+        <div className="w-full flex items-center pb-3">
+          <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+          <h1
+            className={`text-lg font-semibold ${
+              currentMode === "dark"
+                ? "text-white"
+                : "text-black"
+            }`}
+          >
+            {t("title_all_subscribers")}
+          </h1>
+        </div>
+
+        <Box className="items-start justify-between flex flex-wrap gap-4">
           {subscribers.map((sub, index) => {
             return <Subscriber key={index} data={sub} />;
           })}

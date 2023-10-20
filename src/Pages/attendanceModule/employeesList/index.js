@@ -14,6 +14,7 @@ const Employees = () => {
     BACKEND_URL,
     setUser,
     User,
+    themeBgImg
   } = useStateContext();
 
   useEffect(() => {
@@ -25,22 +26,23 @@ const Employees = () => {
     <>
       <div className="min-h-screen">
         <div
-          className={`w-full  ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+          className={`w-full p-4 ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
-          <div className="px-5 ">
+          <div className="w-full flex items-center pb-3">
+            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
             <h1
-              className={`text-lg border-l-[4px] ml-1 pl-1 font-bold ${
+              className={`text-lg font-semibold ${
                 currentMode === "dark"
-                  ? "text-white border-white"
-                  : "text-primary font-bold border-primary"
+                  ? "text-white"
+                  : "text-black"
               }`}
             >
-              ● Employees
+              Employees
             </h1>
-            <EmployeesList />
           </div>
+          <EmployeesList />
         </div>
         {/* <Footer /> */}
       </div>

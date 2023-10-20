@@ -155,7 +155,7 @@ const NotificationsListComponent = ({
             notification_list?.map((notification, index) => (
               <div
                 key={index}
-                className={`card-hover flex items-center space-x-8 py-3 px-3 my-2 rounded-xl`}
+                className={`card-hover shadow-sm flex items-center space-x-8 py-3 px-3 my-2 rounded-xl`}
                 // onClick={(e) => UpdateReadStatus(e, notification?.id)}
                 style={{
                   background:
