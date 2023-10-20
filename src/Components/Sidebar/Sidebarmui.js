@@ -70,7 +70,6 @@ import ReminderToast from "./ReminderToast";
 import DealClosedAlert from "./DealClosedAlert";
 import ReactConfetti from "react-confetti";
 
-
 const Sidebarmui = () => {
   const {
     currentMode,
@@ -95,9 +94,12 @@ const Sidebarmui = () => {
     themeBgImg,
     setUserCredits,
     primaryColor,
-    setPrimaryColor,t, i18n, isLangRTL,
+    setPrimaryColor,
+    t,
+    i18n,
+    isLangRTL,
     blurDarkColor,
-    blurLightColor
+    blurLightColor,
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -671,7 +673,7 @@ const Sidebarmui = () => {
               link: "/unassigned/archive",
             },
             {
-              name: t("menu_personal"), 
+              name: t("menu_personal"),
               count: sidebarData?.UNASSIGNED?.personal,
               link: "/unassigned/personalleads",
             },
@@ -699,7 +701,7 @@ const Sidebarmui = () => {
               link: "/liveleads/follow up",
             },
             {
-              name:t("feedback_meeting"),
+              name: t("feedback_meeting"),
               // count: sidebarData?.HotLeadsCount?.Meeting,
               link: "/liveleads/meeting",
             },
@@ -856,7 +858,7 @@ const Sidebarmui = () => {
               link: "/coldleads/new",
             },
             {
-              name: t('feedback_follow_up'),
+              name: t("feedback_follow_up"),
               count: sidebarData?.ColdLeadsCount?.follow_up,
               link: "/coldleads/follow up",
             },
@@ -1206,18 +1208,18 @@ const Sidebarmui = () => {
       ],
     },
     // MESSAGING
-    {
-      title: t("menu_messaging"),
-      icon: <MdApps />,
+    // {
+    //   title: t("menu_messaging"),
+    //   icon: <MdApps />,
 
-      links: [
-        {
-          name: t("menu_chat"),
-          icon: <BsCircleFill />,
-          link: "/chat",
-        },
-      ],
-    },
+    //   links: [
+    //     {
+    //       name: t("menu_chat"),
+    //       icon: <BsCircleFill />,
+    //       link: "/chat",
+    //     },
+    //   ],
+    // },
     // BILLINGS
     {
       title: t("menu_billings"),
@@ -1319,7 +1321,7 @@ const Sidebarmui = () => {
       });
     } else {
       links.splice(5, 0, {
-        title:  t("menu_marketing"),
+        title: t("menu_marketing"),
         icon: <MdCampaign />,
         links: [
           {
@@ -1442,8 +1444,12 @@ const Sidebarmui = () => {
             //   ? "rgb(249, 249, 249, 0.7)"
             //   : "rgb(249, 249, 249, 0.5)",
             backgroundColor: !themeBgImg
-              ? (currentMode === "dark" ? "rgb(249, 249, 249, 0.7)" : "rgb(249, 249, 249, 0.7)")
-              : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+              ? currentMode === "dark"
+                ? "rgb(249, 249, 249, 0.7)"
+                : "rgb(249, 249, 249, 0.7)"
+              : currentMode === "dark"
+              ? blurDarkColor
+              : blurLightColor,
           },
         }}
         style={{ display: "flex", height: "100%" }}
@@ -1546,7 +1552,7 @@ const Sidebarmui = () => {
                           className={`rounded-md object-cover relative`}
                           alt=""
                         />
-{/* 
+                        {/* 
                         <div
                           onClick={() =>
                             setAnimateProfilePic(!animateProfilePic)
@@ -1669,9 +1675,10 @@ const Sidebarmui = () => {
                       width: "18px",
                       minWidth: "18px",
                     },
-                    "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label": {
-                      paddingRight: isLangRTL(i18n?.language) ? "30px": "0"
-                    }
+                    "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
+                      {
+                        paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
+                      },
                   }}
                   className="my-1"
                 >
