@@ -17,25 +17,25 @@ import {
 const TodayCallLogs = () => {
   const [noData, setNoData] = useState(false);
   const [callLogs, setCallLogs] = useState([]);
-  const [targetData, setTargetData] = useState([]);
-  const [noTargetData, setNoTargetData] = useState(false);
+  // const [targetData, setTargetData] = useState([]);
+  // const [noTargetData, setNoTargetData] = useState(false);
   const [loading, setLoading] = useState(true);
   const { currentMode, User } = useStateContext();
-  const [slide, setSlide] = useState(0);
+  // const [slide, setSlide] = useState(0);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setSlide(slide === 0 ? slides.length - 1 : slide - 1);
-    }, 60 * 1000);
-  });
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setSlide(slide === 0 ? slides.length - 1 : slide - 1);
+  //   }, 60 * 1000);
+  // });
 
-  const nextSlide = () => {
-    setSlide(slide === slides.length - 1 ? 0 : slide + 1);
-  };
+  // const nextSlide = () => {
+  //   setSlide(slide === slides.length - 1 ? 0 : slide + 1);
+  // };
 
-  const prevSlide = () => {
-    setSlide(slide === 0 ? slides.length - 1 : slide - 1);
-  };
+  // const prevSlide = () => {
+  //   setSlide(slide === 0 ? slides.length - 1 : slide - 1);
+  // };
 
   const slides = [
     {
@@ -77,7 +77,7 @@ const TodayCallLogs = () => {
   useEffect(() => {
     if (User && socket) {
       socket.emit("get-call-logs");
-      socket.emit("get-target-data");
+      // socket.emit("get-target-data");
 
       socket.on("call-logs", (data) => {
         if (data) {
@@ -93,19 +93,19 @@ const TodayCallLogs = () => {
         setLoading(false);
       });
 
-      socket.on("target-data", (data) => {
-        if (data) {
-          console.log(data);
-          if (data.length > 0) {
-            setNoTargetData(false);
-            setLoading(false);
-            setTargetData(data);
-          } else {
-            setNoTargetData(true);
-          }
-        }
-        setLoading(false);
-      });
+      // socket.on("target-data", (data) => {
+      //   if (data) {
+      //     console.log(data);
+      //     if (data.length > 0) {
+      //       setNoTargetData(false);
+      //       setLoading(false);
+      //       setTargetData(data);
+      //     } else {
+      //       setNoTargetData(true);
+      //     }
+      //   }
+      //   setLoading(false);
+      // });
     }
   }, [User, socket]);
 
@@ -188,17 +188,18 @@ const TodayCallLogs = () => {
       <div className="carousel px-5 pb-5 mt-[7vh] ">
         {" "}
         {/* overflow-hidden */}
-        <BsArrowLeftCircleFill
+        {/* <BsArrowLeftCircleFill
           className="arrow arrow-left"
           onClick={prevSlide}
-        />
-        {slides.map((item, idx) => {
-          return (
+        /> */}
+        {/* {slides.map((item, idx) => {
+          return ( */}
             <div
-              key={idx}
-              className={`${
-                slide === idx ? "slide" : "slide slide-hidden"
-              } w-full h-full`}
+              // key={idx}
+              // className={`${
+              //   slide === idx ? "slide" : "slide slide-hidden"
+              // } w-full h-full`}
+              className="w-full h-full"
               style={{
                 minHeight: "90vh",
               }}
@@ -211,12 +212,13 @@ const TodayCallLogs = () => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
-                    {item.heading}
+                    {/* {item.heading} */}
+                    CALL LOGS
                   </h1>
                 </div>
 
                 {/* CALL LOGS  */}
-                {item.heading === "CALL LOGS" ? (
+                {/* {item.heading === "CALL LOGS" ? ( */}
                   <>
                     {loading ? (
                       <Loader />
@@ -372,7 +374,7 @@ const TodayCallLogs = () => {
                       </>
                     )}
                   </>
-                // ) : item.heading === "MONTHLY TARGET" ? (
+                {/* // ) : item.heading === "MONTHLY TARGET" ? (
                 //   <>
                 //     {loading ? (
                 //       <Loader />
@@ -507,19 +509,19 @@ const TodayCallLogs = () => {
                 //       )}
                 //     </>
                 //     )}
-                //   </>
+                //   </> */}
 
-                ) : (
+                {/* ) : (
                   <></>
-                )}
+                )} */}
               </>
             </div>
-          );
-        })}
-        <BsArrowRightCircleFill
+          {/* );
+        })} */}
+        {/* <BsArrowRightCircleFill
           className="arrow arrow-right"
           onClick={nextSlide}
-        />
+        /> */}
       </div>
     </div>
   );

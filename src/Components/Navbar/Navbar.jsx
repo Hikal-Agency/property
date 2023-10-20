@@ -81,7 +81,10 @@ const Navbar = () => {
     allRoutes,
     primaryColor,
     setIsCollapsed,
-    themeBgImg, t, langs, isLangRTL
+    themeBgImg, 
+    t, 
+    langs, 
+    isLangRTL
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
