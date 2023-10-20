@@ -518,7 +518,7 @@ const BulkSMSModal = ({
                   </h4>
 
                   <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
-                          <div className="flex items-center justify-between px-3 py-2 border-b">
+                  <div className="flex items-center justify-between px-3 py-2 border-b">
                             {lang && (
                               <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
                                 <div>{lang}</div>
@@ -535,17 +535,16 @@ const BulkSMSModal = ({
                                       : ""
                                   }`}
                                 >
-                                  {formatNum(smsTextValue?.trim()?.length)}/
-                                  {lang === "English"
-                                    ? charLimitForEnglish
-                                    : charLimitForArabic}
+                                  {formatNum(smsTextValue?.trim()?.length)}
+                                     {lang && (
+                                  <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
+                                )}
                                   <p className="ml-2">
-                                    {smsTextValue?.trim()?.length >
-                                    (lang === "English"
+                                    {parseInt((smsTextValue?.trim()?.length - 1) / ((lang === "English"
                                       ? charLimitForEnglish
-                                      : charLimitForArabic)
-                                      ? "Message Character limit exceeded."
-                                      : ""}
+                                      : charLimitForArabic)) + 1
+                                    )}
+                                    {" "}message(s)
                                   </p>
                                 </div>
                               </div>
@@ -569,7 +568,7 @@ const BulkSMSModal = ({
                                   d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
                                 />
                               </svg>
-                              <span className="sr-only">Full screen</span>
+                              <span className="sr-only">{t("full_screen")}</span>
                             </button>
                           </div>
                           <div className="px-4 h-full py-2 bg-white rounded-b-lg">
@@ -642,15 +641,7 @@ const BulkSMSModal = ({
                   size="lg"
                   type="submit"
                   disabled={
-                    loading ? true :
-                    (smsTextValue?.trim() ? 
-                      smsTextValue?.trim()?.length >
-                      (lang === "English"
-                        ? charLimitForEnglish
-                        : charLimitForArabic)
-                        ? true
-                        : false
-                    : true)
+                    smsTextValue?.trim()?.length === 0 ? true : false
                     }
                   onClick={(e) => sendMsg(e)}
                 >

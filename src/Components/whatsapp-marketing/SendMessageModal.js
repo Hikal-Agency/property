@@ -472,17 +472,16 @@ const SendMessageModal = ({
                                       : ""
                                   }`}
                                 >
-                                  {formatNum(smsTextValue?.trim()?.length)}/
-                                  {lang === "English"
-                                    ? charLimitForEnglish
-                                    : charLimitForArabic}
+                                  {formatNum(smsTextValue?.trim()?.length)}
+                                     {lang && (
+                                  <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
+                                )}
                                   <p className="ml-2">
-                                    {smsTextValue?.trim()?.length >
-                                    (lang === "English"
+                                    {parseInt((smsTextValue?.trim()?.length - 1) / ((lang === "English"
                                       ? charLimitForEnglish
-                                      : charLimitForArabic)
-                                      ? "Message Character limit exceeded."
-                                      : ""}
+                                      : charLimitForArabic)) + 1
+                                    )}
+                                    {" "}message(s)
                                   </p>
                                 </div>
                               </div>
@@ -621,14 +620,7 @@ const SendMessageModal = ({
                       color: "white",
                     }}
                     disabled={
-                      smsTextValue?.trim()
-                        ? smsTextValue?.trim()?.length >
-                          (lang === "English"
-                            ? charLimitForEnglish
-                            : charLimitForArabic)
-                          ? true
-                          : false
-                        : true
+                      smsTextValue?.trim()?.length === 0 ? true : false
                     }
                     sx={{ py: "6px", mr: 2 }}
                     className={`${
