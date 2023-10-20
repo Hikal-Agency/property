@@ -26,12 +26,14 @@ import SelectDocumentModal from "./SelectDocumentModal";
 import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
 import SingleImageModal from "./SingleImageModal";
 import SingleDocModal from "./SingleDocModal";
+import usePermission from "../../utils/usePermission";
 
 const SingleListingsPage = () => {
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
   const [openEdit, setOpenEdit] = useState(false);
   const [leadNotFound, setLeadNotFound] = useState(false);
+  const { hasPermission } = usePermission();
   const [singleImageModal, setSingleImageModal] = useState({
     isOpen: false,
     url: "",
@@ -126,9 +128,7 @@ const SingleListingsPage = () => {
       <div
         className={`flex min-h-screen w-full p-4 ${
           !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-        } ${
-          currentMode === "dark" ? "text-white" : "text-black"
-        }`}
+        } ${currentMode === "dark" ? "text-white" : "text-black"}`}
       >
         {loading ? (
           <Loader />
@@ -160,10 +160,13 @@ const SingleListingsPage = () => {
                     )
                   )}
                 </div>
-                
-                <div className={`${
-                  themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-                } rounded-xl w-full p-4`}>
+
+                <div
+                  className={`${
+                    themeBgImg &&
+                    (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                  } rounded-xl w-full p-4`}
+                >
                   <div className="grid sm:grid-cols-1 md:grid-cols-2">
                     <div className="w-full p-1">
                       <div className="flex items-center">
@@ -240,13 +243,24 @@ const SingleListingsPage = () => {
                       <div className="flex space-x-3">
                         <TbCurrentLocation
                           size={18}
-                          className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`}
+                          className={`mr-2 ${
+                            currentMode === "dark"
+                              ? "text-[#EEEEEE]"
+                              : "text-[#333333]"
+                          }`}
                         />
                         <h6>{listData?.address} </h6>
                       </div>
                       {/* Bedrooms  */}
                       <div className="flex space-x-3">
-                        <BiBed size={18} className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`} />
+                        <BiBed
+                          size={18}
+                          className={`mr-2 ${
+                            currentMode === "dark"
+                              ? "text-[#EEEEEE]"
+                              : "text-[#333333]"
+                          }`}
+                        />
                         <h6>{listData?.bedrooms}</h6>
                         <h6>
                           {listData?.property_type === "null"
@@ -256,7 +270,14 @@ const SingleListingsPage = () => {
                       </div>
                       {/* baths  */}
                       <div className="flex space-x-3">
-                        <BiBath size={18} className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`} />
+                        <BiBath
+                          size={18}
+                          className={`mr-2 ${
+                            currentMode === "dark"
+                              ? "text-[#EEEEEE]"
+                              : "text-[#333333]"
+                          }`}
+                        />
                         <h6>
                           {listData?.bathrooms === "null"
                             ? "-"
@@ -283,7 +304,9 @@ const SingleListingsPage = () => {
                           <p className="text-sm my-2 flex items-center">
                             <FaUserPlus
                               size={16}
-                              color={`${currentMode === "dark" ? "#EEEEEE" : "#333333"}`}
+                              color={`${
+                                currentMode === "dark" ? "#EEEEEE" : "#333333"
+                              }`}
                               className="mr-2"
                             />
                             {listData?.addedBy_name}
@@ -319,9 +342,7 @@ const SingleListingsPage = () => {
                             lng: Number(parseFloat(long)),
                           }}
                           icon={{
-                            url: (
-                              <MdLocationPin size={30} color={"#DA1F26"} />
-                            ),
+                            url: <MdLocationPin size={30} color={"#DA1F26"} />,
                             scaledSize: window.google.maps
                               ? new window.google.maps.Size(50, 50)
                               : null,
@@ -334,66 +355,16 @@ const SingleListingsPage = () => {
 
                 {/* <div className="bg-primary h-0.5 w-full my-5"></div> */}
 
-                <div className={`${
-                  themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-                } rounded-xl w-full p-4`}>
-                  <div className="w-full">
-                    <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
-                      <div className="sm:col-span-1 md:col-span-3 lg:col-span-2">
-                        <div className="w-full flex items-center pb-3">
-                          <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                          <h1
-                            className={`text-lg font-semibold ${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-black"
-                            }`}
-                          >
-                            Seller details
-                          </h1>
-                        </div>
-
-                        <div className="space-y-3">
-                          {/* SELLER NAME  */}
-                          <div className="flex space-x-3">
-                            <TbUserCircle
-                              size={18}
-                              className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`}
-                            />
-                            <h6>{listData?.seller_name}</h6>
-                          </div>
-                          {/* SELLER CONTACT  */}
-                          <div className="flex space-x-3">
-                            <TbPhone
-                              size={18}
-                              className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`}
-                            />
-                            <h6>{listData?.seller_contact}</h6>
-                          </div>
-                          {/* SELLER EMAIL  */}
-                          <div className="flex space-x-3">
-                            <TbMail size={18} className={`mr-2 ${currentMode === "dark" ? "text-[#EEEEEE]" : "text-[#333333]"}`} />
-                            <h6>
-                              {listData?.seller_email === "null"
-                                ? ""
-                                : listData?.seller_email}
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
-                        <div
-                          className={`${
-                            !themeBgImg ? (currentMode === "dark"
-                              ? "bg-[#1C1C1C]"
-                              : "bg-[#EEEEEE]")
-                            : (
-                              currentMode === "dark"
-                              ? "blur-bg-dark"
-                              : "blur-bg-light"
-                            )
-                          } rounded-xl shadow-sm p-4`}
-                        >
+                <div
+                  className={`${
+                    themeBgImg &&
+                    (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                  } rounded-xl w-full p-4`}
+                >
+                  {hasPermission("seller_details") && (
+                    <div className="w-full">
+                      <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
+                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-2">
                           <div className="w-full flex items-center pb-3">
                             <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                             <h1
@@ -403,47 +374,116 @@ const SingleListingsPage = () => {
                                   : "text-black"
                               }`}
                             >
-                              Essential Documents
+                              Seller details
                             </h1>
                           </div>
 
-                          <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                            {listData?.documents?.map((l) => {
-                              return l?.doc_url ? (
-                                <div
-                                  onClick={() =>
-                                    setSingleDocModal({
-                                      isOpen: true,
-                                      url: l?.doc_url,
-                                      id: l?.id,
-                                    })
-                                  }
-                                  className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                  // hover:rounded-full hover:shadow-lg
-                                >
-                                  <div className="w-full text-center ">
-                                    <div className="w-full flex justify-center">
-                                      <BsFileEarmarkText
-                                        size={70}
-                                        color={"#AAAAAA"}
-                                        className="hover:-mt-1 hover:mb-1"
-                                      />
-                                    </div>
-                                    <div className="my-3">{l?.doc_name}</div>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="py-2 text-xs italic text-primary">
-                                  No documents to show
-                                </div>
-                              );
-                            })}
+                          <div className="space-y-3">
+                            {/* SELLER NAME  */}
+                            <div className="flex space-x-3">
+                              <TbUserCircle
+                                size={18}
+                                className={`mr-2 ${
+                                  currentMode === "dark"
+                                    ? "text-[#EEEEEE]"
+                                    : "text-[#333333]"
+                                }`}
+                              />
+                              <h6>{listData?.seller_name}</h6>
+                            </div>
+                            {/* SELLER CONTACT  */}
+                            <div className="flex space-x-3">
+                              <TbPhone
+                                size={18}
+                                className={`mr-2 ${
+                                  currentMode === "dark"
+                                    ? "text-[#EEEEEE]"
+                                    : "text-[#333333]"
+                                }`}
+                              />
+                              <h6>{listData?.seller_contact}</h6>
+                            </div>
+                            {/* SELLER EMAIL  */}
+                            <div className="flex space-x-3">
+                              <TbMail
+                                size={18}
+                                className={`mr-2 ${
+                                  currentMode === "dark"
+                                    ? "text-[#EEEEEE]"
+                                    : "text-[#333333]"
+                                }`}
+                              />
+                              <h6>
+                                {listData?.seller_email === "null"
+                                  ? ""
+                                  : listData?.seller_email}
+                              </h6>
+                            </div>
                           </div>
-                          {/* )} */}
+                        </div>
+                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
+                          <div
+                            className={`${
+                              !themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-[#1C1C1C]"
+                                  : "bg-[#EEEEEE]"
+                                : currentMode === "dark"
+                                ? "blur-bg-dark"
+                                : "blur-bg-light"
+                            } rounded-xl shadow-sm p-4`}
+                          >
+                            <div className="w-full flex items-center pb-3">
+                              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                              <h1
+                                className={`text-lg font-semibold ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-black"
+                                }`}
+                              >
+                                Essential Documents
+                              </h1>
+                            </div>
+
+                            <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
+                              {listData?.documents?.map((l) => {
+                                return l?.doc_url ? (
+                                  <div
+                                    onClick={() =>
+                                      setSingleDocModal({
+                                        isOpen: true,
+                                        url: l?.doc_url,
+                                        id: l?.id,
+                                      })
+                                    }
+                                    className="p-2 flex items-center justify-center hover:cursor-pointer"
+                                    // hover:rounded-full hover:shadow-lg
+                                  >
+                                    <div className="w-full text-center ">
+                                      <div className="w-full flex justify-center">
+                                        <BsFileEarmarkText
+                                          size={70}
+                                          color={"#AAAAAA"}
+                                          className="hover:-mt-1 hover:mb-1"
+                                        />
+                                      </div>
+                                      <div className="my-3">{l?.doc_name}</div>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="py-2 text-xs italic text-primary">
+                                    No documents to show
+                                  </div>
+                                );
+                              })}
+                            </div>
+                            {/* )} */}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             )}
