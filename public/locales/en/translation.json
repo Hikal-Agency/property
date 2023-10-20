@@ -713,5 +713,6 @@
 
 
     "type_liveleads": "Livecall", 
-    "liveleads": "Livecall"
+    "liveleads": "Livecall",
+    "add_credit" : "Add Credits"
 }
