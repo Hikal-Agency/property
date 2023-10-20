@@ -32,11 +32,7 @@ import ConfirmBulkDelete from "../../Components/whatsapp-marketing/ConfirmBulkDe
 import Coin from "../../Components/_elements/Coin";
 import PurchaseCreditsModal from "../../Components/whatsapp-marketing/purchaseCredits";
 
-import {
-  BiImport,
-  BiMessageRoundedDots,
-  BiArchive,
-} from "react-icons/bi";
+import { BiImport, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
 import {
   BsWhatsapp,
   BsTrash,
@@ -83,7 +79,9 @@ const AllLeads = () => {
     formatNum,
     User,
     userCredits,
-    isArabic,t
+    isArabic,
+    t,
+    themeBgImg,
   } = useStateContext();
   const {
     toRange,
@@ -265,7 +263,9 @@ const AllLeads = () => {
     {
       field: "otp",
       headerName:
-        leadOriginSelected?.id === "transfferedleads" ? t("label_ex_agent") : t("label_otp"),
+        leadOriginSelected?.id === "transfferedleads"
+          ? t("label_ex_agent")
+          : t("label_otp"),
       minWidth: 50,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
@@ -359,7 +359,7 @@ const AllLeads = () => {
           ),
 
           "bulk import": () => (
-            <BiImport size={16}  className="p-1 text-primary" />
+            <BiImport size={16} className="p-1 text-primary" />
           ),
 
           "property finder": () => (
@@ -1155,8 +1155,8 @@ const AllLeads = () => {
   return (
     <div className="pb-10 filters-dropdown">
       <div className="flex items-center justify-between">
-        <div className="w-full flex items-center py-4">
-          <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div>
+        <div className="w-full flex items-center pb-4">
+          <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
           <h1
             className={`text-lg font-semibold ${
               currentMode === "dark" ? "text-white" : "text-black"
@@ -1205,14 +1205,15 @@ const AllLeads = () => {
         />
       </div>
 
-
       <Box className="flex items-center justify-between">
         <Box className="flex items-center">
           {selectedRows.length === 0 ? (
             <></>
           ) : (
             <Alert color="success" sx={{ mr: 2, padding: "0px 10px" }}>
-              <p className="mt-1">{t("rows_selected", {n: selectedRows?.length})}</p>
+              <p className="mt-1">
+                {t("rows_selected", { n: selectedRows?.length })}
+              </p>
             </Alert>
           )}
 
@@ -1234,136 +1235,138 @@ const AllLeads = () => {
                 },
               }}
             >
-              <small>{t("purchase")?.toUpperCase()}</small>
+              <small className="text-primary">
+                {User?.role !== 1
+                  ? t("purchase")?.toUpperCase()
+                  : t("add_credit")?.toUpperCase()}
+              </small>
             </Typography>
           </div>
         </Box>
-        </Box>
+      </Box>
 
-        <Box className="flex items-center justify-end">
-          <Tooltip title="cContact" arrow>
-            <Button
-              onClick={() => {
-                setAddLeadModalOpen(true);
-              }}
-              type="button"
-              variant="contained"
-              sx={{
-                color: "white",
-                padding: "10px",
-                mb: 2,
-                mr: 1,
-                "& svg path": {
-                  stroke: "white !important",
-                },
-              }}
-              className="bg-btn-primary"
-            >
-              <BsPersonAdd
-                color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
-                size={20}
-              />
-            </Button>
-          </Tooltip>
+      <Box className="flex items-center justify-end">
+        <Tooltip title="cContact" arrow>
+          <Button
+            onClick={() => {
+              setAddLeadModalOpen(true);
+            }}
+            type="button"
+            variant="contained"
+            sx={{
+              color: "white",
+              padding: "10px",
+              mb: 2,
+              mr: 1,
+              "& svg path": {
+                stroke: "white !important",
+              },
+            }}
+            className="bg-btn-primary"
+          >
+            <BsPersonAdd
+              color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
+              size={20}
+            />
+          </Button>
+        </Tooltip>
 
-          <Tooltip title="Delete Lead" arrow>
-            <Button
-              onClick={() => setBulkDeleteModalOpen(true)}
-              type="button"
-              variant="contained"
-              sx={{ padding: "10px", mb: 2, mr: 1 }}
-              className="bg-btn-primary"
-              disabled={selectedRows?.length === 0}
-            >
-              <BsTrash
-                color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
-                size={20}
-              />
-            </Button>
-          </Tooltip>
-          <Tooltip title="Send WhatsApp" arrow>
+        <Tooltip title="Delete Lead" arrow>
+          <Button
+            onClick={() => setBulkDeleteModalOpen(true)}
+            type="button"
+            variant="contained"
+            sx={{ padding: "10px", mb: 2, mr: 1 }}
+            className="bg-btn-primary"
+            disabled={selectedRows?.length === 0}
+          >
+            <BsTrash
+              color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
+              size={20}
+            />
+          </Button>
+        </Tooltip>
+        <Tooltip title="Send WhatsApp" arrow>
+          <Button
+            onClick={() =>
+              setOpenMessageModal({ open: true, isWhatsapp: true })
+            }
+            type="button"
+            variant="contained"
+            sx={{ padding: "10px", mb: 2, mr: 1 }}
+            className="bg-btn-primary"
+            disabled={selectedRows?.length === 0}
+          >
+            <BsWhatsapp
+              color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
+              size={20}
+            />
+          </Button>
+        </Tooltip>
+
+        <Tooltip title="Send SMS" arrow>
+          <div className="relative">
             <Button
               onClick={() =>
-                setOpenMessageModal({ open: true, isWhatsapp: true })
+                setOpenMessageModal({ open: true, isWhatsapp: false })
               }
+              disabled={selectedRows?.length === 0}
               type="button"
               variant="contained"
               sx={{ padding: "10px", mb: 2, mr: 1 }}
               className="bg-btn-primary"
-              disabled={selectedRows?.length === 0}
             >
-              <BsWhatsapp
+              <MdSms
                 color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
                 size={20}
               />
             </Button>
-          </Tooltip>
+          </div>
+        </Tooltip>
 
-          <Tooltip title="Send SMS" arrow>
-            <div className="relative">
+        <Tooltip title="Send Email" arrow>
+          <div className="relative">
+            <Button
+              onClick={() => {}}
+              type="button"
+              variant="contained"
+              sx={{ padding: "10px", mb: 2, mr: 1 }}
+              className="bg-btn-primary"
+              disabled={true}
+            >
+              <HiMail
+                color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
+                size={20}
+              />
+            </Button>
+            <div className="text-white bg-[#1c1c1c] absolute w-[89%] rounded-sm text-xs top-7 left-0 right-0 p-1">
+              {t("coming_soon")}
+            </div>
+          </div>
+        </Tooltip>
+
+        {selectedRows.length === 1 && (
+          <Tooltip title="Open Chat" arrow>
+            <Link
+              to={`/marketing/chat?phoneNumber=${selectedRows[0]?.contact
+                ?.slice(1)
+                ?.replaceAll(" ", "")}`}
+            >
               <Button
-                onClick={() =>
-                  setOpenMessageModal({ open: true, isWhatsapp: false })
-                }
-                disabled={selectedRows?.length === 0}
                 type="button"
                 variant="contained"
                 sx={{ padding: "10px", mb: 2, mr: 1 }}
                 className="bg-btn-primary"
-
               >
-                <MdSms
-                  color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
+                <IoMdChatboxes
+                  color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
                   size={20}
                 />
               </Button>
-            </div>
+            </Link>
           </Tooltip>
-
-          <Tooltip title="Send Email" arrow>
-            <div className="relative">
-              <Button
-                onClick={() => {}}
-                type="button"
-                variant="contained"
-                sx={{ padding: "10px", mb: 2, mr: 1 }}
-                className="bg-btn-primary"
-                disabled={true}
-              >
-                <HiMail
-                  color={`${currentMode === "dark" ? "#FFFFFF" : "#FFFFFF"}`}
-                  size={20}
-                />
-              </Button>
-              <div className="text-white bg-[#1c1c1c] absolute w-[89%] rounded-sm text-xs top-7 left-0 right-0 p-1">
-                {t("coming_soon")}
-              </div>
-            </div>
-          </Tooltip>
-
-          {selectedRows.length === 1 && (
-            <Tooltip title="Open Chat" arrow>
-              <Link
-                to={`/marketing/chat?phoneNumber=${selectedRows[0]?.contact
-                  ?.slice(1)
-                  ?.replaceAll(" ", "")}`}
-              >
-                <Button
-                  type="button"
-                  variant="contained"
-                  sx={{ padding: "10px", mb: 2, mr: 1 }}
-                  className="bg-btn-primary"
-                >
-                  <IoMdChatboxes
-                    color={`${currentMode === "dark" ? "#FFFFFF" : "#AAAAAA"}`}
-                    size={20}
-                  />
-                </Button>
-              </Link>
-            </Tooltip>
-          )}
-        </Box>
-   
+        )}
+      </Box>
 
       <Box
         width={"100%"}

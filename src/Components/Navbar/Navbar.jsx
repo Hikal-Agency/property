@@ -1,10 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useProSidebar } from "react-pro-sidebar";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdStars } from "react-icons/md";
 
-import { Tooltip, Button, Badge, MenuItem, Select } from "@mui/material";
+import {
+  Tooltip,
+  Button,
+  Badge,
+  MenuItem,
+  Select,
+  IconButton,
+} from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
 
@@ -24,7 +31,8 @@ import {
   BsClock,
   BsClockFill,
   BsApple,
-  BsAndroid2
+  BsAndroid2,
+  BsFillChatFill,
 } from "react-icons/bs";
 import {
   MdDarkMode,
@@ -50,24 +58,24 @@ const NavButton = ({
   dotColor,
 }) => (
   // <Tooltip title={title} arrow placement="bottom">
-    <button
-      type="button"
-      onMouseEnter={customFunc}
-      style={{ color }}
-      className="relative text-xl rounded-full p-3 hover:bg-light-gray"
-    >
-      <span
-        style={{ background: dotColor }}
-        className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2"
-      />
-      {icon}
-    </button>
+  <button
+    type="button"
+    onMouseEnter={customFunc}
+    style={{ color }}
+    className="relative text-xl rounded-full p-3 hover:bg-light-gray"
+  >
+    <span
+      style={{ background: dotColor }}
+      className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2"
+    />
+    {icon}
+  </button>
   // </Tooltip>
 );
 
 const changeBodyDirection = (newDirection) => {
   document.body.style.direction = newDirection;
-}
+};
 
 const Navbar = () => {
   const token = localStorage.getItem("auth-token");
@@ -81,7 +89,10 @@ const Navbar = () => {
     allRoutes,
     primaryColor,
     setIsCollapsed,
-    themeBgImg, t, langs, isLangRTL
+    themeBgImg,
+    t,
+    langs,
+    isLangRTL,
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -94,12 +105,13 @@ const Navbar = () => {
     isUserSubscribed,
     unreadNotifsCount,
     notifIconAnimating,
-    i18n
+    i18n,
   } = useStateContext();
   const [currNavBtn, setCurrNavBtn] = useState("");
   const [anchorElem, setAnchorElem] = useState("");
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(true);
+  const navigate = useNavigate();
 
   const handleClick = (event, navBtn) => {
     setCurrNavBtn(navBtn);
@@ -227,17 +239,33 @@ const Navbar = () => {
     }
   };
 
+  const openChat = () => {
+    navigate("/chat");
+  };
+
   return (
     <>
+      <div className="chat-button">
+        <Tooltip title="Chat">
+          <IconButton onClick={openChat} className="bg-btn-primary">
+            <BsFillChatFill color="white" />
+          </IconButton>
+        </Tooltip>
+      </div>
       <div
-        className={` ${themeBgImg 
-          ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-          : (currentMode === "dark" ? "bg-black" : "bg-white") 
+        className={` ${
+          themeBgImg
+            ? currentMode === "dark"
+              ? "blur-bg-dark"
+              : "blur-bg-light"
+            : currentMode === "dark"
+            ? "bg-black"
+            : "bg-white"
         } flex justify-between items-center p-2 relative`}
         style={{
           position: "fixed",
           top: 0,
-          left: isLangRTL(i18n.language) ? "0" : (!isCollapsed ? 65 : 200),
+          left: isLangRTL(i18n.language) ? "0" : !isCollapsed ? 65 : 200,
           right: isLangRTL(i18n.language) ? (!isCollapsed ? 65 : 200) : 0,
           zIndex: "20",
           // backgroundColor: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
@@ -295,29 +323,29 @@ const Navbar = () => {
           ]}
 
           <Select
-          sx={{
-            marginRight: "8px", 
-            "& fieldset": {
-              border: 0
-            }
-          }}
-          size="small"
-        value={i18n.language}
-        onChange={(e) => {
-
-          i18n.changeLanguage(e.target.value);
-          if(isLangRTL(e.target.value)){
-              changeBodyDirection("rtl");
-          } else {
-              changeBodyDirection("ltr");
-          }
-        }
-        }
-      >
-      {langs?.map((lang) => 
-        <MenuItem value={lang?.code} key={lang?.code}>{lang?.title}</MenuItem>
-      )}
-      </Select>
+            sx={{
+              marginRight: "8px",
+              "& fieldset": {
+                border: 0,
+              },
+            }}
+            size="small"
+            value={i18n.language}
+            onChange={(e) => {
+              i18n.changeLanguage(e.target.value);
+              if (isLangRTL(e.target.value)) {
+                changeBodyDirection("rtl");
+              } else {
+                changeBodyDirection("ltr");
+              }
+            }}
+          >
+            {langs?.map((lang) => (
+              <MenuItem value={lang?.code} key={lang?.code}>
+                {lang?.title}
+              </MenuItem>
+            ))}
+          </Select>
 
           {/* MEETINGS  */}
           <NavButton
@@ -547,7 +575,9 @@ const Navbar = () => {
                         <div className="flex justify-between items-center w-full h-full text-white">
                           <div className="flex items-center">
                             <p className="font-semibold mx-1 mr-2">
-                              Hikal CRM<br />iOS
+                              Hikal CRM
+                              <br />
+                              iOS
                             </p>
                           </div>
                           <VscLock
@@ -568,13 +598,15 @@ const Navbar = () => {
                     >
                       {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
                       <div className="flex items-center justify-start">
-                      <div className={`p-1 rounded-full mr-2`}>
+                        <div className={`p-1 rounded-full mr-2`}>
                           <BsAndroid2 size={18} color={"#FFFFFF"} />
                         </div>
                         <div className="flex justify-between items-center w-full h-full text-white">
                           <div className="flex items-center">
                             <p className="font-semibold mx-1 mr-2">
-                              Hikal CRM<br />Android
+                              Hikal CRM
+                              <br />
+                              Android
                             </p>
                           </div>
                         </div>

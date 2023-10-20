@@ -51,7 +51,8 @@ const NotificationsList = () => {
     formatNum,
     setUnreadNotifsCount,
     getNotifCounts,
-    unreadNotifsCount, t
+    unreadNotifsCount, t,
+    themeBgImg
   } = useStateContext();
   console.log("unread count ::: ", unreadNotifsCount);
   const token = localStorage.getItem("auth-token");
@@ -199,14 +200,14 @@ const NotificationsList = () => {
         ) : (
           <>
             <div
-              className={`w-full pl-3 ${
-                currentMode === "dark" ? "bg-black" : "bg-white"
+              className={`w-full p-4 ${
+                !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
               }`}
             >
               {showFilter && (
                 <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-40 "></div>
               )}
-              <div className="w-full flex items-center py-1">
+              <div className="w-full flex items-center pb-3">
                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
                   className={`text-lg font-semibold ${
@@ -222,14 +223,10 @@ const NotificationsList = () => {
                   sx={{
                     ...darkModeColors,
                     "& .Mui-selected": {
-                      color:
-                        currentMode === "dark" ? "white !important" : "black",
                       zIndex: "1",
                     },
                   }}
-                  className={` rounded-md overflow-hidden ${
-                    currentMode === "dark" ? "bg-black" : "bg-white"
-                  } `}
+                  className={` rounded-md overflow-hidden`}
                 >
                   <Tabs value={value} onClick={handleChange} variant="standard">
                     {/* <Tab

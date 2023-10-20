@@ -10,8 +10,14 @@ import AddLeadModal from "../../Components/whatsapp-marketing/AddLeadModal";
 
 
 const Buyers = () => {
-  const { currentMode, setopenBackDrop, pageState, BACKEND_URL, t } =
-    useStateContext();
+  const { 
+    currentMode, 
+    setopenBackDrop, 
+    pageState, 
+    BACKEND_URL, 
+    t,
+    themeBgImg 
+  } = useStateContext();
   const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
@@ -38,7 +44,7 @@ const Buyers = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             {/* <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between"> */}

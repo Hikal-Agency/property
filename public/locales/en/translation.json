@@ -719,5 +719,6 @@
     "no_manager" : "No manager", 
     "sold_listings": "Sold Listings", 
     "unknown" :"Unknown", 
-    "no_listings_available": "Ups!... no listings available"
+    "no_listings_available": "Ups!... no listings available",
+    "add_credit" : "Add Credits"
 }

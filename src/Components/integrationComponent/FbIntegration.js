@@ -14,8 +14,13 @@ import { toast, ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 
 const FbIntegration = () => {
-  const { currentMode, fbToken, setFBToken, darkModeColors } =
-    useStateContext();
+  const { 
+    currentMode, 
+    fbToken, 
+    setFBToken, 
+    darkModeColors,
+    themeBgImg 
+  } = useStateContext();
   const [leadsLoading, setLeadsLoading] = useState(false);
   const [leadsFetched, setLeadsFetched] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -248,7 +253,7 @@ const FbIntegration = () => {
             className={`${
               currentMode === "dark"
                 ? "bg-[#1c1c1c] text-white"
-                : "bg-gray-200 text-black"
+                : "bg-[#EEEEEE] text-black"
             } p-5 rounded-md h-fit`}
           >
             <h1

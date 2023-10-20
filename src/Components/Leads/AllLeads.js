@@ -1963,7 +1963,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     >
                       {feedbacks?.map((feedback, index) => (
                         <MenuItem key={index} value={feedback || ""}>
-                          {t("feedback_" + feedback?.toLowerCase()?.replaceAll(" ", "_"))}
+                          {t(
+                            "feedback_" +
+                              feedback?.toLowerCase()?.replaceAll(" ", "_")
+                          )}
                         </MenuItem>
                       ))}
                     </Select>
@@ -2159,7 +2162,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             />
           </div>
 
-          {!UpdateLeadModelOpen && !timelineModelOpen && (
+          {!timelineModelOpen && (
             <SingleLead
               LeadModelOpen={LeadModelOpen}
               FetchLeads={FetchLeads}

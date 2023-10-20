@@ -18,6 +18,7 @@ const UserAllLocation = (props) => {
     currentMode,
     setopenBackDrop,
     BACKEND_URL,
+    themeBgImg
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
@@ -96,11 +97,22 @@ const UserAllLocation = (props) => {
     <>
       <div className="min-h-screen">
         <div
-          className={`w-full  ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
-          }`}
+          className={`w-full p-4`}
         >
-          <div className="m-4 flex justify-end">
+          <div className="flex justify-between">
+            <div className="w-full flex items-center pb-3">
+              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+              <h1
+                className={`text-lg font-semibold ${
+                  currentMode === "dark"
+                    ? "text-white"
+                    : "text-black"
+                }`}
+              >
+                {UserLocationData?.locations?.data[0].userName}
+              </h1>
+            </div>
+
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={filterDate || parentDate}
@@ -112,19 +124,20 @@ const UserAllLocation = (props) => {
                   );
                   setFilterDate(formattedDate);
                 }}
+                size="small"
                 renderInput={(params) => (
                   <TextField
                     size="small"
                     sx={{
                       "& input": {
-                        color: currentMode === "dark" ? "#EEEEEE" : "#424242",
+                        color: currentMode === "dark" ? "#EEEEEE" : "#333333",
                       },
                       "&": {
                         borderRadius: "4px",
-                        border: "1px solid #AAAAAA",
+                        // border: currentMode === "dark" ? "1px solid #EEEEEE" :"1px solid #333333",
                       },
                       "& .MuiSvgIcon-root": {
-                        color: "#AAAAAA",
+                        color: currentMode === "dark" ? "#EEEEEE" : "#333333",
                       },
                     }}
                     label="Date"
@@ -136,7 +149,7 @@ const UserAllLocation = (props) => {
               />
             </LocalizationProvider>
           </div>
-          <div className="px-5">
+          <div className="">
             <h4 className="text-primary font-bold text-lg mb-2 text-center">
               {UserLocationData?.location?.data?.length > 0 ? (
                 <>{UserLocationData?.locations?.data[0].userName}</>
@@ -150,7 +163,7 @@ const UserAllLocation = (props) => {
                   <div
                     className={`${
                       currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
-                    } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
+                    } w-full h-screen col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
                   >
                     {/* MAP */}
                     {!load?.isLoaded ? (
@@ -159,8 +172,8 @@ const UserAllLocation = (props) => {
                       <GoogleMap
                         zoom={14}
                         center={{
-                          lat: 25.22527310000002,
-                          lng: 55.280889615218406,
+                          lat: UserLocationData?.locations?.data[0].latitude,
+                          lng: UserLocationData?.locations?.data[0].longitude,
                         }}
                         mapContainerStyle={mapContainerStyle}
                         options={options}

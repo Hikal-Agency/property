@@ -63,7 +63,10 @@ const MessagesComponent = ({
     DataGridStyles,
     setopenBackDrop,
     User,
-    BACKEND_URL, t
+    BACKEND_URL, 
+    t,
+    themeBgImg,
+    primaryColor
   } = useStateContext();
   //eslint-disable-next-line
   //eslint-disable-next-line
@@ -426,7 +429,7 @@ const MessagesComponent = ({
           <Pagination
             sx={{
               "& .Mui-selected": {
-                backgroundColor: "#DA1F26 !important",
+                backgroundColor: `${primaryColor} !important`,
                 color: "white !important",
                 borderRadius: "50px !important",
               },

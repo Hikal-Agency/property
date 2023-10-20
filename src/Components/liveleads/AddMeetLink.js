@@ -6,7 +6,7 @@ import {
   IconButton,
   Modal,
   TextField,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -17,7 +17,6 @@ import { useStateContext } from "../../context/ContextProvider";
 import "react-phone-number-input/style.css";
 import { datetimeLong } from "../_elements/formatDateTime";
 import { MdAddLink } from "react-icons/md";
-
 
 const AddMeetLink = ({
   LeadModelOpen,
@@ -50,13 +49,17 @@ const AddMeetLink = ({
 
   const [timeDifference, setTimeDifference] = useState(null);
   useEffect(() => {
-    if (LeadData?.meet_link === null || LeadData?.meet_link === "" || LeadData?.meet_link === "null") {
+    if (
+      LeadData?.meet_link === null ||
+      LeadData?.meet_link === "" ||
+      LeadData?.meet_link === "null"
+    ) {
       const currentTime = new Date();
       const creationDate = new Date(LeadData?.creationDate);
       const diff = (currentTime - creationDate) / (1000 * 60); // Convert milliseconds to minutes
 
       setTimeDifference(diff);
-      
+
       const interval = setInterval(() => {
         const currentTime = new Date();
         const creationDate = new Date(LeadData?.creationDate);
@@ -121,6 +124,10 @@ const AddMeetLink = ({
         setbtnloading(false);
       });
   };
+
+  const openLink = () => {
+    window.open("https://meet.hikalcrm.com/", "_blank");
+  };
   return (
     <>
       {/* MODAL FOR SINGLE LEAD SHOW */}
@@ -157,17 +164,20 @@ const AddMeetLink = ({
             <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
             <h1
               className={`mr-2 text-lg font-semibold ${
-                currentMode === "dark"
-                  ? "text-white"
-                  : "text-black"
+                currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
               Meeting Link
             </h1>
-            {LeadData.meet_link === null || LeadData.meet_link === "" || LeadData.meet_link === "null" ? (
+            {LeadData.meet_link === null ||
+            LeadData.meet_link === "" ||
+            LeadData.meet_link === "null" ? (
               timeDifference <= 9 && (
                 <Tooltip title="Create Meeting Link" arrow>
-                  <button className="bg-primary text-white mx-2 rounded-full p-2 text-sm font-semibold">
+                  <button
+                    className="bg-primary text-white mx-2 rounded-full p-2 text-sm font-semibold"
+                    onClick={openLink}
+                  >
                     <MdAddLink size={16} />
                   </button>
                 </Tooltip>
@@ -176,7 +186,9 @@ const AddMeetLink = ({
               <></>
             )}
           </div>
-          {LeadData.meet_link === null || LeadData.meet_link === "" || LeadData.meet_link === "null" ? (
+          {LeadData.meet_link === null ||
+          LeadData.meet_link === "" ||
+          LeadData.meet_link === "null" ? (
             timeDifference <= 9 ? (
               <form
                 onSubmit={(e) => {
@@ -185,7 +197,8 @@ const AddMeetLink = ({
                 }}
               >
                 <div className="text-[#AAAAAA] text-sm pb-3 w-full text-center">
-                  Create a meeting, then copy the invite link and paste it here to invite your client for the live meeting!
+                  Create a meeting, then copy the invite link and paste it here
+                  to invite your client for the live meeting!
                 </div>
                 <Box sx={darkModeColors} className="my-3">
                   <TextField
@@ -206,7 +219,7 @@ const AddMeetLink = ({
                   className={`min-w-fit w-full mt-3 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
                   ripple={true}
                   size="lg"
-                  style={{color: "white"}}
+                  style={{ color: "white" }}
                   type="submit"
                   disabled={btnloading ? true : false}
                 >
@@ -222,10 +235,14 @@ const AddMeetLink = ({
             ) : (
               <div className="w-full p-5 pt-0 text-center text-[#AAAAAA] font-semibold">
                 The waiting time for the lead has been expired!
-                <br /><br />
-                Please try to reach out the lead through other mediums as soon as possible.
-                <br /><br />
-                The lead registerd for the live call on {datetimeLong(LeadData?.creationDate)}.
+                <br />
+                <br />
+                Please try to reach out the lead through other mediums as soon
+                as possible.
+                <br />
+                <br />
+                The lead registerd for the live call on{" "}
+                {datetimeLong(LeadData?.creationDate)}.
               </div>
             )
           ) : (

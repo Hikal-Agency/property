@@ -5,7 +5,7 @@ import DeviceCard from "./whatsapp-screens/DeviceCard";
 const UserInstances = ({ user, instances, fetchInstances }) => {
   const { currentMode} = useStateContext();
   return (
-    <div className="m-3">
+    <div className="p-1">
       <h1 className="my-2 font-bold text-base" style={{ color: currentMode === "dark" ? "white" : "black" }}>
         {user}
       </h1>

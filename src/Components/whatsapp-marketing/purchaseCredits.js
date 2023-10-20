@@ -20,7 +20,7 @@ const style = {
 };
 
 const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
-  const { currentMode, BACKEND_URL, darkModeColors, setUserCredits } =
+  const { currentMode, BACKEND_URL, darkModeColors, setUserCredits, User } =
     useStateContext();
   const [creditsToPurchase, setCreditsToPurchase] = useState("");
   const [formValues, setFormValues] = useState({
@@ -121,7 +121,7 @@ const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
             position: "absolute",
             right: 15,
             top: 10,
-            color: "#000000",
+            color: currentMode === "dark" ? "#ffffff" : "#000000",
           }}
           onClick={handleClose}
         >
@@ -130,7 +130,9 @@ const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
 
         <div className="flex flex-col justify-center items-center mb-10">
           <HiCreditCard size={50} className="text-main-red-color text-2xl" />
-          <h1 className="font-semibold pt-2 text-lg">Purchase Credits</h1>
+          <h1 className={`font-semibold pt-2 text-lg text-primary`}>
+            Purchase Credits
+          </h1>
         </div>
 
         <Box sx={darkModeColors}>
@@ -150,67 +152,72 @@ const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
                 setFormValues({ ...formValues, credits: e.target.value })
               }
             />
-            <TextField
-              id="cardNumber"
-              type={"number"}
-              label="Card Number"
-              className="w-full mb-5"
-              style={{ marginBottom: "14px" }}
-              variant="outlined"
-              size="small"
-              required
-              value={formValues.cardNumber}
-              onChange={(e) =>
-                setFormValues({ ...formValues, cardNumber: e.target.value })
-              }
-            />
-            <TextField
-              id="exp-month"
-              type={"number"}
-              label="Expiry Month"
-              className="w-full mb-5"
-              style={{ marginBottom: "14px" }}
-              variant="outlined"
-              size="small"
-              required
-              value={formValues.expMonth}
-              onChange={(e) =>
-                setFormValues({ ...formValues, expMonth: e.target.value })
-              }
-            />
-            <TextField
-              id="exp-year"
-              type={"number"}
-              label="Expiry Year"
-              className="w-full mb-5"
-              style={{ marginBottom: "14px" }}
-              variant="outlined"
-              size="small"
-              required
-              value={formValues.expYear}
-              onChange={(e) =>
-                setFormValues({ ...formValues, expYear: e.target.value })
-              }
-            />
-            <TextField
-              id="cvc"
-              type={"number"}
-              label="CVC"
-              className="w-full mb-5"
-              style={{ marginBottom: "14px" }}
-              variant="outlined"
-              size="small"
-              required
-              value={formValues.cvc}
-              onChange={(e) =>
-                setFormValues({ ...formValues, cvc: e.target.value })
-              }
-            />
+            {User?.role !== 1 && (
+              <>
+                <TextField
+                  id="cardNumber"
+                  type={"number"}
+                  label="Card Number"
+                  className="w-full mb-5"
+                  style={{ marginBottom: "14px" }}
+                  variant="outlined"
+                  size="small"
+                  required
+                  value={formValues.cardNumber}
+                  onChange={(e) =>
+                    setFormValues({ ...formValues, cardNumber: e.target.value })
+                  }
+                />
+                <TextField
+                  id="exp-month"
+                  type={"number"}
+                  label="Expiry Month"
+                  className="w-full mb-5"
+                  style={{ marginBottom: "14px" }}
+                  variant="outlined"
+                  size="small"
+                  required
+                  value={formValues.expMonth}
+                  onChange={(e) =>
+                    setFormValues({ ...formValues, expMonth: e.target.value })
+                  }
+                />
+                <TextField
+                  id="exp-year"
+                  type={"number"}
+                  label="Expiry Year"
+                  className="w-full mb-5"
+                  style={{ marginBottom: "14px" }}
+                  variant="outlined"
+                  size="small"
+                  required
+                  value={formValues.expYear}
+                  onChange={(e) =>
+                    setFormValues({ ...formValues, expYear: e.target.value })
+                  }
+                />
+                <TextField
+                  id="cvc"
+                  type={"number"}
+                  label="CVC"
+                  className="w-full mb-5"
+                  style={{ marginBottom: "14px" }}
+                  variant="outlined"
+                  size="small"
+                  required
+                  value={formValues.cvc}
+                  onChange={(e) =>
+                    setFormValues({ ...formValues, cvc: e.target.value })
+                  }
+                />
+              </>
+            )}
             <Button
               fullWidth
               style={{ background: "#da1f26" }}
               type="submit"
               variant="contained"
+              className="bg-btn-primary"
             >
               {btnloading ? (
                 <CircularProgress size={18} sx={{ color: "white" }} />

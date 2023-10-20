@@ -31,7 +31,7 @@ import {
 const GridMeeting = ({ pageState, setpageState }) => {
   console.log("meetings state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, isArabic, primaryColor } = useStateContext();
+  const { currentMode, BACKEND_URL, isArabic, primaryColor, themeBgImg } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [meetingLocation, setMeetingLocation] = useState(null);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
@@ -160,9 +160,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
-            }`}
+            className={`w-full`}
           >
             <div className="">
               <div className="mt-5 md:mt-2">
@@ -174,15 +172,18 @@ const GridMeeting = ({ pageState, setpageState }) => {
                         <div
                           key={index}
                           className={`${
-                            currentMode === "dark"
+                            !themeBgImg ? (currentMode === "dark"
                               ? "bg-[#1c1c1c] text-white"
-                              : "bg-[#EEEEEE] text-black"
+                              : "bg-[#EEEEEE] text-black")
+                            : (currentMode === "dark"
+                              ? "blur-bg-dark text-white"
+                              : "blur-bg-light text-black")
                           } p-4 rounded-md `}
                         >
                           <div className="space-y-1 overflow-hidden">
                             <div className="flex items-center justify-between">
                               <h1 
-                                className="font-bold text-primary" 
+                                className="font-bold" 
                                 style={{
                                   fontFamily: isArabic(item?.leadName)
                                     ? "Noto Kufi Arabic"
@@ -196,32 +197,32 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                 <Avatar
                                   sx={{ marginRight: "3px" }}
                                   style={{
-                                    background: `${currentMode === "dark" ? "black" : "white"}`,
                                     width: "25px",
                                     height: "25px",
                                   }}
                                 >
                                   <IconButton
+                                    className="bg-btn-primary p-2"
                                     onClick={() => handleEditMeeting(item)}
                                   >
                                     <MdEdit
-                                      className={`${currentMode === "dark" ? "text-white" : "text-primary"} `}
+                                      color={"#FFFFFF"}
                                       size={14}
                                     />
                                   </IconButton>
                                 </Avatar>
                                 <Avatar
                                   style={{
-                                    background: `${currentMode === "dark" ? "black" : "white"}`,
                                     width: "25px",
                                     height: "25px",
                                   }}
                                 >
                                   <IconButton
+                                    className="bg-btn-primary p-2"
                                     onClick={() => showLocation(mLat, mLong)}
                                   >
                                     <MdLocationOn
-                                      className={`${currentMode === "dark" ? "text-white" : "text-primary"} `}
+                                      color={"#FFFFFF"}
                                       size={14}
                                     />
                                   </IconButton>
@@ -296,7 +297,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                     },
                   },
                   "& .MuiPaginationItem-root": {
-                    color: currentMode === "dark" ? "white" : "gray",
+                    color: currentMode === "dark" ? "white" : "black",
                   },
                 }}
                 renderItem={(item) => {
@@ -313,11 +314,11 @@ const GridMeeting = ({ pageState, setpageState }) => {
                             ? "white"
                             : "gray"
                           : undefined,
-                        backgroundColor: isEllipsis
-                          ? undefined
-                          : currentMode === "dark"
-                          ? "black"
-                          : "white",
+                          // backgroundColor: isEllipsis
+                          // ? undefined
+                          // : currentMode === "dark"
+                          // ? "black"
+                          // : "white",
                         "&:hover": {
                           backgroundColor:
                             currentMode === "dark" ? "black" : "white",

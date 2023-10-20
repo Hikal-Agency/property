@@ -20,7 +20,7 @@ import { socket } from "../../Pages/App";
 import axios from "../../axoisConfig";
 
 const CreateTicket = ({ categories, setCategories }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, User, t } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, User, t, themeBgImg } = useStateContext();
   const [newCategory, setNewCategory] = useState();
   const [showTextInput, setShowTextInput] = useState(false);
   const [values, setValues] = useState({
@@ -198,15 +198,16 @@ const CreateTicket = ({ categories, setCategories }) => {
     <div
       className={`${
         currentMode === "dark" ? "text-white" : "text-black"
-      } w-full h-full rounded-md p-5`}
+      } w-full h-full p-2`}
     >
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5">
         <div
           className={`${
-            currentMode === "dark" ? "bg-black" : "bg-white"
-          } rounded-md space-3 p-7`}
+            !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
+            : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+          } rounded-xl shadow-sm space-3 p-7`}
         >
-          <h3 className="mb-3 font-semibold text-primary text-center">
+          <h3 className="mb-3 font-semibold text-center uppercase">
             {t("ticket_details")}
           </h3>
           <hr className="mb-5"></hr>
@@ -434,7 +435,8 @@ const CreateTicket = ({ categories, setCategories }) => {
             {/* EMAIL  */}
             <div
               className={`${
-                currentMode === "dark" ? "bg-black" : "bg-white"
+                !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
+                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
               } rounded-lg p-3`}
             >
               <div className="gap-2">
@@ -453,7 +455,8 @@ const CreateTicket = ({ categories, setCategories }) => {
             {/* PHONE  */}
             <div
               className={`${
-                currentMode === "dark" ? "bg-black" : "bg-white"
+                !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
+                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
               } rounded-lg p-3`}
             >
               <div className="gap-2 text-center">
@@ -470,7 +473,8 @@ const CreateTicket = ({ categories, setCategories }) => {
             {/* WHATSAPP CHAT  */}
             <div
               className={`${
-                currentMode === "dark" ? "bg-black" : "bg-white"
+                !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
+                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
               } rounded-lg p-3`}
             >
               <div className="gap-2 text-center">
@@ -487,7 +491,8 @@ const CreateTicket = ({ categories, setCategories }) => {
             {/* VIDEO CALL */}
             <div
               className={`${
-                currentMode === "dark" ? "bg-black" : "bg-white"
+                !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
+                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
               } rounded-lg p-3`}
             >
               <div className="gap-2 text-center">

@@ -12,7 +12,7 @@ import {
 } from "react-icons/bs";
 
 const LocationComponent = ({ upcoming_meetings }) => {
-  const { currentMode, t } = useStateContext();
+  const { currentMode, t, themeBgImg } = useStateContext();
   const [selectedMeeting, setSelectedMeeting] = React.useState(null);
 
   const handleMeetingClick = (meeting) => {
@@ -43,11 +43,12 @@ const LocationComponent = ({ upcoming_meetings }) => {
          {t("upcoming_meeting_locations")}
         </h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 h-[85vh]">
+
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 h-screen">
         <div
           className={`${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]"
-          } w-full h-[85vh] col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
+          } w-full h-screen col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-3`}
         >
           {/* MAP */}
           <MapContainer 
@@ -66,27 +67,32 @@ const LocationComponent = ({ upcoming_meetings }) => {
                   key={index}
                   onClick={() => handleMeetingClick(meeting)} 
                   className={`card-hover flex flex-col justify-between ${
-                    currentMode === "dark"
+                    !themeBgImg ? (currentMode === "dark"
                       ? "bg-[#1c1c1c] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  } rounded-md`}
+                      : "bg-[#EEEEEE] text-black")
+                      : (currentMode === "dark"
+                      ? "blur-bg-dark text-white"
+                      : "blur-bg-white text-black")
+                  } rounded-xl shadow-sm`}
                 >
                   <div className="p-5 space-y-2">
-                    <div className="flex justify-between w-[100%]">
-                      <h4 className="font-bold my-1 text-primary capitalize">
+                    <div className="grid grid-cols-9 mb-3 flex justify-between w-[100%]">
+                      <h4 className="col-span-8 font-bold capitalize">
                         {meeting?.leadName}
                       </h4>
-                      {meeting?.meetingStatus === "Attended" ? (
-                        <BsFillBookmarkFill size={16} color="#279244" />
-                      ) : meeting?.meetingStatus === "Pending" ? (
-                        <BsFillBookmarkFill size={16} color="#eebe3c" />
-                      ) : meeting?.meetingStatus === "Postponed" ? (
-                        <BsFillBookmarkFill size={16} color="#ec6525" />
-                      ) : meeting?.meetingStatus === "Cancelled" ? (
-                        <BsFillBookmarkFill size={16} color="#DA1F26" />
-                      ) : (
-                        <></>
-                      )}
+                      <div className="flex justify-end">
+                        {meeting?.meetingStatus === "Attended" ? (
+                          <BsFillBookmarkFill size={16} color="#279244" />
+                        ) : meeting?.meetingStatus === "Pending" ? (
+                          <BsFillBookmarkFill size={16} color="#eebe3c" />
+                        ) : meeting?.meetingStatus === "Postponed" ? (
+                          <BsFillBookmarkFill size={16} color="#ec6525" />
+                        ) : meeting?.meetingStatus === "Cancelled" ? (
+                          <BsFillBookmarkFill size={16} color="#DA1F26" />
+                        ) : (
+                          <></>
+                        )}
+                      </div>
                     </div>
                     <div className="grid grid-cols-9">
                       <BsBuildings
@@ -133,13 +139,13 @@ const LocationComponent = ({ upcoming_meetings }) => {
                       </p>
                     </div>
                   </div>
-                  <span className="block text-sm bg-primary text-white rounded-md text-center p-2 font-semibold">
+                  <span className="block text-sm bg-primary text-white rounded-b-xl text-center p-2 font-semibold">
                     {meeting?.createdBy}
                   </span>
                 </div>
               );
             })}
-            <span className="text-center text-main-red-color">- - -</span>
+            <span className="text-center text-primary">- - -</span>
           </div>
         </div>
         

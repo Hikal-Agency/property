@@ -6,7 +6,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 const ClosedealsPage = (props) => {
   const [loading, setloading] = useState(true);
-  const { t, currentMode, setopenBackDrop, BACKEND_URL } =
+  const { t, currentMode, setopenBackDrop, BACKEND_URL, themeBgImg } =
     useStateContext();
 
   const [pageState, setpageState] = useState({
@@ -31,7 +31,7 @@ const ClosedealsPage = (props) => {
         ) : (
           <div
             className={`w-full p-4 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="w-full flex items-center pb-3">

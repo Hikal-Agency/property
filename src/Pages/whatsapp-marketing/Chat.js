@@ -485,17 +485,20 @@ const Chat = () => {
               </div>
             ) : (
               <>
-                <h1
-                  className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
-                    currentMode === "dark"
-                      ? "text-white border-white"
-                      : "text-primary font-bold border-primary"
-                  }`}
-                >
-                  ● Whatsapp
-                </h1>
-                <div className={`section-container-${currentMode}`}>
-                  {ready ? (
+                <div className="w-full flex items-center pb-3 mb-3">
+                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                  <h1
+                    className={`text-lg font-semibold ${
+                      currentMode === "dark"
+                        ? "text-white"
+                        : "text-black"
+                    }`}
+                  >
+                    Whatsapp
+                  </h1>
+                </div>
+                {ready ? (
+                  <div className={`section-container-${currentMode}`}>
                     <Conversation
                       currentMode={currentMode}
                       data={data}
@@ -512,16 +515,18 @@ const Chat = () => {
                       activeChat={activeChat}
                       messagesContainerRef={messagesContainerRef}
                     />
-                  ) : qr ? (
+                  </div>
+                ) : qr ? (
+                  <div className={`section-container-${currentMode}`}>
                     <QRCode qr={qr} />
-                  ) : (
-                    <Devices
-                      fetchDevices={fetchDevices}
-                      devices={devicesList}
-                      handleCreateSession={handleCreateSession}
-                    />
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <Devices
+                    fetchDevices={fetchDevices}
+                    devices={devicesList}
+                    handleCreateSession={handleCreateSession}
+                  />
+                )}
               </>
             )}
           </>

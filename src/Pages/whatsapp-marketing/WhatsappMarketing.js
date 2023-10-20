@@ -25,7 +25,7 @@ const pagesComponents = {
 };
 
 const WhatsappMarketing = ({ pageName }) => {
-  const { currentMode, User, setopenBackDrop, isUserSubscribed } =
+  const { currentMode, User, setopenBackDrop, isUserSubscribed, themeBgImg } =
     useStateContext();
   const navigate = useNavigate();
 
@@ -49,13 +49,12 @@ const WhatsappMarketing = ({ pageName }) => {
     <>
       <div className="min-h-screen">
         <div
-          className={`w-full  ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+          className={`w-full p-4  ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
-          <div className="pl-3">{pagesComponents[page]}</div>
+          <div className="w-full">{pagesComponents[page]}</div>
         </div>
-        {/* <Footer /> */}
       </div>
     </>
   );
