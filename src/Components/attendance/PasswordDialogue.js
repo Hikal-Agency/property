@@ -149,7 +149,7 @@ const PasswordDialogue = ({
 
             <div className="action buttons mt-5 flex items-center justify-center space-x-2">
               <Button
-                className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                className={` rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                 ripple={true}
                 size="lg"
                 type="submit"
@@ -157,7 +157,7 @@ const PasswordDialogue = ({
               >
                 {/* <span>Confirm</span> */}
                 {btnloading ? (
-                  <CircularProgress size={18} className="text-primary"/>
+                  <CircularProgress size={18} className="text-primary" />
                 ) : (
                   <span>Confirm</span>
                 )}
