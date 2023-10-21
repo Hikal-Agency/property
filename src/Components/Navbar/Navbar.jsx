@@ -460,6 +460,7 @@ const Navbar = () => {
           <Menu
             className="navbar-menu-backdrop"
             hideBackdrop={true}
+            disableScrollLock={true}
             onClick={handleClose}
             onMouseLeave={handleClose}
             anchorEl={anchorElem}

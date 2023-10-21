@@ -11,7 +11,7 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import {read} from "xlsx";
+import readXlsxFile from "read-excel-file";
 import "../../styles/index.css";
 import usePermission from "../../utils/usePermission";
 import {
@@ -1826,25 +1826,46 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
   const handleBulkImport = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
 
-    reader.onload = (e) => {
-      const text = e.target.result;
-      const rows = text.split("\n");
-      const keys = rows[0].split(",").map((key) => key.toString().trim());
-      const data = rows?.slice(1, rows.length);
-      const formatted = data.map((row) =>
-        row.split(",").map((value) => value.toString().trim())
-      );
-      setCSVData({
-        rows: formatted,
-        keys,
-        fileName: file?.name,
-      });
-      setBulkImportModelOpen(true);
-    };
-
-    reader.readAsText(file);
+    if(file?.name?.slice(-4) === "xlsx") {
+    readXlsxFile(file).then((sheet) => {
+    const rows = sheet?.map((item) => item?.join(","));
+        const keys = rows[0].split(",").map((key) => key.toString().trim());
+        const data = rows?.slice(1, rows.length);
+        const formatted = data.map((row) =>
+          row.split(",").map((value) => value.toString().trim())
+        );
+        setCSVData({
+          rows: formatted,
+          keys,
+          fileName: file?.name,
+        });
+        setBulkImportModelOpen(true);
+  })
+    } else {
+      const reader = new FileReader();
+  
+      reader.onload = (e) => {
+        const text = e.target.result;
+        const rows = text.split("\n");
+        console.log("Rows::", rows); 
+        const keys = rows[0].split(",").map((key) => key.toString().trim());
+        const data = rows?.slice(1, rows.length);
+        const formatted = data.map((row) =>
+          row.split(",").map((value) => value.toString().trim())
+        );
+        setCSVData({
+          rows: formatted,
+          keys,
+          fileName: file?.name,
+        });
+        setBulkImportModelOpen(true);
+      };
+      
+      if(file){
+        reader.readAsText(file);
+      }
+    }
   };
 
   const handleRowHover = (params) => {
