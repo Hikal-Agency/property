@@ -164,6 +164,7 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
         sx={{
           "& .MuiPaper-root": {
             boxShadow: "none !important",
+            width: "60%"
           },
           "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
             {
@@ -230,9 +231,7 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
                   }`}
                   sx={{
                     marginBottom: "20px",
-                    // input: {
-                    //   color: `${currentMode === "dark" ? "#ffffff" : "#000000"}`,
-                    // },
+             
                   }}
                   variant="outlined"
                   size="medium"
@@ -283,20 +282,20 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
             <div className="action buttons mt-5 flex items-center justify-center space-x-2">
               {showDailogue[1] === 0 ? (
                 <Button
-                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                  className={`rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                   ripple={true}
                   size="lg"
                   type="submit"
                   onClick={handleClick}
                   syle={{
-                    color: "white", 
+                    color: "white !important",  
                   }}
                 >
                   {/* <span>Confirm</span> */}
                   {btnloading ? (
-                    <CircularProgress size={18} className="text-primary"/>
+                    <CircularProgress size={18}/> 
                   ) : (
-                    <span>Confirm</span>
+                    <span className="text-white">Confirm</span>
                   )}
                 </Button>
               ) : (
