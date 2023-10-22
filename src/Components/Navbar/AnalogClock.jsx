@@ -4,9 +4,9 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import "../../styles/clock.css";
 
-const AnalogClock = ({ timeString, timezone }) => {
+// const AnalogClock = ({ timeString, timezone }) => {
 //   const { currentMode } = useStateContext();
-  const [time, setTime] = useState(moment(timeString));
+//   const [time, setTime] = useState(moment(timeString));
 
 //   useEffect(() => {
 //     const interval = setInterval(() => {
@@ -85,9 +85,11 @@ const AnalogClock = ({ timeString, timezone }) => {
 //   );
 // };
 
-// const AnalogClock = () => {
+const AnalogClock = ({ timeString, timezone }) => {
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const [time, setTime] = useState(moment(timeString));
 
   useEffect(() => {
     const dailer = (selector, size) => {
@@ -100,14 +102,25 @@ const AnalogClock = ({ timeString, timezone }) => {
     }
 
     const getTime = () => {
-      const date = new Date();
-      const second = date.getSeconds();
-      const minute = date.getMinutes();
-      const hour = date.getHours();
-      const time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-      const day = date.getDay();
-      const month = date.getMonth();
-      const formattedDate = months[month] + ' ' + date.getDate();
+      // const date = moment(timeString, 'DD/MM/YYYY, h:mm:ss a [GMT]Z');
+
+      // const second = date.seconds();
+      // const minute = date.minutes();
+      // const hour = date.hours();
+      // const time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+      // const day = date.day();
+      // const month = date.month();
+      // const formattedDate = months[month] + ' ' + date.date();
+
+      const date = moment.tz(timeString, "DD/MM/YYYY, h:mm:ss a", timezone);
+
+      const second = date.seconds();
+      const minute = date.minutes();
+      const hour = date.hours();
+      const time = date.format("h:mm:ss A");
+      const day = date.day();
+      const month = date.month();
+      const formattedDate = months[month] + ' ' + date.date();
 
       document.querySelector('.second').style.transform = `rotate(${-6 * second}deg)`;
       document.querySelector('.minute').style.transform = `rotate(${-6 * minute}deg)`;
@@ -134,7 +147,7 @@ const AnalogClock = ({ timeString, timezone }) => {
     getTime();
 
     return () => clearInterval(interval);
-  }, []);
+  }, [timeString, timezone]);
 
   return (
     <>

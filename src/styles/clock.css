@@ -214,7 +214,7 @@
   .clock-container .clock-analog .minute {
     color: #fff;
     font-size: 8px;
-    font-weight: bold;
+    /* font-weight: bold; */
   }
   .clock-container .clock-analog .minute span:after {
     background: #fff;
