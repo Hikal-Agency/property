@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import moment from "moment";
 import {
   Backdrop,
   CircularProgress,
@@ -5,23 +9,30 @@ import {
   TextField,
   Button,
   Tooltip,
+  Drawer
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
+import { datetimeLong } from "../_elements/formatDateTime";
 import usePermission from "../../utils/usePermission";
-
 import axios from "../../axoisConfig";
 import BlockIPModal from "./BlockIPModal";
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import AddNewListingModal from "../Listings/AddNewListingModal";
 
-import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
-import moment from "moment";
-import { datetimeLong } from "../_elements/formatDateTime";
-
-import { IoIosAlert } from "react-icons/io";
-import { MdClose } from "react-icons/md";
-import { BiBlock, BiBed } from "react-icons/bi";
+import { 
+  VscCallOutgoing, 
+  VscMail, 
+  VscEdit 
+} from "react-icons/vsc";
+import { 
+  IoIosAlert 
+} from "react-icons/io";
+import { 
+  MdClose 
+} from "react-icons/md";
+import { 
+  BiBlock, 
+  BiBed 
+} from "react-icons/bi";
 import {
   BsShuffle,
   BsTelephone,
@@ -36,7 +47,6 @@ import {
   BsPersonGear,
   BsChatLeftText,
 } from "react-icons/bs";
-import AddNewListingModal from "../Listings/AddNewListingModal";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -49,7 +59,6 @@ const SingleLead = ({
   setBulkDeleteClicked,
   setLeadToDelete,
   isBookedDeal,
-  lead_origin,
 }) => {
   const {
     darkModeColors,
@@ -62,6 +71,7 @@ const SingleLead = ({
     isLangRTL,
     i18n,
   } = useStateContext();
+
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [singleLeadData, setsingleLeadData] = useState({});
@@ -85,6 +95,17 @@ const SingleLead = ({
     setOpen(false);
   };
 
+  const [isOpening, setIsOpening] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      handleLeadModelClose();
+    }, 1000);
+  }
+
   // EDIT BTN CLICK FUNC
   const HandleEditFunc = (params) => {
     console.log("LEADID: ", params);
@@ -92,7 +113,7 @@ const SingleLead = ({
     handleUpdateLeadModelOpen();
   };
 
-  // open listing modal
+  // OPEN listing modal
   const handleOpenListingModal = () => {
     setListingModalOpen(true);
     handleLeadModelClose();
@@ -436,21 +457,25 @@ const SingleLead = ({
       <Modal
         keepMounted
         open={LeadModelOpen}
-        onClose={handleLeadModelClose}
+        // onClose={handleLeadModelClose}
+        onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
+        openAfterTransition
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
-          timeout: 500,
+          timeout: 1000,
         }}
       >
-        <div className="modal-container w-[100vw] h-[100vh] flex items-start justify-end">
-          <button
-            onClick={handleLeadModelClose}
+        <div className={`modal-open ${isClosing ? "modal-close" : ""}
+        w-[100vw] h-[100vh] flex items-start justify-end`}>
+          <button 
+            // onClick={handleLeadModelClose}
+            onClick={handleClose}
             className={`bg-primary w-fit h-fit p-3 ${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            } my-4 z-10`}
+              isLangRTL(i18n.language) ? 'rounded-r-full' : 'rounded-l-full'
+              } my-4 z-10`}
           >
             <MdClose
               size={18}

@@ -270,8 +270,12 @@
 }
 
 /* SLIDE MODAL FROM RIGHT  */
-.modal-container {
+.modal-open {
     animation: slideFromRight 1s ease-in-out; /* Animation duration and easing */
+}
+
+.modal-close {
+    animation: slideToRight 1s ease-in-out; /* Animation duration and easing */
 }
 
 @keyframes slideFromRight {
@@ -280,6 +284,15 @@
     }
     100% {
       transform: translateX(0);
+    }
+}
+
+@keyframes slideToRight {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(100%);
     }
 }
   

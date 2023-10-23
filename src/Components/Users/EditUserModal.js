@@ -54,6 +54,16 @@ import {
     const [loading, setloading] = useState(false);
     const { hasPermission } = usePermission();
 
+    const [isClosing, setIsClosing] = useState(false);
+
+    const handleClose = () => {
+        setIsClosing(true);
+        setTimeout(() => {
+          setIsClosing(false);
+          handleCloseEditModal();
+        }, 1000);
+      }
+
     const [userData, setUserData] = useState({
       position: "",
       target: "",
@@ -154,6 +164,7 @@ import {
           });
         }
     };
+
     useEffect(() => {
         const token = localStorage.getItem("auth-token");
         fetchUserData(token);
@@ -164,7 +175,8 @@ import {
         <Modal
           keepMounted
           open={setEditModalOpen}
-          onClose={handleCloseEditModal}
+            //   onClose={handleCloseEditModal}
+            onClose={handleClose}
           aria-labelledby="keep-mounted-modal-title"
           aria-describedby="keep-mounted-modal-description"
           closeAfterTransition
@@ -173,8 +185,11 @@ import {
             timeout: 500,
           }}
         >
-            <div className="modal-container w-[100vw] h-[100vh] flex items-start justify-end">
-                <button onClick={handleCloseEditModal}
+            <div className={`modal-open ${isClosing ? "modal-close" : ""} 
+            w-[100vw] h-[100vh] flex items-start justify-end`}>
+                <button 
+                    // onClick={handleCloseEditModal}
+                    onClick={handleClose}
                     className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
                 >
                     <MdClose

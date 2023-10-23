@@ -2187,15 +2187,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           {!timelineModelOpen && (
             <SingleLead
               LeadModelOpen={LeadModelOpen}
-              FetchLeads={FetchLeads}
               setLeadModelOpen={setLeadModelOpen}
               handleLeadModelOpen={handleLeadModelOpen}
-              handleLeadModelClose={handleLeadModelClose}
-              LeadData={singleLeadData}
+              handleLeadModelClose={handleLeadModelClose}              
               BACKEND_URL={BACKEND_URL}
+              FetchLeads={FetchLeads}
+              LeadData={singleLeadData}
+              // lead_origin={lead_origin}
               setDeleteModelOpen={setDeleteModelOpen}
               deleteModelOpen={deleteModelOpen}
-              lead_origin={lead_origin}
               handleUpdateLeadModelOpen={handleUpdateLeadModelOpen}
               handleUpdateLeadModelClose={handleUpdateLeadModelClose}
               UpdateLeadModelOpen={UpdateLeadModelOpen}

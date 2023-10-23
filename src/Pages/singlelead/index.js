@@ -24,18 +24,31 @@ import Error404 from "../Error";
 import usePermission from "../../utils/usePermission";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
+import { datetimeLong } from "../../Components/_elements/formatDateTime";
 
 import { 
-  BiArchive
+  BiArchive,
+  BiBed
 } from "react-icons/bi";
 import { 
   BsSnow2, 
   BsPatchQuestion, 
   BsFire, 
-  BsPersonCircle
+  BsPersonCircle,
+  BsTelephone,
+  BsEnvelopeAt,
+  BsType,
+  BsBuildings,
+  BsHouse,
+  BsBookmarkFill,
+  BsChatLeftText,
+  BsPersonPlus,
+  BsPersonGear,
+  BsHouseGear
 } from "react-icons/bs";
-
-import { GiMagnifyingGlass } from "react-icons/gi";
+import { 
+  GiMagnifyingGlass 
+} from "react-icons/gi";
 import {
   TbLanguage,
   TbPhone,
@@ -60,6 +73,8 @@ const SingleLeadPage = () => {
     BACKEND_URL,
     darkModeColors,
     isArabic,
+    themeBgImg,
+    t
   } = useStateContext();
 
   const { hasPermission } = usePermission();
@@ -205,261 +220,341 @@ const SingleLeadPage = () => {
 
   return (
     <>
-      <div className="flex min-h-screen mt-3">
+      <div className="flex min-h-screen">
         {loading ? (
           <Loader />
         ) : (
           <div
-            className={`w-full pl-3 pb-5 ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+            className={`w-full p-4 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             {leadNotFound ? (
               <Error404 />
             ) : (
               <div>
-              <div className="flex justify-between items-center pr-6">
-                <div className="w-full flex items-center mt-5">
-                  {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
-                  <span className="text-sm font-bold tracking-wide bg-primary text-white px-2 py-1 mr-2 rounded-sm my-auto">
-                    <span>{LeadData?.id}</span>
-                  </span>
-                  <h1
-                    className={`text-lg font-bold mr-2 ${
-                      currentMode === "dark"
-                        ? "text-white"
-                        : "text-black"
-                    }`}
-                    style={{
-                      fontFamily: isArabic(LeadData?.leadName)
-                        ? "Noto Kufi Arabic"
-                        : "inherit",
-                    }}
-                  >
-                    {LeadData?.leadName}
-                  </h1>
-                </div>
-
-                <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
-            >
-              <Tooltip title="View Timeline" arrow>
-                <button onClick={() => setTimelinePopup({isOpen: true})}>
-                  <AiOutlineHistory size={16} />
-                </button>
-              </Tooltip>
-            </p>
-
-              </div>
-                
-                {/* Lead Info */}
-                <div className={`${currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#1C1C1C]"} px-3 text-base`}>
-                  <div className="grid sm:grid-cols-1 md:grid-cols-5 mt-5 gap-5">
-                    <div className="sm:col-span-1 md:col-span-3 space-y-3 font-semibold">
-                      {/* LEAD CONTACT  */}
-                      <div className="flex space-x-3">
-                        <TbPhone size={17} className="mr-2 text-primary" />
-                        <h6>{contact}</h6>
-                        <h6>{LeadData?.leadEmail === "null" ? "" : LeadData?.leadEmail}</h6>
-                      </div>
-                      {/* LANGUAGE  */}
-                      <div className="flex space-x-3">
-                        <TbLanguage size={17} className="mr-2 text-primary" />
-                        <h6>{LeadData?.language}</h6>
-                      </div>
-                      {/* PROJECT  */}
-                      <div className="flex space-x-3">
-                        <TbBuildingCommunity size={17} className="mr-2 text-primary" />
-                        <h6>{LeadData?.project === "null" ? "-" : LeadData?.project}</h6>
-                        <h6>{LeadData?.enquiryType === "null" ? "-" : LeadData?.enquiryType}</h6>
-                        <h6>{LeadData?.leadType === "null" ? "-" : LeadData?.leadType}</h6>
-                        <h6>{LeadData?.leadFor === "null" ? "-" : LeadData?.leadFor}</h6>
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-1 md:col-span-2 space-y-2 text-right">
-                      <div className="flex items-center justify-end space-x-3 mb-4">
-                        <span className="border border-primary px-3 py-1 rounded-md font-semibold text-base">
-                          {LeadData?.feedback ?? "?"}
-                        </span>
-                        <Box
-                          className="float-right"
-                        >
-
-                          {LeadData?.coldcall === 0 ? (
-                            <BsFire size={18} color={"#DA1F26"} />
-                          ) : LeadData?.coldcall === 1 ? (
-                            <BsSnow2 size={18} color={"#0ec7ff"} />
-                          ) : LeadData?.coldcall === 2 ? (
-                            <BsPersonCircle size={18} color={"#6C7A89"} />
-                          ) : LeadData?.coldcall === 3 ? (
-                            <GiMagnifyingGlass size={18} color={"#ef5e4e"} />
-                          ) : LeadData?.coldcall === 4 ? (
-                            <BiArchive size={18} color={"#AEC6CF"} />
-                          ) : (
-                            <BsPatchQuestion size={18} color={"#AAAAAA"} />
-                          )}
-                        </Box>
-                      </div>
-                      <p className="text-sm" >
-                        Lead added on {LeadData?.creationDate}
-                      </p>
-                      <p className="text-sm">
-                        Lead edited on{" "}
-                        {LeadData?.lastEdited === ""
-                          ? "-"
-                          : LeadData?.lastEdited}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="bg-primary h-0.5 w-full my-7"></div>
-                  
-                  <div className={`rounded-md mb-5`}>
-                    <h1 className="font-semibold text-lg text-center mb-2">
-                      LEAD NOTES
-                    </h1>
-
-                    {LeadNotesData?.notes?.data?.length === 0 ? (
-                      <p
-                        className={`mt-3 italic ${
-                          currentMode === "dark"
-                            ? "text-white"
-                            : "text-main-red-color"
-                        }`}
-                      >
-                        No notes to show
-                      </p>
-                    ) : (
-                      <TableContainer component={Paper}>
-                        <Table
-                          sx={{
-                            minWidth: 650,
-                            "& .MuiTableCell-root": {
-                              color: currentMode === "dark" && "white",
-                            },
-                          }}
-                          size="small"
-                          aria-label="simple table"
-                        >
-                          <TableHead
-                            sx={{
-                              "& .MuiTableCell-head": {
-                                color: "white",
-                                fontWeight: "400",
-                                // background: "#DA1F26"
-                              },
-                            }}
-                            className={`${ currentMode === "dark" ? "bg-primary" : "bg-[#000000]" }`}
-                          >
-                            <TableRow>
-                              <TableCell align="center" className="w-[5%]">#</TableCell>
-                              <TableCell align="center" className="w-[15%]">Added On</TableCell>
-                              <TableCell align="center" className="w-[15%]">Added By</TableCell>
-                              <TableCell align="center" className="w-[65%]">Note</TableCell>
-                            </TableRow>
-                          </TableHead>
-
-                          <TableBody
-                            sx={{
-                              "& .MuiTableRow-root:nth-of-type(odd)": {
-                                backgroundColor:
-                                  currentMode === "dark" && "#212121",
-                              },
-                              "& .MuiTableRow-root:nth-of-type(even)": {
-                                backgroundColor:
-                                  currentMode === "dark" && "#3b3d44",
-                              },
-                            }}
-                          >
-                            {LeadNotesData?.notes?.data?.map(
-                              (row, index) => (
-                                <TableRow
-                                  key={index}
-                                  sx={{
-                                    "&:last-child td, &:last-child th": {
-                                      border: 0,
-                                    },
-                                  }}
-                                >
-                                  <TableCell
-                                    component="th"
-                                    scope="row"
-                                    align="center"
-                                  >
-                                    {index + 1}
-                                  </TableCell>
-                                  <TableCell align="center">
-                                    {row?.creationDate}
-                                  </TableCell>
-                                  <TableCell align="center">
-                                    {row?.userName}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <p
-                                      style={{
-                                        fontFamily: isArabic(row?.leadNote)
-                                          ? "Noto Kufi Arabic"
-                                          : "inherit",
-                                      }}
-                                    >
-                                      {row?.leadNote}
-                                    </p>
-                                  </TableCell>
-                                </TableRow>
-                              )
-                            )}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    )}
-
-                    <form
-                      className="mt-5"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        AddNote();
+                <div className="w-full flex items-center justify-between pb-3">
+                  <div class="flex items-center">
+                    <div className="bg-primary w-fit rounded-md mr-2 my-1 py-1 px-2 text-white flex items-center justify-center">{LeadData?.id}</div>
+                    <h1
+                      className={`text-lg font-semibold ${
+                        currentMode === "dark"
+                          ? "text-white"
+                          : "text-black"
+                      }`}
+                      style={{
+                        fontFamily: isArabic(LeadData?.leadName)
+                          ? "Noto Kufi Arabic"
+                          : "inherit",
                       }}
                     >
-                      <TextField
+                      {LeadData?.leadName}
+                    </h1>
+                  </div>
+                  <p
+                    style={{ cursor: "pointer" }}
+                    className={`${
+                      currentMode === "dark"
+                        ? "text-[#FFFFFF] bg-[#262626]"
+                        : "text-[#1C1C1C] bg-[#EEEEEE]"
+                    } hover:text-white hover:bg-blue-600 rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
+                  >
+                    <Tooltip title="View Timeline" arrow>
+                      <button onClick={() => setTimelinePopup({isOpen: true})}>
+                        <AiOutlineHistory size={16} />
+                      </button>
+                    </Tooltip>
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5">
+                  {/* USER DETAILS  */}
+                  <div
+                    className={`p-4 rounded-xl shadow-sm card-hover
+                    ${
+                      !themeBgImg 
+                      ? (currentMode === "dark"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black")
+                        : (currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black")
+                    }`}
+                  >
+                    <h1 className="text-center uppercase font-semibold">
+                        {t("user_details")?.toUpperCase()}
+                    </h1>
+                    <hr className="my-4" />
+                    <div className="w-full">
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
+                        <BsTelephone size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <div className="col-span-7">{contact}</div>
+                      </div>
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
+                        <BsEnvelopeAt size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <div className="col-span-7">
+                          {LeadData?.leadEmail === "" ||
+                          LeadData?.leadEmail === "null" ||
+                          LeadData?.leadEmail === "undefined" ||
+                          LeadData?.leadEmail === "-" ||
+                          LeadData?.leadEmail === null ||
+                          LeadData?.leadEmail === undefined
+                            ? "-"
+                            : LeadData?.leadEmail}
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
+                        <BsType size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <div className="col-span-7">
+                          {LeadData?.language} Language
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PROJECT DETAILS  */}
+                  <div
+                    className={`p-4 rounded-xl shadow-sm card-hover
+                    ${
+                      !themeBgImg 
+                      ? (currentMode === "dark"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black")
+                        : (currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black")
+                    }`}
+                  >
+                    <h1 className="text-center uppercase font-semibold">
+                      {t("enquiry_details")?.toUpperCase()}
+                    </h1>
+                    <hr className="my-4" />
+                    <div className="w-full">
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
+                        <BsBuildings size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <div className="col-span-7">
+                          {LeadData?.project === "null"
+                            ? "-"
+                            : LeadData?.project}{" "}
+                          {LeadData?.leadType === "null"
+                            ? "-"
+                            : LeadData?.leadType}
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
+                        <BiBed size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <div className="col-span-7">
+                          {LeadData?.enquiryType === "null"
+                            ? "-"
+                            : LeadData?.enquiryType}
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
+                        <BsHouseGear size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <div className="col-span-7">
+                          {LeadData?.leadFor === "null"
+                            ? "-"
+                            : `For ${LeadData?.leadFor}`}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* STATUS  */}
+                  <div
+                    className={`p-4 rounded-xl shadow-sm card-hover text-center
+                    ${
+                      !themeBgImg 
+                      ? (currentMode === "dark"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black")
+                        : (currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black")
+                    }`}
+                  >
+                    <h1 className="text-center uppercase flex items-center justify-center">
+                      <BsBookmarkFill size={16} className={`text-primary`} />
+                      {t("label_feedback")?.toUpperCase()}
+                      <span className="mx-2  font-semibold">
+                        {t("feedback_" + LeadData?.feedback?.toLowerCase()?.replaceAll(" ", "_")) ?? "---"}
+                      </span>
+                    </h1>
+                    <hr className="my-4" />
+                    <div className="w-full">
+                      {LeadData?.notes === null || LeadData?.notes === "" || LeadData?.notes === "null" || LeadData?.notes === "-" ? (
+                        <></>
+                      ) : (
+                        <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
+                          <BsChatLeftText size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                          <div className="col-span-7 text-start" style={{ fontFamily: isArabic(LeadData?.notes) ? "Noto Kufi Arabic" : "inherit"}}>
+                            {LeadData?.notes}
+                          </div>
+                        </div>
+                      )}
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
+                        <BsPersonPlus size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <div className="col-span-7 text-start">
+                          {t("lead_added_on")} {" "}{datetimeLong(LeadData?.creationDate)}
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
+                        <BsPersonGear size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <div className="col-span-7 text-start">
+                          {t("last_updated_on")}{" "}
+                          {LeadData?.lastEdited === ""
+                            ? "-"
+                            : datetimeLong(LeadData?.lastEdited)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  
+                <div className={`rounded-xl p-4 my-7 ${
+                  !themeBgImg
+                  ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                  : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                } mb-5`}>
+                  <h1 className="font-semibold text-lg text-center mb-3">
+                    LEAD NOTES
+                  </h1>
+
+                  {LeadNotesData?.notes?.data?.length === 0 ? (
+                    <p
+                      className={`mt-3 italic ${
+                        currentMode === "dark"
+                          ? "text-white"
+                          : "text-main-red-color"
+                      }`}
+                    >
+                      No notes to show
+                    </p>
+                  ) : (
+                    <TableContainer component={Paper}>
+                      <Table
                         sx={{
-                          ...darkModeColors,
-                          "& input": {
-                            fontFamily: "Noto Kufi Arabic",
+                          minWidth: 650,
+                          "& .MuiTableCell-root": {
+                            color: currentMode === "dark" && "white",
                           },
                         }}
-                        id="note"
-                        type={"text"}
-                        label="Your Note"
-                        className="w-full"
-                        variant="outlined"
                         size="small"
-                        required
-                        value={AddNoteTxt}
-                        onChange={(e) => setAddNoteTxt(e.target.value)}
-                      />
-                      <button
-                        disabled={addNoteloading ? true : false}
-                        style={{color: "white"}}
-                        type="submit"
-                        className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary p-1 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
+                        aria-label="simple table"
                       >
-                        {addNoteloading ? (
-                          <CircularProgress
-                            sx={{ color: "white" }}
-                            size={25}
-                            className="text-white"
-                          />
-                        ) : (
-                          <span>Add Note</span>
-                        )}
-                      </button>
-                    </form>
-                  </div>
+                        <TableHead
+                          sx={{
+                            "& .MuiTableCell-head": {
+                              color: "white",
+                              fontWeight: "400",
+                              // background: "#DA1F26"
+                            },
+                          }}
+                          className={`${ currentMode === "dark" ? "bg-primary" : "bg-[#000000]" }`}
+                        >
+                          <TableRow>
+                            <TableCell align="center" className="w-[5%]">#</TableCell>
+                            <TableCell align="center" className="w-[15%]">Added On</TableCell>
+                            <TableCell align="center" className="w-[15%]">Added By</TableCell>
+                            <TableCell align="center" className="w-[65%]">Note</TableCell>
+                          </TableRow>
+                        </TableHead>
+
+                        <TableBody
+                          sx={{
+                            "& .MuiTableRow-root:nth-of-type(odd)": {
+                              backgroundColor:
+                                currentMode === "dark" && "#212121",
+                            },
+                            "& .MuiTableRow-root:nth-of-type(even)": {
+                              backgroundColor:
+                                currentMode === "dark" && "#3b3d44",
+                            },
+                          }}
+                        >
+                          {LeadNotesData?.notes?.data?.map(
+                            (row, index) => (
+                              <TableRow
+                                key={index}
+                                sx={{
+                                  "&:last-child td, &:last-child th": {
+                                    border: 0,
+                                  },
+                                }}
+                              >
+                                <TableCell
+                                  component="th"
+                                  scope="row"
+                                  align="center"
+                                >
+                                  {index + 1}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {row?.creationDate}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {row?.userName}
+                                </TableCell>
+                                <TableCell align="left">
+                                  <p
+                                    style={{
+                                      fontFamily: isArabic(row?.leadNote)
+                                        ? "Noto Kufi Arabic"
+                                        : "inherit",
+                                    }}
+                                  >
+                                    {row?.leadNote}
+                                  </p>
+                                </TableCell>
+                              </TableRow>
+                            )
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  )}
+
+                  <form
+                    className="mt-5"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      AddNote();
+                    }}
+                  >
+                    <TextField
+                      sx={{
+                        ...darkModeColors,
+                        "& input": {
+                          fontFamily: "Noto Kufi Arabic",
+                        },
+                      }}
+                      id="note"
+                      type={"text"}
+                      label="Your Note"
+                      className="w-full"
+                      variant="outlined"
+                      size="small"
+                      required
+                      value={AddNoteTxt}
+                      onChange={(e) => setAddNoteTxt(e.target.value)}
+                    />
+                    <button
+                      disabled={addNoteloading ? true : false}
+                      style={{color: "white"}}
+                      type="submit"
+                      className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary p-1 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
+                    >
+                      {addNoteloading ? (
+                        <CircularProgress
+                          sx={{ color: "white" }}
+                          size={25}
+                          className="text-white"
+                        />
+                      ) : (
+                        <span>Add Note</span>
+                      )}
+                    </button>
+                  </form>
                 </div>
               </div>
             )}
