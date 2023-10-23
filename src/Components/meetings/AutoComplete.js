@@ -34,8 +34,11 @@ const AutoComplete = ({ isDisabled, defaultLocation, setMeetingLocation }) => {
 
       getGeocode({ address: description }).then((results) => {
         const { lat, lng } = getLatLng(results[0]);
+        // setMeetingLocation((meetingLocation) => {
+        //   return { ...meetingLocation, lat, lng };
+        // });
         setMeetingLocation((meetingLocation) => {
-          return { ...meetingLocation, lat, lng };
+          return { ...meetingLocation, lat, lng, addressText: description };
         });
       });
     };
