@@ -192,6 +192,7 @@ const BookedDeals = ({
     const [leadDateValue, setLeadDateValue] = useState({});
     const [leadDate, setLeadDate] = useState("");
     const [leadAmount, setLeadAmount] = useState("");
+    const [unitNo, setUnitNo] = useState("");
 
     const ChangeFeedback = (e) => {
       setnewFeedback(e.target.value);
@@ -209,6 +210,7 @@ const BookedDeals = ({
       UpdateLeadData.append("feedback", newFeedback);
       UpdateLeadData.append("amount", leadAmount);
       UpdateLeadData.append("dealDate", leadDate);
+      UpdateLeadData.append("unit", unitNo);
 
       await axios
         .post(
@@ -402,6 +404,16 @@ const BookedDeals = ({
                             value={leadAmount}
                             onChange={(e) => {
                               setLeadAmount(e.target.value);
+                            }}
+                          />
+                          <TextField
+                            required
+                            fullWidth
+                            label={t("label_unit")}
+                            size="small"
+                            value={unitNo}
+                            onChange={(e) => {
+                              setUnitNo(e.target.value);
                             }}
                           />
                         </div>

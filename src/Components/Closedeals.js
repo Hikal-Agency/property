@@ -255,6 +255,14 @@ const Closedeals = ({ pageState, setpageState }) => {
         );
       },
     },
+    // UNIT 
+    {
+      field: "unit",
+      headerAlign: "center",
+      headerName: t("label_unit"),
+      minWidth: 80,
+      flex: 1,
+    },
     // AMOUNT
     {
       field: "amount",
@@ -483,7 +491,13 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 60,
       flex: 1,
     },
-
+    {
+      field: "unit",
+      headerAlign: "center",
+      headerName: t("label_unit"),
+      minWidth: 40,
+      flex: 1,
+    },
     {
       field: "amount",
       headerAlign: "center",
@@ -576,7 +590,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       .get(
         `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${
           pageState.perpage || 14
-        }&agency_id=${User?.agency || 1}`,
+        }`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -616,6 +630,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           amount: row?.amount || "-",
           lid: row?.id,
           leadId: row?.leadId,
+          unit: row?.unit,
         }));
 
         setpageState((old) => ({

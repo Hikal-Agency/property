@@ -91,8 +91,9 @@ const Clock = ({handleClose}) => {
           </Select>
         </Box>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center h-[300px]">
         <AnalogClock timeString={currentTime} timezone={selectedTimezone} />
+        {/* <AnalogClock /> */}
       </div>
       <div className="flex justify-center my-2">
         <h2

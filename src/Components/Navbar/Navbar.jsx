@@ -610,6 +610,11 @@ const Navbar = () => {
                               Android
                             </p>
                           </div>
+                          <VscLock
+                            size={14}
+                            color={"#FFFFFF"}
+                            className="mr-2"
+                          />
                         </div>
                       </div>
                       {/* </Link> */}

@@ -57,6 +57,8 @@ const RenderFeedback = ({ cellValues }) => {
     setDialogue(true);
   };
 
+  console.log("meeting address text: ", meetingLocation);
+
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
       {

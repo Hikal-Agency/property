@@ -7,7 +7,7 @@ import usePlacesAutocomplete, {
 import useOnclickOutside from "react-cool-onclickoutside";
 import { useStateContext } from "../../context/ContextProvider";
 
-const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
+const AutoComplete = ({ isDisabled, defaultLocation, setMeetingLocation }) => {
   const {
     ready,
     value,
@@ -17,10 +17,7 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
   } = usePlacesAutocomplete({
     debounce: 300,
   });
-  const {
-    currentMode, 
-    isArabic, t
-  } = useStateContext();
+  const { currentMode, isArabic, t } = useStateContext();
   const ref = useOnclickOutside(() => {
     clearSuggestions();
   });
@@ -37,15 +34,18 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
 
       getGeocode({ address: description }).then((results) => {
         const { lat, lng } = getLatLng(results[0]);
+        // setMeetingLocation((meetingLocation) => {
+        //   return { ...meetingLocation, lat, lng };
+        // });
         setMeetingLocation((meetingLocation) => {
-            return {...meetingLocation, lat, lng};
+          return { ...meetingLocation, lat, lng, addressText: description };
         });
       });
     };
 
   const renderSuggestions = () =>
     data.map((suggestion) => {
-        console.log(suggestion);
+      console.log(suggestion);
       const {
         place_id,
         structured_formatting: { main_text, secondary_text },
@@ -58,31 +58,31 @@ const AutoComplete = ({isDisabled, defaultLocation, setMeetingLocation}) => {
       );
     });
 
-    useEffect(() => {
-        setValue(defaultLocation);
+  useEffect(() => {
+    setValue(defaultLocation);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [defaultLocation]);
+  }, [defaultLocation]);
 
   return (
     <div ref={ref}>
-        <TextField
-            type={"text"}
-            fullWidth
-            sx={{
-              "& input": {
-                color: currentMode === "dark" ? "white" : "black", 
-                fontFamily: isArabic(value) ? "Noto Kufi Arabic" : "inherit",
-              }
-            }}
-            disabled={isDisabled ? true : !ready}
-            onChange={handleInput}
-            required
-            placeholder={t("search_location")}
-            label={t("location")}
-            size="small"
-            value={value}
-        />
-      {(status === "OK" && !isDisabled) && <ul>{renderSuggestions()}</ul>}
+      <TextField
+        type={"text"}
+        fullWidth
+        sx={{
+          "& input": {
+            // color: currentMode === "dark" ? "white" : "black",
+            fontFamily: isArabic(value) ? "Noto Kufi Arabic" : "inherit",
+          },
+        }}
+        disabled={isDisabled ? true : !ready}
+        onChange={handleInput}
+        required
+        placeholder={t("search_location")}
+        label={t("location")}
+        size="small"
+        value={value}
+      />
+      {status === "OK" && !isDisabled && <ul>{renderSuggestions()}</ul>}
     </div>
   );
 };
