@@ -169,6 +169,16 @@ const RenderManagers = ({ cellValues }) => {
           newManager: newManager?.userName,
           leadName: cellValues?.row?.leadName,
         });
+
+          socket.emit("notification_lead_assign", {
+        newAssignee: [{
+          id: newManager?.id, 
+          userName: newManager?.userName
+        }],
+          leadName: cellValues?.row?.leadName,
+        });
+
+
         fetchSidebarData();
 
         toast.success("Manager Updated Successfully", {

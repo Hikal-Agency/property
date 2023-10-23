@@ -467,6 +467,27 @@ const Sidebarmui = () => {
         console.log("Stripe: ", data);
       });
 
+      socket.on("notification_lead_assigned", (data) => {
+        console.log("data::", data);
+        toast(
+          <ReminderToast
+            type="reminder"
+            reminderTime="2023-08-19 01:25:00 PM"
+            leadName="Qasim"
+          />,
+          {
+            position: "bottom-right",
+            autoClose: 15000,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: true,
+            closeButton: false,
+            draggable: false,
+            theme: "light",
+          }
+        );
+      });
+
       socket.on("notification_reminder", (data) => {
         console.log("Reminder: ", data);
 
