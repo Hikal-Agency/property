@@ -59,6 +59,7 @@ const UpdateLead = ({
   const [leadDate, setLeadDate] = useState("");
   const [leadDateValue, setLeadDateValue] = useState({});
   const [leadAmount, setLeadAmount] = useState("");
+  const [unitNo, setUnitNo] = useState("");
 
   // eslint-disable-next-line
   const ChangeLeadStatus = (event) => {
@@ -103,12 +104,13 @@ const UpdateLead = ({
       .then((result) => {
         console.log("the lead details is given by");
         console.log(result);
-        // setlead(result?.data?.data);
 
         if (result.data.status) {
-          const { amount, dealDate } = result.data.closeddeals;
+          const { amount, dealDate, unit } = result.data.closeddeals;
           setLeadDateValue(dayjs(dealDate));
           setLeadAmount(amount);
+          setUnitNo(unit);
+
         } else {
           toast.error("Error in Fetching the Lead", {
             position: "top-right",
@@ -170,6 +172,7 @@ const UpdateLead = ({
     const updateLeadDate = dayjs(date).format("YYYY-MM-DD");
     UpdateLeadData.append("amount", leadAmount);
     UpdateLeadData.append("dealDate", updateLeadDate);
+    UpdateLeadData.append("unit", unitNo);
 
     await axios
       .post(`${BACKEND_URL}/editdeal/${LeadData.lid}`, UpdateLeadData, {
@@ -313,6 +316,18 @@ const UpdateLead = ({
                         size="small"
                         onChange={(e) => {
                           setLeadAmount(e.target.value);
+                        }}
+                      />
+                    </Box>
+                    <Box sx={darkModeColors} className="w-full" >
+                      <TextField
+                        required
+                        fullWidth
+                        label={t("label_unit")}
+                        value={unitNo}
+                        size="small"
+                        onChange={(e) => {
+                          setUnitNo(e.target.value);
                         }}
                       />
                     </Box>
