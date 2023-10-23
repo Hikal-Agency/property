@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AddLead from "./addlead";
 import Booked from "./booked";
 import ClosedealsPage from "./closedeals";
-import TimelinePage from "./timeline";
 import ColdLeads from "./coldleads";
 import Dashboard from "./dashboard";
 import Error from "./Error";

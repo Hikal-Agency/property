@@ -41,7 +41,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     Managers,
     fetchSidebarData,
     User,
-    t
+    t,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -170,6 +170,16 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
           newAgent: newSalesPerson?.userName,
           leadName: cellValues?.row?.leadName,
         });
+        socket.emit("notification_lead_assign", {
+          newAssignee: [
+            {
+              id: newSalesPerson?.id,
+              userName: newSalesPerson?.userName,
+            },
+          ],
+          leadName: cellValues?.row?.leadName,
+        });
+
         toast.success("Agent Updated Successfully", {
           position: "top-right",
           autoClose: 3000,
@@ -356,12 +366,9 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
             </IconButton>
             <div className="px-10 py-5">
               <div className="flex flex-col justify-center items-center">
-                <IoIosAlert
-                  size={50}
-                  className="text-primary text-2xl"
-                />
+                <IoIosAlert size={50} className="text-primary text-2xl" />
                 <h1 className="font-semibold pt-3 text-lg text-center">
-                  {t("want_to_change_agent")}{" "}{t("from")}{" "}
+                  {t("want_to_change_agent")} {t("from")}{" "}
                   <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                     {SalesPerson3?.userName ?? "No Agent"}
                   </span>{" "}
