@@ -370,34 +370,41 @@ export const ContextProvider = ({ children }) => {
   const langs = [
   {
     code: "en",
-    title: "English"
+    title: "English",
+    flag: "/assets/flags/english-flag.png",
   }, 
   {
     code: "ar", 
     title: "عربي", 
-    rtl: true
+    rtl: true,
+    flag: "/assets/flags/arabic-flag.png",
   }, 
   {
     code: "cn", 
-    title: "中文"
+    title: "中文",
+    flag: "/assets/flags/chinese-flag.png",
   }, 
   {
     code: "fr", 
-    title: "Français"
+    title: "Français",
+    flag: "/assets/flags/french-flag.png",
   }, 
   {
     code: "he", 
     title: "עִבְרִית",
-    rtl: true
+    rtl: true,
+    flag: "/assets/flags/hebrew-flag.png",
   }, 
   {
     code: "pk", 
     title: "اردو", 
-    rtl: true
+    rtl: true,
+    flag: "/assets/flags/urdu-flag.png",
   }, 
   {
     code: "ru", 
-    title: "Русский"
+    title: "Русский",
+    flag: "/assets/flags/russian-flag.png",
   }
 ];
 
@@ -455,6 +462,16 @@ export const ContextProvider = ({ children }) => {
         setUser(user);
       });
   };
+
+  const getLangDetails = (langCode) => {
+    const language = langs.find((lang) => lang.code === langCode);
+    if (language) {
+      const { title, flag } = language;
+      return { title, flag };
+    } else {
+      return null;
+    }
+  }
 
   const isLangRTL = (langCode) => {
     const language = langs?.find((lang) => lang?.code === langCode);
@@ -551,6 +568,7 @@ export const ContextProvider = ({ children }) => {
         setIsUserSubscribed,
         permits,
         isLangRTL,
+        getLangDetails,
         setPermits,
         appLoading,
         setAppLoading,
@@ -568,7 +586,8 @@ export const ContextProvider = ({ children }) => {
         setPrimaryColor,
         themeBgImg, 
         setThemeBgImg, 
-        t, i18n,
+        t, 
+        i18n,
         blurDarkColor,
         setBlurDarkColor,
         blurLightColor,

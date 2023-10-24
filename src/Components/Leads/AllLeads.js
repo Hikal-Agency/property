@@ -729,48 +729,48 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               ))}
 
             {/* CALL  */}
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-            >
-              <Tooltip title="Call" arrow>
+            <Tooltip title="Call" arrow>
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
                 <CallButton phone={cellValues.row.leadContact} />
-              </Tooltip>
-            </p>
+              </p>
+            </Tooltip>
 
             {/* EMAIL  */}
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center `}
-            >
-              <Tooltip title="Send Mail" arrow>
+            <Tooltip title="Send Mail" arrow>
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center `}
+              >
                 <EmailButton email={cellValues.row.leadEmail} />
-              </Tooltip>
-            </p>
+              </p>
+            </Tooltip>
 
             {/* REMINDER  */}
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
-            >
-              <Tooltip title="Set Reminder" arrow>
+            <Tooltip title="Set Reminder" arrow>
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
+              >
                 <button onClick={() => HandleReminderBtn(cellValues)}>
                   <BsAlarm size={16} />
                 </button>
-              </Tooltip>
-            </p>
+              </p>
+            </Tooltip>
 
             {/* EDIT  */}
             {/* <p
@@ -1828,9 +1828,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const handleBulkImport = (event) => {
     const file = event.target.files[0];
 
-    if(file?.name?.slice(-4) === "xlsx") {
-    readXlsxFile(file).then((sheet) => {
-    const rows = sheet?.map((item) => item?.join(","));
+    if (file?.name?.slice(-4) === "xlsx") {
+      readXlsxFile(file).then((sheet) => {
+        const rows = sheet?.map((item) => item?.join(","));
         const keys = rows[0].split(",").map((key) => key.toString().trim());
         const data = rows?.slice(1, rows.length);
         const formatted = data.map((row) =>
@@ -1842,13 +1842,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           fileName: file?.name,
         });
         setBulkImportModelOpen(true);
-  })
+      });
     } else {
       const reader = new FileReader();
-  
+
       reader.onload = (e) => {
         const text = e.target.result;
         const rows = text.split("\n");
+        console.log("Rows::", rows);
         const keys = rows[0].split(",").map((key) => key.toString().trim());
         const data = rows?.slice(1, rows.length);
         const formatted = data.map((row) =>
@@ -1861,8 +1862,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         });
         setBulkImportModelOpen(true);
       };
-      
-      if(file){
+
+      if (file) {
         reader.readAsText(file);
       }
     }
@@ -2188,15 +2189,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           {!timelineModelOpen && (
             <SingleLead
               LeadModelOpen={LeadModelOpen}
-              FetchLeads={FetchLeads}
               setLeadModelOpen={setLeadModelOpen}
               handleLeadModelOpen={handleLeadModelOpen}
-              handleLeadModelClose={handleLeadModelClose}
-              LeadData={singleLeadData}
+              handleLeadModelClose={handleLeadModelClose}              
               BACKEND_URL={BACKEND_URL}
+              FetchLeads={FetchLeads}
+              LeadData={singleLeadData}
+              // lead_origin={lead_origin}
               setDeleteModelOpen={setDeleteModelOpen}
               deleteModelOpen={deleteModelOpen}
-              lead_origin={lead_origin}
               handleUpdateLeadModelOpen={handleUpdateLeadModelOpen}
               handleUpdateLeadModelClose={handleUpdateLeadModelClose}
               UpdateLeadModelOpen={UpdateLeadModelOpen}

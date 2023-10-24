@@ -77,7 +77,6 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
-
 const leadOrigins = [
   { id: "hotleads" },
   { id: "coldleads" },
@@ -89,15 +88,14 @@ const leadOrigins = [
 const leadTypes = [
   { id: "all" },
   { id: "new" },
-  { id: "no answer"},
+  { id: "no answer" },
   { id: "meeting" },
-  { id: "follow up"},
-  { id: "low budget"},
+  { id: "follow up" },
+  { id: "low budget" },
   { id: "not interested" },
   { id: "unreachable" },
   { id: "dead" },
   { id: "wrong number" },
-
 ];
 
 const enquiryTypes = [
@@ -148,7 +146,8 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     SalesPerson,
     isArabic,
     darkModeColors,
-    primaryColor, t
+    primaryColor,
+    t,
   } = useStateContext();
   const [singleLeadData, setsingleLeadData] = useState({});
   const [deleteloading, setdeleteloading] = useState(false);
@@ -180,7 +179,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   });
 
   const bulkImportRef = useRef();
-
 
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
@@ -435,7 +433,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     {
       field: "otp",
       headerName:
-        lead_origin === "transfferedleads" ? t("label_transferred_from") : t("label_otp"),
+        lead_origin === "transfferedleads"
+          ? t("label_transferred_from")
+          : t("label_otp"),
       minWidth: 30,
       headerAlign: "center",
       flex: 1,
@@ -525,7 +525,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           ),
 
           "bulk import": () => (
-            <BiImport size={16} className="text-primary p-1"/>
+            <BiImport size={16} className="text-primary p-1" />
           ),
 
           "property finder": () => (
@@ -607,10 +607,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       renderCell: (cellValues) => {
         return (
           <>
-            {cellValues.formattedValue === "null" ? "-" : cellValues.formattedValue}
+            {cellValues.formattedValue === "null"
+              ? "-"
+              : cellValues.formattedValue}
           </>
-        )
-      }
+        );
+      },
     },
     {
       field: "edit",
@@ -1129,7 +1131,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Unreachable`;
-      }  else if (leadTypeSelected?.id === "dead") {
+      } else if (leadTypeSelected?.id === "dead") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${
@@ -1800,10 +1802,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   {t("label_lead_origin")}
                 </MenuItem>
                 {leadOrigins?.map((origin, index) => (
-                  <MenuItem
-                    key={index}
-                    value={origin?.id || ""}
-                  >
+                  <MenuItem key={index} value={origin?.id || ""}>
                     {t("origin_" + origin?.id)}
                   </MenuItem>
                 ))}
@@ -1852,7 +1851,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 </MenuItem>
                 {leadTypes?.map((type, index) => (
                   <MenuItem key={index} value={type?.id || ""}>
-                    {t("feedback_" + type?.id?.toLowerCase()?.replaceAll(" ", "_"))}
+                    {t(
+                      "feedback_" +
+                        type?.id?.toLowerCase()?.replaceAll(" ", "_")
+                    )}
                   </MenuItem>
                 ))}
               </Select>
@@ -1924,7 +1926,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   </MenuItem>
                   {enquiryTypes?.map((type, index) => (
                     <MenuItem key={index} value={type?.id || ""}>
-                      {isNaN(parseInt(type?.id)) ? t("enquiry_" + type?.id) : t("enquiry_" + type?.id[0] + "bed")}
+                      {isNaN(parseInt(type?.id))
+                        ? t("enquiry_" + type?.id)
+                        : t("enquiry_" + type?.id[0] + "bed")}
                     </MenuItem>
                   ))}
                 </Select>
@@ -1993,20 +1997,38 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                       <span className="text-gray-400">- - -</span>
                     </MenuItem>
                     <MenuItem value={"Website"}>{t("source_website")}</MenuItem>
-                    <MenuItem value={"Campaign Facebook"}>{t("source_facebook")}</MenuItem>
-                    <MenuItem value={"Campaign Snapchat"}>{t("source_snapchat")}</MenuItem>
-                    <MenuItem value={"Campaign Tiktok"}>{t("source_tiktok")}</MenuItem>
-                    <MenuItem value={"Campaign GoogleAds"}>{t("source_googleads")}</MenuItem>
-                    <MenuItem value={"Campaign YouTube"}>{t("source_youtube")}</MenuItem>
-                    <MenuItem value={"Campaign"}>{t("source_campaign")}</MenuItem>
-                    <MenuItem value={"Whatsapp"}>{t("source_whatsapp")}</MenuItem>
+                    <MenuItem value={"Campaign Facebook"}>
+                      {t("source_facebook")}
+                    </MenuItem>
+                    <MenuItem value={"Campaign Snapchat"}>
+                      {t("source_snapchat")}
+                    </MenuItem>
+                    <MenuItem value={"Campaign Tiktok"}>
+                      {t("source_tiktok")}
+                    </MenuItem>
+                    <MenuItem value={"Campaign GoogleAds"}>
+                      {t("source_googleads")}
+                    </MenuItem>
+                    <MenuItem value={"Campaign YouTube"}>
+                      {t("source_youtube")}
+                    </MenuItem>
+                    <MenuItem value={"Campaign"}>
+                      {t("source_campaign")}
+                    </MenuItem>
+                    <MenuItem value={"Whatsapp"}>
+                      {t("source_whatsapp")}
+                    </MenuItem>
                     <MenuItem value={"Comment"}>{t("source_comment")}</MenuItem>
                     <MenuItem value={"Message"}>{t("source_message")}</MenuItem>
                     <MenuItem value={"Property Finder"}>
-                    {t("source_property_finder")}
+                      {t("source_property_finder")}
                     </MenuItem>
-                    <MenuItem value={"Bulk Import"}>{t("source_bulk_import")}</MenuItem>
-                    <MenuItem value={"Personal"}>{t("source_personal")}</MenuItem>
+                    <MenuItem value={"Bulk Import"}>
+                      {t("source_bulk_import")}
+                    </MenuItem>
+                    <MenuItem value={"Personal"}>
+                      {t("source_personal")}
+                    </MenuItem>
                   </Select>
                 </FormControl>
               </Box>
@@ -2019,7 +2041,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               className={`w-full py-2 px-3`}
               id="Project"
               type={"text"}
-              label={t('label_project')}
+              label={t("label_project")}
               variant="outlined"
               size="medium"
               sx={{
@@ -2059,7 +2081,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel style={{ top: "-6px" }}>{t("label_manager")}</InputLabel>
+                  <InputLabel style={{ top: "-6px" }}>
+                    {t("label_manager")}
+                  </InputLabel>
                   <Select
                     label={t("label_manager")}
                     id="Manager"
@@ -2131,7 +2155,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
                 <FormControl fullWidth>
-                  <InputLabel style={{ top: "-6px" }}>{t("label_agent")}</InputLabel>
+                  <InputLabel style={{ top: "-6px" }}>
+                    {t("label_agent")}
+                  </InputLabel>
                   <Select
                     label={t("label_agent")}
                     id="Agent"
@@ -2161,11 +2187,13 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                     <MenuItem selected value="" disabled>
                       {/* <span className="text-gray-400">Agent</span> */}
                     </MenuItem>
-                    {allAgents?.map((agent, index) => (
-                      <MenuItem key={index} value={agent?.id || ""}>
-                        {agent?.userName}
-                      </MenuItem>
-                    ))}
+                    {allAgents
+                      ?.filter((agent) => agent.role === 7)
+                      .map((agent, index) => (
+                        <MenuItem key={index} value={agent.id || ""}>
+                          {agent.userName}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
               </Box>

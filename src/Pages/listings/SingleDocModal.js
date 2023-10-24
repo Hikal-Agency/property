@@ -95,7 +95,10 @@ const SingleDocModal = ({
         {loading ? (
           <div className="w-full flex items-center justify-center space-x-1">
             <CircularProgress size={20} />
-            <span className="font-semibold text-lg"> Fetching Your Lead</span>
+            <span className="font-semibold text-lg">
+              {" "}
+              Fetching Your Dcoument
+            </span>
           </div>
         ) : (
           <>
@@ -118,7 +121,12 @@ const SingleDocModal = ({
               Full view of document
             </h1>
             <div className="w-full flex justify-center  h-[700px]">
-              <iframe src={pdfUrl} title="Document Viewer"></iframe>
+              {/* <iframe src={pdfUrl} title="Document Viewer"></iframe> */}
+
+              <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                Open PDF in a New Tab
+              </a>
+
               {/* <Worker
                 workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js
 "

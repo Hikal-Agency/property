@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import moment from "moment";
 import {
   Backdrop,
   CircularProgress,
@@ -5,23 +9,30 @@ import {
   TextField,
   Button,
   Tooltip,
+  Drawer
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
+import { datetimeLong } from "../_elements/formatDateTime";
 import usePermission from "../../utils/usePermission";
-
 import axios from "../../axoisConfig";
 import BlockIPModal from "./BlockIPModal";
-import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import AddNewListingModal from "../Listings/AddNewListingModal";
 
-import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
-import moment from "moment";
-import { datetimeLong } from "../_elements/formatDateTime";
-
-import { IoIosAlert } from "react-icons/io";
-import { MdClose } from "react-icons/md";
-import { BiBlock, BiBed } from "react-icons/bi";
+import { 
+  VscCallOutgoing, 
+  VscMail, 
+  VscEdit 
+} from "react-icons/vsc";
+import { 
+  IoIosAlert 
+} from "react-icons/io";
+import { 
+  MdClose 
+} from "react-icons/md";
+import { 
+  BiBlock, 
+  BiBed 
+} from "react-icons/bi";
 import {
   BsShuffle,
   BsTelephone,
@@ -34,9 +45,8 @@ import {
   BsPersonPlus,
   BsBookmarkFill,
   BsPersonGear,
-  BsChatLeftText
+  BsChatLeftText,
 } from "react-icons/bs";
-import AddNewListingModal from "../Listings/AddNewListingModal";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -49,7 +59,6 @@ const SingleLead = ({
   setBulkDeleteClicked,
   setLeadToDelete,
   isBookedDeal,
-  lead_origin,
 }) => {
   const {
     darkModeColors,
@@ -58,8 +67,11 @@ const SingleLead = ({
     BACKEND_URL,
     isArabic,
     primaryColor,
-    t, isLangRTL, i18n,
+    t,
+    isLangRTL,
+    i18n,
   } = useStateContext();
+
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [singleLeadData, setsingleLeadData] = useState({});
@@ -83,6 +95,17 @@ const SingleLead = ({
     setOpen(false);
   };
 
+  const [isOpening, setIsOpening] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      handleLeadModelClose();
+    }, 1000);
+  }
+
   // EDIT BTN CLICK FUNC
   const HandleEditFunc = (params) => {
     console.log("LEADID: ", params);
@@ -90,7 +113,7 @@ const SingleLead = ({
     handleUpdateLeadModelOpen();
   };
 
-  // open listing modal
+  // OPEN listing modal
   const handleOpenListingModal = () => {
     setListingModalOpen(true);
     handleLeadModelClose();
@@ -425,7 +448,7 @@ const SingleLead = ({
     const timeout = setTimeout(() => {
       setOpen(true);
     }, 100);
-    
+
     return () => clearTimeout(timeout);
   }, []);
 
@@ -434,19 +457,25 @@ const SingleLead = ({
       <Modal
         keepMounted
         open={LeadModelOpen}
-        onClose={handleLeadModelClose}
+        // onClose={handleLeadModelClose}
+        onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
+        openAfterTransition
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
-          timeout: 500,
+          timeout: 1000,
         }}
       >
-        <div className="modal-container w-[100vw] h-[100vh] flex items-start justify-end">
-          <button onClick={handleLeadModelClose}
-
-            className={`bg-primary w-fit h-fit p-3 ${isLangRTL(i18n.language) ? 'rounded-r-full' : 'rounded-l-full'} my-4 z-10`}
+        <div className={`modal-open ${isClosing ? "modal-close" : ""}
+        w-[100vw] h-[100vh] flex items-start justify-end`}>
+          <button 
+            // onClick={handleLeadModelClose}
+            onClick={handleClose}
+            className={`bg-primary w-fit h-fit p-3 ${
+              isLangRTL(i18n.language) ? 'rounded-r-full' : 'rounded-l-full'
+              } my-4 z-10`}
           >
             <MdClose
               size={18}
@@ -485,18 +514,18 @@ const SingleLead = ({
 
                   <div className="w-full flex justify-end items-center">
                     {/* CALL  */}
-                    <p
-                      style={{ cursor: "pointer" }}
-                      className={`${
-                        currentMode === "dark"
-                          ? "text-[#FFFFFF] bg-[#262626]"
-                          : "text-[#1C1C1C] bg-[#EEEEEE]"
-                      } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
-                    >
-                      <Tooltip title="Call" arrow>
+                    <Tooltip title="Call" arrow>
+                      <p
+                        style={{ cursor: "pointer" }}
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-[#FFFFFF] bg-[#262626]"
+                            : "text-[#1C1C1C] bg-[#EEEEEE]"
+                        } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                      >
                         <CallButton phone={LeadData?.leadContact} />
-                      </Tooltip>
-                    </p>
+                      </p>
+                    </Tooltip>
 
                     {/* EMAIL  */}
                     {LeadData?.leadEmail === "" ||
@@ -613,16 +642,16 @@ const SingleLead = ({
 
                     {/* IP BLOCKING */}
                     {LeadData?.ip && (
-                      <p
-                        style={{ cursor: "pointer" }}
-                        disabled={deleteloading ? true : false}
-                        className={`${
-                          currentMode === "dark"
-                            ? "text-[#FFFFFF] bg-[#262626]"
-                            : "text-[#1C1C1C] bg-[#EEEEEE]"
-                        } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                      >
-                        <Tooltip title="Block IP" arrow>
+                      <Tooltip title="Block IP" arrow>
+                        <p
+                          style={{ cursor: "pointer" }}
+                          disabled={deleteloading ? true : false}
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-[#FFFFFF] bg-[#262626]"
+                              : "text-[#1C1C1C] bg-[#EEEEEE]"
+                          } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                        >
                           <button onClick={() => HandleBlockIP(LeadData)}>
                             <BiBlock
                               className="listingbtn"
@@ -630,8 +659,8 @@ const SingleLead = ({
                               style={{ color: "inherit" }}
                             />
                           </button>
-                        </Tooltip>
-                      </p>
+                        </p>
+                      </Tooltip>
                     )}
                     <Link
                       sx={{ my: 0, w: "100%" }}
@@ -681,7 +710,7 @@ const SingleLead = ({
                     }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
-                        {t("user_details")?.toUpperCase()}
+                      {t("user_details")?.toUpperCase()}
                     </h1>
                     <hr className="my-4" />
                     <div className="w-full">
@@ -768,17 +797,35 @@ const SingleLead = ({
                       <BsBookmarkFill size={16} className="mx-2 text-primary" />
                       {t("label_feedback")?.toUpperCase()}
                       <span className="mx-2  font-semibold">
-                        {t("feedback_" + LeadData?.feedback?.toLowerCase()?.replaceAll(" ", "_")) ?? "---"}
+                        {t(
+                          "feedback_" +
+                            LeadData?.feedback
+                              ?.toLowerCase()
+                              ?.replaceAll(" ", "_")
+                        ) ?? "---"}
                       </span>
                     </h1>
                     <hr className="my-4" />
                     <div className="w-full">
-                      {LeadData?.notes === null || LeadData?.notes === "" || LeadData?.notes === "null" || LeadData?.notes === "-" ? (
+                      {LeadData?.notes === null ||
+                      LeadData?.notes === "" ||
+                      LeadData?.notes === "null" ||
+                      LeadData?.notes === "-" ? (
                         <></>
                       ) : (
                         <div class="flex items-center gap-5 my-4 md:px-5">
-                          <BsChatLeftText size={16} className="text-primary mx-2" />
-                          <div className="text-start" style={{ fontFamily: isArabic(LeadData?.notes) ? "Noto Kufi Arabic" : "inherit"}}>
+                          <BsChatLeftText
+                            size={16}
+                            className="text-primary mx-2"
+                          />
+                          <div
+                            className="text-start"
+                            style={{
+                              fontFamily: isArabic(LeadData?.notes)
+                                ? "Noto Kufi Arabic"
+                                : "inherit",
+                            }}
+                          >
                             {LeadData?.notes}
                           </div>
                         </div>
@@ -786,7 +833,8 @@ const SingleLead = ({
                       <div class="flex items-center gap-5 my-4 md:px-5">
                         <BsPersonPlus size={16} className="text-primary mx-2" />
                         <div className="text-start">
-                          {t("lead_added_on")} {" "}{datetimeLong(LeadData?.creationDate)}
+                          {t("lead_added_on")}{" "}
+                          {datetimeLong(LeadData?.creationDate)}
                         </div>
                       </div>
                       <div class="flex items-center gap-5 my-4 md:px-5">
@@ -810,11 +858,7 @@ const SingleLead = ({
                 <div className="p-5">
                   <div
                     className={`w-full text-center
-                      ${
-                        currentMode === "dark"
-                          ? "text-white"
-                          : "text-black"
-                      }`}
+                      ${currentMode === "dark" ? "text-white" : "text-black"}`}
                   >
                     <div className="w-full my-4">
                       {lastNote ? (

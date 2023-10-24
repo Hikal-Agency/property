@@ -93,6 +93,7 @@ const Navbar = () => {
     t,
     langs,
     isLangRTL,
+    getLangDetails
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -107,8 +108,13 @@ const Navbar = () => {
     notifIconAnimating,
     i18n,
   } = useStateContext();
+
   const [currNavBtn, setCurrNavBtn] = useState("");
   const [anchorElem, setAnchorElem] = useState("");
+
+  const [langTitle, setLangTitle] = useState("");
+  const [langFlag, setLangFlag] = useState("");
+
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
@@ -243,15 +249,28 @@ const Navbar = () => {
     navigate("/chat");
   };
 
+  useEffect(() => {
+    const langDetails = getLangDetails(i18n.language);
+    if (langDetails) {
+      const { title, flag } = langDetails;
+      setLangTitle(title);
+      setLangFlag(flag);
+      // console.log(`Language Title: ${title}`);
+      // console.log(`Language Flag URL: ${flag}`);
+    }
+  }, [getLangDetails]);
+
   return (
     <>
+      {/* CHAT  */}
       <div className="chat-button">
         <Tooltip title="Chat">
-          <IconButton onClick={openChat} className="bg-btn-primary">
-            <BsFillChatFill color="white" />
-          </IconButton>
+          <button onClick={openChat} className="bg-btn-primary p-2 rounded-full">
+            <BsFillChatFill size={20} color="white" />
+          </button>
         </Tooltip>
       </div>
+      
       <div
         className={` ${
           themeBgImg
@@ -275,6 +294,7 @@ const Navbar = () => {
               : "0 2px 4px rgba(255, 255, 255, 0.1)",
         }}
       >
+        {/* BREADCRUMB  */}
         <div className="flex items-center">
           <div
             onClick={() => {
@@ -297,9 +317,9 @@ const Navbar = () => {
           </div>
           <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
         </div>
-        <div>{/* <Clock/> */}</div>
-
+        
         <div className="flex items-center">
+          {/* UPGRADE  */}
           {isUserSubscribed !== null && [
             isUserSubscribed === false ? (
               <Button
@@ -321,31 +341,6 @@ const Navbar = () => {
               <></>
             ),
           ]}
-
-          <Select
-            sx={{
-              marginRight: "8px",
-              "& fieldset": {
-                border: 0,
-              },
-            }}
-            size="small"
-            value={i18n.language}
-            onChange={(e) => {
-              i18n.changeLanguage(e.target.value);
-              if (isLangRTL(e.target.value)) {
-                changeBodyDirection("rtl");
-              } else {
-                changeBodyDirection("ltr");
-              }
-            }}
-          >
-            {langs?.map((lang) => (
-              <MenuItem value={lang?.code} key={lang?.code}>
-                {lang?.title}
-              </MenuItem>
-            ))}
-          </Select>
 
           {/* MEETINGS  */}
           <NavButton
@@ -424,6 +419,53 @@ const Navbar = () => {
             </button>
           </Tooltip>
 
+          {/* LANG  */}
+          <Tooltip title="Language" arrow placement="bottom">
+            <div
+              className="ml-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+              onClick={(event) => {
+                if (currNavBtn === "Language") {
+                  handleClose();
+                } else {
+                  handleClick(event, "Language");
+                }
+              }}
+            >
+              <img
+                className="rounded-sm h-6 w-8 border"
+                src={langFlag}
+                alt=""
+              />
+              <MdKeyboardArrowDown className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+            </div>
+          </Tooltip>
+
+          {/* LANGUAGE  */}
+          {/* <Select
+            sx={{
+              marginRight: "8px",
+              "& fieldset": {
+                border: 0,
+              },
+            }}
+            size="small"
+            value={i18n.language}
+            onChange={(e) => {
+              i18n.changeLanguage(e.target.value);
+              if (isLangRTL(e.target.value)) {
+                changeBodyDirection("rtl");
+              } else {
+                changeBodyDirection("ltr");
+              }
+            }}
+          >
+            {langs?.map((lang) => (
+              <MenuItem value={lang?.code} key={lang?.code}>
+                {lang?.title}
+              </MenuItem>
+            ))}
+          </Select> */}
+
           {/* } */}
           {/* PROFILE  */}
           <Tooltip title="Profile" arrow placement="bottom">
@@ -453,7 +495,7 @@ const Navbar = () => {
                   {User?.userName}
                 </span>
               </p>
-              <MdKeyboardArrowDown className="text-gray-400 text-14" />
+              <MdKeyboardArrowDown className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
             </div>
           </Tooltip>
 
@@ -484,7 +526,8 @@ const Navbar = () => {
                     ? "rgb(28 28 28 / 0.9)"
                     : "rgb(238 238 238 / 0.9)",
                 color: currentMode === "dark" ? "#ffffff" : "black",
-                minWidth: 300,
+                minWidth: currNavBtn === "Language" ? 100 : 300,
+                maxWidth: currNavBtn === "Language" ? 180 : 350,
                 borderRadius: "10px",
                 "& .MuiAvatar-root": {
                   width: 32,
@@ -497,18 +540,6 @@ const Navbar = () => {
                     padding: "5px !important",
                     paddingRight: "0px !important",
                   },
-                // "&:before": {
-                //   content: '""',
-                //   display: "block",
-                //   position: "absolute",
-                //   top: 0,
-                //   right: 66,
-                //   width: 10,
-                //   height: 10,
-                //   background: currentMode === "dark" ? "#4f5159" : "#eef1ff",
-                //   transform: "translateY(-50%) rotate(45deg)",
-                //   zIndex: 0,
-                // },
               },
             }}
             transformOrigin={{ horizontal: "center", vertical: "top" }}
@@ -722,34 +753,6 @@ const Navbar = () => {
                     </div>
                   )}
 
-                  {/* IF SUBSCRIBED, UNSUBCRIBE  */}
-                  {User?.role !== 1 && isUserSubscribed && (
-                    <div
-                      className={`cursor-pointer card-hover ${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                      onClick={UnsubscribeUser}
-                    >
-                      {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
-                      <div className="flex items-center justify-start">
-                        <div
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-[#1C1C1C]"
-                              : "bg-[#EEEEEE]"
-                          } p-2 rounded-full mr-2`}
-                        >
-                          <VscExclude size={18} color={"#AAAAAA"} />
-                        </div>
-                        <p className="mx-1 mr-2 font-semibold">
-                          {t("unsubscribe_package")}
-                        </p>
-                        <VscLock size={14} color={"#DA1F26"} className="mr-2" />
-                      </div>
-                      {/* </Link> */}
-                    </div>
-                  )}
-
                   {/* LOGOUT  */}
                   <div
                     className={`cursor-pointer card-hover ${
@@ -770,6 +773,37 @@ const Navbar = () => {
                       <p className="mx-1 mr-2 font-semibold">{t("log_out")}</p>
                     </div>
                   </div>
+                </div>
+              ) : currNavBtn === "Language" ? (
+                <div className="pl-2">
+                  {langs?.map((lang) => (
+                    <button
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                      onClick={(e) => {
+                        i18n.changeLanguage(lang.code);
+                        if (isLangRTL(lang.code)) {
+                          changeBodyDirection("rtl");
+                        } else {
+                          changeBodyDirection("ltr");
+                        }
+                      }}
+                    >
+                      <div className="grid grid-cols-2 gap-5">
+                        <div className="text-start">
+                          <img
+                            className="rounded-sm h-6 w-8 border"
+                            src={lang.flag}
+                            alt=""
+                          />
+                        </div>
+                        <div className="text-end">
+                          {lang.title}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
                 </div>
               ) : (
                 <></>

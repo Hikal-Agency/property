@@ -7,7 +7,10 @@ import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 import { Backdrop, Modal } from "@mui/material";
 
-import { BiBed, BiCalendarExclamation } from "react-icons/bi";
+import { 
+  BiBed, 
+  BiCalendarExclamation 
+} from "react-icons/bi";
 import {
   BsTelephone,
   BsBuildings,
@@ -46,6 +49,16 @@ const Timeline = ({
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      handleCloseTimelineModel();
+    }, 1000);
+  }
 
   const fetchLeadsData = async (token, LeadID) => {
     const urlLeadsCycle = `${BACKEND_URL}/leadscycle/${LeadID}}`;
@@ -127,7 +140,8 @@ const Timeline = ({
       <Modal
         keepMounted
         open={timelineModelOpen}
-        onClose={handleCloseTimelineModel}
+        // onClose={handleCloseTimelineModel}
+        onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -136,15 +150,17 @@ const Timeline = ({
           timeout: 500,
         }}
       >
-        <div className="w-[100vw] h-[100vh] flex items-start justify-end">
+        <div className={`modal-open ${isClosing ? "modal-close" : ""}
+        w-[100vw] h-[100vh] flex items-start justify-end `}>
           <button
-            onClick={handleCloseTimelineModel}
+            // onClick={handleCloseTimelineModel}
+            onClick={handleClose}
             className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
           >
             <MdClose
               size={18}
               color={"white"}
-              className="hover:border hover:border-white hover:rounded-full"
+              className=" hover:border hover:border-white hover:rounded-full"
             />
           </button>
 

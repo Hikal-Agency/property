@@ -119,7 +119,7 @@ const ReminderComponent = ({
       >
         <div className="p-5 grid grid-cols-9">
           <div className="col-span-8 space-y-3">
-            <h2 className=" text-primary text-md font-semibold">
+            <h2 className={` ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")} text-md font-semibold`}>
               {reminder?.leadName || "No Lead Name"}
             </h2>
             
@@ -174,8 +174,8 @@ const ReminderComponent = ({
 
             <Tooltip title="Cancel Reminder" arrow>
               <IconButton
-                style={{ color: "white" }}
-                className="rounded-full bg-btn-primary"
+                style={{ color: "white", backgroundColor: "#d0382c" }}
+                className="rounded-full"
                 onClick={(event) => handleButtonClick(event, 0, reminder?.id)}
                 disabled={cancleLoading}
               >

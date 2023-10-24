@@ -472,18 +472,18 @@ const AllLeads = () => {
             </p>
 
             {/* CALL  */}
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-green-600 hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center`}
-            >
-              <Tooltip title="Call" arrow>
+            <Tooltip title="Call" arrow>
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-green-600 hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center`}
+              >
                 <CallButton phone={cellValues.row.leadContact} />
-              </Tooltip>
-            </p>
+              </p>
+            </Tooltip>
 
             {/* EMAIL  */}
             {/* {cellValues.row.email === "" ||
@@ -494,18 +494,18 @@ const AllLeads = () => {
             cellValues.row.email === undefined ? (
               <></>
             ) : ( */}
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center `}
-            >
-              <Tooltip title="Send Mail" arrow>
+            <Tooltip title="Send Mail" arrow>
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-2 mx-1 flex items-center `}
+              >
                 <EmailButton email={cellValues.row.leadEmail} />
-              </Tooltip>
-            </p>
+              </p>
+            </Tooltip>
             {/* )} */}
           </div>
         );
