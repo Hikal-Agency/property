@@ -172,16 +172,15 @@ background-color: var(--primary-color);
   color: black !important;
 }
 
-.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-label{
+/* .sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-label{
   color: var(--primary-color);
-  /* font-weight: bold; */
-}
+  font-weight: bold;
+} */
 
-.sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-icon{
+/* .sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-icon{
   color: var(--primary-color);
-  /* font-weight: bold; */
   font-size: 16px;
-}
+} */
 
 .sidebar-root
   > .ps-menu-root

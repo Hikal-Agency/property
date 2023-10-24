@@ -4,10 +4,47 @@ import { AiFillGift } from "react-icons/ai";
 import { FaLink, FaSnowflake, FaMobile, FaInbox, FaSms } from "react-icons/fa";
 import { socket } from "../../Pages/App";
 import {
-  BsStopCircleFill,
-  BsCalendarWeekFill,
-  BsFillCreditCard2FrontFill,
-  BsCircleFill,
+  BsStopCircle,
+  BsCalendarWeek,
+  BsCashStack,
+  BsFileEarmarkBarGraph,
+  BsColumnsGap,
+  BsPeople,
+  BsPersonPlus,
+  BsWebcam,
+  BsFire,
+  BsLink45Deg,
+  BsShuffle,
+  BsSnow,
+  BsArchive,
+  BsPersonRolodex,
+  BsChatRightText,
+  BsSearch,
+  BsPatchCheck,
+  BsBookmarkStar,
+  BsBuildings,
+  BsLock,
+  BsTags,
+  BsGrid3X3Gap,
+  BsGift,
+  BsDashCircle,
+  BsBarChart,
+  BsMegaphone,
+  BsShare,
+  BsFacebook,
+  BsGeoAlt,
+  BsPerson,
+  BsCalendarCheck,
+  BsClockHistory,
+  BsCashCoin,
+  BsHeadset,
+  BsQuestionOctagon,
+  BsTicketPerforated,
+  BsGear,
+  BsBell,
+  BsWhatsapp,
+  BsChatText,
+  BsFileEarmarkText
 } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { BsBuildingGear } from "react-icons/bs";
@@ -18,7 +55,7 @@ import { MdOutlineCampaign, MdSettings } from "react-icons/md";
 
 import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { BsEnvelopeFill, BsFillLayersFill } from "react-icons/bs";
+import { BsEnvelopeAt, BsLayers } from "react-icons/bs";
 import { FaFacebookSquare, FaUsers, FaHandshake } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { RiRadioButtonLine } from "react-icons/ri";
@@ -27,7 +64,7 @@ import { BiCalendar, BiSupport } from "react-icons/bi";
 import { MdApps } from "react-icons/md";
 import { FiSettings, FiUsers } from "react-icons/fi";
 import { FaRandom, FaUserTag, FaUserFriends, FaTags } from "react-icons/fa";
-import { BsPersonFillLock } from "react-icons/bs";
+import { BsPersonGear } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import { GoBrowser } from "react-icons/go";
 import ringtone from "../../assets/new-message-ringtone.mp3";
@@ -655,24 +692,25 @@ const Sidebarmui = () => {
       links: [
         {
           name: t("menu_dashboard"),
-          icon: <RiDashboardFill />,
+          icon: <BsColumnsGap size={16} />,
           link: "/dashboard",
         },
       ],
     },
-
+    // LEADS 
     {
       title: t("leads"),
-      icon: <FaUsers />,
+      icon: <BsPeople size={18} />,
       links: [
         {
           name: t("menu_add_lead"),
-          icon: <MdPersonAdd />,
+          icon: <BsPersonPlus size={18} />,
           link: "/addlead",
         },
+        // UNASSIGNED 
         {
           name: t("menu_unassigned"),
-          icon: <BsStopCircleFill />,
+          icon: <BsStopCircle size={16} />,
           submenu: [
             {
               name: t("menu_live_call"),
@@ -705,58 +743,10 @@ const Sidebarmui = () => {
             },
           ],
         },
-
-        // FRESH
-        {
-          name: t("menu_live_call"),
-          icon: <RiLiveFill />,
-          submenu: [
-            {
-              name: t("feedback_all"),
-              // count: sidebarData?.HotLeadsCount?.hot,
-              link: "/liveleads/all",
-            },
-            {
-              name: t("feedback_new"),
-              // count: sidebarData?.HotLeadsCount?.new,
-              link: "/liveleads/new",
-            },
-            {
-              name: t("feedback_follow_up"),
-              // count: sidebarData?.HotLeadsCount?.follow_up,
-              link: "/liveleads/follow up",
-            },
-            {
-              name: t("feedback_meeting"),
-              // count: sidebarData?.HotLeadsCount?.Meeting,
-              link: "/liveleads/meeting",
-            },
-            {
-              name: t("feedback_low_budget"),
-              // count: sidebarData?.HotLeadsCount?.low_budget,
-              link: "/liveleads/low budget",
-            },
-            {
-              name: t("feedback_no_answer"),
-              // count: sidebarData?.HotLeadsCount?.no_nswer,
-              link: "/freshleads/no answer",
-            },
-            {
-              name: t("feedback_not_interested"),
-              // count: sidebarData?.HotLeadsCount?.not_interested,
-              link: "/freshleads/not interested",
-            },
-            {
-              name: t("feedback_unreachable"),
-              // count: sidebarData?.HotLeadsCount?.unreachable,
-              link: "/freshleads/unreachable",
-            },
-          ],
-        },
         // FRESH
         {
           name: t("menu_fresh"),
-          icon: <SiHotjar />,
+          icon: <BsFire size={16} />,
           submenu: [
             {
               name: t("feedback_all"),
@@ -803,7 +793,7 @@ const Sidebarmui = () => {
         // THIRD PARTY
         {
           name: t("menu_thirdparty"),
-          icon: <FaLink />,
+          icon: <BsLink45Deg size={20} />,
           submenu: [
             {
               name: t("feedback_all"),
@@ -850,7 +840,7 @@ const Sidebarmui = () => {
         // COLD
         {
           name: t("menu_cold"),
-          icon: <FaSnowflake />,
+          icon: <BsSnow size={16} />,
           submenu: [
             {
               name: t("feedback_all"),
@@ -861,21 +851,21 @@ const Sidebarmui = () => {
               name: t("menu_verified"),
               count: sidebarData?.ColdLeadsCount?.verified, //TODO
               link: "/coldleads/coldLeadsVerified",
-              icon: <RiRadioButtonLine style={{ color: "#40B74F" }} />,
+              icon: <RiRadioButtonLine size={16} style={{ color: "#40B74F" }} />,
               countColor: "#008000",
             },
             {
               name: t("menu_invalid"),
               count: sidebarData?.ColdLeadsCount?.unverified, //TODO
               link: "/coldleads/coldLeadsInvalid",
-              icon: <RiRadioButtonLine style={{ color: primaryColor }} />,
+              icon: <RiRadioButtonLine size={16} style={{ color: primaryColor }} />,
               countColor: "#FF0000",
             },
             {
               name: t("menu_not_checked"),
               count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
               link: "/coldleads/coldLeadsNotChecked",
-              icon: <RiRadioButtonLine style={{ color: "#FFCF49" }} />,
+              icon: <RiRadioButtonLine size={16} style={{ color: "#FFCF49" }} />,
               countColor: "#FFA500",
             },
             {
@@ -918,7 +908,7 @@ const Sidebarmui = () => {
         // RESHUFFLED
         {
           name: t("menu_reshuffled"),
-          icon: <FaRandom />,
+          icon: <BsShuffle size={16} />,
           // link: "/reshuffleleads",
           submenu: [
             {
@@ -966,7 +956,7 @@ const Sidebarmui = () => {
         // ARCHIVED
         {
           name: t("menu_archived"),
-          icon: <FaArchive />,
+          icon: <BsArchive size={16} />,
           submenu: [
             {
               name: t("menu_all_leads"),
@@ -1013,7 +1003,7 @@ const Sidebarmui = () => {
         // PERSONAL
         {
           name: t("menu_personal"),
-          icon: <HiUsers />,
+          icon: <BsPersonRolodex size={16} />,
           submenu: [
             {
               name: t("feedback_all"),
@@ -1057,120 +1047,180 @@ const Sidebarmui = () => {
             },
           ],
         },
-
+        // LIVE
+        {
+          name: t("menu_live_call"),
+          icon: <BsWebcam size={18} />,
+          submenu: [
+            {
+              name: t("feedback_all"),
+              // count: sidebarData?.HotLeadsCount?.hot,
+              link: "/liveleads/all",
+            },
+            {
+              name: t("feedback_new"),
+              // count: sidebarData?.HotLeadsCount?.new,
+              link: "/liveleads/new",
+            },
+            {
+              name: t("feedback_follow_up"),
+              // count: sidebarData?.HotLeadsCount?.follow_up,
+              link: "/liveleads/follow up",
+            },
+            {
+              name: t("feedback_meeting"),
+              // count: sidebarData?.HotLeadsCount?.Meeting,
+              link: "/liveleads/meeting",
+            },
+            {
+              name: t("feedback_low_budget"),
+              // count: sidebarData?.HotLeadsCount?.low_budget,
+              link: "/liveleads/low budget",
+            },
+            {
+              name: t("feedback_no_answer"),
+              // count: sidebarData?.HotLeadsCount?.no_nswer,
+              link: "/freshleads/no answer",
+            },
+            {
+              name: t("feedback_not_interested"),
+              // count: sidebarData?.HotLeadsCount?.not_interested,
+              link: "/freshleads/not interested",
+            },
+            {
+              name: t("feedback_unreachable"),
+              // count: sidebarData?.HotLeadsCount?.unreachable,
+              link: "/freshleads/unreachable",
+            },
+          ],
+        },
+        // NOTES 
         {
           name: t("menu_notes"),
-          icon: <MdSpeakerNotes />,
+          icon: <BsChatRightText size={16} />,
           link: "/leadnotes",
         },
+        // SEARCH 
         {
           name: t("menu_search"),
-          icon: <HiSearch />,
+          icon: <BsSearch size={16} />,
           link: "/search",
         },
       ],
     },
+    // DEALS 
     {
       title: t("menu_deals"),
-      icon: <FaHandshake />,
+      icon: <BsPatchCheck size={18} />,
       links: [
         {
           name: t("menu_booked_deals"),
-          icon: <ImBookmark />,
+          icon: <BsBookmarkStar size={16} />,
           link: "/booked",
         },
         {
           name: t("menu_closed_deals"),
-          icon: <ImLock />,
+          icon: <BsLock size={16} />,
           link: "/closedeals",
         },
       ],
     },
+    // SECONDARY LISTINGS AND BUYERS 
     {
       title: t("menu_secondary"),
-      icon: <BsBuildingGear />,
+      icon: <BsBuildings size={18} />,
       links: [
         {
           name: t("menu_listings"),
-          icon: <FaTags />,
+          icon: <BsTags size={16} />,
           link: "/secondaryListings",
         },
         {
           name: t("menu_buyers"),
-          icon: <FaUserFriends />,
+          icon: <BsPeople size={16} />,
           link: "/buyers/buyers",
         },
       ],
     },
-
+    // APPS 
     {
       title: t("menu_apps"),
-      icon: <MdApps />,
+      icon: <BsGrid3X3Gap size={18} />,
       links: [
+        // MEETINGS 
         {
           name: t("menu_meetings"),
-          icon: <BsCalendarWeekFill />,
+          icon: <BsCalendarWeek size={16} />,
           link: "/meetings",
         },
-        {
-          name: t("menu_appointments"),
-          icon: <BsCalendarWeekFill />,
-          link: "/appointments",
-        },
+        // {
+        //   name: t("menu_appointments"),
+        //   icon: <BsCalendarWeek size={16} />,
+        //   link: "/appointments",
+        // },
         // {
         //   name: "Add Users",
         //   icon: <FaUser />,
         //   link: "/adminAuth/signup",
         // },
-
+        
+        // IP 
+        {
+          name: t("menu_blocked_ips"),
+          icon: <BsDashCircle size={16} />,
+          link: "/blocked",
+        },
+        // REPORTS 
         {
           name: t("menu_reports"),
-          icon: <HiDocumentReport />,
+          icon: <BsFileEarmarkBarGraph size={16} />,
           link: "/reports",
         },
+        // OFFERS 
         {
           name: t("menu_offers"),
-          icon: <AiFillGift />,
+          icon: <BsGift size={16} />,
           link: "/offers",
         },
+        // PROPERTY PORTFOLIO 
         {
-          name: t("menu_newsletter"),
-          icon: <BsEnvelopeFill />,
-          link: "/newsletter",
-        },
-        {
-          name: t("menu_users"),
-          icon: <ImUsers />,
-          link: "/users",
+          name: t("menu_property_portfolio"),
+          icon: <BsBuildings size={16} />,
+          link: "/propertyPortfolio",
         },
         // {
         //   name: t("menu_clients"),
-        //   icon: <ImUsers />,
+        //   icon: <ImUsers size={16} />,
         //   link: "/clients",
         // },
         // {
         //   name: "Contacts",
-        //   icon: <MdContactPage />,
+        //   icon: <MdContactPage size={16} />,
         //   link: "/contacts",
         // },
+
+        // NEWSLETTER 
         {
-          name: t("menu_blocked_ips"),
-          icon: <BiBlock />,
-          link: "/blocked",
+          name: t("menu_newsletter"),
+          icon: <BsEnvelopeAt size={16} />,
+          link: "/newsletter",
         },
-        {
-          name: t("menu_property_portfolio"),
-          icon: <RiBuilding2Fill />,
-          link: "/propertyPortfolio",
-        },
+        // LEADERBOARD 
         {
           name: t("menu_leaderboard"),
-          icon: <MdLeaderboard />,
+          icon: <BsBarChart size={16} />,
           link: "/leaderboard",
         },
+        // USERS 
+        {
+          name: t("menu_users"),
+          icon: <BsPeople size={16} />,
+          link: "/users",
+        },
+        // ROLES 
         {
           name: t("menu_roles"),
-          icon: <BsPersonFillLock />,
+          icon: <BsPersonGear size={16} />,
           link: "/roles",
         },
       ],
@@ -1178,17 +1228,17 @@ const Sidebarmui = () => {
     // SOCIAL MEDIA
     {
       title: t("menu_social_media"),
-      icon: <GoBrowser />,
+      icon: <BsShare size={18} />,
       links: [
         {
           name: t("menu_facebook"),
           // icon: <FaChartLine />,
-          icon: <FaFacebookSquare />,
+          icon: <BsFacebook size={16} />,
           link: "/facebook",
         },
         // {
         //   name: "campaigns",
-        //   icon: <FaFacebookSquare />,
+        //   icon: <FaFacebookSquare size={16} />,
         //   link: "/campaigns",
         // },
         // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
@@ -1197,16 +1247,16 @@ const Sidebarmui = () => {
     // LOCATION
     {
       title: t("menu_location"),
-      icon: <MdLocationOn />,
+      icon: <BsGeoAlt size={18} />,
       links: [
         {
           name: t("menu_location_meetings"),
-          icon: <ImLocation />,
+          icon: <BsCalendarWeek size={16} />,
           link: "/location/meetinglocation",
         },
         {
           name: t("menu_location_live"),
-          icon: <MdPersonPinCircle />,
+          icon: <BsPerson size={16} />,
           link: "/location/userlocation",
         },
       ],
@@ -1214,21 +1264,21 @@ const Sidebarmui = () => {
     // ATTENDANCE
     {
       title: t("menu_attendance"),
-      icon: <AiTwotoneCalendar />,
+      icon: <BsCalendarCheck size={18} />,
       links: [
         {
           name: t("menu_office_settings"),
-          icon: <BiCalendar />,
+          icon: <BsClockHistory size={16} />,
           link: "/attendance/officeSettings",
         },
         {
           name: t("menu_employee_list"),
-          icon: <FiUsers />,
+          icon: <BsPeople size={16} />,
           link: "/attendance/employeesList",
         },
         {
           name: t("menu_my_attendance"),
-          icon: <FiUsers />,
+          icon: <BsPerson size={16} />,
           link: "/attendance_self",
         },
       ],
@@ -1236,12 +1286,12 @@ const Sidebarmui = () => {
     // MESSAGING
     // {
     //   title: t("menu_messaging"),
-    //   icon: <MdApps />,
+    //   icon: <MdApps size={16} />,
 
     //   links: [
     //     {
     //       name: t("menu_chat"),
-    //       icon: <BsCircleFill />,
+    //       icon: <BsCircleFill size={16} />,
     //       link: "/chat",
     //     },
     //   ],
@@ -1249,11 +1299,11 @@ const Sidebarmui = () => {
     // BILLINGS
     {
       title: t("menu_billings"),
-      icon: <MdOutlinePayment />,
+      icon: <BsCashCoin size={18} />,
       links: [
         {
           name: t("menu_payments"),
-          icon: <BsFillCreditCard2FrontFill />,
+          icon: <BsCashStack size={16} />,
           link: "/marketing/payments",
         },
       ],
@@ -1261,12 +1311,12 @@ const Sidebarmui = () => {
     // SUPPORT
     {
       title: t("menu_support"),
-      icon: <BiSupport />,
+      icon: <BsHeadset size={20} />,
 
       links: [
         {
           name: t("menu_qa"),
-          icon: <AiOutlineQuestionCircle />,
+          icon: <BsQuestionOctagon size={16} />,
           submenu: [
             {
               name: t("menu_qa_form"),
@@ -1280,7 +1330,7 @@ const Sidebarmui = () => {
         },
         {
           name: t("menu_tickets"),
-          icon: <HiTicket />,
+          icon: <BsTicketPerforated size={16} />,
           link: "/support",
         },
       ],
@@ -1288,11 +1338,11 @@ const Sidebarmui = () => {
     // MISC
     {
       title: t("menu_misc"),
-      icon: <MdSettings />,
+      icon: <BsGear size={18} />,
       links: [
         {
-          name: t("menu_settings"),
-          icon: <FiSettings />,
+          name: t("notifications"),
+          icon: <BsBell size={16} />,
           submenu: [
             // {
             //   name: "Integration",
@@ -1316,31 +1366,31 @@ const Sidebarmui = () => {
     if (User?.role === 1) {
       links.splice(5, 0, {
         title: t("menu_marketing"),
-        icon: <MdCampaign />,
+        icon: <BsMegaphone size={16} />,
         links: [
           {
             name: t("menu_instances"),
-            icon: <BsFillLayersFill />,
+            icon: <BsLayers size={16} />,
             link: "/instances",
           },
           {
             name: t("menu_whatsapp"),
-            icon: <RiWhatsappFill />,
+            icon: <BsWhatsapp size={16} />,
             link: "/marketing/chat",
           },
           {
             name: t("menu_sms"),
-            icon: <FaSms />,
+            icon: <BsChatText size={16} />,
             link: "/marketing/contacts",
           },
           {
             name: t("menu_templates"),
-            icon: <FaMobile />,
+            icon: <BsFileEarmarkText size={16} />,
             link: "/marketing/templates",
           },
           {
             name: t("menu_campaigns"),
-            icon: <MdOutlineCampaign />,
+            icon: <BsMegaphone size={16} />,
             link: "/marketing/messages",
           },
         ],
@@ -1348,21 +1398,21 @@ const Sidebarmui = () => {
     } else {
       links.splice(5, 0, {
         title: t("menu_marketing"),
-        icon: <MdCampaign />,
+        icon: <MdCampaign size={16} />,
         links: [
           {
             name: t("menu_whatsapp"),
-            icon: <RiWhatsappFill />,
+            icon: <RiWhatsappFill size={16} />,
             link: "/marketing/chat",
           },
           {
             name: t("menu_sms"),
-            icon: <MdContactPage />,
+            icon: <MdContactPage size={16} />,
             link: "/marketing/contacts",
           },
           {
             name: t("menu_templates"),
-            icon: <FaMobile />,
+            icon: <FaMobile size={16} />,
             link: "/marketing/templates",
           },
         ],
@@ -1701,10 +1751,26 @@ const Sidebarmui = () => {
                       width: "18px",
                       minWidth: "18px",
                     },
-                    "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
-                      {
-                        paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
-                      },
+                    "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label": {
+                      paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
+                      // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                    },
+                    "& .ps-menu-label": {
+                      fontWeight: "medium",
+                      color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                    },
+                    "& .ps-menu-icon": {
+                      // fontSize: "16px",
+                      color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                    },
+                    "& .ps-menu-label-2": {
+                      fontWeight: "medium",
+                      color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+                    },
+                    "& .ps-menu-icon-2": {
+                      // fontSize: "16px",
+                      color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+                    }
                   }}
                   className="my-1"
                 >
@@ -1795,7 +1861,7 @@ const Sidebarmui = () => {
                                   isCollapsed ? "gap-4" : ""
                                 } rounded-lg text-base ${
                                   !isCollapsed ? "justify-center" : ""
-                                }`}
+                                } `}
                               >
                                 <span
                                   className={`${!isCollapsed && "text-xl"}`}
@@ -1803,7 +1869,7 @@ const Sidebarmui = () => {
                                   {link?.links[0]?.icon}
                                 </span>
                                 {isCollapsed && (
-                                  <span className="capitalize">
+                                  <span className={`capitalize`}>
                                     {link?.links[0]?.name}
                                   </span>
                                 )}
@@ -1954,6 +2020,12 @@ const Sidebarmui = () => {
                                             width: "18px",
                                             minWidth: "18px",
                                           },
+                                          "& .ps-menu-label": {
+                                            color: currentMode === "dark" ? "white" : "black",
+                                          },
+                                          "& .ps-menu-icon": {
+                                            color: currentMode === "dark" ? "white" : "black",
+                                          }
                                         }}
                                         className="my-1 sub"
                                       >
@@ -2016,7 +2088,7 @@ const Sidebarmui = () => {
                                                           "10px !important",
                                                       },
                                                   }}
-                                                  className="relative my-1"
+                                                  className=" relative my-1"
                                                 >
                                                   <MenuItem
                                                     active={
@@ -2033,12 +2105,13 @@ const Sidebarmui = () => {
                                                         style={{
                                                           minWidth:
                                                             "23px !important",
+                                                          color: currentMode === "dark" ? "white !important" : "black !important",
                                                         }}
                                                       >
                                                         {m?.icon}
                                                       </ListItemIcon>
                                                     )}{" "}
-                                                    <span className=" ">
+                                                    <span className={currentMode === "dark" ? "text-white" : "text-black"}>
                                                       {" "}
                                                       {m?.name || ""}
                                                     </span>
@@ -2116,7 +2189,7 @@ const Sidebarmui = () => {
                                               <span
                                                 className={`${
                                                   !isCollapsed && "text-xl"
-                                                }`}
+                                                } ${currentMode === "dark" ? "text-white" : "text-black"}`}
                                                 style={{
                                                   // icons css
                                                   "& .css-wx7wi4": {
@@ -2133,7 +2206,7 @@ const Sidebarmui = () => {
                                                 {menu.icon}
                                               </span>
                                               {isCollapsed && (
-                                                <span className="capitalize">
+                                                <span className={`${currentMode === "dark" ? "text-white" : "text-black"} capitalize`}>
                                                   {menu.name}
                                                 </span>
                                               )}

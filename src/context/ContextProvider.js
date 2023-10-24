@@ -371,40 +371,40 @@ export const ContextProvider = ({ children }) => {
   {
     code: "en",
     title: "English",
-    flag: "assets/flags/english-flag.png",
+    flag: "/assets/flags/english-flag.png",
   }, 
   {
     code: "ar", 
     title: "عربي", 
     rtl: true,
-    flag: "assets/flags/arabic-flag.png",
+    flag: "/assets/flags/arabic-flag.png",
   }, 
   {
     code: "cn", 
     title: "中文",
-    flag: "assets/flags/chinese-flag.png",
+    flag: "/assets/flags/chinese-flag.png",
   }, 
   {
     code: "fr", 
     title: "Français",
-    flag: "assets/flags/french-flag.png",
+    flag: "/assets/flags/french-flag.png",
   }, 
   {
     code: "he", 
     title: "עִבְרִית",
     rtl: true,
-    flag: "assets/flags/hebrew-flag.png",
+    flag: "/assets/flags/hebrew-flag.png",
   }, 
   {
     code: "pk", 
     title: "اردو", 
     rtl: true,
-    flag: "assets/flags/urdu-flag.png",
+    flag: "/assets/flags/urdu-flag.png",
   }, 
   {
     code: "ru", 
     title: "Русский",
-    flag: "assets/flags/russian-flag.png",
+    flag: "/assets/flags/russian-flag.png",
   }
 ];
 
