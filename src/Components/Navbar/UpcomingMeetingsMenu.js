@@ -179,7 +179,7 @@ const UpcomingMeetingsMenu = ({ handleClose }) => {
                   </div>
                   <span
                     className={`${
-                      currentMode === "dark" ? "bg-[#333333]" : "bg-primary"
+                      currentMode === "dark" ? "bg-primary" : "bg-primary"
                     } block text-sm text-white rounded-b-xl text-center p-2 font-semibold`}
                   >
                     {meeting?.createdBy}

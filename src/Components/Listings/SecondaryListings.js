@@ -17,6 +17,7 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { IoIosAlert } from "react-icons/io";
 import usePermission from "../../utils/usePermission";
+import SingleListingsModal from "../../Pages/listings/SingleListingsModal";
 
 
 const SecondaryListings = ({
@@ -131,6 +132,14 @@ const SecondaryListings = ({
   //   };
   // }, []);
 
+  const [singleListingData, setSingleListingData] = useState({});
+  const [singleListingModelOpen, setSingleListingModelOpen] = useState(false);
+
+  const HandleSingleListing = (params) => {
+    setSingleListingData(params);
+    setSingleListingModelOpen(true);
+  };
+
   return (
     <div className="relative">
       <Box className="p-0">
@@ -180,20 +189,16 @@ const SecondaryListings = ({
                       >
                         <div className="flex flex-col gap-2">
                           <Tooltip title="View Property" arrow>
-                            <Link
-                              sx={{ w: "100%" }}
-                              to={`/secondaryListings/${listing?.id}`}
-                              target="_blank"
-                            >
-                              <button className="bg-primary p-2 rounded-full">
-                                <BsListStars size={16} color={"#FFFFFF"} />
-                              </button>
-                            </Link>
+                            <button 
+                              onClick={() => HandleSingleListing(listing?.id)}
+                              className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full">
+                              <BsListStars size={16} color={"#FFFFFF"} />
+                            </button>
                           </Tooltip>
                           {hasPermission("delete_listing") && (
                             <Tooltip title="Delete Listing" arrow>
                               <button
-                                className="bg-primary p-2 rounded-full"
+                                className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
                                 onClick={(e) =>
                                   handleOpenDialogue(
                                     e,
@@ -218,74 +223,78 @@ const SecondaryListings = ({
                         />
                       </div>
                     </div>
-                    <Link
-                      sx={{ w: "100%" }}
-                      to={`/secondaryListings/${listing?.id}`}
-                      target="_blank"
+                    <div 
+                      onClick={() => HandleSingleListing(listing?.id)}
+                      className="px-5 py-3"
                     >
-                      <div className="px-5 py-3">
-                        <h1
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-[#000000]"
-                          } my-2 flex justify-between `}
-                          style={{ textTransform: "capitalize" }}
-                        >
-                          <span className="text-xl font-bold text-primary">
-                            {listing?.price || t("label_unavailable")}
-                          </span>
-                        </h1>
-                        <div
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-[#000000]"
-                          }  my-2 font-semibold`}
-                        >
-                          {listing?.project || `${t("label_project")} ${t("unknown")}`}
-                        </div>
-                        <div
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-[#000000]"
-                          }  my-2`}
-                        >
-                          {listing?.address || `${t("label_area")} ${t("unknown")}`}
-                        </div>
+                      <h1
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-white"
+                            : "text-[#000000]"
+                        } my-2 flex justify-between `}
+                        style={{ textTransform: "capitalize" }}
+                      >
+                        <span className={`text-lg p-1 rounded-md font-bold ${!themeBgImg ? "text-primary" : "bg-primary text-white"}`}>
+                          {listing?.price || t("label_unavailable")}
+                        </span>
+                      </h1>
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-white"
+                            : "text-[#000000]"
+                        }  my-2 font-semibold`}
+                      >
+                        {listing?.project || `${t("label_project")} ${t("unknown")}`}
+                      </div>
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-white"
+                            : "text-[#000000]"
+                        }  my-2`}
+                      >
+                        {listing?.address || `${t("label_area")} ${t("unknown")}`}
+                      </div>
 
-                        <div className="my-2">
-                          <div className="flex space-x-3 items-center">
-                            <BiBed className="text-[#AAAAAA]" size={20} />
-                            <p className="text-start">
-                              <span>
-                                {listing?.bedrooms === "null"
-                                  ? "-"
-                                  : listing?.bedrooms}
-                              </span>{" "}
-                              <span>
-                                {listing?.property_type === "null"
-                                  ? "-"
-                                  : listing?.property_type}
-                              </span>
-                            </p>
-                          </div>
-                        </div>
-                        <div className="my-2 w-full flex items-center justify-between">
-                          <div className="flex space-x-3 items-center">
-                            <BiBath className="text-[#AAAAAA]" size={20} />
-                            <p className="text-start">
-                              <span>
-                                {listing?.bathrooms === "null"
-                                  ? "-"
-                                  : listing?.bathrooms}
-                              </span>
-                            </p>
-                          </div>
+                      <div className="my-2">
+                        <div className="flex space-x-3 items-center">
+                          <BiBed className={`${
+                            !themeBgImg ? "text-[#AAAAAA]"
+                            : (currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#333333]")
+                            }`} size={20} />
+                          <p className="text-start">
+                            <span>
+                              {listing?.bedrooms === "null"
+                                ? "-"
+                                : listing?.bedrooms}
+                            </span>{" "}
+                            <span>
+                              {listing?.property_type === "null"
+                                ? "-"
+                                : listing?.property_type}
+                            </span>
+                          </p>
                         </div>
                       </div>
-                    </Link>
+                      <div className="my-2 w-full flex items-center justify-between">
+                        <div className="flex space-x-3 items-center">
+                          <BiBath className={`${
+                            !themeBgImg ? "text-[#AAAAAA]"
+                            : (currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#333333]")
+                            }`} size={20} />
+                          <p className="text-start">
+                            <span>
+                              {listing?.bathrooms === "null"
+                                ? "-"
+                                : listing?.bathrooms}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    {/* </Link> */}
                   </div>
                 </div>
               );
@@ -381,6 +390,15 @@ const SecondaryListings = ({
               </div>
             </div>
           </Modal>
+        )}
+
+        {/* SINGLE LISTING  */}
+        {singleListingModelOpen && (
+          <SingleListingsModal
+            singleListingModelOpen={singleListingModelOpen}
+            handleCloseSingleListingModel={() => setSingleListingModelOpen(false)}
+            ListingData={singleListingData}
+          />
         )}
 
         {/* PICTURE OVERLAY  */}

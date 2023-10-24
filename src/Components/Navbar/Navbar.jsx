@@ -753,34 +753,6 @@ const Navbar = () => {
                     </div>
                   )}
 
-                  {/* IF SUBSCRIBED, UNSUBCRIBE  */}
-                  {User?.role !== 1 && isUserSubscribed && (
-                    <div
-                      className={`cursor-pointer card-hover ${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                      onClick={UnsubscribeUser}
-                    >
-                      {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
-                      <div className="flex items-center justify-start">
-                        <div
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-[#1C1C1C]"
-                              : "bg-[#EEEEEE]"
-                          } p-2 rounded-full mr-2`}
-                        >
-                          <VscExclude size={18} color={"#AAAAAA"} />
-                        </div>
-                        <p className="mx-1 mr-2 font-semibold">
-                          {t("unsubscribe_package")}
-                        </p>
-                        <VscLock size={14} color={"#DA1F26"} className="mr-2" />
-                      </div>
-                      {/* </Link> */}
-                    </div>
-                  )}
-
                   {/* LOGOUT  */}
                   <div
                     className={`cursor-pointer card-hover ${

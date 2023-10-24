@@ -71,7 +71,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
             
             <div className="flex items-center justify-between">
             <h2 style={{
-                color: primaryColor
+                color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "white" : "black")
               }} className="text-md font-semibold">
                 {meeting?.leadName}
               </h2>

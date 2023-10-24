@@ -192,12 +192,16 @@ const DashboardPanel = ({ setloading }) => {
 
   return (
     <div className="">
-      <h1
-
-        className={`font-semibold text-primary text-lg ml-2 mb-5 mt-2`}
-      >
-        {t("overview")?.toUpperCase()}
-      </h1>
+      <div className="w-full flex items-center pb-3">
+        <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+        <h1
+          className={`text-lg font-semibold uppercase ${
+            !themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")
+          }`}
+        >
+          {t("overview")?.toUpperCase()}
+        </h1>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-5 gap-y-5 pb-2">
         <motion.div
           transition={{ duration: 0.6 }}
@@ -221,14 +225,14 @@ const DashboardPanel = ({ setloading }) => {
             <div>
               {User?.role === 3 && (
                 <p
-                  className={`text-2xl font-bold pb-3 text-primary`}
+                  className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {User?.role === 7 && (
                 <p
-                  className={`text-2xl font-bold pb-3 text-primary`}
+                  className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                  
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
@@ -236,7 +240,7 @@ const DashboardPanel = ({ setloading }) => {
               )}
               {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
                 <p
-                  className={`text-2xl font-bold pb-3 text-primary`}
+                  className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
@@ -271,7 +275,7 @@ const DashboardPanel = ({ setloading }) => {
                   } h-auto w-full p-5 rounded-xl shadow-sm grid content-center`}
                 >
                   <p
-                    className={`text-2xl font-bold pb-3 text-primary`}
+                    className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                
                   >
                     <CountUp end={item.amount} duration={3} />
@@ -307,7 +311,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p
-                        className={`text-2xl font-bold pb-3 text-primary`}
+                        className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                     
                       >
                         <CountUp end={item.amount} duration={3} />
@@ -345,7 +349,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p
-                        className={`text-2xl font-bold pb-3 text-primary`}
+                        className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                      
                       >
                         <CountUp end={item.amount} duration={3} />
