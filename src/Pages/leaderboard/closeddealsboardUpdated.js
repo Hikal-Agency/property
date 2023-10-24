@@ -239,7 +239,7 @@ const ClosedealsboardUpdated = ({ tabValue, setTabValue, isLoading }) => {
             <div className={`p-1 rounded-md h-fit overflow-auto hide-scrollbar`} >
               {/* AGENT  */}
               <div className={`text-lg font-bold text-center uppercase`} >
-                Agent
+                {t("label_agent")}
               </div>
               <div className="grid gap-4 p-3">
                 {active === false ? (

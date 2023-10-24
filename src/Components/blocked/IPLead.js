@@ -3,7 +3,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
 
 const IPLead = ({ lead }) => {
-  const { currentMode, Managers, SalesPerson, User, primaryColor } = useStateContext();
+  const { currentMode, Managers, SalesPerson, User, primaryColor, t } = useStateContext();
 
   const { hasPermission } = usePermission();
 
@@ -47,13 +47,13 @@ const IPLead = ({ lead }) => {
       >
         <div>
           <p className="mb-1">
-            Lead Name: <span>{lead?.leadName}</span>
+          {t("label_lead_name")}: <span>{lead?.leadName}</span>
           </p>
           <p className="mb-1">
-            Contact: <span>{contact}</span>
+            {t("label_contact_number")}: <span>{contact}</span>
           </p>
           <p className="mb-1">
-            Project:{" "}
+            {t("label_project")}:{" "}
             <span>
               {lead?.project} {lead?.enquiryType} {lead?.leadFor}
             </span>
@@ -61,13 +61,13 @@ const IPLead = ({ lead }) => {
         </div>
         <div>
           <p className="mb-1">
-            Manager: <span>{managerName}</span>
+            {t("label_manager")} : <span>{managerName}</span>
           </p>
           <p className="mb-1">
-            Agent: <span>{agentName}</span>
+            {t("label_agent")}: <span>{agentName}</span>
           </p>
           <p className="mb-1">
-            Feedback: <span>{lead?.feedback}</span>
+            {t("label_feedback")}: <span>{lead?.feedback}</span>
           </p>
         </div>
       </Box>

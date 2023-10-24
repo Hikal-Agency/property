@@ -458,6 +458,16 @@ export const ContextProvider = ({ children }) => {
 
   const isLangRTL = (langCode) => {
     const language = langs?.find((lang) => lang?.code === langCode);
+
+    let cssLang = ''; 
+    if(language?.code === "en"){
+      cssLang = '"Open Sans", system-ui, Inter, -apple-system, BlinkMacSystemFont,"Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif';
+    } else if(language?.code === "ar"){
+      cssLang = "Noto Kufi Arabic";
+    }else {
+      cssLang = '"Open Sans", system-ui, Inter, -apple-system, BlinkMacSystemFont,"Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif';
+    }
+    document.documentElement.style.setProperty("--font-family", cssLang);
     if(language) {
       if(language?.rtl){
         return true;

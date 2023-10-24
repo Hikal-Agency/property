@@ -420,7 +420,7 @@ const SendMessageModal = ({
                 onChange={handleChange}
                 variant="standard"
               >
-                <Tab label={t("custom_messsage")} />
+                <Tab label={t("custom_message")} />
                 <Tab label={t("templates")} />
               </Tabs>
               <form onSubmit={handleSendMessage} action="">

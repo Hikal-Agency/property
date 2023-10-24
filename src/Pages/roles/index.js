@@ -192,7 +192,7 @@ const Role = () => {
     },
     {
       field: "status",
-      headerName: t("label_status"),
+      headerName: t("status"),
       headerAlign: "center",
       editable: false,
       minwidth: 150,
@@ -274,7 +274,7 @@ const Role = () => {
     },
     {
       field: "status",
-      headerName: t("label_status"),
+      headerName: t("status"),
       headerAlign: "center",
       editable: false,
       minwidth: 150,

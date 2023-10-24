@@ -3,7 +3,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 
 const IPsList = ({ ips, heading, isRequest, fetchBlockedIPs, isRejected }) => {
-  const { currentMode } = useStateContext();
+  const { t } = useStateContext();
 
 
   return (
@@ -26,7 +26,7 @@ const IPsList = ({ ips, heading, isRequest, fetchBlockedIPs, isRejected }) => {
             }),
           ]
         ) : (
-          <p style={{ color: "red" }}>Nothing to show!</p>
+          <p style={{ color: "red" }}>{t("nothing_to_show")}!</p>
         )}
       </div>
     </>

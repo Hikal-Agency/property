@@ -149,6 +149,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     darkModeColors,
     primaryColor,
     t,
+    isLangRTL, i18n
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -1848,7 +1849,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       reader.onload = (e) => {
         const text = e.target.result;
         const rows = text.split("\n");
-        console.log("Rows::", rows); 
         const keys = rows[0].split(",").map((key) => key.toString().trim());
         const data = rows?.slice(1, rows.length);
         const formatted = data.map((row) =>
@@ -1871,6 +1871,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const handleRowHover = (params) => {
     setHoveredRow(params.row);
   };
+
 
   return (
     <>
@@ -2067,7 +2068,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           <div
             style={{ zIndex: "5 !important" }}
-            className="absolute top-[7px] right-[10px] z-[5]"
+            className={`absolute top-[7px] ${isLangRTL(i18n.language) ? 'left-[10px]' : 'right-[10px]'} z-[5]`}
           >
             <TextField
               placeholder={t("search")}

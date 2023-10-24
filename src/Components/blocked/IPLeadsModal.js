@@ -12,7 +12,7 @@ const style = {
 };
 
 const IPLeadsModal = ({ blockIPModalOpened, handleCloseIPModal, ip }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, t} = useStateContext();
   const [loading, setLoading] = useState(true);
   const [leads, setLeads] = useState([]);
 
@@ -81,7 +81,7 @@ const IPLeadsModal = ({ blockIPModalOpened, handleCloseIPModal, ip }) => {
         </div> :
 
         <div className="mt-12 h-[80%] overflow-y-scroll">
-          <p className="text-2xl mb-16 text-center">Leads for IP: <span className="text-primary font-bold">{ip}</span></p>
+          <p className="text-2xl mb-16 text-center">{t("leads_for_ip")}: <span className="text-primary font-bold">{ip}</span></p>
           {leads?.map((lead) => {
             return <IPLead lead={lead}/>;
           })}

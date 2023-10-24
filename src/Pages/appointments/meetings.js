@@ -1,5 +1,4 @@
 import axios from "../../axoisConfig";
-import { Button } from "@material-tailwind/react";
 import {
   AiOutlineAppstore,
   AiOutlineEdit,
@@ -59,9 +58,6 @@ const Meetings = () => {
 
   console.log("meeting notessss: ", meetingNote);
   const [value, setValue] = useState(0);
-  // const handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
   const handleChange = (event, newValue) => {
     setValue(value === 0 ? 1 : 0);
   };
