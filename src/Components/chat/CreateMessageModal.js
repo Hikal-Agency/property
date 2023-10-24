@@ -126,7 +126,13 @@ const CreateMessageModal = ({
           <IoMdClose size={18} />
         </IconButton>
 
-        <h1 className="font-bold text-xl mb-5">{t("create_message")}</h1>
+        <h1
+          className={`font-bold text-xl mb-5 ${
+            currentMode === "dark" ? "text-white" : "text-dark"
+          }`}
+        >
+          {t("create_message")}
+        </h1>
         <TextField
           fullWidth
           variant="standard"
@@ -180,7 +186,9 @@ const CreateMessageModal = ({
                       }),
                     ]
                   ) : (
-                    <p className="px-5 text-[#da1f26]">{t("no_results_found")}</p>
+                    <p className="px-5 text-[#da1f26]">
+                      {t("no_results_found")}
+                    </p>
                   )}
                 </div>
               ) : (
@@ -195,13 +203,13 @@ const CreateMessageModal = ({
                         return (
                           <ChatConversationItem
                             onClick={() => {
-                              setActiveChat({...JSON.parse(chat.toData)})
+                              setActiveChat({ ...JSON.parse(chat.toData) });
                               handleCloseCreateMessageModal();
                             }}
                             key={chat?.id}
-                                chat={{
-                                  ...JSON.parse(chat.toData),
-                                }}
+                            chat={{
+                              ...JSON.parse(chat.toData),
+                            }}
                           />
                         );
                       }),
