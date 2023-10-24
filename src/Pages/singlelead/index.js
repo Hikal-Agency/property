@@ -1,10 +1,7 @@
-import React, { 
-  useEffect, 
-  useState 
-} from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import {AiOutlineHistory} from "react-icons/ai";
+import { AiOutlineHistory } from "react-icons/ai";
 import {
   Box,
   TextField,
@@ -26,14 +23,11 @@ import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
 
-import { 
-  BiArchive,
-  BiBed
-} from "react-icons/bi";
-import { 
-  BsSnow2, 
-  BsPatchQuestion, 
-  BsFire, 
+import { BiArchive, BiBed } from "react-icons/bi";
+import {
+  BsSnow2,
+  BsPatchQuestion,
+  BsFire,
   BsPersonCircle,
   BsTelephone,
   BsEnvelopeAt,
@@ -44,18 +38,11 @@ import {
   BsChatLeftText,
   BsPersonPlus,
   BsPersonGear,
-  BsHouseGear
+  BsHouseGear,
 } from "react-icons/bs";
-import { 
-  GiMagnifyingGlass 
-} from "react-icons/gi";
-import {
-  TbLanguage,
-  TbPhone,
-  TbBuildingCommunity,
-} from "react-icons/tb";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { TbLanguage, TbPhone, TbBuildingCommunity } from "react-icons/tb";
 import Timeline from "../timeline";
-
 
 const SingleLeadPage = () => {
   const [loading, setloading] = useState(true);
@@ -64,7 +51,7 @@ const SingleLeadPage = () => {
   const [LeadNotesData, setLeadNotesData] = useState(null);
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [addNoteloading, setaddNoteloading] = useState(false);
-  const [timelinePopup, setTimelinePopup] = useState({isOpen: false});
+  const [timelinePopup, setTimelinePopup] = useState({ isOpen: false });
 
   const {
     currentMode,
@@ -74,7 +61,7 @@ const SingleLeadPage = () => {
     darkModeColors,
     isArabic,
     themeBgImg,
-    t
+    t,
   } = useStateContext();
 
   const { hasPermission } = usePermission();
@@ -217,7 +204,6 @@ const SingleLeadPage = () => {
     // eslint-disable-next-line
   }, []);
 
-
   return (
     <>
       <div className="flex min-h-screen">
@@ -235,12 +221,12 @@ const SingleLeadPage = () => {
               <div>
                 <div className="w-full flex items-center justify-between pb-3">
                   <div class="flex items-center">
-                    <div className="bg-primary w-fit rounded-md mr-2 my-1 py-1 px-2 text-white flex items-center justify-center">{LeadData?.id}</div>
+                    <div className="bg-primary w-fit rounded-md mr-2 my-1 py-1 px-2 text-white flex items-center justify-center">
+                      {LeadData?.id}
+                    </div>
                     <h1
                       className={`text-lg font-semibold ${
-                        currentMode === "dark"
-                          ? "text-white"
-                          : "text-black"
+                        currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                       style={{
                         fontFamily: isArabic(LeadData?.leadName)
@@ -260,7 +246,9 @@ const SingleLeadPage = () => {
                     } hover:text-white hover:bg-blue-600 rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
                   >
                     <Tooltip title="View Timeline" arrow>
-                      <button onClick={() => setTimelinePopup({isOpen: true})}>
+                      <button
+                        onClick={() => setTimelinePopup({ isOpen: true })}
+                      >
                         <AiOutlineHistory size={16} />
                       </button>
                     </Tooltip>
@@ -272,26 +260,36 @@ const SingleLeadPage = () => {
                   <div
                     className={`p-4 rounded-xl shadow-sm card-hover
                     ${
-                      !themeBgImg 
-                      ? (currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black")
-                        : (currentMode === "dark"
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                        : currentMode === "dark"
                         ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black")
+                        : "blur-bg-light text-black"
                     }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
-                        {t("user_details")?.toUpperCase()}
+                      {t("user_details")?.toUpperCase()}
                     </h1>
                     <hr className="my-4" />
                     <div className="w-full">
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
-                        <BsTelephone size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <BsTelephone
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
                         <div className="col-span-7">{contact}</div>
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
-                        <BsEnvelopeAt size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <BsEnvelopeAt
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
                         <div className="col-span-7">
                           {LeadData?.leadEmail === "" ||
                           LeadData?.leadEmail === "null" ||
@@ -304,7 +302,12 @@ const SingleLeadPage = () => {
                         </div>
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
-                        <BsType size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <BsType
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
                         <div className="col-span-7">
                           {LeadData?.language} Language
                         </div>
@@ -316,13 +319,13 @@ const SingleLeadPage = () => {
                   <div
                     className={`p-4 rounded-xl shadow-sm card-hover
                     ${
-                      !themeBgImg 
-                      ? (currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black")
-                        : (currentMode === "dark"
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                        : currentMode === "dark"
                         ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black")
+                        : "blur-bg-light text-black"
                     }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
@@ -331,7 +334,12 @@ const SingleLeadPage = () => {
                     <hr className="my-4" />
                     <div className="w-full">
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
-                        <BsBuildings size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <BsBuildings
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
                         <div className="col-span-7">
                           {LeadData?.project === "null"
                             ? "-"
@@ -342,7 +350,12 @@ const SingleLeadPage = () => {
                         </div>
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
-                        <BiBed size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <BiBed
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
                         <div className="col-span-7">
                           {LeadData?.enquiryType === "null"
                             ? "-"
@@ -350,7 +363,12 @@ const SingleLeadPage = () => {
                         </div>
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
-                        <BsHouseGear size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <BsHouseGear
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
                         <div className="col-span-7">
                           {LeadData?.leadFor === "null"
                             ? "-"
@@ -364,42 +382,75 @@ const SingleLeadPage = () => {
                   <div
                     className={`p-4 rounded-xl shadow-sm card-hover text-center
                     ${
-                      !themeBgImg 
-                      ? (currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black")
-                        : (currentMode === "dark"
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                        : currentMode === "dark"
                         ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black")
+                        : "blur-bg-light text-black"
                     }`}
                   >
                     <h1 className="text-center uppercase flex items-center justify-center">
                       <BsBookmarkFill size={16} className={`text-primary`} />
                       {t("label_feedback")?.toUpperCase()}
                       <span className="mx-2  font-semibold">
-                        {t("feedback_" + LeadData?.feedback?.toLowerCase()?.replaceAll(" ", "_")) ?? "---"}
+                        {t(
+                          "feedback_" +
+                            LeadData?.feedback
+                              ?.toLowerCase()
+                              ?.replaceAll(" ", "_")
+                        ) ?? "---"}
                       </span>
                     </h1>
                     <hr className="my-4" />
                     <div className="w-full">
-                      {LeadData?.notes === null || LeadData?.notes === "" || LeadData?.notes === "null" || LeadData?.notes === "-" ? (
+                      {LeadData?.notes === null ||
+                      LeadData?.notes === "" ||
+                      LeadData?.notes === "null" ||
+                      LeadData?.notes === "-" ? (
                         <></>
                       ) : (
                         <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
-                          <BsChatLeftText size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
-                          <div className="col-span-7 text-start" style={{ fontFamily: isArabic(LeadData?.notes) ? "Noto Kufi Arabic" : "inherit"}}>
+                          <BsChatLeftText
+                            size={16}
+                            className={`${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-black"
+                            }`}
+                          />
+                          <div
+                            className="col-span-7 text-start"
+                            style={{
+                              fontFamily: isArabic(LeadData?.notes)
+                                ? "Noto Kufi Arabic"
+                                : "inherit",
+                            }}
+                          >
                             {LeadData?.notes}
                           </div>
                         </div>
                       )}
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
-                        <BsPersonPlus size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <BsPersonPlus
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
                         <div className="col-span-7 text-start">
-                          {t("lead_added_on")} {" "}{datetimeLong(LeadData?.creationDate)}
+                          {t("lead_added_on")}{" "}
+                          {datetimeLong(LeadData?.creationDate)}
                         </div>
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
-                        <BsPersonGear size={16} className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+                        <BsPersonGear
+                          size={16}
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
+                        />
                         <div className="col-span-7 text-start">
                           {t("last_updated_on")}{" "}
                           {LeadData?.lastEdited === ""
@@ -410,13 +461,23 @@ const SingleLeadPage = () => {
                     </div>
                   </div>
                 </div>
-                  
-                <div className={`rounded-xl p-4 my-7 ${
-                  !themeBgImg
-                  ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                  : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-                } mb-5`}>
-                  <h1 className="font-semibold text-lg text-center mb-3">
+
+                <div
+                  className={`rounded-xl p-4 my-7 ${
+                    !themeBgImg
+                      ? currentMode === "dark"
+                        ? "bg-[#1C1C1C]"
+                        : "bg-[#EEEEEE]"
+                      : currentMode === "dark"
+                      ? "blur-bg-dark"
+                      : "blur-bg-light"
+                  } mb-5`}
+                >
+                  <h1
+                    className={` ${
+                      currentMode === "dark" ? "text-white" : "text-dark"
+                    } font-semibold text-lg text-center mb-3`}
+                  >
                     LEAD NOTES
                   </h1>
 
@@ -450,13 +511,25 @@ const SingleLeadPage = () => {
                               // background: "#DA1F26"
                             },
                           }}
-                          className={`${ currentMode === "dark" ? "bg-primary" : "bg-[#000000]" }`}
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-primary"
+                              : "bg-[#000000]"
+                          }`}
                         >
                           <TableRow>
-                            <TableCell align="center" className="w-[5%]">#</TableCell>
-                            <TableCell align="center" className="w-[15%]">Added On</TableCell>
-                            <TableCell align="center" className="w-[15%]">Added By</TableCell>
-                            <TableCell align="center" className="w-[65%]">Note</TableCell>
+                            <TableCell align="center" className="w-[5%]">
+                              #
+                            </TableCell>
+                            <TableCell align="center" className="w-[15%]">
+                              Added On
+                            </TableCell>
+                            <TableCell align="center" className="w-[15%]">
+                              Added By
+                            </TableCell>
+                            <TableCell align="center" className="w-[65%]">
+                              Note
+                            </TableCell>
                           </TableRow>
                         </TableHead>
 
@@ -472,43 +545,41 @@ const SingleLeadPage = () => {
                             },
                           }}
                         >
-                          {LeadNotesData?.notes?.data?.map(
-                            (row, index) => (
-                              <TableRow
-                                key={index}
-                                sx={{
-                                  "&:last-child td, &:last-child th": {
-                                    border: 0,
-                                  },
-                                }}
+                          {LeadNotesData?.notes?.data?.map((row, index) => (
+                            <TableRow
+                              key={index}
+                              sx={{
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
+                            >
+                              <TableCell
+                                component="th"
+                                scope="row"
+                                align="center"
                               >
-                                <TableCell
-                                  component="th"
-                                  scope="row"
-                                  align="center"
+                                {index + 1}
+                              </TableCell>
+                              <TableCell align="center">
+                                {row?.creationDate}
+                              </TableCell>
+                              <TableCell align="center">
+                                {row?.userName}
+                              </TableCell>
+                              <TableCell align="left">
+                                <p
+                                  style={{
+                                    fontFamily: isArabic(row?.leadNote)
+                                      ? "Noto Kufi Arabic"
+                                      : "inherit",
+                                  }}
                                 >
-                                  {index + 1}
-                                </TableCell>
-                                <TableCell align="center">
-                                  {row?.creationDate}
-                                </TableCell>
-                                <TableCell align="center">
-                                  {row?.userName}
-                                </TableCell>
-                                <TableCell align="left">
-                                  <p
-                                    style={{
-                                      fontFamily: isArabic(row?.leadNote)
-                                        ? "Noto Kufi Arabic"
-                                        : "inherit",
-                                    }}
-                                  >
-                                    {row?.leadNote}
-                                  </p>
-                                </TableCell>
-                              </TableRow>
-                            )
-                          )}
+                                  {row?.leadNote}
+                                </p>
+                              </TableCell>
+                            </TableRow>
+                          ))}
                         </TableBody>
                       </Table>
                     </TableContainer>
@@ -540,7 +611,7 @@ const SingleLeadPage = () => {
                     />
                     <button
                       disabled={addNoteloading ? true : false}
-                      style={{color: "white"}}
+                      style={{ color: "white" }}
                       type="submit"
                       className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary p-1 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
                     >
@@ -560,15 +631,14 @@ const SingleLeadPage = () => {
             )}
             {/* <Footer /> */}
           </div>
-
         )}
-          {timelinePopup?.isOpen && (
-            <Timeline
-              timelineModelOpen={timelinePopup?.isOpen}
-              handleCloseTimelineModel={() => setTimelinePopup({isOpen: false})}
-              LeadData={{leadId: LeadData?.id}}
-            />
-          )}
+        {timelinePopup?.isOpen && (
+          <Timeline
+            timelineModelOpen={timelinePopup?.isOpen}
+            handleCloseTimelineModel={() => setTimelinePopup({ isOpen: false })}
+            LeadData={{ leadId: LeadData?.id }}
+          />
+        )}
       </div>
     </>
   );
