@@ -95,7 +95,10 @@ const SingleDocModal = ({
         {loading ? (
           <div className="w-full flex items-center justify-center space-x-1">
             <CircularProgress size={20} />
-            <span className="font-semibold text-lg"> Fetching Your Lead</span>
+            <span className="font-semibold text-lg">
+              {" "}
+              Fetching Your Dcoument
+            </span>
           </div>
         ) : (
           <>
