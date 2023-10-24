@@ -194,7 +194,15 @@ const UpdateLead = ({
         setLeadProject(result?.data?.data?.project);
         setForType(result?.data?.data?.leadFor);
         setLeadName(result?.data?.data?.leadName);
-        setLeadContact(result?.data?.data?.leadContact);
+
+        let leadContact = result?.data?.data?.leadContact;
+
+        if (leadContact) {
+          leadContact = leadContact.replace(/^00/, "+");
+        }
+
+        setLeadContact(leadContact);
+        // setLeadContact(result?.data?.data?.leadContact);
         setLeadEmail(result?.data?.data?.leadEmail);
         setLanguagePrefered(result?.data?.data?.language);
         setLeadStatus(result?.data?.data?.leadStatus);
