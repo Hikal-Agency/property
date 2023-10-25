@@ -1,18 +1,19 @@
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import moment from "moment";
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
 
 import { load } from "../../Pages/App";
-import { BsPinMap } from "react-icons/bs";
+import { BsPinMap, BsClock } from "react-icons/bs";
 import { BiCurrentLocation } from "react-icons/bi";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Box, IconButton, TextField, Tooltip } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { datetimeLong } from "../_elements/formatDateTime";
 
 const UserLocationComponent = () => {
   const { 
@@ -234,20 +235,14 @@ const UserLocationComponent = () => {
                   >
                     {LastLocationData?.locations?.data?.map((user) => (
                       <>
-                        <Marker
+                        <MarkerF
                           key={user?.user_id}
                           position={{
                             lat: parseFloat(user.latitude),
                             lng: parseFloat(user.longitude),
                           }}
                           icon={{
-                            
-                            url:
-                              selectedLocation &&
-                              selectedLocation.user_id === user.user_id
-                                ? user?.profile_picture //CHANGE FOR SELECTED
-                                : "/userpin.svg",
-              
+                            url: "/userpin.svg",
                             scaledSize: window.google
                               ? new window.google.maps.Size(
                                   selectedLocation &&
@@ -271,35 +266,41 @@ const UserLocationComponent = () => {
                             // setselectedLocation(user);
                             handlePinClick(user);
                           }}
-                        ></Marker>
-
-                        {selectedLocation && (
-                          <InfoWindow
-                            position={{
-                              lat:
-                                parseFloat(selectedLocation.latitude),
-                              lng: parseFloat(selectedLocation.longitude),
-                            }}
-                            onCloseClick={() => {
-                              setSelectedLocation(null);
-                            }}
-                            
-                          >
-                            <div>
-                              <h1 className="font-semibold">
-                                {selectedLocation.userName}
-                              </h1>
-                              <h1>
-                                LatLong: {selectedLocation.latitude},{" "}
-                                {selectedLocation.longitude}
-                              </h1>
-                              <h1>
-                                {t("last_updated")}:{" "}
-                                {selectedLocation.latest_recorded_at}
-                              </h1>
-                            </div>
-                          </InfoWindow>
-                        )}
+                        >
+                          {selectedLocation && selectedLocation.user_id === user.user_id && (
+                            <InfoWindow
+                              position={{
+                                lat: Number(selectedLocation.latitude),
+                                lng: Number(selectedLocation.longitude),
+                              }}
+                              onCloseClick={() => {
+                                setSelectedLocation(null);
+                                // clearSelectedMeeting();
+                              }}
+                            >
+                              <div className="w-[250px]">
+                                <h1 
+                                className="p-1 font-semibold capitalize text-primary"
+                                >
+                                  {selectedLocation.userName}
+                                </h1>
+                                <hr className="my-1" />
+                                <div className="p-1 grid grid-cols-7">
+                                  <BsPinMap size={16} />
+                                  <div className="col-span-6">
+                                    {selectedLocation.location}
+                                  </div>
+                                </div>
+                                <div className="p-1 grid grid-cols-7">
+                                  <BsClock size={16} />
+                                  <div className="col-span-6">
+                                    {datetimeLong(selectedLocation.latest_recorded_at)}
+                                  </div>
+                                </div>
+                              </div>
+                            </InfoWindow>
+                          )}
+                        </MarkerF>
                       </>
                     ))}
                   </GoogleMap>
@@ -332,38 +333,36 @@ const UserLocationComponent = () => {
                     } rounded-xl shadow-sm card-hover h-fit space-y-2 p-3 my-1`}
                     onClick={() => handleCardclick(location)}
                   >
-                    <h1 className="font-semibold capitalize">
+                    <h1 className="font-semibold my-1 capitalize flex gap-3 items-center justify-between">
                       {location?.userName}
+                      <img 
+                      src={location?.profile_picture !== null || location?.profile_picture !== "" ? location?.profile_picture : "/favicon.png"} 
+                      className="w-10 h-10 rounded-full" />
                     </h1>
-                    <hr></hr>
-                    <div className="flex gap-3">
-                      <BsPinMap size={20} className="text-primary" />
-                      {location?.location}
+                    <hr className="my-1" />
+                    <div className="my-1 grid grid-cols-7 gap-3">
+                      <BsPinMap size={16} className={!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#333333]")} />
+                      <div className="col-span-6">{location?.location}</div>
                     </div>
-                    <div className="flex gap-3">
-                      <AiOutlineFieldTime size={20} className="text-primary" />
-                      {location?.latest_recorded_at}
+                    <div className="my-1 grid grid-cols-7 gap-3">
+                      <BsClock size={16} className={!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#333333]")} />
+                      <div className="col-span-6">{location?.latest_recorded_at}</div>
                     </div>
-                    <div className="flex justify-end">
+                    <div className=" my-1 w-full">
                       <Tooltip title="View All Location">
-                        <IconButton
+                        <button
                           onClick={() =>
                             navigate(
                               `/location/useralllocation/${location?.user_id}/${filterDate}`
                             )
                           }
-                          // // onClick={() => handleRowClick(location.user_id)}
-                          // sx={{
-                          //   backgroundColor: "transparent",
-                          //   color: "#ffffff",
-                          // }}
-                          className="rounded-full p-1 flex items-center w-fit h-fit text-sm btn-sm"
+                          className="rounded-md uppercase text-white w-full p-1.5 justify-center flex bg-primary hover:bg-red-600 items-center gap-3 text-sm btn-sm"
                         >
                           <BiCurrentLocation
-                            size={20}
-                            className="text-primary"
+                            size={16}
                           />
-                        </IconButton>
+                          {t("view_all_locations")}
+                        </button>
                       </Tooltip>
                     </div>
                   </div>

@@ -721,6 +721,7 @@
     "unknown": "Unknown", 
     "no_listings_available": "No listings available",
     "add_credit": "Add Credits",
-    "label_unit": "Unit", 
-    "leads_for_ip": "Leads for IP"
+    "leads_for_ip": "Leads for IP",
+    "label_unit": "Unit",
+    "view_all_locations": "View all locations"
 }

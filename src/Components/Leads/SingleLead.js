@@ -95,7 +95,6 @@ const SingleLead = ({
     setOpen(false);
   };
 
-  const [isOpening, setIsOpening] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
   const handleClose = () => {
@@ -705,7 +704,7 @@ const SingleLead = ({
                     className={`p-4 rounded-xl shadow-sm card-hover
                     ${
                       currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
+                        ? "bg-[#000000] text-white"
                         : "bg-[#EEEEEE] text-black"
                     }`}
                   >
@@ -745,7 +744,7 @@ const SingleLead = ({
                     className={`p-4 rounded-xl shadow-sm card-hover
                     ${
                       currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
+                        ? "bg-[#000000] text-white"
                         : "bg-[#EEEEEE] text-black"
                     }`}
                   >
@@ -789,7 +788,7 @@ const SingleLead = ({
                     className={`sm:col-span-1 md:col-span-2 p-4 rounded-xl shadow-sm card-hover text-center
                     ${
                       currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
+                        ? "bg-[#000000] text-white"
                         : "bg-[#EEEEEE] text-black"
                     }`}
                   >
