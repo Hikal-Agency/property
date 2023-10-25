@@ -220,8 +220,8 @@ const Timeline = ({
                                 <div className="grid grid-cols-8 gap-3 my-3">
                                   <BsTelephone size={16} />
                                   <div className="col-span-7">
-                                    {leadDetails.leadContact !== "" ? (
-                                      <p>{leadDetails.leadContact}</p>
+                                    {leadDetails.leadContact?.replaceAll(" ", "") !== "" ? (
+                                      <p>{leadDetails.leadContact?.replaceAll(" ", "")}</p>
                                     ) : (
                                       <></>
                                     )}

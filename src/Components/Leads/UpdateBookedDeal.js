@@ -137,7 +137,7 @@ const UpdateBookedDeal = ({
         setBookedAmount(result?.data?.data?.booked_amount);
         setForType(result?.data?.data?.leadFor);
         setLeadName(result?.data?.data?.leadName);
-        setLeadContact(result?.data?.data?.leadContact);
+        setLeadContact(result?.data?.data?.leadContact?.replaceAll(" ", ""));
         setLeadEmail(result?.data?.data?.leadEmail);
         setLanguagePrefered(result?.data?.data?.language);
         setLeadStatus(result?.data?.data?.leadStatus);
@@ -185,7 +185,7 @@ const UpdateBookedDeal = ({
     // UpdateLeadData.append("id", User.id);
     UpdateLeadData.append("id", LeadData.leadId);
     UpdateLeadData.append("leadName", LeadName);
-    UpdateLeadData.append("leadContact", LeadContact);
+    UpdateLeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
     UpdateLeadData.append("leadEmail", LeadEmail);
     UpdateLeadData.append("enquiryType", EnquiryType);
     UpdateLeadData.append("leadType", PropertyType);

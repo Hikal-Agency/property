@@ -214,17 +214,17 @@ const SingleLeadModal = ({
 
   // Replace last 4 digits with "*"
   const stearics =
-    LeadData?.leadContact?.slice(0, LeadData?.leadContact?.length - 4) + "****";
+    LeadData?.leadContact?.replaceAll(" ", "")?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) + "****";
   let contact;
 
   if (hasPermission("number_masking")) {
     if (User?.role === 1) {
-      contact = LeadData?.leadContact;
+      contact = LeadData?.leadContact?.replaceAll(" ", "");
     } else {
       contact = `${stearics}`;
     }
   } else {
-    contact = LeadData?.leadContact;
+    contact = LeadData?.leadContact?.replaceAll(" ", "");
   }
 
   useEffect(() => {

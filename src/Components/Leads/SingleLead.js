@@ -402,17 +402,17 @@ const SingleLead = ({
 
   // Replace last 4 digits with "*"
   const stearics =
-    LeadData?.leadContact?.slice(0, LeadData?.leadContact?.length - 4) + "****";
+    LeadData?.leadContact?.replaceAll(" ", "")?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) + "****";
   let contact;
 
   if (hasPermission("number_masking")) {
     if (User?.role === 1) {
-      contact = LeadData?.leadContact;
+      contact = LeadData?.leadContact?.replaceAll(" ", "");
     } else {
       contact = `${stearics}`;
     }
   } else {
-    contact = LeadData?.leadContact;
+    contact = LeadData?.leadContact?.replaceAll(" ", "");
   }
 
   const EmailButton = ({ email }) => {
@@ -522,7 +522,7 @@ const SingleLead = ({
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
                         } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                       >
-                        <CallButton phone={LeadData?.leadContact} />
+                        <CallButton phone={LeadData?.leadContact?.replaceAll(" ", "")} />
                       </p>
                     </Tooltip>
 

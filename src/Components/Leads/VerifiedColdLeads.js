@@ -140,7 +140,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
       width: 150,
       headerAlign: "center",
       renderCell: (params) => {
-        const contactNumber = params.getValue(params.id, "leadContact");
+        const contactNumber = params.getValue(params.id, "leadContact")?.replaceAll(" ", "");
         // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
 
         // Replace last 4 digits with "*"
@@ -230,7 +230,7 @@ const VerifiedColdLeads = ({ LEADS_URL, pageState, setpageState }) => {
           creationDate: row?.creationDate,
           city: row?.city || "-",
           leadName: row?.leadName || "-",
-          leadContact: row?.leadContact || "-",
+          leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
           project: row?.project || "-",
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",

@@ -75,7 +75,7 @@ export default function LeadsTable({ rows }) {
     } else {
       const selectedObj = {};
       rows.forEach((row) => {
-        selectedObj[row.lid] = row.leadContact;
+        selectedObj[row.lid] = row.leadContact?.replaceAll(" ", "");
       });
       setSelected(selectedObj);
     }
@@ -168,7 +168,7 @@ export default function LeadsTable({ rows }) {
                 <TableCell>
                   <Checkbox
                     onClick={() =>
-                      handleClickCheckbox({ [row.lid]: row.leadContact })
+                      handleClickCheckbox({ [row.lid]: row.leadContact?.replaceAll(" ", "") })
                     }
                     checked={isChecked(row.lid)}
                   />

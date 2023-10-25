@@ -163,7 +163,7 @@ const AddListingModal = ({
     setloading(true);
     e.preventDefault();
 
-    if (!sellerDetails?.leadContact) {
+    if (!sellerDetails?.leadContact?.replaceAll(" ", "")) {
       setloading(false);
       toast.error("Contact number is required.", {
         position: "top-right",
@@ -189,8 +189,8 @@ const AddListingModal = ({
 
     if (sellerDetails?.leadName)
       LeadData.append("seller_name", sellerDetails?.leadName);
-    if (sellerDetails?.leadContact)
-      LeadData.append("seller_contact", sellerDetails?.leadContact);
+    if (sellerDetails?.leadContact?.replaceAll(" ", ""))
+      LeadData.append("seller_contact", sellerDetails?.leadContact?.replaceAll(" ", ""));
     if (sellerDetails?.leadEmail)
       LeadData.append("seller_email", sellerDetails?.leadEmail);
     if (sellerDetails?.propertyPrice)

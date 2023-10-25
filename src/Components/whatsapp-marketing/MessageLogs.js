@@ -66,7 +66,7 @@ const MessageLogs = ({
   }, []);
 
   useEffect(() => {
-    const leadContact = messageLogsModal.data.row.leadContact;
+    const leadContact = messageLogsModal.data.row.leadContact?.replaceAll(" ", "");
     const sentMessages = allMessages.filter((message) => {
       return (
         message.source === alignment &&
@@ -116,7 +116,7 @@ const MessageLogs = ({
               {messageLogsModal.data?.row?.leadName}
             </h2>
             <strong style={{ color: "grey" }}>
-              +{messageLogsModal.data?.row?.leadContact}
+              +{messageLogsModal.data?.row?.leadContact?.replaceAll(" ", "")}
             </strong>
           </Box>
           <ToggleButtonGroup

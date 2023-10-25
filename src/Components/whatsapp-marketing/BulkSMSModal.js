@@ -70,7 +70,7 @@ const BulkSMSModal = ({
   const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM", "AD-MARAHEB"];
 
   const [contactsList, setContactsList] = useState(
-    rangeData?.map((contact) => contact?.leadContact)
+    rangeData?.map((contact) => contact?.leadContact?.replaceAll(" ", ""))
   );
   const [displaRange, setDispalyRange] = useState(false);
 
@@ -153,7 +153,7 @@ const BulkSMSModal = ({
       console.log("range: ", range);
 
       const newContacts = range?.data?.result?.map(
-        (contact) => contact?.leadContact
+        (contact) => contact?.leadContact?.replaceAll(" ", "")
       );
 
       // Filter out existing contacts from contactsList based on whether they exist in newContacts

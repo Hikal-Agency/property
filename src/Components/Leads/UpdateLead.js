@@ -200,7 +200,7 @@ const UpdateLead = ({
         setForType(result?.data?.data?.leadFor);
         setLeadName(result?.data?.data?.leadName);
 
-        let leadContact = result?.data?.data?.leadContact;
+        let leadContact = result?.data?.data?.leadContact?.replaceAll(" ", "");
 
         // if (leadContact) {
         //   leadContact = leadContact.replace(/^00/, "+");
@@ -273,7 +273,7 @@ const UpdateLead = ({
     UpdateLeadData.append("id", LeadData.leadId);
     // UpdateLeadData.append("lid", LeadData.leadId);
     UpdateLeadData.append("leadName", LeadName);
-    UpdateLeadData.append("leadContact", LeadContact);
+    UpdateLeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
     UpdateLeadData.append("leadEmail", LeadEmail);
     UpdateLeadData.append("enquiryType", EnquiryType);
     UpdateLeadData.append("leadType", PropertyType);
