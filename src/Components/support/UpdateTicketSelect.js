@@ -227,7 +227,7 @@ const UpdateTicketSelect = ({ cellValues }) => {
                 },
                 "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
                   {
-                    backgroundColor: "rgba(0, 0, 0, 0.5) !important",
+                    backgroundColor: "rgba(0, 0, 0, 0.6) !important",
                   },
               }}
               open={PriorityDialogue}

@@ -48,7 +48,8 @@ import {
         currentMode, 
         darkModeColors, 
         BACKEND_URL, 
-        DataGridStyles 
+        isLangRTL,
+        i18n
     } = useStateContext();
     const [user, setUser] = useState();
     const [loading, setloading] = useState(false);
@@ -185,12 +186,13 @@ import {
             timeout: 500,
           }}
         >
-            <div className={`modal-open ${isClosing ? "modal-close" : ""} 
+            <div className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"} ${isClosing ? (isLangRTL(i18n.language) ? "modal-close-left" : "modal-close-right") : ""} 
             w-[100vw] h-[100vh] flex items-start justify-end`}>
                 <button 
                     // onClick={handleCloseEditModal}
                     onClick={handleClose}
-                    className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
+                    className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"}
+                    bg-primary w-fit h-fit p-3 my-4 z-10`}
                 >
                     <MdClose
                     size={18}
@@ -206,7 +208,7 @@ import {
                             ? "bg-[#000000] text-white"
                             : "bg-[#FFFFFF] text-black"
                         }
-                         h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
+                         h-[100vh] w-[80vw] overflow-y-scroll
                     `}
                 >
                     <div className={`${currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"} p-4 w-full flex flex items-center mb-1 fixed`}>

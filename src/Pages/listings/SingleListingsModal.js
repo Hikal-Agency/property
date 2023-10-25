@@ -56,7 +56,7 @@ const SingleListingsModal = ({
     isOpen: false,
     listingId: null,
   });
-  const { currentMode, setopenBackDrop, BACKEND_URL, isArabic, themeBgImg } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, isArabic, isLangRTL, i18n } =
     useStateContext();
 
   const handleEdit = () => {
@@ -168,13 +168,14 @@ const SingleListingsModal = ({
         }}
       >
         <div
-          className={`modal-open ${isClosing ? "modal-close" : ""}
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"} ${isClosing ? (isLangRTL(i18n.language) ? "modal-close-left" : "modal-close-right") : ""}
           w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseTimelineModel}
             onClick={handleClose}
-            className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"}
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
               size={18}
@@ -190,7 +191,7 @@ const SingleListingsModal = ({
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
             }
-              p-4 h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
+              p-4 h-[100vh] w-[80vw] overflow-y-scroll
               `}
           >
             {loading ? (

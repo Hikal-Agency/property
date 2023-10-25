@@ -12,6 +12,7 @@ import axios from "../../axoisConfig";
 import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import NotesGrid from "./NotesGrid";
+import SingleLeadModal from "../../Pages/singlelead/SingleLeadModal";
 import {
   AiOutlineTable,
   AiOutlineAppstore,
@@ -22,11 +23,6 @@ const LeadNotes = ({ pageState, setpageState }) => {
   const [searchText, setSearchText] = useState("");
   const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
-
-  // Model Variables
-  // const [LeadModelOpen, setLeadModelOpen] = useState(false);
-  // const handleLeadModelOpen = () => setLeadModelOpen(true);
-  // const handleLeadModelClose = () => setLeadModelOpen(false);
 
   const handleChange = (event, newValue) => {
     setValue(value === 0 ? 1 : 0);
@@ -183,6 +179,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchLeads(token);
@@ -191,7 +188,16 @@ const LeadNotes = ({ pageState, setpageState }) => {
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params) => {
-    window.open(`/leadnotes/${params.row.leadId}`);
+    // window.open(`/leadnotes/${params.row.leadId}`);
+    HandleSingleLead(params.row.leadId)
+  };
+
+  const [singleLeadID, setSingleLeadID] = useState({});
+  const [singleLeadModelOpen, setSingleLeadModelOpen] = useState(false);
+
+  const HandleSingleLead = (params) => {
+    setSingleLeadID(params);
+    setSingleLeadModelOpen(true);
   };
 
   const DataGridStyles = {
@@ -314,6 +320,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
       </>
     );
   }
+
   return (
     <div className="sm:-mt-0 md:-mt-5 lg:-mt-10">
       <Box
@@ -436,6 +443,14 @@ const LeadNotes = ({ pageState, setpageState }) => {
           />
         </TabPanel>
       </div>
+
+      {singleLeadModelOpen && (
+        <SingleLeadModal
+          singleLeadModelOpen={singleLeadModelOpen}
+          handleCloseSingleLeadModel={() => setSingleLeadModelOpen(false)}
+          LeadID={singleLeadID}
+        />
+      )}
     </div>
   );
 

@@ -270,12 +270,21 @@
 }
 
 /* SLIDE MODAL FROM RIGHT  */
-.modal-open {
+.modal-open-right {
     animation: slideFromRight 1s ease-in-out; /* Animation duration and easing */
 }
 
-.modal-close {
+.modal-close-right {
     animation: slideToRight 1s ease-in-out; /* Animation duration and easing */
+}
+
+/* SLIDE MODAL FROM LEFT  */
+.modal-open-left {
+    animation: slideFromLeft 1s ease-in-out; /* Animation duration and easing */
+}
+
+.modal-close-left {
+    animation: slideToLeft 1s ease-in-out; /* Animation duration and easing */
 }
 
 @keyframes slideFromRight {
@@ -293,6 +302,24 @@
     }
     100% {
       transform: translateX(100%);
+    }
+}
+
+@keyframes slideFromLeft {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+}
+
+@keyframes slideToLeft {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
     }
 }
   
