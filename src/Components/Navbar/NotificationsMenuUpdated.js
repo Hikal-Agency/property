@@ -134,7 +134,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   return (
     <Container
       onClick={handleAvoidClose}
-      onMouseLeave={handleClose}
+      // onMouseLeave={handleClose}
       sx={{ maxHeight: 500, p:1, width: 350, position: "relative" }}
       className="pb-5"
     >

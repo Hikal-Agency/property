@@ -43,7 +43,7 @@ const UpcomingMeetingsMenu = ({ handleClose }) => {
   return (
     <>
       <Container
-        onMouseLeave={handleClose}
+        // onMouseLeave={handleClose}
         sx={{ maxHeight: 500, width: 350, p: 1, position: "relative" }}
       >
         <div
