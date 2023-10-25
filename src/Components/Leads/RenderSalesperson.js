@@ -345,7 +345,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
               },
               "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
                 {
-                  backgroundColor: "rgba(0, 0, 0, 0.5) !important",
+                  backgroundColor: "rgba(0, 0, 0, 0.6) !important",
                 },
             }}
             open={Dialogue}

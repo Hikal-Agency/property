@@ -6,6 +6,7 @@ import Error from "../Error";
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 import { Backdrop, Modal } from "@mui/material";
+import { datetimeLong } from "../../Components/_elements/formatDateTime";
 
 import { 
   BiBed, 
@@ -42,7 +43,7 @@ const Timeline = ({
   handleCloseTimelineModel,
   timelineModelOpen,
 }) => {
-  const { currentMode, BACKEND_URL, isArabic, primaryColor, t } =
+  const { currentMode, BACKEND_URL, isArabic, primaryColor, t, isLangRTL, i18n } =
     useStateContext();
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [leadDetails, setLeadDetails] = useState(null);
@@ -150,12 +151,13 @@ const Timeline = ({
           timeout: 500,
         }}
       >
-        <div className={`modal-open ${isClosing ? "modal-close" : ""}
+        <div className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"} ${isClosing ? (isLangRTL(i18n.language) ? "modal-close-left" : "modal-close-right") : ""}
         w-[100vw] h-[100vh] flex items-start justify-end `}>
           <button
             // onClick={handleCloseTimelineModel}
             onClick={handleClose}
-            className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"}
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
               size={18}
@@ -168,10 +170,10 @@ const Timeline = ({
             style={style}
             className={` ${
               currentMode === "dark"
-                ? "bg-[#1C1C1C] text-white"
+                ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            }
-             p-4 h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
+            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"} 
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
             <div className={`w-full`}>
@@ -180,7 +182,7 @@ const Timeline = ({
               ) : (
                 <div className="">
                   <div className="w-full flex items-center pb-3 ">
-                    <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                    <div className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} bg-primary h-10 w-1 rounded-full my-1`}></div>
                     <h1
                       className={`text-lg font-semibold ${
                         currentMode === "dark" ? "text-white" : "text-black"
@@ -215,7 +217,7 @@ const Timeline = ({
                                 {leadDetails.leadName}
                               </h3>
                               <div className="w-[80%] bg-primary h-0.5 my-5"></div>
-                              <div className="text-center sm:text-left sm:before:mx-0">
+                              <div className="sm:before:mx-0">
                                 {/* CONTACT NUMBER  */}
                                 <div className="grid grid-cols-8 gap-3 my-3">
                                   <BsTelephone size={16} />
@@ -269,11 +271,11 @@ const Timeline = ({
                                 {/* CREATION DATE  */}
                                 <div className="text-sm mb-5">
                                   <p>{t("lead_added_on")}:</p>
-                                  <p>{leadDetails.creationDate}</p>
+                                  <p>{datetimeLong(leadDetails.creationDate)}</p>
                                 </div>
                                 <div className="text-sm mb-5">
                                   <p>{t("lead_edited_on")}:</p>
-                                  <p>{leadDetails.lastEdited}</p>
+                                  <p>{leadDetails?.lastEdited === null ? "-" : datetimeLong(leadDetails.lastEdited)}</p>
                                 </div>
                               </div>
                             </>
@@ -293,10 +295,10 @@ const Timeline = ({
                                 (timeline, index) => {
                                   return (
                                     <>
-                                      <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                      <div className={`${isLangRTL(i18n.language) ? "ml-3" : "mr-3"} col-start-1 col-end-3 md:mx-auto relative`}>
                                         <div className="h-full w-6 flex items-center justify-center">
                                           <div
-                                            className={`h-full border-b-[${primaryColor}] rounded-md px-2 py-1 text-sm`}
+                                            className={`h-full border-b-[${primaryColor}] rounded-xl shadow-sm px-2 py-1 text-sm`}
                                             style={{
                                               width: "min-content",
                                               whiteSpace: "nowrap",
@@ -315,11 +317,11 @@ const Timeline = ({
                                             {/* LEAD NOTE  */}
                                             {timeline.leadNote ? (
                                               <>
-                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                <div className={`${isLangRTL(i18n.language) ? "ml-3" : "mr-3"} col-start-1 col-end-3 md:mx-auto relative`}>
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
                                                   </div>
-                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                  <div className={`${isLangRTL(i18n.language) ? "-mr-2" : "-ml-2"} absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}>
                                                     <MdNoteAlt
                                                       className="text-white"
                                                       size={16}
@@ -329,17 +331,15 @@ const Timeline = ({
                                                 <div
                                                   className={`${
                                                     currentMode === "dark"
-                                                      ? "bg-[#000000]"
+                                                      ? "bg-[#1C1C1C]"
                                                       : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                     
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                  <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
                                                     <HiUser
                                                       size={12}
-                                                      color={"#AAAAAA"}
-                                                      className="mr-2"
                                                     />
                                                     {timeline.addedBy}
                                                   </p>
@@ -367,9 +367,8 @@ const Timeline = ({
                                                     </p>
                                                   )} */}
                                                   {/* CREATION DATE  */}
-                                                  <p className="text-xs tracking-wide uppercase  text-[#AAAAAA]">
-                                                    {timeline.creationDate ||
-                                                      timeline.CreationDate}
+                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                    {datetimeLong(timeline.creationDate)}
                                                   </p>
                                                 </div>
                                               </>
@@ -377,11 +376,11 @@ const Timeline = ({
                                             timeline.manager &&
                                               timeline.manager !== "0" ? (
                                               <>
-                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                <div className={`${isLangRTL(i18n.language) ? "ml-3" : "mr-3"} col-start-1 col-end-3 md:mx-auto relative`}>
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                   </div>
-                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                  <div className={`${isLangRTL(i18n.language) ? "-mr-2" : "-ml-2"} absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}>
                                                     <FaUserCheck
                                                       className="text-white"
                                                       size={16}
@@ -391,19 +390,18 @@ const Timeline = ({
                                                 <div
                                                   className={`${
                                                     currentMode === "dark"
-                                                      ? "bg-[#000000]"
+                                                      ? "bg-[#1C1C1C]"
                                                       : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                   // style={{
                                                   //   transform:
                                                   //     "translateX(-30px)",
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                  <p className="text-sm tracking-wide text-[#AAAAAA] font-italic justify-end flex items-center gap-2">
                                                     <HiUser
                                                       size={12}
-                                                      className="mr-1 text-[#AAAAAA]"
                                                     />
                                                     {timeline.addedBy}
                                                   </p>
@@ -416,9 +414,8 @@ const Timeline = ({
                                                     .
                                                   </p>
                                                   {/* CREATION DATE  */}
-                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                    {timeline.creationDate ||
-                                                      timeline.CreationDate}
+                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                    {datetimeLong(timeline.CreationDate)}
                                                   </p>
                                                 </div>
                                               </>
@@ -426,11 +423,11 @@ const Timeline = ({
                                             timeline.agent &&
                                               timeline.agent !== "0" ? (
                                               <>
-                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                <div className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} col-start-1 col-end-3 md:mx-auto relative`}>
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                   </div>
-                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                  <div className={`${isLangRTL(i18n.language) ? "-mr-2" : "-ml-2"} absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}>
                                                     <FaUserCheck
                                                       className="text-white"
                                                       size={16}
@@ -440,19 +437,18 @@ const Timeline = ({
                                                 <div
                                                   className={`${
                                                     currentMode === "dark"
-                                                      ? "bg-[#000000]"
+                                                      ? "bg-[#1C1C1C]"
                                                       : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                   // style={{
                                                   //   transform:
                                                   //     "translateX(-30px)",
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                  <p className="text-sm tracking-wide font-italic gap-2 text-[#AAAAAA] justify-end flex items-center">
                                                     <HiUser
                                                       size={12}
-                                                      className="mr-1 text-[#AAAAAA]"
                                                     />
                                                     {timeline.addedBy}
                                                   </p>
@@ -465,9 +461,8 @@ const Timeline = ({
                                                     .
                                                   </p>
                                                   {/* CREATION DATE  */}
-                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                    {timeline.creationDate ||
-                                                      timeline.CreationDate}
+                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                    {datetimeLong(timeline.CreationDate)}
                                                   </p>
                                                 </div>
                                               </>
@@ -475,11 +470,11 @@ const Timeline = ({
                                             timeline.feedback &&
                                               timeline.feedback !== "0" ? (
                                               <>
-                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                <div className={`${isLangRTL(i18n.language) ? "ml-3" : "mr-3"} col-start-1 col-end-3 md:mx-auto relative`}>
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                   </div>
-                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                  <div className={`${isLangRTL(i18n.language) ? "-mr-2" : "-ml-2"} absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}>
                                                     <BsBookmarkCheckFill
                                                       className="text-white"
                                                       size={16}
@@ -489,19 +484,18 @@ const Timeline = ({
                                                 <div
                                                   className={`${
                                                     currentMode === "dark"
-                                                      ? "bg-[#000000]"
+                                                      ? "bg-[#1C1C1C]"
                                                       : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                   // style={{
                                                   //   transform:
                                                   //     "translateX(-30px)",
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                  <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
                                                     <HiUser
                                                       size={12}
-                                                      className="mr-1 text-[#AAAAAA]"
                                                     />
                                                     {timeline.addedBy}
                                                   </p>
@@ -514,9 +508,8 @@ const Timeline = ({
                                                     .
                                                   </p>
                                                   {/* CREATION DATE  */}
-                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                    {timeline.creationDate ||
-                                                      timeline.CreationDate}
+                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                    {datetimeLong(timeline.CreationDate)}
                                                   </p>
                                                 </div>
                                               </>
@@ -524,11 +517,11 @@ const Timeline = ({
                                             timeline.meetingStatus &&
                                               timeline.meetingStatus !== "0" ? (
                                               <>
-                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                <div className={`${isLangRTL(i18n.language) ? "ml-3" : "mr-3"} col-start-1 col-end-3 md:mx-auto relative`}>
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                   </div>
-                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                  <div className={`${isLangRTL(i18n.language) ? "-mr-2" : "-ml-2"} absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}>
                                                     <BiCalendarExclamation
                                                       className="text-white"
                                                       size={16}
@@ -538,19 +531,18 @@ const Timeline = ({
                                                 <div
                                                   className={`${
                                                     currentMode === "dark"
-                                                      ? "bg-[#000000]"
+                                                      ? "bg-[#1C1C1C]"
                                                       : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                   // style={{
                                                   //   transform:
                                                   //     "translateX(-30px)",
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                  <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
                                                     <HiUser
                                                       size={12}
-                                                      className="mr-1 text-[#AAAAAA]"
                                                     />
                                                     {timeline.addedBy}
                                                   </p>
@@ -563,9 +555,8 @@ const Timeline = ({
                                                     .
                                                   </p>
                                                   {/* CREATION DATE  */}
-                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                    {timeline.creationDate ||
-                                                      timeline.CreationDate}
+                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                    {datetimeLong(timeline.CreationDate)}
                                                   </p>
                                                 </div>
                                               </>
@@ -573,11 +564,11 @@ const Timeline = ({
                                             timeline.meetingDate &&
                                               timeline.meetingDate !== "0" ? (
                                               <>
-                                                <div className="col-start-1 col-end-3 mr-3 md:mx-auto relative">
+                                                <div className={`${isLangRTL(i18n.language) ? "ml-3" : "mr-3"} col-start-1 col-end-3 md:mx-auto relative`}>
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                   </div>
-                                                  <div className="absolute top-1/2 -mt-5 -ml-2 text-center bg-primary rounded-full p-2">
+                                                  <div className={`${isLangRTL(i18n.language) ? "-mr-2" : "-ml-2"} absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}>
                                                     <BsClockFill
                                                       className="text-white"
                                                       size={16}
@@ -587,19 +578,18 @@ const Timeline = ({
                                                 <div
                                                   className={`${
                                                     currentMode === "dark"
-                                                      ? "bg-[#000000]"
+                                                      ? "bg-[#1C1C1C]"
                                                       : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-md shadow-md md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                   // style={{
                                                   //   transform:
                                                   //     "translateX(-30px)",
                                                   // }}
                                                 >
                                                   {/* ADDED BY  */}
-                                                  <p className="text-xs tracking-wide font-italic justify-end flex items-center">
+                                                  <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
                                                     <HiUser
                                                       size={12}
-                                                      className="mr-1 text-[#AAAAAA]"
                                                     />
                                                     {timeline.addedBy}
                                                   </p>
@@ -622,9 +612,8 @@ const Timeline = ({
                                                     .
                                                   </p>
                                                   {/* CREATION DATE  */}
-                                                  <p className="text-xs tracking-wide uppercase text-[#AAAAAA]">
-                                                    {timeline.creationDate ||
-                                                      timeline.CreationDate}
+                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                    {datetimeLong(timeline.CreationDate)}
                                                   </p>
                                                 </div>
                                               </>

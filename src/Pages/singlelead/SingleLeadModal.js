@@ -80,8 +80,9 @@ const SingleLeadModal = ({
     BACKEND_URL,
     darkModeColors,
     isArabic,
-    themeBgImg,
     t,
+    isLangRTL,
+    i18n
   } = useStateContext();
 
   const { hasPermission } = usePermission();
@@ -274,12 +275,13 @@ const SingleLeadModal = ({
           timeout: 500,
         }}
       >
-        <div className={`modal-open ${isClosing ? "modal-close" : ""}
+        <div className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"} ${isClosing ? (isLangRTL(i18n.language) ? "modal-close-left" : "modal-close-right") : ""}
         w-[100vw] h-[100vh] flex items-start justify-end `}>
           <button
             // onClick={handleCloseTimelineModel}
             onClick={handleClose}
-            className="bg-primary w-fit h-fit p-3 rounded-l-full my-4 z-10"
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"}
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
               size={18}
@@ -292,10 +294,10 @@ const SingleLeadModal = ({
             style={style}
             className={` ${
               currentMode === "dark"
-                ? "bg-[#1C1C1C] text-white"
+                ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            }
-             p-4 h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
+            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"} 
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
             {leadNotFound ? (
@@ -304,7 +306,8 @@ const SingleLeadModal = ({
               <div>
                 <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5">
                   <div className="w-full flex items-center pb-3 ">
-                    <div className="bg-primary w-fit rounded-md mr-2 my-1 py-1 px-2 text-white flex items-center justify-center">
+                    <div className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"}
+                    bg-primary w-fit rounded-md my-1 py-1 px-2 text-white flex items-center justify-center`}>
                       {LeadData?.id}
                     </div>
                     <h1
@@ -351,7 +354,7 @@ const SingleLeadModal = ({
                           currentMode === "dark"
                             ? "text-[#FFFFFF] bg-[#262626]"
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
-                        } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                        } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                       >
                         <Tooltip title="Send Mail" arrow>
                           <EmailButton email={LeadData?.leadEmail} />
@@ -365,7 +368,7 @@ const SingleLeadModal = ({
                         currentMode === "dark"
                           ? "text-[#FFFFFF] bg-[#262626]"
                           : "text-[#1C1C1C] bg-[#EEEEEE]"
-                      } hover:text-white hover:bg-blue-600 rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
+                      } hover:text-white hover:bg-orange-600 rounded-full shadow-none p-1.5 mx-1 flex items-center timelineBtn`}
                     >
                       <Tooltip title="View Timeline" arrow>
                         <button
@@ -378,16 +381,9 @@ const SingleLeadModal = ({
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5">
+                <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5">
                   {/* USER DETAILS  */}
-                  <div
-                    className={`p-4 rounded-xl shadow-sm card-hover
-                    ${
-                      currentMode === "dark"
-                        ? "bg-[#000000] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    }`}
-                  >
+                  <div className="p-4">
                     <h1 className="text-center uppercase font-semibold">
                       {t("user_details")?.toUpperCase()}
                     </h1>
@@ -435,14 +431,7 @@ const SingleLeadModal = ({
                   </div>
 
                   {/* PROJECT DETAILS  */}
-                  <div
-                    className={`p-4 rounded-xl shadow-sm card-hover
-                    ${
-                      currentMode === "dark"
-                        ? "bg-[#000000] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    }`}
-                  >
+                  <div className="p-4">
                     <h1 className="text-center uppercase font-semibold">
                       {t("enquiry_details")?.toUpperCase()}
                     </h1>
@@ -495,17 +484,12 @@ const SingleLeadModal = ({
 
                   {/* STATUS  */}
                   <div
-                    className={`col-span-2 p-4 rounded-xl shadow-sm card-hover text-center
-                    ${
-                      currentMode === "dark"
-                        ? "bg-[#000000] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    }`}
+                    className={`sm:col-span-1 md:col-span-2 lg:col-span-1 p-4`}
                   >
                     <h1 className="text-center uppercase flex items-center justify-center">
-                      <BsBookmarkFill size={16} className={`text-primary mr-2 `} />
+                      <BsBookmarkFill size={16} className={`text-primary ${isLangRTL(i18n.language) ? "ml-2" : "mr-2"}`} />
                       {t("label_feedback")?.toUpperCase()}
-                      <span className="mx-2  font-semibold">
+                      <span className="mx-2 font-semibold">
                         {t(
                           "feedback_" +
                             LeadData?.feedback
@@ -522,7 +506,7 @@ const SingleLeadModal = ({
                       LeadData?.notes === "-" ? (
                         <></>
                       ) : (
-                        <div class="flex items-center gap-5 my-4 lg:px-5">
+                        <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                           <BsChatLeftText
                             size={16}
                             className={`${
@@ -532,7 +516,7 @@ const SingleLeadModal = ({
                             }`}
                           />
                           <div
-                            className="text-start"
+                            className="col-span-7"
                             style={{
                               fontFamily: isArabic(LeadData?.notes)
                                 ? "Noto Kufi Arabic"
@@ -543,26 +527,26 @@ const SingleLeadModal = ({
                           </div>
                         </div>
                       )}
-                      <div class="flex items-center gap-5 my-4 lg:px-5">
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                         <BsPersonPlus
                           size={16}
                           className={`${
                             currentMode === "dark" ? "text-white" : "text-black"
                           }`}
                         />
-                        <div className="text-start">
+                        <div className="col-span-7">
                           {t("lead_added_on")}{" "}
                           {datetimeLong(LeadData?.creationDate)}
                         </div>
                       </div>
-                      <div class="flex items-center gap-5 my-4 lg:px-5">
+                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                         <BsPersonGear
                           size={16}
                           className={`${
                             currentMode === "dark" ? "text-white" : "text-black"
                           }`}
                         />
-                        <div className="text-start">
+                        <div className="col-span-7">
                           {t("last_updated_on")}{" "}
                           {LeadData?.lastEdited === ""
                             ? "-"
@@ -573,67 +557,67 @@ const SingleLeadModal = ({
                   </div>
                 </div>
 
+                <div className="px-4 pb-4">
+                  <div className={`my-4 rounded-xl p-4 shadow-sm ${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"}`}>
+                    <form
+                      className="my-5"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        AddNote();
+                      }}
+                    >
+                      <TextField
+                        sx={{
+                          ...darkModeColors,
+                          "& input": {
+                            fontFamily: "Noto Kufi Arabic",
+                          },
+                        }}
+                        id="note"
+                        type={"text"}
+                        label="Your Note"
+                        className="w-full"
+                        variant="outlined"
+                        size="small"
+                        required
+                        multiline
+                        minRows={2}
+                        value={AddNoteTxt}
+                        onChange={(e) => setAddNoteTxt(e.target.value)}
+                      />
+                      <button
+                        disabled={addNoteloading ? true : false}
+                        style={{ color: "white" }}
+                        type="submit"
+                        className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary p-1 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
+                      >
+                        {addNoteloading ? (
+                          <CircularProgress
+                            sx={{ color: "white" }}
+                            size={25}
+                            className="text-white"
+                          />
+                        ) : (
+                          <span>Add Note</span>
+                        )}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
                 <div
-                  className={`rounded-xl p-4 my-7 ${
-                    currentMode === "dark"
-                        ? "bg-[#000000] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                  } mb-5`}
+                  className={`p-4`}
                 >
                   <h1
                     className={` ${
                       currentMode === "dark" ? "text-white" : "text-dark"
-                    } font-semibold text-lg text-center mb-3`}
+                    } font-semibold text-lg text-center uppercase`}
                   >
-                    LEAD NOTES
+                    {t("lead_notes")}
                   </h1>
-                  
-                  <form
-                    className="my-5"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      AddNote();
-                    }}
-                  >
-                    <TextField
-                      sx={{
-                        ...darkModeColors,
-                        "& input": {
-                          fontFamily: "Noto Kufi Arabic",
-                        },
-                      }}
-                      id="note"
-                      type={"text"}
-                      label="Your Note"
-                      className="w-full"
-                      variant="outlined"
-                      size="small"
-                      required
-                      multiline
-                      minRows={2}
-                      value={AddNoteTxt}
-                      onChange={(e) => setAddNoteTxt(e.target.value)}
-                    />
-                    <button
-                      disabled={addNoteloading ? true : false}
-                      style={{ color: "white" }}
-                      type="submit"
-                      className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary p-1 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
-                    >
-                      {addNoteloading ? (
-                        <CircularProgress
-                          sx={{ color: "white" }}
-                          size={25}
-                          className="text-white"
-                        />
-                      ) : (
-                        <span>Add Note</span>
-                      )}
-                    </button>
-                  </form>
 
                   {LeadNotesData?.notes?.data?.length === 0 ? (
-                    <div className="italic text-xs text-primary text-center mt-3">
+                    <div className="italic text-xs text-primary text-center mt-4 p-4">
                       {t("no_notes_available")}
                     </div>
                   ) : (
@@ -655,7 +639,7 @@ const SingleLeadModal = ({
                             </div>
                           </div>
                           <div className="bg-primary h-10 w-0.5"></div>
-                          <div className="p-3 flex-grow text-start">
+                          <div className="p-3 flex-grow">
                             <p
                               style={{
                                 fontFamily: isArabic(row?.leadNote)

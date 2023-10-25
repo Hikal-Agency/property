@@ -398,7 +398,7 @@ const Newleads = ({
                       },
                       "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
                         {
-                          backgroundColor: "rgba(0, 0, 0, 0.05) !important",
+                          backgroundColor: "rgba(0, 0, 0, 0.6) !important",
                         },
                     }}
                     open={openDialog}

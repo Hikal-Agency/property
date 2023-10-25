@@ -467,14 +467,13 @@ const SingleLead = ({
           timeout: 1000,
         }}
       >
-        <div className={`modal-open ${isClosing ? "modal-close" : ""}
+        <div className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"} ${isClosing ? (isLangRTL(i18n.language) ? "modal-close-left" : "modal-close-right") : ""}
         w-[100vw] h-[100vh] flex items-start justify-end`}>
           <button 
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`bg-primary w-fit h-fit p-3 ${
-              isLangRTL(i18n.language) ? 'rounded-r-full' : 'rounded-l-full'
-              } my-4 z-10`}
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"}
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
               size={18}
@@ -487,10 +486,10 @@ const SingleLead = ({
             style={style}
             className={` ${
               currentMode === "dark"
-                ? "bg-[#1C1C1C] text-white"
+                ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            }
-             p-4 h-[100vh] w-[80vw] rounded-l-md overflow-y-scroll
+            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
             {loading ? (
@@ -501,7 +500,7 @@ const SingleLead = ({
               <>
                 <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5">
                   <div className="w-full flex items-center pb-3 ">
-                    <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                    <div className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} bg-primary h-10 w-1 rounded-full my-1`}></div>
                     <h1
                       className={`text-lg font-semibold ${
                         currentMode === "dark" ? "text-white" : "text-black"
@@ -541,7 +540,7 @@ const SingleLead = ({
                           currentMode === "dark"
                             ? "text-[#FFFFFF] bg-[#262626]"
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
-                        } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                        } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                       >
                         <Tooltip title="Send Mail" arrow>
                           <EmailButton email={LeadData?.leadEmail} />
@@ -556,7 +555,7 @@ const SingleLead = ({
                         currentMode === "dark"
                           ? "text-[#FFFFFF] bg-[#262626]"
                           : "text-[#1C1C1C] bg-[#EEEEEE]"
-                      } hover:bg-[#019a9a] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                      } hover:bg-teal-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                     >
                       <Tooltip title="Update Details" arrow>
                         <button onClick={() => HandleEditFunc(LeadData)}>
@@ -574,7 +573,7 @@ const SingleLead = ({
                           currentMode === "dark"
                             ? "text-[#FFFFFF] bg-[#262626]"
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
-                        } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                        } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                       >
                         <Tooltip title="Delete Lead" arrow>
                           <button
@@ -603,7 +602,7 @@ const SingleLead = ({
                         currentMode === "dark"
                           ? "text-[#FFFFFF] bg-[#262626]"
                           : "text-[#1C1C1C] bg-[#EEEEEE]"
-                      } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                      } hover:bg-purple-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                     >
                       <Tooltip title="Add Listing" arrow>
                         <button onClick={handleOpenListingModal}>
@@ -628,7 +627,7 @@ const SingleLead = ({
                           currentMode === "dark"
                             ? "text-[#FFFFFF] bg-[#262626]"
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
-                        } hover:bg-purple-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                        } hover:bg-yellow-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                       >
                         <Tooltip title="Request for Reshuffle" arrow>
                           {/* <button onClick={(e) => handleRequest(e, LeadData)}> */}
@@ -649,7 +648,7 @@ const SingleLead = ({
                             currentMode === "dark"
                               ? "text-[#FFFFFF] bg-[#262626]"
                               : "text-[#1C1C1C] bg-[#EEEEEE]"
-                          } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                          } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                         >
                           <button onClick={() => HandleBlockIP(LeadData)}>
                             <BiBlock
@@ -704,7 +703,7 @@ const SingleLead = ({
                     className={`p-4 rounded-xl shadow-sm card-hover
                     ${
                       currentMode === "dark"
-                        ? "bg-[#000000] text-white"
+                        ? "bg-[#1C1C1C] text-white"
                         : "bg-[#EEEEEE] text-black"
                     }`}
                   >
@@ -733,7 +732,7 @@ const SingleLead = ({
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                         <BsType size={16} className="text-primary" />
                         <div className="col-span-7">
-                          {LeadData?.language} Language
+                          {LeadData?.language}
                         </div>
                       </div>
                     </div>
@@ -744,7 +743,7 @@ const SingleLead = ({
                     className={`p-4 rounded-xl shadow-sm card-hover
                     ${
                       currentMode === "dark"
-                        ? "bg-[#000000] text-white"
+                        ? "bg-[#1C1C1C] text-white"
                         : "bg-[#EEEEEE] text-black"
                     }`}
                   >
@@ -777,7 +776,7 @@ const SingleLead = ({
                         <div className="col-span-7">
                           {LeadData?.leadFor === "null"
                             ? "-"
-                            : `For ${LeadData?.leadFor}`}
+                            : `${LeadData?.leadFor}`}
                         </div>
                       </div>
                     </div>
@@ -788,14 +787,14 @@ const SingleLead = ({
                     className={`sm:col-span-1 md:col-span-2 p-4 rounded-xl shadow-sm card-hover text-center
                     ${
                       currentMode === "dark"
-                        ? "bg-[#000000] text-white"
+                        ? "bg-[#1C1C1C] text-white"
                         : "bg-[#EEEEEE] text-black"
                     }`}
                   >
                     <h1 className="text-center uppercase flex items-center justify-center">
                       <BsBookmarkFill size={16} className="mx-2 text-primary" />
                       {t("label_feedback")?.toUpperCase()}
-                      <span className="mx-2  font-semibold">
+                      <span className="mx-2 font-semibold">
                         {t(
                           "feedback_" +
                             LeadData?.feedback
@@ -831,14 +830,14 @@ const SingleLead = ({
                       )}
                       <div class="flex items-center gap-5 my-4 md:px-5">
                         <BsPersonPlus size={16} className="text-primary mx-2" />
-                        <div className="text-start">
+                        <div className="">
                           {t("lead_added_on")}{" "}
                           {datetimeLong(LeadData?.creationDate)}
                         </div>
                       </div>
                       <div class="flex items-center gap-5 my-4 md:px-5">
                         <BsPersonGear size={16} className="text-primary mx-2" />
-                        <div className="text-start">
+                        <div className="">
                           {t("last_updated_on")}{" "}
                           {LeadData?.lastEdited === ""
                             ? "-"
