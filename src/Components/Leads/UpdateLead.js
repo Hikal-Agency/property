@@ -40,8 +40,8 @@ const UpdateLead = ({
     User,
     BACKEND_URL,
     setSalesPerson: setAllSalesPersons,
-    SalesPerson: AllSalesPersons, 
-    t
+    SalesPerson: AllSalesPersons,
+    t,
   } = useStateContext();
   const [value, setValue] = useState();
   const [loading, setloading] = useState(true);
@@ -73,7 +73,12 @@ const UpdateLead = ({
 
   const handlePhone = () => {
     setError(false);
-    const inputValue = value;
+    let inputValue = value;
+    if (inputValue && !inputValue.startsWith("+")) {
+      inputValue = "+" + inputValue;
+
+      console.log("replaced : ", inputValue);
+    }
     console.log("Phone: ", inputValue);
     if (inputValue && isPossiblePhoneNumber(inputValue)) {
       console.log("Possible: ", inputValue);
@@ -197,8 +202,12 @@ const UpdateLead = ({
 
         let leadContact = result?.data?.data?.leadContact;
 
-        if (leadContact) {
-          leadContact = leadContact.replace(/^00/, "+");
+        // if (leadContact) {
+        //   leadContact = leadContact.replace(/^00/, "+");
+        // }
+
+        if (leadContact && !leadContact.startsWith("+")) {
+          leadContact = "+" + leadContact;
         }
 
         setLeadContact(leadContact);
@@ -240,7 +249,6 @@ const UpdateLead = ({
 
   const UpdateLeadFunc = async () => {
     setbtnloading(true);
-
 
     if (!LeadContact) {
       setloading(false);
@@ -341,7 +349,10 @@ const UpdateLead = ({
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
-              <span className="font-semibold text-lg"> {t("fetching_your_lead")}</span>
+              <span className="font-semibold text-lg">
+                {" "}
+                {t("fetching_your_lead")}
+              </span>
             </div>
           ) : (
             <>
@@ -562,15 +573,33 @@ const UpdateLead = ({
                         select
                       >
                         <MenuItem value="">{t("label_enquiry_about")}</MenuItem>
-                        <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
-                        <MenuItem value={"1 Bedroom"}>{t("enquiry_1bed")}</MenuItem>
-                        <MenuItem value={"2 Bedrooms"}>{t("enquiry_2bed")}</MenuItem>
-                        <MenuItem value={"3 Bedrooms"}>{t("enquiry_3bed")}</MenuItem>
-                        <MenuItem value={"4 Bedrooms"}>{t("enquiry_4bed")}</MenuItem>
-                        <MenuItem value={"5 Bedrooms"}>{t("enquiry_5bed")}</MenuItem>
-                        <MenuItem value={"6 Bedrooms"}>{t("enquiry_6bed")}</MenuItem>
-                        <MenuItem value={"Retail"}>{t("enquiry_retail")}</MenuItem>
-                        <MenuItem value={"Other"}>{t("enquiry_others")}</MenuItem>
+                        <MenuItem value={"Studio"}>
+                          {t("enquiry_studio")}
+                        </MenuItem>
+                        <MenuItem value={"1 Bedroom"}>
+                          {t("enquiry_1bed")}
+                        </MenuItem>
+                        <MenuItem value={"2 Bedrooms"}>
+                          {t("enquiry_2bed")}
+                        </MenuItem>
+                        <MenuItem value={"3 Bedrooms"}>
+                          {t("enquiry_3bed")}
+                        </MenuItem>
+                        <MenuItem value={"4 Bedrooms"}>
+                          {t("enquiry_4bed")}
+                        </MenuItem>
+                        <MenuItem value={"5 Bedrooms"}>
+                          {t("enquiry_5bed")}
+                        </MenuItem>
+                        <MenuItem value={"6 Bedrooms"}>
+                          {t("enquiry_6bed")}
+                        </MenuItem>
+                        <MenuItem value={"Retail"}>
+                          {t("enquiry_retail")}
+                        </MenuItem>
+                        <MenuItem value={"Other"}>
+                          {t("enquiry_others")}
+                        </MenuItem>
                       </TextField>
 
                       {/* <label className="text-sm text-gray-500">
@@ -590,12 +619,24 @@ const UpdateLead = ({
                         select
                       >
                         <MenuItem value="">{t("label_property_type")}</MenuItem>
-                        <MenuItem value={"Apartment"}>{t("property_apartment")}</MenuItem>
-                        <MenuItem value={"Villa"}>{t("property_villa")}</MenuItem>
-                        <MenuItem value={"penthouse"}>{t("property_penthouse")}</MenuItem>
-                        <MenuItem value={"mansion"}>{t("property_mansion")}</MenuItem>
-                        <MenuItem value={"Commercial"}>{t("property_commercial")}</MenuItem>
-                        <MenuItem value={"Townhouse"}>{t("property_townhouse")}</MenuItem>
+                        <MenuItem value={"Apartment"}>
+                          {t("property_apartment")}
+                        </MenuItem>
+                        <MenuItem value={"Villa"}>
+                          {t("property_villa")}
+                        </MenuItem>
+                        <MenuItem value={"penthouse"}>
+                          {t("property_penthouse")}
+                        </MenuItem>
+                        <MenuItem value={"mansion"}>
+                          {t("property_mansion")}
+                        </MenuItem>
+                        <MenuItem value={"Commercial"}>
+                          {t("property_commercial")}
+                        </MenuItem>
+                        <MenuItem value={"Townhouse"}>
+                          {t("property_townhouse")}
+                        </MenuItem>
                       </TextField>
 
                       {/* <label className="text-sm text-gray-500">For</label> */}
@@ -615,8 +656,12 @@ const UpdateLead = ({
                         <MenuItem value="" selected>
                           For
                         </MenuItem>
-                        <MenuItem value={"Investment"}>{t("purpose_investment")}</MenuItem>
-                        <MenuItem value={"End-user"}>{t("purpose_end_user")}</MenuItem>
+                        <MenuItem value={"Investment"}>
+                          {t("purpose_investment")}
+                        </MenuItem>
+                        <MenuItem value={"End-user"}>
+                          {t("purpose_end_user")}
+                        </MenuItem>
                       </TextField>
                     </Box>
                   </div>
@@ -682,8 +727,6 @@ const UpdateLead = ({
                         </Typography>
                       )}
 
-
-
                       <TextField
                         id="LeadEmailAddress"
                         type={"email"}
@@ -747,7 +790,6 @@ const UpdateLead = ({
           )}
         </div>
       </Modal>
-
     </>
   );
 };
