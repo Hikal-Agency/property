@@ -1,10 +1,18 @@
 import React, { useEffect } from "react";
+import moment from 'moment';
 import { load } from "../../Pages/App";
 import { GoogleMap, MarkerF, InfoWindow } from "@react-google-maps/api";
 import { useStateContext } from "../../context/ContextProvider";
+import { datetimeLong } from "../_elements/formatDateTime";
+
+import {
+  BsPerson,
+  BsClock,
+  BsBuildings
+} from "react-icons/bs";
 
 const MapContainer = ({ location, selectedMeeting, clearSelectedMeeting }) => {
-  const { currentMode } = useStateContext();
+  const { currentMode, isArabic } = useStateContext();
   useEffect(() => {
     console.log("meetings and locations are", location);
   }, [location]);
@@ -38,6 +46,14 @@ const MapContainer = ({ location, selectedMeeting, clearSelectedMeeting }) => {
         >
           {validLocations?.length > 0 ? (
             validLocations?.map((meeting) => {
+
+              const mDate = meeting?.meetingDate;
+              const mTime = meeting?.meetingTime;
+              
+              const dateTimeString = `${mDate} ${mTime}`;
+              
+              const timeString = moment(dateTimeString).format('YYYY-MM-DD HH:mm:ss');
+    
               return (
                 <MarkerF
                   key={meeting.id}
@@ -65,18 +81,37 @@ const MapContainer = ({ location, selectedMeeting, clearSelectedMeeting }) => {
                         clearSelectedMeeting();
                       }}
                     >
-                      <div>
-                        <h1>{meeting?.leadName}</h1>
-                        <h1 className="font-semibold">
-                          {meeting?.project}&nbsp;
-                          {meeting?.enquiryType}&nbsp;
-                          {meeting?.leadType}
+                      <div className="w-[250px]">
+                        <h1 
+                        className="p-1 font-semibold capitalize text-primary"
+                        style={{
+                          fontFamily: isArabic(meeting?.leadName) ? "Noto Kufi Arabic" : "inherit"
+                        }}>
+                          {meeting?.leadName ?? "?"}
                         </h1>
-                        <h1>
-                          {meeting?.meetingTime}&nbsp;
-                          {meeting?.meetingDate}
-                        </h1>
-                        <h1> {meeting?.createdBy}</h1>
+                        <hr className="my-1" />
+                        <div className="p-1 grid grid-cols-7">
+                          <BsBuildings size={16} />
+                          <div className="col-span-6">
+                            {meeting?.project}
+                            {" "}
+                            {meeting?.enquiryType}
+                            {" "}
+                            {meeting?.leadType}
+                          </div>
+                        </div>
+                        <div className="p-1 grid grid-cols-7">
+                          <BsClock size={16} />
+                          <div className="col-span-6">
+                            {datetimeLong(timeString)}
+                          </div>
+                        </div>
+                        <div className="p-1 grid grid-cols-7">
+                          <BsPerson size={16} />
+                          <div className="col-span-6">
+                            {meeting?.createdBy}
+                          </div>
+                        </div>
                       </div>
                     </InfoWindow>
                   )}

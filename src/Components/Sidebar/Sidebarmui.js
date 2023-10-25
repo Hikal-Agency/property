@@ -1755,21 +1755,29 @@ const Sidebarmui = () => {
                       paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
                       // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
                     },
-                    "& .ps-menu-label": {
+                    // "& .ps-menu-label": {
+                    //   fontWeight: "medium",
+                    //   color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                    // },
+                    // "& .ps-menu-icon": {
+                    //   // fontSize: "16px",
+                    //   color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                    // }, 
+                    // "&.ps-menu-label:hover": {
+                    //   fontWeight: "medium",
+                    //   color: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                    // },
+                    // "& .ps-menu-icon:hover": {
+                    //   // fontSize: "16px",
+                    //   color: currentMode === "dark" ? "#000000" : "#FFFFFF",
+                    // }
+                    "& .ps-menu-button": {
                       fontWeight: "medium",
                       color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
                     },
-                    "& .ps-menu-icon": {
-                      // fontSize: "16px",
-                      color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
-                    },
-                    "& .ps-menu-label-2": {
+                    "& .ps-menu-button:hover": {
                       fontWeight: "medium",
-                      color: currentMode === "dark" ? "#FFFFFF" : "#000000",
-                    },
-                    "& .ps-menu-icon-2": {
-                      // fontSize: "16px",
-                      color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+                      color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#000000" : "#FFFFFF"),
                     }
                   }}
                   className="my-1"

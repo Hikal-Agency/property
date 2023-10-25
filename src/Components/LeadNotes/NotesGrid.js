@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { BsBuildings } from "react-icons/bs";
 import { BiUserCircle, BiUser } from "react-icons/bi";
+import SingleLeadModal from "../../Pages/singlelead/SingleLeadModal";
 
 
 const NotesGrid = ({ pageState, setpageState }) => {
@@ -38,6 +39,14 @@ const NotesGrid = ({ pageState, setpageState }) => {
     setLoading(isLoading);
   }, [pageState.page]);
 
+  const [singleLeadID, setSingleLeadID] = useState({});
+  const [singleLeadModelOpen, setSingleLeadModelOpen] = useState(false);
+
+  const HandleSingleLead = (params) => {
+    setSingleLeadID(params);
+    setSingleLeadModelOpen(true);
+  };
+
   return (
     <>
       <div className="min-h-screen">
@@ -64,10 +73,13 @@ const NotesGrid = ({ pageState, setpageState }) => {
                               ? "blur-bg-dark text-white"
                               : "blur-bg-light text-black")
                           } p-3 rounded-lg shadow-sm card-hover cursor-pointer `}
-                          onClick={(e) => handleNavigate(e, item?.leadId)}
+                          // onClick={(e) => handleNavigate(e, item?.leadId)}
+                          onClick={() => HandleSingleLead(item?.leadId)}
                         >
                           <div className="my-1 space-y-1 overflow-hidden">
-                            <h1 className="font-semibold capitalize text-primary py-1">
+                            <h1 className={`font-semibold capitalize py-1 ${
+                              !themeBgImg ? "text-primary" : ""
+                            }`}>
                               <span style={{fontFamily: isArabic(item?.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadNote}</span>
                             </h1>
                             <div className="my-3 h-[1px] w-full bg-primary" ></div>
@@ -115,37 +127,18 @@ const NotesGrid = ({ pageState, setpageState }) => {
                     color: currentMode === "dark" ? "white" : "black",
                   },
                 }}
-                // renderItem={(item) => {
-                //   const isEllipsis =
-                //     item.type === "start-ellipsis" ||
-                //     item.type === "end-ellipsis";
-
-                //   return (
-                //     <PaginationItem
-                //       {...item}
-                //       // page={pageState.page}
-                //       sx={{
-                //         color: isEllipsis
-                //           ? currentMode === "dark"
-                //             ? "red"
-                //             : "red"
-                //           : undefined,
-                //         backgroundColor: isEllipsis
-                //           ? undefined
-                //           : currentMode === "dark"
-                //           ? "red"
-                //           : "red",
-                //         "&:hover": {
-                //           backgroundColor:
-                //             currentMode === "dark" ? "red" : "red",
-                //         },
-                //       }}
-                //     />
-                //   );
-                // }}
               />
             </Stack>
+            
+            {singleLeadModelOpen && (
+              <SingleLeadModal
+                singleLeadModelOpen={singleLeadModelOpen}
+                handleCloseSingleLeadModel={() => setSingleLeadModelOpen(false)}
+                LeadID={singleLeadID}
+              />
+            )}
           </div>
+          
         )}
       </div>
     </>

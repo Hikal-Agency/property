@@ -10,6 +10,11 @@ import moment from "moment";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TextField } from "@mui/material";
+import { datetimeLong } from "../../Components/_elements/formatDateTime";
+
+import {
+  BsClock
+} from "react-icons/bs";
 
 const UserAllLocation = (props) => {
   const {
@@ -195,31 +200,59 @@ const UserAllLocation = (props) => {
                               onClick={() => {
                                 setSelectedUser(user);
                               }}
-                            />
-                            {selectedUser ? (
-                              <InfoWindow
-                                position={{
-                                  lat: parseFloat(selectedUser?.latitude),
-                                  lng: parseFloat(selectedUser?.longitude),
-                                }}
-                                onCloseClick={() => {
-                                  setSelectedUser(null);
-                                }}
-                              >
-                                <div>
-                                  <h1 className="font-semibold">
-                                    {selectedUser.userName}
-                                  </h1>
-                                  <h1>
-                                    LatLong: {selectedUser?.latitude},{" "}
-                                    {selectedUser?.longitude}
-                                  </h1>
-                                  <h1>
-                                    Last updated: {selectedUser.recorded_at}
-                                  </h1>
-                                </div>
-                              </InfoWindow>
-                            ) : null}
+                            >
+                              {selectedUser && (
+                                <InfoWindow
+                                  position={{
+                                    lat: Number(selectedUser.latitude),
+                                    lng: Number(selectedUser.longitude),
+                                  }}
+                                  onCloseClick={() => {
+                                    setSelectedUser(null);
+                                  }}
+                                >
+                                  <div className="w-[250px]">
+                                    <h1 
+                                    className="p-1 font-semibold capitalize text-primary"
+                                    >
+                                      {selectedUser.userName}
+                                    </h1>
+                                    <hr className="my-1" />
+                                    <div className="p-1 grid grid-cols-7">
+                                      <BsClock size={16} />
+                                      <div className="col-span-6">
+                                        {datetimeLong(selectedUser.recorded_at)}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </InfoWindow>
+                              )}
+
+                              {/* {selectedUser ? (
+                                <InfoWindow
+                                  position={{
+                                    lat: parseFloat(selectedUser?.latitude),
+                                    lng: parseFloat(selectedUser?.longitude),
+                                  }}
+                                  onCloseClick={() => {
+                                    setSelectedUser(null);
+                                  }}
+                                >
+                                  <div>
+                                    <h1 className="font-semibold">
+                                      {selectedUser.userName}
+                                    </h1>
+                                    <h1>
+                                      LatLong: {selectedUser?.latitude},{" "}
+                                      {selectedUser?.longitude}
+                                    </h1>
+                                    <h1>
+                                      Last updated: {selectedUser.recorded_at}
+                                    </h1>
+                                  </div>
+                                </InfoWindow>
+                              ) : null} */}
+                            </MarkerF>
                           </>
                         ))}
                         <MarkerF
