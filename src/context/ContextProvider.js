@@ -372,39 +372,53 @@ export const ContextProvider = ({ children }) => {
     code: "en",
     title: "English",
     flag: "/assets/flags/english-flag.png",
+    font: "'Noto Sans', sans-serif",
+    size: "12px",
   }, 
   {
     code: "ar", 
     title: "عربي", 
     rtl: true,
     flag: "/assets/flags/arabic-flag.png",
+    font: "'Noto Kufi Arabic', sans-serif",
+    size: "12px",
   }, 
   {
     code: "cn", 
     title: "中文",
     flag: "/assets/flags/chinese-flag.png",
+    font: "'Noto Sans TC', sans-serif",
+    size: "14px",
   }, 
   {
     code: "fr", 
     title: "Français",
     flag: "/assets/flags/french-flag.png",
+    font: "'Noto Sans', sans-serif",
+    size: "12px",
   }, 
   {
     code: "he", 
     title: "עִבְרִית",
     rtl: true,
     flag: "/assets/flags/hebrew-flag.png",
+    font: "'Noto Sans Hebrew', sans-serif;",
+    size: "14px",
   }, 
   {
     code: "pk", 
     title: "اردو", 
     rtl: true,
     flag: "/assets/flags/urdu-flag.png",
+    font: "'Noto Kufi Arabic', sans-serif",
+    size: "12px",
   }, 
   {
     code: "ru", 
     title: "Русский",
     flag: "/assets/flags/russian-flag.png",
+    font: "'Noto Sans', sans-serif",
+    size: "12px",
   }
 ];
 
@@ -477,14 +491,19 @@ export const ContextProvider = ({ children }) => {
     const language = langs?.find((lang) => lang?.code === langCode);
 
     let cssLang = ''; 
-    if(language?.code === "en"){
-      cssLang = '"Open Sans", system-ui, Inter, -apple-system, BlinkMacSystemFont,"Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif';
-    } else if(language?.code === "ar"){
-      cssLang = "Noto Kufi Arabic";
-    }else {
-      cssLang = '"Open Sans", system-ui, Inter, -apple-system, BlinkMacSystemFont,"Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif';
+    let cssSize = ''; 
+    
+    if (language) {
+      const { font, size } = language;
+      cssLang = font;
+      cssSize = size;
+    }
+    else {
+      return null;
     }
     document.documentElement.style.setProperty("--font-family", cssLang);
+    document.documentElement.style.setProperty("--font-size", cssSize);
+    
     if(language) {
       if(language?.rtl){
         return true;
