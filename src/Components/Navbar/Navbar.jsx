@@ -77,6 +77,10 @@ const changeBodyDirection = (newDirection) => {
   document.body.style.direction = newDirection;
 };
 
+const changeBodyFont = (newFont) => {
+  document.body.style.fontFamily = newFont;
+};
+
 const Navbar = () => {
   const token = localStorage.getItem("auth-token");
 
