@@ -508,13 +508,12 @@ const Sidebarmui = () => {
         console.log("data::", data);
         toast(
           <ReminderToast
-            type="reminder"
-            reminderTime="2023-08-19 01:25:00 PM"
-            leadName="Qasim"
+            type="lead_assigned"
+            leadName={data?.leadName}
           />,
           {
             position: "bottom-right",
-            autoClose: 15000,
+            autoClose: 30000,
             hideProgressBar: true,
             closeOnClick: false,
             pauseOnHover: true,
