@@ -28,7 +28,7 @@ const ReminderToast = ({type, leadName = "", reminderTime = ""}) => {
             <small> {reminderTime}</small>
       </div>
       : (type === "lead_assigned" ? <div className="flex items-center self-end text-right justify-end text-gray-400">
-            <small>Lead Assigned</small>
+            <small>Lead Assignment</small>
       </div> : <></>) }
     </div>
   );
