@@ -42,6 +42,8 @@ const UpdateLead = ({
     setSalesPerson: setAllSalesPersons,
     SalesPerson: AllSalesPersons,
     t,
+    Managers,
+    // SalesPerson,
   } = useStateContext();
   const [value, setValue] = useState();
   const [loading, setloading] = useState(true);
@@ -152,32 +154,32 @@ const UpdateLead = ({
     setAllSalesPersons(data);
   }
 
-  useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    axios
-      .get(`${BACKEND_URL}/managers`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log(result);
-        const managers = result?.data?.managers?.data;
-        setManager2(managers || []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("auth-token");
+  //   axios
+  //     .get(`${BACKEND_URL}/managers`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log(result);
+  //       const managers = result?.data?.managers?.data;
+  //       setManager2(managers || []);
 
-        const urls = managers?.map((manager) => {
-          return `${BACKEND_URL}/teamMembers/${manager?.id}`;
-        });
+  //       const urls = managers?.map((manager) => {
+  //         return `${BACKEND_URL}/teamMembers/${manager?.id}`;
+  //       });
 
-        setPersons(urls || []);
-        setloading(false);
-      })
-      .catch((err) => {
-        setloading(false);
-        console.log(err);
-      });
-  }, []);
+  //       setPersons(urls || []);
+  //       setloading(false);
+  //     })
+  //     .catch((err) => {
+  //       setloading(false);
+  //       console.log(err);
+  //     });
+  // }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
@@ -219,6 +221,7 @@ const UpdateLead = ({
         setLeadNotes(result?.data?.data?.notes);
         setManager(result?.data?.data?.assignedToManager);
         setSalesPerson2(result?.data?.data?.assignedToSales);
+        setloading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -438,7 +441,7 @@ const UpdateLead = ({
                           variant="outlined"
                           size="small"
                           value={
-                            Manager2?.find((person) => person?.id === Manager)
+                            Managers?.find((person) => person?.id === Manager)
                               ?.userName || t("no_manager")
                           }
                           onChange={(e) => {
