@@ -42,6 +42,7 @@ const NotificationsListComponent = ({
     setpageState,
     primaryColor,
     unreadNotifsCount,
+    themeBgImg
   } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
@@ -54,8 +55,8 @@ const NotificationsListComponent = ({
   };
 
   const readColor = {
-    bgColorRead: currentMode === "dark" ? "#222222" : "#DDDDDD",
-    bgColor: currentMode === "dark" ? "#0C0C0C" : "#F4F4F4",
+    bgColorRead: !themeBgImg ? (currentMode === "dark" ? "#222222" : "#DDDDDD") : (currentMode === "dark" ? "rgba(34,34,34,0.5)" : "rgba(221,221,221,0.5)"),
+    bgColor: !themeBgImg ? (currentMode === "dark" ? "#0C0C0C" : "#F4F4F4") : (currentMode === "dark" ? "rgba(12,12,12,0.7)" : "rgba(244,244,244,0.7)"),
   };
 
   const iconBGColor = {
@@ -185,9 +186,9 @@ const NotificationsListComponent = ({
                   >
                     {notification?.title}
                   </p>
-                  <p style={{ color: "#AAAAAA" }} className="mt-2 text-sm">
+                  <p style={{ color: !themeBgImg ? "#AAAAAA" : (currentMode === "dark" ? "#CCCCCC" : "#333333") }} className="mt-2 text-sm">
                     {notification?.type}{" "}
-                    <span className="text-[#AAAAAA] rounded-full mx-1">●</span>{" "}
+                    <span className="rounded-full mx-1">●</span>{" "}
                     {notification?.created_at}{" "}
                   </p>
                 </div>
