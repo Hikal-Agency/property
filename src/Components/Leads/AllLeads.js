@@ -33,7 +33,7 @@ import {
   FaUser,
   FaRegComments,
 } from "react-icons/fa";
-import { MdCampaign } from "react-icons/md";
+import { MdCampaign, MdImportantDevices } from "react-icons/md";
 import { BiImport, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
 import { BsShieldX, BsShieldCheck, BsShieldMinus } from "react-icons/bs";
 import { BsShuffle } from "react-icons/bs";
@@ -1912,43 +1912,50 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               <Box>
                 <div className="grid-cols-1 mb-7 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
                   {hasPermission("leadSource_counts") && (
-                    <div className="justify-self-end">
-                      <div className="px-4">
-                        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
-                          {counters && counters?.length > 0
-                            ? counters?.map((counter) => (
-                                <Box
-                                  sx={{
-                                    padding: "5px 7px",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    background:
-                                      currentMode === "dark"
-                                        ? "#000000"
-                                        : "#FFFFFF",
-                                    color:
-                                      currentMode === "dark"
-                                        ? "white"
-                                        : "black",
-                                    boxShadow:
-                                      currentMode === "dark"
-                                        ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                        : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                                    height: "30px",
-                                    minWidth: "60px",
-                                    maxWidth: "100px",
-                                  }}
-                                >
-                                  {sourceCounters[counter?.leadSource]}
-                                  <span className="px-2">{counter?.count}</span>
-                                </Box>
-                              ))
-                            : ""}
-                          {/* MESSAGE  */}
+                    <>
+                      <Tooltip title="Lead Source" arrow>
+                        <button className="p-2 bg-primary hover:bg-black rounded-full">
+                          <MdImportantDevices size={18} color={"#FFFFFF"} />
+                        </button>
+                      </Tooltip>
+                      
+                      <div className="justify-self-end">
+                        <div className="px-4">
+                          <div className="flex flex-wrap gap-4 justify-end">
+                            {counters && counters?.length > 0
+                              ? counters?.map((counter) => (
+                                  <Box
+                                    sx={{
+                                      padding: "5px 7px",
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                      background:
+                                        currentMode === "dark"
+                                          ? "#000000"
+                                          : "#FFFFFF",
+                                      color:
+                                        currentMode === "dark"
+                                          ? "white"
+                                          : "black",
+                                      boxShadow:
+                                        currentMode === "dark"
+                                          ? "0px 1px 1px rgba(66, 66, 66, 1)"
+                                          : "0px 1px 1px rgba(0, 0, 0, 0.25)",
+                                      height: "30px",
+                                      minWidth: "60px",
+                                      maxWidth: "100px",
+                                    }}
+                                  >
+                                    {sourceCounters[counter?.leadSource]}
+                                    <span className="px-2">{counter?.count}</span>
+                                  </Box>
+                                ))
+                              : ""}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
               </Box>

@@ -1998,7 +1998,7 @@ const Sidebarmui = () => {
                                   <span className={`capitalize flex items-center gap-2`}>
                                     {link?.links[0]?.name}
                                     {link?.links[0].pro && (
-                                      <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                      <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
                                         <GiQueenCrown size={16} className="gold-grad" />
                                       </div>
                                     )}

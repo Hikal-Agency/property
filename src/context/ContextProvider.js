@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import moment from "moment";
 import axios from "../axoisConfig";
 import {toast} from "react-toastify";
 
@@ -23,6 +24,7 @@ export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
   const [User, setUser] = useState({});
+  const [counters, setCounters] = useState([]);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [selected, setSelected] = useState("Dashboard");
   const [reloadDataGrid, setreloadDataGrid] = useState(false);
@@ -422,6 +424,43 @@ export const ContextProvider = ({ children }) => {
   }
 ];
 
+  const getLangDetails = (langCode) => {
+    const language = langs.find((lang) => lang.code === langCode);
+    if (language) {
+      const { title, flag } = language;
+      return { title, flag };
+    } else {
+      return null;
+    }
+  }
+
+  const isLangRTL = (langCode) => {
+    const language = langs?.find((lang) => lang?.code === langCode);
+
+    let cssLang = ''; 
+    let cssSize = ''; 
+    
+    if (language) {
+      const { font, size } = language;
+      cssLang = font;
+      cssSize = size;
+    }
+    else {
+      return null;
+    }
+    document.documentElement.style.setProperty("--font-family", cssLang);
+    document.documentElement.style.setProperty("--font-size", cssSize);
+    
+    if(language) {
+      if(language?.rtl){
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   const ReFetchProfile = () => {
     const token = localStorage.getItem("auth-token");
@@ -477,43 +516,24 @@ export const ContextProvider = ({ children }) => {
       });
   };
 
-  const getLangDetails = (langCode) => {
-    const language = langs.find((lang) => lang.code === langCode);
-    if (language) {
-      const { title, flag } = language;
-      return { title, flag };
-    } else {
-      return null;
-    }
-  }
-
-  const isLangRTL = (langCode) => {
-    const language = langs?.find((lang) => lang?.code === langCode);
-
-    let cssLang = ''; 
-    let cssSize = ''; 
-    
-    if (language) {
-      const { font, size } = language;
-      cssLang = font;
-      cssSize = size;
-    }
-    else {
-      return null;
-    }
-    document.documentElement.style.setProperty("--font-family", cssLang);
-    document.documentElement.style.setProperty("--font-size", cssSize);
-    
-    if(language) {
-      if(language?.rtl){
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
+  const SourceCounters = async () => {
+    const token = localStorage.getItem("auth-token");
+    const currentDate = moment().format("YYYY-MM-DD");
+    await axios
+      .get(`${BACKEND_URL}/totalSource?date=${currentDate}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        const source = {
+          counters: result.data.data.query_result,
+        }
+        setCounters(source);
+      });
+      // setCounters(callCounter?.data?.data?.query_result);
+  };
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
@@ -587,6 +607,7 @@ export const ContextProvider = ({ children }) => {
         setIsUserSubscribed,
         permits,
         isLangRTL,
+        SourceCounters,
         getLangDetails,
         setPermits,
         appLoading,
@@ -613,6 +634,8 @@ export const ContextProvider = ({ children }) => {
         setBlurLightColor,
         blurWhiteColor,
         setBlurWhiteColor,
+        counters,
+        setCounters
       }}
     >
       {children}
