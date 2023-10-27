@@ -66,7 +66,7 @@ import { FiSettings, FiUsers } from "react-icons/fi";
 import { FaRandom, FaUserTag, FaUserFriends, FaTags } from "react-icons/fa";
 import { BsPersonGear } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
-import { GoBrowser } from "react-icons/go";
+import { GiQueenCrown } from "react-icons/gi";
 import ringtone from "../../assets/new-message-ringtone.mp3";
 import notifRingtone from "../../assets/notification-ringtone.mp3";
 import useWindowSize from "react-use/lib/useWindowSize";
@@ -692,6 +692,7 @@ const Sidebarmui = () => {
         {
           name: t("menu_dashboard"),
           icon: <BsColumnsGap size={16} />,
+          pro: false,
           link: "/dashboard",
         },
       ],
@@ -700,45 +701,54 @@ const Sidebarmui = () => {
     {
       title: t("leads"),
       icon: <BsPeople size={18} />,
+      pro: false,
       links: [
         {
           name: t("menu_add_lead"),
           icon: <BsPersonPlus size={18} />,
+          pro: false,
           link: "/addlead",
         },
         // UNASSIGNED 
         {
           name: t("menu_unassigned"),
           icon: <BsStopCircle size={16} />,
+          pro: false,
           submenu: [
             {
-              name: t("menu_live_call"),
-              link: "/unassigned/liveleads",
-            },
-            {
               name: t("menu_fresh"),
+              pro: false,
               link: "/unassigned/fresh",
               count: sidebarData?.UNASSIGNED?.fresh,
             },
             {
               name: t("menu_thirdparty"),
+              pro: false,
               count: sidebarData?.UNASSIGNED?.third_party,
               link: "/unassigned/thirdpartyleads",
             },
             {
               name: t("menu_cold"),
+              pro: false,
               count: sidebarData?.UNASSIGNED?.cold,
               link: "/unassigned/coldleads",
             },
             {
               name: t("menu_archived"),
+              pro: false,
               count: sidebarData?.UNASSIGNED?.warm,
               link: "/unassigned/archive",
             },
             {
               name: t("menu_personal"),
+              pro: false,
               count: sidebarData?.UNASSIGNED?.personal,
               link: "/unassigned/personalleads",
+            },
+            {
+              name: t("menu_live_call"),
+              pro: false,
+              link: "/unassigned/liveleads",
             },
           ],
         },
@@ -746,44 +756,53 @@ const Sidebarmui = () => {
         {
           name: t("menu_fresh"),
           icon: <BsFire size={16} />,
+          pro: false,
           submenu: [
             {
               name: t("feedback_all"),
+              pro: false,
               count: sidebarData?.HotLeadsCount?.hot,
               link: "/freshleads/all",
             },
             {
               name: t("feedback_new"),
+              pro: false,
               count: sidebarData?.HotLeadsCount?.new,
               link: "/freshleads/new",
             },
             {
               name: t("feedback_follow_up"),
+              pro: false,
               count: sidebarData?.HotLeadsCount?.follow_up,
               link: "/freshleads/follow up",
             },
             {
               name: t("feedback_meeting"),
+              pro: false,
               count: sidebarData?.HotLeadsCount?.Meeting,
               link: "/freshleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
+              pro: false,
               count: sidebarData?.HotLeadsCount?.low_budget,
               link: "/freshleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
+              pro: false,
               count: sidebarData?.HotLeadsCount?.no_nswer,
               link: "/freshleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
+              pro: false,
               count: sidebarData?.HotLeadsCount?.not_interested,
               link: "/freshleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
+              pro: false,
               count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/freshleads/unreachable",
             },
@@ -793,44 +812,53 @@ const Sidebarmui = () => {
         {
           name: t("menu_thirdparty"),
           icon: <BsLink45Deg size={20} />,
+          pro: false,
           submenu: [
             {
               name: t("feedback_all"),
+              pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.all,
               link: "/thirdpartyleads/all",
             },
             {
               name: t("feedback_new"),
+              pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.new,
               link: "/thirdpartyleads/new",
             },
             {
               name: t("feedback_follow_up"),
+              pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
               link: "/thirdpartyleads/follow up",
             },
             {
               name: t("feedback_meeting"),
+              pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
               link: "/thirdpartyleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
+              pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
               link: "/thirdpartyleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
+              pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
               link: "/thirdpartyleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
+              pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
               link: "/thirdpartyleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
+              pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
               link: "/thirdpartyleads/unreachable",
             },
@@ -840,14 +868,17 @@ const Sidebarmui = () => {
         {
           name: t("menu_cold"),
           icon: <BsSnow size={16} />,
+          pro: false,
           submenu: [
             {
               name: t("feedback_all"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.all,
               link: "/coldleads/all",
             },
             {
               name: t("menu_verified"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.verified, //TODO
               link: "/coldleads/coldLeadsVerified",
               icon: <RiRadioButtonLine size={16} style={{ color: "#40B74F" }} />,
@@ -855,6 +886,7 @@ const Sidebarmui = () => {
             },
             {
               name: t("menu_invalid"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.unverified, //TODO
               link: "/coldleads/coldLeadsInvalid",
               icon: <RiRadioButtonLine size={16} style={{ color: primaryColor }} />,
@@ -862,6 +894,7 @@ const Sidebarmui = () => {
             },
             {
               name: t("menu_not_checked"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
               link: "/coldleads/coldLeadsNotChecked",
               icon: <RiRadioButtonLine size={16} style={{ color: "#FFCF49" }} />,
@@ -869,36 +902,43 @@ const Sidebarmui = () => {
             },
             {
               name: t("feedback_new"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.new,
               link: "/coldleads/new",
             },
             {
               name: t("feedback_follow_up"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.follow_up,
               link: "/coldleads/follow up",
             },
             {
               name: t("feedback_meeting"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.Meeting,
               link: "/coldleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.low_budget,
               link: "/coldleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.no_nswer,
               link: "/coldleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.not_interested,
               link: "/coldleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
+              pro: false,
               count: sidebarData?.ColdLeadsCount?.unreachable,
               link: "/coldleads/unreachable",
             },
@@ -908,45 +948,54 @@ const Sidebarmui = () => {
         {
           name: t("menu_reshuffled"),
           icon: <BsShuffle size={16} />,
+          pro: false,
           // link: "/reshuffleleads",
           submenu: [
             {
               name: t("feedback_all"),
+              pro: false,
               count: sidebarData?.Reshuffle?.fresh,
               link: "/reshuffleleads/all",
             },
             {
               name: t("feedback_new"),
+              pro: false,
               count: sidebarData?.Reshuffle?.new,
               link: "/reshuffleleads/new",
             },
             {
               name: t("feedback_follow_up"),
+              pro: false,
               count: sidebarData?.Reshuffle?.follow_up,
               link: "/reshuffleleads/follow up",
             },
             {
               name: t("feedback_meeting"),
+              pro: false,
               count: sidebarData?.Reshuffle?.meeting,
               link: "/reshuffleleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
+              pro: false,
               count: sidebarData?.Reshuffle?.low_budget,
               link: "/reshuffleleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
+              pro: false,
               count: sidebarData?.Reshuffle?.no_answer,
               link: "/reshuffleleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
+              pro: false,
               count: sidebarData?.Reshuffle?.not_interested,
               link: "/reshuffleleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
+              pro: false,
               count: sidebarData?.Reshuffle?.unreachable,
               link: "/reshuffleleads/unreachable",
             },
@@ -956,44 +1005,53 @@ const Sidebarmui = () => {
         {
           name: t("menu_archived"),
           icon: <BsArchive size={16} />,
+          pro: false,
           submenu: [
             {
               name: t("menu_all_leads"),
+              pro: false,
               count: sidebarData?.WarmLeadCount?.all,
               link: "/archive/all",
             },
             {
               name: t("menu_new_leads"),
+              pro: false,
               count: sidebarData?.WarmLeadCount?.new,
               link: "/archive/new",
             },
             {
               name: t("feedback_follow_up"),
+              pro: false,
               count: sidebarData?.WarmLeadCount?.follow_up,
               link: "/archive/follow up",
             },
             {
               name: t("feedback_meeting"),
+              pro: false,
               count: sidebarData?.WarmLeadCount?.Meeting,
               link: "/archive/meeting",
             },
             {
               name: t("feedback_low_budget"),
+              pro: false,
               count: sidebarData?.WarmLeadCount?.low_budget,
               link: "/archive/low budget",
             },
             {
               name: t("feedback_no_answer"),
+              pro: false,
               count: sidebarData?.WarmLeadCount?.no_nswer,
               link: "/archive/no answer",
             },
             {
               name: t("feedback_not_interested"),
+              pro: false,
               count: sidebarData?.WarmLeadCount?.not_interested,
               link: "/archive/not interested",
             },
             {
               name: t("feedback_unreachable"),
+              pro: false,
               count: sidebarData?.WarmLeadCount?.unreachable,
               link: "/archive/unreachable",
             },
@@ -1003,44 +1061,53 @@ const Sidebarmui = () => {
         {
           name: t("menu_personal"),
           icon: <BsPersonRolodex size={16} />,
+          pro: false,
           submenu: [
             {
               name: t("feedback_all"),
+              pro: false,
               count: sidebarData?.PersonalLeadsCount?.all,
               link: "/personalleads/all",
             },
             {
               name: t("feedback_new"),
+              pro: false,
               count: sidebarData?.PersonalLeadsCount?.new,
               link: "/personalleads/new",
             },
             {
               name: t("feedback_follow_up"),
+              pro: false,
               count: sidebarData?.PersonalLeadsCount?.follow_up,
               link: "/personalleads/follow up",
             },
             {
               name: t("feedback_meeting"),
+              pro: false,
               count: sidebarData?.PersonalLeadsCount?.Meeting,
               link: "/personalleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
+              pro: false,
               count: sidebarData?.PersonalLeadsCount?.low_budget,
               link: "/personalleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
+              pro: false,
               count: sidebarData?.PersonalLeadsCount?.no_nswer,
               link: "/personalleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
+              pro: false,
               count: sidebarData?.PersonalLeadsCount?.not_interested,
               link: "/personalleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
+              pro: false,
               count: sidebarData?.PersonalLeadsCount?.unreachable,
               link: "/personalleads/unreachable",
             },
@@ -1050,44 +1117,53 @@ const Sidebarmui = () => {
         {
           name: t("menu_live_call"),
           icon: <BsWebcam size={18} />,
+          pro: false,
           submenu: [
             {
               name: t("feedback_all"),
+              pro: false,
               // count: sidebarData?.HotLeadsCount?.hot,
               link: "/liveleads/all",
             },
             {
               name: t("feedback_new"),
+              pro: false,
               // count: sidebarData?.HotLeadsCount?.new,
               link: "/liveleads/new",
             },
             {
               name: t("feedback_follow_up"),
+              pro: false,
               // count: sidebarData?.HotLeadsCount?.follow_up,
               link: "/liveleads/follow up",
             },
             {
               name: t("feedback_meeting"),
+              pro: false,
               // count: sidebarData?.HotLeadsCount?.Meeting,
               link: "/liveleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
+              pro: false,
               // count: sidebarData?.HotLeadsCount?.low_budget,
               link: "/liveleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
+              pro: false,
               // count: sidebarData?.HotLeadsCount?.no_nswer,
               link: "/freshleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
+              pro: false,
               // count: sidebarData?.HotLeadsCount?.not_interested,
               link: "/freshleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
+              pro: false,
               // count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/freshleads/unreachable",
             },
@@ -1097,12 +1173,14 @@ const Sidebarmui = () => {
         {
           name: t("menu_notes"),
           icon: <BsChatRightText size={16} />,
+          pro: false,
           link: "/leadnotes",
         },
         // SEARCH 
         {
           name: t("menu_search"),
           icon: <BsSearch size={16} />,
+          pro: false,
           link: "/search",
         },
       ],
@@ -1111,15 +1189,18 @@ const Sidebarmui = () => {
     {
       title: t("menu_deals"),
       icon: <BsPatchCheck size={18} />,
+      pro: false,
       links: [
         {
           name: t("menu_booked_deals"),
           icon: <BsBookmarkStar size={16} />,
+          pro: false,
           link: "/booked",
         },
         {
           name: t("menu_closed_deals"),
           icon: <BsLock size={16} />,
+          pro: false,
           link: "/closedeals",
         },
       ],
@@ -1128,15 +1209,18 @@ const Sidebarmui = () => {
     {
       title: t("menu_secondary"),
       icon: <BsBuildings size={18} />,
+      pro: false,
       links: [
         {
           name: t("menu_listings"),
           icon: <BsTags size={16} />,
+          pro: false,
           link: "/secondaryListings",
         },
         {
           name: t("menu_buyers"),
           icon: <BsPeople size={16} />,
+          pro: false,
           link: "/buyers/buyers",
         },
       ],
@@ -1145,6 +1229,7 @@ const Sidebarmui = () => {
     {
       title: t("menu_apps"),
       icon: <BsGrid3X3Gap size={18} />,
+      pro: false,
       links: [
         // MEETINGS 
         {
@@ -1167,26 +1252,29 @@ const Sidebarmui = () => {
         {
           name: t("menu_blocked_ips"),
           icon: <BsDashCircle size={16} />,
+          pro: true,
           link: "/blocked",
         },
         // REPORTS 
         {
           name: t("menu_reports"),
           icon: <BsFileEarmarkBarGraph size={16} />,
+          pro: false,
           link: "/reports",
         },
         // OFFERS 
         {
           name: t("menu_offers"),
           icon: <BsGift size={16} />,
+          pro: false,
           link: "/offers",
         },
         // PROPERTY PORTFOLIO 
-        {
-          name: t("menu_property_portfolio"),
-          icon: <BsBuildings size={16} />,
-          link: "/propertyPortfolio",
-        },
+        // {
+        //   name: t("menu_property_portfolio"),
+        //   icon: <BsBuildings size={16} />,
+        //   link: "/propertyPortfolio",
+        // },
         // {
         //   name: t("menu_clients"),
         //   icon: <ImUsers size={16} />,
@@ -1199,27 +1287,30 @@ const Sidebarmui = () => {
         // },
 
         // NEWSLETTER 
-        {
-          name: t("menu_newsletter"),
-          icon: <BsEnvelopeAt size={16} />,
-          link: "/newsletter",
-        },
+        // {
+        //   name: t("menu_newsletter"),
+        //   icon: <BsEnvelopeAt size={16} />,
+        //   link: "/newsletter",
+        // },
         // LEADERBOARD 
         {
           name: t("menu_leaderboard"),
           icon: <BsBarChart size={16} />,
+          pro: true,
           link: "/leaderboard",
         },
         // USERS 
         {
           name: t("menu_users"),
           icon: <BsPeople size={16} />,
+          pro: false,
           link: "/users",
         },
         // ROLES 
         {
           name: t("menu_roles"),
           icon: <BsPersonGear size={16} />,
+          pro: false,
           link: "/roles",
         },
       ],
@@ -1228,11 +1319,13 @@ const Sidebarmui = () => {
     {
       title: t("menu_social_media"),
       icon: <BsShare size={18} />,
+      pro: true,
       links: [
         {
           name: t("menu_facebook"),
           // icon: <FaChartLine />,
           icon: <BsFacebook size={16} />,
+          pro: true,
           link: "/facebook",
         },
         // {
@@ -1247,15 +1340,18 @@ const Sidebarmui = () => {
     {
       title: t("menu_location"),
       icon: <BsGeoAlt size={18} />,
+      pro: true,
       links: [
         {
           name: t("menu_location_meetings"),
           icon: <BsCalendarWeek size={16} />,
+          pro: true,
           link: "/location/meetinglocation",
         },
         {
           name: t("menu_location_live"),
           icon: <BsPerson size={16} />,
+          pro: true,
           link: "/location/userlocation",
         },
       ],
@@ -1264,20 +1360,24 @@ const Sidebarmui = () => {
     {
       title: t("menu_attendance"),
       icon: <BsCalendarCheck size={18} />,
+      pro: true,
       links: [
         {
           name: t("menu_office_settings"),
           icon: <BsClockHistory size={16} />,
+          pro: true,
           link: "/attendance/officeSettings",
         },
         {
           name: t("menu_employee_list"),
           icon: <BsPeople size={16} />,
+          pro: true,
           link: "/attendance/employeesList",
         },
         {
           name: t("menu_my_attendance"),
           icon: <BsPerson size={16} />,
+          pro: true,
           link: "/attendance_self",
         },
       ],
@@ -1299,10 +1399,12 @@ const Sidebarmui = () => {
     {
       title: t("menu_billings"),
       icon: <BsCashCoin size={18} />,
+      pro: false,
       links: [
         {
           name: t("menu_payments"),
           icon: <BsCashStack size={16} />,
+          pro: false,
           link: "/marketing/payments",
         },
       ],
@@ -1311,11 +1413,12 @@ const Sidebarmui = () => {
     {
       title: t("menu_support"),
       icon: <BsHeadset size={20} />,
-
+      pro: false,
       links: [
         {
           name: t("menu_qa"),
           icon: <BsQuestionOctagon size={16} />,
+          pro: false,
           submenu: [
             {
               name: t("menu_qa_form"),
@@ -1330,6 +1433,7 @@ const Sidebarmui = () => {
         {
           name: t("menu_tickets"),
           icon: <BsTicketPerforated size={16} />,
+          pro: false,
           link: "/support",
         },
       ],
@@ -1338,10 +1442,12 @@ const Sidebarmui = () => {
     {
       title: t("menu_misc"),
       icon: <BsGear size={18} />,
+      pro: false,
       links: [
         {
           name: t("notifications"),
           icon: <BsBell size={16} />,
+          pro: false,
           submenu: [
             // {
             //   name: "Integration",
@@ -1349,10 +1455,12 @@ const Sidebarmui = () => {
             // },
             {
               name: t("menu_notification_settings"),
+              pro: false,
               link: "/notifications",
             },
             {
               name: t("menu_notification_history"),
+              pro: false,
               link: "/notificationsList",
             },
           ],
@@ -1366,30 +1474,36 @@ const Sidebarmui = () => {
       links.splice(5, 0, {
         title: t("menu_marketing"),
         icon: <BsMegaphone size={16} />,
+        pro: true,
         links: [
           {
             name: t("menu_instances"),
             icon: <BsLayers size={16} />,
+            pro: true,
             link: "/instances",
           },
           {
             name: t("menu_whatsapp"),
             icon: <BsWhatsapp size={16} />,
+            pro: true,
             link: "/marketing/chat",
           },
           {
             name: t("menu_sms"),
             icon: <BsChatText size={16} />,
+            pro: true,
             link: "/marketing/contacts",
           },
           {
             name: t("menu_templates"),
             icon: <BsFileEarmarkText size={16} />,
+            pro: true,
             link: "/marketing/templates",
           },
           {
             name: t("menu_campaigns"),
             icon: <BsMegaphone size={16} />,
+            pro: true,
             link: "/marketing/messages",
           },
         ],
@@ -1397,27 +1511,32 @@ const Sidebarmui = () => {
     } else {
       links.splice(5, 0, {
         title: t("menu_marketing"),
-        icon: <MdCampaign size={16} />,
+        icon: <BsMegaphone size={16} />,
+        pro: true,
         links: [
           {
             name: t("menu_whatsapp"),
-            icon: <RiWhatsappFill size={16} />,
+            icon: <BsWhatsapp size={16} />,
+            pro: true,
             link: "/marketing/chat",
           },
           {
             name: t("menu_sms"),
-            icon: <MdContactPage size={16} />,
+            icon: <BsChatText size={16} />,
+            pro: true,
             link: "/marketing/contacts",
           },
           {
             name: t("menu_templates"),
-            icon: <FaMobile size={16} />,
+            icon: <BsFileEarmarkText size={16} />,
+            pro: true,
             link: "/marketing/templates",
           },
         ],
       });
     }
   }
+
   useEffect(() => {
     const url = location.pathname?.replaceAll("%20", " ");
     if (activeSidebarHeading !== 1) {
@@ -1876,8 +1995,13 @@ const Sidebarmui = () => {
                                   {link?.links[0]?.icon}
                                 </span>
                                 {isCollapsed && (
-                                  <span className={`capitalize`}>
+                                  <span className={`capitalize flex items-center gap-2`}>
                                     {link?.links[0]?.name}
+                                    {link?.links[0].pro && (
+                                      <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                        <GiQueenCrown size={16} className="gold-grad" />
+                                      </div>
+                                    )}
                                   </span>
                                 )}
                               </div>
@@ -1961,7 +2085,17 @@ const Sidebarmui = () => {
                             <SubMenu
                               icon={link?.icon}
                               open={activeSidebarHeading === linkIndex}
-                              label={link?.title?.toUpperCase()}
+                              // label={link?.title?.toUpperCase()}
+                              label={
+                                <span className={`${currentMode === "dark" ? "text-white" : "text-black"} uppercasecapitalize flex items-center gap-2`}>
+                                  {link.title}
+                                  {link.pro && (
+                                    <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                      <GiQueenCrown size={16} className="gold-grad" />
+                                    </div>
+                                  )}
+                                </span>
+                              }
                               className="top-level-dropdown"
                             >
                               {link.links.map((menu, index) => {
@@ -2037,7 +2171,17 @@ const Sidebarmui = () => {
                                         className="my-1 sub"
                                       >
                                         <SubMenu
-                                          label={menu.name}
+                                          // label={menu.name}
+                                          label={
+                                            <span className={`${currentMode === "dark" ? "text-white" : "text-black"} capitalize flex items-center gap-2`}>
+                                              {menu.name}
+                                              {menu.pro && (
+                                                <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                                  <GiQueenCrown size={16} className="gold-grad" />
+                                                </div>
+                                              )}
+                                            </span>
+                                          }
                                           icon={menu.icon}
                                           open={
                                             openedSubMenu.menuIndex ===
@@ -2118,9 +2262,13 @@ const Sidebarmui = () => {
                                                         {m?.icon}
                                                       </ListItemIcon>
                                                     )}{" "}
-                                                    <span className={currentMode === "dark" ? "text-white" : "text-black"}>
-                                                      {" "}
+                                                    <span className={` ${currentMode === "dark" ? "text-white" : "text-black"} flex items-center gap-2`}>
                                                       {m?.name || ""}
+                                                      {m.pro && (
+                                                        <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                                          <GiQueenCrown size={16} className="gold-grad" />
+                                                        </div>
+                                                      )}
                                                     </span>
                                                   </MenuItem>
                                                   {m?.count != null && (
@@ -2213,8 +2361,13 @@ const Sidebarmui = () => {
                                                 {menu.icon}
                                               </span>
                                               {isCollapsed && (
-                                                <span className={`${currentMode === "dark" ? "text-white" : "text-black"} capitalize`}>
+                                                <span className={`${currentMode === "dark" ? "text-white" : "text-black"} capitalize flex items-center gap-2`}>
                                                   {menu.name}
+                                                  {menu.pro && (
+                                                    <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                                      <GiQueenCrown size={16} className="gold-grad" />
+                                                    </div>
+                                                  )}
                                                 </span>
                                               )}
                                             </div>

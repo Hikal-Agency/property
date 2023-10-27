@@ -37,14 +37,14 @@ const TodayCallLogs = () => {
   //   setSlide(slide === 0 ? slides.length - 1 : slide - 1);
   // };
 
-  const slides = [
-    {
-      heading: "CALL LOGS",
-    },
-    // {
-    //   heading: "MONTHLY TARGET",
-    // },
-  ];
+  // const slides = [
+  //   {
+  //     heading: "CALL LOGS",
+  //   },
+  //   {
+  //     heading: "MONTHLY TARGET",
+  //   },
+  // ];
 
   const monthNames = [
     "January",

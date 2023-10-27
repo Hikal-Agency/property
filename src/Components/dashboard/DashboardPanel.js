@@ -247,10 +247,10 @@ const DashboardPanel = ({ setloading }) => {
                 </p>
               )}
               <p
-                className={`text-sm ${
+                className={` ${
                   currentMode === "dark"
                     ? "text-white"
-                    : "text-main-dark-bg-2 font-semibold"
+                    : "text-black"
                 }   `}
               >
                 {t("fresh")} {t("leads")}
@@ -281,10 +281,10 @@ const DashboardPanel = ({ setloading }) => {
                     <CountUp end={item.amount} duration={3} />
                   </p>
                   <p
-                    className={`text-sm ${
+                    className={` ${
                       currentMode === "dark"
                         ? "text-white"
-                        : "text-main-dark-bg-2 font-semibold"
+                        : "text-black"
                     }`}
                   >
                     {item?.title}
@@ -317,10 +317,10 @@ const DashboardPanel = ({ setloading }) => {
                         <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
-                        className={`text-sm ${
+                        className={` ${
                           currentMode === "dark"
                             ? "text-white"
-                            : "text-main-dark-bg-2 font-semibold"
+                            : "text-black"
                         }`}
                       >
                         {item?.title}
@@ -355,10 +355,10 @@ const DashboardPanel = ({ setloading }) => {
                         <CountUp end={item.amount} duration={3} />
                       </p>
                       <p
-                        className={`text-sm ${
+                        className={`${
                           currentMode === "dark"
                             ? "text-white"
-                            : "text-main-dark-bg-2 font-semibold"
+                            : "text-black"
                         }`}
                       >
                         {item?.title}
