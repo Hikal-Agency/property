@@ -723,5 +723,6 @@
     "add_credit": "Add Credits",
     "leads_for_ip": "Leads for IP",
     "label_unit": "Unit",
-    "view_all_locations": "View all locations"
+    "view_all_locations": "View all locations",
+    "search_timezone" : "Search Timezone"
 }
