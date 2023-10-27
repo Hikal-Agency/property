@@ -44,7 +44,7 @@ import {
   BsBell,
   BsWhatsapp,
   BsChatText,
-  BsFileEarmarkText
+  BsFileEarmarkText,
 } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { BsBuildingGear } from "react-icons/bs";
@@ -136,7 +136,8 @@ const Sidebarmui = () => {
     i18n,
     isLangRTL,
     blurDarkColor,
-    blurLightColor, setThemeBgImg
+    blurLightColor,
+    setThemeBgImg,
   } = useStateContext();
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
@@ -202,7 +203,7 @@ const Sidebarmui = () => {
     if (!e.target.closest(".view-image")) {
       navigate("/profile");
     }
-  }; 
+  };
 
   const setOpenedSubMenu = ({ menuIndex, linkIndex, sub = false }) => {
     if (sub) {
@@ -293,21 +294,35 @@ const Sidebarmui = () => {
             //   // navigate("/attendance_self");
             // }
           }
+          
+          const changeBodyDirection = (newDirection) => {
+            document.body.style.direction = newDirection;
+          };
+
+          const language = result.data?.user[0]?.language;
+
+          if (language) {
+            i18n.changeLanguage(language);
+            if (isLangRTL(language)) {
+              changeBodyDirection("rtl");
+            } else {
+              changeBodyDirection("ltr");
+            }
+          }
+
 
           setUserCredits(result.data?.user[0]?.credits);
           setPermits(allPermissions);
 
           const bgColor = result.data?.user[0]?.theme;
-          if (
-            !bgColor || bgColor === "default"
-          ) {
+          if (!bgColor || bgColor === "default") {
             setPrimaryColor("rgb(218,31,38)");
           } else {
             setPrimaryColor(bgColor);
           }
 
           const bgTheme = result.data?.user[0]?.backgroundImg;
-          if( bgTheme && bgTheme !== "default") {
+          if (bgTheme && bgTheme !== "default") {
             setThemeBgImg(bgTheme);
           }
         });
@@ -507,10 +522,7 @@ const Sidebarmui = () => {
       socket.on("notification_lead_assigned", (data) => {
         console.log("data::", data);
         toast(
-          <ReminderToast
-            type="lead_assigned"
-            leadName={data?.leadName}
-          />,
+          <ReminderToast type="lead_assigned" leadName={data?.leadName} />,
           {
             position: "bottom-right",
             autoClose: 30000,
@@ -696,7 +708,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // LEADS 
+    // LEADS
     {
       title: t("leads"),
       icon: <BsPeople size={18} />,
@@ -706,7 +718,7 @@ const Sidebarmui = () => {
           icon: <BsPersonPlus size={18} />,
           link: "/addlead",
         },
-        // UNASSIGNED 
+        // UNASSIGNED
         {
           name: t("menu_unassigned"),
           icon: <BsStopCircle size={16} />,
@@ -850,21 +862,27 @@ const Sidebarmui = () => {
               name: t("menu_verified"),
               count: sidebarData?.ColdLeadsCount?.verified, //TODO
               link: "/coldleads/coldLeadsVerified",
-              icon: <RiRadioButtonLine size={16} style={{ color: "#40B74F" }} />,
+              icon: (
+                <RiRadioButtonLine size={16} style={{ color: "#40B74F" }} />
+              ),
               countColor: "#008000",
             },
             {
               name: t("menu_invalid"),
               count: sidebarData?.ColdLeadsCount?.unverified, //TODO
               link: "/coldleads/coldLeadsInvalid",
-              icon: <RiRadioButtonLine size={16} style={{ color: primaryColor }} />,
+              icon: (
+                <RiRadioButtonLine size={16} style={{ color: primaryColor }} />
+              ),
               countColor: "#FF0000",
             },
             {
               name: t("menu_not_checked"),
               count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
               link: "/coldleads/coldLeadsNotChecked",
-              icon: <RiRadioButtonLine size={16} style={{ color: "#FFCF49" }} />,
+              icon: (
+                <RiRadioButtonLine size={16} style={{ color: "#FFCF49" }} />
+              ),
               countColor: "#FFA500",
             },
             {
@@ -1093,13 +1111,13 @@ const Sidebarmui = () => {
             },
           ],
         },
-        // NOTES 
+        // NOTES
         {
           name: t("menu_notes"),
           icon: <BsChatRightText size={16} />,
           link: "/leadnotes",
         },
-        // SEARCH 
+        // SEARCH
         {
           name: t("menu_search"),
           icon: <BsSearch size={16} />,
@@ -1107,7 +1125,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // DEALS 
+    // DEALS
     {
       title: t("menu_deals"),
       icon: <BsPatchCheck size={18} />,
@@ -1124,7 +1142,7 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // SECONDARY LISTINGS AND BUYERS 
+    // SECONDARY LISTINGS AND BUYERS
     {
       title: t("menu_secondary"),
       icon: <BsBuildings size={18} />,
@@ -1141,12 +1159,12 @@ const Sidebarmui = () => {
         },
       ],
     },
-    // APPS 
+    // APPS
     {
       title: t("menu_apps"),
       icon: <BsGrid3X3Gap size={18} />,
       links: [
-        // MEETINGS 
+        // MEETINGS
         {
           name: t("menu_meetings"),
           icon: <BsCalendarWeek size={16} />,
@@ -1162,26 +1180,26 @@ const Sidebarmui = () => {
         //   icon: <FaUser />,
         //   link: "/adminAuth/signup",
         // },
-        
-        // IP 
+
+        // IP
         {
           name: t("menu_blocked_ips"),
           icon: <BsDashCircle size={16} />,
           link: "/blocked",
         },
-        // REPORTS 
+        // REPORTS
         {
           name: t("menu_reports"),
           icon: <BsFileEarmarkBarGraph size={16} />,
           link: "/reports",
         },
-        // OFFERS 
+        // OFFERS
         {
           name: t("menu_offers"),
           icon: <BsGift size={16} />,
           link: "/offers",
         },
-        // PROPERTY PORTFOLIO 
+        // PROPERTY PORTFOLIO
         {
           name: t("menu_property_portfolio"),
           icon: <BsBuildings size={16} />,
@@ -1198,25 +1216,25 @@ const Sidebarmui = () => {
         //   link: "/contacts",
         // },
 
-        // NEWSLETTER 
+        // NEWSLETTER
         {
           name: t("menu_newsletter"),
           icon: <BsEnvelopeAt size={16} />,
           link: "/newsletter",
         },
-        // LEADERBOARD 
+        // LEADERBOARD
         {
           name: t("menu_leaderboard"),
           icon: <BsBarChart size={16} />,
           link: "/leaderboard",
         },
-        // USERS 
+        // USERS
         {
           name: t("menu_users"),
           icon: <BsPeople size={16} />,
           link: "/users",
         },
-        // ROLES 
+        // ROLES
         {
           name: t("menu_roles"),
           icon: <BsPersonGear size={16} />,
@@ -1750,10 +1768,11 @@ const Sidebarmui = () => {
                       width: "18px",
                       minWidth: "18px",
                     },
-                    "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label": {
-                      paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
-                      // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
-                    },
+                    "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
+                      {
+                        paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
+                        // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                      },
                     // "& .ps-menu-label": {
                     //   fontWeight: "medium",
                     //   color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
@@ -1761,7 +1780,7 @@ const Sidebarmui = () => {
                     // "& .ps-menu-icon": {
                     //   // fontSize: "16px",
                     //   color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
-                    // }, 
+                    // },
                     // "&.ps-menu-label:hover": {
                     //   fontWeight: "medium",
                     //   color: currentMode === "dark" ? "#000000" : "#FFFFFF",
@@ -1772,12 +1791,20 @@ const Sidebarmui = () => {
                     // }
                     "& .ps-menu-button": {
                       fontWeight: "medium",
-                      color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                      color: !themeBgImg
+                        ? primaryColor
+                        : currentMode === "dark"
+                        ? "#FFFFFF"
+                        : "#000000",
                     },
                     "& .ps-menu-button:hover": {
                       fontWeight: "medium",
-                      color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#000000" : "#FFFFFF"),
-                    }
+                      color: !themeBgImg
+                        ? primaryColor
+                        : currentMode === "dark"
+                        ? "#000000"
+                        : "#FFFFFF",
+                    },
                   }}
                   className="my-1"
                 >
@@ -2028,11 +2055,17 @@ const Sidebarmui = () => {
                                             minWidth: "18px",
                                           },
                                           "& .ps-menu-label": {
-                                            color: currentMode === "dark" ? "white" : "black",
+                                            color:
+                                              currentMode === "dark"
+                                                ? "white"
+                                                : "black",
                                           },
                                           "& .ps-menu-icon": {
-                                            color: currentMode === "dark" ? "white" : "black",
-                                          }
+                                            color:
+                                              currentMode === "dark"
+                                                ? "white"
+                                                : "black",
+                                          },
                                         }}
                                         className="my-1 sub"
                                       >
@@ -2112,13 +2145,23 @@ const Sidebarmui = () => {
                                                         style={{
                                                           minWidth:
                                                             "23px !important",
-                                                          color: currentMode === "dark" ? "white !important" : "black !important",
+                                                          color:
+                                                            currentMode ===
+                                                            "dark"
+                                                              ? "white !important"
+                                                              : "black !important",
                                                         }}
                                                       >
                                                         {m?.icon}
                                                       </ListItemIcon>
                                                     )}{" "}
-                                                    <span className={currentMode === "dark" ? "text-white" : "text-black"}>
+                                                    <span
+                                                      className={
+                                                        currentMode === "dark"
+                                                          ? "text-white"
+                                                          : "text-black"
+                                                      }
+                                                    >
                                                       {" "}
                                                       {m?.name || ""}
                                                     </span>
@@ -2196,7 +2239,11 @@ const Sidebarmui = () => {
                                               <span
                                                 className={`${
                                                   !isCollapsed && "text-xl"
-                                                } ${currentMode === "dark" ? "text-white" : "text-black"}`}
+                                                } ${
+                                                  currentMode === "dark"
+                                                    ? "text-white"
+                                                    : "text-black"
+                                                }`}
                                                 style={{
                                                   // icons css
                                                   "& .css-wx7wi4": {
@@ -2213,7 +2260,13 @@ const Sidebarmui = () => {
                                                 {menu.icon}
                                               </span>
                                               {isCollapsed && (
-                                                <span className={`${currentMode === "dark" ? "text-white" : "text-black"} capitalize`}>
+                                                <span
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "text-white"
+                                                      : "text-black"
+                                                  } capitalize`}
+                                                >
                                                   {menu.name}
                                                 </span>
                                               )}

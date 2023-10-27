@@ -7,7 +7,6 @@ i18n
   .use(HttpApi)
   .init({
     debug: true,
-    lng: "en",
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false,

@@ -264,6 +264,36 @@ const Navbar = () => {
     }
   }, [getLangDetails]);
 
+  const saveLangInProfile = async (code) => {
+      const token = localStorage.getItem("auth-token");
+    try {
+      await axios.post(
+        `${BACKEND_URL}/updateuser/${User.id}`,
+        JSON.stringify({
+          language: code
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
+
   return (
     <>
       {/* CHAT  */}
@@ -786,6 +816,7 @@ const Navbar = () => {
                       } mb-3 p-3 rounded-xl shadow-sm w-full`}
                       onClick={(e) => {
                         i18n.changeLanguage(lang.code);
+                        saveLangInProfile(lang.code);
                         if (isLangRTL(lang.code)) {
                           changeBodyDirection("rtl");
                         } else {
