@@ -172,7 +172,7 @@ const Timeline = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"} 
+            } ${isLangRTL(i18n.language) ? (currentMode === "dark" && " border-primary border-r-2") : (currentMode === "dark" && " border-primary border-l-2")} 
              p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
@@ -222,8 +222,8 @@ const Timeline = ({
                                 <div className="grid grid-cols-8 gap-3 my-3">
                                   <BsTelephone size={16} />
                                   <div className="col-span-7">
-                                    {leadDetails.leadContact !== "" ? (
-                                      <p>{leadDetails.leadContact}</p>
+                                    {leadDetails.leadContact?.replaceAll(" ", "") !== "" ? (
+                                      <p>{leadDetails.leadContact?.replaceAll(" ", "")}</p>
                                     ) : (
                                       <></>
                                     )}

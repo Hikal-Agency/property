@@ -204,7 +204,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     setloading(true);
     e.preventDefault();
 
-    if (!sellerDetails?.leadContact) {
+    if (!sellerDetails?.leadContact?.replaceAll(" ", "")) {
       setloading(false);
       toast.error("Contact number is required.", {
         position: "top-right",
@@ -236,8 +236,8 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
 
     if (sellerDetails?.leadName)
       Data.append("seller_name", sellerDetails?.leadName);
-    if (sellerDetails?.leadContact)
-      Data.append("seller_contact", sellerDetails?.leadContact);
+    if (sellerDetails?.leadContact?.replaceAll(" ", ""))
+      Data.append("seller_contact", sellerDetails?.leadContact?.replaceAll(" ", ""));
     if (sellerDetails?.leadEmail)
       Data.append("seller_email", sellerDetails?.leadEmail);
     if (sellerDetails?.propertyPrice)

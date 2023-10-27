@@ -9,17 +9,17 @@ const IPLead = ({ lead }) => {
 
   // Replace last 4 digits with "*"
   const stearics =
-    lead?.leadContact?.slice(0, lead?.leadContact?.length - 4) + "****";
+    lead?.leadContact?.replaceAll(" ", "")?.slice(0, lead?.leadContact?.replaceAll(" ", "")?.length - 4) + "****";
   let contact;
 
   if (hasPermission("number_masking")) {
     if (User?.role === 1) {
-      contact = lead?.leadContact;
+      contact = lead?.leadContact?.replaceAll(" ", "");
     } else {
       contact = `${stearics}`;
     }
   } else {
-    contact = lead?.leadContact;
+    contact = lead?.leadContact?.replaceAll(" ", "");
   }
 
   const managerName = Managers?.find(

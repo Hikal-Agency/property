@@ -215,17 +215,17 @@ const SingleLeadModal = ({
 
   // Replace last 4 digits with "*"
   const stearics =
-    LeadData?.leadContact?.slice(0, LeadData?.leadContact?.length - 4) + "****";
+    LeadData?.leadContact?.replaceAll(" ", "")?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) + "****";
   let contact;
 
   if (hasPermission("number_masking")) {
     if (User?.role === 1) {
-      contact = LeadData?.leadContact;
+      contact = LeadData?.leadContact?.replaceAll(" ", "");
     } else {
       contact = `${stearics}`;
     }
   } else {
-    contact = LeadData?.leadContact;
+    contact = LeadData?.leadContact?.replaceAll(" ", "");
   }
 
   useEffect(() => {
@@ -296,7 +296,7 @@ const SingleLeadModal = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"} 
+            } ${isLangRTL(i18n.language) ? (currentMode === "dark" && " border-primary border-r-2") : (currentMode === "dark" && " border-primary border-l-2")} 
              p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >

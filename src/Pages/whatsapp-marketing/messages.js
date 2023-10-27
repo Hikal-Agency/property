@@ -942,7 +942,7 @@ const AllLeads = () => {
               : index + 1,
           creationDate: row?.creationDate,
           leadName: row?.leadName || "-",
-          leadContact: row?.leadContact || "-",
+          leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
           project: row?.project || "-",
           leadId: row?.id,
           email: row?.leadEmail || "-",
@@ -1003,7 +1003,7 @@ const AllLeads = () => {
                 : index + 1,
             creationDate: row?.creationDate || "-",
             leadName: row?.leadName || "-",
-            leadContact: row?.leadContact || "-",
+            leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
             project: row?.project || "-",
             language: getLangCode(row?.language) || "-",
             leadType: row?.leadType || "-",
@@ -1394,7 +1394,7 @@ const AllLeads = () => {
             setSelectedRows(
               ids.map((id) => {
                 const contact =
-                  pageState?.data[id - pageState?.from]?.leadContact;
+                  pageState?.data[id - pageState?.from]?.leadContact?.replaceAll(" ", "");
                 const lid = pageState?.data[id - pageState?.from]?.leadId;
                 if (contact[0] === "+") {
                   return {

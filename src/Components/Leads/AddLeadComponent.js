@@ -180,7 +180,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
       coldCall = 5;
     }
     if (LeadName) LeadData.append("leadName", LeadName);
-    if (LeadContact) LeadData.append("leadContact", LeadContact);
+    if (LeadContact) LeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
     if (LeadEmail) LeadData.append("leadEmail", LeadEmail);
     if (EnquiryType) LeadData.append("enquiryType", EnquiryType);
     if (PropertyType) LeadData.append("leadType", PropertyType);
@@ -761,7 +761,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       {t("source_snapchat")}  Campaign
                       </MenuItem>
                       <MenuItem value={"Campaign TikTok"}>
-                        {t("source_tiktok")}TikTok Campaign
+                        {t("source_tiktok")} Campaign
                       </MenuItem>
                       <MenuItem value={"Campaign GoogleAds"}>
                     {t("source_googleads")} Campaign

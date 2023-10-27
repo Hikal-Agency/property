@@ -53,7 +53,7 @@ const AddNewListingModal = ({
   });
   const [sellerDetails, setSellerDetails] = useState({
     leadName: LeadData?.leadName,
-    leadContact: LeadData?.leadContact,
+    leadContact: LeadData?.leadContact?.replaceAll(" ", ""),
     leadEmail: LeadData?.leadEmail,
     propertyPrice: "",
   });
@@ -164,7 +164,7 @@ const AddNewListingModal = ({
     setloading(true);
     e.preventDefault();
 
-    if (!sellerDetails?.leadContact) {
+    if (!sellerDetails?.leadContact?.replaceAll(" ", "")) {
       setloading(false);
       toast.error("Contact number is required.", {
         position: "top-right",
@@ -193,8 +193,8 @@ const AddNewListingModal = ({
 
     if (sellerDetails?.leadName)
       LeadData.append("seller_name", sellerDetails?.leadName);
-    if (sellerDetails?.leadContact)
-      LeadData.append("seller_contact", sellerDetails?.leadContact);
+    if (sellerDetails?.leadContact?.replaceAll(" ", ""))
+      LeadData.append("seller_contact", sellerDetails?.leadContact?.replaceAll(" ", ""));
     if (sellerDetails?.leadEmail)
       LeadData.append("seller_email", sellerDetails?.leadEmail);
     if (sellerDetails?.propertyPrice)

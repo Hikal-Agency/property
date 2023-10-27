@@ -204,8 +204,8 @@ const Timeline = ({LeadData, handleCloseTimelineModel, timelineModelOpen}) => {
                               {/* CONTACT NUMBER  */}
                               <div className="flex mb-5">
                                 <BsTelephone size={16} className="mr-3" />
-                                {leadDetails.leadContact !== "" ? (
-                                  <p>{leadDetails.leadContact}</p>
+                                {leadDetails.leadContact?.replaceAll(" ", "") !== "" ? (
+                                  <p>{leadDetails.leadContact?.replaceAll(" ", "")}</p>
                                 ) : (
                                   <></>
                                 )}

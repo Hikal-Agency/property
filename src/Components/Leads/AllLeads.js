@@ -321,17 +321,17 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
         // Replace last 4 digits with "*"
         const stearics =
-          contactNumber?.slice(0, contactNumber?.length - 4) + "****";
+          contactNumber?.replaceAll(" ", "")?.slice(0, contactNumber?.replaceAll(" ", "")?.length - 4) + "****";
         let finalNumber;
 
         if (hasPermission("number_masking")) {
           if (User?.role === 1) {
-            finalNumber = contactNumber;
+            finalNumber = contactNumber?.replaceAll(" ", "");
           } else {
             finalNumber = `${stearics}`;
           }
         } else {
-          finalNumber = contactNumber;
+          finalNumber = contactNumber?.replaceAll(" ", "");
         }
 
         return (
@@ -738,7 +738,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
-                <CallButton phone={cellValues.row.leadContact} />
+                <CallButton phone={cellValues.row.leadContact?.replaceAll(" ", "")} />
               </p>
             </Tooltip>
 

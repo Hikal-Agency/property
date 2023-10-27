@@ -550,17 +550,17 @@ const BookedDeals = ({
 
         // Replace last 4 digits with "*"
         const stearics =
-          contactNumber?.slice(0, contactNumber?.length - 4) + "****";
+          contactNumber?.replaceAll(" ", "")?.slice(0, contactNumber?.replaceAll(" ", "")?.length - 4) + "****";
         let finalNumber;
 
         if (hasPermission("number_masking")) {
           if (User?.role === 1) {
-            finalNumber = contactNumber;
+            finalNumber = contactNumber?.replaceAll(" ", "");
           } else {
             finalNumber = `${stearics}`;
           }
         } else {
-          finalNumber = contactNumber;
+          finalNumber = contactNumber?.replaceAll(" ", "");
         }
 
         return <span>{finalNumber}</span>;
@@ -939,7 +939,7 @@ const BookedDeals = ({
               : index + 1,
           creationDate: row?.creationDate,
           leadName: row?.leadName || "-",
-          leadContact: row?.leadContact || "-",
+          leadContact: row?.leadContact?.replaceAll(" ", "") || "-",
           project: row?.project || "-",
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",

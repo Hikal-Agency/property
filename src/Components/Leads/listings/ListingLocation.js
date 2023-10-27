@@ -117,6 +117,7 @@ const ListingLocation = ({
           />
           <div style={{ marginTop: 30 }}></div>
           <GoogleMap
+          className="relative"
             onLoad={(map) => setMap(map)}
             mapContainerStyle={mapContainerStyle}
             center={listingLocation}
