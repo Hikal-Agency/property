@@ -28,11 +28,14 @@ const UpdateBookedDeal = ({
   BACKEND_URL,
   FetchLeads,
 }) => {
-  const { darkModeColors, currentMode, User } = useStateContext();
+  const { darkModeColors, currentMode, User, t, isLangRTL, i18n } =
+    useStateContext();
+  const [isClosing, setIsClosing] = useState(false);
+
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const style = {
-    transform: "translate(-50%, -50%)",
+    transform: "translate(100%, 30%)",
     boxShadow: 24,
   };
   const token = localStorage.getItem("auth-token");
@@ -69,6 +72,14 @@ const UpdateBookedDeal = ({
   };
   const ChangeFeedback = (event) => {
     setFeedback(event.target.value);
+  };
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      handleLeadModelClose();
+    }, 1000);
   };
 
   //eslint-disable-next-line
@@ -243,7 +254,7 @@ const UpdateBookedDeal = ({
       <Modal
         keepMounted
         open={LeadModelOpen}
-        onClose={handleLeadModelClose}
+        onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -252,11 +263,26 @@ const UpdateBookedDeal = ({
           timeout: 500,
         }}
       >
-        <div
+        {/* <div
           style={style}
           className={`  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           } absolute top-1/2 left-1/2 p-4 rounded-md`}
+        > */}
+        <div
+          style={style}
+          className={`${
+            isLangRTL(i18n.language)
+              ? "modal-open-left"
+              : "modal-open-right-booked"
+          } ${
+            isClosing
+              ? isLangRTL(i18n.language)
+                ? "modal-close-left"
+                : "modal-close-right"
+              : ""
+          }
+        w-[60vw] h-min bg-primary p-4 `}
         >
           <IconButton
             sx={{
@@ -265,12 +291,12 @@ const UpdateBookedDeal = ({
               top: 10,
               color: (theme) => theme.palette.grey[500],
             }}
-            onClick={handleLeadModelClose}
+            onClick={handleClose}
           >
             <IoMdClose size={18} />
           </IconButton>
           {loading ? (
-            <div className="w-full flex items-center justify-center space-x-1">
+            <div className="">
               <CircularProgress size={20} />
               <span className="font-semibold text-lg"> Fetching Your Lead</span>
             </div>
@@ -280,15 +306,13 @@ const UpdateBookedDeal = ({
                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
                   className={`text-lg font-semibold ${
-                    currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
+                    currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
                   Update Booked Deal Details
                 </h1>
               </div>
-              
+
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -306,8 +330,8 @@ const UpdateBookedDeal = ({
                         variant="outlined"
                         size="small"
                         value={booked_amount}
-                        sx={{ 
-                          marginBottom: "1.35rem !important" 
+                        sx={{
+                          marginBottom: "1.35rem !important",
                         }}
                         onChange={(e) => setBookedAmount(e.target.value)}
                       />
@@ -320,8 +344,8 @@ const UpdateBookedDeal = ({
                         variant="outlined"
                         size="small"
                         value={LeadProject}
-                        sx={{ 
-                          marginBottom: "1.35rem !important" 
+                        sx={{
+                          marginBottom: "1.35rem !important",
                         }}
                         onChange={(e) => setLeadProject(e.target.value)}
                       />
@@ -334,8 +358,8 @@ const UpdateBookedDeal = ({
                           label="Enquiry for"
                           onChange={ChangeEnquiryType}
                           className="w-full"
-                          sx={{ 
-                            marginBottom: "1.35rem !important" 
+                          sx={{
+                            marginBottom: "1.35rem !important",
                           }}
                           displayEmpty
                           required
@@ -367,8 +391,8 @@ const UpdateBookedDeal = ({
                           displayEmpty
                           required
                           size="small"
-                          sx={{ 
-                            marginBottom: "1.35rem !important" 
+                          sx={{
+                            marginBottom: "1.35rem !important",
                           }}
                         >
                           <MenuItem value="" disabled>
@@ -394,8 +418,8 @@ const UpdateBookedDeal = ({
                           displayEmpty
                           required
                           size="small"
-                          sx={{ 
-                            marginBottom: "1.35rem !important" 
+                          sx={{
+                            marginBottom: "1.35rem !important",
                           }}
                         >
                           <MenuItem value="" disabled>
