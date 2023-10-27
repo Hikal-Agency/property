@@ -142,6 +142,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
         onClick={() => {
           navigate("/notificationsList");
           setCurrNavBtn(null);
+          handleClose();
         }}
         className="flex -mt-2 mb-3 justify-center text-[#AAAAAA] hover:text-primary text-sm w-full"
         style={{
