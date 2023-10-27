@@ -527,7 +527,7 @@ const Users = () => {
                 </p>
                 
                 {/* UPDATE ROLE  */}
-                {cellValues.row.role !== 1 && (
+                {/* {cellValues.row.role !== 1 && (
                   hasPermission("role_update") ? (
                     <p
                       style={{ cursor: "pointer" }}
@@ -551,7 +551,7 @@ const Users = () => {
                       </Tooltip>
                     </p>
                   ) : null
-                )}
+                )} */}
 
                 {/* DELETE USER  */}
                 {hasPermission("users_delete") ? (

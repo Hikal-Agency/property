@@ -359,7 +359,7 @@ export const ContextProvider = ({ children }) => {
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundPosition = "center";
     document.body.style.backgroundAttachment = "fixed";
-    document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+    // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
     document.body.style.backgroundBlendMode = "overlay";
   }, [themeBgImg]);
 
