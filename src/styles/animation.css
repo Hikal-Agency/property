@@ -145,7 +145,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     color: #f0a608;
-    font-family: 'Raleway', sans-serif;
+    /* font-family: 'Raleway', sans-serif; */
     position: relative;
 	font-weight: 900;
     margin: 0;
