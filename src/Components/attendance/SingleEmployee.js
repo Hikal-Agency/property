@@ -145,15 +145,6 @@ const SingleEmployee = ({ user }) => {
         if (params?.row?.is_late === 1 || params.row.is_late === 2) {
           return params?.row?.late_minutes + " minutes";
         } else if (hasPermission("mark_late")) {
-          // If there are no late minutes, return the buttons wrapped in a component
-          const checkTime = moment(params?.row?.check_datetime).format("HH:mm");
-
-          let lateMinutes = moment(checkTime, "HH:mm").diff(
-            moment(params?.row?.default_datetime || "09:30 AM", "HH:mm"),
-            "minutes"
-          );
-
-          if(lateMinutes > 0) {
             return (
               <div className="flex justify-between px-5 py-3">
                 <Tooltip title="Yes" arrow>
@@ -186,10 +177,6 @@ const SingleEmployee = ({ user }) => {
                 </Tooltip>
               </div>
             );
-
-          } else {
-            return "-";
-          }
         } else {
           return "-";
         }
