@@ -1,5 +1,7 @@
 
 import React, { useEffect, useState } from "react";
+import moment from "moment";
+import axios from "axios";
 import {
   Box,
   Tooltip,
@@ -41,6 +43,7 @@ import {
 import {
   TbWorldWww
 } from "react-icons/tb";
+import SourceCounter from "../../Components/_elements/SourceCounter";
 
 const AllUnassignedLeads = () => {
   const {
@@ -51,7 +54,7 @@ const AllUnassignedLeads = () => {
     t,
     themeBgImg,
     primaryColor,
-    SourceCounters,
+    Counters,
     User
   } = useStateContext();
   
@@ -62,9 +65,6 @@ const AllUnassignedLeads = () => {
   const [loading, setloading] = useState(true);
 
   const { hasPermission } = usePermission();
-
-  console.log("USER ===================== ", User);
-  console.log("SOURCE ===================== ", SourceCounters);
 
   const sourceCounters = {
     "Campaign Facebook": <FaFacebookF size={14} color={"#0e82e1"} />,
@@ -105,7 +105,7 @@ const AllUnassignedLeads = () => {
           <Loader />
         ) : (
           <div className="w-full">
-            <div className="w-full flex items-center justify-between pb-3">
+            <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-between items-start pb-3">
               <div className="flex items-center">
                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
@@ -115,7 +115,6 @@ const AllUnassignedLeads = () => {
                       : "text-black"
                   }`}
                 >
-                  {/* ●  */}
                   {`${t("unassigned")} ${t("leads")}`} {" "}
                   <span className="capitalize">({t("type_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
@@ -123,51 +122,9 @@ const AllUnassignedLeads = () => {
                   </span>
                 </h1>
               </div>
-              {pathname2 === "unassigned" && lead_type?.toLowerCase() === "fresh" && (
-                <Box>
-                  <div className="grid-cols-1 mb-7 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
-                    {hasPermission("leadSource_counts") && (
-                      <>
-                        <Tooltip title="Lead Source" arrow>
-                          <button className="p-2 bg-primary hover:bg-black rounded-full">
-                            <MdImportantDevices size={18} color={"#FFFFFF"} />
-                          </button>
-                        </Tooltip>
-                      
-                        {SourceCounters.counters && SourceCounters.counters?.length > 0
-                          ? SourceCounters.counters?.map((counter) => (
-                              <Box
-                                sx={{
-                                  padding: "5px 7px",
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                  background:
-                                    currentMode === "dark"
-                                      ? "#000000"
-                                      : "#FFFFFF",
-                                  color:
-                                    currentMode === "dark"
-                                      ? "white"
-                                      : "black",
-                                  boxShadow:
-                                    currentMode === "dark"
-                                      ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                      : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                                  height: "30px",
-                                  minWidth: "60px",
-                                  maxWidth: "100px",
-                                }}
-                              >
-                                {sourceCounters[counter?.leadSource]}
-                                <span className="px-2">{counter?.count}</span>
-                              </Box>
-                            ))
-                          : ""}
-                      </>
-                    )}
-                  </div>
-                </Box>
+              
+              {(hasPermission("leadSource_counts") || User.role === 1) && (
+                <SourceCounter />
               )}
             </div>
 

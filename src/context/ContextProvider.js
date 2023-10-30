@@ -24,7 +24,7 @@ export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
   const [User, setUser] = useState({});
-  const [counters, setCounters] = useState([]);
+  const [Counters, setCounters] = useState([]);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [selected, setSelected] = useState("Dashboard");
   const [reloadDataGrid, setreloadDataGrid] = useState(false);
@@ -519,6 +519,7 @@ export const ContextProvider = ({ children }) => {
   const SourceCounters = async () => {
     const token = localStorage.getItem("auth-token");
     const currentDate = moment().format("YYYY-MM-DD");
+    console.log("CURRENT DATE ==============", currentDate);
     await axios
       .get(`${BACKEND_URL}/totalSource?date=${currentDate}`, {
         headers: {
@@ -534,6 +535,11 @@ export const ContextProvider = ({ children }) => {
       });
       // setCounters(callCounter?.data?.data?.query_result);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    SourceCounters(token);
+  }, []);
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
@@ -634,7 +640,7 @@ export const ContextProvider = ({ children }) => {
         setBlurLightColor,
         blurWhiteColor,
         setBlurWhiteColor,
-        counters,
+        Counters,
         setCounters
       }}
     >

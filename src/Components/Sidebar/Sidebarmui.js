@@ -2136,19 +2136,8 @@ const Sidebarmui = () => {
                                 >
                                   {link.title}
                                   {link.pro && (
-                                    <div
-                                      className={`${
-                                        !themeBgImg
-                                          ? currentMode === "dark"
-                                            ? "bg-black"
-                                            : "bg-white"
-                                          : "bg-transparent"
-                                      } p-1 rounded-full`}
-                                    >
-                                      <GiQueenCrown
-                                        size={16}
-                                        className="gold-grad"
-                                      />
+                                    <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                      <GiQueenCrown size={16} className="gold-grad" />
                                     </div>
                                   )}
                                 </span>
@@ -2245,19 +2234,8 @@ const Sidebarmui = () => {
                                             >
                                               {menu.name}
                                               {menu.pro && (
-                                                <div
-                                                  className={`${
-                                                    !themeBgImg
-                                                      ? currentMode === "dark"
-                                                        ? "bg-black"
-                                                        : "bg-white"
-                                                      : "bg-transparent"
-                                                  } p-1 rounded-full`}
-                                                >
-                                                  <GiQueenCrown
-                                                    size={16}
-                                                    className="gold-grad"
-                                                  />
+                                                <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                                  <GiQueenCrown size={16} className="gold-grad" />
                                                 </div>
                                               )}
                                             </span>
@@ -2355,20 +2333,8 @@ const Sidebarmui = () => {
                                                     >
                                                       {m?.name || ""}
                                                       {m.pro && (
-                                                        <div
-                                                          className={`${
-                                                            !themeBgImg
-                                                              ? currentMode ===
-                                                                "dark"
-                                                                ? "bg-black"
-                                                                : "bg-white"
-                                                              : "bg-transparent"
-                                                          } p-1 rounded-full`}
-                                                        >
-                                                          <GiQueenCrown
-                                                            size={16}
-                                                            className="gold-grad"
-                                                          />
+                                                        <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                                          <GiQueenCrown size={16} className="gold-grad" />
                                                         </div>
                                                       )}
                                                     </span>
@@ -2476,20 +2442,8 @@ const Sidebarmui = () => {
                                                 >
                                                   {menu.name}
                                                   {menu.pro && (
-                                                    <div
-                                                      className={`${
-                                                        !themeBgImg
-                                                          ? currentMode ===
-                                                            "dark"
-                                                            ? "bg-black"
-                                                            : "bg-white"
-                                                          : "bg-transparent"
-                                                      } p-1 rounded-full`}
-                                                    >
-                                                      <GiQueenCrown
-                                                        size={16}
-                                                        className="gold-grad"
-                                                      />
+                                                    <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
+                                                      <GiQueenCrown size={16} className="gold-grad" />
                                                     </div>
                                                   )}
                                                 </span>

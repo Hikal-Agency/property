@@ -56,7 +56,7 @@ const SingleListingsModal = ({
     isOpen: false,
     listingId: null,
   });
-  const { currentMode, setopenBackDrop, BACKEND_URL, isArabic, isLangRTL, i18n } =
+  const { currentMode, setopenBackDrop, BACKEND_URL, isArabic, isLangRTL, i18n, User } =
     useStateContext();
 
   const handleEdit = () => {
@@ -424,12 +424,12 @@ const SingleListingsModal = ({
 
                     {/* <div className="bg-primary h-0.5 w-full my-5"></div> */}
 
-                    <div
-                      className={`${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#EEEEEE]"
-                      } rounded-xl w-full p-4`}
-                    >
-                      {hasPermission("seller_details") && (
+                    {(listData?.addedBy === User?.id || hasPermission("seller_details") || User.role === 1) && (
+                      <div
+                        className={`${
+                          currentMode === "dark" ? "bg-[#000000]" : "bg-[#EEEEEE]"
+                        } rounded-xl w-full p-4`}
+                      >
                         <div className="w-full">
                           <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
                             <div className="sm:col-span-1 md:col-span-3 lg:col-span-2">
@@ -574,8 +574,8 @@ const SingleListingsModal = ({
                             </div>
                           </div>
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 )}
                 {/* <Footer /> */}
