@@ -8,11 +8,13 @@ import { useStateContext } from '../../context/ContextProvider';
 import { 
     BiImport,
     BiArchive,
-    BiMessageRoundedDots 
 } from "react-icons/bi";
 import { 
     BsSnow2,
-    BsPersonCircle 
+    BsPersonCircle,
+    BsMegaphone,
+    BsChatDots,
+    BsWhatsapp
 } from "react-icons/bs";
 import { 
     FaFacebookF,
@@ -20,7 +22,6 @@ import {
     FaTiktok,
     FaYoutube,
     FaTwitter,
-    FaWhatsapp,
     FaRegComments
 } from "react-icons/fa";
 import { 
@@ -106,25 +107,25 @@ const SourceCounter = () => {
         },
         {
             "Campaign": {
-                icon: <MdCampaign size={16} color={"white"} />,
+                icon: <BsMegaphone size={16} color={"white"} />,
                 bg: "#696969",
             }
         },
         {
             "WhatsApp": {
-                icon: <FaWhatsapp size={16} color={"white"} />,
+                icon: <BsWhatsapp size={16} color={"white"} />,
                 bg: "#53cc60",
             }
         },
         {
             "Message": {
-                icon: <BiMessageRoundedDots size={16} color={"white"} />,
+                icon: <BsChatDots size={16} color={"white"} />,
                 bg: "#6A5ACD",
             }
         },
         {
             "Comment": {
-                icon: <FaRegComments size={16} color={"white"} />,
+                icon: <FaRegComments size={18} color={"white"} />,
                 bg: "#a9b3c6",
             }
         },
@@ -168,10 +169,7 @@ const SourceCounter = () => {
 
     return (
         <div className='flex justify-end'>
-            <div className={`${expanded 
-                ? (themeBgImg && (currentMode === "dark" ? "bg-[#1C1C1C] shadow-sm" : "bg-[#EEEEEE] shadow-sm")) 
-                : "bg-transparent"} 
-                w-fit flex items-center justify-end text-white rounded-xl px-2`}>
+            <div className={`bg-transparent w-fit flex items-center justify-end text-white rounded-xl px-2`}>
                 {!expanded ? (
                     <Tooltip title="Lead Source" arrow>
                         <button className={`bg-primary p-2 cursor-pointer rounded-full`} onClick={handleClick}>
@@ -180,7 +178,7 @@ const SourceCounter = () => {
                     </Tooltip>
                 ) : (
                     <Tooltip title="Close" arrow>
-                        <button className={`${!themeBgImg && "bg-primary"} p-2 mx-1 cursor-pointer rounded-full`} onClick={handleClose}>
+                        <button className={`${"bg-primary"} p-2 mx-2 cursor-pointer rounded-full`} onClick={handleClose}>
                             <MdClose size={20} color={"#FFFFFF"} />
                         </button>
                     </Tooltip>
@@ -194,11 +192,11 @@ const SourceCounter = () => {
                         // maxHeight: expanded ? "100%" : '30px',
                         maxWidth: expanded ? "100%" : "0",
                         overflow: 'hidden',
-                        transition: 'max-width 2s ease',
+                        transition: 'max-width 1s ease',
                     }}
                     onTransitionEnd={handleTransitionEnd}
                 >
-                    <div className="flex flex-wrap gap-4 items-center justify-end"
+                    <div className="flex flex-wrap gap-2 items-center justify-end"
                     style={{
                         maxHeight: "100%",
                     }}>
