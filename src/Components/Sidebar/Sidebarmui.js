@@ -294,7 +294,7 @@ const Sidebarmui = () => {
             //   // navigate("/attendance_self");
             // }
           }
-          
+
           const changeBodyDirection = (newDirection) => {
             document.body.style.direction = newDirection;
           };
@@ -309,7 +309,6 @@ const Sidebarmui = () => {
               changeBodyDirection("ltr");
             }
           }
-
 
           setUserCredits(result.data?.user[0]?.credits);
           setPermits(allPermissions);
@@ -391,6 +390,7 @@ const Sidebarmui = () => {
             userName: result.data.user[0].userName,
             userType: result.data.user[0].userType,
             is_alert: result.data.user[0].is_alert,
+            timezone: result.data.user[0].timezone,
           };
 
           setUser(user);
@@ -1287,7 +1287,7 @@ const Sidebarmui = () => {
           pro: false,
           link: "/offers",
         },
-        // PROPERTY PORTFOLIO 
+        // PROPERTY PORTFOLIO
         // {
         //   name: t("menu_property_portfolio"),
         //   icon: <BsBuildings size={16} />,
@@ -1304,13 +1304,13 @@ const Sidebarmui = () => {
         //   link: "/contacts",
         // },
 
-        // NEWSLETTER 
+        // NEWSLETTER
         // {
         //   name: t("menu_newsletter"),
         //   icon: <BsEnvelopeAt size={16} />,
         //   link: "/newsletter",
         // },
-        // LEADERBOARD 
+        // LEADERBOARD
         {
           name: t("menu_leaderboard"),
           icon: <BsBarChart size={16} />,
@@ -2022,11 +2022,24 @@ const Sidebarmui = () => {
                                   {link?.links[0]?.icon}
                                 </span>
                                 {isCollapsed && (
-                                  <span className={`capitalize flex items-center gap-2`}>
+                                  <span
+                                    className={`capitalize flex items-center gap-2`}
+                                  >
                                     {link?.links[0]?.name}
                                     {link?.links[0].pro && (
-                                      <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
-                                        <GiQueenCrown size={16} className="gold-grad" />
+                                      <div
+                                        className={`${
+                                          themeBgImg
+                                            ? currentMode === "dark"
+                                              ? "bg-black"
+                                              : "bg-white"
+                                            : "bg-transparent"
+                                        } p-1 rounded-full`}
+                                      >
+                                        <GiQueenCrown
+                                          size={16}
+                                          className="gold-grad"
+                                        />
                                       </div>
                                     )}
                                   </span>
@@ -2114,11 +2127,28 @@ const Sidebarmui = () => {
                               open={activeSidebarHeading === linkIndex}
                               // label={link?.title?.toUpperCase()}
                               label={
-                                <span className={`${currentMode === "dark" ? "text-white" : "text-black"} uppercasecapitalize flex items-center gap-2`}>
+                                <span
+                                  className={`${
+                                    currentMode === "dark"
+                                      ? "text-white"
+                                      : "text-black"
+                                  } uppercasecapitalize flex items-center gap-2`}
+                                >
                                   {link.title}
                                   {link.pro && (
-                                    <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
-                                      <GiQueenCrown size={16} className="gold-grad" />
+                                    <div
+                                      className={`${
+                                        !themeBgImg
+                                          ? currentMode === "dark"
+                                            ? "bg-black"
+                                            : "bg-white"
+                                          : "bg-transparent"
+                                      } p-1 rounded-full`}
+                                    >
+                                      <GiQueenCrown
+                                        size={16}
+                                        className="gold-grad"
+                                      />
                                     </div>
                                   )}
                                 </span>
@@ -2206,11 +2236,28 @@ const Sidebarmui = () => {
                                         <SubMenu
                                           // label={menu.name}
                                           label={
-                                            <span className={`${currentMode === "dark" ? "text-white" : "text-black"} capitalize flex items-center gap-2`}>
+                                            <span
+                                              className={`${
+                                                currentMode === "dark"
+                                                  ? "text-white"
+                                                  : "text-black"
+                                              } capitalize flex items-center gap-2`}
+                                            >
                                               {menu.name}
                                               {menu.pro && (
-                                                <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
-                                                  <GiQueenCrown size={16} className="gold-grad" />
+                                                <div
+                                                  className={`${
+                                                    !themeBgImg
+                                                      ? currentMode === "dark"
+                                                        ? "bg-black"
+                                                        : "bg-white"
+                                                      : "bg-transparent"
+                                                  } p-1 rounded-full`}
+                                                >
+                                                  <GiQueenCrown
+                                                    size={16}
+                                                    className="gold-grad"
+                                                  />
                                                 </div>
                                               )}
                                             </span>
@@ -2299,11 +2346,29 @@ const Sidebarmui = () => {
                                                         {m?.icon}
                                                       </ListItemIcon>
                                                     )}{" "}
-                                                    <span className={` ${currentMode === "dark" ? "text-white" : "text-black"} flex items-center gap-2`}>
+                                                    <span
+                                                      className={` ${
+                                                        currentMode === "dark"
+                                                          ? "text-white"
+                                                          : "text-black"
+                                                      } flex items-center gap-2`}
+                                                    >
                                                       {m?.name || ""}
                                                       {m.pro && (
-                                                        <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
-                                                          <GiQueenCrown size={16} className="gold-grad" />
+                                                        <div
+                                                          className={`${
+                                                            !themeBgImg
+                                                              ? currentMode ===
+                                                                "dark"
+                                                                ? "bg-black"
+                                                                : "bg-white"
+                                                              : "bg-transparent"
+                                                          } p-1 rounded-full`}
+                                                        >
+                                                          <GiQueenCrown
+                                                            size={16}
+                                                            className="gold-grad"
+                                                          />
                                                         </div>
                                                       )}
                                                     </span>
@@ -2402,11 +2467,29 @@ const Sidebarmui = () => {
                                                 {menu.icon}
                                               </span>
                                               {isCollapsed && (
-                                                <span className={`${currentMode === "dark" ? "text-white" : "text-black"} capitalize flex items-center gap-2`}>
+                                                <span
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "text-white"
+                                                      : "text-black"
+                                                  } capitalize flex items-center gap-2`}
+                                                >
                                                   {menu.name}
                                                   {menu.pro && (
-                                                    <div className={`${!themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
-                                                      <GiQueenCrown size={16} className="gold-grad" />
+                                                    <div
+                                                      className={`${
+                                                        !themeBgImg
+                                                          ? currentMode ===
+                                                            "dark"
+                                                            ? "bg-black"
+                                                            : "bg-white"
+                                                          : "bg-transparent"
+                                                      } p-1 rounded-full`}
+                                                    >
+                                                      <GiQueenCrown
+                                                        size={16}
+                                                        className="gold-grad"
+                                                      />
                                                     </div>
                                                   )}
                                                 </span>

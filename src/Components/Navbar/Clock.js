@@ -26,7 +26,9 @@ const Clock = ({ handleClose }) => {
   const [timezones, setTimezones] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [selectedTimezone, setSelectedTimezone] = useState(moment.tz.guess());
+  const [selectedTimezone, setSelectedTimezone] = useState(
+    localStorage.getItem("timezone") || moment.tz.guess()
+  );
   const { currentMode, darkModeColors, t } = useStateContext();
 
   console.log("mode: ", currentMode);
