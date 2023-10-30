@@ -27,12 +27,26 @@ const UpdateLead = ({
   LeadData,
 }) => {
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum, t } =
-    useStateContext();
+  const {
+    darkModeColors,
+    currentMode,
+    User,
+    BACKEND_URL,
+    formatNum,
+    t,
+    isLangRTL,
+    i18n,
+  } = useStateContext();
+  const [isClosing, setIsClosing] = useState(false);
+
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
+  // const style = {
+  //   transform: "translate(-50%, -50%)",
+  //   boxShadow: 24,
+  // };
   const style = {
-    transform: "translate(-50%, -50%)",
+    transform: "translate(100%, 30%)",
     boxShadow: 24,
   };
   //eslint-disable-next-line
@@ -233,11 +247,27 @@ const UpdateLead = ({
           timeout: 500,
         }}
       >
-        <div
+        {/* <div
           style={style}
           className={`w-[calc(100%-20px)] sm:w-[85%] md:w-[80%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] ${
             currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md border border-[#AAAAAA]`}
+        > */}
+        <div
+          style={style}
+          className={`${
+            isLangRTL(i18n.language)
+              ? "modal-open-left"
+              : "modal-open-right-booked"
+          } ${
+            isClosing
+              ? isLangRTL(i18n.language)
+                ? "modal-close-left"
+                : "modal-close-right"
+              : ""
+          }
+        w-[60vw] h-min ${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"}
+        p-4 `}
         >
           <IconButton
             sx={{
@@ -255,7 +285,7 @@ const UpdateLead = ({
               <CircularProgress size={20} />
               <span
                 className={`font-semibold text-lg             ${
-                  currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+                  currentMode === "dark" ? "text-white" : "text-dark"
                 }
 `}
               >
