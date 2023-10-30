@@ -9,6 +9,7 @@ import {
 import { useStateContext } from "../../context/ContextProvider";
 import LocationPicker from "./LocationPicker";
 import { IoMdClose } from "react-icons/io";
+import { useState } from "react";
 
 const ShowLocation = ({
   isModalOpened,
@@ -16,12 +17,21 @@ const ShowLocation = ({
   meetingLocation,
   meetingNote,
 }) => {
-  const { currentMode, darkModeColors, isArabic, t } = useStateContext();
+  const { currentMode, darkModeColors, isArabic, t, isLangRTL, i18n } =
+    useStateContext();
+  const [isClosing, setIsClosing] = useState(false);
 
   console.log("meeting note: ", meetingNote);
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      handleModalClose();
+    }, 1000);
+  };
 
   const style = {
-    transform: "translate(-50%, -50%)",
+    transform: "translate(100%, 30%)",
     boxShadow: 24,
     height: "60vh",
     overflowY: "scroll",
@@ -32,7 +42,7 @@ const ShowLocation = ({
       <Modal
         keepMounted
         open={isModalOpened}
-        onClose={handleModalClose}
+        onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -41,19 +51,33 @@ const ShowLocation = ({
           timeout: 500,
         }}
       >
-        <div
+        {/* <div
           style={style}
           className={`w-[calc(100%-20px)] md:w-[50%]  ${
             currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-white"
           } absolute top-1/2 left-1/2 p-4 rounded-md`}
+        > */}
+        <div
+          style={style}
+          className={`${
+            isLangRTL(i18n.language)
+              ? "modal-open-left"
+              : "modal-open-right-booked"
+          } ${
+            isClosing
+              ? isLangRTL(i18n.language)
+                ? "modal-close-left"
+                : "modal-close-right"
+              : ""
+          }
+        w-[60vw] h-min ${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"}
+        p-4 `}
         >
           <div className="w-full flex items-center pb-3">
             <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
             <h1
               className={`text-lg font-semibold ${
-                currentMode === "dark"
-                  ? "text-white"
-                  : "text-black"
+                currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
               {t("meeting_details")}
@@ -65,9 +89,13 @@ const ShowLocation = ({
               <TextField
                 id="text"
                 type={"text"}
-                sx={{"& input": {
-                  fontFamily: isArabic(meetingNote) ? "Noto Kufi Arabic" : "inherit"
-                }}}
+                sx={{
+                  "& input": {
+                    fontFamily: isArabic(meetingNote)
+                      ? "Noto Kufi Arabic"
+                      : "inherit",
+                  },
+                }}
                 label={t("label_meeting_note")}
                 className="w-full"
                 style={{ marginBottom: "20px" }}
@@ -78,14 +106,16 @@ const ShowLocation = ({
                 readOnly={true}
               />
             </FormControl>
-          {/* </Box>
+            {/* </Box>
           <Box sx={darkModeColors} className="w-full p-4"> */}
             {meetingLocation && [
               meetingLocation.lat && meetingLocation.lng ? (
                 <LocationPicker
                   showOnly={true}
                   meetingLocation={meetingLocation}
-                  className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
+                  className={`${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
                 />
               ) : (
                 <div className="mt-8 text-center text-[#da1f26]">
