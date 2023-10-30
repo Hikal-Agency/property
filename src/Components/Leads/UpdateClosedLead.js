@@ -5,7 +5,7 @@ import {
   Modal,
   TextField,
   IconButton,
-  Box
+  Box,
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -27,7 +27,7 @@ const UpdateLead = ({
   LeadData,
 }) => {
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum, t} =
+  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum, t } =
     useStateContext();
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
@@ -110,7 +110,6 @@ const UpdateLead = ({
           setLeadDateValue(dayjs(dealDate));
           setLeadAmount(amount);
           setUnitNo(unit);
-
         } else {
           toast.error("Error in Fetching the Lead", {
             position: "top-right",
@@ -254,7 +253,14 @@ const UpdateLead = ({
           {loading ? (
             <div className="w-full flex items-center justify-center space-x-1">
               <CircularProgress size={20} />
-              <span className="font-semibold text-lg">{t("fetching_your_lead")}</span>
+              <span
+                className={`font-semibold text-lg             ${
+                  currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+                }
+`}
+              >
+                {t("fetching_your_lead")}
+              </span>
             </div>
           ) : (
             <>
@@ -263,7 +269,7 @@ const UpdateLead = ({
                   currentMode === "dark" ? "text-white" : "text-black"
                 } text-center font-bold text-lg pb-10`}
               >
-               {t("update_closed_details")}
+                {t("update_closed_details")}
               </h1>
               <form
                 onSubmit={(e) => {
@@ -273,7 +279,7 @@ const UpdateLead = ({
               >
                 <div className="grid sm:grid-cols-1">
                   <div className="flex flex-col justify-center items-center gap-7 mb-5">
-                    <Box sx={darkModeColors} className="w-full" >
+                    <Box sx={darkModeColors} className="w-full">
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           label={t("closed_deal_date")}
@@ -307,7 +313,7 @@ const UpdateLead = ({
                         />
                       </LocalizationProvider>
                     </Box>
-                    <Box sx={darkModeColors} className="w-full" >
+                    <Box sx={darkModeColors} className="w-full">
                       <TextField
                         required
                         fullWidth
@@ -319,7 +325,7 @@ const UpdateLead = ({
                         }}
                       />
                     </Box>
-                    <Box sx={darkModeColors} className="w-full" >
+                    <Box sx={darkModeColors} className="w-full">
                       <TextField
                         required
                         fullWidth
