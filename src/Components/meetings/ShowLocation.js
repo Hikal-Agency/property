@@ -10,6 +10,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import LocationPicker from "./LocationPicker";
 import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
+import { MdClose } from "react-icons/md";
 
 const ShowLocation = ({
   isModalOpened,
@@ -73,6 +74,20 @@ const ShowLocation = ({
         w-[60vw] h-min ${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"}
         p-4 `}
         >
+          <button
+            // onClick={handleLeadModelClose}
+            onClick={handleClose}
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
+          >
+            <MdClose
+              size={18}
+              color={"white"}
+              className="hover:border hover:border-white hover:rounded-full"
+            />
+          </button>
           <div className="w-full flex items-center pb-3">
             <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
             <h1

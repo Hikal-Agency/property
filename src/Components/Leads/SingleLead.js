@@ -469,7 +469,7 @@ const SingleLead = ({
           }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
-          <button
+          {/* <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
             className={`${
@@ -482,7 +482,7 @@ const SingleLead = ({
               color={"white"}
               className="hover:border hover:border-white hover:rounded-full"
             />
-          </button>
+          </button> */}
 
           <div
             style={style}
