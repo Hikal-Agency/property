@@ -269,6 +269,16 @@
     /* border: 1px solid rgba(255,255,255,0.25); */
 }
 
+/* booked deals slide */
+.modal-open-right-booked {
+    animation: slideFromRightBooked 1s ease-in-out forwards; /* Animation duration and easing */
+}
+
+.modal-close-right-booked {
+    animation: slideToRightBooked 1s ease-in-out; /* Animation duration and easing */
+}
+
+
 /* SLIDE MODAL FROM RIGHT  */
 .modal-open-right {
     animation: slideFromRight 1s ease-in-out; /* Animation duration and easing */
@@ -286,6 +296,27 @@
 .modal-close-left {
     animation: slideToLeft 1s ease-in-out; /* Animation duration and easing */
 }
+
+/* booked deals */
+@keyframes slideFromRightBooked {
+    /* 0% {
+      transform: translateX(100%);
+    } */
+    100% {
+      transform: translate(65%,30%);
+    }
+}
+
+@keyframes slideToRightBooked {
+    0% {
+      transform: translateX(0);
+    }
+    /* 100% {
+      transform: translateX(100%);
+    } */
+}
+
+
 
 @keyframes slideFromRight {
     0% {
