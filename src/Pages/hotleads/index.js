@@ -7,25 +7,18 @@ import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
 import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
-
-import { BiMessageRoundedDots } from "react-icons/bi";
-import {
-  FaSnapchatGhost,
-  FaYoutube,
-  FaFacebookF,
-  FaTiktok,
-  FaWhatsapp,
-} from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { MdCampaign } from "react-icons/md";
-import { TbWorldWww } from "react-icons/tb";
+import SourceCounter from "../../Components/_elements/SourceCounter";
 import { toast } from "react-toastify";
 import moment from "moment";
-import { GiMagnifyingGlass } from "react-icons/gi";
 
 const AllHotLeads = () => {
-  const { currentMode, setopenBackDrop, pageState, BACKEND_URL, t, themeBgImg } =
-    useStateContext();
+  const { 
+    currentMode, 
+    setopenBackDrop, 
+    pageState, 
+    BACKEND_URL, 
+    t, User,
+    themeBgImg } = useStateContext();
   const location = useLocation();
   const { hasPermission } = usePermission();
   const lead_type2 = location.pathname.split("/")[2];
@@ -33,55 +26,10 @@ const AllHotLeads = () => {
   const pathname2 = location.pathname.split("/")[1];
   const [loading, setloading] = useState(true);
   const token = localStorage.getItem("auth-token");
-  const [counters, setCounter] = useState([]);
-
-  const sourceCounters = {
-    "Campaign Facebook": <FaFacebookF size={14} color={"#0e82e1"} />,
-    "Campaign Snapchat": <FaSnapchatGhost size={16} color={"#f6d80a"} />,
-    "Campaign TikTok": (
-      <FaTiktok size={16} color={currentMode === "dark" ? "white" : "black"} />
-    ),
-    "Campaign YouTube": <FaYoutube size={18} color={"#c4302b"} />,
-    "Campaign GoogleAds": <FcGoogle size={18} />,
-    "Property Finder": <GiMagnifyingGlass size={16} color={"#ef5e4e"} />,
-  };
-
-  const fetchCounter = async () => {
-    const currentDate = moment().format("YYYY-MM-DD");
-    // const currentDate = "2023-01-01";
-    try {
-      const callCounter = await axios.get(
-        `${BACKEND_URL}/totalSource?date=${currentDate}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      console.log("counter===> :", callCounter);
-
-      setCounter(callCounter?.data?.data?.query_result);
-    } catch (error) {
-      console.log("Error::: ", error);
-      toast.error("Unable to fetch count.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
 
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);
-    fetchCounter();
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -122,42 +70,8 @@ const AllHotLeads = () => {
                   </span>
                 </h1>
               </div>
-
-              {hasPermission("leadSource_counts") && (
-                <div className="justify-self-end">
-                  <div className="px-4">
-                    <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4">
-                      {counters && counters?.length > 0
-                        ? counters?.map((counter) => (
-                            <Box
-                              sx={{
-                                padding: "5px 7px",
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                background:
-                                  currentMode === "dark"
-                                    ? "#000000"
-                                    : "#FFFFFF",
-                                color:
-                                  currentMode === "dark" ? "white" : "black",
-                                boxShadow:
-                                  currentMode === "dark"
-                                    ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                    : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                                height: "30px",
-                                minWidth: "60px",
-                                maxWidth: "100px",
-                              }}
-                            >
-                              {sourceCounters[counter?.leadSource]}
-                              <span className="px-2">{counter?.count}</span>
-                            </Box>
-                          ))
-                        : ""}
-                    </div>
-                  </div>
-                </div>
+              {(hasPermission("leadSource_counts") || User.role === 1) && (
+                <SourceCounter />
               )}
             </div>
             <AllLeads

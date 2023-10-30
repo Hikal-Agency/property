@@ -105,7 +105,7 @@ const AllUnassignedLeads = () => {
           <Loader />
         ) : (
           <div className="w-full">
-            <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-between items-start pb-3">
+            <div className="w-full">
               <div className="flex items-center">
                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
@@ -122,10 +122,6 @@ const AllUnassignedLeads = () => {
                   </span>
                 </h1>
               </div>
-              
-              {(hasPermission("leadSource_counts") || User.role === 1) && (
-                <SourceCounter />
-              )}
             </div>
 
             <AllLeads

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
     Box, 
     Tooltip
@@ -49,12 +49,23 @@ const SourceCounter = () => {
         t
     } = useStateContext();
 
-    console.log("COUNTERS ============== ", Counters.counters);
-
     const [expanded, setExpanded] = useState(false);
     const handleClick = () => {
         setExpanded(prevExpanded => !prevExpanded);
     };
+
+    const contentRef = useRef(null);
+    const handleTransitionEnd = () => {
+        if (expanded) {
+            contentRef.current.style.maxHeight = '100%';
+        } else {
+            contentRef.current.style.maxHeight = '30px';
+        }
+    };
+    const handleClose = () => {
+        contentRef.current.style.maxHeight = '30px';
+        handleClick();
+    }
 
     const sourceCounters = [
         {
@@ -156,11 +167,11 @@ const SourceCounter = () => {
     ];
 
     return (
-        <div className='w-full flex justify-end mb-5'>
+        <div className='flex justify-end'>
             <div className={`${expanded 
                 ? (themeBgImg && (currentMode === "dark" ? "bg-[#1C1C1C] shadow-sm" : "bg-[#EEEEEE] shadow-sm")) 
                 : "bg-transparent"} 
-                w-fit flex items-center justify-end text-white rounded-xl p-2 gap-2 mb-4`}>
+                w-fit flex items-center justify-end text-white rounded-xl px-2`}>
                 {!expanded ? (
                     <Tooltip title="Lead Source" arrow>
                         <button className={`bg-primary p-2 cursor-pointer rounded-full`} onClick={handleClick}>
@@ -169,51 +180,67 @@ const SourceCounter = () => {
                     </Tooltip>
                 ) : (
                     <Tooltip title="Close" arrow>
-                        <button className={`${!themeBgImg && "bg-primary"} p-2 mr-3 cursor-pointer rounded-full`} onClick={handleClick}>
+                        <button className={`${!themeBgImg && "bg-primary"} p-2 mx-1 cursor-pointer rounded-full`} onClick={handleClose}>
                             <MdClose size={20} color={"#FFFFFF"} />
                         </button>
                     </Tooltip>
                 )}
                 <div 
+                    ref={contentRef}
                     className=""
                     style={{
-                        display: expanded ? "block" : "none",
+                        maxHeight: "30px",
+                        // display: expanded ? "block" : "none",
+                        // maxHeight: expanded ? "100%" : '30px',
+                        maxWidth: expanded ? "100%" : "0",
+                        overflow: 'hidden',
+                        transition: 'max-width 2s ease',
                     }}
+                    onTransitionEnd={handleTransitionEnd}
                 >
-                    <div className="flex flex-wrap gap-5 items-center justify-end">
-                        {sourceCounters.map((counterObject, index) => {
-                            const leadSource = Object.keys(counterObject)[0];
-                            const { icon, bg } = counterObject[leadSource];
+                    <div className="flex flex-wrap gap-4 items-center justify-end"
+                    style={{
+                        maxHeight: "100%",
+                    }}>
+                        {Counters.counters && Counters.counters.length > 0 ? (
+                            sourceCounters.map((counterObject, index) => {
+                                const leadSource = Object.keys(counterObject)[0];
+                                const { icon, bg } = counterObject[leadSource];
 
-                            const counterData = Counters.counters.find(
-                                (counter) => counter.leadSource === leadSource
-                            );
+                                const counterData = Counters.counters.find(
+                                    (counter) => counter.leadSource === leadSource
+                                );
 
-                            if (!counterData) return null;
+                                if (!counterData) return null;
 
-                            return (
-                                <div className="grid grid-cols-2 flex items-center font-semibold"
-                                    style={{
-                                        color: currentMode === "dark" ? "white" : "black",
-                                        background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
-                                        boxShadow: currentMode === "dark"
-                                        ? "2px 2px 5px rgba(66, 66, 66, 1)"
-                                        : "2px 2px 5px rgba(0, 0, 0, 0.25)",
-                                    }}
-                                >
-                                    <div className="p-2 h-full w-full flex items-center justify-center"
+                                return (
+                                    <div className="grid grid-cols-2 flex items-center font-semibold border border-[#AAAAAA]"
                                         style={{
-                                            background: bg,
+                                            color: currentMode === "dark" ? "white" : "black",
+                                            background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+                                            boxShadow: currentMode === "dark"
+                                            ? "2px 2px 5px rgba(66, 66, 66, 1)"
+                                            : "2px 2px 5px rgba(0, 0, 0, 0.25)",
                                         }}
                                     >
-                                        {icon}
+                                        <div className="p-2 h-full w-full flex items-center justify-center"
+                                            style={{
+                                                background: bg,
+                                            }}
+                                        >
+                                            {icon}
+                                        </div>
+                                        <div className="p-2 flex items-center justify-center h-full">
+                                            {counterData.count}
+                                        </div> 
                                     </div>
-                                    <div className="p-2 flex items-center justify-center h-full">
-                                        {counterData.count}
-                                    </div> 
-                                </div>
-                            );
-                        })}
+                                );
+                            })
+                        ) : (
+                            <div className="text-sm bg-primary flex items-center">
+                                {t("no_results_found")}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

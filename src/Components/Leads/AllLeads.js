@@ -22,6 +22,7 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
+import SourceCounter from "../_elements/SourceCounter";
 
 import {
   FaSnapchatGhost,
@@ -1887,32 +1888,24 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               "& .MuiSelect-select": {
                 padding: "1px",
                 paddingX: "5px !important",
-                // paddingRight: "5px",
-              },
-              "& .MuiInputBase-root": {
-                marginTop: "5px",
-              },
-              "& input": {
-                paddingTop: "0",
               },
               "& .applied-filter": {
                 width: "max-content",
               },
-              "& .MuiDataGrid-main .MuiDataGrid-overlay": {
-                backgroundColor:
-                  currentMode === "dark"
-                    ? "black !important"
-                    : "white !important",
-                color: "#AAAAAA !important",
-              },
             }}
-            className={"items-center mb-2 sm:-mt-0 md:-mt-0 lg:-mt-6"}
+            className={"items-center"}
           >
-            <div className="justify-end">
-              <div className="w-full flex justify-end">
+            <div className="flex items-end justify-end">
+              {(hasPermission("leadSource_counts") || User.role === 1) && (
+                <SourceCounter />
+              )}
+
+              <div className="w-fit flex justify-end">
                 <Box
                   sx={{
-                    width: "120px",
+                    width: "150px",
+                    minWidth: "100px",
+                    maxWidth: "200px",
                   }}
                 >
                   <FormControl fullWidth>
@@ -1954,6 +1947,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   </FormControl>
                 </Box>
               </div>
+
             </div>
           </Box>
         )}
