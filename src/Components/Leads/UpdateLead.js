@@ -23,6 +23,7 @@ import PhoneInput, {
   isPossiblePhoneNumber,
 } from "react-phone-number-input";
 import classNames from "classnames";
+import { MdClose } from "react-icons/md";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -43,6 +44,8 @@ const UpdateLead = ({
     SalesPerson: AllSalesPersons,
     t,
     Managers,
+    isLangRTL,
+    i18n,
     // SalesPerson,
   } = useStateContext();
   const [value, setValue] = useState();
@@ -51,9 +54,11 @@ const UpdateLead = ({
   const [noAgents, setNoAgents] = useState(false);
   const [error, setError] = useState(false);
   const style = {
-    transform: "translate(-50%, -50%)",
+    transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
+  const [isClosing, setIsClosing] = useState(false);
+
   const [PropertyType, setPropertyType] = useState("");
   const [EnquiryType, setEnquiryType] = useState("");
   const [ForType, setForType] = useState("");
@@ -239,6 +244,15 @@ const UpdateLead = ({
       });
     // eslint-disable-next-line
   }, []);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      handleLeadModelClose();
+    }, 1000);
+  };
+
   useEffect(() => {
     const agents = AllSalesPersons[`manager-${Manager}`];
     if (agents === undefined) {
@@ -334,7 +348,7 @@ const UpdateLead = ({
       <Modal
         keepMounted
         open={LeadModelOpen}
-        onClose={handleLeadModelClose}
+        onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -344,70 +358,106 @@ const UpdateLead = ({
         }}
       >
         <div
-          style={style}
-          className={`w-[calc(100%-30px)] md:w-[85%]  ${
-            currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md border boder-[#AAAAAA]`}
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
+              ? isLangRTL(i18n.language)
+                ? "modal-close-left"
+                : "modal-close-right"
+              : ""
+          }
+        w-[100vw] h-[100vh] flex items-start justify-end`}
         >
-          {loading ? (
-            <div className="w-full flex items-center justify-center space-x-1">
-              <CircularProgress size={20} />
-              <span className="font-semibold text-lg">
-                {" "}
-                {t("fetching_your_lead")}
-              </span>
-            </div>
-          ) : (
-            <>
-              <IconButton
-                sx={{
-                  position: "absolute",
-                  right: 12,
-                  top: 10,
-                  color: (theme) => theme.palette.grey[500],
-                }}
-                onClick={handleLeadModelClose}
-              >
-                <IoMdClose size={18} />
-              </IconButton>
-              <h1
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                } text-center font-semibold text-lg pb-10`}
-              >
-                {t("update_lead_details")}
-              </h1>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  UpdateLeadFunc();
-                }}
-              >
-                <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5">
-                  <div>
-                    <Box sx={darkModeColors}>
-                      <h4
-                        className={`${
-                          currentMode === "dark"
-                            ? "text-primary"
-                            : "text-primary"
-                        } text-center font-semibold pb-5`}
-                      >
-                        {t("agent_details")}
-                      </h4>
+          <button
+            // onClick={handleLeadModelClose}
+            onClick={handleClose}
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
+          >
+            <MdClose
+              size={18}
+              color={"white"}
+              className="hover:border hover:border-white hover:rounded-full"
+            />
+          </button>
+          {/* <div
+            style={style}
+            className={`w-[calc(100%-30px)] md:w-[85%]  ${
+              currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+            } absolute top-1/2 left-1/2 p-5 rounded-md border boder-[#AAAAAA]`}
+          > */}
+          <div
+            style={style}
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            `}
+          >
+            {loading ? (
+              <div className="w-full flex items-center justify-center space-x-1">
+                <CircularProgress size={20} />
+                <span className="font-semibold text-lg">
+                  {" "}
+                  {t("fetching_your_lead")}
+                </span>
+              </div>
+            ) : (
+              <>
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    right: 12,
+                    top: 10,
+                    color: (theme) => theme.palette.grey[500],
+                  }}
+                  onClick={handleLeadModelClose}
+                >
+                  <IoMdClose size={18} />
+                </IconButton>
+                <h1
+                  className={`${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  } text-center font-semibold text-lg pb-10`}
+                >
+                  {t("update_lead_details")}
+                </h1>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    UpdateLeadFunc();
+                  }}
+                >
+                  <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5">
+                    <div>
+                      <Box sx={darkModeColors}>
+                        <h4
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-primary"
+                              : "text-primary"
+                          } text-center font-semibold pb-5`}
+                        >
+                          {t("agent_details")}
+                        </h4>
 
-                      <>
-                        {/* <FormHelperText
+                        <>
+                          {/* <FormHelperText
                             sx={{
                               color: currentMode === "dark" ? "white" : "black",
                             }}
                           >
                             Manager
                           </FormHelperText> */}
-                        {/* <label className="text-sm text-gray-500">
+                          {/* <label className="text-sm text-gray-500">
                             Manager
                           </label> */}
-                        {/* <Select
+                          {/* <Select
                             id="Manager"
                             value={User?.role === 1 ? Manager : ""}
                             disabled={User?.role !== 1 && true}
@@ -427,47 +477,47 @@ const UpdateLead = ({
                               </MenuItem>
                             ))}
                           </Select> */}
-                        <TextField
-                          id="Manager"
-                          type="text"
-                          label={t("label_manager")}
-                          className="w-full"
-                          sx={{
-                            marginBottom: "1.25rem !important",
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                            pointerEvents: "none",
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={
-                            Managers?.find((person) => person?.id === Manager)
-                              ?.userName || t("no_manager")
-                          }
-                          onChange={(e) => {
-                            e.preventDefault();
-                          }}
-                          readOnly={true}
-                        />
-                      </>
+                          <TextField
+                            id="Manager"
+                            type="text"
+                            label={t("label_manager")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "1.25rem !important",
+                              color:
+                                currentMode === "dark" ? "#ffffff" : "#000000",
+                              pointerEvents: "none",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={
+                              Managers?.find((person) => person?.id === Manager)
+                                ?.userName || t("no_manager")
+                            }
+                            onChange={(e) => {
+                              e.preventDefault();
+                            }}
+                            readOnly={true}
+                          />
+                        </>
 
-                      {noAgents
-                        ? ""
-                        : // <p
-                          //   style={{
-                          //     color: "#0000005c",
-                          //     textAlign: "left",
-                          //     width: "85%",
-                          //   }}
-                          // >
-                          //   No Agents
-                          // </p>
-                          (User.role === 1 || User.role === 3) && (
-                            <>
-                              {/* <label className="text-sm text-gray-500">
+                        {noAgents
+                          ? ""
+                          : // <p
+                            //   style={{
+                            //     color: "#0000005c",
+                            //     textAlign: "left",
+                            //     width: "85%",
+                            //   }}
+                            // >
+                            //   No Agents
+                            // </p>
+                            (User.role === 1 || User.role === 3) && (
+                              <>
+                                {/* <label className="text-sm text-gray-500">
                               Sales Agent
                             </label> */}
-                              {/* <FormHelperText
+                                {/* <FormHelperText
                               sx={{
                                 color:
                                   currentMode === "dark" ? "white" : "black",
@@ -491,306 +541,311 @@ const UpdateLead = ({
                                 </MenuItem>
                               ))}
                             </Select> */}
-                              <TextField
-                                id="Salesperson"
-                                type="text"
-                                label={t("label_agent")}
-                                className="w-full"
-                                style={{
-                                  marginBottom: "1.25rem !important",
-                                  color: "#ffffff",
-                                  pointerEvents: "none",
-                                }}
-                                variant="outlined"
-                                size="small"
-                                value={
-                                  SalesPerson?.find(
-                                    (person) => person?.id === SalesPerson2
-                                  )?.userName || t("no_agent_assigned")
-                                }
-                                onChange={(e) => {
-                                  e.preventDefault();
-                                }}
-                                readOnly={true}
-                              />
-                            </>
-                          )}
+                                <TextField
+                                  id="Salesperson"
+                                  type="text"
+                                  label={t("label_agent")}
+                                  className="w-full"
+                                  style={{
+                                    marginBottom: "1.25rem !important",
+                                    color: "#ffffff",
+                                    pointerEvents: "none",
+                                  }}
+                                  variant="outlined"
+                                  size="small"
+                                  value={
+                                    SalesPerson?.find(
+                                      (person) => person?.id === SalesPerson2
+                                    )?.userName || t("no_agent_assigned")
+                                  }
+                                  onChange={(e) => {
+                                    e.preventDefault();
+                                  }}
+                                  readOnly={true}
+                                />
+                              </>
+                            )}
 
-                      {User.role === 7 && (
+                        {User.role === 7 && (
+                          <TextField
+                            id="Salesperson"
+                            label={t("label_agent")}
+                            type="text"
+                            className="w-full mb-5"
+                            style={{
+                              marginBottom: "1.25rem !important",
+                              color: "#ffffff",
+                              pointerEvents: "none",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={User?.userName}
+                            readOnly={true}
+                          />
+                        )}
+                      </Box>
+                    </div>
+
+                    <div>
+                      <Box sx={darkModeColors}>
+                        <h4
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-primary"
+                              : "text-primary"
+                          } text-center font-semibold pb-5`}
+                        >
+                          {t("project_details")}
+                        </h4>
                         <TextField
-                          id="Salesperson"
-                          label={t("label_agent")}
-                          type="text"
-                          className="w-full mb-5"
-                          style={{
-                            marginBottom: "1.25rem !important",
-                            color: "#ffffff",
-                            pointerEvents: "none",
-                          }}
+                          id="Project"
+                          type={"text"}
+                          className="w-full"
+                          sx={{ marginBottom: "1.25rem !important" }}
+                          label={t("label_project_name")}
                           variant="outlined"
                           size="small"
-                          value={User?.userName}
-                          readOnly={true}
+                          value={LeadProject}
+                          onChange={(e) => setLeadProject(e.target.value)}
                         />
-                      )}
-                    </Box>
-                  </div>
 
-                  <div>
-                    <Box sx={darkModeColors}>
-                      <h4
-                        className={`${
-                          currentMode === "dark"
-                            ? "text-primary"
-                            : "text-primary"
-                        } text-center font-semibold pb-5`}
-                      >
-                        {t("project_details")}
-                      </h4>
-                      <TextField
-                        id="Project"
-                        type={"text"}
-                        className="w-full"
-                        sx={{ marginBottom: "1.25rem !important" }}
-                        label={t("label_project_name")}
-                        variant="outlined"
-                        size="small"
-                        value={LeadProject}
-                        onChange={(e) => setLeadProject(e.target.value)}
-                      />
-
-                      {/* <label className="text-sm text-gray-500">
+                        {/* <label className="text-sm text-gray-500">
                         Enquiry About
                       </label> */}
-                      <TextField
-                        id="enquiry"
-                        value={EnquiryType}
-                        label={t("label_enquiry_for")}
-                        onChange={ChangeEnquiryType}
-                        size="small"
-                        className="w-full"
-                        sx={{
-                          marginBottom: "1.25rem !important",
-                        }}
-                        displayEmpty
-                        select
-                      >
-                        <MenuItem value="">{t("label_enquiry_about")}</MenuItem>
-                        <MenuItem value={"Studio"}>
-                          {t("enquiry_studio")}
-                        </MenuItem>
-                        <MenuItem value={"1 Bedroom"}>
-                          {t("enquiry_1bed")}
-                        </MenuItem>
-                        <MenuItem value={"2 Bedrooms"}>
-                          {t("enquiry_2bed")}
-                        </MenuItem>
-                        <MenuItem value={"3 Bedrooms"}>
-                          {t("enquiry_3bed")}
-                        </MenuItem>
-                        <MenuItem value={"4 Bedrooms"}>
-                          {t("enquiry_4bed")}
-                        </MenuItem>
-                        <MenuItem value={"5 Bedrooms"}>
-                          {t("enquiry_5bed")}
-                        </MenuItem>
-                        <MenuItem value={"6 Bedrooms"}>
-                          {t("enquiry_6bed")}
-                        </MenuItem>
-                        <MenuItem value={"Retail"}>
-                          {t("enquiry_retail")}
-                        </MenuItem>
-                        <MenuItem value={"Other"}>
-                          {t("enquiry_others")}
-                        </MenuItem>
-                      </TextField>
+                        <TextField
+                          id="enquiry"
+                          value={EnquiryType}
+                          label={t("label_enquiry_for")}
+                          onChange={ChangeEnquiryType}
+                          size="small"
+                          className="w-full"
+                          sx={{
+                            marginBottom: "1.25rem !important",
+                          }}
+                          displayEmpty
+                          select
+                        >
+                          <MenuItem value="">
+                            {t("label_enquiry_about")}
+                          </MenuItem>
+                          <MenuItem value={"Studio"}>
+                            {t("enquiry_studio")}
+                          </MenuItem>
+                          <MenuItem value={"1 Bedroom"}>
+                            {t("enquiry_1bed")}
+                          </MenuItem>
+                          <MenuItem value={"2 Bedrooms"}>
+                            {t("enquiry_2bed")}
+                          </MenuItem>
+                          <MenuItem value={"3 Bedrooms"}>
+                            {t("enquiry_3bed")}
+                          </MenuItem>
+                          <MenuItem value={"4 Bedrooms"}>
+                            {t("enquiry_4bed")}
+                          </MenuItem>
+                          <MenuItem value={"5 Bedrooms"}>
+                            {t("enquiry_5bed")}
+                          </MenuItem>
+                          <MenuItem value={"6 Bedrooms"}>
+                            {t("enquiry_6bed")}
+                          </MenuItem>
+                          <MenuItem value={"Retail"}>
+                            {t("enquiry_retail")}
+                          </MenuItem>
+                          <MenuItem value={"Other"}>
+                            {t("enquiry_others")}
+                          </MenuItem>
+                        </TextField>
 
-                      {/* <label className="text-sm text-gray-500">
+                        {/* <label className="text-sm text-gray-500">
                         Property Type
                       </label> */}
-                      <TextField
-                        id="property-type"
-                        value={PropertyType}
-                        label={t("label_property_type")}
-                        sx={{
-                          marginBottom: "1.25rem !important",
-                        }}
-                        onChange={ChangePropertyType}
-                        size="small"
-                        className="w-full"
-                        displayEmpty
-                        select
-                      >
-                        <MenuItem value="">{t("label_property_type")}</MenuItem>
-                        <MenuItem value={"Apartment"}>
-                          {t("property_apartment")}
-                        </MenuItem>
-                        <MenuItem value={"Villa"}>
-                          {t("property_villa")}
-                        </MenuItem>
-                        <MenuItem value={"penthouse"}>
-                          {t("property_penthouse")}
-                        </MenuItem>
-                        <MenuItem value={"mansion"}>
-                          {t("property_mansion")}
-                        </MenuItem>
-                        <MenuItem value={"Commercial"}>
-                          {t("property_commercial")}
-                        </MenuItem>
-                        <MenuItem value={"Townhouse"}>
-                          {t("property_townhouse")}
-                        </MenuItem>
-                      </TextField>
+                        <TextField
+                          id="property-type"
+                          value={PropertyType}
+                          label={t("label_property_type")}
+                          sx={{
+                            marginBottom: "1.25rem !important",
+                          }}
+                          onChange={ChangePropertyType}
+                          size="small"
+                          className="w-full"
+                          displayEmpty
+                          select
+                        >
+                          <MenuItem value="">
+                            {t("label_property_type")}
+                          </MenuItem>
+                          <MenuItem value={"Apartment"}>
+                            {t("property_apartment")}
+                          </MenuItem>
+                          <MenuItem value={"Villa"}>
+                            {t("property_villa")}
+                          </MenuItem>
+                          <MenuItem value={"penthouse"}>
+                            {t("property_penthouse")}
+                          </MenuItem>
+                          <MenuItem value={"mansion"}>
+                            {t("property_mansion")}
+                          </MenuItem>
+                          <MenuItem value={"Commercial"}>
+                            {t("property_commercial")}
+                          </MenuItem>
+                          <MenuItem value={"Townhouse"}>
+                            {t("property_townhouse")}
+                          </MenuItem>
+                        </TextField>
 
-                      {/* <label className="text-sm text-gray-500">For</label> */}
-                      <TextField
-                        id="for"
-                        sx={{
-                          marginBottom: "1.25rem !important",
-                        }}
-                        value={ForType}
-                        label={t("label_purpose_of_enquiry")}
-                        onChange={ChangeForType}
-                        size="small"
-                        className="w-full"
-                        displayEmpty
-                        select
-                      >
-                        <MenuItem value="" selected>
-                          For
-                        </MenuItem>
-                        <MenuItem value={"Investment"}>
-                          {t("purpose_investment")}
-                        </MenuItem>
-                        <MenuItem value={"End-user"}>
-                          {t("purpose_end_user")}
-                        </MenuItem>
-                      </TextField>
-                    </Box>
-                  </div>
-
-                  <div>
-                    <Box sx={darkModeColors}>
-                      <h4
-                        className={`${
-                          currentMode === "dark"
-                            ? "text-primary"
-                            : "text-primary"
-                        } text-center font-semibold pb-5`}
-                      >
-                        {t("lead_details")}
-                      </h4>
-                      <TextField
-                        id="LeadName"
-                        type={"text"}
-                        label={t("label_lead_name")}
-                        className="w-full"
-                        sx={{ marginBottom: "1.25rem !important" }}
-                        variant="outlined"
-                        size="small"
-                        required
-                        value={LeadName}
-                        onChange={(e) => setLeadName(e.target.value)}
-                      />
-
-                      <PhoneInput
-                        placeholder={t("label_contact_number")}
-                        value={LeadContact}
-                        onChange={(value) => setValue(value)}
-                        onKeyUp={handlePhone}
-                        required
-                        labels={t("label_phone_number")}
-                        error={error}
-                        className={`${classNames({
-                          "dark-mode": currentMode === "dark",
-                        })} mb-5`}
-                        size="small"
-                        style={{
-                          background: `${
-                            currentMode === "dark" ? "#1C1C1C" : "#fff"
-                          }`,
-                          "& .PhoneInputCountryIconImg": {
-                            color: "#fff",
-                          },
-                          // padding: "10px",
-                          // color: "#808080",
-                          border: `1px solid ${
-                            currentMode === "dark" ? "#fff" : "#ccc"
-                          }`,
-                          borderRadius: "5px",
-                          outline: "none",
-                        }}
-                        inputStyle={{
-                          outline: "none",
-                        }}
-                      />
-                      {error && (
-                        <Typography variant="body2" color="error">
-                          {error}
-                        </Typography>
-                      )}
-
-                      <TextField
-                        id="LeadEmailAddress"
-                        type={"email"}
-                        className="w-full"
-                        label={t("label_email_address")}
-                        sx={{ marginBottom: "1.25rem !important" }}
-                        variant="outlined"
-                        size="small"
-                        value={LeadEmail === "undefined" ? "" : LeadEmail}
-                        // onChange={(e) => setLeadEmail(e.target.value)}
-                        error={emailError && emailError}
-                        helperText={emailError && emailError}
-                        onChange={handleEmail}
-                      />
-
-                      <TextField
-                        sx={{
-                          marginBottom: "1.25rem !important",
-                        }}
-                        id="LanguagePrefered"
-                        value={LanguagePrefered}
-                        onChange={ChangeLanguagePrefered}
-                        label={t("label_language")}
-                        size="small"
-                        className="w-full"
-                        select
-                        displayEmpty
-                      >
-                        <MenuItem value="" selected>
-                          {t("label_language")}
-                        </MenuItem>
-                        <MenuItem value={"Arabic"}>Arabic</MenuItem>
-                        <MenuItem value={"English"}>English</MenuItem>
-                        <MenuItem value={"Farsi"}>Farsi</MenuItem>
-                        <MenuItem value={"French"}>French</MenuItem>
-                        <MenuItem value={"Hindi"}>Hindi</MenuItem>
-                        <MenuItem value={"Russian"}>Russian</MenuItem>
-                        <MenuItem value={"Spanish"}>Spanish</MenuItem>
-                        <MenuItem value={"Urdu"}>Urdu</MenuItem>
-                      </TextField>
-                    </Box>
-                  </div>
-                </div>
-                <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary hover:shadow-none `}
-                  ripple={true}
-                  size="lg"
-                  type="submit"
-                  disabled={btnloading ? true : false}
-                >
-                  {btnloading ? (
-                    <div className="flex items-center justify-center space-x-1 mt-5">
-                      <CircularProgress size={18} sx={{ color: "white" }} />
+                        {/* <label className="text-sm text-gray-500">For</label> */}
+                        <TextField
+                          id="for"
+                          sx={{
+                            marginBottom: "1.25rem !important",
+                          }}
+                          value={ForType}
+                          label={t("label_purpose_of_enquiry")}
+                          onChange={ChangeForType}
+                          size="small"
+                          className="w-full"
+                          displayEmpty
+                          select
+                        >
+                          <MenuItem value="" selected>
+                            For
+                          </MenuItem>
+                          <MenuItem value={"Investment"}>
+                            {t("purpose_investment")}
+                          </MenuItem>
+                          <MenuItem value={"End-user"}>
+                            {t("purpose_end_user")}
+                          </MenuItem>
+                        </TextField>
+                      </Box>
                     </div>
-                  ) : (
-                    <span> {t("btn_update_lead")}</span>
-                  )}
-                </Button>
-              </form>
-            </>
-          )}
+
+                    <div>
+                      <Box sx={darkModeColors}>
+                        <h4
+                          className={`${
+                            currentMode === "dark"
+                              ? "text-primary"
+                              : "text-primary"
+                          } text-center font-semibold pb-5`}
+                        >
+                          {t("lead_details")}
+                        </h4>
+                        <TextField
+                          id="LeadName"
+                          type={"text"}
+                          label={t("label_lead_name")}
+                          className="w-full"
+                          sx={{ marginBottom: "1.25rem !important" }}
+                          variant="outlined"
+                          size="small"
+                          required
+                          value={LeadName}
+                          onChange={(e) => setLeadName(e.target.value)}
+                        />
+
+                        <PhoneInput
+                          placeholder={t("label_contact_number")}
+                          value={LeadContact}
+                          onChange={(value) => setValue(value)}
+                          onKeyUp={handlePhone}
+                          required
+                          labels={t("label_phone_number")}
+                          error={error}
+                          className={`${classNames({
+                            "dark-mode": currentMode === "dark",
+                          })} mb-5`}
+                          size="small"
+                          style={{
+                            background: `${
+                              currentMode === "dark" ? "#1C1C1C" : "#fff"
+                            }`,
+                            "& .PhoneInputCountryIconImg": {
+                              color: "#fff",
+                            },
+                            // padding: "10px",
+                            // color: "#808080",
+                            border: `1px solid ${
+                              currentMode === "dark" ? "#fff" : "#ccc"
+                            }`,
+                            borderRadius: "5px",
+                            outline: "none",
+                          }}
+                          inputStyle={{
+                            outline: "none",
+                          }}
+                        />
+                        {error && (
+                          <Typography variant="body2" color="error">
+                            {error}
+                          </Typography>
+                        )}
+
+                        <TextField
+                          id="LeadEmailAddress"
+                          type={"email"}
+                          className="w-full"
+                          label={t("label_email_address")}
+                          sx={{ marginBottom: "1.25rem !important" }}
+                          variant="outlined"
+                          size="small"
+                          value={LeadEmail === "undefined" ? "" : LeadEmail}
+                          // onChange={(e) => setLeadEmail(e.target.value)}
+                          error={emailError && emailError}
+                          helperText={emailError && emailError}
+                          onChange={handleEmail}
+                        />
+
+                        <TextField
+                          sx={{
+                            marginBottom: "1.25rem !important",
+                          }}
+                          id="LanguagePrefered"
+                          value={LanguagePrefered}
+                          onChange={ChangeLanguagePrefered}
+                          label={t("label_language")}
+                          size="small"
+                          className="w-full"
+                          select
+                          displayEmpty
+                        >
+                          <MenuItem value="" selected>
+                            {t("label_language")}
+                          </MenuItem>
+                          <MenuItem value={"Arabic"}>Arabic</MenuItem>
+                          <MenuItem value={"English"}>English</MenuItem>
+                          <MenuItem value={"Farsi"}>Farsi</MenuItem>
+                          <MenuItem value={"French"}>French</MenuItem>
+                          <MenuItem value={"Hindi"}>Hindi</MenuItem>
+                          <MenuItem value={"Russian"}>Russian</MenuItem>
+                          <MenuItem value={"Spanish"}>Spanish</MenuItem>
+                          <MenuItem value={"Urdu"}>Urdu</MenuItem>
+                        </TextField>
+                      </Box>
+                    </div>
+                  </div>
+                  <Button
+                    className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary hover:shadow-none `}
+                    ripple={true}
+                    size="lg"
+                    type="submit"
+                    disabled={btnloading ? true : false}
+                  >
+                    {btnloading ? (
+                      <div className="flex items-center justify-center space-x-1 mt-5">
+                        <CircularProgress size={18} sx={{ color: "white" }} />
+                      </div>
+                    ) : (
+                      <span> {t("btn_update_lead")}</span>
+                    )}
+                  </Button>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       </Modal>
     </>

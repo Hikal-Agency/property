@@ -9,7 +9,7 @@ import {
   TextField,
   Button,
   Tooltip,
-  Drawer
+  Drawer,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { datetimeLong } from "../_elements/formatDateTime";
@@ -18,21 +18,10 @@ import axios from "../../axoisConfig";
 import BlockIPModal from "./BlockIPModal";
 import AddNewListingModal from "../Listings/AddNewListingModal";
 
-import { 
-  VscCallOutgoing, 
-  VscMail, 
-  VscEdit 
-} from "react-icons/vsc";
-import { 
-  IoIosAlert 
-} from "react-icons/io";
-import { 
-  MdClose 
-} from "react-icons/md";
-import { 
-  BiBlock, 
-  BiBed 
-} from "react-icons/bi";
+import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
+import { IoIosAlert } from "react-icons/io";
+import { MdClose } from "react-icons/md";
+import { BiBlock, BiBed } from "react-icons/bi";
 import {
   BsShuffle,
   BsTelephone,
@@ -103,13 +92,14 @@ const SingleLead = ({
       setIsClosing(false);
       handleLeadModelClose();
     }, 1000);
-  }
+  };
 
   // EDIT BTN CLICK FUNC
   const HandleEditFunc = (params) => {
     console.log("LEADID: ", params);
     setsingleLeadData(params);
     handleUpdateLeadModelOpen();
+    handleLeadModelClose();
   };
 
   // OPEN listing modal
@@ -467,12 +457,24 @@ const SingleLead = ({
           timeout: 1000,
         }}
       >
-        <div className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"} ${isClosing ? (isLangRTL(i18n.language) ? "modal-close-left" : "modal-close-right") : ""}
-        w-[100vw] h-[100vh] flex items-start justify-end`}>
-          <button 
+        <div
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
+              ? isLangRTL(i18n.language)
+                ? "modal-close-left"
+                : "modal-close-right"
+              : ""
+          }
+        w-[100vw] h-[100vh] flex items-start justify-end`}
+        >
+          <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"}
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -500,7 +502,11 @@ const SingleLead = ({
               <>
                 <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5">
                   <div className="w-full flex items-center pb-3 ">
-                    <div className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} bg-primary h-10 w-1 rounded-full my-1`}></div>
+                    <div
+                      className={`${
+                        isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                      } bg-primary h-10 w-1 rounded-full my-1`}
+                    ></div>
                     <h1
                       className={`text-lg font-semibold ${
                         currentMode === "dark" ? "text-white" : "text-black"
@@ -731,9 +737,7 @@ const SingleLead = ({
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                         <BsType size={16} className="text-primary" />
-                        <div className="col-span-7">
-                          {LeadData?.language}
-                        </div>
+                        <div className="col-span-7">{LeadData?.language}</div>
                       </div>
                     </div>
                   </div>
