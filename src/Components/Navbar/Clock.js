@@ -9,9 +9,11 @@ import {
   IconButton,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
+import axios from "../../axoisConfig";
 
 import AnalogClock from "./AnalogClock";
 import { BsSearch } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 const Clock = ({ handleClose }) => {
   const [currentTime, setCurrentTime] = useState(
@@ -58,10 +60,47 @@ const Clock = ({ handleClose }) => {
 
   console.log("filtered timezone list: ", filteredTimezones);
 
-  const handleTimezoneChange = (e) => {
+  const handleTimezoneChange = async (e) => {
+    const timeZone = e.target.value;
     console.log("timzone selected : ", e.target.value);
     setSelectedTimezone(e.target.value);
     localStorage.setItem("timezone", e.target.value);
+    try {
+      const updateTimezone = await axios.post(
+        `${BACKEND_URL}/profile`,
+        timeZone,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("Timezone updated.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log("Response: ", updateTimezone);
+    } catch (error) {
+      toast.error("Unable set timezone.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   return (
