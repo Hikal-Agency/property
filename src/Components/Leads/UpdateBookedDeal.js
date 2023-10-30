@@ -282,7 +282,8 @@ const UpdateBookedDeal = ({
                 : "modal-close-right"
               : ""
           }
-        w-[60vw] h-min bg-primary p-4 `}
+        w-[60vw] h-min ${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"}
+        p-4 `}
         >
           <IconButton
             sx={{
@@ -298,7 +299,14 @@ const UpdateBookedDeal = ({
           {loading ? (
             <div className="">
               <CircularProgress size={20} />
-              <span className="font-semibold text-lg"> Fetching Your Lead</span>
+              <span
+                className={`font-semibold text-lg ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                {" "}
+                Fetching Your Lead
+              </span>
             </div>
           ) : (
             <>
