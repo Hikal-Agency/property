@@ -1691,6 +1691,7 @@ const SingleEmployee = ({ user }) => {
                   <SalaryDeductDailogue
                     showDailogue={showDailogue}
                     setDialogue={setDialogue}
+                    FetchAttendance={FetchAttendance}
                   />
                 )}
               </div>

@@ -17,7 +17,11 @@ import { useStateContext } from "../../context/ContextProvider";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 
-const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
+const SalaryDeductDailogue = ({
+  showDailogue,
+  setDialogue,
+  FetchAttendance,
+}) => {
   console.log("showdialogue: ", showDailogue);
   const token = localStorage.getItem("auth-token");
   const {
@@ -77,6 +81,7 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
 
       setloading(false);
       setDialogue(false);
+      FetchAttendance();
 
       console.log("Response: ", UpdateReason);
     } catch (error) {
@@ -125,7 +130,9 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
       setCancelLoading(false);
 
       toast.success(
-        btn === 1 ? "Salary undeduction approved." : "Salary undeduction rejected.",
+        btn === 1
+          ? "Salary undeduction approved."
+          : "Salary undeduction rejected.",
         {
           position: "top-right",
           autoClose: 3000,
@@ -164,7 +171,7 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
         sx={{
           "& .MuiPaper-root": {
             boxShadow: "none !important",
-            width: "60%"
+            width: "60%",
           },
           "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
             {
@@ -231,7 +238,6 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
                   }`}
                   sx={{
                     marginBottom: "20px",
-             
                   }}
                   variant="outlined"
                   size="medium"
@@ -288,12 +294,12 @@ const SalaryDeductDailogue = ({ showDailogue, setDialogue }) => {
                   type="submit"
                   onClick={handleClick}
                   syle={{
-                    color: "white !important",  
+                    color: "white !important",
                   }}
                 >
                   {/* <span>Confirm</span> */}
                   {btnloading ? (
-                    <CircularProgress size={18}/> 
+                    <CircularProgress size={18} />
                   ) : (
                     <span className="text-white">Confirm</span>
                   )}
