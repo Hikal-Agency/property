@@ -22,6 +22,7 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
+import SourceCounter from "../_elements/SourceCounter";
 
 import {
   FaSnapchatGhost,
@@ -1887,82 +1888,24 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               "& .MuiSelect-select": {
                 padding: "1px",
                 paddingX: "5px !important",
-                // paddingRight: "5px",
-              },
-              "& .MuiInputBase-root": {
-                marginTop: "5px",
-              },
-              "& input": {
-                paddingTop: "0",
               },
               "& .applied-filter": {
                 width: "max-content",
               },
-              "& .MuiDataGrid-main .MuiDataGrid-overlay": {
-                backgroundColor:
-                  currentMode === "dark"
-                    ? "black !important"
-                    : "white !important",
-                color: "#AAAAAA !important",
-              },
             }}
-            className={"items-center mb-2 sm:-mt-0 md:-mt-0 lg:-mt-6"}
+            className={"items-center"}
           >
-            <div className="justify-end">
-              <Box>
-                <div className="grid-cols-1 mb-7 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
-                  {hasPermission("leadSource_counts") && (
-                    <>
-                      <Tooltip title="Lead Source" arrow>
-                        <button className="p-2 bg-primary hover:bg-black rounded-full">
-                          <MdImportantDevices size={18} color={"#FFFFFF"} />
-                        </button>
-                      </Tooltip>
-                      
-                      <div className="justify-self-end">
-                        <div className="px-4">
-                          <div className="flex flex-wrap gap-4 justify-end">
-                            {counters && counters?.length > 0
-                              ? counters?.map((counter) => (
-                                  <Box
-                                    sx={{
-                                      padding: "5px 7px",
-                                      display: "flex",
-                                      justifyContent: "space-between",
-                                      alignItems: "center",
-                                      background:
-                                        currentMode === "dark"
-                                          ? "#000000"
-                                          : "#FFFFFF",
-                                      color:
-                                        currentMode === "dark"
-                                          ? "white"
-                                          : "black",
-                                      boxShadow:
-                                        currentMode === "dark"
-                                          ? "0px 1px 1px rgba(66, 66, 66, 1)"
-                                          : "0px 1px 1px rgba(0, 0, 0, 0.25)",
-                                      height: "30px",
-                                      minWidth: "60px",
-                                      maxWidth: "100px",
-                                    }}
-                                  >
-                                    {sourceCounters[counter?.leadSource]}
-                                    <span className="px-2">{counter?.count}</span>
-                                  </Box>
-                                ))
-                              : ""}
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </Box>
-              <div className="w-full flex justify-end">
+            <div className="flex items-end justify-end">
+              {(hasPermission("leadSource_counts") || User.role === 1) && (
+                <SourceCounter />
+              )}
+
+              <div className="w-fit flex justify-end">
                 <Box
                   sx={{
-                    width: "120px",
+                    width: "150px",
+                    minWidth: "100px",
+                    maxWidth: "200px",
                   }}
                 >
                   <FormControl fullWidth>
@@ -2004,6 +1947,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   </FormControl>
                 </Box>
               </div>
+
             </div>
           </Box>
         )}
