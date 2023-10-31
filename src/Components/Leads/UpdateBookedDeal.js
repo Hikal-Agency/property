@@ -18,6 +18,7 @@ import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
+import { MdClose } from "react-icons/md";
 
 const UpdateBookedDeal = ({
   LeadModelOpen,
@@ -35,7 +36,7 @@ const UpdateBookedDeal = ({
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
   const style = {
-    transform: "translate(100%, 30%)",
+    transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
   const token = localStorage.getItem("auth-token");
@@ -270,11 +271,8 @@ const UpdateBookedDeal = ({
           } absolute top-1/2 left-1/2 p-4 rounded-md`}
         > */}
         <div
-          style={style}
           className={`${
-            isLangRTL(i18n.language)
-              ? "modal-open-left"
-              : "modal-open-right-booked"
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
           } ${
             isClosing
               ? isLangRTL(i18n.language)
@@ -282,165 +280,188 @@ const UpdateBookedDeal = ({
                 : "modal-close-right"
               : ""
           }
-        w-[60vw] h-min ${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"}
-        p-4 `}
+        w-[100vw] h-[100vh] flex items-start justify-end`}
         >
-          <IconButton
-            sx={{
-              position: "absolute",
-              right: 12,
-              top: 10,
-              color: (theme) => theme.palette.grey[500],
-            }}
+          <button
+            // onClick={handleLeadModelClose}
             onClick={handleClose}
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
-            <IoMdClose size={18} />
-          </IconButton>
-          {loading ? (
-            <div className="">
-              <CircularProgress size={20} />
-              <span
-                className={`font-semibold text-lg ${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
-                {" "}
-                Fetching Your Lead
-              </span>
-            </div>
-          ) : (
-            <>
-              <div className="w-full flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark" ? "text-white" : "text-black"
+            <MdClose
+              size={18}
+              color={"white"}
+              className="hover:border hover:border-white hover:rounded-full"
+            />
+          </button>
+          <div
+            style={style}
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            `}
+          >
+            {/* <IconButton
+              sx={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                color: (theme) => theme.palette.grey[500],
+              }}
+              onClick={handleClose}
+            >
+              <IoMdClose size={18} />
+            </IconButton> */}
+            {loading ? (
+              <div className="">
+                <CircularProgress size={20} />
+                <span
+                  className={`font-semibold text-lg ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
                   }`}
                 >
-                  Update Booked Deal Details
-                </h1>
+                  {" "}
+                  Fetching Your Lead
+                </span>
               </div>
+            ) : (
+              <>
+                <div className="w-full flex items-center pb-3">
+                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                  <h1
+                    className={`text-lg font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    Update Booked Deal Details
+                  </h1>
+                </div>
 
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  UpdateLeadFunc();
-                }}
-              >
-                <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1 px-4 pt-4">
-                  <div>
-                    <Box sx={darkModeColors}>
-                      <TextField
-                        id="Project"
-                        type={"number"}
-                        label="Booked Amount"
-                        className="w-full"
-                        variant="outlined"
-                        size="small"
-                        value={booked_amount}
-                        sx={{
-                          marginBottom: "1.35rem !important",
-                        }}
-                        onChange={(e) => setBookedAmount(e.target.value)}
-                      />
-
-                      <TextField
-                        id="Project"
-                        type={"text"}
-                        label="Project name"
-                        className="w-full"
-                        variant="outlined"
-                        size="small"
-                        value={LeadProject}
-                        sx={{
-                          marginBottom: "1.35rem !important",
-                        }}
-                        onChange={(e) => setLeadProject(e.target.value)}
-                      />
-
-                      <FormControl fullWidth variant="outlined" size="medium">
-                        <InputLabel id="">Enquiry for</InputLabel>
-                        <Select
-                          id="enquiry"
-                          value={EnquiryType}
-                          label="Enquiry for"
-                          onChange={ChangeEnquiryType}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    UpdateLeadFunc();
+                  }}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1 px-4 pt-4">
+                    <div>
+                      <Box sx={darkModeColors}>
+                        <TextField
+                          id="Project"
+                          type={"number"}
+                          label="Booked Amount"
                           className="w-full"
+                          variant="outlined"
+                          size="small"
+                          value={booked_amount}
                           sx={{
                             marginBottom: "1.35rem !important",
                           }}
-                          displayEmpty
-                          required
-                          size="small"
-                        >
-                          <MenuItem value="" disabled>
-                            ---NONE---
-                          </MenuItem>
-                          <MenuItem value={"Studio"}>Studio</MenuItem>
-                          <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
-                          <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
-                          <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
-                          <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
-                          <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
-                          <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
-                          <MenuItem value={"Retail"}>Retail</MenuItem>
-                          <MenuItem value={"Other"}>Others</MenuItem>
-                        </Select>
-                      </FormControl>
+                          onChange={(e) => setBookedAmount(e.target.value)}
+                        />
 
-                      <FormControl fullWidth variant="outlined" size="medium">
-                        <InputLabel id="">Property type</InputLabel>
-                        <Select
-                          id="property-type"
-                          value={PropertyType}
-                          label="Property type"
-                          onChange={ChangePropertyType}
+                        <TextField
+                          id="Project"
+                          type={"text"}
+                          label="Project name"
                           className="w-full"
-                          displayEmpty
-                          required
+                          variant="outlined"
                           size="small"
+                          value={LeadProject}
                           sx={{
                             marginBottom: "1.35rem !important",
                           }}
-                        >
-                          <MenuItem value="" disabled>
-                            ---NONE---
-                          </MenuItem>
-                          <MenuItem value={"Apartment"}>Apartment</MenuItem>
-                          <MenuItem value={"Villa"}>Villa</MenuItem>
-                          <MenuItem value={"penthouse"}>Penthouse</MenuItem>
-                          <MenuItem value={"mansion"}>Mansion</MenuItem>
-                          <MenuItem value={"Commercial"}>Commercial</MenuItem>
-                          <MenuItem value={"Townhouse"}>Townhouse</MenuItem>
-                        </Select>
-                      </FormControl>
+                          onChange={(e) => setLeadProject(e.target.value)}
+                        />
 
-                      <FormControl fullWidth variant="outlined" size="medium">
-                        <InputLabel id="">Purpose of enquiry</InputLabel>
-                        <Select
-                          id="for"
-                          value={ForType}
-                          label="Purpose of enquiry"
-                          onChange={ChangeForType}
-                          className="w-full"
-                          displayEmpty
-                          required
-                          size="small"
-                          sx={{
-                            marginBottom: "1.35rem !important",
-                          }}
-                        >
-                          <MenuItem value="" disabled>
-                            ---NONE---
-                          </MenuItem>
-                          <MenuItem value={"Investment"}>Investment</MenuItem>
-                          <MenuItem value={"End-user"}>End-User</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </div>
+                        <FormControl fullWidth variant="outlined" size="medium">
+                          <InputLabel id="">Enquiry for</InputLabel>
+                          <Select
+                            id="enquiry"
+                            value={EnquiryType}
+                            label="Enquiry for"
+                            onChange={ChangeEnquiryType}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "1.35rem !important",
+                            }}
+                            displayEmpty
+                            required
+                            size="small"
+                          >
+                            <MenuItem value="" disabled>
+                              ---NONE---
+                            </MenuItem>
+                            <MenuItem value={"Studio"}>Studio</MenuItem>
+                            <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
+                            <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
+                            <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
+                            <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
+                            <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
+                            <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
+                            <MenuItem value={"Retail"}>Retail</MenuItem>
+                            <MenuItem value={"Other"}>Others</MenuItem>
+                          </Select>
+                        </FormControl>
 
-                  {/* <div>
+                        <FormControl fullWidth variant="outlined" size="medium">
+                          <InputLabel id="">Property type</InputLabel>
+                          <Select
+                            id="property-type"
+                            value={PropertyType}
+                            label="Property type"
+                            onChange={ChangePropertyType}
+                            className="w-full"
+                            displayEmpty
+                            required
+                            size="small"
+                            sx={{
+                              marginBottom: "1.35rem !important",
+                            }}
+                          >
+                            <MenuItem value="" disabled>
+                              ---NONE---
+                            </MenuItem>
+                            <MenuItem value={"Apartment"}>Apartment</MenuItem>
+                            <MenuItem value={"Villa"}>Villa</MenuItem>
+                            <MenuItem value={"penthouse"}>Penthouse</MenuItem>
+                            <MenuItem value={"mansion"}>Mansion</MenuItem>
+                            <MenuItem value={"Commercial"}>Commercial</MenuItem>
+                            <MenuItem value={"Townhouse"}>Townhouse</MenuItem>
+                          </Select>
+                        </FormControl>
+
+                        <FormControl fullWidth variant="outlined" size="medium">
+                          <InputLabel id="">Purpose of enquiry</InputLabel>
+                          <Select
+                            id="for"
+                            value={ForType}
+                            label="Purpose of enquiry"
+                            onChange={ChangeForType}
+                            className="w-full"
+                            displayEmpty
+                            required
+                            size="small"
+                            sx={{
+                              marginBottom: "1.35rem !important",
+                            }}
+                          >
+                            <MenuItem value="" disabled>
+                              ---NONE---
+                            </MenuItem>
+                            <MenuItem value={"Investment"}>Investment</MenuItem>
+                            <MenuItem value={"End-user"}>End-User</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </div>
+
+                    {/* <div>
                     <Box sx={darkModeColors}>
                       <h4
                         className={`${
@@ -473,26 +494,27 @@ const UpdateBookedDeal = ({
                       </FormControl>
                     </Box>
                   </div> */}
-                </div>
+                  </div>
 
-                <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
-                  ripple={true}
-                  size="lg"
-                  type="submit"
-                  disabled={btnloading ? true : false}
-                >
-                  {btnloading ? (
-                    <div className="flex items-center justify-center space-x-1">
-                      <CircularProgress size={18} sx={{ color: "white" }} />
-                    </div>
-                  ) : (
-                    <span>Update Lead</span>
-                  )}
-                </Button>
-              </form>
-            </>
-          )}
+                  <Button
+                    className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
+                    ripple={true}
+                    size="lg"
+                    type="submit"
+                    disabled={btnloading ? true : false}
+                  >
+                    {btnloading ? (
+                      <div className="flex items-center justify-center space-x-1">
+                        <CircularProgress size={18} sx={{ color: "white" }} />
+                      </div>
+                    ) : (
+                      <span>Update Lead</span>
+                    )}
+                  </Button>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       </Modal>
     </>
