@@ -216,7 +216,7 @@ const UpdateLead = ({
         if (leadContact && !leadContact.startsWith("+")) {
           leadContact = "+" + leadContact;
         }
-        
+
         setLeadContact(leadContact);
         // setLeadContact(result?.data?.data?.leadContact);
         setLeadEmail(result?.data?.data?.leadEmail);
@@ -409,7 +409,7 @@ const UpdateLead = ({
               </div>
             ) : (
               <>
-                <IconButton
+                {/* <IconButton
                   sx={{
                     position: "absolute",
                     right: 12,
@@ -419,7 +419,7 @@ const UpdateLead = ({
                   onClick={handleLeadModelClose}
                 >
                   <IoMdClose size={18} />
-                </IconButton>
+                </IconButton> */}
                 <h1
                   className={`${
                     currentMode === "dark" ? "text-white" : "text-black"
@@ -755,9 +755,11 @@ const UpdateLead = ({
                           required
                           labels={t("label_phone_number")}
                           error={error}
-                          className={`${classNames({
+                          className={`
+                          ${classNames({
                             "dark-mode": currentMode === "dark",
-                          })} mb-5`}
+                          })}
+                           mb-5`}
                           size="small"
                           style={{
                             background: `${
