@@ -17,6 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
+import { MdClose } from "react-icons/md";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -46,7 +47,7 @@ const UpdateLead = ({
   //   boxShadow: 24,
   // };
   const style = {
-    transform: "translate(100%, 30%)",
+    transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
   //eslint-disable-next-line
@@ -82,6 +83,14 @@ const UpdateLead = ({
   // eslint-disable-next-line
   const ChangeFeedback = (event) => {
     setFeedback(event.target.value);
+  };
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      handleLeadModelClose();
+    }, 1000);
   };
   useEffect(() => {
     console.log("lead data is ");
@@ -247,18 +256,9 @@ const UpdateLead = ({
           timeout: 500,
         }}
       >
-        {/* <div
-          style={style}
-          className={`w-[calc(100%-20px)] sm:w-[85%] md:w-[80%] lg:w-[70%] xl:w-[60%] 2xl:w-[50%] ${
-            currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md border border-[#AAAAAA]`}
-        > */}
         <div
-          style={style}
           className={`${
-            isLangRTL(i18n.language)
-              ? "modal-open-left"
-              : "modal-open-right-booked"
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
           } ${
             isClosing
               ? isLangRTL(i18n.language)
@@ -266,128 +266,147 @@ const UpdateLead = ({
                 : "modal-close-right"
               : ""
           }
-        w-[60vw] h-min ${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"}
-        p-4 `}
+        w-[100vw] h-[100vh] flex items-start justify-end`}
         >
-          <IconButton
-            sx={{
-              position: "absolute",
-              right: 12,
-              top: 10,
-              color: (theme) => theme.palette.grey[500],
-            }}
-            onClick={handleLeadModelClose}
+          <button
+            // onClick={handleLeadModelClose}
+            onClick={handleClose}
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
-            <IoMdClose size={18} />
-          </IconButton>
-          {loading ? (
-            <div className="w-full flex items-center justify-center space-x-1">
-              <CircularProgress size={20} />
-              <span
-                className={`font-semibold text-lg             ${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }
-`}
-              >
-                {t("fetching_your_lead")}
-              </span>
-            </div>
-          ) : (
-            <>
-              <h1
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                } text-center font-bold text-lg pb-10`}
-              >
-                {t("update_closed_details")}
-              </h1>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  UpdateLeadFunc();
-                }}
-              >
-                <div className="grid sm:grid-cols-1">
-                  <div className="flex flex-col justify-center items-center gap-7 mb-5">
-                    <Box sx={darkModeColors} className="w-full">
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          label={t("closed_deal_date")}
-                          value={leadDateValue}
-                          views={["year", "month", "day"]}
-                          required
-                          onChange={(newValue) => {
-                            setLeadDateValue(newValue);
-                            console.log("newvalue: ", newValue);
-                            setLeadDate(
-                              formatNum(newValue.$d.getUTCFullYear()) +
-                                "-" +
-                                formatNum(newValue.$d.getUTCMonth() + 1) +
-                                "-" +
-                                formatNum(newValue.$d.getUTCDate() + 1)
-                            );
-                          }}
-                          format="yyyy-MM-dd"
-                          // renderInput={(params) => (
-                          //   <TextField {...params} fullWidth />
-                          // )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              onKeyDown={(e) => e.preventDefault()}
-                              readOnly={true}
-                              fullWidth
-                              size="small"
-                            />
-                          )}
-                        />
-                      </LocalizationProvider>
-                    </Box>
-                    <Box sx={darkModeColors} className="w-full">
-                      <TextField
-                        required
-                        fullWidth
-                        label={t("closed_amount")}
-                        value={leadAmount}
-                        size="small"
-                        onChange={(e) => {
-                          setLeadAmount(e.target.value);
-                        }}
-                      />
-                    </Box>
-                    <Box sx={darkModeColors} className="w-full">
-                      <TextField
-                        required
-                        fullWidth
-                        label={t("label_unit")}
-                        value={unitNo}
-                        size="small"
-                        onChange={(e) => {
-                          setUnitNo(e.target.value);
-                        }}
-                      />
-                    </Box>
-                  </div>
-                </div>
-
-                <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
-                  ripple={true}
-                  size="lg"
-                  type="submit"
-                  disabled={btnloading ? true : false}
+            <MdClose
+              size={18}
+              color={"white"}
+              className="hover:border hover:border-white hover:rounded-full"
+            />
+          </button>
+          <div
+            style={style}
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            `}
+          >
+            <IconButton
+              sx={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                color: (theme) => theme.palette.grey[500],
+              }}
+              onClick={handleLeadModelClose}
+            >
+              <IoMdClose size={18} />
+            </IconButton>
+            {loading ? (
+              <div className="w-full flex items-center justify-center space-x-1">
+                <CircularProgress size={20} />
+                <span className="font-semibold text-lg">
+                  {t("fetching_your_lead")}
+                </span>
+              </div>
+            ) : (
+              <>
+                <h1
+                  className={`${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  } text-center font-bold text-lg pb-10`}
                 >
-                  {btnloading ? (
-                    <div className="flex items-center justify-center space-x-1">
-                      <CircularProgress size={18} sx={{ color: "white" }} />
+                  {t("update_closed_details")}
+                </h1>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    UpdateLeadFunc();
+                  }}
+                >
+                  <div className="grid sm:grid-cols-1">
+                    <div className="flex flex-col justify-center items-center gap-7 mb-5">
+                      <Box sx={darkModeColors} className="w-full">
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            label={t("closed_deal_date")}
+                            value={leadDateValue}
+                            views={["year", "month", "day"]}
+                            required
+                            onChange={(newValue) => {
+                              setLeadDateValue(newValue);
+                              console.log("newvalue: ", newValue);
+                              setLeadDate(
+                                formatNum(newValue.$d.getUTCFullYear()) +
+                                  "-" +
+                                  formatNum(newValue.$d.getUTCMonth() + 1) +
+                                  "-" +
+                                  formatNum(newValue.$d.getUTCDate() + 1)
+                              );
+                            }}
+                            format="yyyy-MM-dd"
+                            // renderInput={(params) => (
+                            //   <TextField {...params} fullWidth />
+                            // )}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                onKeyDown={(e) => e.preventDefault()}
+                                readOnly={true}
+                                fullWidth
+                                size="small"
+                              />
+                            )}
+                          />
+                        </LocalizationProvider>
+                      </Box>
+                      <Box sx={darkModeColors} className="w-full">
+                        <TextField
+                          required
+                          fullWidth
+                          label={t("closed_amount")}
+                          value={leadAmount}
+                          size="small"
+                          onChange={(e) => {
+                            setLeadAmount(e.target.value);
+                          }}
+                        />
+                      </Box>
+                      <Box sx={darkModeColors} className="w-full">
+                        <TextField
+                          required
+                          fullWidth
+                          label={t("label_unit")}
+                          value={unitNo}
+                          size="small"
+                          onChange={(e) => {
+                            setUnitNo(e.target.value);
+                          }}
+                        />
+                      </Box>
                     </div>
-                  ) : (
-                    <span> {t("btn_update_lead")}</span>
-                  )}
-                </Button>
-              </form>
-            </>
-          )}
+                  </div>
+
+                  <Button
+                    className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
+                    ripple={true}
+                    size="lg"
+                    type="submit"
+                    disabled={btnloading ? true : false}
+                  >
+                    {btnloading ? (
+                      <div className="flex items-center justify-center space-x-1">
+                        <CircularProgress size={18} sx={{ color: "white" }} />
+                      </div>
+                    ) : (
+                      <span> {t("btn_update_lead")}</span>
+                    )}
+                  </Button>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       </Modal>
     </>
