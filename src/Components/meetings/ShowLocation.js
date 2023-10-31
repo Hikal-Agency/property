@@ -30,14 +30,17 @@ const ShowLocation = ({
       handleModalClose();
     }, 1000);
   };
-
   const style = {
-    transform: "translate(100%, 30%)",
+    transform: "translate(0%, 0%)",
     boxShadow: 24,
-    height: "60vh",
-    overflowY: "scroll",
-    position: "relative",
   };
+  // const style = {
+  //   transform: "translate(100%, 30%)",
+  //   boxShadow: 24,
+  //   height: "60vh",
+  //   overflowY: "scroll",
+  //   position: "relative",
+  // };
   return (
     <>
       <Modal
@@ -59,11 +62,8 @@ const ShowLocation = ({
           } absolute top-1/2 left-1/2 p-4 rounded-md`}
         > */}
         <div
-          style={style}
           className={`${
-            isLangRTL(i18n.language)
-              ? "modal-open-left"
-              : "modal-open-right-booked"
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
           } ${
             isClosing
               ? isLangRTL(i18n.language)
@@ -71,10 +71,9 @@ const ShowLocation = ({
                 : "modal-close-right"
               : ""
           }
-        w-[60vw] h-min ${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"}
-        p-4 `}
+        w-[100vw] h-[100vh] flex items-start justify-end`}
         >
-          {/* <button
+          <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
             className={`${
@@ -87,69 +86,81 @@ const ShowLocation = ({
               color={"white"}
               className="hover:border hover:border-white hover:rounded-full"
             />
-          </button> */}
-          <div className="w-full flex items-center pb-3">
-            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-            <h1
-              className={`text-lg font-semibold ${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-            >
-              {t("meeting_details")}
-            </h1>
-          </div>
+          </button>
 
-          <Box sx={darkModeColors} className="w-full p-4">
-            <FormControl fullWidth>
-              <TextField
-                id="text"
-                type={"text"}
-                sx={{
-                  "& input": {
-                    fontFamily: isArabic(meetingNote)
-                      ? "Noto Kufi Arabic"
-                      : "inherit",
-                  },
-                }}
-                label={t("label_meeting_note")}
-                className="w-full"
-                style={{ marginBottom: "20px" }}
-                variant="outlined"
-                name="text"
-                size="small"
-                value={meetingNote || "No note"}
-                readOnly={true}
-              />
-            </FormControl>
-            {/* </Box>
-          <Box sx={darkModeColors} className="w-full p-4"> */}
-            {meetingLocation && [
-              meetingLocation.lat && meetingLocation.lng ? (
-                <LocationPicker
-                  showOnly={true}
-                  meetingLocation={meetingLocation}
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                />
-              ) : (
-                <div className="mt-8 text-center text-[#da1f26]">
-                  <p>{t("location_not_set_for_meeting")}</p>
-                </div>
-              ),
-            ]}
-          </Box>
-          <IconButton
-            sx={{
-              position: "absolute",
-              right: 12,
-              top: 10,
-              color: (theme) => theme.palette.grey[500],
-            }}
-            onClick={handleModalClose}
+          <div
+            style={style}
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            `}
           >
-            <IoMdClose size={18} />
-          </IconButton>
+            <div className="w-full flex items-center pb-3">
+              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+              <h1
+                className={`text-lg font-semibold ${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              >
+                {t("meeting_details")}
+              </h1>
+            </div>
+
+            <Box sx={darkModeColors} className="w-full p-4">
+              <FormControl fullWidth>
+                <TextField
+                  id="text"
+                  type={"text"}
+                  sx={{
+                    "& input": {
+                      fontFamily: isArabic(meetingNote)
+                        ? "Noto Kufi Arabic"
+                        : "inherit",
+                    },
+                  }}
+                  label={t("label_meeting_note")}
+                  className="w-full"
+                  style={{ marginBottom: "20px" }}
+                  variant="outlined"
+                  name="text"
+                  size="small"
+                  value={meetingNote || "No note"}
+                  readOnly={true}
+                />
+              </FormControl>
+              {/* </Box>
+          <Box sx={darkModeColors} className="w-full p-4"> */}
+              {meetingLocation && [
+                meetingLocation.lat && meetingLocation.lng ? (
+                  <LocationPicker
+                    showOnly={true}
+                    meetingLocation={meetingLocation}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  />
+                ) : (
+                  <div className="mt-8 text-center text-[#da1f26]">
+                    <p>{t("location_not_set_for_meeting")}</p>
+                  </div>
+                ),
+              ]}
+            </Box>
+            {/* <IconButton
+              sx={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                color: (theme) => theme.palette.grey[500],
+              }}
+              onClick={handleModalClose}
+            >
+              <IoMdClose size={18} />
+            </IconButton> */}
+          </div>
         </div>
       </Modal>
     </>
