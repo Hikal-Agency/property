@@ -768,6 +768,9 @@ const UpdateLead = ({
                             "& .PhoneInputCountryIconImg": {
                               color: "#fff",
                             },
+                            "& .PhoneInputInput": {
+                              background: "none !important",
+                            },
                             // padding: "10px",
                             // color: "#808080",
                             border: `1px solid ${
