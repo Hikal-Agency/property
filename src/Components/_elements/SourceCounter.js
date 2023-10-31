@@ -6,38 +6,29 @@ import {
 import { useStateContext } from '../../context/ContextProvider';
 
 import { 
-    BiImport,
-    BiArchive,
-} from "react-icons/bi";
-import { 
     BsSnow2,
-    BsPersonCircle,
+    BsPersonRolodex,
     BsMegaphone,
     BsChatDots,
-    BsWhatsapp
+    BsWhatsapp,
+    BsGlobe2,
+    BsChatLeftText,
+    BsLink45Deg,
+    BsArchive,
+    BsDownload,
+    BsTwitter,
+    BsYoutube,
+    BsTiktok,
+    BsSnapchat,
+    BsFacebook
 } from "react-icons/bs";
-import { 
-    FaFacebookF,
-    FaSnapchatGhost,
-    FaTiktok,
-    FaYoutube,
-    FaTwitter,
-    FaRegComments
-} from "react-icons/fa";
 import { 
     FcGoogle 
 } from "react-icons/fc";
 import { 
-    GiMagnifyingGlass 
-} from "react-icons/gi";
-import { 
-    MdCampaign,
     MdClose,
     MdImportantDevices 
 } from "react-icons/md";
-import { 
-    TbWorldWww 
-} from "react-icons/tb";
 
 const SourceCounter = () => {
     const {
@@ -71,25 +62,25 @@ const SourceCounter = () => {
     const sourceCounters = [
         {
             "Campaign Facebook": {
-                icon: <FaFacebookF size={14} color={"white"} />,
+                icon: <BsFacebook size={16} color={"white"} />,
                 bg: "#0e82e1",
             }
         },
         {
             "Campaign Snapchat": {
-                icon: <FaSnapchatGhost size={14} color={"white"} />,
+                icon: <BsSnapchat size={14} color={"white"} />,
                 bg: "#edbd34", //"#f6d80a",
             }
         },
         {
             "Campaign TikTok": {
-                icon: <FaTiktok size={14} color={"white"} />,
+                icon: <BsTiktok size={14} color={"white"} />,
                 bg: "#000000",
             }
         },
         {
             "Campaign YouTube": {
-                icon: <FaYoutube size={16} color={"white"} />,
+                icon: <BsYoutube size={16} color={"white"} />,
                 bg: "#c4302b",
             }
         },
@@ -101,7 +92,7 @@ const SourceCounter = () => {
         },
         {
             "Campaign Twitter": {
-                icon: <FaTwitter size={16} color={"white"} />,
+                icon: <BsTwitter size={16} color={"white"} />,
                 bg: "#00acee",
             }
         },
@@ -125,31 +116,31 @@ const SourceCounter = () => {
         },
         {
             "Comment": {
-                icon: <FaRegComments size={18} color={"white"} />,
+                icon: <BsChatLeftText size={16} color={"white"} />,
                 bg: "#a9b3c6",
             }
         },
         {
             "Website": {
-                icon: <TbWorldWww size={16} color={"white"} />,
+                icon: <BsGlobe2 size={16} color={"white"} />,
                 bg: "#AED6F1",
             }
         },
         {
             "Property Finder": {
-                icon: <GiMagnifyingGlass size={16} color={"white"} />,
+                icon: <BsLink45Deg size={18} color={"white"} />,
                 bg: "#ef5e4e",
             }
         },
         {
             "Bulk Import": {
-                icon: <BiImport size={16} color={"white"} />,
+                icon: <BsDownload size={16} color={"white"} />,
                 bg: primaryColor,
             }
         },
         {
             "Warm": {
-                icon: <BiArchive size={16} color={"white"} />,
+                icon: <BsArchive size={16} color={"white"} />,
                 bg: "#AEC6CF",
             }
         },
@@ -161,7 +152,7 @@ const SourceCounter = () => {
         },
         {
             "Personal": {
-                icon: <BsPersonCircle size={16} color={"white"} />,
+                icon: <BsPersonRolodex size={16} color={"white"} />,
                 bg: "#6C7A89",
             }
         },
@@ -212,26 +203,28 @@ const SourceCounter = () => {
                                 if (!counterData) return null;
 
                                 return (
-                                    <div className="grid grid-cols-2 flex items-center font-semibold border border-[#AAAAAA]"
-                                        style={{
-                                            color: currentMode === "dark" ? "white" : "black",
-                                            background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
-                                            boxShadow: currentMode === "dark"
-                                            ? "2px 2px 5px rgba(66, 66, 66, 1)"
-                                            : "2px 2px 5px rgba(0, 0, 0, 0.25)",
-                                        }}
-                                    >
-                                        <div className="p-2 h-full w-full flex items-center justify-center"
+                                    <Tooltip title={leadSource} arrow>
+                                        <div className="grid grid-cols-2 flex items-center font-semibold border border-[#AAAAAA]"
                                             style={{
-                                                background: bg,
+                                                color: currentMode === "dark" ? "white" : "black",
+                                                background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+                                                boxShadow: currentMode === "dark"
+                                                ? "2px 2px 5px rgba(66, 66, 66, 1)"
+                                                : "2px 2px 5px rgba(0, 0, 0, 0.25)",
                                             }}
                                         >
-                                            {icon}
+                                            <div className="p-2 h-full w-full flex items-center justify-center"
+                                                style={{
+                                                    background: bg,
+                                                }}
+                                            >
+                                                {icon}
+                                            </div>
+                                            <div className="p-2 flex items-center justify-center h-full">
+                                                {counterData.count}
+                                            </div> 
                                         </div>
-                                        <div className="p-2 flex items-center justify-center h-full">
-                                            {counterData.count}
-                                        </div> 
-                                    </div>
+                                    </Tooltip>
                                 );
                             })
                         ) : (

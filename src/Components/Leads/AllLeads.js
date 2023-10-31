@@ -14,45 +14,11 @@ import {
 import readXlsxFile from "read-excel-file";
 import "../../styles/index.css";
 import usePermission from "../../utils/usePermission";
-import {
-  DataGrid,
-  gridPageCountSelector,
-  gridPageSelector,
-  GridToolbar,
-  useGridApiContext,
-  useGridSelector,
-} from "@mui/x-data-grid";
-import SourceCounter from "../_elements/SourceCounter";
-
-import {
-  FaSnapchatGhost,
-  FaTiktok,
-  FaFacebookF,
-  FaWhatsapp,
-  FaYoutube,
-  FaTwitter,
-  FaUser,
-  FaRegComments,
-} from "react-icons/fa";
-import { MdCampaign, MdImportantDevices } from "react-icons/md";
-import { BiImport, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
-import { BsShieldX, BsShieldCheck, BsShieldMinus } from "react-icons/bs";
-import { BsShuffle } from "react-icons/bs";
-import { FcGoogle } from "react-icons/fc";
-import { GiMagnifyingGlass } from "react-icons/gi";
-import { TbFileImport, TbWorldWww } from "react-icons/tb";
-import { RiMailSendLine } from "react-icons/ri";
-import { ImSearch } from "react-icons/im";
-import { VscCallOutgoing } from "react-icons/vsc";
-import { SiGooglemeet } from "react-icons/si";
-
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { useLocation } from "react-router-dom";
-
-import { BsPersonCircle, BsSnow2, BsTrash, BsAlarm } from "react-icons/bs";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "./SingleLead";
@@ -69,6 +35,61 @@ import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
 import AddMeetLink from "../liveleads/AddMeetLink";
 import Timeline from "../../Pages/timeline";
+import {
+  DataGrid,
+  gridPageCountSelector,
+  gridPageSelector,
+  GridToolbar,
+  useGridApiContext,
+  useGridSelector,
+} from "@mui/x-data-grid";
+import SourceCounter from "../_elements/SourceCounter";
+
+import {
+  FaSnapchatGhost,
+  FaUser,
+} from "react-icons/fa";
+import { 
+  BsShieldX, 
+  BsShieldCheck, 
+  BsShieldMinus,
+  BsShuffle,
+  BsSnow2, 
+  BsTrash, 
+  BsAlarm,
+  BsTiktok,
+  BsYoutube,
+  BsTwitter,
+  BsDownload,
+  BsLink45Deg,
+  BsMegaphone,
+  BsPersonRolodex,
+  BsWhatsapp,
+  BsChatDots,
+  BsChatLeftText,
+  BsGlobe2,
+  BsFacebook,
+  BsArchive
+} from "react-icons/bs";
+import { 
+  FcGoogle 
+} from "react-icons/fc";
+import { 
+  TbFileImport 
+} from "react-icons/tb";
+import { 
+  RiMailSendLine 
+} from "react-icons/ri";
+import { 
+  ImSearch 
+} from "react-icons/im";
+import { 
+  VscCallOutgoing 
+} from "react-icons/vsc";
+import { 
+  SiGooglemeet 
+} from "react-icons/si";
+
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -154,19 +175,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
-
-  const [counters, setCounter] = useState([]);
-
-  const sourceCounters = {
-    "Campaign Facebook": <FaFacebookF size={14} color={"#0e82e1"} />,
-    "Campaign Snapchat": <FaSnapchatGhost size={16} color={"#f6d80a"} />,
-    "Campaign TikTok": (
-      <FaTiktok size={16} color={currentMode === "dark" ? "white" : "black"} />
-    ),
-    "Campaign YouTube": <FaYoutube size={18} color={"#c4302b"} />,
-    "Campaign GoogleAds": <FcGoogle size={18} />,
-    "Property Finder": <GiMagnifyingGlass size={16} color={"#ef5e4e"} />,
-  };
 
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
@@ -522,11 +530,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           ),
 
           "campaign facebook": () => (
-            <FaFacebookF size={16} color={"#0e82e1"} className="p-1" />
+            <BsFacebook size={16} color={"#0e82e1"} className="p-1" />
           ),
 
           "campaign tiktok": () => (
-            <FaTiktok
+            <BsTiktok
               size={16}
               color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
               className="p-1"
@@ -536,37 +544,37 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
 
           "campaign youtube": () => (
-            <FaYoutube size={16} color={"#FF0000"} className="p-1" />
+            <BsYoutube size={16} color={"#FF0000"} className="p-1" />
           ),
 
           "campaign twitter": () => (
-            <FaTwitter size={16} color={"#00acee"} className="p-1" />
+            <BsTwitter size={16} color={"#00acee"} className="p-1" />
           ),
 
           "bulk import": () => (
-            <BiImport size={16} color={primaryColor} className="p-1" />
+            <BsDownload size={16} color={primaryColor} className="p-1" />
           ),
 
           "property finder": () => (
-            <GiMagnifyingGlass size={16} color={"#ef5e4e"} className="p-1" />
+            <BsLink45Deg size={16} color={"#ef5e4e"} className="p-1" />
           ),
 
           campaign: () => (
-            <MdCampaign size={16} color={"#696969"} className="p-0.5" />
+            <BsMegaphone size={16} color={"#696969"} className="p-0.5" />
           ),
 
           cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
 
           personal: () => (
-            <BsPersonCircle size={16} color={"#6C7A89"} className="p-1" />
+            <BsPersonRolodex size={16} color={"#6C7A89"} className="p-1" />
           ),
 
           whatsapp: () => (
-            <FaWhatsapp size={16} color={"#53cc60"} className="p-1" />
+            <BsWhatsapp size={16} color={"#53cc60"} className="p-1" />
           ),
 
           message: () => (
-            <BiMessageRoundedDots
+            <BsChatDots
               size={16}
               color={"#6A5ACD"}
               className="p-0.5"
@@ -574,11 +582,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           ),
 
           comment: () => (
-            <FaRegComments size={16} color={"#a9b3c6"} className="p-0.5" />
+            <BsChatLeftText size={16} color={"#a9b3c6"} className="p-0.5" />
           ),
 
           website: () => (
-            <TbWorldWww size={16} color={"#AED6F1"} className="p-0.5" />
+            <BsGlobe2 size={16} color={"#AED6F1"} className="p-0.5" />
           ),
 
           self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
@@ -587,7 +595,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           <>
             <div className="flex items-center justify-center">
               {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
-                <BiArchive
+                <BsArchive
                   style={{
                     width: "50%",
                     height: "50%",
@@ -1563,42 +1571,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       .catch((err) => console.log(err));
   };
 
-  const fetchCounter = async () => {
-    const currentDate = moment().format("YYYY-MM-DD");
-    // const currentDate = "2023-01-01";
-    try {
-      const callCounter = await axios.get(
-        `${BACKEND_URL}/totalSource?date=${currentDate}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      console.log("counter===> :", callCounter);
-
-      setCounter(callCounter?.data?.data?.query_result);
-    } catch (error) {
-      console.log("Error::: ", error);
-      toast.error("Unable to fetch count.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
     FetchLeads(token);
-    fetchCounter(token);
   }, [unassignedFeedback]);
 
   useEffect(() => {
