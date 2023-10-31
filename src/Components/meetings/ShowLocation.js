@@ -74,7 +74,7 @@ const ShowLocation = ({
         w-[60vw] h-min ${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"}
         p-4 `}
         >
-          <button
+          {/* <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
             className={`${
@@ -87,7 +87,7 @@ const ShowLocation = ({
               color={"white"}
               className="hover:border hover:border-white hover:rounded-full"
             />
-          </button>
+          </button> */}
           <div className="w-full flex items-center pb-3">
             <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
             <h1
