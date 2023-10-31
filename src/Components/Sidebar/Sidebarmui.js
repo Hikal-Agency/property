@@ -1867,6 +1867,7 @@ const Sidebarmui = () => {
                     },
                     "& .css-1mfnem1:hover": {
                       backgroundColor: primaryColor,
+                      color: "white",
                     },
                     // submenu containerr color
                     "& .css-z5rm24": {
@@ -1888,26 +1889,15 @@ const Sidebarmui = () => {
                       minWidth: "18px",
                     },
                     "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
-                      {
-                        paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
-                        // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
-                      },
-                    // "& .ps-menu-label": {
-                    //   fontWeight: "medium",
-                    //   color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
-                    // },
-                    // "& .ps-menu-icon": {
-                    //   // fontSize: "16px",
-                    //   color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
-                    // },
-                    // "&.ps-menu-label:hover": {
-                    //   fontWeight: "medium",
-                    //   color: currentMode === "dark" ? "#000000" : "#FFFFFF",
-                    // },
-                    // "& .ps-menu-icon:hover": {
-                    //   // fontSize: "16px",
-                    //   color: currentMode === "dark" ? "#000000" : "#FFFFFF",
-                    // }
+                    {
+                      paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
+                      // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                      // color: !themeBgImg
+                      //   ? primaryColor
+                      //   : currentMode === "dark"
+                      //   ? "#FFFFFF"
+                      //   : "#000000",
+                    },
                     "& .ps-menu-button": {
                       fontWeight: "medium",
                       color: !themeBgImg
@@ -1986,19 +1976,23 @@ const Sidebarmui = () => {
                               },
                               "& .css-1mfnem1:hover": {
                                 backgroundColor: primaryColor,
+                                color: "white",
                               },
                               "& .css-1ogoo8i": {
                                 backgroundColor: primaryColor,
+                                color: "white",
                               },
                               // STYLING FOR DARK MODE
                               "& .css-yktbuo": {
                                 backgroundColor: primaryColor,
+                                color: "white",
                               },
                               "& .css-yktbuo:hover": {
                                 backgroundColor: primaryColor,
+                                color: "white",
                               },
                               "& .css-1v6ithu": {
-                                color: "white",
+                                // color: "white",
                               },
                             }}
                             className="relative my-1"
@@ -2088,19 +2082,23 @@ const Sidebarmui = () => {
                                     },
                                     "& .css-1mfnem1:hover": {
                                       backgroundColor: primaryColor,
+                                      color: "white",
                                     },
                                     "& .css-1ogoo8i": {
                                       backgroundColor: primaryColor,
+                                      color: "white",
                                     },
                                     // STYLING FOR DARK MODE
                                     "& .css-yktbuo": {
                                       backgroundColor: primaryColor,
+                                      color: "white",
                                     },
                                     "& .css-yktbuo:hover": {
                                       backgroundColor: primaryColor,
+                                      color: "white",
                                     },
                                     "& .css-1v6ithu": {
-                                      color: "white",
+                                      // color: "white",
                                     },
                                   }}
                                   className="relative my-1"
@@ -2128,11 +2126,8 @@ const Sidebarmui = () => {
                               // label={link?.title?.toUpperCase()}
                               label={
                                 <span
-                                  className={`${
-                                    currentMode === "dark"
-                                      ? "text-white"
-                                      : "text-black"
-                                  } uppercasecapitalize flex items-center gap-2`}
+                                  className={`
+                                  uppercase capitalize flex items-center gap-2`}
                                 >
                                   {link.title}
                                   {link.pro && (
@@ -2184,6 +2179,7 @@ const Sidebarmui = () => {
                                           },
                                           "& .css-1mfnem1:hover": {
                                             backgroundColor: primaryColor,
+                                            color: "white",
                                           },
                                           // submenu containerr color
                                           "& .css-z5rm24": {
@@ -2226,11 +2222,7 @@ const Sidebarmui = () => {
                                           // label={menu.name}
                                           label={
                                             <span
-                                              className={`${
-                                                currentMode === "dark"
-                                                  ? "text-white"
-                                                  : "text-black"
-                                              } capitalize flex items-center gap-2`}
+                                              className={`capitalize flex items-center gap-2`}
                                             >
                                               {menu.name}
                                               {menu.pro && (
@@ -2261,25 +2253,24 @@ const Sidebarmui = () => {
                                                       borderRadius: "0px",
                                                     },
                                                     "& .css-1mfnem1:hover": {
-                                                      backgroundColor:
-                                                        primaryColor,
+                                                      backgroundColor: primaryColor,
+                                                      color: "white",
                                                     },
                                                     "& .css-1ogoo8i": {
-                                                      backgroundColor:
-                                                        primaryColor,
+                                                      backgroundColor: primaryColor,
+                                                      color: "white",
                                                     },
                                                     // STYLING FOR DARK MODE
                                                     "& .css-yktbuo": {
-                                                      backgroundColor:
-                                                        primaryColor,
+                                                      backgroundColor: primaryColor,
+                                                      color: "white",
                                                     },
                                                     "& .css-1f8bwsm": {
-                                                      minWidth:
-                                                        "10px !important",
+                                                      minWidth: "10px !important",
                                                     },
                                                     "& .css-yktbuo:hover": {
-                                                      backgroundColor:
-                                                        primaryColor,
+                                                      backgroundColor: primaryColor,
+                                                      color: "white",
                                                     },
                                                     "& .css-1v6ithu": {
                                                       color: "white",
@@ -2293,8 +2284,7 @@ const Sidebarmui = () => {
                                                     },
                                                     "& .css-cveggr-MuiListItemIcon-root":
                                                       {
-                                                        minWidth:
-                                                          "10px !important",
+                                                        minWidth: "10px !important",
                                                       },
                                                   }}
                                                   className=" relative my-1"
@@ -2325,11 +2315,7 @@ const Sidebarmui = () => {
                                                       </ListItemIcon>
                                                     )}{" "}
                                                     <span
-                                                      className={` ${
-                                                        currentMode === "dark"
-                                                          ? "text-white"
-                                                          : "text-black"
-                                                      } flex items-center gap-2`}
+                                                      className={`flex items-center gap-2`}
                                                     >
                                                       {m?.name || ""}
                                                       {m.pro && (
@@ -2376,16 +2362,20 @@ const Sidebarmui = () => {
                                             },
                                             "& .css-1mfnem1:hover": {
                                               backgroundColor: primaryColor,
+                                              color: "white",
                                             },
                                             "& .css-1ogoo8i": {
                                               backgroundColor: primaryColor,
+                                              color: "white",
                                             },
                                             // STYLING FOR DARK MODE
                                             "& .css-yktbuo": {
                                               backgroundColor: primaryColor,
+                                              color: "white",
                                             },
                                             "& .css-yktbuo:hover": {
                                               backgroundColor: primaryColor,
+                                              color: "white",
                                             },
                                             "& .css-1v6ithu": {
                                               color: "white",
@@ -2412,10 +2402,6 @@ const Sidebarmui = () => {
                                               <span
                                                 className={`${
                                                   !isCollapsed && "text-xl"
-                                                } ${
-                                                  currentMode === "dark"
-                                                    ? "text-white"
-                                                    : "text-black"
                                                 }`}
                                                 style={{
                                                   // icons css
@@ -2434,11 +2420,7 @@ const Sidebarmui = () => {
                                               </span>
                                               {isCollapsed && (
                                                 <span
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "text-white"
-                                                      : "text-black"
-                                                  } capitalize flex items-center gap-2`}
+                                                  className={` capitalize flex items-center gap-2`}
                                                 >
                                                   {menu.name}
                                                   {menu.pro && (
