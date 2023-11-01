@@ -24,7 +24,7 @@ const UpdateComponent = ({
   DataName,
   UserData,
 }) => {
-  const { BACKEND_URL, User, t, isLangRTL, i18n, currentMode } =
+  const { BACKEND_URL, User, t, isLangRTL, i18n, currentMode, darkModeColors } =
     useStateContext();
   const [isClosing, setIsClosing] = useState(false);
 
@@ -305,6 +305,12 @@ const UpdateComponent = ({
                         required
                         value={data}
                         onChange={(e) => setRole(e.target.value)}
+                        sx={{
+                          ...darkModeColors,
+                          "& Input": {
+                            color: currentMode === "dark" ? "#fff" : "#000",
+                          },
+                        }}
                       />
                     </div>
                     {value === 0 && (
