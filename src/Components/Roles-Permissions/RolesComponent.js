@@ -30,7 +30,7 @@ const RolesComponent = ({
   value,
   fetchData,
 }) => {
-  const { BACKEND_URL, User, t, isLangRTL, i18n, currentMode } =
+  const { BACKEND_URL, User, t, isLangRTL, i18n, currentMode, darkModeColors } =
     useStateContext();
   const [formdata, setformdata] = useState({ user_id: User?.id, status: 1 });
   const [isClosing, setIsClosing] = useState(false);
@@ -279,6 +279,13 @@ const RolesComponent = ({
                             ...formdata,
                             data: e.target.value,
                           });
+                        }}
+                        sx={{
+                          ...darkModeColors,
+                          "& Input": {
+                            color: currentMode === "dark" ? "#fff" : "#000",
+                            // borderColor: currentMode === "dark" ? "#fff" : "",
+                          },
                         }}
                       />
                     </div>
