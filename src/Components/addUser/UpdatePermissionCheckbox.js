@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
+import { useStateContext } from "../../context/ContextProvider";
 
 const UpdatePermissionsCheckbox = ({
   permission,
@@ -9,6 +10,7 @@ const UpdatePermissionsCheckbox = ({
   allPermissions,
 }) => {
   const [checked, setChecked] = useState(permission.isPermitted);
+  const { currentMode } = useStateContext();
 
   console.log("update permisssions checkbox::: ", permission);
   console.log("update Alllpermisssions checkbox::: ", allPermissions);
@@ -60,6 +62,9 @@ const UpdatePermissionsCheckbox = ({
             name="permissionCheckbox"
             fullWidth
             inputProps={{ "aria-label": "controlled" }}
+            style={{
+              color: currentMode === "dark" ? "#fff" : "#000",
+            }}
           />
         }
         label={permission?.permission}
