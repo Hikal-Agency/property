@@ -360,14 +360,14 @@ const Navbar = () => {
                 variant="contained"
                 className="bg-btn-primary"
                 sx={{
-                  mr: 2,
+                  mx: 2,
                   "& svg": {
                     color: "white",
                   },
                 }}
               >
                 <Link to="/marketing/payments" className="flex items-center">
-                  <MdStars className="mr-2" size={18} />
+                  <MdStars className="mx-2" size={18} />
                   <span className="mt-[2px]">{t("upgrade")}</span>
                 </Link>
               </Button>
@@ -456,7 +456,7 @@ const Navbar = () => {
           {/* LANG  */}
           <Tooltip title="Language" arrow placement="bottom">
             <div
-              className="ml-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+              className="mx-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
               onClick={(event) => {
                 if (currNavBtn === "Language") {
                   handleClose();
@@ -504,7 +504,7 @@ const Navbar = () => {
           {/* PROFILE  */}
           <Tooltip title="Profile" arrow placement="bottom">
             <div
-              className="ml-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+              className="mx-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
               onClick={(event) => {
                 if (currNavBtn === "Profile") {
                   handleClose();
@@ -524,7 +524,7 @@ const Navbar = () => {
                 <span
                   className={`${
                     currentMode === "dark" ? "text-white" : "text-main-dark-bg"
-                  } font-bold ml-1 text-14`}
+                  } font-bold mx-1 text-14`}
                 >
                   {User?.userName}
                 </span>
@@ -565,13 +565,13 @@ const Navbar = () => {
                 "& .MuiAvatar-root": {
                   width: 32,
                   height: 32,
-                  ml: -0.5,
-                  mr: 1,
+                  // ml: -0.5,
+                  mx: 1,
                 },
                 "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
                   {
-                    padding: "5px !important",
-                    paddingRight: "0px !important",
+                    padding: "0 !important",
+                    // paddingRight: "0px !important",
                   },
               },
             }}
@@ -590,7 +590,7 @@ const Navbar = () => {
               ) : currNavBtn === "Meetings" ? (
                 <UpcomingMeetingsMenu />
               ) : currNavBtn === "Profile" ? (
-                <div className="pl-2">
+                <div className="px-2">
                   <div
                     className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"

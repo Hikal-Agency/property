@@ -370,59 +370,59 @@ export const ContextProvider = ({ children }) => {
   };
 
   const langs = [
-  {
-    code: "en",
-    title: "English",
-    flag: "/assets/flags/english-flag.png",
-    font: "'Noto Sans', sans-serif",
-    size: "12px",
-  }, 
-  {
-    code: "ar", 
-    title: "عربي", 
-    rtl: true,
-    flag: "/assets/flags/arabic-flag.png",
-    font: "'Noto Kufi Arabic', sans-serif",
-    size: "12px",
-  }, 
-  {
-    code: "cn", 
-    title: "中文",
-    flag: "/assets/flags/chinese-flag.png",
-    font: "'Noto Sans TC', sans-serif",
-    size: "14px",
-  }, 
-  {
-    code: "fr", 
-    title: "Français",
-    flag: "/assets/flags/french-flag.png",
-    font: "'Noto Sans', sans-serif",
-    size: "12px",
-  }, 
-  {
-    code: "he", 
-    title: "עִבְרִית",
-    rtl: true,
-    flag: "/assets/flags/hebrew-flag.png",
-    font: "'Noto Sans Hebrew', sans-serif;",
-    size: "14px",
-  }, 
-  {
-    code: "pk", 
-    title: "اردو", 
-    rtl: true,
-    flag: "/assets/flags/urdu-flag.png",
-    font: "'Noto Kufi Arabic', sans-serif",
-    size: "12px",
-  }, 
-  {
-    code: "ru", 
-    title: "Русский",
-    flag: "/assets/flags/russian-flag.png",
-    font: "'Noto Sans', sans-serif",
-    size: "12px",
-  }
-];
+    {
+      code: "en",
+      title: "English",
+      flag: "/assets/flags/english-flag.png",
+      font: "'Noto Sans', sans-serif",
+      size: "12px",
+    }, 
+    {
+      code: "ar", 
+      title: "عربي", 
+      rtl: true,
+      flag: "/assets/flags/arabic-flag.png",
+      font: "'Noto Kufi Arabic', sans-serif",
+      size: "12px",
+    }, 
+    {
+      code: "cn", 
+      title: "中文",
+      flag: "/assets/flags/chinese-flag.png",
+      font: "'Noto Sans TC', sans-serif",
+      size: "14px",
+    }, 
+    {
+      code: "fr", 
+      title: "Français",
+      flag: "/assets/flags/french-flag.png",
+      font: "'Noto Sans', sans-serif",
+      size: "12px",
+    }, 
+    {
+      code: "he", 
+      title: "עִבְרִית",
+      rtl: true,
+      flag: "/assets/flags/hebrew-flag.png",
+      font: "'Noto Sans Hebrew', sans-serif;",
+      size: "14px",
+    }, 
+    {
+      code: "pk", 
+      title: "اردو", 
+      rtl: true,
+      flag: "/assets/flags/urdu-flag.png",
+      font: "'Noto Kufi Arabic', sans-serif",
+      size: "12px",
+    }, 
+    {
+      code: "ru", 
+      title: "Русский",
+      flag: "/assets/flags/russian-flag.png",
+      font: "'Noto Sans', sans-serif",
+      size: "12px",
+    }
+  ];
 
   const getLangDetails = (langCode) => {
     const language = langs.find((lang) => lang.code === langCode);
