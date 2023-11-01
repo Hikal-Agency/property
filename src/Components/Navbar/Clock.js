@@ -16,6 +16,8 @@ import { BsSearch } from "react-icons/bs";
 import { toast } from "react-toastify";
 
 const Clock = ({ handleClose }) => {
+  const { currentMode, darkModeColors, t, BACKEND_URL, User } =
+    useStateContext();
   const token = localStorage.getItem("auth-token");
   const [currentTime, setCurrentTime] = useState(
     localStorage.getItem("timezone")
@@ -28,10 +30,9 @@ const Clock = ({ handleClose }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [selectedTimezone, setSelectedTimezone] = useState(
-    localStorage.getItem("timezone") || moment.tz.guess()
+    // localStorage.getItem("timezone") || moment.tz.guess()
+    User?.timezone || moment.tz.guess()
   );
-  const { currentMode, darkModeColors, t, BACKEND_URL, User } =
-    useStateContext();
 
   console.log("mode: ", currentMode);
 

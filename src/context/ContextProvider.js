@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import moment from "moment";
 import axios from "../axoisConfig";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const StateContext = createContext();
 
@@ -370,59 +370,59 @@ export const ContextProvider = ({ children }) => {
   };
 
   const langs = [
-  {
-    code: "en",
-    title: "English",
-    flag: "/assets/flags/english-flag.png",
-    font: "'Noto Sans', sans-serif",
-    size: "12px",
-  }, 
-  {
-    code: "ar", 
-    title: "عربي", 
-    rtl: true,
-    flag: "/assets/flags/arabic-flag.png",
-    font: "'Noto Kufi Arabic', sans-serif",
-    size: "12px",
-  }, 
-  {
-    code: "cn", 
-    title: "中文",
-    flag: "/assets/flags/chinese-flag.png",
-    font: "'Noto Sans TC', sans-serif",
-    size: "14px",
-  }, 
-  {
-    code: "fr", 
-    title: "Français",
-    flag: "/assets/flags/french-flag.png",
-    font: "'Noto Sans', sans-serif",
-    size: "12px",
-  }, 
-  {
-    code: "he", 
-    title: "עִבְרִית",
-    rtl: true,
-    flag: "/assets/flags/hebrew-flag.png",
-    font: "'Noto Sans Hebrew', sans-serif;",
-    size: "14px",
-  }, 
-  {
-    code: "pk", 
-    title: "اردو", 
-    rtl: true,
-    flag: "/assets/flags/urdu-flag.png",
-    font: "'Noto Kufi Arabic', sans-serif",
-    size: "12px",
-  }, 
-  {
-    code: "ru", 
-    title: "Русский",
-    flag: "/assets/flags/russian-flag.png",
-    font: "'Noto Sans', sans-serif",
-    size: "12px",
-  }
-];
+    {
+      code: "en",
+      title: "English",
+      flag: "/assets/flags/english-flag.png",
+      font: "'Noto Sans', sans-serif",
+      size: "12px",
+    },
+    {
+      code: "ar",
+      title: "عربي",
+      rtl: true,
+      flag: "/assets/flags/arabic-flag.png",
+      font: "'Noto Kufi Arabic', sans-serif",
+      size: "12px",
+    },
+    {
+      code: "cn",
+      title: "中文",
+      flag: "/assets/flags/chinese-flag.png",
+      font: "'Noto Sans TC', sans-serif",
+      size: "14px",
+    },
+    {
+      code: "fr",
+      title: "Français",
+      flag: "/assets/flags/french-flag.png",
+      font: "'Noto Sans', sans-serif",
+      size: "12px",
+    },
+    {
+      code: "he",
+      title: "עִבְרִית",
+      rtl: true,
+      flag: "/assets/flags/hebrew-flag.png",
+      font: "'Noto Sans Hebrew', sans-serif;",
+      size: "14px",
+    },
+    {
+      code: "pk",
+      title: "اردو",
+      rtl: true,
+      flag: "/assets/flags/urdu-flag.png",
+      font: "'Noto Kufi Arabic', sans-serif",
+      size: "12px",
+    },
+    {
+      code: "ru",
+      title: "Русский",
+      flag: "/assets/flags/russian-flag.png",
+      font: "'Noto Sans', sans-serif",
+      size: "12px",
+    },
+  ];
 
   const getLangDetails = (langCode) => {
     const language = langs.find((lang) => lang.code === langCode);
@@ -432,27 +432,26 @@ export const ContextProvider = ({ children }) => {
     } else {
       return null;
     }
-  }
+  };
 
   const isLangRTL = (langCode) => {
     const language = langs?.find((lang) => lang?.code === langCode);
 
-    let cssLang = ''; 
-    let cssSize = ''; 
-    
+    let cssLang = "";
+    let cssSize = "";
+
     if (language) {
       const { font, size } = language;
       cssLang = font;
       cssSize = size;
-    }
-    else {
+    } else {
       return null;
     }
     document.documentElement.style.setProperty("--font-family", cssLang);
     document.documentElement.style.setProperty("--font-size", cssSize);
-    
-    if(language) {
-      if(language?.rtl){
+
+    if (language) {
+      if (language?.rtl) {
         return true;
       } else {
         return false;
@@ -460,7 +459,7 @@ export const ContextProvider = ({ children }) => {
     } else {
       return false;
     }
-  }
+  };
 
   const ReFetchProfile = () => {
     const token = localStorage.getItem("auth-token");
@@ -530,15 +529,17 @@ export const ContextProvider = ({ children }) => {
       .then((result) => {
         const source = {
           counters: result.data.data.query_result,
-        }
+        };
         setCounters(source);
       });
-      // setCounters(callCounter?.data?.data?.query_result);
+    // setCounters(callCounter?.data?.data?.query_result);
   };
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    SourceCounters(token);
+    if (token) {
+      SourceCounters(token);
+    }
   }, []);
 
   return (
@@ -630,9 +631,9 @@ export const ContextProvider = ({ children }) => {
         setUserCredits,
         primaryColor,
         setPrimaryColor,
-        themeBgImg, 
-        setThemeBgImg, 
-        t, 
+        themeBgImg,
+        setThemeBgImg,
+        t,
         i18n,
         blurDarkColor,
         setBlurDarkColor,
@@ -641,7 +642,7 @@ export const ContextProvider = ({ children }) => {
         blurWhiteColor,
         setBlurWhiteColor,
         Counters,
-        setCounters
+        setCounters,
       }}
     >
       {children}
