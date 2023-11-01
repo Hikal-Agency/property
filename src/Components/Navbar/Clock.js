@@ -30,7 +30,8 @@ const Clock = ({ handleClose }) => {
   const [selectedTimezone, setSelectedTimezone] = useState(
     localStorage.getItem("timezone") || moment.tz.guess()
   );
-  const { currentMode, darkModeColors, t, BACKEND_URL } = useStateContext();
+  const { currentMode, darkModeColors, t, BACKEND_URL, User } =
+    useStateContext();
 
   console.log("mode: ", currentMode);
 
@@ -70,8 +71,8 @@ const Clock = ({ handleClose }) => {
     localStorage.setItem("timezone", e.target.value);
     try {
       const updateTimezone = await axios.post(
-        `${BACKEND_URL}/profile`,
-        timeZone,
+        `${BACKEND_URL}/updateuser/${User?.id}`,
+        { timezone: timeZone },
         {
           headers: {
             "Content-Type": "application/json",
