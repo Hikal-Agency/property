@@ -1255,11 +1255,11 @@ const Sidebarmui = () => {
           icon: <BsCalendarWeek size={16} />,
           link: "/meetings",
         },
-        // {
-        //   name: t("menu_appointments"),
-        //   icon: <BsCalendarWeek size={16} />,
-        //   link: "/appointments",
-        // },
+        {
+          name: t("menu_appointments"),
+          icon: <BsCalendarWeek size={16} />,
+          link: "/appointments",
+        },
         // {
         //   name: "Add Users",
         //   icon: <FaUser />,

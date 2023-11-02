@@ -706,5 +706,25 @@
     "select_category": "اختيار الفئة ",
     "select_sender_id": "اختيار هوية المرسل ",
     "clear": "مسح",
-    "clear_all": "مسح الكل"
+    "clear_all": "مسح الكل",
+
+
+
+    "new_from_here": "",
+
+
+    "type_liveleads": "مكالمة مباشرة",
+    "liveleads": "مكالمة مباشرة",
+    "update_lead_details": "تحديث تفاصيل العميل المحتمل",
+    "no_agent_assigned": "لم يتم تعيين وكيل",
+    "no_manager": "لا يوجد مدير",
+    "sold_listings": "القوائم المباعة",
+    "unknown": "غير معروف",
+    "no_listings_available": "لا توجد قوائم متاحة",
+    "add_credit": "إضافة رصيد",
+    "leads_for_ip": "العملاء المحتملين لعنوان IP",
+    "label_unit": "وحدة",
+    "view_all_locations": "عرض جميع المواقع",
+    "search_timezone": "البحث في التوقيت",
+    "update_property": "تحديث العقار"
 }
