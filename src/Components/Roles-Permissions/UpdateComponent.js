@@ -1,9 +1,4 @@
-import {
-  CircularProgress,
-  Modal,
-  Backdrop,
-  IconButton,
-} from "@mui/material";
+import { CircularProgress, Modal, Backdrop, IconButton } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
@@ -14,9 +9,10 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import UpdatePermissionsCheckbox from "../addUser/UpdatePermissionCheckbox";
 import { GridCloseIcon } from "@mui/x-data-grid";
+import { MdClose } from "react-icons/md";
 
 const style = {
-  transform: "translate(-50%, -50%)",
+  transform: "translate(0%, 0%)",
   boxShadow: 24,
 };
 
@@ -28,7 +24,9 @@ const UpdateComponent = ({
   DataName,
   UserData,
 }) => {
-  const { BACKEND_URL, User, t } = useStateContext();
+  const { BACKEND_URL, User, t, isLangRTL, i18n, currentMode, darkModeColors } =
+    useStateContext();
+  const [isClosing, setIsClosing] = useState(false);
 
   const [data, setRole] = useState(DataName);
   const [loading, setloading] = useState(false);
@@ -202,6 +200,13 @@ const UpdateComponent = ({
   console.log("permits:::: ", permits);
 
   console.log("User Model: ");
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      addUserModelClose();
+    }, 1000);
+  };
   return (
     <Modal
       keepMounted
@@ -215,15 +220,51 @@ const UpdateComponent = ({
         timeout: 500,
       }}
     >
-      <div
+      {/* <div
         style={style}
         className={`w-[calc(100%-20px)] md:w-[75%] absolute top-1/2 left-1/2 p-5  rounded-md `}
+      > */}
+      <div
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
+            ? isLangRTL(i18n.language)
+              ? "modal-close-left"
+              : "modal-close-right"
+            : ""
+        }
+        w-[100vw] h-[100vh] flex items-start justify-end`}
       >
-        <div className="relative overflow-hidden">
+        <button
+          // onClick={handleLeadModelClose}
+          onClick={handleClose}
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
+        >
+          <MdClose
+            size={18}
+            color={"white"}
+            className="hover:border hover:border-white hover:rounded-full"
+          />
+        </button>
+        {/* <div className="relative overflow-hidden"> */}
+        <div
+          style={style}
+          className={` ${
+            currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+          } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            `}
+        >
           <div className={` `}>
             <div className="flex items-center justify-center pl-3">
-              <div className="w-full space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5] ">
-                <IconButton
+              <div className="w-full space-y-4 md:space-y-6  pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5] ">
+                {/* <IconButton
                   sx={{
                     position: "absolute",
                     right: 12,
@@ -233,9 +274,13 @@ const UpdateComponent = ({
                   onClick={addUserModelClose}
                 >
                   <GridCloseIcon size={18} />
-                </IconButton>
+                </IconButton> */}
                 <div>
-                  <h2 className="text-center text-xl font-bold text-[#1c1c1c] mt-4">
+                  <h2
+                    className={`text-center text-xl font-bold  mt-4 ${
+                      currentMode === "dark" ? "text-white" : "text-[#1c1c1c]"
+                    }`}
+                  >
                     {value === 0 ? t("update_role") : t("update_permission")}
                   </h2>
                 </div>
@@ -260,6 +305,12 @@ const UpdateComponent = ({
                         required
                         value={data}
                         onChange={(e) => setRole(e.target.value)}
+                        sx={{
+                          ...darkModeColors,
+                          "& Input": {
+                            color: currentMode === "dark" ? "#fff" : "#000",
+                          },
+                        }}
                       />
                     </div>
                     {value === 0 && (

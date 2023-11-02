@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Checkbox, FormControlLabel } from "@mui/material";
+import { useStateContext } from "../../context/ContextProvider";
 
 const PermissionsCheckbox = ({
   permission,
@@ -8,6 +9,7 @@ const PermissionsCheckbox = ({
   allChecked,
 }) => {
   const [checked, setChecked] = useState(true);
+  const { currentMode } = useStateContext();
 
   useEffect(() => {
     if (allChecked) {
@@ -54,6 +56,9 @@ const PermissionsCheckbox = ({
             name="permissionCheckbox"
             fullWidth
             inputProps={{ "aria-label": "controlled" }}
+            style={{
+              color: currentMode === "dark" ? "#fff" : "#000",
+            }}
           />
         }
         label={permission?.permission}
