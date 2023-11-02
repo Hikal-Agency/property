@@ -45,6 +45,7 @@ import {
   BsWhatsapp,
   BsChatText,
   BsFileEarmarkText,
+  BsCameraVideo
 } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { BsBuildingGear } from "react-icons/bs";
@@ -1257,7 +1258,7 @@ const Sidebarmui = () => {
         },
         {
           name: t("menu_appointments"),
-          icon: <BsCalendarWeek size={16} />,
+          icon: <BsCameraVideo size={16} />,
           link: "/appointments",
         },
         // {
