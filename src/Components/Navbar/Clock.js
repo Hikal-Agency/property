@@ -19,11 +19,16 @@ const Clock = ({ handleClose }) => {
   const { currentMode, darkModeColors, t, BACKEND_URL, User } =
     useStateContext();
   const token = localStorage.getItem("auth-token");
+  // const [currentTime, setCurrentTime] = useState(
+  //   localStorage.getItem("timezone")
+  //     ? moment()
+  //         .tz(localStorage.getItem("timezone"))
+  //         .format("D/MM/YYYY, h:mm:ss a [GMT]Z")
+  //     : moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
+  // );
   const [currentTime, setCurrentTime] = useState(
-    localStorage.getItem("timezone")
-      ? moment()
-          .tz(localStorage.getItem("timezone"))
-          .format("D/MM/YYYY, h:mm:ss a [GMT]Z")
+    User?.timezone
+      ? moment().tz(User?.timezone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
       : moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
   );
   const [timezones, setTimezones] = useState([]);
@@ -58,6 +63,8 @@ const Clock = ({ handleClose }) => {
       clearInterval(interval);
     };
   }, [selectedTimezone]);
+
+  console.log("User?.timzone: ", User?.timezone);
 
   const filteredTimezones = timezones?.filter((timezone) =>
     timezone.toLowerCase().includes(searchQuery.toLowerCase())
@@ -111,6 +118,7 @@ const Clock = ({ handleClose }) => {
   return (
     <div
       onMouseLeave={handleClose}
+      onClick={(e) => e.stopPropagation()}
       style={{
         margin: 0,
         padding: "0.5rem 0.5rem",
@@ -194,7 +202,7 @@ const Clock = ({ handleClose }) => {
             {filteredTimezones?.map((timezone) => (
               <>
                 <MenuItem
-                  selected={timezone === selectedTimezone}
+                  // selected={timezone === selectedTimezone}
                   onKeyDown={(e) => e.stopPropagation()}
                   key={timezone}
                   value={timezone}
