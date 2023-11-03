@@ -726,5 +726,9 @@
     "view_all_locations": "צפה בכל המיקומים",
     "search_timezone" : "חפש אזור זמן",
     "update_property": "עדכן נכס",
-    "secondary_buyers": "קונים משניים"
+    "secondary_buyers": "קונים משניים",
+    "create_meeting": "צור פגישה",
+    "meeting_has_created": "הפגישה שלך נוצרה!",
+    "join_as_moderator": "הצטרף לפגישה כמנחה",
+    "share_to_attendees": "שתף את קישור הפגישה עם המשתתפים"
 }

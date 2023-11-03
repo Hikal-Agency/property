@@ -724,5 +724,9 @@
     "view_all_locations": "查看所有位置",
     "search_timezone": "搜索时区",
     "update_property": "更新房产",
-    "secondary_buyers": "二手买家"
+    "secondary_buyers": "二手买家",
+    "create_meeting": "创建会议",
+    "meeting_has_created": "您的会议已创建！",
+    "join_as_moderator": "以主持人身份加入会议",
+    "share_to_attendees": "将此会议链接分享给与会者"
 }
