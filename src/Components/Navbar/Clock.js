@@ -117,7 +117,7 @@ const Clock = ({ handleClose }) => {
 
   return (
     <div
-      // onMouseLeave={handleClose}
+      onMouseLeave={handleClose}
       onClick={(e) => e.stopPropagation()}
       style={{
         margin: 0,
