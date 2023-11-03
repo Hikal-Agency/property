@@ -127,12 +127,10 @@ const TemplatesComponent = () => {
           <Box className="flex items-center justify-between">
             <div className="w-full flex items-center justify-between pb-3">
               <div className="flex items-center">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <div className="bg-primary h-10 w-1 rounded-full"></div>
                 <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
+                  className={`text-lg font-semibold mx-2 uppercase ${
+                    currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
                   {t("title_message_templates")}

@@ -221,18 +221,13 @@ const SingleLeadPage = () => {
               <div>
                 <div className="w-full flex items-center justify-between pb-3">
                   <div class="flex items-center">
-                    <div className="bg-primary w-fit rounded-md mr-2 my-1 py-1 px-2 text-white flex items-center justify-center">
+                    <div className="bg-primary w-fit rounded-md my-1 py-1 px-2 text-white flex items-center justify-center">
                       {LeadData?.id}
                     </div>
                     <h1
-                      className={`text-lg font-semibold ${
+                      className={`text-lg font-semibold mx-2 uppercase ${
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
-                      style={{
-                        fontFamily: isArabic(LeadData?.leadName)
-                          ? "Noto Kufi Arabic"
-                          : "inherit",
-                      }}
                     >
                       {LeadData?.leadName}
                     </h1>

@@ -723,5 +723,6 @@
     "label_unit": "单元",
     "view_all_locations": "查看所有位置",
     "search_timezone": "搜索时区",
-    "update_property": "更新房产"
+    "update_property": "更新房产",
+    "secondary_buyers": "二手买家"
 }

@@ -725,5 +725,6 @@
     "label_unit": "Единица",
     "view_all_locations": "Просмотреть все местоположения",
     "search_timezone": "Поиск по временной зоне",
-    "update_property": "Обновить объект"
+    "update_property": "Обновить объект",
+    "secondary_buyers": "Вторичные покупатели"
 }

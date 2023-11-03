@@ -147,9 +147,9 @@ const MessagesDashboar = () => {
           >
             <div className="w-full flex items-center justify-between py-1">
               <div className="flex items-center">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <div className="bg-primary h-10 w-1 rounded-full"></div>
                 <h1
-                  className={`text-lg font-semibold ${
+                  className={`text-lg font-semibold mx-2 uppercase ${
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >

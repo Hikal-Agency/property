@@ -47,35 +47,35 @@ const Tour360 = (props) => {
     <>
       <div className="min-h-screen">
         <div
-          className={`w-full  ${
+          className={`w-full p-4  ${
             currentMode === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <div className="pl-3">
-            <div className="mt-5 md:mt-2">
+          <div className="w-full h-full">
+            <div class="w-full flex items-center pb-3">
+              <div className="bg-primary h-10 w-1 rounded-full"></div>
               <h1
-                className={`font-semibold ${
-                  currentMode === "dark" ? "text-white" : "text-primary"
-                } text-lg ml-2 mb-3 auto-cols-max gap-x-3`}
+                className={`text-lg font-semibold mx-2 uppercase ${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
               >
                 {ProjectData?.data?.projectName}
               </h1>
+            </div>
 
-              <div className="w-full h-[80vh]">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  frameborder="0"
-                  allow="xr-spatial-tracking; gyroscope; accelerometer"
-                  allowfullscreen
-                  scrolling="no"
-                  src={ProjectData?.data?.tourlink}
-                ></iframe>
-              </div>
+            <div className="w-full h-[80vh]">
+              <iframe
+                width="100%"
+                height="100%"
+                frameborder="0"
+                allow="xr-spatial-tracking; gyroscope; accelerometer"
+                allowfullscreen
+                scrolling="no"
+                src={ProjectData?.data?.tourlink}
+              ></iframe>
             </div>
           </div>
         </div>
-        {/* <Footer /> */}
       </div>
     </>
   );

@@ -10,11 +10,8 @@ const Employees = () => {
   const {
     currentMode,
     setopenBackDrop,
-    setLocationData,
-    BACKEND_URL,
-    setUser,
-    User,
-    themeBgImg
+    themeBgImg,
+    t
   } = useStateContext();
 
   useEffect(() => {
@@ -31,16 +28,14 @@ const Employees = () => {
           }`}
         >
           <div className="w-full flex items-center pb-3">
-            <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-            <h1
-              className={`text-lg font-semibold ${
-                currentMode === "dark"
-                  ? "text-white"
-                  : "text-black"
-              }`}
-            >
-              Employees
-            </h1>
+            <div className="bg-primary h-10 w-1 rounded-full"></div>
+              <h1
+                className={`text-lg font-semibold mx-2 uppercase ${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              >
+                {t("employees")}
+              </h1>
           </div>
           <EmployeesList />
         </div>

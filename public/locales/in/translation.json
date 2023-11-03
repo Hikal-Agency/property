@@ -726,5 +726,6 @@
     "label_unit": "इकाई",
     "view_all_locations": "सभी स्थानों को देखें",
     "search_timezone" : "समय क्षेत्र खोजें",
-    "update_property": "संपत्ति अपडेट करें"
+    "update_property": "संपत्ति अपडेट करें",
+    "secondary_buyers": "द्वितीयक खरीदार"
 }

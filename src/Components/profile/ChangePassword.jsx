@@ -82,13 +82,16 @@ export const ChangePassword = () => {
       
       <div className="relative w-full">
         <form onSubmit={UpdatePass}>
-          <Box sx={darkModeColors} className="grid grid-cols-6 gap-x-3 gap-y-5">
-            <div className="col-span-6 w-full">
+          <Box sx={darkModeColors} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
+            <div className="col-span-1 md:col-span-2 lg:col-span-2 w-full">
               <TextField
                 id="old-password"
                 type={"password"}
                 label={t("label_old_password")}
                 className="w-full"
+                style={{
+                  marginBottom: "15px",
+                }}
                 variant="outlined"
                 size="medium"
                 required
@@ -101,12 +104,15 @@ export const ChangePassword = () => {
                 }
               />
             </div>
-            <div className="col-span-6 w-full">
+            <div className="col-span-1 w-full">
               <TextField
                 id="new-password"
                 type={"password"}
                 label={t("label_new_password")}
                 className="w-full"
+                style={{
+                  marginBottom: "15px",
+                }}
                 variant="outlined"
                 size="medium"
                 value={passwordData?.password}
@@ -120,12 +126,15 @@ export const ChangePassword = () => {
                 required
               />
             </div>
-            <div className="col-span-6 w-full">
+            <div className="col-span-1 w-full">
               <TextField
                 id="confirm-password"
                 type={"password"}
                 label={t("label_confirm_password")}
                 className="w-full"
+                style={{
+                  marginBottom: "15px",
+                }}
                 variant="outlined"
                 size="medium"
                 required
@@ -147,7 +156,7 @@ export const ChangePassword = () => {
               )}
             </div>
             <Button
-              className={`col-span-6 min-w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+              className={`col-span-1 md:col-span-2 lg:col-span-2 card-hover min-w-full  text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
               ripple={true}
               size="lg"
               type="submit"
