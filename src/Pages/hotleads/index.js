@@ -50,13 +50,14 @@ const AllHotLeads = () => {
           >
             <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
               <div className="flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <div className="bg-primary h-10 w-1 rounded-full"></div>
                 <h1
-                  className={`text-lg font-semibold ${
+                  className={`text-lg font-semibold mx-2 uppercase ${
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  {`${t("fresh")} ${t("leads")}`}{" "}
+                  {`${t("fresh")} ${t("leads")}`}
+                  {" "}
                   <span className="capitalize">
                     (
                     {t(
@@ -70,6 +71,7 @@ const AllHotLeads = () => {
                   </span>
                 </h1>
               </div>
+
               {(hasPermission("leadSource_counts") || User.role === 1) && (
                 <SourceCounter />
               )}

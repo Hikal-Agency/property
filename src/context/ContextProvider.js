@@ -408,6 +408,13 @@ export const ContextProvider = ({ children }) => {
       size: "14px",
     },
     {
+      code: "in", 
+      title: "हिंदी",
+      flag: "/assets/flags/hindi-flag.png",
+      font: "'Noto Sans Devanagari', sans-serif;",
+      size: "14px",
+    },
+    {
       code: "pk", 
       title: "اردو", 
       rtl: true,
