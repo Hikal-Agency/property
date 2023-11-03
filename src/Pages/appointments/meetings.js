@@ -80,7 +80,7 @@ const Meetings = () => {
   };
 
   const handleRowClick = (params, event) => {
-    if (!event.target.closest(".editBtn button")) {
+    if (!event.target.closest(".editBtn ")) {
       setMeetingNote(params.row.meetingNote);
       setLocationModalOpen(true);
       const { mLat, mLong } = params.row;
@@ -287,7 +287,7 @@ const Meetings = () => {
                 currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#229ed1] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
+              } hover:bg-[#229ed1] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn editBtn`}
             >
               <Tooltip title="Edit Meeting here" arrow>
                 <button
