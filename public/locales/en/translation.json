@@ -726,5 +726,8 @@
     "view_all_locations": "View all locations",
     "search_timezone" : "Search Timezone",
     "update_property": "Update Property", 
-    "create_meeting" : "Create Meeting"
+    "create_meeting" : "Create Meeting", 
+    "meeting_has_created": "Your meeting has been created!", 
+    "join_as_moderator": "Join the meeting as a Moderator",
+    "share_to_attendees": "Share this meeting link to attendees"
 }

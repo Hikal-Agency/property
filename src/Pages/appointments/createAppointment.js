@@ -11,6 +11,7 @@ import {
 import { BsSearch } from "react-icons/bs";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
+import NewMeetingModal from "./NewMeetingModa";
 
 const CreateAppointment = () => {
   const [loading, setloading] = useState(true);
@@ -30,6 +31,10 @@ const CreateAppointment = () => {
     pendingMeeting: null,
     completedMeetings: null,
   });
+  const [newMeetingModal, setNewMeetingModal] = useState({
+    isOpen: false
+  })
+  const [btnLoading, setBtnLoading] = useState(false);
 
   console.log("meetings count:: ", meetingsCount);
   useEffect(() => {
@@ -39,9 +44,9 @@ const CreateAppointment = () => {
   }, []);
 
   const handleCreateMeeting = async () => {
-    // const token = localStorage.getItem("auth-token");
-    setloading(true);
     try {
+
+      setBtnLoading(true);
       const createMeeting = await axios.get(
         `${BACKEND_URL}/create?name=${User?.userName}`,
         {
@@ -65,8 +70,22 @@ const CreateAppointment = () => {
           },
         }
       );
-      const url = joinAsModerator?.data?.url;
-      window.open(url, "_blank");
+      const joinAsAttendee = await axios.post(
+        `${BACKEND_URL}/attendee`,
+        JSON.stringify({
+          meetingID: meetingID,
+          fullName: "Example Full Name"
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const urlForModerator = joinAsModerator?.data?.url;
+      const urlForAttendee = joinAsAttendee?.data?.url;
+      setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee});
     } catch (error) {
       console.log(error);
       toast.error("Unable to create meeting at the moment.", {
@@ -80,7 +99,7 @@ const CreateAppointment = () => {
         theme: "light",
       });
     }
-    setloading(false);
+    setBtnLoading(false);
   };
 
   return (
@@ -105,9 +124,9 @@ const CreateAppointment = () => {
                 }}
                 size="lg"
                 type="submit"
-                disabled={loading ? true : false}
+                disabled={btnLoading ? true : false}
               >
-                {loading ? (
+                {btnLoading ? (
                   <CircularProgress
                     size={20}
                     sx={{ color: "white" }}
@@ -270,6 +289,8 @@ const CreateAppointment = () => {
           </div>
         )}
       </div>
+
+      {newMeetingModal?.isOpen && <NewMeetingModal handleClose={() => setNewMeetingModal({isOpen: false})} newMeetingModal={newMeetingModal}/>}
     </>
   );
 };
