@@ -14,6 +14,7 @@ import axios from "../../axoisConfig";
 import AnalogClock from "./AnalogClock";
 import { BsSearch } from "react-icons/bs";
 import { toast } from "react-toastify";
+import TimeZone from "./TimeZone";
 
 const Clock = ({ handleClose }) => {
   const {
@@ -26,6 +27,7 @@ const Clock = ({ handleClose }) => {
     setTimezone,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
+  console.log("TIMEZONE::::> ", timeZone);
   // const [currentTime, setCurrentTime] = useState(
   //   localStorage.getItem("timezone")
   //     ? moment()
@@ -51,6 +53,11 @@ const Clock = ({ handleClose }) => {
     // Fetch all timezones
     const fetchedTimezones = moment.tz.names();
     setTimezones(fetchedTimezones);
+    console.log("first timeZone:: ", timeZone);
+
+    if (!timeZone) {
+      setTimezone(moment.tz.guess());
+    }
 
     console.log("Timezone::", timeZone);
   }, []);
@@ -149,6 +156,7 @@ const Clock = ({ handleClose }) => {
         currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#000000]"
       } clock-div`}
     >
+      <TimeZone />
       <div className="flex justify-center h-[300px]">
         <AnalogClock timeString={currentTime} timezone={timeZone} />
         {/* <AnalogClock /> */}
