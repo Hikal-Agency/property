@@ -725,5 +725,10 @@
     "label_unit": "Unité",
     "view_all_locations": "Voir toutes les localisations",
     "search_timezone": "Rechercher le fuseau horaire",
-    "update_property": "Mettre à jour la propriété"
+    "update_property": "Mettre à jour la propriété",
+    "secondary_buyers": "Acheteurs Secondaires",
+    "create_meeting": "Créer une réunion",
+    "meeting_has_created": "Votre réunion a été créée !",
+    "join_as_moderator": "Rejoindre la réunion en tant que modérateur",
+    "share_to_attendees": "Partager ce lien de réunion avec les participants"
 }

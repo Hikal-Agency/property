@@ -97,7 +97,7 @@ const Navbar = () => {
     t,
     langs,
     isLangRTL,
-    getLangDetails
+    getLangDetails,
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -265,12 +265,12 @@ const Navbar = () => {
   }, [getLangDetails]);
 
   const saveLangInProfile = async (code) => {
-      const token = localStorage.getItem("auth-token");
+    const token = localStorage.getItem("auth-token");
     try {
       await axios.post(
         `${BACKEND_URL}/updateuser/${User.id}`,
         JSON.stringify({
-          language: code
+          language: code,
         }),
         {
           headers: {
@@ -292,19 +292,22 @@ const Navbar = () => {
         theme: "light",
       });
     }
-  }
+  };
 
   return (
     <>
       {/* CHAT  */}
       <div className="chat-button">
         <Tooltip title="Chat">
-          <button onClick={openChat} className="bg-btn-primary p-2 rounded-full">
+          <button
+            onClick={openChat}
+            className="bg-btn-primary p-2 rounded-full"
+          >
             <BsFillChatFill size={20} color="white" />
           </button>
         </Tooltip>
       </div>
-      
+
       <div
         className={` ${
           themeBgImg
@@ -351,7 +354,7 @@ const Navbar = () => {
           </div>
           <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
         </div>
-        
+
         <div className="flex items-center">
           {/* UPGRADE  */}
           {isUserSubscribed !== null && [
@@ -470,7 +473,11 @@ const Navbar = () => {
                 src={langFlag}
                 alt=""
               />
-              <MdKeyboardArrowDown className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+              <MdKeyboardArrowDown
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              />
             </div>
           </Tooltip>
 
@@ -529,7 +536,11 @@ const Navbar = () => {
                   {User?.userName}
                 </span>
               </p>
-              <MdKeyboardArrowDown className={`${currentMode === "dark" ? "text-white" : "text-black"}`} />
+              <MdKeyboardArrowDown
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              />
             </div>
           </Tooltip>
 
@@ -832,9 +843,7 @@ const Navbar = () => {
                             alt=""
                           />
                         </div>
-                        <div className="text-end">
-                          {lang.title}
-                        </div>
+                        <div className="text-end">{lang.title}</div>
                       </div>
                     </button>
                   ))}

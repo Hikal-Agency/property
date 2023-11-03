@@ -81,8 +81,7 @@ const Meetings = () => {
   };
 
   const handleRowClick = (params, event) => {
-    if (!event.target.closest(" .edit_meeting_btn ")) {
-      console.log("row clicked :::: ");
+    if (!event.target.closest(".editBtn ")) {
       setMeetingNote(params.row.meetingNote);
       setLocationModalOpen(true);
       const { mLat, mLong } = params.row;
@@ -289,11 +288,11 @@ const Meetings = () => {
                 currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#229ed1] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn edit_meeting_btn`}
+              } hover:bg-[#229ed1] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn editBtn`}
             >
-              <Tooltip title="Edit Meeting" arrow>
+              <Tooltip title="Edit Meeting here" arrow>
                 <button
-                  className="edit_meeting_btn"
+                  className="editBtn"
                   onClick={() => handleEditMeeting(cellValues)}
                 >
                   <AiOutlineEdit size={16} />
@@ -332,7 +331,6 @@ const Meetings = () => {
               >
                 <Tooltip title="View Location" arrow>
                   <button
-                    className="meetingBtn"
                     onClick={() =>
                       showLocation(cellValues.row.mLat, cellValues.row.mLong)
                     }
@@ -552,9 +550,9 @@ const Meetings = () => {
           >
             <div className="flex justify-between">
               <div className="flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <div className="bg-primary h-10 w-1 rounded-full"></div>
                 <h1
-                  className={`text-lg font-semibold ${
+                  className={`text-lg font-semibold mx-2 uppercase ${
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >

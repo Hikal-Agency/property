@@ -726,5 +726,10 @@
     "label_unit": "इकाई",
     "view_all_locations": "सभी स्थानों को देखें",
     "search_timezone" : "समय क्षेत्र खोजें",
-    "update_property": "संपत्ति अपडेट करें"
+    "update_property": "संपत्ति अपडेट करें",
+    "secondary_buyers": "द्वितीयक खरीदार",
+    "create_meeting": "मीटिंग बनाएं",
+    "meeting_has_created": "आपकी मीटिंग बना दी गई है!",
+    "join_as_moderator": "मॉडरेटर के रूप में मीटिंग में शामिल हों",
+    "share_to_attendees": "इस मीटिंग का लिंक मिलने वालों के साथ साझा करें"
 }

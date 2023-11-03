@@ -4,9 +4,10 @@ import {
   CircularProgress,
   Modal,
   TextField,
-  FormControl, IconButton,
+  FormControl,
+  IconButton,
   MenuItem,
-  Box
+  Box,
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -22,6 +23,7 @@ import { IoMdClose } from "react-icons/io";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import { MdAccessTime } from "react-icons/md";
 import moment from "moment";
+import { MdClose } from "react-icons/md";
 
 const UpdateMeeting = ({
   meetingModalOpen,
@@ -32,12 +34,23 @@ const UpdateMeeting = ({
   const id = meetingData?.meetingId;
   console.log("Update lead: ", meetingModalOpen);
   // eslint-disable-next-line
-  const { darkModeColors, currentMode, User, BACKEND_URL, formatNum, isArabic, t } =
-    useStateContext();
+  const {
+    darkModeColors,
+    currentMode,
+    User,
+    BACKEND_URL,
+    formatNum,
+    isArabic,
+    t,
+    isLangRTL,
+    i18n,
+  } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(
     meetingData?.meetingStatus
   );
+  const [isClosing, setIsClosing] = useState(false);
+
   const [meetingTime, setMeetingTime] = useState("");
   const [meetingTimeValue, setMeetingTimeValue] = useState(
     dayjs("2023-01-01 " + meetingData?.meetingTime)
@@ -52,16 +65,28 @@ const UpdateMeeting = ({
     lng: 0,
     addressText: "",
   });
+  // const style = {
+  //   transform: "translate(-50%, -50%)",
+  //   boxShadow: 24,
+  //   height: "90%",
+  //   overflowY: "scroll",
+  // };
+
   const style = {
-    transform: "translate(-50%, -50%)",
+    transform: "translate(0%, 0%)",
     boxShadow: 24,
-    height: "90%",
     overflowY: "scroll",
   };
 
-  useEffect(() => {
-    
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      handleMeetingModalClose();
+    }, 1000);
+  };
 
+  useEffect(() => {
     const geocoder = new window.google.maps.Geocoder();
 
     if (!meetingData?.mLat || !meetingData?.mLong) {
@@ -210,32 +235,53 @@ const UpdateMeeting = ({
           timeout: 500,
         }}
       >
-        <div
+        {/* <div
           style={style}
           className={`w-[calc(100%-20px)] md:w-[50%]  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           } absolute top-1/2 left-1/2 p-4 rounded-md`}
+        > */}
+        <div
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
+              ? isLangRTL(i18n.language)
+                ? "modal-close-left"
+                : "modal-close-right"
+              : ""
+          }
+        w-[100vw] h-[100vh] flex items-start justify-end`}
         >
-          <IconButton
-            sx={{
-              position: "absolute",
-              right: 12,
-              top: 10,
-              color: (theme) => theme.palette.grey[500],
-            }}
-            onClick={handleMeetingModalClose}
+          <button
+            // onClick={handleLeadModelClose}
+            onClick={handleClose}
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
-            <IoMdClose size={18} />
-          </IconButton>
-
-          <>
+            <MdClose
+              size={18}
+              color={"white"}
+              className="hover:border hover:border-white hover:rounded-full"
+            />
+          </button>
+          <div
+            style={style}
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            `}
+          >
             <div className="w-full flex items-center pb-3">
               <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
               <h1
                 className={`text-lg font-semibold ${
-                  currentMode === "dark"
-                    ? "text-white"
-                    : "text-black"
+                  currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
                 {t("update_meeting_details")}
@@ -352,10 +398,18 @@ const UpdateMeeting = ({
                         setMeetingStatus(e.target.value);
                       }}
                     >
-                      <MenuItem value={"Pending"}>{t("status_pending")}</MenuItem>
-                      <MenuItem value={"Postponed"}>{t("status_postponed")}</MenuItem>
-                      <MenuItem value={"Attended"}>{t("status_attended")}</MenuItem>
-                      <MenuItem value={"Cancelled"}>{t("status_cancelled")}</MenuItem>
+                      <MenuItem value={"Pending"}>
+                        {t("status_pending")}
+                      </MenuItem>
+                      <MenuItem value={"Postponed"}>
+                        {t("status_postponed")}
+                      </MenuItem>
+                      <MenuItem value={"Attended"}>
+                        {t("status_attended")}
+                      </MenuItem>
+                      <MenuItem value={"Cancelled"}>
+                        {t("status_cancelled")}
+                      </MenuItem>
                     </TextField>
                   </FormControl>
                   <Box sx={darkModeColors} className="w-full">
@@ -369,7 +423,9 @@ const UpdateMeeting = ({
                         variant="outlined"
                         sx={{
                           "& input": {
-                            fontFamily: isArabic(meetingNotes) ? "Noto Kufi Arabic" : "inherit",
+                            fontFamily: isArabic(meetingNotes)
+                              ? "Noto Kufi Arabic"
+                              : "inherit",
                           },
                         }}
                         name="text"
@@ -406,7 +462,7 @@ const UpdateMeeting = ({
                 )}
               </Button>
             </form>
-          </>
+          </div>
         </div>
       </Modal>
     </>

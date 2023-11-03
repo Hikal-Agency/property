@@ -91,15 +91,18 @@ export const GeneralInfo = ({
   return (
     <>
       
-      <div className="relative w-full">
+      <div className="w-full">
         <form action="">
-          <Box sx={darkModeColors} className="grid grid-cols-6 gap-x-3 gap-y-5">
-            <div className="col-span-3 w-full">
+          <Box sx={darkModeColors} className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
+            <div className="col-span-1 w-full">
               <TextField
                 id="contact-number"
                 type={"tel"}
                 label={t("label_contact_number")}
                 className="w-full"
+                style={{
+                  marginBottom: "15px",
+                }}
                 variant="outlined"
                 size="medium"
                 required
@@ -107,32 +110,32 @@ export const GeneralInfo = ({
                 onInput={handleContact}
               />
             </div>
-            <div className="col-span-3 w-full">
+            <div className="col-span-1 w-full">
               <TextField
                 id="alternative-contact-number"
                 type={"tel"}
                 label={t("label_alt_contact_number")}
                 className="w-full"
+                style={{
+                  marginBottom: "15px",
+                }}
                 variant="outlined"
                 size="medium"
                 value={GeneralInfo?.userAltContact}
-                // onInput={(e) =>
-                //   setGeneralInfo({
-                //     ...GeneralInfo,
-                //     userAltContact: e.target.value,
-                //   })
-                // }
                 error={contactError && contactError}
                 helperText={contactError && contactError}
                 onInput={handlePhone}
               />
             </div>
-            <div className="col-span-3 w-full">
+            <div className="col-span-1 w-full">
               <TextField
                 id="email"
                 type={"email"}
                 label={t("label_email_address")}
                 className="w-full"
+                style={{
+                  marginBottom: "15px",
+                }}
                 variant="outlined"
                 size="medium"
                 required
@@ -145,12 +148,15 @@ export const GeneralInfo = ({
                 }
               />
             </div>
-            <div className="col-span-3 w-full">
+            <div className="col-span-1 w-full">
               <TextField
                 id="alternative-email"
                 type={"email"}
                 label={t("label_alt_email_address")}
                 className="w-full"
+                style={{
+                  marginBottom: "15px",
+                }}
                 variant="outlined"
                 size="medium"
                 value={GeneralInfo?.userAltEmail}
@@ -158,27 +164,11 @@ export const GeneralInfo = ({
                 helperText={emailError && emailError}
                 onChange={handleEmail}
               />
-              {/* <TextField
-                id="alternative-email"
-                type={"email"}
-                label="AlternativeEmail Address"
-                className="w-full"
-                variant="outlined"
-                size="medium"
-                required
-                value={GeneralInfo?.userAltEmail}
-                onInput={(e) =>
-                  setGeneralInfo({
-                    ...GeneralInfo,
-                    userAltEmail: e.target.value,
-                  })
-                }
-              /> */}
             </div>
-            <div className="col-span-3 w-full">
+            <div className="col-span-1  w-full">
               <Button
                 onClick={UpdateProfileFunc}
-                className={`min-w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                className={`min-w-full card-hover text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                 ripple={true}
                 style={{
                   color: "white"
@@ -196,13 +186,13 @@ export const GeneralInfo = ({
                 )}
               </Button>
             </div>
-            <div className="col-span-3 w-full">
+            <div className="col-span-1 w-full">
               <Button
                 onClick={ResetGeneralInfo}
                 ripple={true}
                 variant="outlined"
                 type="reset"
-                className={`shadow-none w-full rounded-md text-sm  ${
+                className={`shadow-none card-hover w-full rounded-md text-sm  ${
                   currentMode === "dark"
                     ? "text-white border-white"
                     : "text-primary border-primary"
@@ -213,28 +203,6 @@ export const GeneralInfo = ({
             </div>
           </Box>
         </form>
-        <div className="flex justify-between px-10 w-full pt-10">
-          <div
-            className={`text-center ${
-              currentMode === "dark" ? "text-gray-50" : "text-gray-600"
-            }`}
-          >
-            <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-              <h1>{t("created")}</h1>
-            </div>
-            {User?.creationDate}
-          </div>
-          <div
-            className={`text-center ${
-              currentMode === "dark" ? "text-gray-50" : "text-gray-600"
-            }`}
-          >
-            <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-              <h1>{t("last_updated")}</h1>
-            </div>
-            {User?.lastEdited}
-          </div>
-        </div>
       </div>
     </>
   );
