@@ -725,5 +725,6 @@
     "label_unit": "Unit",
     "view_all_locations": "View all locations",
     "search_timezone" : "Search Timezone",
-    "update_property": "Update Property"
+    "update_property": "Update Property", 
+    "create_meeting" : "Create Meeting"
 }

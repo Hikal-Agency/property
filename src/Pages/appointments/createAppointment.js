@@ -9,13 +9,23 @@ import {
   TextField,
 } from "@mui/material";
 import { BsSearch } from "react-icons/bs";
+import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
-import md5 from "md5";
 
 const CreateAppointment = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, User, darkModeColors, primaryColor, themeBgImg, blurDarkColor, blurLightColor } =
-    useStateContext();
+  const {
+    currentMode,
+    setopenBackDrop,
+    User,
+    t,
+    darkModeColors,
+    primaryColor,
+    BACKEND_URL,
+    themeBgImg,
+    blurDarkColor,
+    blurLightColor,
+  } = useStateContext();
   const [meetingsCount, setMeetingCount] = useState({
     pendingMeeting: null,
     completedMeetings: null,
@@ -30,35 +40,47 @@ const CreateAppointment = () => {
 
   const handleCreateMeeting = async () => {
     // const token = localStorage.getItem("auth-token");
-    // try {
-    //   const Data = {};
-    //   const apiObj = {
-    //     meetingId: "random-4451041",
-    //     server: "https://meet.hikalcrm.com/bigbluebutton/",
-    //     sharedSecret: "FQXivXsHx9eWxTV8AU0bUb6jDQqioRdOviG5gr14vos",
-    //     name: "random-4451041",
-    //     callName: "create",
-    //   };
-    //   const queryString = `allowStartStopRecording=true&attendeePW=ap&autoStartRecording=false&meetingID=${apiObj?.meetingId}&moderatorPW=mp&name=${apiObj?.name}&record=false&voiceBridge=75977&welcome=Welcome to Hikal Meet`;
+    setloading(true);
+    try {
+      const createMeeting = await axios.get(
+        `${BACKEND_URL}/create?name=${User?.userName}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + token,
+          },
+        }
+      );
 
-    //   const checkSum = `${apiObj?.callName}${queryString}${apiObj.sharedSecret}`;
-    //   console.log("Checksum::", checkSum);
-    //   await axios.post(
-    //     `https://meet.hikalcrm.com/bigbluebutton/api/create?${queryString}&checksum=${md5(
-    //       checkSum
-    //     )}`,
-    //     JSON.stringify(Data),
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: "Bearer " + token,
-    //       },
-    //     }
-    //   );
-    // } catch (error) {
-    //   console.log(error);
-    
-    // }
+      const meetingID = createMeeting?.data?.data?.meetingID;
+      const joinAsModerator = await axios.post(
+        `${BACKEND_URL}/join`,
+        JSON.stringify({
+          meetingID: meetingID,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const url = joinAsModerator?.data?.url;
+      window.open(url, "_blank");
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to create meeting at the moment.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    setloading(false);
   };
 
   return (
@@ -92,7 +114,7 @@ const CreateAppointment = () => {
                     className="text-white"
                   />
                 ) : (
-                  <span>Create Meeting</span>
+                  <span>{t("create_meeting")}</span>
                 )}
               </Button>
               <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-5 flex justify-between">
@@ -103,7 +125,13 @@ const CreateAppointment = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     fontWeight: "bold",
-                    background: !themeBgImg ? (currentMode === "dark" ? "#333333" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+                    background: !themeBgImg
+                      ? currentMode === "dark"
+                        ? "#333333"
+                        : "#EEEEEE"
+                      : currentMode === "dark"
+                      ? blurDarkColor
+                      : blurLightColor,
                     color: currentMode === "dark" ? "white" : "black",
                     boxShadow:
                       currentMode === "dark"
@@ -166,7 +194,13 @@ const CreateAppointment = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         fontWeight: "bold",
-                        background: !themeBgImg ? (currentMode === "dark" ? "#333333" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+                        background: !themeBgImg
+                          ? currentMode === "dark"
+                            ? "#333333"
+                            : "#EEEEEE"
+                          : currentMode === "dark"
+                          ? blurDarkColor
+                          : blurLightColor,
                         color: currentMode === "dark" ? "white" : "black",
                         boxShadow:
                           currentMode === "dark"
@@ -190,7 +224,13 @@ const CreateAppointment = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         fontWeight: "bold",
-                        background: !themeBgImg ? (currentMode === "dark" ? "#333333" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+                        background: !themeBgImg
+                          ? currentMode === "dark"
+                            ? "#333333"
+                            : "#EEEEEE"
+                          : currentMode === "dark"
+                          ? blurDarkColor
+                          : blurLightColor,
                         color: currentMode === "dark" ? "white" : "black",
                         boxShadow:
                           currentMode === "dark"
