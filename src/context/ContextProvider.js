@@ -32,6 +32,7 @@ export const ContextProvider = ({ children }) => {
   const [DashboardData, setDashboardData] = useState();
   const [LocationData, setLocationData] = useState();
   const [timeZone, setTimezone] = useState(null);
+  const [timeZones, setTimezones] = useState([]);
   const [userCredits, setUserCredits] = useState("");
   const [UserLocationData, setUserLocationData] = useState();
   const [LastLocationData, setLastLocationData] = useState();
@@ -392,16 +393,16 @@ export const ContextProvider = ({ children }) => {
       flag: "/assets/flags/chinese-flag.png",
       font: "'Noto Sans TC', sans-serif",
       size: "14px",
-    }, 
+    },
     {
-      code: "fr", 
+      code: "fr",
       title: "Français",
       flag: "/assets/flags/french-flag.png",
       font: "'Noto Sans', sans-serif",
       size: "12px",
     },
     {
-      code: "he", 
+      code: "he",
       title: "עִבְרִית",
       rtl: true,
       flag: "/assets/flags/hebrew-flag.png",
@@ -409,15 +410,15 @@ export const ContextProvider = ({ children }) => {
       size: "14px",
     },
     {
-      code: "in", 
+      code: "in",
       title: "हिंदी",
       flag: "/assets/flags/hindi-flag.png",
       font: "'Noto Sans Devanagari', sans-serif;",
       size: "14px",
     },
     {
-      code: "pk", 
-      title: "اردو", 
+      code: "pk",
+      title: "اردو",
       rtl: true,
       flag: "/assets/flags/urdu-flag.png",
       font: "'Noto Kufi Arabic', sans-serif",
@@ -429,7 +430,7 @@ export const ContextProvider = ({ children }) => {
       flag: "/assets/flags/russian-flag.png",
       font: "'Noto Sans', sans-serif",
       size: "12px",
-    }
+    },
   ];
 
   const getLangDetails = (langCode) => {
@@ -587,6 +588,8 @@ export const ContextProvider = ({ children }) => {
         DataGridStyles,
         timeZone,
         setTimezone,
+        timeZones,
+        setTimezones,
         reloadDataGrid,
         setreloadDataGrid,
         openBackDrop,

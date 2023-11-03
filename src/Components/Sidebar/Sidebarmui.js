@@ -45,7 +45,7 @@ import {
   BsWhatsapp,
   BsChatText,
   BsFileEarmarkText,
-  BsCameraVideo
+  BsCameraVideo,
 } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { BsBuildingGear } from "react-icons/bs";
@@ -107,6 +107,7 @@ import { FaArchive } from "react-icons/fa";
 import ReminderToast from "./ReminderToast";
 import DealClosedAlert from "./DealClosedAlert";
 import ReactConfetti from "react-confetti";
+import moment from "moment";
 
 const Sidebarmui = () => {
   const {
@@ -141,6 +142,8 @@ const Sidebarmui = () => {
     setThemeBgImg,
     timeZone,
     setTimezone,
+    timeZones,
+    setTimezones,
   } = useStateContext();
   console.log("timezone in sidebar: ", timeZone);
 
@@ -481,6 +484,12 @@ const Sidebarmui = () => {
     }
     fetchSidebarData();
   }, [User]);
+
+  useEffect(() => {
+    // Fetch all timezones
+    const fetchedTimezones = moment.tz.names();
+    setTimezones(fetchedTimezones);
+  }, []);
 
   useEffect(() => {
     const setUnreadCount = async (isNoToast = false) => {

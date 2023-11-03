@@ -25,6 +25,8 @@ const TimeZone = () => {
     User,
     timeZone,
     setTimezone,
+    timeZones,
+    setTimezones,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
@@ -33,9 +35,9 @@ const TimeZone = () => {
       ? moment().tz(timeZone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
       : moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
   );
-  const [timezones, setTimezones] = useState([]);
+  // const [timezones, setTimezones] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const filteredTimezones = timezones?.filter((timezone) =>
+  const filteredTimezones = timeZones?.filter((timezone) =>
     timezone.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -123,7 +125,7 @@ const TimeZone = () => {
               labelId="demo-simple-select-label"
               // onChange={handleTimezoneChange}
             >
-              <MenuItem value="selected">--- Select a timezone ---</MenuItem>
+              <MenuItem value="selected">{timeZone ?? "---SELECT---"}</MenuItem>
               <MenuItem
                 value={"search"}
                 onKeyDown={(e) => {
