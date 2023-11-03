@@ -3,7 +3,7 @@ import {
   AiOutlineAppstore,
   AiOutlineEdit,
   AiOutlineTable,
-  AiOutlineHistory
+  AiOutlineHistory,
 } from "react-icons/ai";
 import { MdOutlineLocationOn } from "react-icons/md";
 import React, { useEffect, useState } from "react";
@@ -26,18 +26,17 @@ import Timeline from "../timeline";
 
 const Meetings = () => {
   const [loading, setloading] = useState(true);
-  const { 
-    currentMode, 
-    setopenBackDrop, 
-    BACKEND_URL, 
-    User, 
-    darkModeColors, 
-    DataGridStyles, 
-    primaryColor, 
+  const {
+    currentMode,
+    setopenBackDrop,
+    BACKEND_URL,
+    User,
+    darkModeColors,
+    DataGridStyles,
+    primaryColor,
     t,
-    themeBgImg 
-  } =
-    useStateContext();
+    themeBgImg,
+  } = useStateContext();
   const [locationModalOpen, setLocationModalOpen] = useState(false);
   const [meetingNote, setMeetingNote] = useState(null);
   const [meetingLocation, setMeetingLocation] = useState(null);
@@ -49,12 +48,10 @@ const Meetings = () => {
     id: null,
   });
 
-  
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
     setTimelineModelOpen(true);
   };
-
 
   console.log("meeting notessss: ", meetingNote);
   const [value, setValue] = useState(0);
@@ -83,7 +80,7 @@ const Meetings = () => {
   };
 
   const handleRowClick = (params, event) => {
-    if (!event.target.closest(".deleteLeadBtn button")) {
+    if (!event.target.closest(".editBtn button")) {
       setMeetingNote(params.row.meetingNote);
       setLocationModalOpen(true);
       const { mLat, mLong } = params.row;
@@ -162,8 +159,12 @@ const Meetings = () => {
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>{cellValues.row.project === "null" ? "-" : cellValues.row.project}</p>
-            <p>{cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}</p>
+            <p>
+              {cellValues.row.project === "null" ? "-" : cellValues.row.project}
+            </p>
+            <p>
+              {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
+            </p>
           </div>
         );
       },
@@ -178,8 +179,16 @@ const Meetings = () => {
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>{cellValues.row.enquiryType === "null" ? "-" : cellValues.row.enquiryType}</p>
-            <p>{cellValues.row.leadType === "null" ? "-" : cellValues.row.leadType}</p>
+            <p>
+              {cellValues.row.enquiryType === "null"
+                ? "-"
+                : cellValues.row.enquiryType}
+            </p>
+            <p>
+              {cellValues.row.leadType === "null"
+                ? "-"
+                : cellValues.row.leadType}
+            </p>
           </div>
         );
       },
@@ -268,7 +277,7 @@ const Meetings = () => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div 
+          <div
             // className="deleteLeadBtn space-x-2 w-full flex items-center justify-center align-center"
             className={`w-full h-full px-1 flex items-center justify-center`}
           >
@@ -280,8 +289,11 @@ const Meetings = () => {
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
               } hover:bg-[#229ed1] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
             >
-              <Tooltip title="Edit Meeting" arrow>
-                <button onClick={() => handleEditMeeting(cellValues)}>
+              <Tooltip title="Edit Meeting here" arrow>
+                <button
+                  className="editBtn"
+                  onClick={() => handleEditMeeting(cellValues)}
+                >
                   <AiOutlineEdit size={16} />
                 </button>
               </Tooltip>
@@ -314,7 +326,11 @@ const Meetings = () => {
                 } hover:bg-[#ec9c19] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
               >
                 <Tooltip title="View Location" arrow>
-                  <button onClick={() => showLocation(cellValues.row.mLat, cellValues.row.mLong) }>
+                  <button
+                    onClick={() =>
+                      showLocation(cellValues.row.mLat, cellValues.row.mLong)
+                    }
+                  >
                     <MdOutlineLocationOn size={16} />
                   </button>
                 </Tooltip>
@@ -533,12 +549,10 @@ const Meetings = () => {
                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                 <h1
                   className={`text-lg font-semibold ${
-                    currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
+                    currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  {t("menu_meetings")} {" "}
+                  {t("menu_meetings")}{" "}
                   <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {pageState?.total}
                   </span>
@@ -562,18 +576,13 @@ const Meetings = () => {
                 }}
                 className={`rounded-md overflow-hidden`}
               >
-                <Tabs
-                  value={value}
-                  onClick={handleChange}
-                  variant="standard"
-                >
+                <Tabs value={value} onClick={handleChange} variant="standard">
                   <Tab
                     icon={
                       <AiOutlineTable
                         size={22}
                         style={{
-                          color:
-                            currentMode === "dark" ? "#ffffff" : "#000000",
+                          color: currentMode === "dark" ? "#ffffff" : "#000000",
                         }}
                       />
                     }
@@ -583,8 +592,7 @@ const Meetings = () => {
                       <AiOutlineAppstore
                         size={22}
                         style={{
-                          color:
-                            currentMode === "dark" ? "#ffffff" : "#000000",
+                          color: currentMode === "dark" ? "#ffffff" : "#000000",
                         }}
                       />
                     }
@@ -687,9 +695,8 @@ const Meetings = () => {
                 />
               </TabPanel>
             </div>
-                
           </div>
-        )} 
+        )}
         {meetingLocation !== null && locationModalOpen ? (
           <ShowLocation
             isModalOpened={locationModalOpen}
@@ -705,13 +712,12 @@ const Meetings = () => {
         )}
 
         {timelineModelOpen && (
-            <Timeline
-              timelineModelOpen={timelineModelOpen}
-              handleCloseTimelineModel={() => setTimelineModelOpen(false)}
-              LeadData={singleLeadData}
-            />
-          )}
-
+          <Timeline
+            timelineModelOpen={timelineModelOpen}
+            handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+            LeadData={singleLeadData}
+          />
+        )}
       </div>
     </>
   );
