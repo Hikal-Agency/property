@@ -16,8 +16,15 @@ import { BsSearch } from "react-icons/bs";
 import { toast } from "react-toastify";
 
 const Clock = ({ handleClose }) => {
-  const { currentMode, darkModeColors, t, BACKEND_URL, User } =
-    useStateContext();
+  const {
+    currentMode,
+    darkModeColors,
+    t,
+    BACKEND_URL,
+    User,
+    timeZone,
+    setTimezone,
+  } = useStateContext();
   const token = localStorage.getItem("auth-token");
   // const [currentTime, setCurrentTime] = useState(
   //   localStorage.getItem("timezone")
@@ -27,42 +34,45 @@ const Clock = ({ handleClose }) => {
   //     : moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
   // );
   const [currentTime, setCurrentTime] = useState(
-    User?.timezone
-      ? moment().tz(User?.timezone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
+    timeZone
+      ? moment().tz(timeZone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
       : moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
   );
   const [timezones, setTimezones] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [selectedTimezone, setSelectedTimezone] = useState(
-    // localStorage.getItem("timezone") || moment.tz.guess()
-    User?.timezone || moment.tz.guess()
-  );
-
-  console.log("mode: ", currentMode);
-
-  useEffect(() => {
-    if (localStorage.getItem("timezone")) {
-      setSelectedTimezone(localStorage.getItem("timezone"));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("timezone")) {
+  //     setTimezone(localStorage.getItem("timezone"));
+  //   }
+  // }, []);
 
   useEffect(() => {
     // Fetch all timezones
     const fetchedTimezones = moment.tz.names();
     setTimezones(fetchedTimezones);
 
+    console.log("Timezone::", timeZone);
+  }, []);
+
+  let interval;
+
+  useEffect(() => {
     // Update current time every second
-    const interval = setInterval(() => {
+    if (interval) {
+      clearInterval(interval);
+    }
+
+    interval = setInterval(() => {
       setCurrentTime(
-        moment().tz(selectedTimezone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
+        moment().tz(timeZone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
       );
     }, 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [selectedTimezone]);
+  }, [timeZone]);
 
   console.log("User?.timzone: ", User?.timezone);
 
@@ -73,10 +83,9 @@ const Clock = ({ handleClose }) => {
   console.log("filtered timezone list: ", filteredTimezones);
 
   const handleTimezoneChange = async (e) => {
-    const timeZone = e.target.value;
-    console.log("timzone selected : ", e.target.value);
-    setSelectedTimezone(e.target.value);
-    localStorage.setItem("timezone", e.target.value);
+    const timeZone = e.target.innerText?.trim();
+    console.log("timzone selected : ", e);
+    // localStorage.setItem("timezone", e.target.innerText?.trim());
     try {
       const updateTimezone = await axios.post(
         `${BACKEND_URL}/updateuser/${User?.id}`,
@@ -89,6 +98,7 @@ const Clock = ({ handleClose }) => {
         }
       );
 
+      setTimezone(e.target.innerText?.trim());
       toast.success("Timezone updated.", {
         position: "top-right",
         autoClose: 3000,
@@ -117,8 +127,7 @@ const Clock = ({ handleClose }) => {
 
   return (
     <div
-      onMouseLeave={handleClose}
-      onClick={(e) => e.stopPropagation()}
+      // onMouseLeave={handleClose}
       style={{
         margin: 0,
         padding: "0.5rem 0.5rem",
@@ -154,10 +163,14 @@ const Clock = ({ handleClose }) => {
             }}
             size="small"
             variant="standard"
-            value={selectedTimezone}
-            onClick={handleTimezoneChange}
+            value={timeZone}
+            // onChange={handleTimezoneChange}
           >
+            <MenuItem value={null} disabled>
+              Select a timezone
+            </MenuItem>
             <MenuItem
+              value={"search"}
               onKeyDown={(e) => {
                 e.stopPropagation();
                 // e.preventDefault();
@@ -202,10 +215,10 @@ const Clock = ({ handleClose }) => {
             {filteredTimezones?.map((timezone) => (
               <>
                 <MenuItem
-                  // selected={timezone === selectedTimezone}
-                  onKeyDown={(e) => e.stopPropagation()}
+                  // onKeyDown={(e) => e.stopPropagation()}
                   key={timezone}
                   value={timezone}
+                  onClick={handleTimezoneChange}
                 >
                   {timezone}
                 </MenuItem>
@@ -215,7 +228,7 @@ const Clock = ({ handleClose }) => {
         </Box>
       </div>
       <div className="flex justify-center h-[300px]">
-        <AnalogClock timeString={currentTime} timezone={selectedTimezone} />
+        <AnalogClock timeString={currentTime} timezone={timeZone} />
         {/* <AnalogClock /> */}
       </div>
       <div className="flex justify-center my-2">
