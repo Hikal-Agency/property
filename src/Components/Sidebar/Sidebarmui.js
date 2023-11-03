@@ -139,7 +139,10 @@ const Sidebarmui = () => {
     blurDarkColor,
     blurLightColor,
     setThemeBgImg,
+    timeZone,
+    setTimezone,
   } = useStateContext();
+  console.log("timezone in sidebar: ", timeZone);
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
   const [newMessageReceived, setNewMessageReceived] = useState(false);
@@ -301,6 +304,8 @@ const Sidebarmui = () => {
           };
 
           const language = result.data?.user[0]?.language;
+          const timezone = result.data?.user[0]?.timezone;
+          setTimezone(timezone);
 
           if (language) {
             i18n.changeLanguage(language);
@@ -394,6 +399,7 @@ const Sidebarmui = () => {
             timezone: result.data.user[0].timezone,
           };
 
+          setTimezone(user?.timezone);
           setUser(user);
           setIsUserSubscribed(checkUser(user));
           getAllLeadsMembers(user);
@@ -1890,15 +1896,15 @@ const Sidebarmui = () => {
                       minWidth: "18px",
                     },
                     "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
-                    {
-                      paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
-                      // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
-                      // color: !themeBgImg
-                      //   ? primaryColor
-                      //   : currentMode === "dark"
-                      //   ? "#FFFFFF"
-                      //   : "#000000",
-                    },
+                      {
+                        paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
+                        // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                        // color: !themeBgImg
+                        //   ? primaryColor
+                        //   : currentMode === "dark"
+                        //   ? "#FFFFFF"
+                        //   : "#000000",
+                      },
                     "& .ps-menu-button": {
                       fontWeight: "medium",
                       color: !themeBgImg
@@ -2132,8 +2138,19 @@ const Sidebarmui = () => {
                                 >
                                   {link.title}
                                   {link.pro && (
-                                    <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
-                                      <GiQueenCrown size={16} className="gold-grad" />
+                                    <div
+                                      className={`${
+                                        themeBgImg
+                                          ? currentMode === "dark"
+                                            ? "bg-black"
+                                            : "bg-white"
+                                          : "bg-transparent"
+                                      } p-1 rounded-full`}
+                                    >
+                                      <GiQueenCrown
+                                        size={16}
+                                        className="gold-grad"
+                                      />
                                     </div>
                                   )}
                                 </span>
@@ -2227,8 +2244,19 @@ const Sidebarmui = () => {
                                             >
                                               {menu.name}
                                               {menu.pro && (
-                                                <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
-                                                  <GiQueenCrown size={16} className="gold-grad" />
+                                                <div
+                                                  className={`${
+                                                    themeBgImg
+                                                      ? currentMode === "dark"
+                                                        ? "bg-black"
+                                                        : "bg-white"
+                                                      : "bg-transparent"
+                                                  } p-1 rounded-full`}
+                                                >
+                                                  <GiQueenCrown
+                                                    size={16}
+                                                    className="gold-grad"
+                                                  />
                                                 </div>
                                               )}
                                             </span>
@@ -2254,23 +2282,28 @@ const Sidebarmui = () => {
                                                       borderRadius: "0px",
                                                     },
                                                     "& .css-1mfnem1:hover": {
-                                                      backgroundColor: primaryColor,
+                                                      backgroundColor:
+                                                        primaryColor,
                                                       color: "white",
                                                     },
                                                     "& .css-1ogoo8i": {
-                                                      backgroundColor: primaryColor,
+                                                      backgroundColor:
+                                                        primaryColor,
                                                       color: "white",
                                                     },
                                                     // STYLING FOR DARK MODE
                                                     "& .css-yktbuo": {
-                                                      backgroundColor: primaryColor,
+                                                      backgroundColor:
+                                                        primaryColor,
                                                       color: "white",
                                                     },
                                                     "& .css-1f8bwsm": {
-                                                      minWidth: "10px !important",
+                                                      minWidth:
+                                                        "10px !important",
                                                     },
                                                     "& .css-yktbuo:hover": {
-                                                      backgroundColor: primaryColor,
+                                                      backgroundColor:
+                                                        primaryColor,
                                                       color: "white",
                                                     },
                                                     "& .css-1v6ithu": {
@@ -2285,7 +2318,8 @@ const Sidebarmui = () => {
                                                     },
                                                     "& .css-cveggr-MuiListItemIcon-root":
                                                       {
-                                                        minWidth: "10px !important",
+                                                        minWidth:
+                                                          "10px !important",
                                                       },
                                                   }}
                                                   className=" relative my-1"
@@ -2320,8 +2354,20 @@ const Sidebarmui = () => {
                                                     >
                                                       {m?.name || ""}
                                                       {m.pro && (
-                                                        <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
-                                                          <GiQueenCrown size={16} className="gold-grad" />
+                                                        <div
+                                                          className={`${
+                                                            themeBgImg
+                                                              ? currentMode ===
+                                                                "dark"
+                                                                ? "bg-black"
+                                                                : "bg-white"
+                                                              : "bg-transparent"
+                                                          } p-1 rounded-full`}
+                                                        >
+                                                          <GiQueenCrown
+                                                            size={16}
+                                                            className="gold-grad"
+                                                          />
                                                         </div>
                                                       )}
                                                     </span>
@@ -2425,8 +2471,20 @@ const Sidebarmui = () => {
                                                 >
                                                   {menu.name}
                                                   {menu.pro && (
-                                                    <div className={`${themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white") : "bg-transparent"} p-1 rounded-full`}>
-                                                      <GiQueenCrown size={16} className="gold-grad" />
+                                                    <div
+                                                      className={`${
+                                                        themeBgImg
+                                                          ? currentMode ===
+                                                            "dark"
+                                                            ? "bg-black"
+                                                            : "bg-white"
+                                                          : "bg-transparent"
+                                                      } p-1 rounded-full`}
+                                                    >
+                                                      <GiQueenCrown
+                                                        size={16}
+                                                        className="gold-grad"
+                                                      />
                                                     </div>
                                                   )}
                                                 </span>

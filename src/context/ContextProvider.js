@@ -31,6 +31,7 @@ export const ContextProvider = ({ children }) => {
   const [openBackDrop, setopenBackDrop] = useState(false);
   const [DashboardData, setDashboardData] = useState();
   const [LocationData, setLocationData] = useState();
+  const [timeZone, setTimezone] = useState(null);
   const [userCredits, setUserCredits] = useState("");
   const [UserLocationData, setUserLocationData] = useState();
   const [LastLocationData, setLastLocationData] = useState();
@@ -584,6 +585,8 @@ export const ContextProvider = ({ children }) => {
         session,
         setSession,
         DataGridStyles,
+        timeZone,
+        setTimezone,
         reloadDataGrid,
         setreloadDataGrid,
         openBackDrop,
