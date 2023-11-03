@@ -725,5 +725,10 @@
     "label_unit": "Единица",
     "view_all_locations": "Просмотреть все местоположения",
     "search_timezone": "Поиск по временной зоне",
-    "update_property": "Обновить объект"
+    "update_property": "Обновить объект",
+    "secondary_buyers": "Вторичные покупатели",
+    "create_meeting": "Создать встречу",
+    "meeting_has_created": "Ваша встреча создана!",
+    "join_as_moderator": "Присоединиться к встрече в качестве модератора",
+    "share_to_attendees": "Поделиться этой ссылкой на встречу с участниками"
 }

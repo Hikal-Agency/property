@@ -25,7 +25,8 @@ const AllLiveLeads = () => {
     setopenBackDrop,
     pageState,
     BACKEND_URL,
-    themeBgImg
+    themeBgImg,
+    t
   } = useStateContext();
   const location = useLocation();
   const {hasPermission} = usePermission();
@@ -57,18 +58,17 @@ const AllLiveLeads = () => {
             }`}
           >
             <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
-              <div className="flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+              <div className="flex items-center pb-3">                
+                <div className="bg-primary h-10 w-1 rounded-full"></div>
                 <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
+                  className={`text-lg font-semibold mx-2 uppercase ${
+                    currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  Live Call Leads{" "}
-                  <span className="capitalize">({lead_type})</span>{" "}
-                  <span className="bg-primary text-white px-3 py-1 ml-2 rounded-sm my-auto">
+                  {`${t("type_livecall")} ${t("leads")}`} 
+                  {" "}
+                  <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", '_'))})</span>{" "}
+                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                     {pageState?.total}
                   </span>
                 </h1>

@@ -116,7 +116,7 @@
     "feedback_cancelled": "Cancelled",
     "no_feedback": "No feedback",
     "typing": "Typing",
-    "type_livecall": "Livecall",
+    "type_livecall": "Live Call",
     "type_thirdpartyleads": "Third Party",
     "type_coldleads": "Cold",
     "type_personal": "Personal",
@@ -726,6 +726,8 @@
     "view_all_locations": "View all locations",
     "search_timezone" : "Search Timezone",
     "update_property": "Update Property", 
+    "secondary_buyers": "Secondary Buyers",
+    
     "create_meeting" : "Create Meeting", 
     "meeting_has_created": "Your meeting has been created!", 
     "join_as_moderator": "Join the meeting as a Moderator",

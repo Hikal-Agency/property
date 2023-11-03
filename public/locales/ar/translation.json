@@ -726,5 +726,10 @@
     "label_unit": "وحدة",
     "view_all_locations": "عرض جميع المواقع",
     "search_timezone": "البحث في التوقيت",
-    "update_property": "تحديث العقار"
+    "update_property": "تحديث العقار",
+    "secondary_buyers": "المشترين الثانويين",
+    "create_meeting": "إنشاء الاجتماع",
+    "meeting_has_created": "تم إنشاء الاجتماع الخاص بك!",
+    "join_as_moderator": "الانضمام إلى الاجتماع كمدير",
+    "share_to_attendees": "شارك رابط الاجتماع مع الحاضرين"
 }

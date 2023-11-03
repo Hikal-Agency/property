@@ -725,5 +725,10 @@
     "label_unit": "یونٹ",
     "view_all_locations": "تمام مقامات دیکھیں",
     "search_timezone" : "توقیت تلاش کریں",
-    "update_property": "جائیداد کو اپ ڈیٹ کریں"
+    "update_property": "جائیداد کو اپ ڈیٹ کریں",
+    "secondary_buyers": "ثانوی خریداروں",
+    "create_meeting": "میٹنگ تخلیق کریں",
+    "meeting_has_created": "آپ کی میٹنگ تخلیق ہو گئی ہے!",
+    "join_as_moderator": "ماڈریٹر کے طور پر میٹنگ میں شامل ہوں",
+    "share_to_attendees": "اس میٹنگ کا لنک حاضرین کے ساتھ شیئر کریں"
 }

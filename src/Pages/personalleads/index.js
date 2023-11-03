@@ -42,16 +42,14 @@ const PersonaLeads = () => {
             }`}
           >
             <div className="w-full flex items-center pb-3">
-              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+              <div className="bg-primary h-10 w-1 rounded-full"></div>
               <h1
-                className={`text-lg font-semibold ${
-                  currentMode === "dark"
-                    ? "text-white"
-                    : "text-black"
+                className={`text-lg font-semibold mx-2 uppercase ${
+                  currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                {/* ●  */}
-                {`${t("type_personal")} ${t("leads")}`} {" "}
+                {`${t("type_personal")} ${t("leads")}`} 
+                {" "}
                 <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", '_'))})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}

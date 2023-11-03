@@ -3,8 +3,6 @@ import { Avatar, Box } from "@mui/material";
 
 import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
-import { BsFillPlusCircleFill } from "react-icons/bs";
-import { MdEmail } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import { Tab, Tabs } from "@mui/material";
 import { GeneralInfo as GeneralInfoTab } from "../../Components/profile/GeneralInfo.jsx";
@@ -14,6 +12,17 @@ import Loader from "../../Components/Loader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ImagePicker from "./ImagePicker";
+import { datetimeLong } from "../../Components/_elements/formatDateTime";
+
+import {
+  BsTelephone,
+  BsEnvelopeAt,
+  BsFillPlusCircleFill,
+  BsPersonPlus
+} from "react-icons/bs";
+import { 
+  MdEmail 
+} from "react-icons/md";
 
 const ProfilePage = () => {
   const [loading, setloading] = useState(true);
@@ -23,7 +32,10 @@ const ProfilePage = () => {
     darkModeColors,
     setopenBackDrop,
     BACKEND_URL,
-    setUser, t
+    setUser, 
+    t,
+    themeBgImg,
+    primaryColor
   } = useStateContext();
   const [GeneralInfoData, setGeneralInfo] = useState({
     userAltContact: "",
@@ -247,151 +259,138 @@ const ProfilePage = () => {
         ) : (
           <div
             className={`w-full ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
-            <div className={`w-full `}>
-              <div className="pl-3">
-                <div className="my-5 mb-10">
-                  <div
-                    className={`grid grid-cols-8 ${
-                      currentMode === "dark"
-                        ? "bg-[#1c1c1c] text-white"
-                        : "bg-white text-[#1c1c1c] "
-                    } rounded-md shadow-md`}
-                  >
-                    <div className="col-span-2 border-r-2 border-gray-400  py-10 ">
-                      <h1 className="text-lg font-semibold pb-10 text-center">
-                        {t("user_account")}
-                      </h1>
-                      <div className="accountinfo border-t-2 border-gray-400 px-5 pt-10 ">
-                        <div className="flex justify-center flex-col items-center">
-                          <label htmlFor="pick-image">
-                            <div
-                              onClick={() =>
-                                setImagePickerModal({ isOpen: true })
-                              }
-                              className="relative"
-                            >
-                              <img
-                                src={User?.displayImg}
-                                width={200}
-                                height={200}
-                                alt=""
-                                className="rounded-full mx-auto w-28"
-                              />
-                              <div className="absolute -top-1 right-1 ">
-                                <BsFillPlusCircleFill
-                                  className="text-primary bg-white border-white border-[3px] rounded-full w-full h-full"
-                                  size={30}
-                                />
-                              </div>
-                            </div>
-                          </label>
-                          {/* <input
-                              accept="image/*"
-                              onInput={handlePickImage}
-                              id="pick-image"
-                              type="file"
-                              hidden
-                            /> */}
-                          {/* <input
-                              accept="image/*"
-                              onChange={handlePickImage}
-                              id="pick-image"
-                              type="file"
-                              hidden
-                            /> */}
-                          <div className="mt-3">
-                            <h1 className="text-lg font-bold text-center">
-                              {User?.userName}
-                            </h1>
-                            <h3
-                              className={`${
-                                currentMode === "dark"
-                                  ? "text-gray-50"
-                                  : "text-gray-600"
-                              }  text-center`}
-                            >
-                              {User?.position}
-                            </h3>
-                          </div>
+            <div className={`w-full p-4 ${
+              currentMode === "dark" ? "text-white" : "text-black"
+            }`}>
+              <div className="grid grid-cols-4 gap-5">
+                {/* PROFILE  */}
+                <div className="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1">
+                  <div className={`${
+                    themeBgImg ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                    : (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                  } rounded-xl shadow-sm p-4 min-w-[200px] min-h-[200px]`}>
+                    <h1 className="text-lg font-semibold text-center">
+                      {t("user_account")}
+                    </h1>
+                    <div className="my-3 h-0.5 w-full rounded-full bg-primary"></div>
+                    <div className="accountinfo p-4">
+                      <div className="flex justify-center flex-col items-center gap-4">
+                        <label htmlFor="pick-image">
                           <div
-                            className={`mt-5 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
+                            onClick={() =>
+                              setImagePickerModal({ isOpen: true })
+                            }
+                            className="relative"
                           >
-                            <div className="flex items-center space-x-1 justify-center font-bold  mb-1">
-                              <MdEmail size={25} className="block" />
-                              <h1>{t("label_email_address")}</h1>
+                            <img
+                              src={User?.displayImg}
+                              width={200}
+                              height={200}
+                              alt=""
+                              className="rounded-full mx-auto w-28"
+                            />
+                            <div className="absolute -top-2.5 -right-2.5 ">
+                              <BsFillPlusCircleFill
+                                className="text-primary bg-white border-white border-[3px] rounded-full w-full h-full"
+                                size={30}
+                              />
                             </div>
+                          </div>
+                        </label>
+                        <div className="text-center my-2">
+                          <h1 className="text-lg my-1 font-semibold text-center uppercase">
+                            {User?.userName}
+                          </h1>
+                          <h3 className="text-sm my-1 uppercase">
+                            {User?.position}
+                          </h3>
+                        </div>
+                        <div className="text-center w-full my-1">
+                          <div className="flex items-center justify-center font-semibold gap-3 my-2">
+                            <BsTelephone size={16} className="block" />
+                            {t("label_contact_number")}
+                          </div>
+                          <div className="my-2">
+                            {User?.userContact}
+                          </div>
+                        </div>
+                        <div className="text-center w-full my-1">
+                          <div className="flex items-center justify-center font-semibold gap-3 my-2">
+                            <BsEnvelopeAt size={16} className="block" />
+                            {t("label_email_address")}
+                          </div>
+                          <div className="my-2">
                             {User?.userEmail}
                           </div>
-                          <div
-                            className={`mt-3 text-center ${
-                              currentMode === "dark"
-                                ? "text-gray-50"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            <div className="flex items-center justify-center font-semibold mb-1">
-                              <h1 className="block">{t("status")}: </h1>{" "}
-                              <p className="font-bold">{t("status_active")}</p>
-                            </div>
-                            <div className="mt-3">
-                              <h1>{t("profile_created_on")}: </h1>
-                              <p className="font-bold">{User?.creationDate}</p>
-                            </div>
+                        </div>
+                        <div className="text-center w-full my-1">
+                          <div className="flex items-center justify-center font-semibold gap-3 my-2">
+                            <BsPersonPlus size={16} className="block" />
+                            {t("profile_created_on")}
+                          </div>
+                          <div className="my-2">
+                            {datetimeLong(User?.creationDate)}
                           </div>
                         </div>
                       </div>
                     </div>
-                    {/* section 2 */}
-                    <div className="col-span-6 ">
-                      <Box
+                    <div 
+                      className={`bg-green-600 text-white rounded-md text-center shadow-sm text-sm font-semibold uppercase p-2`}
+                    >
+                      {t("status_active")}
+                    </div>
+                  </div>
+                </div>
+
+                {/* UPDATE  */}
+                <div className="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-3">
+                  <div className={`${
+                    themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                  } rounded-xl shadow-sm p-4`}>
+                    <Box
+                      sx={darkModeColors}
+                      className="pt-2 pb-4 mb-4"
+                    >
+                      <Tabs
                         sx={darkModeColors}
-                        className="pb-7 mt-8 border-b-2 border-gray-400 pl-5"
+                        value={value}
+                        onChange={handleChange}
+                        variant="standard"
                       >
-                        <Tabs
-                          sx={darkModeColors}
-                          value={value}
-                          onChange={handleChange}
-                          variant="standard"
-                        >
-                          <Tab label={t("general_info")?.toUpperCase()} />
-                          <Tab label={t("personal_info")?.toUpperCase()}/>
-                          <Tab label={t("change_password")?.toUpperCase()} />
-                        </Tabs>
-                      </Box>
-                      <div className="px-7 pt-12">
-                        <TabPanel value={value} index={0}>
-                          <GeneralInfoTab
-                            btnloading={btnloading}
-                            GeneralInfoData={GeneralInfoData}
-                            UpdateProfile={UpdateProfile}
-                            User={User}
-                          />
-                        </TabPanel>
-                        <TabPanel value={value} index={1}>
-                          <PersonalInfoTab
-                            UpdateProfile={UpdateProfile}
-                            btnloading={btnloading}
-                            PersonalInfoData={PersonalInfo}
-                            User={User}
-                          />
-                        </TabPanel>
-                        <TabPanel value={value} index={2}>
-                          <ChangePasswordTab />
-                        </TabPanel>
-                      </div>
+                        <Tab label={t("general_info")?.toUpperCase()} />
+                        <Tab label={t("personal_info")?.toUpperCase()}/>
+                        <Tab label={t("change_password")?.toUpperCase()} />
+                      </Tabs>
+                    </Box>
+                    <div className="p-5">
+                      <TabPanel value={value} index={0}>
+                        <GeneralInfoTab
+                          btnloading={btnloading}
+                          GeneralInfoData={GeneralInfoData}
+                          UpdateProfile={UpdateProfile}
+                          User={User}
+                        />
+                      </TabPanel>
+                      <TabPanel value={value} index={1}>
+                        <PersonalInfoTab
+                          UpdateProfile={UpdateProfile}
+                          btnloading={btnloading}
+                          PersonalInfoData={PersonalInfo}
+                          User={User}
+                        />
+                      </TabPanel>
+                      <TabPanel value={value} index={2}>
+                        <ChangePasswordTab />
+                      </TabPanel>
                     </div>
                   </div>
                 </div>
               </div>
+              
             </div>
-            {/* <Footer /> */}
           </div>
         )}
       </div>
