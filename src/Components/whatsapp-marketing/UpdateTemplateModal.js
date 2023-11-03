@@ -13,9 +13,10 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import RichEditor from "./richEditorComp/RichEditor";
+import { MdClose } from "react-icons/md";
 
 const style = {
-  transform: "translate(-50%, -50%)",
+  transform: "translate(0%, 0%)",
   boxShadow: 24,
 };
 
@@ -24,10 +25,20 @@ const UpdateTemplateModal = ({
   setUpdateTemplateModal,
   fetchTemplates,
 }) => {
-  const { currentMode, BACKEND_URL, t } = useStateContext();
+  const { currentMode, BACKEND_URL, t, isLangRTL, i18n } = useStateContext();
   const [templateTitle, setTemplateTitle] = useState(
     updateTemplateModal?.template?.name
   );
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      setUpdateTemplateModal({ isOpen: false });
+    }, 1000);
+  };
+
   const [templateBody, setTemplateBody] = useState(
     updateTemplateModal?.template?.body
   );
@@ -82,7 +93,6 @@ const UpdateTemplateModal = ({
   };
   return (
     <>
-      
       <Modal
         keepMounted
         open={updateTemplateModal.isOpen}
@@ -95,13 +105,25 @@ const UpdateTemplateModal = ({
           timeout: 500,
         }}
       >
-        <div
+        {/* <div
           style={style}
           className={`w-[calc(100%-20px)] md:w-[70%] h-[90%]  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 rounded-md overflow-y-scroll`}
+        > */}
+        <div
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
+              ? isLangRTL(i18n.language)
+                ? "modal-close-left"
+                : "modal-close-right"
+              : ""
+          }
+        w-[100vw] h-[100vh] flex items-start justify-end`}
         >
-          <IconButton
+          {/* <IconButton
             sx={{
               position: "absolute",
               right: 5,
@@ -111,22 +133,46 @@ const UpdateTemplateModal = ({
             onClick={() => setUpdateTemplateModal({ isOpen: false })}
           >
             <IoMdClose size={18} />
-          </IconButton>
-          <strong className="text-lg">{t("update_template")}</strong>
-          <form onSubmit={handleSubmit} className="mt-8">
-            <TextField
-              id="templateTitle"
-              type={"text"}
-              label={t("template_name")}
-              className="w-full mb-5"
-              style={{ marginBottom: "10px" }}
-              variant="outlined"
-              size="medium"
-              required
-              value={templateTitle}
-              onChange={(e) => setTemplateTitle(e.target.value)}
+          </IconButton> */}
+          <button
+            // onClick={handleLeadModelClose}
+            onClick={handleClose}
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
+            bg-primary w-fit h-fit p-3 my-4 z-10`}
+          >
+            <MdClose
+              size={18}
+              color={"white"}
+              className="hover:border hover:border-white hover:rounded-full"
             />
-            {/* <TextareaAutosize
+          </button>
+          <div
+            style={style}
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            `}
+          >
+            <strong className="text-lg">{t("update_template")}</strong>
+            <form onSubmit={handleSubmit} className="mt-8">
+              <TextField
+                id="templateTitle"
+                type={"text"}
+                label={t("template_name")}
+                className="w-full mb-5"
+                style={{ marginBottom: "10px" }}
+                variant="outlined"
+                size="medium"
+                required
+                value={templateTitle}
+                onChange={(e) => setTemplateTitle(e.target.value)}
+              />
+              {/* <TextareaAutosize
                 id="template-body"
                 placeholder="Template Body"
                 type={"text"}
@@ -146,30 +192,33 @@ const UpdateTemplateModal = ({
                 value={templateBody}
                 onInput={(e) => setTemplateBody(e.target.value)}
               /> */}
-            <div style={{ 
-                height: "320px",
-                marginBottom: "20px",
-                overflowY: "scroll",
-            }}>
-              <RichEditor
-                messageValue={updateTemplateModal?.template?.body}
-                setMessageValue={setTemplateBody}
-              />
-            </div>
-            <Button
-              type="submit"
-              variant="contained"
-              className="bg-btn-primary"
-              fullWidth
-              style={{ padding: "10px 0", color: "white" }}
-            >
-              {btnloading ? (
-                <CircularProgress size={18} sx={{ color: "white"}} />
-              ) : (
-                <span>{t("update_template")}</span>
-              )}
-            </Button>
-          </form>
+              <div
+                style={{
+                  height: "320px",
+                  marginBottom: "20px",
+                  overflowY: "scroll",
+                }}
+              >
+                <RichEditor
+                  messageValue={updateTemplateModal?.template?.body}
+                  setMessageValue={setTemplateBody}
+                />
+              </div>
+              <Button
+                type="submit"
+                variant="contained"
+                className="bg-btn-primary"
+                fullWidth
+                style={{ padding: "10px 0", color: "white" }}
+              >
+                {btnloading ? (
+                  <CircularProgress size={18} sx={{ color: "white" }} />
+                ) : (
+                  <span>{t("update_template")}</span>
+                )}
+              </Button>
+            </form>
+          </div>
         </div>
       </Modal>
     </>
