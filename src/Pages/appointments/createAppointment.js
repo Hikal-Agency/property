@@ -74,7 +74,7 @@ const CreateAppointment = () => {
         `${BACKEND_URL}/attendee`,
         JSON.stringify({
           meetingID: meetingID,
-          fullName: "Example Full Name"
+          fullName: "Example Full Name".replaceAll(" ", "%20")
         }),
         {
           headers: {
