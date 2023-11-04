@@ -109,19 +109,12 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
-      const data = {
-        status: 2,
-      };
-      await axios.post(
-        `${BACKEND_URL}/blocked/${ip?.id}`,
-        JSON.stringify(data),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      await axios.delete(`${BACKEND_URL}/blocked/${ip?.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
       toast.success("Request rejected successfuly!", {
         position: "top-right",
         autoClose: 3000,

@@ -536,7 +536,6 @@ const Sidebarmui = () => {
       });
 
       socket.on("notification_lead_assigned", (data) => {
-        console.log("data::", data);
         toast(
           <ReminderToast type="lead_assigned" leadName={data?.leadName} />,
           {
