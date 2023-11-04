@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/system";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
@@ -55,10 +55,10 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
     reshuffle: <BsShuffle size={16} olor={"#ffffff"} />,
   };
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = async (page) => {
     try {
       setLoading(true);
-      const url = `${BACKEND_URL}/allnotifications`;
+      const url = `${BACKEND_URL}/allnotifications?page=${page}`;
 
       const response = await axios.get(url, {
         headers: {
@@ -69,9 +69,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
       setLoading(false);
       console.log(response);
 
-      const filteredNotifications = response?.data?.notification?.data?.filter(
-        (notification) => notification.isRead !== 1
-      );
+      const filteredNotifications = response?.data?.notification?.data;
 
       setNotifications(filteredNotifications);
     } catch (error) {
@@ -80,7 +78,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   };
 
   useEffect(() => {
-    fetchNotifications();
+    fetchNotifications(1);
   }, [BACKEND_URL, token]);
 
   const openNotification = (e, activity) => {
@@ -135,7 +133,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
     <Container
       onClick={handleAvoidClose}
       // onMouseLeave={handleClose}
-      sx={{ maxHeight: 500, p:1, width: 350, position: "relative" }}
+      sx={{ maxHeight: 500, p: 1, width: 350, position: "relative" }}
       className="pb-5"
     >
       <div
@@ -167,18 +165,22 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
       )}
       {!loading &&
         (notifications?.length > 0 ? (
-          notifications?.map((activity, index) => {
-            return (
-              <NotificationItem
-                setNotifications={setNotifications}
-                iconBGColor={iconBGColor}
-                notificationIcons={notificationIcons}
-                openNotification={openNotification}
-                key={index}
-                activity={activity}
-              />
-            );
-          })
+          <>
+            {notifications?.map((activity, index) => {
+              return (
+                <NotificationItem
+                  setNotifications={setNotifications}
+                  iconBGColor={iconBGColor}
+                  notificationIcons={notificationIcons}
+                  openNotification={openNotification}
+                  key={index}
+                  activity={activity}
+                />
+              );
+            })}
+
+            <Button>Load more..</Button>
+          </>
         ) : (
           <h1 className="text-center">No Unread Notifications</h1>
         ))}

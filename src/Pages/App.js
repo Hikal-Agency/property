@@ -74,6 +74,7 @@ import SingleListingsPage from "./listings/SingleListingsPage";
 import ListingUsers from "./listingsUsers";
 import Buyers from "./listingsUsers/buyers";
 import AllLiveLeads from "./liveleads";
+import MeetInvite from "./MeetInvite";
 
 const libraries = ["places"];
 
@@ -516,7 +517,8 @@ function App() {
       pathname === "/callLogs" ||
       pathname === "/attendance" ||
       pathname === "/fresh-logs" ||
-      pathname === "/attendanceLogin"
+      pathname === "/attendanceLogin" ||
+      pathname.startsWith("/invite")
     ) {
       return false;
     } else {
@@ -550,6 +552,7 @@ function App() {
               <Route path="/attendance" element={<RegisterAttendance />} />
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
+              <Route path="/invite/:meetingID" element={<MeetInvite />} />
               {routes.map((route, index) => {
                 return (
                   <Route
