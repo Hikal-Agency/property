@@ -81,7 +81,10 @@ const Meetings = () => {
   };
 
   const handleRowClick = (params, event) => {
-    if (!event.target.closest(".editBtn ")) {
+    if (
+      !event.target.closest(".editBtn ") ||
+      !event.target.closest(".timelineBtn ")
+    ) {
       setMeetingNote(params.row.meetingNote);
       setLocationModalOpen(true);
       const { mLat, mLong } = params.row;
