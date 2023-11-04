@@ -456,56 +456,6 @@ const Navbar = () => {
             </button>
           </Tooltip>
 
-          {/* LANG  */}
-          <Tooltip title="Language" arrow placement="bottom">
-            <div
-              className="mx-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-              onClick={(event) => {
-                if (currNavBtn === "Language") {
-                  handleClose();
-                } else {
-                  handleClick(event, "Language");
-                }
-              }}
-            >
-              <img
-                className="rounded-sm h-6 w-8 border"
-                src={langFlag}
-                alt=""
-              />
-              <MdKeyboardArrowDown
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              />
-            </div>
-          </Tooltip>
-
-          {/* LANGUAGE  */}
-          {/* <Select
-            sx={{
-              marginRight: "8px",
-              "& fieldset": {
-                border: 0,
-              },
-            }}
-            size="small"
-            value={i18n.language}
-            onChange={(e) => {
-              i18n.changeLanguage(e.target.value);
-              if (isLangRTL(e.target.value)) {
-                changeBodyDirection("rtl");
-              } else {
-                changeBodyDirection("ltr");
-              }
-            }}
-          >
-            {langs?.map((lang) => (
-              <MenuItem value={lang?.code} key={lang?.code}>
-                {lang?.title}
-              </MenuItem>
-            ))}
-          </Select> */}
 
           {/* } */}
           {/* PROFILE  */}
@@ -541,6 +491,31 @@ const Navbar = () => {
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               />
+            </div>
+          </Tooltip>
+          
+          {/* LANG  */}
+          <Tooltip title="Language" arrow placement="bottom">
+            <div
+              className="mx-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+              onClick={(event) => {
+                if (currNavBtn === "Language") {
+                  handleClose();
+                } else {
+                  handleClick(event, "Language");
+                }
+              }}
+            >
+              <img
+                className="rounded-sm h-6 w-8 border"
+                src={langFlag}
+                alt=""
+              />
+              {/* <MdKeyboardArrowDown
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              /> */}
             </div>
           </Tooltip>
 
@@ -843,7 +818,15 @@ const Navbar = () => {
                             alt=""
                           />
                         </div>
-                        <div className="text-end">{lang.title}</div>
+                        <div 
+                          className="text-end"
+                          style={{
+                            fontFamily: lang?.font,
+                            // fontSize: lang?.size
+                          }}
+                        >
+                          {lang.title}
+                        </div>
                       </div>
                     </button>
                   ))}
