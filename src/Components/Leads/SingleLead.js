@@ -392,7 +392,10 @@ const SingleLead = ({
 
   // Replace last 4 digits with "*"
   const stearics =
-    LeadData?.leadContact?.replaceAll(" ", "")?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) + "****";
+    LeadData?.leadContact
+      ?.replaceAll(" ", "")
+      ?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) +
+    "****";
   let contact;
 
   if (hasPermission("number_masking")) {
@@ -469,7 +472,7 @@ const SingleLead = ({
           }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
-          {/* <button
+          <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
             className={`${
@@ -482,15 +485,18 @@ const SingleLead = ({
               color={"white"}
               className="hover:border hover:border-white hover:rounded-full"
             />
-          </button> */}
-
+          </button>
           <div
             style={style}
             className={` ${
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) ? (currentMode === "dark" && " border-primary border-r-2") : (currentMode === "dark" && " border-primary border-l-2")}
+            } ${
+              isLangRTL(i18n.language)
+                ? currentMode === "dark" && " border-primary border-r-2"
+                : currentMode === "dark" && " border-primary border-l-2"
+            }
              p-4 h-[100vh] w-[80vw] overflow-y-scroll 
             `}
           >
@@ -527,7 +533,9 @@ const SingleLead = ({
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
                         } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
                       >
-                        <CallButton phone={LeadData?.leadContact?.replaceAll(" ", "")} />
+                        <CallButton
+                          phone={LeadData?.leadContact?.replaceAll(" ", "")}
+                        />
                       </p>
                     </Tooltip>
 
