@@ -695,7 +695,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             className={`w-full h-full px-1 flex items-center justify-center`}
           >
             {/* MEET LINK  */}
-            {lead_origin === "liveleads" &&
+            {(lead_origin === "liveleads" || lead_type === "liveleads") &&
               cellValues.row.notes.startsWith("Live") &&
               (cellValues.row.meet_link === null ||
               cellValues.row.meet_link === "" ||
