@@ -35,7 +35,6 @@ import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
 import AddMeetLink from "../liveleads/AddMeetLink";
 import Timeline from "../../Pages/timeline";
-import NewMeetingModal from "../../Pages/appointments/NewMeetingModa";
 
 import {
   DataGrid,
@@ -143,18 +142,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
   const bulkImportRef = useRef();
   const dataTableRef = useRef();
-
-  // contact masking
-  // const renderMaskedContactNumber = (params) => {
-  //   const leadContact = params.getValue(params.id, "leadContact");
-
-  //   return (
-  //     <InputMask mask="(+9 99) 9999-9999" value={leadContact}>
-  //       {() => <input style={{ border: "none", outline: "none" }} />}{" "}
-  //       {/* Optional styling */}
-  //     </InputMask>
-  //   );
-  // };
 
   const location = useLocation();
   console.log("Location::", location);
@@ -1341,6 +1328,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadCategory: leadCategory || "-",
           coldCall: row?.coldcall,
           meet_link: row?.meet_link || "",
+          admin_link: row?.admin_link || "",
           notes: row?.notes || "",
           otp:
             row?.otp === "No OTP" || row?.otp === "No OTP Used"
@@ -1464,6 +1452,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       coldCallCode = 2;
     } else if (lead_origin === "warmleads") {
       coldCallCode = 4;
+    } else if (lead_origin === "liveleads") {
+      coldCallCode = 10;
+    } else if (lead_origin === "buyers") {
+      coldCallCode = 5;
     } else if (lead_origin === "transfferedleads") {
       coldCallCode = 0;
     }
@@ -1492,6 +1484,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         coldCallCode = 2;
       } else if (lead_type === "thirdpartyleads") {
         coldCallCode = 3;
+      } else if (lead_type === "liveleads") {
+        coldCallCode = 10;
+      } else if (lead_type === "buyers") {
+        coldCallCode = 5;
       }
     }
 
@@ -1552,6 +1548,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadStatus: row?.leadStatus || "-",
           coldCall: row?.coldcall,
           meet_link: row?.meet_link || "",
+          admin_link: row?.admin_link || "",
           leadCategory: leadCategory || "-",
           notes: row?.notes || "",
           otp:
@@ -1632,7 +1629,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
   // NEW MEETING 
   const AddMeetLinkFunction = async (
-    mLeadId, meetLink
+    mLeadId, 
+    meetLink,
+    adminLink
   ) => {
     setBtnLoading(true);
 
@@ -1640,6 +1639,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     const AddLeadData = new FormData();
     AddLeadData.append("id", mLeadId);
     AddLeadData.append("meet_link", meetLink);
+    AddLeadData.append("admin_link", adminLink);
 
     await axios
     .post(`${BACKEND_URL}/leads/${mLeadId}`, AddLeadData, {
@@ -1661,9 +1661,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         theme: "light",
       });
       setBtnLoading(false);
-
-      // handleLeadModelClose();
-      // FetchLeads(token);
+      FetchLeads(token);
     })
     .catch((err) => {
       toast.error("Error in sending meeting link", {
@@ -1699,70 +1697,77 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const [ nameOfLead, setNameOfLead ] = useState({});
 
   const HandleSendMeetLinkBtn = async (params) => {
-    console.log("LEAD NAME =================== ", params);
-    setNameOfLead(params);
-    console.log("LEAD NAME ================= ", nameOfLead);
-    try {
+    const currentTime = new Date();
+    const leadTime = new Date(params?.row?.creationDate);
 
-      setBtnLoading(true);
-      const createMeeting = await axios.get(
-        `${BACKEND_URL}/create?name=${User?.userName}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: "Bearer " + token,
-          },
-        }
-      );
+    const diff = (currentTime - leadTime) / (1000 * 60); //CONVERT MILLISECONDS TO MINUTES
 
-      const meetingID = createMeeting?.data?.data?.meetingID;
-      const joinAsModerator = await axios.post(
-        `${BACKEND_URL}/join`,
-        JSON.stringify({
-          meetingID: meetingID,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const joinAsAttendee = await axios.post(
-        `${BACKEND_URL}/attendee`,
-        JSON.stringify({
-          meetingID: meetingID,
-          // fullName: "Example Full Name".replaceAll(" ", "%20")
-          fullName: params?.row?.leadName.replaceAll(" ", "%20"),
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const urlForModerator = joinAsModerator?.data?.url;
-      const urlForAttendee = joinAsAttendee?.data?.url;
-      // setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee});
-      
-      redirectToMeeting(urlForModerator);
-      AddMeetLinkFunction(params?.row?.leadId, urlForAttendee);
+    if (diff < 5) {
+      setNameOfLead(params);
+      try {
 
-    } catch (error) {
-      console.log(error);
-      toast.error("Unable to create meeting at the moment.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+        setBtnLoading(true);
+        const createMeeting = await axios.get(
+          `${BACKEND_URL}/create?name=${User?.userName.replaceAll(" ", "%20")}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: "Bearer " + token,
+            },
+          }
+        );
+
+        const meetingID = createMeeting?.data?.data?.meetingID;
+        const joinAsModerator = await axios.post(
+          `${BACKEND_URL}/join`,
+          JSON.stringify({
+            meetingID: meetingID,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const joinAsAttendee = await axios.post(
+          `${BACKEND_URL}/attendee`,
+          JSON.stringify({
+            meetingID: meetingID,
+            // fullName: "Example Full Name".replaceAll(" ", "%20")
+            fullName: params?.row?.leadName.replaceAll(" ", "%20"),
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const urlForModerator = joinAsModerator?.data?.url;
+        const urlForAttendee = joinAsAttendee?.data?.url;
+        // setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee});
+        
+        redirectToMeeting(urlForModerator);
+        AddMeetLinkFunction(params?.row?.leadId, urlForAttendee, urlForModerator);
+
+      } catch (error) {
+        console.log(error);
+        toast.error("Unable to create meeting at the moment.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      setBtnLoading(false);
+    } else {
+      HandleAddMeetLinkBtn(params);
     }
-    setBtnLoading(false);
   };
 
   const HandleViewTimeline = (params) => {

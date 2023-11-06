@@ -728,5 +728,15 @@
     "create_meeting": "创建会议",
     "meeting_has_created": "您的会议已创建！",
     "join_as_moderator": "以主持人身份加入会议",
-    "share_to_attendees": "将此会议链接分享给与会者"
+    "share_to_attendees": "将此会议链接分享给与会者",
+    
+    "live_call_meeting_created": "会议已成功创建！",
+    "live_call_meeting_created_shared": "会议已创建并共享给您的客户。",
+    "just_start": "立即开始会议！",
+    "start": "开始",
+    "meeting_link": "会议链接",
+    "client_meeting_link": "客户会议链接",
+    "waiting_time_over": "等待线索的时间已经过期！",
+    "reach_by_other_source": "请尝试通过其他媒介联系线索！",
+    "registered_lead_on": "线索的注册日期和时间"
 }

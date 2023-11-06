@@ -708,9 +708,7 @@
     "clear": "Clear",
     "clear_all": "Clear all", 
 
-
     "new_from_here": "",
-
 
     "type_liveleads": "Live Call", 
     "liveleads": "Live Call", 
@@ -727,7 +725,6 @@
     "search_timezone" : "Search Timezone",
     "update_property": "Update Property", 
     "secondary_buyers": "Secondary Buyers",
-    
     "create_meeting" : "Create Meeting", 
     "meeting_has_created": "Your meeting has been created!", 
     "join_as_moderator": "Join the meeting as a Moderator",
@@ -736,5 +733,10 @@
     "live_call_meeting_created": "The meeting has been created successfully!",
     "live_call_meeting_created_shared": "The meeting has been created and shared to your client.",
     "just_start": "Just start the meeting!",
-    "start": "Start"
+    "start": "Start",
+    "meeting_link": "Meeting Link",
+    "client_meeting_link": "Client's Meeting Link",
+    "waiting_time_over": "The waiting time for the lead has been expired!",
+    "reach_by_other_source": "Please try to reach out the lead through other mediums!",
+    "registered_lead_on": "Registered date and time of the lead"
 }

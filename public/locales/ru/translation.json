@@ -708,10 +708,8 @@
     "clear": "Очистить",
     "clear_all": "Очистить все",
 
-
     "new_from_here": "",
 
-    
     "type_liveleads": "Живой звонок",
     "liveleads": "Живой звонок",
     "update_lead_details": "Обновить детали лида",
@@ -730,5 +728,15 @@
     "create_meeting": "Создать встречу",
     "meeting_has_created": "Ваша встреча создана!",
     "join_as_moderator": "Присоединиться к встрече в качестве модератора",
-    "share_to_attendees": "Поделиться этой ссылкой на встречу с участниками"
+    "share_to_attendees": "Поделиться этой ссылкой на встречу с участниками",
+
+    "live_call_meeting_created": "Встреча успешно создана!",
+    "live_call_meeting_created_shared": "Встреча создана и отправлена вашему клиенту.",
+    "just_start": "Просто начните встречу!",
+    "start": "Начать",
+    "meeting_link": "Ссылка на встречу",
+    "client_meeting_link": "Ссылка на встречу клиента",
+    "waiting_time_over": "Время ожидания лида истекло!",
+    "reach_by_other_source": "Попробуйте связаться с лидом через другие каналы!",
+    "registered_lead_on": "Зарегистрированная дата и время лида"
 }
