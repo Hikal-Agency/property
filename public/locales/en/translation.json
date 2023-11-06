@@ -731,5 +731,10 @@
     "create_meeting" : "Create Meeting", 
     "meeting_has_created": "Your meeting has been created!", 
     "join_as_moderator": "Join the meeting as a Moderator",
-    "share_to_attendees": "Share this meeting link to attendees"
+    "share_to_attendees": "Share this meeting link to attendees",
+
+    "live_call_meeting_created": "The meeting has been created successfully!",
+    "live_call_meeting_created_shared": "The meeting has been created and shared to your client.",
+    "just_start": "Just start the meeting!",
+    "start": "Start"
 }
