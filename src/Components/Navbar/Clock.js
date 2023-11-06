@@ -138,8 +138,8 @@ const Clock = ({ handleClose }) => {
     <div
       // onMouseLeave={handleClose}
       style={{
-        margin: 0,
-        padding: "0.5rem 0.5rem",
+        // margin: 0,
+        // padding: "0.5rem 0.5rem",
         "& .MuiList-root": {
           backgroundColor:
             currentMode === "dark"
@@ -156,7 +156,7 @@ const Clock = ({ handleClose }) => {
       }}
       className={`${
         currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#000000]"
-      } clock-div`}
+      } clock-div p-3`}
     >
       <TimeZone />
       <div className="flex justify-center h-[300px]">

@@ -32,8 +32,11 @@ import {
   BsClockFill,
   BsApple,
   BsAndroid2,
-  BsFillChatFill,
+  BsChatText,
 } from "react-icons/bs";
+import {
+  GoCommentDiscussion
+} from "react-icons/go";
 import {
   MdDarkMode,
   MdKeyboardArrowDown,
@@ -297,13 +300,24 @@ const Navbar = () => {
   return (
     <>
       {/* CHAT  */}
-      <div className="chat-button">
+      <div 
+        className="fixed"
+        style={{
+          bottom: "20px",
+          right: !isLangRTL(i18n.language) && "20px",
+          left: isLangRTL(i18n.language) && "20px",
+          zIndex: 999
+        }}
+      >
         <Tooltip title="Chat">
           <button
             onClick={openChat}
-            className="bg-btn-primary p-2 rounded-full"
+            className="cursor-pointer bg-primary hover:bg-[#AAAAAA] hover:border-[#AAAAAA] text-white border-2 p-3 rounded-full"
           >
-            <BsFillChatFill size={20} color="white" />
+            <GoCommentDiscussion 
+              size={24} 
+              color={"#FFFFFF"}
+            />
           </button>
         </Tooltip>
       </div>
@@ -461,7 +475,7 @@ const Navbar = () => {
           {/* PROFILE  */}
           <Tooltip title="Profile" arrow placement="bottom">
             <div
-              className="mx-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+              className={`bg-primary text-white mx-1 p-2 flex items-center gap-2 cursor-pointer hover:bg-light-gray rounded-xl shadow-sm card-hover`}
               onClick={(event) => {
                 if (currNavBtn === "Profile") {
                   handleClose();
@@ -473,23 +487,20 @@ const Navbar = () => {
               <img
                 height={50}
                 width={50}
-                className="rounded-full w-8 h-8 object-cover"
+                className="rounded-full w-10 h-10 object-cover"
                 src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
                 alt="user-profile"
               />
               <p className="display-block sm:display-none">
                 <span
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-main-dark-bg"
-                  } font-bold mx-1 text-14`}
+                  className={`font-bold`}
                 >
                   {User?.userName}
                 </span>
               </p>
               <MdKeyboardArrowDown
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
+                size={14}
+                className={``}
               />
             </div>
           </Tooltip>
@@ -520,7 +531,7 @@ const Navbar = () => {
           </Tooltip>
 
           <Menu
-            className="navbar-menu-backdrop"
+            className="hide-scrollbar navbar-menu-backdrop"
             hideBackdrop={false}
             onClick={handleClose}
             onMouseLeave={handleClose}
@@ -534,6 +545,9 @@ const Navbar = () => {
                   background: "transparent !important",
                 },
                 mt: 2,
+                pl: !isLangRTL(i18n.language) && 0.6,
+                pr: isLangRTL(i18n.language) && 0.6,
+                py: 0.4,
                 overflowY: "scroll",
                 filter:
                   currentMode === "dark"
@@ -548,17 +562,16 @@ const Navbar = () => {
                 minWidth: currNavBtn === "Language" ? 100 : 300,
                 maxWidth: currNavBtn === "Language" ? 180 : 350,
                 borderRadius: "10px",
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  // ml: -0.5,
-                  mx: 1,
-                },
+                // "& .MuiAvatar-root": {
+                //   width: 32,
+                //   height: 32,
+                //   // ml: -0.5,
+                //   mx: 1,
+                // },
                 "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
-                  {
-                    padding: "0 !important",
-                    // paddingRight: "0px !important",
-                  },
+                {
+                  padding: "0 !important",
+                },
               },
             }}
             transformOrigin={{ horizontal: "center", vertical: "top" }}
@@ -794,7 +807,7 @@ const Navbar = () => {
                   </div>
                 </div>
               ) : currNavBtn === "Language" ? (
-                <div className="pl-2">
+                <div className="px-2">
                   {langs?.map((lang) => (
                     <button
                       className={`cursor-pointer card-hover ${

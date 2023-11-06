@@ -227,12 +227,12 @@
 
 /* HIDE SCROLLBAR  */
 .hide-scrollbar {
-    scrollbar-width: none; /* For Firefox */
+    scrollbar-width: 0px; /* For Firefox */
     -ms-overflow-style: none; /* For Internet Explorer and Edge */
 }
   
 .hide-scrollbar::-webkit-scrollbar {
-    width: 0.5em;
+    width: 0px;
 }
   
 .hide-scrollbar::-webkit-scrollbar-track {

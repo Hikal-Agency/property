@@ -130,11 +130,15 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   };
 
   return (
-    <Container
+    <div
       onClick={handleAvoidClose}
       // onMouseLeave={handleClose}
-      sx={{ maxHeight: 500, p: 1, width: 350, position: "relative" }}
-      className="pb-5"
+      sx={{ 
+        maxHeight: 500,
+        width: 350, 
+        // position: "relative" 
+      }}
+      className="p-3"
     >
       <div
         onClick={() => {
@@ -142,7 +146,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
           setCurrNavBtn(null);
           handleClose();
         }}
-        className="flex -mt-2 mb-3 justify-center text-[#AAAAAA] hover:text-primary text-sm w-full"
+        className="flex -mt-2 mb-3 justify-center hover:text-[#AAAAAA] text-sm w-full"
         style={{
           textDecoration: "none",
           cursor: "pointer",
@@ -179,12 +183,17 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
               );
             })}
 
-            <Button>Load more..</Button>
+            <div className="pt-3 flex justify-center">
+              <button className="text-primary bg-transparent hover:bg-[#AAAAAA] hover:text-white font-semibold rounded-xl shadow-sm p-2">
+                Load more
+              </button>
+            </div>
+            
           </>
         ) : (
           <h1 className="text-center">No Unread Notifications</h1>
         ))}
-    </Container>
+    </div>
   );
 };
 export default NotificationsMenuUpdated;
