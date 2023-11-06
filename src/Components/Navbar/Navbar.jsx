@@ -11,6 +11,7 @@ import {
   MenuItem,
   Select,
   IconButton,
+  TextField,
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
@@ -379,6 +380,15 @@ const Navbar = () => {
             ),
           ]}
 
+          {/* search */}
+          <div className="search__container">
+            <TextField
+              className="search__input"
+              type="text"
+              placeholder="Search"
+            />
+          </div>
+
           {/* MEETINGS  */}
           <NavButton
             title="Meetings"
@@ -394,7 +404,6 @@ const Navbar = () => {
               )
             }
           />
-
           {/* NOTIFICATIONS  */}
           <NavButton
             handleClose={handleClose}
@@ -417,7 +426,6 @@ const Navbar = () => {
               </Badge>
             }
           />
-
           {/* CLOCK  */}
           <NavButton
             handleClose={handleClose}
@@ -433,7 +441,6 @@ const Navbar = () => {
               )
             }
           />
-
           {/* THEME  */}
           {/* {!themeBgImg && */}
           <Tooltip
@@ -455,8 +462,6 @@ const Navbar = () => {
               )}
             </button>
           </Tooltip>
-
-
           {/* } */}
           {/* PROFILE  */}
           <Tooltip title="Profile" arrow placement="bottom">
@@ -493,7 +498,6 @@ const Navbar = () => {
               />
             </div>
           </Tooltip>
-          
           {/* LANG  */}
           <Tooltip title="Language" arrow placement="bottom">
             <div
@@ -518,7 +522,6 @@ const Navbar = () => {
               /> */}
             </div>
           </Tooltip>
-
           <Menu
             className="navbar-menu-backdrop"
             hideBackdrop={false}
@@ -818,7 +821,7 @@ const Navbar = () => {
                             alt=""
                           />
                         </div>
-                        <div 
+                        <div
                           className="text-end"
                           style={{
                             fontFamily: lang?.font,
