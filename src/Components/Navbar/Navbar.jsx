@@ -124,6 +124,39 @@ const Navbar = () => {
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("auth-token");
+
+    setSearchTerm(e.target.value);
+    const search = e.target.value;
+    try {
+      const postSearch = await axios.get(`${BACKEND_URL}/searchleads`, {
+        params: { search: search },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("search result: ", postSearch);
+    } catch (error) {
+      console.log("error: ", error);
+      toast.error("Unable to search", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   const handleClick = (event, navBtn) => {
     setCurrNavBtn(navBtn);
     setOpen(true);
@@ -385,7 +418,9 @@ const Navbar = () => {
             <TextField
               className="search__input"
               type="text"
-              placeholder="Search"
+              placeholder="Search Leads"
+              value={searchTerm}
+              onChange={handleSearch}
             />
           </div>
 
