@@ -335,8 +335,8 @@ const Navbar = () => {
         style={{
           position: "fixed",
           top: 0,
-          left: isLangRTL(i18n.language) ? "0" : !isCollapsed ? 65 : 200,
-          right: isLangRTL(i18n.language) ? (!isCollapsed ? 65 : 200) : 0,
+          left: isLangRTL(i18n.language) ? "0" : !isCollapsed ? 80 : 200,
+          right: isLangRTL(i18n.language) ? (!isCollapsed ? 80 : 200) : 0,
           zIndex: "20",
           // backgroundColor: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
           boxShadow:

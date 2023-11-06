@@ -56,7 +56,7 @@ html, body{
 
 /* subscribe btn styling */
 .MuiBox-root .css-tykrgw-MuiButtonBase-root-MuiButton-root > a:hover i::before {
-  left: 20%;
+  /* left: 20%; */
   width: 20px;
 }
 
@@ -168,6 +168,7 @@ background-color: var(--primary-color);
 .ps-menu-button:hover {
   color: black !important;
 }
+
 
 /* .sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-label{
   color: var(--primary-color);
@@ -331,8 +332,8 @@ aside.ps-sidebar-root {
 }
 
 .css-b3tsul.ps-collapsed {
-  width: 65px !important;
-  min-width: 65px !important;
+  width: 80px !important;
+  min-width: 80px !important;
 }
 
 /* Data tables stylings */
@@ -588,7 +589,6 @@ label[for="bulkImport"] .MuiButtonBase-root {
   text-align: center;
   border-radius: 3px;
   min-width: 40px;
-  right: 3px;
   padding: 1px 2px;
   /* border: 1px solid var(--primary-color); */
 }
