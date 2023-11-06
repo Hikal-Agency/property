@@ -818,7 +818,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.HotLeadsCount?.no_nswer,
+              count: sidebarData?.HotLeadsCount?.no_answer,
               link: "/freshleads/no answer",
             },
             {
@@ -874,7 +874,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
+              count: sidebarData?.ThirdPartyLeadsCount?.no_answer,
               link: "/thirdpartyleads/no answer",
             },
             {
@@ -960,7 +960,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.ColdLeadsCount?.no_nswer,
+              count: sidebarData?.ColdLeadsCount?.no_answer,
               link: "/coldleads/no answer",
             },
             {
@@ -987,49 +987,49 @@ const Sidebarmui = () => {
             {
               name: t("feedback_all"),
               pro: false,
-              count: sidebarData?.Reshuffle?.fresh,
+              count: sidebarData?.ReshuffleLeadsCount?.all,
               link: "/reshuffleleads/all",
             },
             {
               name: t("feedback_new"),
               pro: false,
-              count: sidebarData?.Reshuffle?.new,
+              count: sidebarData?.ReshuffleLeadsCount?.new,
               link: "/reshuffleleads/new",
             },
             {
               name: t("feedback_follow_up"),
               pro: false,
-              count: sidebarData?.Reshuffle?.follow_up,
+              count: sidebarData?.ReshuffleLeadsCount?.follow_up,
               link: "/reshuffleleads/follow up",
             },
             {
               name: t("feedback_meeting"),
               pro: false,
-              count: sidebarData?.Reshuffle?.meeting,
+              count: sidebarData?.ReshuffleLeadsCount?.Meeting,
               link: "/reshuffleleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
               pro: false,
-              count: sidebarData?.Reshuffle?.low_budget,
+              count: sidebarData?.ReshuffleLeadsCount?.low_budget,
               link: "/reshuffleleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.Reshuffle?.no_answer,
+              count: sidebarData?.ReshuffleLeadsCount?.no_answer,
               link: "/reshuffleleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
               pro: false,
-              count: sidebarData?.Reshuffle?.not_interested,
+              count: sidebarData?.ReshuffleLeadsCount?.not_interested,
               link: "/reshuffleleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
-              count: sidebarData?.Reshuffle?.unreachable,
+              count: sidebarData?.ReshuffleLeadsCount?.unreachable,
               link: "/reshuffleleads/unreachable",
             },
           ],
@@ -1073,7 +1073,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.WarmLeadCount?.no_nswer,
+              count: sidebarData?.WarmLeadCount?.no_answer,
               link: "/archive/no answer",
             },
             {
@@ -1129,7 +1129,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.PersonalLeadsCount?.no_nswer,
+              count: sidebarData?.PersonalLeadsCount?.no_answer,
               link: "/personalleads/no answer",
             },
             {
@@ -1155,49 +1155,49 @@ const Sidebarmui = () => {
             {
               name: t("feedback_all"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.hot,
+              count: sidebarData?.LiveCallCount?.all,
               link: "/liveleads/all",
             },
             {
               name: t("feedback_new"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.new,
+              count: sidebarData?.LiveCallCount?.new,
               link: "/liveleads/new",
             },
             {
               name: t("feedback_follow_up"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.follow_up,
+              count: sidebarData?.LiveCallCount?.follow_up,
               link: "/liveleads/follow up",
             },
             {
               name: t("feedback_meeting"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.Meeting,
+              count: sidebarData?.LiveCallCount?.Meeting,
               link: "/liveleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.low_budget,
+              count: sidebarData?.LiveCallCount?.low_budget,
               link: "/liveleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.no_nswer,
+              count: sidebarData?.LiveCallCount?.no_answer,
               link: "/freshleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.not_interested,
+              count: sidebarData?.LiveCallCount?.not_interested,
               link: "/freshleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.unreachable,
+              count: sidebarData?.LiveCallCount?.unreachable,
               link: "/freshleads/unreachable",
             },
           ],

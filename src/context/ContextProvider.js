@@ -293,6 +293,8 @@ export const ContextProvider = ({ children }) => {
           third_party: response.data.data["unassigned"]["THIRD PARTY LEADS"],
           warm: response.data.data["unassigned"]["WARM LEADS"],
         },
+        ReshuffleLeadsCount: response.data.data["RESHUFFLED LEADS"],
+        LiveCallCount: response.data.data["LIVE CALLS"],
       });
     } catch (error) {
       console.log(error);
