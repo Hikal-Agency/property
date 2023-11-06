@@ -5,7 +5,7 @@ import Calls from "./Calls";
 // eslint-disable-next-line
 
 const Task = () => {
-  const { currentMode, darkModeColors, BACKEND_URL, primaryColor, themeBgImg, t } = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, fontFam, primaryColor, themeBgImg, t } = useStateContext();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -84,9 +84,14 @@ const Task = () => {
               onChange={handleChange}
               variant="standard"
               // centered
-              className="w-full m-1 px-1"
+              className="w-full m-1 px-1"              
             >
-              <Tab label={t("calls_count")} />
+              <Tab 
+                label={t("calls_count")} 
+                style={{
+                  fontFamily: fontFam
+                }}
+              />
             </Tabs>
           </div>
         </Box>
