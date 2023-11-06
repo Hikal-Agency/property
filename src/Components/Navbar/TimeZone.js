@@ -94,10 +94,10 @@ const TimeZone = () => {
 
   return (
     <>
-      <div className="flex justify-between mb-2">
+      <div className="flex justify-between items-center mb-2 px-4">
         <Box>
           <h3 className={`${currentMode === "dark" ? "#fff" : "#000"}`}>
-            {timeZone}
+            {/* {timeZone} */}
           </h3>
         </Box>
         <Box sx={darkModeColors} style={{ minWidth: "50px" }}>
@@ -125,7 +125,10 @@ const TimeZone = () => {
               labelId="demo-simple-select-label"
               // onChange={handleTimezoneChange}
             >
-              <MenuItem value="selected">{timeZone ?? "---SELECT---"}</MenuItem>
+              <MenuItem className="uppercase" value="selected">
+                {timeZone ?? "---SELECT---"}
+                {/* ---SELECT--- */}
+              </MenuItem>
               <MenuItem
                 value={"search"}
                 onKeyDown={(e) => {

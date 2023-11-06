@@ -53,7 +53,7 @@ const NewMeetingModal = ({ newMeetingModal, handleClose }) => {
       >
         <div
           style={style}
-          className={`w-[calc(100%-20px)] md:w-[65%]  ${
+          className={`w-[calc(100%-20px)] md:w-[50%] ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           } absolute top-1/2 left-1/2 p-5 pt-12 rounded-md`}
         >

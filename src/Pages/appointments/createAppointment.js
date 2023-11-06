@@ -70,22 +70,8 @@ const CreateAppointment = () => {
           },
         }
       );
-      const joinAsAttendee = await axios.post(
-        `${BACKEND_URL}/attendee`,
-        JSON.stringify({
-          meetingID: meetingID,
-          fullName: "Example Full Name".replaceAll(" ", "%20")
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: "Bearer " + token,
-          },
-        }
-      );
       const urlForModerator = joinAsModerator?.data?.url;
-      const urlForAttendee = joinAsAttendee?.data?.url;
-      setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee});
+      setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee: `${BACKEND_URL?.slice(0, BACKEND_URL?.length - 4)}/invite/${meetingID}`});
     } catch (error) {
       console.log(error);
       toast.error("Unable to create meeting at the moment.", {
