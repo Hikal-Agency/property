@@ -1922,10 +1922,10 @@ const Sidebarmui = () => {
                     "& .ps-menu-icon": {
                       marginRight: !isLangRTL(i18n.language) && "10px",
                       marginLeft: isLangRTL(i18n.language) && "10px",
-                      color:
-                        currentMode === "dark"
-                          ? "white"
-                          : "black",
+                      // color:
+                      //   currentMode === "dark"
+                      //     ? "white"
+                      //     : "black",
                     },
                   }}
                   className="my-1"
@@ -2236,10 +2236,10 @@ const Sidebarmui = () => {
                                           "& .ps-menu-icon": {
                                             marginRight: !isLangRTL(i18n.language) && "10px",
                                             marginLeft: isLangRTL(i18n.language) && "10px",
-                                            color:
-                                              currentMode === "dark"
-                                                ? "white"
-                                                : "black",
+                                            // color:
+                                            //   currentMode === "dark"
+                                            //     ? "white"
+                                            //     : "black",
                                           },
                                         }}
                                         className="my-1 sub"
