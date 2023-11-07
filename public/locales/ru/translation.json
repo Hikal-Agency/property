@@ -707,11 +707,6 @@
     "select_sender_id": "Выберите отправителя",
     "clear": "Очистить",
     "clear_all": "Очистить все",
-
-
-    "new_from_here": "",
-
-    
     "type_liveleads": "Живой звонок",
     "liveleads": "Живой звонок",
     "update_lead_details": "Обновить детали лида",
@@ -730,5 +725,32 @@
     "create_meeting": "Создать встречу",
     "meeting_has_created": "Ваша встреча создана!",
     "join_as_moderator": "Присоединиться к встрече в качестве модератора",
-    "share_to_attendees": "Поделиться этой ссылкой на встречу с участниками"
+    "share_to_attendees": "Поделиться этой ссылкой на встречу с участниками",
+    "thirdpartyleads": "Лиды от третьих лиц",
+    "livecall": "Прямой звонок",
+    "coldleads": "Холодные лиды",
+    "archive": "Архивные лиды",
+    "personalleads": "Персональные лиды",
+    "freshleads": "Свежие лиды",
+    "new": "Новые",
+    "follow up": "Дальнейшие действия",
+    "low budget": "Ограниченный бюджет",
+    "no answer": "Нет ответа",
+    "not interested": "Не заинтересован",
+    "unreachable": "Недоступные",
+    "coldleadsverified": "Подтвержденные холодные лиды",
+    "coldleadsinvalid": "Недействительные холодные лиды",
+    "coldleadsnotchecked": "Не проверенные холодные лиды",
+    "reshuffleleads": "Перемешивание лидов",
+    "leadnotes": "Заметки о лиде",
+    "closedeals": "Закрытые сделки",
+    "secondarylistings": "Вторичные объявления",
+    "buyers": "Покупатели",
+    "meetinglocation": "Место встречи",
+    "userlocation": "Местоположение пользователя",
+    "officesettings": "Настройки офиса",
+    "employeeslist": "Список сотрудников",
+    "attendance_self": "Самостоятельное присутствие",
+    "trainer": "Тренер",
+    "notificationslist": "Список уведомлений"
 }

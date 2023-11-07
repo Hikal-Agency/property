@@ -707,11 +707,6 @@
     "select_sender_id": "Sélectionner l'ID de l'expéditeur",
     "clear": "Effacer",
     "clear_all": "Tout effacer",
-
-
-    "new_from_here": "",
-
-    
     "type_liveleads": "Appel en direct",
     "liveleads": "Appel en direct",
     "update_lead_details": "Mettre à jour les détails du prospect",
@@ -730,5 +725,32 @@
     "create_meeting": "Créer une réunion",
     "meeting_has_created": "Votre réunion a été créée !",
     "join_as_moderator": "Rejoindre la réunion en tant que modérateur",
-    "share_to_attendees": "Partager ce lien de réunion avec les participants"
+    "share_to_attendees": "Partager ce lien de réunion avec les participants",
+    "thirdpartyleads": "Leads de tiers",
+    "livecall": "Appel en direct",
+    "coldleads": "Leads froids",
+    "archive": "Leads archivés",
+    "personalleads": "Leads personnels",
+    "freshleads": "Leads frais",
+    "new": "Nouveau",
+    "follow up": "Suivi",
+    "low budget": "Budget faible",
+    "no answer": "Pas de réponse",
+    "not interested": "Pas intéressé",
+    "unreachable": "Injoignable",
+    "coldleadsverified": "Leads froids vérifiés",
+    "coldleadsinvalid": "Leads froids non valides",
+    "coldleadsnotchecked": "Leads froids non vérifiés",
+    "reshuffleleads": "Rebrassage des leads",
+    "leadnotes": "Notes sur les leads",
+    "closedeals": "Deals clos",
+    "secondarylistings": "Annonces secondaires",
+    "buyers": "Acheteurs",
+    "meetinglocation": "Lieu de réunion",
+    "userlocation": "Emplacement de l'utilisateur",
+    "officesettings": "Paramètres du bureau",
+    "employeeslist": "Liste des employés",
+    "attendance_self": "Présence personnelle",
+    "trainer": "Formateur",
+    "notificationslist": "Liste des notifications"
 }
