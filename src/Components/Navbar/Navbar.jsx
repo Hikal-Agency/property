@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
+import { search } from "../../utils/axiosSearch";
 
 import { useStateContext } from "../../context/ContextProvider";
 import { ColorModeContext } from "../../context/theme";
@@ -127,22 +128,31 @@ const Navbar = () => {
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(null);
+  const [searchResult, setSearchResults] = useState(null);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("auth-token");
 
     setSearchTerm(e.target.value);
-    const search = e.target.value;
+    const searchWord = e.target.value;
     try {
       const postSearch = await axios.get(`${BACKEND_URL}/searchleads`, {
-        params: { search: search },
+        params: { search: searchWord },
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       });
+
+      // const postSearch = await search(
+      //   `${BACKEND_URL}/searchleads?search=${searchWord}`,
+      //   {},
+      //   token
+      // );
+
+      setSearchResults(postSearch?.data?.data);
 
       console.log("search result: ", postSearch);
     } catch (error) {
@@ -158,6 +168,11 @@ const Navbar = () => {
         theme: "light",
       });
     }
+  };
+
+  const handleNavigate = (e, search) => {
+    e.preventDefault();
+    navigate(`/lead/${search?.leadId || search?.id}`);
   };
 
   const handleClick = (event, navBtn) => {
@@ -436,6 +451,29 @@ const Navbar = () => {
               value={searchTerm}
               onChange={handleSearch}
             />
+            {searchResult?.length > 0 && (
+              <div
+                className={`absolute mt-1 p-3 w-[170px] ${
+                  currentMode === "dark" ? "bg-[#292828]" : "bg-[#e9e7e8]"
+                }`}
+                style={{
+                  overflow: searchResult.length > 10 ? "auto" : "visible",
+                  maxHeight: searchResult.length > 10 ? "200px" : "auto",
+                }}
+              >
+                {searchResult?.map((search) => (
+                  <p
+                    key={search?.id}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-dark"
+                    } cursor-pointer`}
+                    onClick={(e) => handleNavigate(e, search)}
+                  >
+                    {search?.leadName}
+                  </p>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* MEETINGS  */}
