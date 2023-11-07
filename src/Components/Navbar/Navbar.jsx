@@ -12,6 +12,7 @@ import {
   Select,
   IconButton,
   TextField,
+  Box,
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
@@ -100,6 +101,7 @@ const Navbar = () => {
     langs,
     isLangRTL,
     getLangDetails,
+    darkModeColors,
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -429,14 +431,17 @@ const Navbar = () => {
           ]}
 
           {/* search */}
-          <div className="search__container">
-            <TextField
-              className="search__input"
-              type="text"
-              placeholder="Search Leads"
-              value={searchTerm}
-              onChange={handleSearch}
-            />
+          <div className="">
+            <Box sx={darkModeColors}>
+              <TextField
+                // className="h-20"
+                type="text"
+                placeholder="Search Leads"
+                value={searchTerm}
+                onChange={handleSearch}
+                size="small"
+              />
+            </Box>
             {searchResult?.length > 0 && (
               <div
                 className={`absolute mt-1 p-3 w-[170px] ${
