@@ -13,6 +13,7 @@ import {
   IconButton,
   TextField,
   Box,
+  CircularProgress,
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
@@ -129,9 +130,11 @@ const Navbar = () => {
 
   const [searchTerm, setSearchTerm] = useState(null);
   const [searchResult, setSearchResults] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    setSearchLoading(true);
     const token = localStorage.getItem("auth-token");
 
     setSearchTerm(e.target.value);
@@ -151,10 +154,14 @@ const Navbar = () => {
       //   token
       // );
 
-      setSearchResults(postSearch?.data?.data);
+      if (postSearch?.data?.message !== "No Data") {
+        setSearchResults(postSearch?.data);
+      }
 
+      setSearchLoading(false);
       console.log("search result: ", postSearch);
     } catch (error) {
+      setSearchLoading(false);
       console.log("error: ", error);
       toast.error("Unable to search", {
         position: "top-right",
@@ -434,7 +441,6 @@ const Navbar = () => {
           <div className="">
             <Box sx={darkModeColors}>
               <TextField
-                // className="h-20"
                 type="text"
                 placeholder="Search Leads"
                 value={searchTerm}
@@ -442,27 +448,35 @@ const Navbar = () => {
                 size="small"
               />
             </Box>
-            {searchResult?.length > 0 && (
+            {searchResult?.data?.length > 0 && (
               <div
                 className={`absolute mt-1 p-3 w-[170px] ${
                   currentMode === "dark" ? "bg-[#292828]" : "bg-[#e9e7e8]"
                 }`}
                 style={{
-                  overflow: searchResult.length > 10 ? "auto" : "visible",
-                  maxHeight: searchResult.length > 10 ? "200px" : "auto",
+                  overflow:
+                    searchResult?.data?.length > 10 ? "auto" : "visible",
+                  maxHeight: searchResult?.data?.length > 10 ? "200px" : "auto",
                 }}
               >
-                {searchResult?.map((search) => (
-                  <p
-                    key={search?.id}
-                    className={`${
-                      currentMode === "dark" ? "text-white" : "text-dark"
-                    } cursor-pointer`}
-                    onClick={(e) => handleNavigate(e, search)}
-                  >
-                    {search?.leadName}
-                  </p>
-                ))}
+                {searchLoading === false ? (
+                  searchResult?.data &&
+                  searchResult?.data?.map((search) => (
+                    <p
+                      key={search?.id}
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-dark"
+                      } cursor-pointer`}
+                      onClick={(e) => handleNavigate(e, search)}
+                    >
+                      {search?.leadName}
+                    </p>
+                  ))
+                ) : (
+                  <div className="flex justify-center">
+                    <CircularProgress />
+                  </div>
+                )}
               </div>
             )}
           </div>
