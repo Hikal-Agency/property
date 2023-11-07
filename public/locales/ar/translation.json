@@ -707,6 +707,9 @@
     "select_sender_id": "اختيار هوية المرسل ",
     "clear": "مسح",
     "clear_all": "مسح الكل",
+
+    "new_from_here": "",
+
     "type_liveleads": "مكالمة مباشرة",
     "liveleads": "مكالمة مباشرة",
     "update_lead_details": "تحديث تفاصيل العميل المحتمل",
@@ -752,5 +755,14 @@
     "employeeslist": "قائمة الموظفين",
     "attendance_self": "حضور الذات",
     "trainer": "المدرب",
-    "notificationslist": "قائمة الإشعارات"
+    "notificationslist": "قائمة الإشعارات",
+    "live_call_meeting_created": "تم إنشاء الاجتماع بنجاح!",
+    "live_call_meeting_created_shared": "تم إنشاء الاجتماع ومشاركته مع عميلك.",
+    "just_start": "ابدأ الاجتماع!",
+    "start": "بداية",
+    "meeting_link": "رابط الاجتماع",
+    "client_meeting_link": "رابط اجتماع العميل",
+    "waiting_time_over": "انتهت مدة الانتظار للعميل!",
+    "reach_by_other_source": "يرجى محاولة الوصول إلى العميل من خلال وسائط أخرى!",
+    "registered_lead_on": "تاريخ ووقت تسجيل العميل"
 }

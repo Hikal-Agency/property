@@ -100,7 +100,6 @@ const BreadCrumb = ({ allroutes, currentMode }) => {
           fontFamily: font,
         }}
         color={currentMode === "dark" ? "white" : "inherit"}>
-        {console.log("hehe:", formattedLastURL)}
         {t(formattedLastURL?.toLowerCase())}
       </Typography>
     </Breadcrumbs>

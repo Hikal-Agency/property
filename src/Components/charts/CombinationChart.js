@@ -29,7 +29,7 @@ ChartJS.register(
 );
 
 const CombinationChart = () => {
-  const { currentMode, BACKEND_URL, primaryColor, withOpacity, t } = useStateContext();
+  const { currentMode, BACKEND_URL, primaryColor, withOpacity } = useStateContext();
   const [performanceChartData, setPerformanceChartData] = useState([]);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const CombinationChart = () => {
             datasets: [
               {
                 type: "line",
-                label: t("menu_closed_deals"),
+                label: "Closed Deals",
                 data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
                 backgroundColor: withOpacity(primaryColor, 0.4),
@@ -77,7 +77,7 @@ const CombinationChart = () => {
               },
               {
                 type: "line",
-                label: t("meetings"),
+                label: "Meetings",
                 data: performanceChartData.map(
                   (member) => member.total_meetings
                 ),
@@ -101,6 +101,7 @@ const CombinationChart = () => {
           style={{
             height: "100%",
             width: "100%",
+            fontFamily: "'Noto Kufi Arabic', sans-serif",
           }}
         />
       ) : (
@@ -112,7 +113,7 @@ const CombinationChart = () => {
             datasets: [
               {
                 type: "line",
-                label: t("menu_closed_deals"),
+                label: "Closed Deals",
                 data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
                 backgroundColor: withOpacity(primaryColor, 0.4),
@@ -120,7 +121,7 @@ const CombinationChart = () => {
               },
               {
                 type: "line",
-                label: t("meetings"),
+                label: "Meetings",
                 data: performanceChartData.map(
                   (member) => member.total_meetings
                 ),

@@ -707,6 +707,9 @@
     "select_sender_id": "Sélectionner l'ID de l'expéditeur",
     "clear": "Effacer",
     "clear_all": "Tout effacer",
+
+    "new_from_here": "",
+
     "type_liveleads": "Appel en direct",
     "liveleads": "Appel en direct",
     "update_lead_details": "Mettre à jour les détails du prospect",
@@ -752,5 +755,14 @@
     "employeeslist": "Liste des employés",
     "attendance_self": "Présence personnelle",
     "trainer": "Formateur",
-    "notificationslist": "Liste des notifications"
+    "notificationslist": "Liste des notifications",
+    "live_call_meeting_created": "La réunion a été créée avec succès !",
+    "live_call_meeting_created_shared": "La réunion a été créée et partagée avec votre client.",
+    "just_start": "Commencez simplement la réunion !",
+    "start": "Démarrer",
+    "meeting_link": "Lien de la réunion",
+    "client_meeting_link": "Lien de la réunion du client",
+    "waiting_time_over": "Le temps d'attente pour le prospect a expiré !",
+    "reach_by_other_source": "Veuillez essayer de contacter le prospect par d'autres moyens !",
+    "registered_lead_on": "Date et heure d'enregistrement du prospect"
 }

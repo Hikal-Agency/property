@@ -708,6 +708,9 @@
     "select_sender_id": "प्रेषक आईडी चुनें",
     "clear": "साफ़ करें",
     "clear_all": "सभी साफ़ करें",
+    
+    "new_from_here": "",
+
     "type_liveleads": "लाइव कॉल",
     "liveleads": "लाइव कॉल",
     "update_lead_details": "लीड विवरण अपडेट करें",
@@ -753,5 +756,14 @@
     "employeeslist": "कर्मचारी सूची",
     "attendance_self": "उपस्थिति स्वयं",
     "trainer": "प्रशिक्षक",
-    "notificationslist": "सूचनाओं की सूची"
+    "notificationslist": "सूचनाओं की सूची",
+    "live_call_meeting_created": "बैठक सफलतापूर्वक बनाई गई है!",
+    "live_call_meeting_created_shared": "बैठक बनाई और आपके ग्राहक के साथ साझा की गई है।",
+    "just_start": "बस बैठक शुरू करें!",
+    "start": "शुरू करें",
+    "meeting_link": "बैठक का लिंक",
+    "client_meeting_link": "ग्राहक का बैठक का लिंक",
+    "waiting_time_over": "लीड के लिए प्रतीक्षा समय समाप्त हो गया है!",
+    "reach_by_other_source": "कृपया लीड से अन्य माध्यमों के माध्यम से संपर्क करने का प्रयास करें!",
+    "registered_lead_on": "लीड का पंजीकृत तारीख और समय"
 }

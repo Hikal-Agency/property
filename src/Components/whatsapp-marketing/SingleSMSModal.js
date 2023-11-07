@@ -1,12 +1,9 @@
 import { useStateContext } from "../../context/ContextProvider";
-import {
-  Modal,
-  Backdrop, Box,
-  TextField
-} from "@mui/material";
+import { Modal, Backdrop, Box, TextField, IconButton } from "@mui/material";
 import moment from "moment";
 import { FaSms } from "react-icons/fa";
 import { RiWhatsappFill } from "react-icons/ri";
+import { IoMdClose } from "react-icons/io";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -49,18 +46,19 @@ const SingleSMSModal = ({
               : "bg-white border-[#EEEEEE]"
           } absolute top-1/2 left-1/2 p-4 rounded-md`}
         >
-          {/* <IconButton
+          <IconButton
             sx={{
               position: "absolute",
               right: 5,
               top: 2,
+              marginBottom: "10px",
               color: (theme) => theme.palette.grey[500],
             }}
             onClick={() => handleLeadModelClose()}
           >
             <IoMdClose size={18} />
-          </IconButton> */}
-          <div className="mx-auto">
+          </IconButton>
+          <div className="mx-auto mt-10">
             <div className="w-full flex items-center justify-between py-1 mb-6">
               <div className="flex items-center justify-between">
                 <h1
@@ -143,7 +141,6 @@ const SingleSMSModal = ({
                     displayEmpty
                     multiline
                   />
-                  
                 </Box>
               </div>
             </div>

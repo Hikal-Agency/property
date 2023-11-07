@@ -752,5 +752,15 @@
     "employeeslist": "Список сотрудников",
     "attendance_self": "Самостоятельное присутствие",
     "trainer": "Тренер",
-    "notificationslist": "Список уведомлений"
+    "notificationslist": "Список уведомлений",
+
+    "live_call_meeting_created": "Встреча успешно создана!",
+    "live_call_meeting_created_shared": "Встреча создана и отправлена вашему клиенту.",
+    "just_start": "Просто начните встречу!",
+    "start": "Начать",
+    "meeting_link": "Ссылка на встречу",
+    "client_meeting_link": "Ссылка на встречу клиента",
+    "waiting_time_over": "Время ожидания лида истекло!",
+    "reach_by_other_source": "Попробуйте связаться с лидом через другие каналы!",
+    "registered_lead_on": "Зарегистрированная дата и время лида"
 }

@@ -42,9 +42,13 @@ const UpcomingMeetingsMenu = ({ handleClose }) => {
   }, []);
   return (
     <>
-      <Container
+      <div
         // onMouseLeave={handleClose}
-        sx={{ maxHeight: 500, width: 350, p: 1, position: "relative" }}
+        sx={{ 
+          maxHeight: 500, 
+          width: 350 
+        }}
+        className="p-3"
       >
         <div
           onClick={() => {
@@ -199,7 +203,7 @@ const UpcomingMeetingsMenu = ({ handleClose }) => {
               <h2>No meetings</h2>
             </div>
           ))}
-      </Container>
+      </div>
 
       {timelinePopup?.isOpen && (
         <Timeline

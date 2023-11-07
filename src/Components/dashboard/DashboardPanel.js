@@ -225,14 +225,14 @@ const DashboardPanel = ({ setloading }) => {
             <div>
               {User?.role === 3 && (
                 <p
-                  className={`text-[18px] font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {User?.role === 7 && (
                 <p
-                  className={`text-[18px] font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                  
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
@@ -240,7 +240,7 @@ const DashboardPanel = ({ setloading }) => {
               )}
               {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
                 <p
-                  className={`text-[18px] font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
@@ -275,7 +275,7 @@ const DashboardPanel = ({ setloading }) => {
                   } h-auto w-full p-5 rounded-xl shadow-sm grid content-center`}
                 >
                   <p
-                    className={`text-[18px] font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                    className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                
                   >
                     <CountUp end={item.amount} duration={3} />
@@ -311,7 +311,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p
-                        className={`text-[18px] font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                        className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                     
                       >
                         <CountUp end={item.amount} duration={3} />
@@ -349,7 +349,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p
-                        className={`text-[18px] font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                        className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                      
                       >
                         <CountUp end={item.amount} duration={3} />

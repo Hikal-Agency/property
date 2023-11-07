@@ -11,9 +11,12 @@ import {
   MenuItem,
   Select,
   IconButton,
+  TextField,
+  Box,
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
+import { search } from "../../utils/axiosSearch";
 
 import { useStateContext } from "../../context/ContextProvider";
 import { ColorModeContext } from "../../context/theme";
@@ -32,8 +35,11 @@ import {
   BsClockFill,
   BsApple,
   BsAndroid2,
-  BsFillChatFill,
+  BsChatText,
 } from "react-icons/bs";
+import {
+  GoCommentDiscussion
+} from "react-icons/go";
 import {
   MdDarkMode,
   MdKeyboardArrowDown,
@@ -98,6 +104,7 @@ const Navbar = () => {
     langs,
     isLangRTL,
     getLangDetails,
+    darkModeColors,
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -122,6 +129,53 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState(null);
+  const [searchResult, setSearchResults] = useState(null);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("auth-token");
+
+    setSearchTerm(e.target.value);
+    const searchWord = e.target.value;
+    try {
+      const postSearch = await axios.get(`${BACKEND_URL}/searchleads`, {
+        params: { search: searchWord },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      // const postSearch = await search(
+      //   `${BACKEND_URL}/searchleads?search=${searchWord}`,
+      //   {},
+      //   token
+      // );
+
+      setSearchResults(postSearch?.data?.data);
+
+      console.log("search result: ", postSearch);
+    } catch (error) {
+      console.log("error: ", error);
+      toast.error("Unable to search", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const handleNavigate = (e, search) => {
+    e.preventDefault();
+    navigate(`/lead/${search?.leadId || search?.id}`);
+  };
 
   const handleClick = (event, navBtn) => {
     setCurrNavBtn(navBtn);
@@ -297,13 +351,24 @@ const Navbar = () => {
   return (
     <>
       {/* CHAT  */}
-      <div className="chat-button">
+      <div 
+        className="fixed"
+        style={{
+          bottom: "20px",
+          right: !isLangRTL(i18n.language) && "20px",
+          left: isLangRTL(i18n.language) && "20px",
+          zIndex: 999
+        }}
+      >
         <Tooltip title="Chat">
           <button
             onClick={openChat}
-            className="bg-btn-primary p-2 rounded-full"
+            className="cursor-pointer bg-primary hover:bg-[#AAAAAA] hover:border-[#AAAAAA] text-white border-2 p-3 rounded-full"
           >
-            <BsFillChatFill size={20} color="white" />
+            <GoCommentDiscussion 
+              size={24} 
+              color={"#FFFFFF"}
+            />
           </button>
         </Tooltip>
       </div>
@@ -321,8 +386,8 @@ const Navbar = () => {
         style={{
           position: "fixed",
           top: 0,
-          left: isLangRTL(i18n.language) ? "0" : !isCollapsed ? 65 : 200,
-          right: isLangRTL(i18n.language) ? (!isCollapsed ? 65 : 200) : 0,
+          left: isLangRTL(i18n.language) ? "0" : !isCollapsed ? 80 : 200,
+          right: isLangRTL(i18n.language) ? (!isCollapsed ? 80 : 200) : 0,
           zIndex: "20",
           // backgroundColor: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
           boxShadow:
@@ -379,6 +444,43 @@ const Navbar = () => {
             ),
           ]}
 
+          {/* search */}
+          <div className="">
+            <Box sx={darkModeColors}>
+              <TextField
+                // className="h-20"
+                type="text"
+                placeholder="Search Leads"
+                value={searchTerm}
+                onChange={handleSearch}
+                size="small"
+              />
+            </Box>
+            {searchResult?.length > 0 && (
+              <div
+                className={`absolute mt-1 p-3 w-[170px] ${
+                  currentMode === "dark" ? "bg-[#292828]" : "bg-[#e9e7e8]"
+                }`}
+                style={{
+                  overflow: searchResult.length > 10 ? "auto" : "visible",
+                  maxHeight: searchResult.length > 10 ? "200px" : "auto",
+                }}
+              >
+                {searchResult?.map((search) => (
+                  <p
+                    key={search?.id}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-dark"
+                    } cursor-pointer`}
+                    onClick={(e) => handleNavigate(e, search)}
+                  >
+                    {search?.leadName}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* MEETINGS  */}
           <NavButton
             title="Meetings"
@@ -394,7 +496,6 @@ const Navbar = () => {
               )
             }
           />
-
           {/* NOTIFICATIONS  */}
           <NavButton
             handleClose={handleClose}
@@ -417,7 +518,6 @@ const Navbar = () => {
               </Badge>
             }
           />
-
           {/* CLOCK  */}
           <NavButton
             handleClose={handleClose}
@@ -433,7 +533,6 @@ const Navbar = () => {
               )
             }
           />
-
           {/* THEME  */}
           {/* {!themeBgImg && */}
           <Tooltip
@@ -455,13 +554,11 @@ const Navbar = () => {
               )}
             </button>
           </Tooltip>
-
-
           {/* } */}
           {/* PROFILE  */}
           <Tooltip title="Profile" arrow placement="bottom">
             <div
-              className="mx-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+              className={`bg-primary text-white mx-1 p-2 flex items-center gap-2 cursor-pointer hover:bg-light-gray rounded-xl shadow-sm card-hover`}
               onClick={(event) => {
                 if (currNavBtn === "Profile") {
                   handleClose();
@@ -473,27 +570,23 @@ const Navbar = () => {
               <img
                 height={50}
                 width={50}
-                className="rounded-full w-8 h-8 object-cover"
+                className="rounded-full w-10 h-10 object-cover"
                 src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
                 alt="user-profile"
               />
               <p className="display-block sm:display-none">
                 <span
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-main-dark-bg"
-                  } font-bold mx-1 text-14`}
+                  className={`font-bold`}
                 >
                   {User?.userName}
                 </span>
               </p>
               <MdKeyboardArrowDown
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
+                size={14}
+                className={``}
               />
             </div>
           </Tooltip>
-          
           {/* LANG  */}
           <Tooltip title="Language" arrow placement="bottom">
             <div
@@ -518,9 +611,8 @@ const Navbar = () => {
               /> */}
             </div>
           </Tooltip>
-
           <Menu
-            className="navbar-menu-backdrop"
+            className="hide-scrollbar navbar-menu-backdrop"
             hideBackdrop={false}
             onClick={handleClose}
             onMouseLeave={handleClose}
@@ -534,6 +626,9 @@ const Navbar = () => {
                   background: "transparent !important",
                 },
                 mt: 2,
+                pl: !isLangRTL(i18n.language) && 0.6,
+                pr: isLangRTL(i18n.language) && 0.6,
+                py: 0.4,
                 overflowY: "scroll",
                 filter:
                   currentMode === "dark"
@@ -548,17 +643,16 @@ const Navbar = () => {
                 minWidth: currNavBtn === "Language" ? 100 : 300,
                 maxWidth: currNavBtn === "Language" ? 180 : 350,
                 borderRadius: "10px",
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  // ml: -0.5,
-                  mx: 1,
-                },
+                // "& .MuiAvatar-root": {
+                //   width: 32,
+                //   height: 32,
+                //   // ml: -0.5,
+                //   mx: 1,
+                // },
                 "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
-                  {
-                    padding: "0 !important",
-                    // paddingRight: "0px !important",
-                  },
+                {
+                  padding: "0 !important",
+                },
               },
             }}
             transformOrigin={{ horizontal: "center", vertical: "top" }}
@@ -794,7 +888,7 @@ const Navbar = () => {
                   </div>
                 </div>
               ) : currNavBtn === "Language" ? (
-                <div className="pl-2">
+                <div className="px-2">
                   {langs?.map((lang) => (
                     <button
                       className={`cursor-pointer card-hover ${
@@ -818,7 +912,7 @@ const Navbar = () => {
                             alt=""
                           />
                         </div>
-                        <div 
+                        <div
                           className="text-end"
                           style={{
                             fontFamily: lang?.font,

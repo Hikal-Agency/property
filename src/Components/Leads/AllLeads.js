@@ -35,6 +35,7 @@ import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
 import AddMeetLink from "../liveleads/AddMeetLink";
 import Timeline from "../../Pages/timeline";
+
 import {
   DataGrid,
   gridPageCountSelector,
@@ -89,6 +90,7 @@ import {
 import { 
   SiGooglemeet 
 } from "react-icons/si";
+import JoinMeeting from "../liveleads/JoinMeeting";
 
 
 const bulkUpdateBtnStyles = {
@@ -140,18 +142,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
   const bulkImportRef = useRef();
   const dataTableRef = useRef();
-
-  // contact masking
-  // const renderMaskedContactNumber = (params) => {
-  //   const leadContact = params.getValue(params.id, "leadContact");
-
-  //   return (
-  //     <InputMask mask="(+9 99) 9999-9999" value={leadContact}>
-  //       {() => <input style={{ border: "none", outline: "none" }} />}{" "}
-  //       {/* Optional styling */}
-  //     </InputMask>
-  //   );
-  // };
 
   const location = useLocation();
   console.log("Location::", location);
@@ -705,7 +695,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             className={`w-full h-full px-1 flex items-center justify-center`}
           >
             {/* MEET LINK  */}
-            {lead_origin === "liveleads" &&
+            {(lead_origin === "liveleads" || lead_type === "liveleads") &&
               cellValues.row.notes.startsWith("Live") &&
               (cellValues.row.meet_link === null ||
               cellValues.row.meet_link === "" ||
@@ -715,7 +705,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   className={`text-white bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
                 >
                   <Tooltip title="Send Link" arrow>
-                    <button onClick={() => HandleAddMeetLinkBtn(cellValues)}>
+                    <button onClick={() => HandleSendMeetLinkBtn(cellValues)}>
                       <SiGooglemeet size={16} />
                     </button>
                   </Tooltip>
@@ -1338,6 +1328,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadCategory: leadCategory || "-",
           coldCall: row?.coldcall,
           meet_link: row?.meet_link || "",
+          admin_link: row?.admin_link || "",
           notes: row?.notes || "",
           otp:
             row?.otp === "No OTP" || row?.otp === "No OTP Used"
@@ -1461,6 +1452,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       coldCallCode = 2;
     } else if (lead_origin === "warmleads") {
       coldCallCode = 4;
+    } else if (lead_origin === "liveleads") {
+      coldCallCode = 10;
+    } else if (lead_origin === "buyers") {
+      coldCallCode = 5;
     } else if (lead_origin === "transfferedleads") {
       coldCallCode = 0;
     }
@@ -1489,6 +1484,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         coldCallCode = 2;
       } else if (lead_type === "thirdpartyleads") {
         coldCallCode = 3;
+      } else if (lead_type === "liveleads") {
+        coldCallCode = 10;
+      } else if (lead_type === "buyers") {
+        coldCallCode = 5;
       }
     }
 
@@ -1549,6 +1548,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           leadStatus: row?.leadStatus || "-",
           coldCall: row?.coldcall,
           meet_link: row?.meet_link || "",
+          admin_link: row?.admin_link || "",
           leadCategory: leadCategory || "-",
           notes: row?.notes || "",
           otp:
@@ -1619,12 +1619,155 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     // setUpdateLeadModelOpen(true);
   };
 
-  // MEET LINK BUTTON CLICK
+  // MEET LINK BUTTON CLICK ------- NO------------
   const HandleAddMeetLinkBtn = async (params) => {
     console.log("LEADID: ", params);
     setsingleLeadData(params.row);
     handleAddMeetLinkModalOpen();
     // setUpdateLeadModelOpen(true);
+  };
+
+  // NEW MEETING 
+  const AddMeetLinkFunction = async (
+    mLeadId, 
+    meetLink,
+    adminLink
+  ) => {
+    setBtnLoading(true);
+
+    const token = localStorage.getItem("auth-token");
+    const AddLeadData = new FormData();
+    AddLeadData.append("id", mLeadId);
+    AddLeadData.append("meet_link", meetLink);
+    AddLeadData.append("admin_link", adminLink);
+
+    await axios
+    .post(`${BACKEND_URL}/leads/${mLeadId}`, AddLeadData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((result) => {
+      console.log("Meeting link sent successfully!");
+      console.log(result);
+      toast.success("Meeting link sent successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setBtnLoading(false);
+      FetchLeads(token);
+    })
+    .catch((err) => {
+      toast.error("Error in sending meeting link", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setBtnLoading(false);
+    });
+  };
+
+  // REDIRECT TO MEETING 
+  const [redirectAnimation, setRedirectAnimation] = useState(false);
+  const redirectToMeeting = (url) => {
+    // console.log("URL")
+    // setRedirectAnimation(true);
+
+    // setTimeout(() => {
+      window.open(url, "_blank");
+    //   setRedirectAnimation(false);
+    // }, 3000);
+  };
+
+  const [newMeetingModal, setNewMeetingModal] = useState({
+    isOpen: false
+  })
+  const [ btnLoading, setBtnLoading ] = useState(false);
+  const [ nameOfLead, setNameOfLead ] = useState({});
+
+  const HandleSendMeetLinkBtn = async (params) => {
+    const currentTime = new Date();
+    const leadTime = new Date(params?.row?.creationDate);
+
+    const diff = (currentTime - leadTime) / (1000 * 60); //CONVERT MILLISECONDS TO MINUTES
+
+    if (diff < 5) {
+      setNameOfLead(params);
+      try {
+
+        setBtnLoading(true);
+        const createMeeting = await axios.get(
+          `${BACKEND_URL}/create?name=${User?.userName.replaceAll(" ", "%20")}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: "Bearer " + token,
+            },
+          }
+        );
+
+        const meetingID = createMeeting?.data?.data?.meetingID;
+        const joinAsModerator = await axios.post(
+          `${BACKEND_URL}/join`,
+          JSON.stringify({
+            meetingID: meetingID,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const joinAsAttendee = await axios.post(
+          `${BACKEND_URL}/attendee`,
+          JSON.stringify({
+            meetingID: meetingID,
+            // fullName: "Example Full Name".replaceAll(" ", "%20")
+            fullName: params?.row?.leadName.replaceAll(" ", "%20"),
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              // Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const urlForModerator = joinAsModerator?.data?.url;
+        const urlForAttendee = joinAsAttendee?.data?.url;
+        // setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee});
+        
+        redirectToMeeting(urlForModerator);
+        AddMeetLinkFunction(params?.row?.leadId, urlForAttendee, urlForModerator);
+
+      } catch (error) {
+        console.log(error);
+        toast.error("Unable to create meeting at the moment.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      setBtnLoading(false);
+    } else {
+      HandleAddMeetLinkBtn(params);
+    }
   };
 
   const HandleViewTimeline = (params) => {
@@ -2210,6 +2353,31 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               CSVData={CSVData}
               lead_origin={lead_origin}
             />
+          )}
+
+          {newMeetingModal?.isOpen && (
+            <JoinMeeting 
+              handleClose={() => setNewMeetingModal({isOpen: false})} 
+              newMeetingModal={newMeetingModal}
+            />
+          )}
+
+          {redirectAnimation && (
+            <div className="flex fixed z-[100000] bg-black text-white top-0 left-0 w-screen h-screen flex-col justify-center items-center">
+              <h1 className="text-4xl mb-6">
+                Redirecting you to the meeting
+              </h1>
+              <div id="fountainG">
+                <div id="fountainG_1" className="fountainG"></div>
+                <div id="fountainG_2" className="fountainG"></div>
+                <div id="fountainG_3" className="fountainG"></div>
+                <div id="fountainG_4" className="fountainG"></div>
+                <div id="fountainG_5" className="fountainG"></div>
+                <div id="fountainG_6" className="fountainG"></div>
+                <div id="fountainG_7" className="fountainG"></div>
+                <div id="fountainG_8" className="fountainG"></div>
+              </div>
+            </div>
           )}
         </Box>
       </div>

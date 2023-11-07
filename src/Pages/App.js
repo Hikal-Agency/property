@@ -424,11 +424,11 @@ const routes = [
     pageName: "Settings",
     element: <Settings />,
   },
-  {
-    path: "/integrations",
-    pageName: "Settings",
-    element: <Integrations />,
-  },
+  // {
+  //   path: "/integrations",
+  //   pageName: "Integrations",
+  //   element: <Integrations />,
+  // },
   {
     path: "/notifications",
     pageName: "Settings",
@@ -540,7 +540,9 @@ function App() {
           <div
             className={`w-[100%] overflow-x-hidden ${
               hasSidebarOrNavbar() ? "pt-16" : "pt-0"
-            } ${!themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")}`}
+            } ${
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+            }`}
           >
             {hasSidebarOrNavbar() && (
               <div className={`px-0`}>
