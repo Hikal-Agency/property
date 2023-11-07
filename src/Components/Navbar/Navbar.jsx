@@ -11,6 +11,7 @@ import {
   MenuItem,
   Select,
   IconButton,
+  TextField,
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
@@ -125,6 +126,39 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("auth-token");
+
+    setSearchTerm(e.target.value);
+    const search = e.target.value;
+    try {
+      const postSearch = await axios.get(`${BACKEND_URL}/searchleads`, {
+        params: { search: search },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("search result: ", postSearch);
+    } catch (error) {
+      console.log("error: ", error);
+      toast.error("Unable to search", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const handleClick = (event, navBtn) => {
     setCurrNavBtn(navBtn);
@@ -393,6 +427,17 @@ const Navbar = () => {
             ),
           ]}
 
+          {/* search */}
+          <div className="search__container">
+            <TextField
+              className="search__input"
+              type="text"
+              placeholder="Search Leads"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+          </div>
+
           {/* MEETINGS  */}
           <NavButton
             title="Meetings"
@@ -408,7 +453,6 @@ const Navbar = () => {
               )
             }
           />
-
           {/* NOTIFICATIONS  */}
           <NavButton
             handleClose={handleClose}
@@ -431,7 +475,6 @@ const Navbar = () => {
               </Badge>
             }
           />
-
           {/* CLOCK  */}
           <NavButton
             handleClose={handleClose}
@@ -447,7 +490,6 @@ const Navbar = () => {
               )
             }
           />
-
           {/* THEME  */}
           {/* {!themeBgImg && */}
           <Tooltip
@@ -469,8 +511,6 @@ const Navbar = () => {
               )}
             </button>
           </Tooltip>
-
-
           {/* } */}
           {/* PROFILE  */}
           <Tooltip title="Profile" arrow placement="bottom">
@@ -504,7 +544,6 @@ const Navbar = () => {
               />
             </div>
           </Tooltip>
-          
           {/* LANG  */}
           <Tooltip title="Language" arrow placement="bottom">
             <div
@@ -529,7 +568,6 @@ const Navbar = () => {
               /> */}
             </div>
           </Tooltip>
-
           <Menu
             className="hide-scrollbar navbar-menu-backdrop"
             hideBackdrop={false}
@@ -831,7 +869,7 @@ const Navbar = () => {
                             alt=""
                           />
                         </div>
-                        <div 
+                        <div
                           className="text-end"
                           style={{
                             fontFamily: lang?.font,
