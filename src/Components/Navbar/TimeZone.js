@@ -167,7 +167,7 @@ const TimeZone = () => {
                 />
                 {/* </Box> */}
               </MenuItem>
-              {filteredTimezones?.map((timezone) => (
+              {/* {filteredTimezones?.map((timezone) => (
                 <>
                   <MenuItem
                     // onKeyDown={(e) => e.stopPropagation()}
@@ -178,6 +178,25 @@ const TimeZone = () => {
                     {timezone}
                   </MenuItem>
                 </>
+              ))} */}
+              {filteredTimezones?.slice(0, 3).map((timezone, index) => (
+                <MenuItem
+                  key={timezone}
+                  value={timezone}
+                  onClick={handleTimezoneChange}
+                >
+                  <span style={{ marginRight: "8px" }}>{"\u2691"}</span>
+                  {timezone}
+                </MenuItem>
+              ))}
+              {filteredTimezones?.slice(3).map((timezone) => (
+                <MenuItem
+                  key={timezone}
+                  value={timezone}
+                  onClick={handleTimezoneChange}
+                >
+                  {timezone}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
