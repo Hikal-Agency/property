@@ -707,14 +707,17 @@
     "select_sender_id": "בחר זיהוי שולח",
     "clear": "נקה",
     "clear_all": "נקה הכול",
+<<<<<<< HEAD
+=======
 
     "new_from_here": "",
 
+>>>>>>> 51f3e790ee9ba5c8cb85badb4f5dc5251aad9cf5
     "type_liveleads": "שיחה חיה",
     "liveleads": "שיחה חיה",
     "update_lead_details": "עדכון פרטי ליד",
     "no_agent_assigned": "לא הוקצה סוכן",
-    "no_manager" : "אין מנהל",
+    "no_manager": "אין מנהל",
     "sold_listings": "רשימות שנמכרו",
     "unknown": "לא ידוע",
     "no_listings_available": "אין רשומות זמינות",
@@ -722,13 +725,42 @@
     "leads_for_ip": "לידים עבור כתובת ה-IP",
     "label_unit": "יחידה",
     "view_all_locations": "צפה בכל המיקומים",
-    "search_timezone" : "חפש אזור זמן",
+    "search_timezone": "חפש אזור זמן",
     "update_property": "עדכן נכס",
     "secondary_buyers": "קונים משניים",
     "create_meeting": "צור פגישה",
     "meeting_has_created": "הפגישה שלך נוצרה!",
     "join_as_moderator": "הצטרף לפגישה כמנחה",
     "share_to_attendees": "שתף את קישור הפגישה עם המשתתפים",
+<<<<<<< HEAD
+    "thirdpartyleads": "לידים מצד שלישי",
+    "livecall": "שיחה חיה",
+    "coldleads": "לידים קרים",
+    "archive": "לידים בארכיון",
+    "personalleads": "לידים אישיים",
+    "freshleads": "לידים טריים",
+    "new": "חדש",
+    "follow up": "מעקב",
+    "low budget": "תקציב נמוך",
+    "no answer": "אין תשובה",
+    "not interested": "לא מעוניין",
+    "unreachable": "לא נגיע",
+    "coldleadsverified": "לידים קרים מאומתים",
+    "coldleadsinvalid": "לידים קרים לא תקפים",
+    "coldleadsnotchecked": "לידים קרים לא נבדקו",
+    "reshuffleleads": "ערבוב מחדש של לידים",
+    "leadnotes": "הערות לידים",
+    "closedeals": "עסקאות סגורות",
+    "secondarylistings": "רישומים משניים",
+    "buyers": "קונים",
+    "meetinglocation": "מקום הפגישה",
+    "userlocation": "מיקום המשתמש",
+    "officesettings": "הגדרות משרד",
+    "employeeslist": "רשימת עובדים",
+    "attendance_self": "נוכחות אישית",
+    "trainer": "מאמן",
+    "notificationslist": "רשימת התראות"
+=======
     
     "live_call_meeting_created": "הפגישה נוצרה בהצלחה!",
     "live_call_meeting_created_shared": "הפגישה נוצרה ושותפה ללקוח שלך.",
@@ -739,4 +771,5 @@
     "waiting_time_over": "זמן ההמתנה לליד פג תוקף!",
     "reach_by_other_source": "נסה ליצור קשר עם הליד באמצעות ערוצים אחרים!",
     "registered_lead_on": "תאריך ושעת הרשמה של הליד"
+>>>>>>> 51f3e790ee9ba5c8cb85badb4f5dc5251aad9cf5
 }

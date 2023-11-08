@@ -67,7 +67,6 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
       });
 
       setLoading(false);
-      console.log(response);
 
       const filteredNotifications = response?.data?.notification?.data;
 
