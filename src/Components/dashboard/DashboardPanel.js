@@ -407,7 +407,7 @@ const DashboardPanel = ({ setloading }) => {
                 } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
               >
                 <div className="justify-between items-center">
-                  <h6 className="font-semibold">Performance</h6>
+                  <h6 className="font-semibold">{t("performance")}</h6>
                   <CombinationChart />
                 </div>
               </div>
@@ -511,7 +511,7 @@ const DashboardPanel = ({ setloading }) => {
               } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Sales</h6>
+                <h6 className="font-semibold pb-3">{t("sales")}</h6>
                 {saleschart_loading ? (
                   <div className="flex items-center space-x-2">
                     <CircularProgress size={20} /> <span>Loading</span>
