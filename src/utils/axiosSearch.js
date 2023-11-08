@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const makeRequestCreator = () => {
   let token;
@@ -29,6 +30,16 @@ const makeRequestCreator = () => {
       } else {
         // Handle usual errors
         console.log("Something went wrong: ", error.message);
+        toast.error("Unable to search.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     }
   };
