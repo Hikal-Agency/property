@@ -133,7 +133,7 @@ const Navbar = () => {
   const [searchLoading, setSearchLoading] = useState(false);
 
   const handleSearch = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setSearchLoading(true);
     const token = localStorage.getItem("auth-token");
 
