@@ -143,22 +143,22 @@ const Navbar = () => {
     setSearchTerm(e.target.value);
     const searchWord = e.target.value;
     try {
-      const postSearch = await axios.get(`${BACKEND_URL}/searchleads`, {
-        params: { search: searchWord },
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      // const postSearch = await axios.get(`${BACKEND_URL}/searchleads`, {
+      //   params: { search: searchWord },
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: "Bearer " + token,
+      //   },
+      // });
 
-      // const postSearch = await search(
-      //   `${BACKEND_URL}/searchleads?search=${searchWord}`,
-      //   {},
-      //   token
-      // );
+      const postSearch = await search(
+        `${BACKEND_URL}/searchleads?search=${searchWord}`,
+        // {},
+        token
+      );
 
       if (postSearch?.data?.message !== "No Data") {
-        setSearchResults(postSearch?.data);
+        setSearchResults(postSearch);
       }
 
       setSearchLoading(false);
