@@ -68,7 +68,7 @@ const SingleEmployee = ({ user }) => {
   // offdays
   const [offDays, setOffDays] = useState(settings?.off_day || "");
   const isOffDay = (offDay) => {
-    const formattedOffDay = moment(offDay).format("dddd"); // Convert date to day name (e.g., "Sunday")
+    const formattedOffDay = moment(offDay).format("dddd");
     return offDays.includes(formattedOffDay);
   };
 
@@ -522,223 +522,446 @@ const SingleEmployee = ({ user }) => {
       params.date_range = [startDate, endDate].join(",");
     }
 
-    await axios
-      .get(`${BACKEND_URL}/attendance?user_id=${id}`, {
-        params,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("fetched data ", result.data);
+    try {
+      const [attendanceResponse, agencyResponse] = await Promise.all([
+        axios.get(`${BACKEND_URL}/attendance?user_id=${id}`, {
+          params,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+        axios.get(`${BACKEND_URL}/agencies/1`),
+      ]);
 
-        const data = result.data.Record.data;
+      console.log("Fetched data: ", attendanceResponse.data);
+      console.log("Fetched agency data: ", agencyResponse.data);
 
-        const firstCheckIn = data?.find((element) => {
-          return (
-            element.attendance_type.toLowerCase() === "in" ||
-            element.attendance_type.toLowerCase() === "check-in"
-          );
-        });
+      const data = attendanceResponse.data.Record.data;
 
-        console.log("first check in:: ", firstCheckIn);
+      // offdays
+      setSettings({
+        ...settings,
+        off_day: agencyResponse?.data?.data?.off_day || "",
+      });
+      const offDaysFromApi = agencyResponse?.data?.data?.off_day;
+      const offDaysArray = offDaysFromApi.split(", ").filter(Boolean); // Split and remove empty entries
+      setOffDays(offDaysArray);
 
-        const workingDays = calculateWorkingDays(firstCheckIn?.off_day);
+      const firstCheckIn = data?.find((element) => {
+        return (
+          element.attendance_type.toLowerCase() === "in" ||
+          element.attendance_type.toLowerCase() === "check-in"
+        );
+      });
 
-        console.log("working days: ", workingDays);
+      console.log("first check in:: ", firstCheckIn);
 
-        console.log("first check in : ", firstCheckIn);
+      const workingDays = calculateWorkingDays(firstCheckIn?.off_day);
 
-        let rowsdata = data?.reduce((acc, row) => {
-          const date = moment(row?.check_datetime).format("YYYY-MM-DD");
-          const existingRow = acc.find((item) => item.date === date);
+      console.log("working days: ", workingDays);
 
-          const attendanceType = row?.attendance_type.toLowerCase();
-          const checkTime = row?.check_datetime
-            ? moment(row.check_datetime).format("hh:mm A")
-            : "-";
+      console.log("first check in : ", firstCheckIn);
 
-          if (!existingRow) {
-            acc.push({
-              date,
-              checkIns:
-                attendanceType === "in" || attendanceType === "check-in"
-                  ? [checkTime]
-                  : [],
-              checkOuts:
-                attendanceType === "out" || attendanceType === "check-out"
-                  ? [checkTime]
-                  : [],
-              attendanceSourcesForCheckIn:
-                attendanceType === "in" || attendanceType === "check-in"
-                  ? [row.attendance_source || "-"]
-                  : [],
-              attendanceSourcesForCheckOut:
-                attendanceType === "out" || attendanceType === "check-out"
-                  ? [row.attendance_source || "-"]
-                  : [],
-              ...otherFields(row),
-            });
-          } else {
-            if (attendanceType === "in" || attendanceType === "check-in") {
-              existingRow.checkIns.push(checkTime);
-              existingRow.attendanceSourcesForCheckIn.push(
-                row.attendance_source || "-"
-              );
-            } else if (
-              attendanceType === "out" ||
-              attendanceType === "check-out"
-            ) {
-              existingRow.checkOuts.push(checkTime);
-              existingRow.attendanceSourcesForCheckOut.push(
-                row.attendance_source || "-"
-              );
-            }
+      let rowsdata = data?.reduce((acc, row) => {
+        const date = moment(row?.check_datetime).format("YYYY-MM-DD");
+        const existingRow = acc.find((item) => item.date === date);
+
+        const attendanceType = row?.attendance_type.toLowerCase();
+        const checkTime = row?.check_datetime
+          ? moment(row.check_datetime).format("hh:mm A")
+          : "-";
+
+        if (!existingRow) {
+          acc.push({
+            date,
+            checkIns:
+              attendanceType === "in" || attendanceType === "check-in"
+                ? [checkTime]
+                : [],
+            checkOuts:
+              attendanceType === "out" || attendanceType === "check-out"
+                ? [checkTime]
+                : [],
+            attendanceSourcesForCheckIn:
+              attendanceType === "in" || attendanceType === "check-in"
+                ? [row.attendance_source || "-"]
+                : [],
+            attendanceSourcesForCheckOut:
+              attendanceType === "out" || attendanceType === "check-out"
+                ? [row.attendance_source || "-"]
+                : [],
+            ...otherFields(row),
+          });
+        } else {
+          if (attendanceType === "in" || attendanceType === "check-in") {
+            existingRow.checkIns.push(checkTime);
+            existingRow.attendanceSourcesForCheckIn.push(
+              row.attendance_source || "-"
+            );
+          } else if (
+            attendanceType === "out" ||
+            attendanceType === "check-out"
+          ) {
+            existingRow.checkOuts.push(checkTime);
+            existingRow.attendanceSourcesForCheckOut.push(
+              row.attendance_source || "-"
+            );
           }
-
-          return acc;
-        }, []);
-
-        function otherFields(row) {
-          // Add other fields as needed
-          return {
-            id: row.id,
-
-            checkIn:
-              row?.attendance_type.toLowerCase() === "in" ||
-              row?.attendance_type.toLowerCase() === "check-in"
-                ? "In"
-                : "-",
-            checkOut:
-              row?.attendance_type.toLowerCase() === "out" ||
-              row?.attendance_type.toLowerCase() === "check-out"
-                ? "Out"
-                : "-",
-            attendance_type: row?.attendance_type,
-            check_datetime: row?.check_datetime,
-            default_datetime: row?.default_datetime,
-            is_late: row?.is_late || "-",
-            late_reason: row?.late_reason || "-",
-            late_minutes: row?.late_minutes || "-",
-            salary: row?.salary,
-            profile_picture: row?.profile_picture,
-            position: row?.position || "-",
-            currency: row?.currency || "-",
-            userName: row?.userName || "-",
-            created_at: row?.created_at,
-            updated_at: row?.updated_at,
-            deduction: row?.deduct_salary,
-            cut_salary: row?.cut_salary || "-",
-            off_day: row?.off_day || "-",
-            notify_status: row?.notify_status || "",
-            notify_deduct_salary: row?.notify_deduct_salary || "",
-            edit: "edit",
-          };
         }
 
-        // Concatenate check-ins, check-outs, and attendance_sources into a single comma-separated string
-        rowsdata = rowsdata.map((row) => ({
-          ...row,
-          checkIns: row.checkIns.join(", "),
-          checkOuts: row.checkOuts.join(", "),
-          attendanceSourcesForCheckIn:
-            row.attendanceSourcesForCheckIn.join(", "),
-          attendanceSourcesForCheckOut:
-            row.attendanceSourcesForCheckOut.join(", "),
-        }));
+        return acc;
+      }, []);
 
-        console.log("rowsss:::::::: ", rowsdata);
+      function otherFields(row) {
+        // Add other fields as needed
+        return {
+          id: row.id,
 
-        const attended_days = rowsdata.filter(
-          (row) =>
+          checkIn:
             row?.attendance_type.toLowerCase() === "in" ||
             row?.attendance_type.toLowerCase() === "check-in"
-        );
-        console.log("attended days: ", attended_days);
+              ? "In"
+              : "-",
+          checkOut:
+            row?.attendance_type.toLowerCase() === "out" ||
+            row?.attendance_type.toLowerCase() === "check-out"
+              ? "Out"
+              : "-",
+          attendance_type: row?.attendance_type,
+          check_datetime: row?.check_datetime,
+          default_datetime: row?.default_datetime,
+          is_late: row?.is_late || "-",
+          late_reason: row?.late_reason || "-",
+          late_minutes: row?.late_minutes || "-",
+          salary: row?.salary,
+          profile_picture: row?.profile_picture,
+          position: row?.position || "-",
+          currency: row?.currency || "-",
+          userName: row?.userName || "-",
+          created_at: row?.created_at,
+          updated_at: row?.updated_at,
+          deduction: row?.deduct_salary,
+          cut_salary: row?.cut_salary || "-",
+          off_day: row?.off_day || "-",
+          notify_status: row?.notify_status || "",
+          notify_deduct_salary: row?.notify_deduct_salary || "",
+          edit: "edit",
+        };
+      }
 
-        const attended_count = attended_days.length;
-        console.log("attended count: ", attended_count);
+      // Concatenate check-ins, check-outs, and attendance_sources into a single comma-separated string
+      rowsdata = rowsdata.map((row) => ({
+        ...row,
+        checkIns: row.checkIns.join(", "),
+        checkOuts: row.checkOuts.join(", "),
+        attendanceSourcesForCheckIn: row.attendanceSourcesForCheckIn.join(", "),
+        attendanceSourcesForCheckOut:
+          row.attendanceSourcesForCheckOut.join(", "),
+      }));
 
-        const leave_count = workingDays - attended_count;
-        console.log("leave days: ", leave_count);
+      console.log("rowsss:::::::: ", rowsdata);
 
-        const is_late = rowsdata.filter((row) => row?.is_late === 1);
-        const late_count = is_late.length;
-        console.log("is late: ", late_count);
+      const attended_days = rowsdata.filter(
+        (row) =>
+          row?.attendance_type.toLowerCase() === "in" ||
+          row?.attendance_type.toLowerCase() === "check-in"
+      );
+      console.log("attended days: ", attended_days);
 
-        const checkInRow = rowsdata.find((row) => isCheckIn(row));
+      const attended_count = attended_days.length;
+      console.log("attended count: ", attended_count);
 
-        const per_day_salary = firstCheckIn?.salary / 30;
-        const LEAVE_DAY_SALARY = per_day_salary * leave_count;
-        const LATE_DAY_SALARY = (per_day_salary * late_count) / 2;
-        // const TOTAl_SALARY =
-        //   firstCheckIn?.salary - (LEAVE_DAY_SALARY + LATE_DAY_SALARY);
-        const TOTAl_SALARY = (
-          firstCheckIn?.salary -
-          (LEAVE_DAY_SALARY + LATE_DAY_SALARY)
-        ).toFixed(2);
+      const leave_count = workingDays - attended_count;
+      console.log("leave days: ", leave_count);
 
-        let deductionValue = "";
-        let cutSalaryValue = "";
+      const is_late = rowsdata.filter((row) => row?.is_late === 1);
+      const late_count = is_late.length;
+      console.log("is late: ", late_count);
 
-        if (checkInRow) {
-          console.log("checkinrows: ", checkInRow);
-          // Get the value of deduction
-          deductionValue = checkInRow.deduction || "";
+      const checkInRow = rowsdata.find((row) => isCheckIn(row));
 
-          // Get the value of cut_salary if deduction is 'one'
-          if (deductionValue === 1) {
-            cutSalaryValue = checkInRow.cut_salary || "";
-          }
+      const per_day_salary = firstCheckIn?.salary / 30;
+      const LEAVE_DAY_SALARY = per_day_salary * leave_count;
+      const LATE_DAY_SALARY = (per_day_salary * late_count) / 2;
+      // const TOTAl_SALARY =
+      //   firstCheckIn?.salary - (LEAVE_DAY_SALARY + LATE_DAY_SALARY);
+      const TOTAl_SALARY = (
+        firstCheckIn?.salary -
+        (LEAVE_DAY_SALARY + LATE_DAY_SALARY)
+      ).toFixed(2);
+
+      let deductionValue = "";
+      let cutSalaryValue = "";
+
+      if (checkInRow) {
+        console.log("checkinrows: ", checkInRow);
+        // Get the value of deduction
+        deductionValue = checkInRow.deduction || "";
+
+        // Get the value of cut_salary if deduction is 'one'
+        if (deductionValue === 1) {
+          cutSalaryValue = checkInRow.cut_salary || "";
         }
+      }
 
-        console.log("Deduction Value:", deductionValue);
-        console.log("Cut Salary Value:", cutSalaryValue);
+      console.log("Deduction Value:", deductionValue);
+      console.log("Cut Salary Value:", cutSalaryValue);
 
-        setEmpData(rowsdata);
-        setCutSalary(cutSalaryValue);
-        setloading(false);
+      setEmpData(rowsdata);
+      setCutSalary(cutSalaryValue);
+      setloading(false);
 
-        setpageState((old) => ({
-          ...old,
-          isLoading: false,
-          data: rowsdata,
-          attended_count: attended_count,
-          leave_count: leave_count,
-          late_count: late_count,
-          dedution: deductionValue,
-          cut_salary: cutSalaryValue,
-          first_check: firstCheckIn,
-          workingDays: workingDays,
-          leaveDaySalary: LEAVE_DAY_SALARY,
-          lateDaySalary: LATE_DAY_SALARY,
-          totalSalary: TOTAl_SALARY,
-          perDaySalary: per_day_salary,
-          pageSize: result?.data?.Record?.per_page,
-          total: result?.data?.Record?.total,
-        }));
-      })
-      .catch((err) => {
-        setloading(false);
-        console.log("here is error");
-        console.log(err);
-        toast.error("Sorry something went wrong. Kindly refresh the page.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
+      setpageState((old) => ({
+        ...old,
+        isLoading: false,
+        data: rowsdata,
+        attended_count: attended_count,
+        leave_count: leave_count,
+        late_count: late_count,
+        dedution: deductionValue,
+        cut_salary: cutSalaryValue,
+        first_check: firstCheckIn,
+        workingDays: workingDays,
+        leaveDaySalary: LEAVE_DAY_SALARY,
+        lateDaySalary: LATE_DAY_SALARY,
+        totalSalary: TOTAl_SALARY,
+        perDaySalary: per_day_salary,
+        pageSize: attendanceResponse?.data?.Record?.per_page,
+        total: attendanceResponse?.data?.Record?.total,
+      }));
+    } catch (err) {
+      setloading(false);
+      console.log("here is error");
+      console.log(err);
+      toast.error("Sorry something went wrong. Kindly refresh the page.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
+    }
+
+    // await axios
+    //   .get(`${BACKEND_URL}/attendance?user_id=${id}`, {
+    //     params,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer " + token,
+    //     },
+    //   })
+    //   .then((result) => {
+    //     console.log("fetched data ", result.data);
+
+    //     const data = result.data.Record.data;
+
+    //     const firstCheckIn = data?.find((element) => {
+    //       return (
+    //         element.attendance_type.toLowerCase() === "in" ||
+    //         element.attendance_type.toLowerCase() === "check-in"
+    //       );
+    //     });
+
+    //     console.log("first check in:: ", firstCheckIn);
+
+    //     const workingDays = calculateWorkingDays(firstCheckIn?.off_day);
+
+    //     console.log("working days: ", workingDays);
+
+    //     console.log("first check in : ", firstCheckIn);
+
+    //     let rowsdata = data?.reduce((acc, row) => {
+    //       const date = moment(row?.check_datetime).format("YYYY-MM-DD");
+    //       const existingRow = acc.find((item) => item.date === date);
+
+    //       const attendanceType = row?.attendance_type.toLowerCase();
+    //       const checkTime = row?.check_datetime
+    //         ? moment(row.check_datetime).format("hh:mm A")
+    //         : "-";
+
+    //       if (!existingRow) {
+    //         acc.push({
+    //           date,
+    //           checkIns:
+    //             attendanceType === "in" || attendanceType === "check-in"
+    //               ? [checkTime]
+    //               : [],
+    //           checkOuts:
+    //             attendanceType === "out" || attendanceType === "check-out"
+    //               ? [checkTime]
+    //               : [],
+    //           attendanceSourcesForCheckIn:
+    //             attendanceType === "in" || attendanceType === "check-in"
+    //               ? [row.attendance_source || "-"]
+    //               : [],
+    //           attendanceSourcesForCheckOut:
+    //             attendanceType === "out" || attendanceType === "check-out"
+    //               ? [row.attendance_source || "-"]
+    //               : [],
+    //           ...otherFields(row),
+    //         });
+    //       } else {
+    //         if (attendanceType === "in" || attendanceType === "check-in") {
+    //           existingRow.checkIns.push(checkTime);
+    //           existingRow.attendanceSourcesForCheckIn.push(
+    //             row.attendance_source || "-"
+    //           );
+    //         } else if (
+    //           attendanceType === "out" ||
+    //           attendanceType === "check-out"
+    //         ) {
+    //           existingRow.checkOuts.push(checkTime);
+    //           existingRow.attendanceSourcesForCheckOut.push(
+    //             row.attendance_source || "-"
+    //           );
+    //         }
+    //       }
+
+    //       return acc;
+    //     }, []);
+
+    //     function otherFields(row) {
+    //       // Add other fields as needed
+    //       return {
+    //         id: row.id,
+
+    //         checkIn:
+    //           row?.attendance_type.toLowerCase() === "in" ||
+    //           row?.attendance_type.toLowerCase() === "check-in"
+    //             ? "In"
+    //             : "-",
+    //         checkOut:
+    //           row?.attendance_type.toLowerCase() === "out" ||
+    //           row?.attendance_type.toLowerCase() === "check-out"
+    //             ? "Out"
+    //             : "-",
+    //         attendance_type: row?.attendance_type,
+    //         check_datetime: row?.check_datetime,
+    //         default_datetime: row?.default_datetime,
+    //         is_late: row?.is_late || "-",
+    //         late_reason: row?.late_reason || "-",
+    //         late_minutes: row?.late_minutes || "-",
+    //         salary: row?.salary,
+    //         profile_picture: row?.profile_picture,
+    //         position: row?.position || "-",
+    //         currency: row?.currency || "-",
+    //         userName: row?.userName || "-",
+    //         created_at: row?.created_at,
+    //         updated_at: row?.updated_at,
+    //         deduction: row?.deduct_salary,
+    //         cut_salary: row?.cut_salary || "-",
+    //         off_day: row?.off_day || "-",
+    //         notify_status: row?.notify_status || "",
+    //         notify_deduct_salary: row?.notify_deduct_salary || "",
+    //         edit: "edit",
+    //       };
+    //     }
+
+    //     // Concatenate check-ins, check-outs, and attendance_sources into a single comma-separated string
+    //     rowsdata = rowsdata.map((row) => ({
+    //       ...row,
+    //       checkIns: row.checkIns.join(", "),
+    //       checkOuts: row.checkOuts.join(", "),
+    //       attendanceSourcesForCheckIn:
+    //         row.attendanceSourcesForCheckIn.join(", "),
+    //       attendanceSourcesForCheckOut:
+    //         row.attendanceSourcesForCheckOut.join(", "),
+    //     }));
+
+    //     console.log("rowsss:::::::: ", rowsdata);
+
+    //     const attended_days = rowsdata.filter(
+    //       (row) =>
+    //         row?.attendance_type.toLowerCase() === "in" ||
+    //         row?.attendance_type.toLowerCase() === "check-in"
+    //     );
+    //     console.log("attended days: ", attended_days);
+
+    //     const attended_count = attended_days.length;
+    //     console.log("attended count: ", attended_count);
+
+    //     const leave_count = workingDays - attended_count;
+    //     console.log("leave days: ", leave_count);
+
+    //     const is_late = rowsdata.filter((row) => row?.is_late === 1);
+    //     const late_count = is_late.length;
+    //     console.log("is late: ", late_count);
+
+    //     const checkInRow = rowsdata.find((row) => isCheckIn(row));
+
+    //     const per_day_salary = firstCheckIn?.salary / 30;
+    //     const LEAVE_DAY_SALARY = per_day_salary * leave_count;
+    //     const LATE_DAY_SALARY = (per_day_salary * late_count) / 2;
+    //     // const TOTAl_SALARY =
+    //     //   firstCheckIn?.salary - (LEAVE_DAY_SALARY + LATE_DAY_SALARY);
+    //     const TOTAl_SALARY = (
+    //       firstCheckIn?.salary -
+    //       (LEAVE_DAY_SALARY + LATE_DAY_SALARY)
+    //     ).toFixed(2);
+
+    //     let deductionValue = "";
+    //     let cutSalaryValue = "";
+
+    //     if (checkInRow) {
+    //       console.log("checkinrows: ", checkInRow);
+    //       // Get the value of deduction
+    //       deductionValue = checkInRow.deduction || "";
+
+    //       // Get the value of cut_salary if deduction is 'one'
+    //       if (deductionValue === 1) {
+    //         cutSalaryValue = checkInRow.cut_salary || "";
+    //       }
+    //     }
+
+    //     console.log("Deduction Value:", deductionValue);
+    //     console.log("Cut Salary Value:", cutSalaryValue);
+
+    //     setEmpData(rowsdata);
+    //     setCutSalary(cutSalaryValue);
+    //     setloading(false);
+
+    //     setpageState((old) => ({
+    //       ...old,
+    //       isLoading: false,
+    //       data: rowsdata,
+    //       attended_count: attended_count,
+    //       leave_count: leave_count,
+    //       late_count: late_count,
+    //       dedution: deductionValue,
+    //       cut_salary: cutSalaryValue,
+    //       first_check: firstCheckIn,
+    //       workingDays: workingDays,
+    //       leaveDaySalary: LEAVE_DAY_SALARY,
+    //       lateDaySalary: LATE_DAY_SALARY,
+    //       totalSalary: TOTAl_SALARY,
+    //       perDaySalary: per_day_salary,
+    //       pageSize: result?.data?.Record?.per_page,
+    //       total: result?.data?.Record?.total,
+    //     }));
+    //   })
+    //   .catch((err) => {
+    //     setloading(false);
+    //     console.log("here is error");
+    //     console.log(err);
+    //     toast.error("Sorry something went wrong. Kindly refresh the page.", {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //     // navigate("/", {
+    //     //   state: {
+    //     //     error: "Something Went Wrong! Please Try Again",
+    //     //     continueURL: location.pathname,
+    //     //   },
+    //     // });
+    //   });
   };
 
   // ON LATE
