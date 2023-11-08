@@ -7,12 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
 import usePermission from "../../utils/usePermission";
-import {
-  Avatar,
-  Box,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { MdModeEdit, MdMoneyOff, MdPendingActions } from "react-icons/md";
 import { TfiCheck, TfiClose } from "react-icons/tfi";
@@ -28,6 +23,8 @@ import {
 import SalaryDeductDailogue from "./SalaryDeductDailogue";
 import PasswordDialogue from "./PasswordDialogue";
 import { FaDownload } from "react-icons/fa";
+import MyCalendar from "./MyCalendar";
+import EmployeeCalendar from "./EmployeeCalendar";
 
 const SingleEmployee = ({ user }) => {
   const {
@@ -38,9 +35,9 @@ const SingleEmployee = ({ user }) => {
     BACKEND_URL,
     DataGridStyles,
     pageState,
-    setpageState, 
+    setpageState,
     t,
-    themeBgImg
+    themeBgImg,
   } = useStateContext();
 
   const path = window.location.pathname;
@@ -63,6 +60,13 @@ const SingleEmployee = ({ user }) => {
   const [showDailogue, setDialogue] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState(false);
   console.log("cut: ", cut_salary);
+
+  // offdays
+  const [offDays, setOffDays] = useState([]);
+  const isOffDay = (offDay) => {
+    const formattedOffDay = moment(offDay).format("dddd"); // Convert date to day name (e.g., "Sunday")
+    return offDays.includes(formattedOffDay);
+  };
 
   const handleDayFilter = (event) => {
     setSelectedMonth(event.target.value);
@@ -145,44 +149,44 @@ const SingleEmployee = ({ user }) => {
         if (params?.row?.is_late === 1 || params.row.is_late === 2) {
           return params?.row?.late_minutes + " minutes";
         } else if (hasPermission("mark_late")) {
-            return (
-              <div className="flex justify-between px-5 py-3">
-                <Tooltip title="Yes" arrow>
-                  <IconButton
-                    style={{
-                      backgroundColor: "#4CAF50",
-                      color: "white",
-                      fontSize: "1rem",
-                    }}
-                    className="rounded-full"
-                    onClick={(event) => lateSalary(event, 1, params?.row.id)}
-                  >
-                    <CheckIcon />
-                  </IconButton>
-                </Tooltip>
-  
-                <Tooltip title="No" arrow>
-                  <IconButton
-                    style={{
-                      backgroundColor: "#DC2626",
-                      color: "white",
-                      fontSize: "1rem",
-                      marginLeft: "5%",
-                    }}
-                    className="rounded-full"
-                    onClick={(event) => lateSalary(event, 2, params?.row.id)}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Tooltip>
-              </div>
-            );
+          return (
+            <div className="flex justify-between px-5 py-3">
+              <Tooltip title="Yes" arrow>
+                <IconButton
+                  style={{
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    fontSize: "1rem",
+                  }}
+                  className="rounded-full"
+                  onClick={(event) => lateSalary(event, 1, params?.row.id)}
+                >
+                  <CheckIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="No" arrow>
+                <IconButton
+                  style={{
+                    backgroundColor: "#DC2626",
+                    color: "white",
+                    fontSize: "1rem",
+                    marginLeft: "5%",
+                  }}
+                  className="rounded-full"
+                  onClick={(event) => lateSalary(event, 2, params?.row.id)}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+          );
         } else {
           return "-";
         }
       },
     },
-    
+
     {
       field: "extra_minutes",
       headerAlign: "center",
@@ -192,7 +196,12 @@ const SingleEmployee = ({ user }) => {
       renderCell: (params) => {
         console.log("Params:", params);
         const checkTime = moment(params?.row?.check_datetime).format("HH:mm");
-        const checkoutTime = moment(`${params?.row?.date} ${moment(params?.row?.checkOuts?.split(",")[0], "hh:mm A").format("HH:mm:ss")}`).format("HH:mm");
+        const checkoutTime = moment(
+          `${params?.row?.date} ${moment(
+            params?.row?.checkOuts?.split(",")[0],
+            "hh:mm A"
+          ).format("HH:mm:ss")}`
+        ).format("HH:mm");
         const extraMinutes = moment(checkoutTime, "HH:mm").diff(
           moment(params?.row?.defaultCheckout || "06:30 PM", "HH:mm"),
           "minutes"
@@ -203,26 +212,25 @@ const SingleEmployee = ({ user }) => {
           "minutes"
         );
 
-        if(isNaN(lateMinutes) || isNaN(extraMinutes)) {
+        if (isNaN(lateMinutes) || isNaN(extraMinutes)) {
           return "-";
         } else {
           let totalMinutes = 0;
-          if(lateMinutes < 0) {
-            totalMinutes += lateMinutes; 
+          if (lateMinutes < 0) {
+            totalMinutes += lateMinutes;
           }
-          if(extraMinutes > 0) {
+          if (extraMinutes > 0) {
             totalMinutes += extraMinutes;
           }
 
-          if(totalMinutes > 0) {
-            return totalMinutes?.toString()?.slice(1) + " minutes"
+          if (totalMinutes > 0) {
+            return totalMinutes?.toString()?.slice(1) + " minutes";
           } else {
             return "-";
           }
         }
       },
     },
-
 
     // LATE REASON
     {
@@ -769,7 +777,10 @@ const SingleEmployee = ({ user }) => {
     if (btn === 1) {
       console.log("deducted salary: ", deduted_salary);
       UpdateData.append("is_late", 1);
-      UpdateData.append("late_minutes", Number(lateMinutes) <= 0 ? 0 : lateMinutes);
+      UpdateData.append(
+        "late_minutes",
+        Number(lateMinutes) <= 0 ? 0 : lateMinutes
+      );
       UpdateData.append("deduct_salary", 1);
       UpdateData.append("notify_status", "Direct");
       UpdateData.append("cut_salary", deduted_salary.toString());
@@ -813,7 +824,10 @@ const SingleEmployee = ({ user }) => {
       ) {
         console.log("lates::::::::::::::");
         UpdateData.append("is_late", 1);
-        UpdateData.append("late_minutes",  Number(lateMinutes) <= 0 ? 0 : lateMinutes);
+        UpdateData.append(
+          "late_minutes",
+          Number(lateMinutes) <= 0 ? 0 : lateMinutes
+        );
         UpdateData.append("deduct_salary", 2);
       } else if (
         // moment(pageState?.first_check?.check_datetime, "HH:mm") >
@@ -822,7 +836,10 @@ const SingleEmployee = ({ user }) => {
       ) {
         console.log("lates::::::::::::::");
         UpdateData.append("is_late", 2);
-        UpdateData.append("late_minutes",  Number(lateMinutes) <= 0 ? 0 : lateMinutes);
+        UpdateData.append(
+          "late_minutes",
+          Number(lateMinutes) <= 0 ? 0 : lateMinutes
+        );
         UpdateData.append("deduct_salary", 2);
       } else if (
         moment(pageState?.first_check?.check_datetime, "HH:mm") <=
@@ -1387,7 +1404,12 @@ const SingleEmployee = ({ user }) => {
                     onClick={() => setPasswordConfirm(true)}
                     // sx={{ border: "1px solid #DA1F26" }}
                   >
-                    <FaDownload size={14} className={`${currentMode === "dark" ? "text-white" : "text-black"} hover:text-primary`} />
+                    <FaDownload
+                      size={14}
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } hover:text-primary`}
+                    />
                   </IconButton>
                 </Tooltip>
               </div>
@@ -1423,9 +1445,13 @@ const SingleEmployee = ({ user }) => {
                 <div className="col-span-2 px-2 pb-2 text-sm h-fit">
                   <div
                     className={`${
-                     !themeBgImg 
-                     ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                     : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EEEEEE]"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
                     } rounded-xl shadow-sm p-3 mb-1`}
                   >
                     <label htmlFor="pick-image">
@@ -1471,30 +1497,38 @@ const SingleEmployee = ({ user }) => {
 
                   <div
                     className={`${
-                      !themeBgImg 
-                     ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                     : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EEEEEE]"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
                     } rounded-xl shadow-sm p-3 my-1`}
                   >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <h1 className="font-semibold">{t("monthly_salary")}</h1>
+                          <h1 className="font-semibold">
+                            {t("monthly_salary")}
+                          </h1>
                         </div>
                         <div className="font-bold">
                           {empData[0]?.salary
-                          ? `${empData[0]?.currency} ${empData[0]?.salary} `
-                          : "-"}
+                            ? `${empData[0]?.currency} ${empData[0]?.salary} `
+                            : "-"}
                         </div>
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <h1 className="font-semibold">{t("salary_per_day")}</h1>
+                          <h1 className="font-semibold">
+                            {t("salary_per_day")}
+                          </h1>
                         </div>
                         <div className="font-bold">
                           {empData[0]?.salary && empData[0]?.salary !== null
-                          ? `${empData[0]?.currency} ${pageState?.perDaySalary}`
-                          : "-"}
+                            ? `${empData[0]?.currency} ${pageState?.perDaySalary}`
+                            : "-"}
                         </div>
                       </div>
                     </div>
@@ -1503,9 +1537,13 @@ const SingleEmployee = ({ user }) => {
 
                   <div
                     className={`${
-                      !themeBgImg 
-                     ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                     : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EEEEEE]"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
                     } rounded-xl shadow-sm p-3 my-1`}
                   >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
@@ -1548,7 +1586,7 @@ const SingleEmployee = ({ user }) => {
                           </p>
                           {"  "}
                           <h1 className="font-semibold text-sm">
-                           {t("late_attendance_days")}
+                            {t("late_attendance_days")}
                           </h1>
                         </div>
                       </div>
@@ -1558,32 +1596,40 @@ const SingleEmployee = ({ user }) => {
                   {empData[0]?.salary ? (
                     <div
                       className={`${
-                        !themeBgImg 
-                        ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                        : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                        !themeBgImg
+                          ? currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                          : currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light"
                       } rounded-xl shadow-sm p-3 my-1`}
                     >
                       <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                         <div className="text-center">
                           <div className="flex items-center justify-center">
-                            <h1 className="font-semibold">{t("leave_days_salary")}</h1>
+                            <h1 className="font-semibold">
+                              {t("leave_days_salary")}
+                            </h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
                           <div className="font-bold">
                             {empData[0]?.salary
-                            ? `${empData[0]?.currency} ${pageState?.leaveDaySalary} `
-                            : "-"}
+                              ? `${empData[0]?.currency} ${pageState?.leaveDaySalary} `
+                              : "-"}
                           </div>
                         </div>
                         <div className="text-center">
                           <div className="flex items-center justify-center">
-                            <h1 className="font-semibold">{t("late_days_salary")}</h1>
+                            <h1 className="font-semibold">
+                              {t("late_days_salary")}
+                            </h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
                           <div className="font-bold">
                             {empData[0]?.salary && empData[0]?.salary !== null
-                            ? `${empData[0]?.currency} ${pageState?.lateDaySalary}`
-                            : "-"}
+                              ? `${empData[0]?.currency} ${pageState?.lateDaySalary}`
+                              : "-"}
                           </div>
                         </div>
                       </div>
@@ -1595,9 +1641,13 @@ const SingleEmployee = ({ user }) => {
 
                   <div
                     className={`${
-                      !themeBgImg 
-                      ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                      : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EEEEEE]"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
                     } rounded-xl shadow-sm p-3 my-1`}
                   >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
@@ -1607,8 +1657,8 @@ const SingleEmployee = ({ user }) => {
                         </div>
                         <div className="font-bold">
                           {empData[0]?.salary
-                          ? `${empData[0]?.currency} ${pageState?.totalSalary} `
-                          : "-"}
+                            ? `${empData[0]?.currency} ${pageState?.totalSalary} `
+                            : "-"}
                         </div>
                       </div>
                     </div>
@@ -1641,7 +1691,6 @@ const SingleEmployee = ({ user }) => {
                           csvOptions: {
                             disableToolbarButton: User?.role !== 1,
                           },
-         
                         },
                       }}
                       width="auto"
@@ -1671,6 +1720,10 @@ const SingleEmployee = ({ user }) => {
                           pageSize: newPageSize,
                         }))
                       }
+                    />
+                    <EmployeeCalendar
+                      isOffDay={isOffDay}
+                      pageState={pageState}
                     />
                   </Box>
                 </div>
