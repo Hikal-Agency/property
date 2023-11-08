@@ -17,14 +17,14 @@ const EmployeeCalendar = ({ isOffDay, pageState }) => {
       plugins: [interactionPlugin, dayGridPlugin],
       initialView: "dayGridMonth",
       height: "90vh",
-      selectable: true,
-      select: function (start, end, allDays) {
-        if (isOffDay(start)) {
-          setSelectedDate(null); // Clear selectedDate if off-day is clicked
-        } else {
-          setSelectedDate(start);
-        }
-      },
+      //   selectable: true,
+      //   select: function (start, end, allDays) {
+      //     if (isOffDay(start)) {
+      //       setSelectedDate(null); // Clear selectedDate if off-day is clicked
+      //     } else {
+      //       setSelectedDate(start);
+      //     }
+      //   },
       dayCellDidMount: function (args) {
         const dayElement = args.el; // Use args.el instead of args.dayEl
         const dayDate = args.date;
@@ -115,13 +115,13 @@ const EmployeeCalendar = ({ isOffDay, pageState }) => {
 
   return (
     <div ref={calendarRef}>
-      {selectedDate && (
+      {/* {selectedDate && (
         <AlterTimingPopup
           date={selectedDate}
           isOffDay={isOffDay}
           onClose={() => setSelectedDate(null)}
         />
-      )}
+      )} */}
     </div>
   );
 };
