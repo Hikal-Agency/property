@@ -21,6 +21,13 @@ export const ContextProvider = ({ children }) => {
     localStorage.getItem("currentMode") || "light"
   );
   const [themeSettings, setThemeSettings] = useState(false);
+  const [settings, setSettings] = useState({
+    in_time: null,
+    out_time: null,
+    in_late_time: null,
+    out_late_time: null,
+    off_day: null,
+  });
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
   const [User, setUser] = useState({});
@@ -415,7 +422,7 @@ export const ContextProvider = ({ children }) => {
       font: "'Noto Sans TC', sans-serif",
       // size: "14px",
       size: "12px",
-    }, 
+    },
     {
       code: "fr",
       title: "Français",
@@ -688,6 +695,8 @@ export const ContextProvider = ({ children }) => {
         setBlurWhiteColor,
         Counters,
         setCounters,
+        settings,
+        setSettings,
       }}
     >
       {children}

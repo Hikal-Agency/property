@@ -9,26 +9,21 @@ import axios from "../../axoisConfig";
 import moment from "moment";
 
 const OfficeSettings = () => {
-  const { 
-    currentMode, 
-    BACKEND_URL, 
-    t,
-    themeBgImg
-  } = useStateContext();
+  const { currentMode, BACKEND_URL, t, themeBgImg, settings, setSettings } =
+    useStateContext();
   const token = localStorage.getItem("auth-token");
 
-  const [settings, setSettings] = useState({
-    in_time: null,
-    out_time: null,
-    in_late_time: null,
-    out_late_time: null,
-    off_day: null,
-  });
+  // const [settings, setSettings] = useState({
+  //   in_time: null,
+  //   out_time: null,
+  //   in_late_time: null,
+  //   out_late_time: null,
+  //   off_day: null,
+  // });
   const [btnLoading, setBtnLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   console.log("settings: ", settings);
-
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -193,13 +188,17 @@ const OfficeSettings = () => {
           {t("office_time_settings")}
         </h1>
       </div>
-  
 
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 gap-5 pb-3">
         <div
           className={`${
-            !themeBgImg ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-            : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+            !themeBgImg
+              ? currentMode === "dark"
+                ? "bg-[#1c1c1c]"
+                : "bg-[#EEEEEE]"
+              : currentMode === "dark"
+              ? "blur-bg-dark"
+              : "blur-bg-light"
           } w-full col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 p-5 rounded-xl shadow-sm`}
         >
           <div
@@ -213,8 +212,13 @@ const OfficeSettings = () => {
             <div className="flex flex-col">
               <div
                 className={`${
-                  !themeBgImg ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-                  : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                  !themeBgImg
+                    ? currentMode === "dark"
+                      ? "bg-[#1c1c1c]"
+                      : "bg-[#EEEEEE]"
+                    : currentMode === "dark"
+                    ? "blur-bg-dark"
+                    : "blur-bg-light"
                 } p-4 shadow-sm rounded-xl`}
               >
                 <div className="flex justify-between mb-3">
@@ -284,7 +288,7 @@ const OfficeSettings = () => {
                       currentMode === "dark" ? "text-white" : "text-center"
                     }`}
                   >
-                   {t("off_day")}
+                    {t("off_day")}
                   </p>
                   {isEditing ? (
                     <input
@@ -313,8 +317,13 @@ const OfficeSettings = () => {
             <div className="flex flex-col">
               <div
                 className={`${
-                  !themeBgImg ? (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-                  : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                  !themeBgImg
+                    ? currentMode === "dark"
+                      ? "bg-[#1c1c1c]"
+                      : "bg-[#EEEEEE]"
+                    : currentMode === "dark"
+                    ? "blur-bg-dark"
+                    : "blur-bg-light"
                 } p-4 shadow-sm rounded-xl`}
               >
                 <div className="flex justify-between mb-3">
@@ -323,7 +332,7 @@ const OfficeSettings = () => {
                       currentMode === "dark" ? "text-white" : "text-center"
                     }`}
                   >
-                   {t("maximum_late_time")}
+                    {t("maximum_late_time")}
                   </p>
                   {isEditing ? (
                     <input
@@ -353,7 +362,7 @@ const OfficeSettings = () => {
                       currentMode === "dark" ? "text-white" : "text-center"
                     }`}
                   >
-                   {t("overtime_after")}
+                    {t("overtime_after")}
                   </p>
                   {isEditing ? (
                     <input
@@ -385,7 +394,7 @@ const OfficeSettings = () => {
                   type="submit"
                   size="medium"
                   className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold mb-3"
-                  style={{color: "#ffffff" }}
+                  style={{ color: "#ffffff" }}
                   onClick={handleEditClick}
                 >
                   {t("button_modify_settings")}
@@ -395,7 +404,7 @@ const OfficeSettings = () => {
                   type="submit"
                   size="medium"
                   className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold mb-3"
-                  style={{color: "#ffffff" }}
+                  style={{ color: "#ffffff" }}
                   onClick={handleUpdateClick}
                 >
                   {btnLoading ? (

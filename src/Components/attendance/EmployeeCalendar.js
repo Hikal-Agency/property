@@ -7,7 +7,7 @@ import "../../styles/index.css";
 import AlterTimingPopup from "./AlterTimingPopup";
 import moment from "moment";
 
-const EmployeeCalendar = ({ isOffDay, pageState }) => {
+const EmployeeCalendar = ({ isOffDay, pageState, settings, setSettings }) => {
   const { currentMode, primaryColor } = useStateContext();
   const calendarRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(null);

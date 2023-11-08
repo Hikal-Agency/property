@@ -38,7 +38,11 @@ const SingleEmployee = ({ user }) => {
     setpageState,
     t,
     themeBgImg,
+    settings,
+    setSettings,
   } = useStateContext();
+
+  console.log("settings: ", settings);
 
   const path = window.location.pathname;
   const location = path.split("/").pop();
@@ -62,7 +66,7 @@ const SingleEmployee = ({ user }) => {
   console.log("cut: ", cut_salary);
 
   // offdays
-  const [offDays, setOffDays] = useState([]);
+  const [offDays, setOffDays] = useState(settings?.off_day || "");
   const isOffDay = (offDay) => {
     const formattedOffDay = moment(offDay).format("dddd"); // Convert date to day name (e.g., "Sunday")
     return offDays.includes(formattedOffDay);
