@@ -100,29 +100,7 @@ const CreateAppointment = () => {
             }`}
           >
             <div className="mt-3">
-              <Button
-                onClick={handleCreateMeeting}
-                className={`mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
-                ripple={true}
-                style={{
-                  background: `${primaryColor}`,
-                  color: "white",
-                }}
-                size="lg"
-                type="submit"
-                disabled={btnLoading ? true : false}
-              >
-                {btnLoading ? (
-                  <CircularProgress
-                    size={20}
-                    sx={{ color: "white" }}
-                    className="text-white"
-                  />
-                ) : (
-                  <span>{t("create_meeting")}</span>
-                )}
-              </Button>
-              <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-5 flex justify-between">
+              <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-5 gap-5 flex justify-between">
                 <Box
                   sx={{
                     borderRadius: "7px",
@@ -169,8 +147,8 @@ const CreateAppointment = () => {
                   </span>
                 </Box>
 
-                <div className="p-5 mt-2 w-full lg:col-span-2">
-                  <Box sx={darkModeColors}>
+                <div className="mt-5 w-full lg:col-span-2 flex flex-col gap-5">
+                  {/* <Box sx={darkModeColors}>
                     <TextField
                       className="w-full"
                       placeholder="search.."
@@ -188,31 +166,25 @@ const CreateAppointment = () => {
                         ),
                       }}
                     />
-                  </Box>
+                  </Box> */}
 
-                  <div className="grid grid-cols-2 gap-5 py-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <Box
+                      className="shadow-md rounded-xl p-5"
                       sx={{
-                        // padding: "6px",
-                        borderRadius: "7px",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                         fontWeight: "bold",
                         background: !themeBgImg
                           ? currentMode === "dark"
-                            ? "#333333"
+                            ? "#1C1C1C"
                             : "#EEEEEE"
                           : currentMode === "dark"
                           ? blurDarkColor
                           : blurLightColor,
                         color: currentMode === "dark" ? "white" : "black",
-                        boxShadow:
-                          currentMode === "dark"
-                            ? "3px 3px 3px rgba(255, 255, 255, 0.35)"
-                            : "3px 3px 3px rgba(0, 0, 0, 0.25)",
                       }}
-                      className="p-5"
                     >
                       <div className="flex flex-col items-center space-y-3">
                         <h1 className="font-bold text-3xl text-primary mr-3">
@@ -222,27 +194,21 @@ const CreateAppointment = () => {
                       </div>
                     </Box>
                     <Box
+                      className="shadow-md rounded-xl p-5"
                       sx={{
-                        // padding: "10px",
-                        borderRadius: "7px",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                         fontWeight: "bold",
                         background: !themeBgImg
                           ? currentMode === "dark"
-                            ? "#333333"
+                            ? "#1C1C1C"
                             : "#EEEEEE"
                           : currentMode === "dark"
                           ? blurDarkColor
                           : blurLightColor,
                         color: currentMode === "dark" ? "white" : "black",
-                        boxShadow:
-                          currentMode === "dark"
-                            ? "3px 3px 3px rgba(255, 255, 255, 0.35)"
-                            : "3px 3px 3px rgba(0, 0, 0, 0.25)",
                       }}
-                      className="p-5"
                     >
                       <div className="flex flex-col items-center space-y-3">
                         <h1 className="font-bold text-3xl text-primary mr-3">
@@ -252,25 +218,30 @@ const CreateAppointment = () => {
                       </div>
                     </Box>
                   </div>
+                  <Button
+                    onClick={handleCreateMeeting}
+                    className={`mb-5 text-white w-full rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
+                    ripple={true}
+                    style={{
+                      background: `${primaryColor}`,
+                      color: "white",
+                    }}
+                    size="lg"
+                    type="submit"
+                    disabled={btnLoading ? true : false}
+                  >
+                    {btnLoading ? (
+                      <CircularProgress
+                        size={20}
+                        sx={{ color: "white" }}
+                        className="text-white"
+                      />
+                    ) : (
+                      <span>{t("create_meeting")}</span>
+                    )}
+                  </Button>
                 </div>
               </div>
-
-              {/* <h1
-                className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                  currentMode === "dark"
-                    ? "text-white border-white"
-                    : "text-red-600 font-bold border-red-600"
-                }`}
-              >
-                ● Create Appointment
-              </h1> */}
-              {/* <GoogleCalendarAppointment
-                meetingsCount={meetingsCount}
-                setMeetingCount={setMeetingCount}
-              /> */}
-              <Box className="h-[60vh] flex items-center justify-center">
-                <img src="/coming-soon.png" width={"200px"} alt="" />
-              </Box>
             </div>
           </div>
         )}

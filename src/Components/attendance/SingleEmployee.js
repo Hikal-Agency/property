@@ -1665,7 +1665,7 @@ const SingleEmployee = ({ user }) => {
             {/* SALARY CALC & TABLE  */}
             <div className="my-5 mb-10">
               <div
-                className={`grid grid-cols-1 md:grid-cols-12  ${
+                className={`grid grid-cols-1 md:grid-cols-12 gap-3  ${
                   currentMode === "dark" ? "text-[#EEEEEE]" : "text-black"
                 }`}
               >
@@ -1893,67 +1893,74 @@ const SingleEmployee = ({ user }) => {
                 </div>
 
                 {/* section 2 */}
-                <div className="col-span-10 ">
-                  <Box
-                    width={"100%"}
-                    height={"100%"}
-                    className={`single-emp ${currentMode}-mode-datatable `}
-                    sx={{ ...DataGridStyles, paddingLeft: "5px" }}
-                  >
-                    <DataGrid
-                      disableDensitySelector
-                      autoHeight
-                      disableSelectionOnClick
-                      rows={pageState.data}
-                      columns={columns}
-                      loading={pageState.isLoading}
-                      rowsPerPageOptions={[]}
-                      pagination
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: false,
-                          printOptions: {
-                            disableToolbarButton: User?.role !== 1,
-                          },
-                          csvOptions: {
-                            disableToolbarButton: User?.role !== 1,
-                          },
-                        },
-                      }}
-                      width="auto"
-                      paginationMode="server"
-                      page={pageState.page - 1}
-                      pageSize={pageState.pageSize}
-                      sx={{
-                        boxShadow: 2,
-                        "& .MuiDataGrid-cell:hover": {
-                          cursor: "pointer",
-                        },
-                      }}
-                      getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0
-                          ? "even"
-                          : "odd"
-                      }
-                      onPageChange={(newPage) => {
-                        setpageState((old) => ({
-                          ...old,
-                          page: newPage + 1,
-                        }));
-                      }}
-                      onPageSizeChange={(newPageSize) =>
-                        setpageState((old) => ({
-                          ...old,
-                          pageSize: newPageSize,
-                        }))
-                      }
-                    />
-                    <EmployeeCalendar
-                      isOffDay={isOffDay}
-                      pageState={pageState}
-                    />
-                  </Box>
+                <div className={`${
+                  themeBgImg ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                  : (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                } col-span-10 p-5 rounded-xl shadow-sm`}>
+                  <EmployeeCalendar
+                    isOffDay={isOffDay}
+                    pageState={pageState}
+                  />
                 </div>
+                
+              </div>
+
+              <div className="w-full my-5">
+                <Box
+                  width={"100%"}
+                  height={"100%"}
+                  className={`single-emp ${currentMode}-mode-datatable `}
+                  sx={{ ...DataGridStyles, paddingLeft: "5px" }}
+                >
+                  <DataGrid
+                    disableDensitySelector
+                    autoHeight
+                    disableSelectionOnClick
+                    rows={pageState.data}
+                    columns={columns}
+                    loading={pageState.isLoading}
+                    rowsPerPageOptions={[]}
+                    pagination
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: false,
+                        printOptions: {
+                          disableToolbarButton: User?.role !== 1,
+                        },
+                        csvOptions: {
+                          disableToolbarButton: User?.role !== 1,
+                        },
+                      },
+                    }}
+                    width="auto"
+                    paginationMode="server"
+                    page={pageState.page - 1}
+                    pageSize={pageState.pageSize}
+                    sx={{
+                      boxShadow: 2,
+                      "& .MuiDataGrid-cell:hover": {
+                        cursor: "pointer",
+                      },
+                    }}
+                    getRowClassName={(params) =>
+                      params.indexRelativeToCurrentPage % 2 === 0
+                        ? "even"
+                        : "odd"
+                    }
+                    onPageChange={(newPage) => {
+                      setpageState((old) => ({
+                        ...old,
+                        page: newPage + 1,
+                      }));
+                    }}
+                    onPageSizeChange={(newPageSize) =>
+                      setpageState((old) => ({
+                        ...old,
+                        pageSize: newPageSize,
+                      }))
+                    }
+                  />
+                </Box>
                 {showDailogue && (
                   <SalaryDeductDailogue
                     showDailogue={showDailogue}

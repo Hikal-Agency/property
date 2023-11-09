@@ -706,6 +706,7 @@
     "select_category": "Select Category",
     "select_sender_id": "Select Sender ID",
     "clear": "Clear",
+    "clear_all": "Clear All",
 
     "new_from_here": "",
 
@@ -724,6 +725,10 @@
     "search_timezone": "Search Timezone",
     "update_property": "Update Property",
     "secondary_buyers": "Secondary Buyers",
+    "create_meeting" : "Create Meeting", 
+    "meeting_has_created": "Your meeting has been created!", 
+    "join_as_moderator": "Join the meeting as a Moderator",
+    "share_to_attendees": "Share this meeting link to attendees",
     "thirdpartyleads": "Third Party Leads",
     "livecall": "Live Call",
     "coldleads": "Cold Leads",
@@ -751,11 +756,6 @@
     "attendance_self": "Attendance Self",
     "trainer": "Trainer",
     "notificationslist": "Notifications List",
-    "create_meeting" : "Create Meeting", 
-    "meeting_has_created": "Your meeting has been created!", 
-    "join_as_moderator": "Join the meeting as a Moderator",
-    "share_to_attendees": "Share this meeting link to attendees",
-
     "live_call_meeting_created": "The meeting has been created successfully!",
     "live_call_meeting_created_shared": "The meeting has been created and shared to your client.",
     "just_start": "Just start the meeting!",
