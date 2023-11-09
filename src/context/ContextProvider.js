@@ -387,6 +387,7 @@ export const ContextProvider = ({ children }) => {
 
   useEffect(() => {
   if(!themeBgImg?.startsWith("#")){
+    document.body.style.backgroundColor = "transparent";
     document.body.style.backgroundImage = `url(${themeBgImg})`;
     document.body.style.backgroundRepeat = "no-repeat";
     document.body.style.backgroundSize = "cover";
@@ -395,6 +396,7 @@ export const ContextProvider = ({ children }) => {
     // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
     document.body.style.backgroundBlendMode = "overlay";
   } else {
+    document.body.style.backgroundImage = "none";
     document.body.style.backgroundColor = themeBgImg;
   }
   }, [themeBgImg]);
