@@ -17,6 +17,10 @@ const colors = [
   "rgb(247, 193, 52)", // Light yellow
 ];
 
+const solidColors = [
+  "#ddaaff", "#000000"
+]; 
+
 const images = [
   "https://images.unsplash.com/photo-1554034483-04fda0d3507b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
   "https://images.unsplash.com/photo-1501696461415-6bd6660c6742?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
@@ -138,6 +142,13 @@ const ColorsPopup = ({ handleClose }) => {
               backgroundImage: `url(${image})`, 
               backgroundRepeat: "no-repeat", 
               backgroundSize: "cover"
+            }}>
+            </div>)}
+        </div>
+
+        <div className="my-4 mx-auto place-items-center grid grid-cols-5 gap-y-5">
+            {solidColors?.map((color) => <div onClick={() => handleSelectBgImg(color)} className="cursor-pointer rounded-md w-[35px] h-[35px]" style={{
+              backgroundColor: color, 
             }}>
             </div>)}
         </div>
