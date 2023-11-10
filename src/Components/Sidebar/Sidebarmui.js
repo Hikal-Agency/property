@@ -140,6 +140,8 @@ const Sidebarmui = () => {
     setThemeBgImg,
     timeZone,
     setTimezone,
+    pinnedZone,
+    setPinnedZone,
   } = useStateContext();
   console.log("timezone in sidebar: ", timeZone);
 
@@ -396,9 +398,11 @@ const Sidebarmui = () => {
             userType: result.data.user[0].userType,
             is_alert: result.data.user[0].is_alert,
             timezone: result.data.user[0].timezone,
+            pinned: result.data.user[0].pinned,
           };
 
           setTimezone(user?.timezone);
+          setPinnedZone(user?.pinned);
           setUser(user);
           setIsUserSubscribed(checkUser(user));
           getAllLeadsMembers(user);

@@ -25,6 +25,8 @@ const TimeZone = () => {
     User,
     timeZone,
     setTimezone,
+    pinnedZone,
+    setPinnedZone,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
@@ -38,6 +40,48 @@ const TimeZone = () => {
   const filteredTimezones = timezones?.filter((timezone) =>
     timezone.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handlePinTimeZone = async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    try {
+      const pinTimeZone = await axios.post(
+        `${BACKEND_URL}/updateuser/${User?.id}`,
+        { pinned: timeZone },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("Timezone Pinned.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log("Response: ", pinTimeZone);
+    } catch (error) {
+      toast.error("Unable set timezone.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const handleTimezoneChange = async (e) => {
     const timeZone = e.target.innerText?.trim();
@@ -185,7 +229,12 @@ const TimeZone = () => {
                   value={timezone}
                   onClick={handleTimezoneChange}
                 >
-                  <span style={{ marginRight: "8px" }}>{"\u2691"}</span>
+                  <span
+                    style={{ marginRight: "8px" }}
+                    onClick={handlePinTimeZone}
+                  >
+                    {"\u2691"}
+                  </span>
                   {timezone}
                 </MenuItem>
               ))}
