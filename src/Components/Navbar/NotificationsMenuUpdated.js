@@ -23,8 +23,11 @@ import {
 const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   const token = localStorage.getItem("auth-token");
   const { BACKEND_URL, User, getNotifCounts, t } = useStateContext();
-  const [notifications, setNotifications] = useState();
+  const [notifications, setNotifications] = useState([]);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [lastPage, setLastPage] = useState(null);
+  const [currPage, setCurrPage] = useState(1);
   const navigate = useNavigate();
 
   const handleAvoidClose = (event) => {
@@ -58,7 +61,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   const fetchNotifications = async (page) => {
     try {
       setLoading(true);
-      const url = `${BACKEND_URL}/allnotifications?page=${page}`;
+      const url = `${BACKEND_URL}/allnotifications?page=${page}&isRead=0`;
 
       const response = await axios.get(url, {
         headers: {
@@ -69,15 +72,19 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
       setLoading(false);
 
       const filteredNotifications = response?.data?.notification?.data;
+      const lastPage = response?.data?.notification?.last_page;
+      setLastPage(lastPage);
 
-      setNotifications(filteredNotifications);
+      setNotifications([...notifications, ...filteredNotifications]);
+
+      console.log([...notifications, ...filteredNotifications]);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchNotifications(1);
+    fetchNotifications(currPage);
   }, [BACKEND_URL, token]);
 
   const openNotification = (e, activity) => {
@@ -127,6 +134,30 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
       setCurrNavBtn(null);
     }
   };
+
+  const loadMore = async () => {
+    try {
+      setBtnLoading(true);
+      const url = `${BACKEND_URL}/allnotifications?page=${currPage+1}&isRead=0`;
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setCurrPage((page) =>page + 1);
+      setBtnLoading(false);
+
+      const filteredNotifications = response?.data?.notification?.data;
+      const lastPage = response?.data?.notification?.last_page;
+      setLastPage(lastPage);
+
+      setNotifications([...notifications, ...filteredNotifications]);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div
@@ -182,16 +213,16 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
               );
             })}
 
-            <div className="pt-3 flex justify-center">
-              <button className="text-primary bg-transparent hover:bg-[#AAAAAA] hover:text-white font-semibold rounded-xl shadow-sm p-2">
-                Load more
+            <di v className="pt-3 flex justify-center">
+              <button onClick={loadMore} disabled={currPage >= lastPage} className="text-primary bg-transparent hover:bg-[#AAAAAA] hover:text-white font-semibold rounded-xl shadow-sm p-2">
+                {btnLoading ? <CircularProgress size={18} style={{color: "black"}}/> : <span>Load more</span>}
               </button>
-            </div>
+            </di>
             
-          </>
+          </>     
         ) : (
           <h1 className="text-center">No Unread Notifications</h1>
-        ))}
+        ))}     
     </div>
   );
 };

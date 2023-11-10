@@ -17,6 +17,7 @@ const EmployeeCalendar = ({ isOffDay, pageState, settings, setSettings }) => {
       plugins: [interactionPlugin, dayGridPlugin],
       initialView: "dayGridMonth",
       height: "90vh",
+      displayEventTime: false,
       //   selectable: true,
       //   select: function (start, end, allDays) {
       //     if (isOffDay(start)) {
@@ -86,30 +87,60 @@ const EmployeeCalendar = ({ isOffDay, pageState, settings, setSettings }) => {
   //   };
   console.log("pagestate in emp calendar:: ", pageState);
 
+  // const formatEvents = (pageState) => {
+  //   const events = [];
+
+  //   for (const data of pageState) {
+  //     const checkDatetime = moment(data.check_datetime);
+  //     const date = checkDatetime.format("YYYY-MM-DD");
+  //     const checkIn = data.checkIns;
+  //     const checkOut = data.checkOuts;
+
+  //     if (checkIn && checkDatetime.isValid()) {
+  //       events.push({
+  //         title: `Check-in: ${checkIn}`,
+  //         start: checkDatetime.toISOString(),
+  //       });
+  //     }
+
+  //     if (checkOut && checkDatetime.isValid()) {
+  //       events.push({
+  //         title: `Check-out: ${checkOut}`,
+  //         start: checkDatetime.toISOString(), // Use the datetime from your data
+  //       });
+  //     }
+  //   }
+
+  //   return events;
+  // };
+
   const formatEvents = (pageState) => {
     const events = [];
-
+  
     for (const data of pageState) {
       const checkDatetime = moment(data.check_datetime);
       const date = checkDatetime.format("YYYY-MM-DD");
-      const checkIn = data.checkIns;
-      const checkOut = data.checkOuts;
 
-      if (checkIn && checkDatetime.isValid()) {
-        events.push({
-          title: `Check-in: ${checkIn}`,
-          start: checkDatetime.toISOString(),
-        });
+      if (data.checkIns) {
+        const checkIn = data.checkIns;
+        if (checkIn && checkDatetime.isValid()) {
+          events.push({
+            title: `IN: ${checkIn}`,
+            start: checkDatetime.toISOString(),
+          });
+        }
       }
-
-      if (checkOut && checkDatetime.isValid()) {
-        events.push({
-          title: `Check-out: ${checkOut}`,
-          start: checkDatetime.toISOString(), // Use the datetime from your data
-        });
+      if (data.checkOuts) {
+        const checkOut = data.checkOuts;
+        if (checkOut && checkDatetime.isValid()) {
+          events.push({
+            title: `OUT: ${checkOut}`,
+            start: checkDatetime.toISOString(),
+          });
+        }
       }
     }
-
+  
     return events;
   };
 

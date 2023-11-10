@@ -94,8 +94,10 @@ const ShowLocation = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            } ${isLangRTL(i18n.language) 
+              ? (currentMode === "dark" && "border-r-2 border-primary") 
+              : (currentMode === "dark" && "border-l-2 border-primary")}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll
             `}
           >
             <div className="w-full flex items-center pb-3">

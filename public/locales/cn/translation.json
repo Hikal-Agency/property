@@ -707,6 +707,9 @@
     "select_sender_id": "选择发送者ID",
     "clear": "清除",
     "clear_all": "全部清除",
+
+    "new_from_here": "",
+    
     "type_liveleads": "实时通话",
     "liveleads": "实时通话",
     "update_lead_details": "更新潜在客户详情",

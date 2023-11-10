@@ -29,7 +29,7 @@ ChartJS.register(
 );
 
 const CombinationChart = () => {
-  const { currentMode, BACKEND_URL, primaryColor, withOpacity } = useStateContext();
+  const { currentMode, BACKEND_URL, primaryColor, withOpacity, t } = useStateContext();
   const [performanceChartData, setPerformanceChartData] = useState([]);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const CombinationChart = () => {
             datasets: [
               {
                 type: "line",
-                label: "Closed Deals",
+                label: t("menu_closed_deals"),
                 data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
                 backgroundColor: withOpacity(primaryColor, 0.4),
@@ -77,7 +77,7 @@ const CombinationChart = () => {
               },
               {
                 type: "line",
-                label: "Meetings",
+                label: t("meetings"),
                 data: performanceChartData.map(
                   (member) => member.total_meetings
                 ),
@@ -113,7 +113,7 @@ const CombinationChart = () => {
             datasets: [
               {
                 type: "line",
-                label: "Closed Deals",
+                label: t("menu_closed_deals"),
                 data: performanceChartData.map((member) => member.total_sales),
                 fill: true,
                 backgroundColor: withOpacity(primaryColor, 0.4),
@@ -121,7 +121,7 @@ const CombinationChart = () => {
               },
               {
                 type: "line",
-                label: "Meetings",
+                label: t("meetings"),
                 data: performanceChartData.map(
                   (member) => member.total_meetings
                 ),

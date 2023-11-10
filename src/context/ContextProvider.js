@@ -60,7 +60,7 @@ export const ContextProvider = ({ children }) => {
   const [permits, setPermits] = useState("");
   const [primaryColor, setPrimaryColor] = useState("default");
   const [fontFam, setFontFam] = useState("'Noto Sans', sans-serif");
-  const [themeBgImg, setThemeBgImg] = useState("");
+  const [themeBgImg, setThemeBgImg] = useState(null);
   const [blurDarkColor, setBlurDarkColor] = useState("rgba(28,28,28,0.5)");
   const [blurLightColor, setBlurLightColor] = useState("rgba(238,238,238,0.5)");
   const [blurWhiteColor, setBlurWhiteColor] = useState("rgba(255,255,255,0.5)");
@@ -386,6 +386,8 @@ export const ContextProvider = ({ children }) => {
   }, [primaryColor]);
 
   useEffect(() => {
+  if(!themeBgImg?.startsWith("#")){
+    document.body.style.backgroundColor = "transparent";
     document.body.style.backgroundImage = `url(${themeBgImg})`;
     document.body.style.backgroundRepeat = "no-repeat";
     document.body.style.backgroundSize = "cover";
@@ -393,6 +395,10 @@ export const ContextProvider = ({ children }) => {
     document.body.style.backgroundAttachment = "fixed";
     // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
     document.body.style.backgroundBlendMode = "overlay";
+  } else {
+    document.body.style.backgroundImage = "none";
+    document.body.style.backgroundColor = themeBgImg;
+  }
   }, [themeBgImg]);
 
   const withOpacity = (rgb, opacity) => {
