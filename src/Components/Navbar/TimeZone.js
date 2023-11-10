@@ -57,6 +57,20 @@ const TimeZone = () => {
 
     // Fetch the previous pinned values from the state
     const previousPinnedValues = pinnedZone || [];
+
+    if (previousPinnedValues.length >= 3) {
+      toast.error("You can only pin up to 3 timezones.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return; // Stop further execution
+    }
     // Check if the timezone is already pinned
     const isPinned = previousPinnedValues.includes(timezone);
 
