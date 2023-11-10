@@ -1,20 +1,6 @@
-import React, { 
-  useEffect, 
-  useRef, 
-  useState 
-} from "react";
-import { 
-  Avatar, 
-  Box, 
-  IconButton, 
-  ListItemIcon, 
-  Tooltip 
-} from "@mui/material";
-import { 
-  useLocation,
-  Link, 
-  useNavigate  
-} from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Avatar, Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   Menu,
@@ -36,6 +22,8 @@ import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
 import ReminderToast from "./ReminderToast";
 import DealClosedAlert from "./DealClosedAlert";
+import { ImUsers } from "react-icons/im";
+import { MdContactPage } from "react-icons/md";
 
 import {
   BsStopCircle,
@@ -83,19 +71,10 @@ import {
   BsLayers,
   BsPersonGear,
 } from "react-icons/bs";
-import { 
-  FaFacebookSquare, 
-  FaInbox
-} from "react-icons/fa";
-import { 
-  IoMdClose 
-} from "react-icons/io";
-import { 
-  RiRadioButtonLine 
-} from "react-icons/ri";
-import { 
-  GiQueenCrown 
-} from "react-icons/gi";
+import { FaFacebookSquare, FaInbox } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+import { RiRadioButtonLine } from "react-icons/ri";
+import { GiQueenCrown } from "react-icons/gi";
 
 const Sidebarmui = () => {
   const {
@@ -525,10 +504,7 @@ const Sidebarmui = () => {
 
       socket.on("notification_lead_assigned", (data) => {
         toast(
-          <ReminderToast 
-            type="lead_assigned" 
-            leadName={data?.leadName} 
-          />,
+          <ReminderToast type="lead_assigned" leadName={data?.leadName} />,
           {
             position: "bottom-right",
             autoClose: 30000,
@@ -1294,21 +1270,21 @@ const Sidebarmui = () => {
           link: "/offers",
         },
         // PROPERTY PORTFOLIO
-        // {
-        //   name: t("menu_property_portfolio"),
-        //   icon: <BsBuildings size={16} />,
-        //   link: "/propertyPortfolio",
-        // },
-        // {
-        //   name: t("menu_clients"),
-        //   icon: <ImUsers size={16} />,
-        //   link: "/clients",
-        // },
-        // {
-        //   name: "Contacts",
-        //   icon: <MdContactPage size={16} />,
-        //   link: "/contacts",
-        // },
+        {
+          name: t("menu_property_portfolio"),
+          icon: <BsBuildings size={16} />,
+          link: "/propertyPortfolio",
+        },
+        {
+          name: t("menu_clients"),
+          icon: <ImUsers size={16} />,
+          link: "/clients",
+        },
+        {
+          name: "Contacts",
+          icon: <MdContactPage size={16} />,
+          link: "/contacts",
+        },
 
         // NEWSLETTER
         // {
@@ -1671,7 +1647,9 @@ const Sidebarmui = () => {
           },
         }}
         style={{ display: "flex", height: "100%" }}
-        className={`max-w-[200px] sticky top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"}`}
+        className={`max-w-[200px] sticky top-0 ${
+          isLangRTL(i18n.language) ? "right-0" : "left-0"
+        }`}
       >
         <Sidebar
           rootStyles={{
@@ -1694,7 +1672,11 @@ const Sidebarmui = () => {
               }}
             >
               {/* HIKAL CRM  */}
-              <div className={`flex ${isCollapsed ? "justify-between" : "justify-center"} w-full items-center h-[50px]`}>
+              <div
+                className={`flex ${
+                  isCollapsed ? "justify-between" : "justify-center"
+                } w-full items-center h-[50px]`}
+              >
                 <Link
                   to={
                     User?.role !== 5
@@ -2234,8 +2216,12 @@ const Sidebarmui = () => {
                                                 : "black",
                                           },
                                           "& .ps-menu-icon": {
-                                            marginRight: !isLangRTL(i18n.language) && "10px",
-                                            marginLeft: isLangRTL(i18n.language) && "10px",
+                                            marginRight:
+                                              !isLangRTL(i18n.language) &&
+                                              "10px",
+                                            marginLeft:
+                                              isLangRTL(i18n.language) &&
+                                              "10px",
                                             // color:
                                             //   currentMode === "dark"
                                             //     ? "white"
@@ -2323,8 +2309,14 @@ const Sidebarmui = () => {
                                                         : currentMode === "dark"
                                                         ? "white"
                                                         : "black",
-                                                      right: !isLangRTL(i18n.language) && "3px",
-                                                      left: isLangRTL(i18n.language) && "3px",
+                                                      right:
+                                                        !isLangRTL(
+                                                          i18n.language
+                                                        ) && "3px",
+                                                      left:
+                                                        isLangRTL(
+                                                          i18n.language
+                                                        ) && "3px",
                                                     },
                                                     "& .css-cveggr-MuiListItemIcon-root":
                                                       {
@@ -2384,7 +2376,11 @@ const Sidebarmui = () => {
                                                   </MenuItem>
                                                   {m?.count != null && (
                                                     <span
-                                                      className={`leads_counter block absolute ${isLangRTL(i18n.language) ? "left-5" : "right-5"}`}
+                                                      className={`leads_counter block absolute ${
+                                                        isLangRTL(i18n.language)
+                                                          ? "left-5"
+                                                          : "right-5"
+                                                      }`}
                                                       style={{
                                                         top: "50%",
                                                         transform:
@@ -2442,8 +2438,12 @@ const Sidebarmui = () => {
                                                 currentMode === "dark"
                                                   ? menu?.countColor
                                                   : "black",
-                                              right: !isLangRTL(i18n.language) && "3px",
-                                              left: isLangRTL(i18n.language) && "3px",
+                                              right:
+                                                !isLangRTL(i18n.language) &&
+                                                "3px",
+                                              left:
+                                                isLangRTL(i18n.language) &&
+                                                "3px",
                                             },
                                           }}
                                           className="relative my-1"
@@ -2506,7 +2506,11 @@ const Sidebarmui = () => {
                                           {menu?.count !== null &&
                                             menu?.count !== undefined && (
                                               <span
-                                                className={`leads_counter block absolute ${isLangRTL(i18n.language) ? "left-5" : "right-5"}`}
+                                                className={`leads_counter block absolute ${
+                                                  isLangRTL(i18n.language)
+                                                    ? "left-5"
+                                                    : "right-5"
+                                                }`}
                                                 style={{
                                                   top: "50%",
                                                   transform: "translateY(-50%)",
