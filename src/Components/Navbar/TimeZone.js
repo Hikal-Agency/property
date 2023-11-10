@@ -277,6 +277,7 @@ const TimeZone = () => {
                   <span
                     style={{ marginRight: "8px", cursor: "pointer" }}
                     onClick={(e) => handlePinTimeZone(e, timezone)}
+                    value={pinnedZone}
                   >
                     {"\u2690"}
                   </span>
@@ -293,6 +294,7 @@ const TimeZone = () => {
                   <span
                     style={{ marginRight: "8px", cursor: "pointer" }}
                     onClick={(e) => handlePinTimeZone(e, timezone)}
+                    value={pinnedZone}
                   >
                     {"\u2691"}
                   </span>
