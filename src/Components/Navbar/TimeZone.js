@@ -32,6 +32,8 @@ const TimeZone = () => {
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
+  console.log("pinnedzone:::: ", pinnedZone);
+
   const [currentTime, setCurrentTime] = useState(
     timeZone
       ? moment().tz(timeZone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
@@ -55,10 +57,15 @@ const TimeZone = () => {
     e.stopPropagation();
     e.preventDefault();
 
+    console.log("pinnedZone in handlechange: ", pinnedZone);
+
     // Fetch the previous pinned values from the state
     const previousPinnedValues = pinnedZone || [];
 
-    if (previousPinnedValues.length >= 3) {
+    console.log("prev pinnedZones:: ", previousPinnedValues);
+    console.log("prev pinnedZones:: ", previousPinnedValues.length);
+
+    if (previousPinnedValues.length > 2) {
       toast.error("You can only pin up to 3 timezones.", {
         position: "top-right",
         autoClose: 3000,
@@ -69,7 +76,7 @@ const TimeZone = () => {
         progress: undefined,
         theme: "light",
       });
-      return; // Stop further execution
+      return;
     }
     // Check if the timezone is already pinned
     const isPinned = previousPinnedValues.includes(timezone);
@@ -84,6 +91,7 @@ const TimeZone = () => {
     } else {
       // Append the new timezone
       updatedPinnedValues = [...previousPinnedValues, timezone];
+      // updatedPinnedValues = timezone;
     }
 
     try {
@@ -126,9 +134,11 @@ const TimeZone = () => {
   };
 
   const handleTimezoneChange = async (e) => {
-    const timeZone = e.target.innerText?.trim();
+    // const timeZone = e.target.innerText?.trim();
+    const timeZone = e.target.innerText?.trim().replace("⚑", "");
     console.log("timzone selected : ", e);
-    // localStorage.setItem("timezone", e.target.innerText?.trim());
+    console.log("trimmed timezone::: ", timeZone);
+
     try {
       const updateTimezone = await axios.post(
         `${BACKEND_URL}/updateuser/${User?.id}`,

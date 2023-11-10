@@ -40,7 +40,7 @@ export const ContextProvider = ({ children }) => {
   const [LocationData, setLocationData] = useState();
   const [timeZone, setTimezone] = useState(null);
   const [timeZones, setTimezones] = useState([]);
-  const [pinnedZone, setPinnedZone] = useState(null);
+  const [pinnedZone, setPinnedZone] = useState([]);
   const [userCredits, setUserCredits] = useState("");
   const [UserLocationData, setUserLocationData] = useState();
   const [LastLocationData, setLastLocationData] = useState();
