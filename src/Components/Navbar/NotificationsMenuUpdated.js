@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Container } from "@mui/system";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
@@ -23,8 +23,11 @@ import {
 const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   const token = localStorage.getItem("auth-token");
   const { BACKEND_URL, User, getNotifCounts, t } = useStateContext();
-  const [notifications, setNotifications] = useState();
+  const [notifications, setNotifications] = useState([]);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [lastPage, setLastPage] = useState(null);
+  const [currPage, setCurrPage] = useState(1);
   const navigate = useNavigate();
 
   const handleAvoidClose = (event) => {
@@ -55,10 +58,10 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
     reshuffle: <BsShuffle size={16} olor={"#ffffff"} />,
   };
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = async (page) => {
     try {
       setLoading(true);
-      const url = `${BACKEND_URL}/allnotifications`;
+      const url = `${BACKEND_URL}/allnotifications?page=${page}&isRead=0`;
 
       const response = await axios.get(url, {
         headers: {
@@ -67,20 +70,21 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
       });
 
       setLoading(false);
-      console.log(response);
 
-      const filteredNotifications = response?.data?.notification?.data?.filter(
-        (notification) => notification.isRead !== 1
-      );
+      const filteredNotifications = response?.data?.notification?.data;
+      const lastPage = response?.data?.notification?.last_page;
+      setLastPage(lastPage);
 
-      setNotifications(filteredNotifications);
+      setNotifications([...notifications, ...filteredNotifications]);
+
+      console.log([...notifications, ...filteredNotifications]);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchNotifications();
+    fetchNotifications(currPage);
   }, [BACKEND_URL, token]);
 
   const openNotification = (e, activity) => {
@@ -131,12 +135,40 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
     }
   };
 
+  const loadMore = async () => {
+    try {
+      setBtnLoading(true);
+      const url = `${BACKEND_URL}/allnotifications?page=${currPage+1}&isRead=0`;
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setCurrPage((page) =>page + 1);
+      setBtnLoading(false);
+
+      const filteredNotifications = response?.data?.notification?.data;
+      const lastPage = response?.data?.notification?.last_page;
+      setLastPage(lastPage);
+
+      setNotifications([...notifications, ...filteredNotifications]);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
-    <Container
+    <div
       onClick={handleAvoidClose}
       // onMouseLeave={handleClose}
-      sx={{ maxHeight: 500, p:1, width: 350, position: "relative" }}
-      className="pb-5"
+      sx={{ 
+        maxHeight: 500,
+        width: 350, 
+        // position: "relative" 
+      }}
+      className="p-3"
     >
       <div
         onClick={() => {
@@ -144,7 +176,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
           setCurrNavBtn(null);
           handleClose();
         }}
-        className="flex -mt-2 mb-3 justify-center text-[#AAAAAA] hover:text-primary text-sm w-full"
+        className="flex -mt-2 mb-3 justify-center hover:text-[#AAAAAA] text-sm w-full"
         style={{
           textDecoration: "none",
           cursor: "pointer",
@@ -167,22 +199,31 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
       )}
       {!loading &&
         (notifications?.length > 0 ? (
-          notifications?.map((activity, index) => {
-            return (
-              <NotificationItem
-                setNotifications={setNotifications}
-                iconBGColor={iconBGColor}
-                notificationIcons={notificationIcons}
-                openNotification={openNotification}
-                key={index}
-                activity={activity}
-              />
-            );
-          })
+          <>
+            {notifications?.map((activity, index) => {
+              return (
+                <NotificationItem
+                  setNotifications={setNotifications}
+                  iconBGColor={iconBGColor}
+                  notificationIcons={notificationIcons}
+                  openNotification={openNotification}
+                  key={index}
+                  activity={activity}
+                />
+              );
+            })}
+
+            <di v className="pt-3 flex justify-center">
+              <button onClick={loadMore} disabled={currPage >= lastPage} className="text-primary bg-transparent hover:bg-[#AAAAAA] hover:text-white font-semibold rounded-xl shadow-sm p-2">
+                {btnLoading ? <CircularProgress size={18} style={{color: "black"}}/> : <span>Load more</span>}
+              </button>
+            </di>
+            
+          </>     
         ) : (
           <h1 className="text-center">No Unread Notifications</h1>
-        ))}
-    </Container>
+        ))}     
+    </div>
   );
 };
 export default NotificationsMenuUpdated;

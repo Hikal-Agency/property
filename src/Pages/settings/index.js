@@ -13,7 +13,7 @@ import axios from "../../axoisConfig";
 import { ToastContainer, toast } from "react-toastify";
 
 const Settings = () => {
-  const { darkModeColors, SalesPerson, currentMode, Managers, BACKEND_URL } =
+  const { t, themeBgImg, currentMode, Managers, BACKEND_URL } =
     useStateContext();
 
   return (
@@ -21,23 +21,18 @@ const Settings = () => {
       
       <div className="flex min-h-screen">
         <div
-          className={`w-full ${
-            currentMode === "dark" ? "bg-black" : "bg-white"
+          className={`w-full p-4 ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
           }`}
         >
-          <div className={`w-full `}>
-            <div className="pl-3">
-              <h1
-                className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
-                  currentMode === "dark"
-                    ? "text-white border-white"
-                    : "text-primary font-bold border-primary"
-                }`}
-              >
-                ● Settings
-              </h1>
-            </div>
-          </div>
+          <div className="bg-primary h-10 w-1 rounded-full"></div>
+          <h1
+            className={`text-lg font-semibold mx-2 uppercase ${
+              currentMode === "dark" ? "text-white" : "text-black"
+            }`}
+          >
+            {t("menu_settings")}
+          </h1>
         </div>
       </div>
       {/* <Footer /> */}

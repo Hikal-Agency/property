@@ -1,8 +1,30 @@
-import { Avatar, Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { AiFillGift } from "react-icons/ai";
-import { FaLink, FaSnowflake, FaMobile, FaInbox, FaSms } from "react-icons/fa";
+import { Avatar, Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  sidebarClasses,
+} from "react-pro-sidebar";
+import { toast } from "react-toastify";
+import ReactConfetti from "react-confetti";
+import useWindowSize from "react-use/lib/useWindowSize";
+import moment from "moment";
+
+import axios from "../../axoisConfig";
+import ringtone from "../../assets/new-message-ringtone.mp3";
+import notifRingtone from "../../assets/notification-ringtone.mp3";
 import { socket } from "../../Pages/App";
+import { useProSidebar } from "react-pro-sidebar";
+import { useStateContext } from "../../context/ContextProvider";
+import usePermission from "../../utils/usePermission";
+import ReminderToast from "./ReminderToast";
+import DealClosedAlert from "./DealClosedAlert";
+import { ImUsers } from "react-icons/im";
+import { MdContactPage } from "react-icons/md";
+
 import {
   BsStopCircle,
   BsCalendarWeek,
@@ -45,67 +67,14 @@ import {
   BsWhatsapp,
   BsChatText,
   BsFileEarmarkText,
+  BsCameraVideo,
+  BsLayers,
+  BsPersonGear,
 } from "react-icons/bs";
+import { FaFacebookSquare, FaInbox } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
-import { BsBuildingGear } from "react-icons/bs";
-
-import { MdOutlinePayment } from "react-icons/md";
-import { AiTwotoneCalendar } from "react-icons/ai";
-import { MdOutlineCampaign, MdSettings } from "react-icons/md";
-
-import { HiTicket, HiDocumentReport, HiUsers, HiSearch } from "react-icons/hi";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { BsEnvelopeAt, BsLayers } from "react-icons/bs";
-import { FaFacebookSquare, FaUsers, FaHandshake } from "react-icons/fa";
-import { MdLocationOn } from "react-icons/md";
 import { RiRadioButtonLine } from "react-icons/ri";
-import { BiBlock } from "react-icons/bi";
-import { BiCalendar, BiSupport } from "react-icons/bi";
-import { MdApps } from "react-icons/md";
-import { FiSettings, FiUsers } from "react-icons/fi";
-import { FaRandom, FaUserTag, FaUserFriends, FaTags } from "react-icons/fa";
-import { BsPersonGear } from "react-icons/bs";
-import { useLocation } from "react-router-dom";
 import { GiQueenCrown } from "react-icons/gi";
-import ringtone from "../../assets/new-message-ringtone.mp3";
-import notifRingtone from "../../assets/notification-ringtone.mp3";
-import useWindowSize from "react-use/lib/useWindowSize";
-
-import {
-  MdLeaderboard,
-  MdPersonAdd,
-  MdSpeakerNotes,
-  MdContactPage,
-  MdPersonPinCircle,
-} from "react-icons/md";
-import {
-  RiWhatsappFill,
-  RiDashboardFill,
-  RiBuilding2Fill,
-} from "react-icons/ri";
-import { SiHotjar } from "react-icons/si";
-import { ImBookmark } from "react-icons/im";
-import { RiLiveFill } from "react-icons/ri";
-import {
-  Sidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-  sidebarClasses,
-} from "react-pro-sidebar";
-import { useProSidebar } from "react-pro-sidebar";
-import { MdCampaign } from "react-icons/md";
-import { useStateContext } from "../../context/ContextProvider";
-import { ImLock, ImUsers, ImLocation } from "react-icons/im";
-
-import axios from "../../axoisConfig";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import usePermission from "../../utils/usePermission";
-import { FaArchive } from "react-icons/fa";
-import ReminderToast from "./ReminderToast";
-import DealClosedAlert from "./DealClosedAlert";
-import ReactConfetti from "react-confetti";
 
 const Sidebarmui = () => {
   const {
@@ -140,10 +109,12 @@ const Sidebarmui = () => {
     setThemeBgImg,
     timeZone,
     setTimezone,
+    timeZones,
+    setTimezones,
     pinnedZone,
     setPinnedZone,
   } = useStateContext();
-  console.log("timezone in sidebar: ", timeZone);
+  // console.log("timezone in sidebar: ", timeZone);
 
   const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
   const [newMessageReceived, setNewMessageReceived] = useState(false);
@@ -486,6 +457,12 @@ const Sidebarmui = () => {
   }, [User]);
 
   useEffect(() => {
+    // Fetch all timezones
+    const fetchedTimezones = moment.tz.names();
+    setTimezones(fetchedTimezones);
+  }, []);
+
+  useEffect(() => {
     const setUnreadCount = async (isNoToast = false) => {
       try {
         const token = localStorage.getItem("auth-token");
@@ -530,7 +507,6 @@ const Sidebarmui = () => {
       });
 
       socket.on("notification_lead_assigned", (data) => {
-        console.log("data::", data);
         toast(
           <ReminderToast type="lead_assigned" leadName={data?.leadName} />,
           {
@@ -813,7 +789,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.HotLeadsCount?.no_nswer,
+              count: sidebarData?.HotLeadsCount?.no_answer,
               link: "/freshleads/no answer",
             },
             {
@@ -869,7 +845,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.ThirdPartyLeadsCount?.no_nswer,
+              count: sidebarData?.ThirdPartyLeadsCount?.no_answer,
               link: "/thirdpartyleads/no answer",
             },
             {
@@ -955,7 +931,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.ColdLeadsCount?.no_nswer,
+              count: sidebarData?.ColdLeadsCount?.no_answer,
               link: "/coldleads/no answer",
             },
             {
@@ -982,49 +958,49 @@ const Sidebarmui = () => {
             {
               name: t("feedback_all"),
               pro: false,
-              count: sidebarData?.Reshuffle?.fresh,
+              count: sidebarData?.ReshuffleLeadsCount?.all,
               link: "/reshuffleleads/all",
             },
             {
               name: t("feedback_new"),
               pro: false,
-              count: sidebarData?.Reshuffle?.new,
+              count: sidebarData?.ReshuffleLeadsCount?.new,
               link: "/reshuffleleads/new",
             },
             {
               name: t("feedback_follow_up"),
               pro: false,
-              count: sidebarData?.Reshuffle?.follow_up,
+              count: sidebarData?.ReshuffleLeadsCount?.follow_up,
               link: "/reshuffleleads/follow up",
             },
             {
               name: t("feedback_meeting"),
               pro: false,
-              count: sidebarData?.Reshuffle?.meeting,
+              count: sidebarData?.ReshuffleLeadsCount?.Meeting,
               link: "/reshuffleleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
               pro: false,
-              count: sidebarData?.Reshuffle?.low_budget,
+              count: sidebarData?.ReshuffleLeadsCount?.low_budget,
               link: "/reshuffleleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.Reshuffle?.no_answer,
+              count: sidebarData?.ReshuffleLeadsCount?.no_answer,
               link: "/reshuffleleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
               pro: false,
-              count: sidebarData?.Reshuffle?.not_interested,
+              count: sidebarData?.ReshuffleLeadsCount?.not_interested,
               link: "/reshuffleleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
-              count: sidebarData?.Reshuffle?.unreachable,
+              count: sidebarData?.ReshuffleLeadsCount?.unreachable,
               link: "/reshuffleleads/unreachable",
             },
           ],
@@ -1068,7 +1044,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.WarmLeadCount?.no_nswer,
+              count: sidebarData?.WarmLeadCount?.no_answer,
               link: "/archive/no answer",
             },
             {
@@ -1124,7 +1100,7 @@ const Sidebarmui = () => {
             {
               name: t("feedback_no_answer"),
               pro: false,
-              count: sidebarData?.PersonalLeadsCount?.no_nswer,
+              count: sidebarData?.PersonalLeadsCount?.no_answer,
               link: "/personalleads/no answer",
             },
             {
@@ -1150,49 +1126,49 @@ const Sidebarmui = () => {
             {
               name: t("feedback_all"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.hot,
+              count: sidebarData?.LiveCallCount?.all,
               link: "/liveleads/all",
             },
             {
               name: t("feedback_new"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.new,
+              count: sidebarData?.LiveCallCount?.new,
               link: "/liveleads/new",
             },
             {
               name: t("feedback_follow_up"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.follow_up,
+              count: sidebarData?.LiveCallCount?.follow_up,
               link: "/liveleads/follow up",
             },
             {
               name: t("feedback_meeting"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.Meeting,
+              count: sidebarData?.LiveCallCount?.Meeting,
               link: "/liveleads/meeting",
             },
             {
               name: t("feedback_low_budget"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.low_budget,
+              count: sidebarData?.LiveCallCount?.low_budget,
               link: "/liveleads/low budget",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.no_nswer,
+              count: sidebarData?.LiveCallCount?.no_answer,
               link: "/freshleads/no answer",
             },
             {
               name: t("feedback_not_interested"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.not_interested,
+              count: sidebarData?.LiveCallCount?.not_interested,
               link: "/freshleads/not interested",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
-              // count: sidebarData?.HotLeadsCount?.unreachable,
+              count: sidebarData?.LiveCallCount?.unreachable,
               link: "/freshleads/unreachable",
             },
           ],
@@ -1265,11 +1241,11 @@ const Sidebarmui = () => {
           icon: <BsCalendarWeek size={16} />,
           link: "/meetings",
         },
-        // {
-        //   name: t("menu_appointments"),
-        //   icon: <BsCalendarWeek size={16} />,
-        //   link: "/appointments",
-        // },
+        {
+          name: t("menu_appointments"),
+          icon: <BsCameraVideo size={16} />,
+          link: "/appointments",
+        },
         // {
         //   name: "Add Users",
         //   icon: <FaUser />,
@@ -1298,21 +1274,21 @@ const Sidebarmui = () => {
           link: "/offers",
         },
         // PROPERTY PORTFOLIO
-        // {
-        //   name: t("menu_property_portfolio"),
-        //   icon: <BsBuildings size={16} />,
-        //   link: "/propertyPortfolio",
-        // },
-        // {
-        //   name: t("menu_clients"),
-        //   icon: <ImUsers size={16} />,
-        //   link: "/clients",
-        // },
-        // {
-        //   name: "Contacts",
-        //   icon: <MdContactPage size={16} />,
-        //   link: "/contacts",
-        // },
+        {
+          name: t("menu_property_portfolio"),
+          icon: <BsBuildings size={16} />,
+          link: "/propertyPortfolio",
+        },
+        {
+          name: t("menu_clients"),
+          icon: <ImUsers size={16} />,
+          link: "/clients",
+        },
+        {
+          name: "Contacts",
+          icon: <MdContactPage size={16} />,
+          link: "/contacts",
+        },
 
         // NEWSLETTER
         // {
@@ -1675,7 +1651,9 @@ const Sidebarmui = () => {
           },
         }}
         style={{ display: "flex", height: "100%" }}
-        className={`max-w-[200px] sticky top-0 left-0`}
+        className={`max-w-[200px] sticky top-0 ${
+          isLangRTL(i18n.language) ? "right-0" : "left-0"
+        }`}
       >
         <Sidebar
           rootStyles={{
@@ -1697,14 +1675,19 @@ const Sidebarmui = () => {
                 zIndex: 1000,
               }}
             >
-              <div className="flex justify-between items-center h-[50px]">
+              {/* HIKAL CRM  */}
+              <div
+                className={`flex ${
+                  isCollapsed ? "justify-between" : "justify-center"
+                } w-full items-center h-[50px]`}
+              >
                 <Link
                   to={
                     User?.role !== 5
                       ? "/dashboard"
                       : "/attendance/officeSettings"
                   }
-                  className="items-center gap-3 ml-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                  className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
                   onClick={() => {
                     setSelected({
                       name: User?.role !== 5 ? "Dashboard" : "Office Settings",
@@ -1712,40 +1695,28 @@ const Sidebarmui = () => {
                     });
                   }}
                 >
-                  {isCollapsed ? (
-                    <div className="flex items-center space-x-2">
-                      <img
-                        height={40}
-                        width={40}
-                        className="h-[40px] w-auto p-1"
-                        src="/favicon.png"
-                        alt=""
-                      />
-
-                      <div className="relative">
-                        <h1
-                          className={`overflow-hidden ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                        >
-                          HIKAL CRM
-                        </h1>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex justify-center">
-                      <img
-                        height={40}
-                        width={40}
-                        className="h-[40px] w-auto p-1"
-                        src="/favicon.png"
-                        alt=""
-                      />
-                    </div>
-                  )}
+                  <div className="w-full flex items-center gap-2 p-2">
+                    <img
+                      height={40}
+                      width={40}
+                      className="h-[40px] w-[40px] p-1"
+                      src="/favicon.png"
+                      alt=""
+                    />
+                    {isCollapsed && (
+                      <h1
+                        className={`font-bold overflow-hidden uppercase ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                      >
+                        HIKAL CRM
+                      </h1>
+                    )}
+                  </div>
                 </Link>
               </div>
-              <div className="profile-section border-b mt-1 px-2 pb-5 mb-2">
+              {/* PROFILE  */}
+              <div className="profile-section border-b-2 border-primary px-2 pb-5 mb-2">
                 {isCollapsed ? (
                   <>
                     <div
@@ -1794,7 +1765,7 @@ const Sidebarmui = () => {
                       </Box>
 
                       <h1
-                        className={`my-2 font-bold text-lg text-center ${
+                        className={`my-2 font-bold text-lg text-center capitalize ${
                           currentMode === "dark"
                             ? "text-white"
                             : "text-main-dark-bg"
@@ -1806,7 +1777,7 @@ const Sidebarmui = () => {
                         style={{
                           background: primaryColor,
                         }}
-                        className={`block rounded-md px-2 py-1 text-sm text-white`}
+                        className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
                       >
                         {User?.position || ""}
                       </span>
@@ -1822,16 +1793,19 @@ const Sidebarmui = () => {
                       src={User?.displayImg}
                       height={50}
                       width={50}
-                      className="rounded-md cursor-pointer"
+                      className="rounded-sm cursor-pointer"
                       alt=""
                     />
                   </div>
                 )}
               </div>
+
               <div
                 className={`${
                   animateProfilePic ? "animate-profile-pic" : ""
-                } fixed hidden top-0 left-0 w-screen h-screen`}
+                } fixed hidden top-0 ${
+                  isLangRTL(i18n.language) ? "right-0" : "left-0"
+                } w-screen h-screen`}
                 style={{
                   backgroundColor: "rgba(0, 0, 0, 0.85)",
                 }}
@@ -1839,7 +1813,8 @@ const Sidebarmui = () => {
                 <IconButton
                   sx={{
                     position: "absolute",
-                    right: "8%",
+                    right: !isLangRTL(i18n.language) && "8%",
+                    left: isLangRTL(i18n.language) && "8%",
                     top: "8%",
                     color: "white",
                   }}
@@ -1856,6 +1831,8 @@ const Sidebarmui = () => {
                 />
               </div>
             </div>
+
+            {/* MODULES  */}
             <div className="sidebar-root mt-4 mb-4 text-base">
               <Menu
                 menuItemStyles={{
@@ -1900,7 +1877,10 @@ const Sidebarmui = () => {
                     },
                     "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
                       {
-                        paddingRight: isLangRTL(i18n?.language) ? "30px" : "0",
+                        display: "flex",
+                        gap: "5px",
+                        paddingRight: !isLangRTL(i18n?.language) && "10px",
+                        paddingLeft: isLangRTL(i18n?.language) && "10px",
                         // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
                         // color: !themeBgImg
                         //   ? primaryColor
@@ -1915,6 +1895,7 @@ const Sidebarmui = () => {
                         : currentMode === "dark"
                         ? "#FFFFFF"
                         : "#000000",
+                      gap: "5px",
                     },
                     "& .ps-menu-button:hover": {
                       fontWeight: "medium",
@@ -1923,6 +1904,14 @@ const Sidebarmui = () => {
                         : currentMode === "dark"
                         ? "#000000"
                         : "#FFFFFF",
+                    },
+                    "& .ps-menu-icon": {
+                      marginRight: !isLangRTL(i18n.language) && "10px",
+                      marginLeft: isLangRTL(i18n.language) && "10px",
+                      // color:
+                      //   currentMode === "dark"
+                      //     ? "white"
+                      //     : "black",
                     },
                   }}
                   className="my-1"
@@ -2231,10 +2220,16 @@ const Sidebarmui = () => {
                                                 : "black",
                                           },
                                           "& .ps-menu-icon": {
-                                            color:
-                                              currentMode === "dark"
-                                                ? "white"
-                                                : "black",
+                                            marginRight:
+                                              !isLangRTL(i18n.language) &&
+                                              "10px",
+                                            marginLeft:
+                                              isLangRTL(i18n.language) &&
+                                              "10px",
+                                            // color:
+                                            //   currentMode === "dark"
+                                            //     ? "white"
+                                            //     : "black",
                                           },
                                         }}
                                         className="my-1 sub"
@@ -2318,6 +2313,14 @@ const Sidebarmui = () => {
                                                         : currentMode === "dark"
                                                         ? "white"
                                                         : "black",
+                                                      right:
+                                                        !isLangRTL(
+                                                          i18n.language
+                                                        ) && "3px",
+                                                      left:
+                                                        isLangRTL(
+                                                          i18n.language
+                                                        ) && "3px",
                                                     },
                                                     "& .css-cveggr-MuiListItemIcon-root":
                                                       {
@@ -2377,7 +2380,11 @@ const Sidebarmui = () => {
                                                   </MenuItem>
                                                   {m?.count != null && (
                                                     <span
-                                                      className="leads_counter block absolute right-5"
+                                                      className={`leads_counter block absolute ${
+                                                        isLangRTL(i18n.language)
+                                                          ? "left-5"
+                                                          : "right-5"
+                                                      }`}
                                                       style={{
                                                         top: "50%",
                                                         transform:
@@ -2435,6 +2442,12 @@ const Sidebarmui = () => {
                                                 currentMode === "dark"
                                                   ? menu?.countColor
                                                   : "black",
+                                              right:
+                                                !isLangRTL(i18n.language) &&
+                                                "3px",
+                                              left:
+                                                isLangRTL(i18n.language) &&
+                                                "3px",
                                             },
                                           }}
                                           className="relative my-1"
@@ -2497,7 +2510,11 @@ const Sidebarmui = () => {
                                           {menu?.count !== null &&
                                             menu?.count !== undefined && (
                                               <span
-                                                className="leads_counter block absolute right-5"
+                                                className={`leads_counter block absolute ${
+                                                  isLangRTL(i18n.language)
+                                                    ? "left-5"
+                                                    : "right-5"
+                                                }`}
                                                 style={{
                                                   top: "50%",
                                                   transform: "translateY(-50%)",

@@ -127,22 +127,22 @@ const DashboardPanel = ({ setloading }) => {
     },
     {
       amount: DashboardData?.lead_status?.meeting,
-      title: "Meeting",
+      title: t("meeting"),
       link: "/meetings",
     },
     {
       amount: DashboardData?.lead_status?.followup,
-      title: "Follow up",
+      title: t("feedback_follow_up"),
       link: "/freshleads/follow up",
     },
     {
       amount: DashboardData?.lead_status?.new,
-      title: "New lead",
+      title: t("menu_new_leads"),
       // link: "/freshleads/all",
     },
     {
       amount: DashboardData?.isAdmin?.total_agents,
-      title: "Sales agent",
+      title: t("sales_agents"),
     },
     // {
     //   amount: 20,
@@ -154,26 +154,26 @@ const DashboardPanel = ({ setloading }) => {
     {
       icon: <FaHandshake />,
       amount: DashboardData?.lead_status?.closed,
-      title: "Closed deal",
+      title: t("menu_closed_deals"),
       link: "/closedeals",
     },
     {
       icon: <AiOutlineFire />,
       amount: DashboardData?.lead_status?.meeting,
-      title: "Meeting",
+      title: t("meeting"),
       link: "/meetings",
     },
     {
       icon: <AiOutlineFire />,
       amount: DashboardData?.lead_status?.followup,
       percentage: "-12%",
-      title: "Follow up",
+      title: t("feedback_follow_up"),
       link: "/freshleads/follow up",
     },
     {
       icon: <AiOutlineFire />,
       amount: DashboardData?.lead_status?.new,
-      title: "New lead",
+      title: t("menu_new_leads"),
       // link: "/freshleads/new",
     },
   ];
@@ -193,9 +193,9 @@ const DashboardPanel = ({ setloading }) => {
   return (
     <div className="">
       <div className="w-full flex items-center pb-3">
-        <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+        <div className="bg-primary h-10 w-1 rounded-full"></div>
         <h1
-          className={`text-lg font-semibold uppercase ${
+          className={`text-lg font-semibold mx-2 uppercase ${
             !themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")
           }`}
         >
@@ -225,14 +225,14 @@ const DashboardPanel = ({ setloading }) => {
             <div>
               {User?.role === 3 && (
                 <p
-                  className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {User?.role === 7 && (
                 <p
-                  className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                  
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
@@ -240,7 +240,7 @@ const DashboardPanel = ({ setloading }) => {
               )}
               {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
                 <p
-                  className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
@@ -275,7 +275,7 @@ const DashboardPanel = ({ setloading }) => {
                   } h-auto w-full p-5 rounded-xl shadow-sm grid content-center`}
                 >
                   <p
-                    className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                    className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                
                   >
                     <CountUp end={item.amount} duration={3} />
@@ -311,7 +311,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p
-                        className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                        className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                     
                       >
                         <CountUp end={item.amount} duration={3} />
@@ -349,7 +349,7 @@ const DashboardPanel = ({ setloading }) => {
                   >
                     <div>
                       <p
-                        className={`text-2xl font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
+                        className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")}`}
                      
                       >
                         <CountUp end={item.amount} duration={3} />
@@ -407,7 +407,7 @@ const DashboardPanel = ({ setloading }) => {
                 } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
               >
                 <div className="justify-between items-center">
-                  <h6 className="font-semibold">Performance</h6>
+                  <h6 className="font-semibold">{t("performance")}</h6>
                   <CombinationChart />
                 </div>
               </div>
@@ -511,7 +511,7 @@ const DashboardPanel = ({ setloading }) => {
               } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Sales</h6>
+                <h6 className="font-semibold pb-3">{t("sales")}</h6>
                 {saleschart_loading ? (
                   <div className="flex items-center space-x-2">
                     <CircularProgress size={20} /> <span>Loading</span>

@@ -74,6 +74,7 @@ import SingleListingsPage from "./listings/SingleListingsPage";
 import ListingUsers from "./listingsUsers";
 import Buyers from "./listingsUsers/buyers";
 import AllLiveLeads from "./liveleads";
+import MeetInvite from "./MeetInvite";
 
 const libraries = ["places"];
 
@@ -423,11 +424,11 @@ const routes = [
     pageName: "Settings",
     element: <Settings />,
   },
-  {
-    path: "/integrations",
-    pageName: "Settings",
-    element: <Integrations />,
-  },
+  // {
+  //   path: "/integrations",
+  //   pageName: "Integrations",
+  //   element: <Integrations />,
+  // },
   {
     path: "/notifications",
     pageName: "Settings",
@@ -516,7 +517,8 @@ function App() {
       pathname === "/callLogs" ||
       pathname === "/attendance" ||
       pathname === "/fresh-logs" ||
-      pathname === "/attendanceLogin"
+      pathname === "/attendanceLogin" ||
+      pathname.startsWith("/invite")
     ) {
       return false;
     } else {
@@ -538,7 +540,9 @@ function App() {
           <div
             className={`w-[100%] overflow-x-hidden ${
               hasSidebarOrNavbar() ? "pt-16" : "pt-0"
-            } ${!themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")}`}
+            } ${
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+            }`}
           >
             {hasSidebarOrNavbar() && (
               <div className={`px-0`}>
@@ -550,6 +554,7 @@ function App() {
               <Route path="/attendance" element={<RegisterAttendance />} />
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
+              <Route path="/invite/:meetingID" element={<MeetInvite />} />
               {routes.map((route, index) => {
                 return (
                   <Route

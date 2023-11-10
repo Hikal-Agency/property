@@ -21,6 +21,13 @@ export const ContextProvider = ({ children }) => {
     localStorage.getItem("currentMode") || "light"
   );
   const [themeSettings, setThemeSettings] = useState(false);
+  const [settings, setSettings] = useState({
+    in_time: null,
+    out_time: null,
+    in_late_time: null,
+    out_late_time: null,
+    off_day: null,
+  });
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
   const [User, setUser] = useState({});
@@ -32,6 +39,7 @@ export const ContextProvider = ({ children }) => {
   const [DashboardData, setDashboardData] = useState();
   const [LocationData, setLocationData] = useState();
   const [timeZone, setTimezone] = useState(null);
+  const [timeZones, setTimezones] = useState([]);
   const [pinnedZone, setPinnedZone] = useState(null);
   const [userCredits, setUserCredits] = useState("");
   const [UserLocationData, setUserLocationData] = useState();
@@ -52,7 +60,8 @@ export const ContextProvider = ({ children }) => {
   const [fbToken, setFBToken] = useState();
   const [permits, setPermits] = useState("");
   const [primaryColor, setPrimaryColor] = useState("default");
-  const [themeBgImg, setThemeBgImg] = useState("");
+  const [fontFam, setFontFam] = useState("'Noto Sans', sans-serif");
+  const [themeBgImg, setThemeBgImg] = useState(null);
   const [blurDarkColor, setBlurDarkColor] = useState("rgba(28,28,28,0.5)");
   const [blurLightColor, setBlurLightColor] = useState("rgba(238,238,238,0.5)");
   const [blurWhiteColor, setBlurWhiteColor] = useState("rgba(255,255,255,0.5)");
@@ -78,6 +87,7 @@ export const ContextProvider = ({ children }) => {
   const DataGridStyles = {
     "& .MuiButtonBase-root": {
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
     // TOOLBAR COLORS
     "& .MuiDataGrid-toolbarContainer": {
@@ -86,16 +96,20 @@ export const ContextProvider = ({ children }) => {
       padding: "10px 5px",
       gap: "15px",
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
     // TOOLBAR BUTTON
     "& .MuiInputBase-root": {
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
     "& .MuiInputBase-root::before": {
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
     "& .MuiInputBase-root:hover::before": {
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
 
     // Background color of header of data grid
@@ -106,6 +120,7 @@ export const ContextProvider = ({ children }) => {
       color: currentMode === "dark" ? "white" : "white",
       borderRadius: "0",
       width: "100%",
+      fontFamily: fontFam,
     },
     "& .MuiDataGrid-root .MuiDataGrid-main": {
       height: "auto",
@@ -125,11 +140,13 @@ export const ContextProvider = ({ children }) => {
     },
     "& .MuiIconButton-sizeSmall": {
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
     // background color of main table content
     "& .MuiDataGrid-virtualScroller": {
       backgroundColor: currentMode === "dark" ? "black" : "white",
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
     // changing rows hover color
     "& .MuiDataGrid-row:hover": {
@@ -163,19 +180,24 @@ export const ContextProvider = ({ children }) => {
       borderTop: `2px solid ${primaryColor}`,
       backgroundColor: currentMode === "dark" ? "black" : "white",
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
     "& .MuiTablePagination-selectLabel": {
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
     "& .MuiTablePagination-select ": {
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
     "& .MuiSvgIcon-fontSizeMedium ": {
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
       // TODO: For Pagination SVG, white
     },
     "& .MuiTablePagination-displayedRows": {
       color: currentMode === "dark" ? "white" : "black",
+      fontFamily: fontFam,
     },
   };
 
@@ -184,12 +206,14 @@ export const ContextProvider = ({ children }) => {
     // SELECT STATEMENT LABLE COLOR
     "& .MuiInputBase-root": {
       color: currentMode === "dark" && "white !important",
+      fontFamily: fontFam,
     },
 
     // TEXT FIELDS LABEL COLOR
     "& .MuiFormLabel-root, & .MuiInputLabel-root, & .MuiInputLabel-formControl":
       {
         color: currentMode === "dark" && "white !important",
+        fontFamily: fontFam,
       },
 
     // border color of text fields and select fields
@@ -201,6 +225,7 @@ export const ContextProvider = ({ children }) => {
     "& .MuiSvgIcon-root, & .MuiSvgIcon-fontSizeMedium, & .MuiSelect-icon,& .MuiSelect-iconOutlined":
       {
         color: currentMode === "dark" && "white",
+        fontFamily: fontFam,
       },
     // text color for textfields
     // "& .MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl":
@@ -220,9 +245,11 @@ export const ContextProvider = ({ children }) => {
     // TABS HEADERS COLOR
     "& .Mui-selected": {
       color: `${primaryColor} !important`,
+      fontFamily: fontFam,
     },
     "& .MuiTab-root,& .MuiTab-textColorPrimary": {
       color: currentMode === "dark" && "white",
+      fontFamily: fontFam,
     },
     "& .MuiTabs-indicator": {
       backgroundColor: `${primaryColor} !important`,
@@ -293,6 +320,8 @@ export const ContextProvider = ({ children }) => {
           third_party: response.data.data["unassigned"]["THIRD PARTY LEADS"],
           warm: response.data.data["unassigned"]["WARM LEADS"],
         },
+        ReshuffleLeadsCount: response.data.data["RESHUFFLED LEADS"],
+        LiveCallCount: response.data.data["LIVE CALLS"],
       });
     } catch (error) {
       console.log(error);
@@ -358,13 +387,19 @@ export const ContextProvider = ({ children }) => {
   }, [primaryColor]);
 
   useEffect(() => {
-    document.body.style.backgroundImage = `url(${themeBgImg})`;
-    document.body.style.backgroundRepeat = "no-repeat";
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.backgroundAttachment = "fixed";
-    // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
-    document.body.style.backgroundBlendMode = "overlay";
+    if (!themeBgImg?.startsWith("#")) {
+      document.body.style.backgroundColor = "transparent";
+      document.body.style.backgroundImage = `url(${themeBgImg})`;
+      document.body.style.backgroundRepeat = "no-repeat";
+      document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundPosition = "center";
+      document.body.style.backgroundAttachment = "fixed";
+      // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+      document.body.style.backgroundBlendMode = "overlay";
+    } else {
+      document.body.style.backgroundImage = "none";
+      document.body.style.backgroundColor = themeBgImg;
+    }
   }, [themeBgImg]);
 
   const withOpacity = (rgb, opacity) => {
@@ -392,7 +427,8 @@ export const ContextProvider = ({ children }) => {
       title: "中文",
       flag: "/assets/flags/chinese-flag.png",
       font: "'Noto Sans TC', sans-serif",
-      size: "14px",
+      // size: "14px",
+      size: "12px",
     },
     {
       code: "fr",
@@ -407,7 +443,16 @@ export const ContextProvider = ({ children }) => {
       rtl: true,
       flag: "/assets/flags/hebrew-flag.png",
       font: "'Noto Sans Hebrew', sans-serif;",
-      size: "14px",
+      // size: "14px",
+      size: "12px",
+    },
+    {
+      code: "in",
+      title: "हिंदी",
+      flag: "/assets/flags/hindi-flag.png",
+      font: "'Noto Sans Devanagari', sans-serif;",
+      // size: "14px",
+      size: "12px",
     },
     {
       code: "pk",
@@ -452,6 +497,8 @@ export const ContextProvider = ({ children }) => {
     document.documentElement.style.setProperty("--font-family", cssLang);
     document.documentElement.style.setProperty("--font-size", cssSize);
 
+    setFontFam(cssLang);
+
     if (language) {
       if (language?.rtl) {
         return true;
@@ -462,6 +509,10 @@ export const ContextProvider = ({ children }) => {
       return false;
     }
   };
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--font-family", fontFam);
+  }, [fontFam]);
 
   const ReFetchProfile = () => {
     const token = localStorage.getItem("auth-token");
@@ -581,6 +632,8 @@ export const ContextProvider = ({ children }) => {
         DataGridStyles,
         timeZone,
         setTimezone,
+        timeZones,
+        setTimezones,
         pinnedZone,
         setPinnedZone,
         reloadDataGrid,
@@ -637,6 +690,8 @@ export const ContextProvider = ({ children }) => {
         setUserCredits,
         primaryColor,
         setPrimaryColor,
+        fontFam,
+        setFontFam,
         themeBgImg,
         setThemeBgImg,
         t,
@@ -649,6 +704,8 @@ export const ContextProvider = ({ children }) => {
         setBlurWhiteColor,
         Counters,
         setCounters,
+        settings,
+        setSettings,
       }}
     >
       {children}

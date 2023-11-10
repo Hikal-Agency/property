@@ -25,6 +25,8 @@ const TimeZone = () => {
     User,
     timeZone,
     setTimezone,
+    timeZones,
+    setTimezones,
     pinnedZone,
     setPinnedZone,
   } = useStateContext();
@@ -35,9 +37,9 @@ const TimeZone = () => {
       ? moment().tz(timeZone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
       : moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
   );
-  const [timezones, setTimezones] = useState([]);
+  // const [timezones, setTimezones] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const filteredTimezones = timezones?.filter((timezone) =>
+  const filteredTimezones = timeZones?.filter((timezone) =>
     timezone.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -136,10 +138,10 @@ const TimeZone = () => {
 
   return (
     <>
-      <div className="flex justify-between mb-2">
+      <div className="flex justify-between items-center mb-2 px-4">
         <Box>
           <h3 className={`${currentMode === "dark" ? "#fff" : "#000"}`}>
-            {timeZone}
+            {/* {timeZone} */}
           </h3>
         </Box>
         <Box sx={darkModeColors} style={{ minWidth: "50px" }}>
@@ -167,7 +169,10 @@ const TimeZone = () => {
               labelId="demo-simple-select-label"
               // onChange={handleTimezoneChange}
             >
-              <MenuItem value="selected">--- Select a timezone ---</MenuItem>
+              <MenuItem className="uppercase" value="selected">
+                {timeZone ?? "---SELECT---"}
+                {/* ---SELECT--- */}
+              </MenuItem>
               <MenuItem
                 value={"search"}
                 onKeyDown={(e) => {

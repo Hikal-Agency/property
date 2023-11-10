@@ -70,12 +70,10 @@ const BlockedIps = () => {
         }`}
       >
         <div className="w-full flex items-center pb-3 mb-1">
-          <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+          <div className="bg-primary h-10 w-1 rounded-full"></div>
           <h1
-            className={`text-lg font-semibold ${
-              currentMode === "dark"
-                ? "text-white"
-                : "text-black"
+            className={`text-lg font-semibold mx-2 uppercase ${
+              currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
             {t("ip_blocking")}
@@ -138,7 +136,7 @@ const BlockedIps = () => {
                 </div>
             </AccordionDetails>
           </Accordion>
-
+{/* 
           <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}
             sx={{
               backgroundColor: !themeBgImg ? (currentMode === "dark" ? "#1C1C1C" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
@@ -166,7 +164,7 @@ const BlockedIps = () => {
                   />
                 </div>
             </AccordionDetails>
-          </Accordion>
+          </Accordion> */}
       </div>
     </>
   );

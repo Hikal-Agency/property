@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { Box } from "@mui/system";
 
 const Contacts = () => {
-  const { currentMode, BACKEND_URL, primaryColor } = useStateContext();
+  const { currentMode, BACKEND_URL, primaryColor, themeBgImg, t } = useStateContext();
   const [loading, setloading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [page, setPage] = useState(1);
@@ -111,19 +111,18 @@ const Contacts = () => {
         ) : (
           <div
             className={`w-full  ${
-              currentMode === "dark" ? "bg-black" : "bg-white"
+              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
             <div className="pl-3">
               <div className="mt-5 md:mt-2">
+                <div className="bg-primary h-10 w-1 rounded-full"></div>
                 <h1
-                  className={`text-2xl border-l-[4px]  ml-1 pl-1 mb-5 mt-4 font-bold ${
-                    currentMode === "dark"
-                      ? "text-white border-white"
-                      : "text-primary font-bold border-primary"
+                  className={`text-lg font-semibold mx-2 uppercase ${
+                    currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                ● Contacts
+                  {t("contacts")}
                 </h1>
 
                 <Box

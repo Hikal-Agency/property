@@ -9,17 +9,32 @@ import {
   TextField,
 } from "@mui/material";
 import { BsSearch } from "react-icons/bs";
+import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
-import md5 from "md5";
+import NewMeetingModal from "./NewMeetingModa";
 
 const CreateAppointment = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, User, darkModeColors, primaryColor, themeBgImg, blurDarkColor, blurLightColor } =
-    useStateContext();
+  const {
+    currentMode,
+    setopenBackDrop,
+    User,
+    t,
+    darkModeColors,
+    primaryColor,
+    BACKEND_URL,
+    themeBgImg,
+    blurDarkColor,
+    blurLightColor,
+  } = useStateContext();
   const [meetingsCount, setMeetingCount] = useState({
     pendingMeeting: null,
     completedMeetings: null,
   });
+  const [newMeetingModal, setNewMeetingModal] = useState({
+    isOpen: false
+  })
+  const [btnLoading, setBtnLoading] = useState(false);
 
   console.log("meetings count:: ", meetingsCount);
   useEffect(() => {
@@ -29,35 +44,48 @@ const CreateAppointment = () => {
   }, []);
 
   const handleCreateMeeting = async () => {
-    // const token = localStorage.getItem("auth-token");
-    // try {
-    //   const Data = {};
-    //   const apiObj = {
-    //     meetingId: "random-4451041",
-    //     server: "https://meet.hikalcrm.com/bigbluebutton/",
-    //     sharedSecret: "FQXivXsHx9eWxTV8AU0bUb6jDQqioRdOviG5gr14vos",
-    //     name: "random-4451041",
-    //     callName: "create",
-    //   };
-    //   const queryString = `allowStartStopRecording=true&attendeePW=ap&autoStartRecording=false&meetingID=${apiObj?.meetingId}&moderatorPW=mp&name=${apiObj?.name}&record=false&voiceBridge=75977&welcome=Welcome to Hikal Meet`;
+    try {
 
-    //   const checkSum = `${apiObj?.callName}${queryString}${apiObj.sharedSecret}`;
-    //   console.log("Checksum::", checkSum);
-    //   await axios.post(
-    //     `https://meet.hikalcrm.com/bigbluebutton/api/create?${queryString}&checksum=${md5(
-    //       checkSum
-    //     )}`,
-    //     JSON.stringify(Data),
-    //     {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: "Bearer " + token,
-    //       },
-    //     }
-    //   );
-    // } catch (error) {
-    //   console.log(error);
-    // }
+      setBtnLoading(true);
+      const createMeeting = await axios.get(
+        `${BACKEND_URL}/create?name=${User?.userName}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      const meetingID = createMeeting?.data?.data?.meetingID;
+      const joinAsModerator = await axios.post(
+        `${BACKEND_URL}/join`,
+        JSON.stringify({
+          meetingID: meetingID,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const urlForModerator = joinAsModerator?.data?.url;
+      setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee: `${BACKEND_URL?.slice(0, BACKEND_URL?.length - 4)}/invite/${meetingID}`});
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to create meeting at the moment.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    setBtnLoading(false);
   };
 
   return (
@@ -72,29 +100,7 @@ const CreateAppointment = () => {
             }`}
           >
             <div className="mt-3">
-              <Button
-                onClick={handleCreateMeeting}
-                className={`mb-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
-                ripple={true}
-                style={{
-                  background: `${primaryColor}`,
-                  color: "white",
-                }}
-                size="lg"
-                type="submit"
-                disabled={loading ? true : false}
-              >
-                {loading ? (
-                  <CircularProgress
-                    size={20}
-                    sx={{ color: "white" }}
-                    className="text-white"
-                  />
-                ) : (
-                  <span>Create Meeting</span>
-                )}
-              </Button>
-              <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-5 flex justify-between">
+              <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-5 gap-5 flex justify-between">
                 <Box
                   sx={{
                     borderRadius: "7px",
@@ -102,7 +108,13 @@ const CreateAppointment = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     fontWeight: "bold",
-                    background: !themeBgImg ? (currentMode === "dark" ? "#333333" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+                    background: !themeBgImg
+                      ? currentMode === "dark"
+                        ? "#333333"
+                        : "#EEEEEE"
+                      : currentMode === "dark"
+                      ? blurDarkColor
+                      : blurLightColor,
                     color: currentMode === "dark" ? "white" : "black",
                     boxShadow:
                       currentMode === "dark"
@@ -135,8 +147,8 @@ const CreateAppointment = () => {
                   </span>
                 </Box>
 
-                <div className="p-5 mt-2 w-full lg:col-span-2">
-                  <Box sx={darkModeColors}>
+                <div className="mt-5 w-full lg:col-span-2 flex flex-col gap-5">
+                  {/* <Box sx={darkModeColors}>
                     <TextField
                       className="w-full"
                       placeholder="search.."
@@ -154,25 +166,25 @@ const CreateAppointment = () => {
                         ),
                       }}
                     />
-                  </Box>
+                  </Box> */}
 
-                  <div className="grid grid-cols-2 gap-5 py-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <Box
+                      className="shadow-md rounded-xl p-5"
                       sx={{
-                        // padding: "6px",
-                        borderRadius: "7px",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                         fontWeight: "bold",
-                        background: !themeBgImg ? (currentMode === "dark" ? "#333333" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+                        background: !themeBgImg
+                          ? currentMode === "dark"
+                            ? "#1C1C1C"
+                            : "#EEEEEE"
+                          : currentMode === "dark"
+                          ? blurDarkColor
+                          : blurLightColor,
                         color: currentMode === "dark" ? "white" : "black",
-                        boxShadow:
-                          currentMode === "dark"
-                            ? "3px 3px 3px rgba(255, 255, 255, 0.35)"
-                            : "3px 3px 3px rgba(0, 0, 0, 0.25)",
                       }}
-                      className="p-5"
                     >
                       <div className="flex flex-col items-center space-y-3">
                         <h1 className="font-bold text-3xl text-primary mr-3">
@@ -182,21 +194,21 @@ const CreateAppointment = () => {
                       </div>
                     </Box>
                     <Box
+                      className="shadow-md rounded-xl p-5"
                       sx={{
-                        // padding: "10px",
-                        borderRadius: "7px",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
                         fontWeight: "bold",
-                        background: !themeBgImg ? (currentMode === "dark" ? "#333333" : "#EEEEEE") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+                        background: !themeBgImg
+                          ? currentMode === "dark"
+                            ? "#1C1C1C"
+                            : "#EEEEEE"
+                          : currentMode === "dark"
+                          ? blurDarkColor
+                          : blurLightColor,
                         color: currentMode === "dark" ? "white" : "black",
-                        boxShadow:
-                          currentMode === "dark"
-                            ? "3px 3px 3px rgba(255, 255, 255, 0.35)"
-                            : "3px 3px 3px rgba(0, 0, 0, 0.25)",
                       }}
-                      className="p-5"
                     >
                       <div className="flex flex-col items-center space-y-3">
                         <h1 className="font-bold text-3xl text-primary mr-3">
@@ -206,29 +218,36 @@ const CreateAppointment = () => {
                       </div>
                     </Box>
                   </div>
+                  <Button
+                    onClick={handleCreateMeeting}
+                    className={`mb-5 text-white w-full rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
+                    ripple={true}
+                    style={{
+                      background: `${primaryColor}`,
+                      color: "white",
+                    }}
+                    size="lg"
+                    type="submit"
+                    disabled={btnLoading ? true : false}
+                  >
+                    {btnLoading ? (
+                      <CircularProgress
+                        size={20}
+                        sx={{ color: "white" }}
+                        className="text-white"
+                      />
+                    ) : (
+                      <span>{t("create_meeting")}</span>
+                    )}
+                  </Button>
                 </div>
               </div>
-
-              {/* <h1
-                className={`text-lg border-l-[4px] ml-1 pl-1 mb-5 font-bold ${
-                  currentMode === "dark"
-                    ? "text-white border-white"
-                    : "text-red-600 font-bold border-red-600"
-                }`}
-              >
-                ● Create Appointment
-              </h1> */}
-              {/* <GoogleCalendarAppointment
-                meetingsCount={meetingsCount}
-                setMeetingCount={setMeetingCount}
-              /> */}
-              <Box className="h-[60vh] flex items-center justify-center">
-                <img src="/coming-soon.png" width={"200px"} alt="" />
-              </Box>
             </div>
           </div>
         )}
       </div>
+
+      {newMeetingModal?.isOpen && <NewMeetingModal handleClose={() => setNewMeetingModal({isOpen: false})} newMeetingModal={newMeetingModal}/>}
     </>
   );
 };

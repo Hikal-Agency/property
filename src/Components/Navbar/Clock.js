@@ -25,6 +25,8 @@ const Clock = ({ handleClose }) => {
     User,
     timeZone,
     setTimezone,
+    timeZones,
+    setTimezones,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
   console.log("TIMEZONE::::> ", timeZone);
@@ -40,7 +42,7 @@ const Clock = ({ handleClose }) => {
       ? moment().tz(timeZone).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
       : moment().tz(moment.tz.guess()).format("D/MM/YYYY, h:mm:ss a [GMT]Z")
   );
-  const [timezones, setTimezones] = useState([]);
+  // const [timezones, setTimezones] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   // useEffect(() => {
@@ -51,9 +53,9 @@ const Clock = ({ handleClose }) => {
 
   useEffect(() => {
     // Fetch all timezones
-    const fetchedTimezones = moment.tz.names();
-    setTimezones(fetchedTimezones);
-    console.log("first timeZone:: ", timeZone);
+    // const fetchedTimezones = moment.tz.names();
+    // setTimezones(fetchedTimezones);
+    // console.log("first timeZone:: ", timeZone);
 
     if (!timeZone) {
       setTimezone(moment.tz.guess());
@@ -83,7 +85,7 @@ const Clock = ({ handleClose }) => {
 
   console.log("User?.timzone: ", User?.timezone);
 
-  const filteredTimezones = timezones?.filter((timezone) =>
+  const filteredTimezones = timeZones?.filter((timezone) =>
     timezone.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -136,8 +138,8 @@ const Clock = ({ handleClose }) => {
     <div
       // onMouseLeave={handleClose}
       style={{
-        margin: 0,
-        padding: "0.5rem 0.5rem",
+        // margin: 0,
+        // padding: "0.5rem 0.5rem",
         "& .MuiList-root": {
           backgroundColor:
             currentMode === "dark"
@@ -154,7 +156,7 @@ const Clock = ({ handleClose }) => {
       }}
       className={`${
         currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#000000]"
-      } clock-div`}
+      } clock-div p-3`}
     >
       <TimeZone />
       <div className="flex justify-center h-[300px]">

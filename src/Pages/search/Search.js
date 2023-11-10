@@ -1718,13 +1718,14 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         <Box></Box> */}
 
         <div className="w-full flex items-center pb-3">
-          <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+          <div className="bg-primary h-10 w-1 rounded-full"></div>
           <h1
-            className={`text-lg font-semibold ${
+            className={`text-lg font-semibold mx-2 uppercase ${
               currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
-            {t("leads_search")}{" "}
+            {t("leads_search")}
+            {" "}
             <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
               {pageState?.total}
             </span>

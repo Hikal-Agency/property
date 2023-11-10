@@ -7,12 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
 import usePermission from "../../utils/usePermission";
-import {
-  Avatar,
-  Box,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { MdModeEdit, MdMoneyOff, MdPendingActions } from "react-icons/md";
 import { TfiCheck, TfiClose } from "react-icons/tfi";
@@ -28,6 +23,8 @@ import {
 import SalaryDeductDailogue from "./SalaryDeductDailogue";
 import PasswordDialogue from "./PasswordDialogue";
 import { FaDownload } from "react-icons/fa";
+import MyCalendar from "./MyCalendar";
+import EmployeeCalendar from "./EmployeeCalendar";
 
 const SingleEmployee = ({ user }) => {
   const {
@@ -38,10 +35,14 @@ const SingleEmployee = ({ user }) => {
     BACKEND_URL,
     DataGridStyles,
     pageState,
-    setpageState, 
+    setpageState,
     t,
-    themeBgImg
+    themeBgImg,
+    settings,
+    setSettings,
   } = useStateContext();
+
+  console.log("settings: ", settings);
 
   const path = window.location.pathname;
   const location = path.split("/").pop();
@@ -63,6 +64,13 @@ const SingleEmployee = ({ user }) => {
   const [showDailogue, setDialogue] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState(false);
   console.log("cut: ", cut_salary);
+
+  // offdays
+  const [offDays, setOffDays] = useState(settings?.off_day || "");
+  const isOffDay = (offDay) => {
+    const formattedOffDay = moment(offDay).format("dddd");
+    return offDays.includes(formattedOffDay);
+  };
 
   const handleDayFilter = (event) => {
     setSelectedMonth(event.target.value);
@@ -145,44 +153,44 @@ const SingleEmployee = ({ user }) => {
         if (params?.row?.is_late === 1 || params.row.is_late === 2) {
           return params?.row?.late_minutes + " minutes";
         } else if (hasPermission("mark_late")) {
-            return (
-              <div className="flex justify-between px-5 py-3">
-                <Tooltip title="Yes" arrow>
-                  <IconButton
-                    style={{
-                      backgroundColor: "#4CAF50",
-                      color: "white",
-                      fontSize: "1rem",
-                    }}
-                    className="rounded-full"
-                    onClick={(event) => lateSalary(event, 1, params?.row.id)}
-                  >
-                    <CheckIcon />
-                  </IconButton>
-                </Tooltip>
-  
-                <Tooltip title="No" arrow>
-                  <IconButton
-                    style={{
-                      backgroundColor: "#DC2626",
-                      color: "white",
-                      fontSize: "1rem",
-                      marginLeft: "5%",
-                    }}
-                    className="rounded-full"
-                    onClick={(event) => lateSalary(event, 2, params?.row.id)}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Tooltip>
-              </div>
-            );
+          return (
+            <div className="flex justify-between px-5 py-3">
+              <Tooltip title="Yes" arrow>
+                <IconButton
+                  style={{
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    fontSize: "1rem",
+                  }}
+                  className="rounded-full"
+                  onClick={(event) => lateSalary(event, 1, params?.row.id)}
+                >
+                  <CheckIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Tooltip title="No" arrow>
+                <IconButton
+                  style={{
+                    backgroundColor: "#DC2626",
+                    color: "white",
+                    fontSize: "1rem",
+                    marginLeft: "5%",
+                  }}
+                  className="rounded-full"
+                  onClick={(event) => lateSalary(event, 2, params?.row.id)}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
+          );
         } else {
           return "-";
         }
       },
     },
-    
+
     {
       field: "extra_minutes",
       headerAlign: "center",
@@ -192,7 +200,12 @@ const SingleEmployee = ({ user }) => {
       renderCell: (params) => {
         console.log("Params:", params);
         const checkTime = moment(params?.row?.check_datetime).format("HH:mm");
-        const checkoutTime = moment(`${params?.row?.date} ${moment(params?.row?.checkOuts?.split(",")[0], "hh:mm A").format("HH:mm:ss")}`).format("HH:mm");
+        const checkoutTime = moment(
+          `${params?.row?.date} ${moment(
+            params?.row?.checkOuts?.split(",")[0],
+            "hh:mm A"
+          ).format("HH:mm:ss")}`
+        ).format("HH:mm");
         const extraMinutes = moment(checkoutTime, "HH:mm").diff(
           moment(params?.row?.defaultCheckout || "06:30 PM", "HH:mm"),
           "minutes"
@@ -203,26 +216,25 @@ const SingleEmployee = ({ user }) => {
           "minutes"
         );
 
-        if(isNaN(lateMinutes) || isNaN(extraMinutes)) {
+        if (isNaN(lateMinutes) || isNaN(extraMinutes)) {
           return "-";
         } else {
           let totalMinutes = 0;
-          if(lateMinutes < 0) {
-            totalMinutes += lateMinutes; 
+          if (lateMinutes < 0) {
+            totalMinutes += lateMinutes;
           }
-          if(extraMinutes > 0) {
+          if (extraMinutes > 0) {
             totalMinutes += extraMinutes;
           }
 
-          if(totalMinutes > 0) {
-            return totalMinutes?.toString()?.slice(1) + " minutes"
+          if (totalMinutes > 0) {
+            return totalMinutes?.toString()?.slice(1) + " minutes";
           } else {
             return "-";
           }
         }
       },
     },
-
 
     // LATE REASON
     {
@@ -510,223 +522,446 @@ const SingleEmployee = ({ user }) => {
       params.date_range = [startDate, endDate].join(",");
     }
 
-    await axios
-      .get(`${BACKEND_URL}/attendance?user_id=${id}`, {
-        params,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("fetched data ", result.data);
+    try {
+      const [attendanceResponse, agencyResponse] = await Promise.all([
+        axios.get(`${BACKEND_URL}/attendance?user_id=${id}`, {
+          params,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+        axios.get(`${BACKEND_URL}/agencies/1`),
+      ]);
 
-        const data = result.data.Record.data;
+      console.log("Fetched data: ", attendanceResponse.data);
+      console.log("Fetched agency data: ", agencyResponse.data);
 
-        const firstCheckIn = data?.find((element) => {
-          return (
-            element.attendance_type.toLowerCase() === "in" ||
-            element.attendance_type.toLowerCase() === "check-in"
-          );
-        });
+      const data = attendanceResponse.data.Record.data;
 
-        console.log("first check in:: ", firstCheckIn);
+      // offdays
+      setSettings({
+        ...settings,
+        off_day: agencyResponse?.data?.data?.off_day || "",
+      });
+      const offDaysFromApi = agencyResponse?.data?.data?.off_day;
+      const offDaysArray = offDaysFromApi.split(", ").filter(Boolean); // Split and remove empty entries
+      setOffDays(offDaysArray);
 
-        const workingDays = calculateWorkingDays(firstCheckIn?.off_day);
+      const firstCheckIn = data?.find((element) => {
+        return (
+          element.attendance_type.toLowerCase() === "in" ||
+          element.attendance_type.toLowerCase() === "check-in"
+        );
+      });
 
-        console.log("working days: ", workingDays);
+      console.log("first check in:: ", firstCheckIn);
 
-        console.log("first check in : ", firstCheckIn);
+      const workingDays = calculateWorkingDays(firstCheckIn?.off_day);
 
-        let rowsdata = data?.reduce((acc, row) => {
-          const date = moment(row?.check_datetime).format("YYYY-MM-DD");
-          const existingRow = acc.find((item) => item.date === date);
+      console.log("working days: ", workingDays);
 
-          const attendanceType = row?.attendance_type.toLowerCase();
-          const checkTime = row?.check_datetime
-            ? moment(row.check_datetime).format("hh:mm A")
-            : "-";
+      console.log("first check in : ", firstCheckIn);
 
-          if (!existingRow) {
-            acc.push({
-              date,
-              checkIns:
-                attendanceType === "in" || attendanceType === "check-in"
-                  ? [checkTime]
-                  : [],
-              checkOuts:
-                attendanceType === "out" || attendanceType === "check-out"
-                  ? [checkTime]
-                  : [],
-              attendanceSourcesForCheckIn:
-                attendanceType === "in" || attendanceType === "check-in"
-                  ? [row.attendance_source || "-"]
-                  : [],
-              attendanceSourcesForCheckOut:
-                attendanceType === "out" || attendanceType === "check-out"
-                  ? [row.attendance_source || "-"]
-                  : [],
-              ...otherFields(row),
-            });
-          } else {
-            if (attendanceType === "in" || attendanceType === "check-in") {
-              existingRow.checkIns.push(checkTime);
-              existingRow.attendanceSourcesForCheckIn.push(
-                row.attendance_source || "-"
-              );
-            } else if (
-              attendanceType === "out" ||
-              attendanceType === "check-out"
-            ) {
-              existingRow.checkOuts.push(checkTime);
-              existingRow.attendanceSourcesForCheckOut.push(
-                row.attendance_source || "-"
-              );
-            }
+      let rowsdata = data?.reduce((acc, row) => {
+        const date = moment(row?.check_datetime).format("YYYY-MM-DD");
+        const existingRow = acc.find((item) => item.date === date);
+
+        const attendanceType = row?.attendance_type.toLowerCase();
+        const checkTime = row?.check_datetime
+          ? moment(row.check_datetime).format("hh:mm A")
+          : "-";
+
+        if (!existingRow) {
+          acc.push({
+            date,
+            checkIns:
+              attendanceType === "in" || attendanceType === "check-in"
+                ? [checkTime]
+                : [],
+            checkOuts:
+              attendanceType === "out" || attendanceType === "check-out"
+                ? [checkTime]
+                : [],
+            attendanceSourcesForCheckIn:
+              attendanceType === "in" || attendanceType === "check-in"
+                ? [row.attendance_source || "-"]
+                : [],
+            attendanceSourcesForCheckOut:
+              attendanceType === "out" || attendanceType === "check-out"
+                ? [row.attendance_source || "-"]
+                : [],
+            ...otherFields(row),
+          });
+        } else {
+          if (attendanceType === "in" || attendanceType === "check-in") {
+            existingRow.checkIns.push(checkTime);
+            existingRow.attendanceSourcesForCheckIn.push(
+              row.attendance_source || "-"
+            );
+          } else if (
+            attendanceType === "out" ||
+            attendanceType === "check-out"
+          ) {
+            existingRow.checkOuts.push(checkTime);
+            existingRow.attendanceSourcesForCheckOut.push(
+              row.attendance_source || "-"
+            );
           }
-
-          return acc;
-        }, []);
-
-        function otherFields(row) {
-          // Add other fields as needed
-          return {
-            id: row.id,
-
-            checkIn:
-              row?.attendance_type.toLowerCase() === "in" ||
-              row?.attendance_type.toLowerCase() === "check-in"
-                ? "In"
-                : "-",
-            checkOut:
-              row?.attendance_type.toLowerCase() === "out" ||
-              row?.attendance_type.toLowerCase() === "check-out"
-                ? "Out"
-                : "-",
-            attendance_type: row?.attendance_type,
-            check_datetime: row?.check_datetime,
-            default_datetime: row?.default_datetime,
-            is_late: row?.is_late || "-",
-            late_reason: row?.late_reason || "-",
-            late_minutes: row?.late_minutes || "-",
-            salary: row?.salary,
-            profile_picture: row?.profile_picture,
-            position: row?.position || "-",
-            currency: row?.currency || "-",
-            userName: row?.userName || "-",
-            created_at: row?.created_at,
-            updated_at: row?.updated_at,
-            deduction: row?.deduct_salary,
-            cut_salary: row?.cut_salary || "-",
-            off_day: row?.off_day || "-",
-            notify_status: row?.notify_status || "",
-            notify_deduct_salary: row?.notify_deduct_salary || "",
-            edit: "edit",
-          };
         }
 
-        // Concatenate check-ins, check-outs, and attendance_sources into a single comma-separated string
-        rowsdata = rowsdata.map((row) => ({
-          ...row,
-          checkIns: row.checkIns.join(", "),
-          checkOuts: row.checkOuts.join(", "),
-          attendanceSourcesForCheckIn:
-            row.attendanceSourcesForCheckIn.join(", "),
-          attendanceSourcesForCheckOut:
-            row.attendanceSourcesForCheckOut.join(", "),
-        }));
+        return acc;
+      }, []);
 
-        console.log("rowsss:::::::: ", rowsdata);
+      function otherFields(row) {
+        // Add other fields as needed
+        return {
+          id: row.id,
 
-        const attended_days = rowsdata.filter(
-          (row) =>
+          checkIn:
             row?.attendance_type.toLowerCase() === "in" ||
             row?.attendance_type.toLowerCase() === "check-in"
-        );
-        console.log("attended days: ", attended_days);
+              ? "In"
+              : "-",
+          checkOut:
+            row?.attendance_type.toLowerCase() === "out" ||
+            row?.attendance_type.toLowerCase() === "check-out"
+              ? "Out"
+              : "-",
+          attendance_type: row?.attendance_type,
+          check_datetime: row?.check_datetime,
+          default_datetime: row?.default_datetime,
+          is_late: row?.is_late || "-",
+          late_reason: row?.late_reason || "-",
+          late_minutes: row?.late_minutes || "-",
+          salary: row?.salary,
+          profile_picture: row?.profile_picture,
+          position: row?.position || "-",
+          currency: row?.currency || "-",
+          userName: row?.userName || "-",
+          created_at: row?.created_at,
+          updated_at: row?.updated_at,
+          deduction: row?.deduct_salary,
+          cut_salary: row?.cut_salary || "-",
+          off_day: row?.off_day || "-",
+          notify_status: row?.notify_status || "",
+          notify_deduct_salary: row?.notify_deduct_salary || "",
+          edit: "edit",
+        };
+      }
 
-        const attended_count = attended_days.length;
-        console.log("attended count: ", attended_count);
+      // Concatenate check-ins, check-outs, and attendance_sources into a single comma-separated string
+      rowsdata = rowsdata.map((row) => ({
+        ...row,
+        checkIns: row.checkIns.join(", "),
+        checkOuts: row.checkOuts.join(", "),
+        attendanceSourcesForCheckIn: row.attendanceSourcesForCheckIn.join(", "),
+        attendanceSourcesForCheckOut:
+          row.attendanceSourcesForCheckOut.join(", "),
+      }));
 
-        const leave_count = workingDays - attended_count;
-        console.log("leave days: ", leave_count);
+      console.log("rowsss:::::::: ", rowsdata);
 
-        const is_late = rowsdata.filter((row) => row?.is_late === 1);
-        const late_count = is_late.length;
-        console.log("is late: ", late_count);
+      const attended_days = rowsdata.filter(
+        (row) =>
+          row?.attendance_type.toLowerCase() === "in" ||
+          row?.attendance_type.toLowerCase() === "check-in"
+      );
+      console.log("attended days: ", attended_days);
 
-        const checkInRow = rowsdata.find((row) => isCheckIn(row));
+      const attended_count = attended_days.length;
+      console.log("attended count: ", attended_count);
 
-        const per_day_salary = firstCheckIn?.salary / 30;
-        const LEAVE_DAY_SALARY = per_day_salary * leave_count;
-        const LATE_DAY_SALARY = (per_day_salary * late_count) / 2;
-        // const TOTAl_SALARY =
-        //   firstCheckIn?.salary - (LEAVE_DAY_SALARY + LATE_DAY_SALARY);
-        const TOTAl_SALARY = (
-          firstCheckIn?.salary -
-          (LEAVE_DAY_SALARY + LATE_DAY_SALARY)
-        ).toFixed(2);
+      const leave_count = workingDays - attended_count;
+      console.log("leave days: ", leave_count);
 
-        let deductionValue = "";
-        let cutSalaryValue = "";
+      const is_late = rowsdata.filter((row) => row?.is_late === 1);
+      const late_count = is_late.length;
+      console.log("is late: ", late_count);
 
-        if (checkInRow) {
-          console.log("checkinrows: ", checkInRow);
-          // Get the value of deduction
-          deductionValue = checkInRow.deduction || "";
+      const checkInRow = rowsdata.find((row) => isCheckIn(row));
 
-          // Get the value of cut_salary if deduction is 'one'
-          if (deductionValue === 1) {
-            cutSalaryValue = checkInRow.cut_salary || "";
-          }
+      const per_day_salary = firstCheckIn?.salary / 30;
+      const LEAVE_DAY_SALARY = per_day_salary * leave_count;
+      const LATE_DAY_SALARY = (per_day_salary * late_count) / 2;
+      // const TOTAl_SALARY =
+      //   firstCheckIn?.salary - (LEAVE_DAY_SALARY + LATE_DAY_SALARY);
+      const TOTAl_SALARY = (
+        firstCheckIn?.salary -
+        (LEAVE_DAY_SALARY + LATE_DAY_SALARY)
+      ).toFixed(2);
+
+      let deductionValue = "";
+      let cutSalaryValue = "";
+
+      if (checkInRow) {
+        console.log("checkinrows: ", checkInRow);
+        // Get the value of deduction
+        deductionValue = checkInRow.deduction || "";
+
+        // Get the value of cut_salary if deduction is 'one'
+        if (deductionValue === 1) {
+          cutSalaryValue = checkInRow.cut_salary || "";
         }
+      }
 
-        console.log("Deduction Value:", deductionValue);
-        console.log("Cut Salary Value:", cutSalaryValue);
+      console.log("Deduction Value:", deductionValue);
+      console.log("Cut Salary Value:", cutSalaryValue);
 
-        setEmpData(rowsdata);
-        setCutSalary(cutSalaryValue);
-        setloading(false);
+      setEmpData(rowsdata);
+      setCutSalary(cutSalaryValue);
+      setloading(false);
 
-        setpageState((old) => ({
-          ...old,
-          isLoading: false,
-          data: rowsdata,
-          attended_count: attended_count,
-          leave_count: leave_count,
-          late_count: late_count,
-          dedution: deductionValue,
-          cut_salary: cutSalaryValue,
-          first_check: firstCheckIn,
-          workingDays: workingDays,
-          leaveDaySalary: LEAVE_DAY_SALARY,
-          lateDaySalary: LATE_DAY_SALARY,
-          totalSalary: TOTAl_SALARY,
-          perDaySalary: per_day_salary,
-          pageSize: result?.data?.Record?.per_page,
-          total: result?.data?.Record?.total,
-        }));
-      })
-      .catch((err) => {
-        setloading(false);
-        console.log("here is error");
-        console.log(err);
-        toast.error("Sorry something went wrong. Kindly refresh the page.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        // navigate("/", {
-        //   state: {
-        //     error: "Something Went Wrong! Please Try Again",
-        //     continueURL: location.pathname,
-        //   },
-        // });
+      setpageState((old) => ({
+        ...old,
+        isLoading: false,
+        data: rowsdata,
+        attended_count: attended_count,
+        leave_count: leave_count,
+        late_count: late_count,
+        dedution: deductionValue,
+        cut_salary: cutSalaryValue,
+        first_check: firstCheckIn,
+        workingDays: workingDays,
+        leaveDaySalary: LEAVE_DAY_SALARY,
+        lateDaySalary: LATE_DAY_SALARY,
+        totalSalary: TOTAl_SALARY,
+        perDaySalary: per_day_salary,
+        pageSize: attendanceResponse?.data?.Record?.per_page,
+        total: attendanceResponse?.data?.Record?.total,
+      }));
+    } catch (err) {
+      setloading(false);
+      console.log("here is error");
+      console.log(err);
+      toast.error("Sorry something went wrong. Kindly refresh the page.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
+    }
+
+    // await axios
+    //   .get(`${BACKEND_URL}/attendance?user_id=${id}`, {
+    //     params,
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Bearer " + token,
+    //     },
+    //   })
+    //   .then((result) => {
+    //     console.log("fetched data ", result.data);
+
+    //     const data = result.data.Record.data;
+
+    //     const firstCheckIn = data?.find((element) => {
+    //       return (
+    //         element.attendance_type.toLowerCase() === "in" ||
+    //         element.attendance_type.toLowerCase() === "check-in"
+    //       );
+    //     });
+
+    //     console.log("first check in:: ", firstCheckIn);
+
+    //     const workingDays = calculateWorkingDays(firstCheckIn?.off_day);
+
+    //     console.log("working days: ", workingDays);
+
+    //     console.log("first check in : ", firstCheckIn);
+
+    //     let rowsdata = data?.reduce((acc, row) => {
+    //       const date = moment(row?.check_datetime).format("YYYY-MM-DD");
+    //       const existingRow = acc.find((item) => item.date === date);
+
+    //       const attendanceType = row?.attendance_type.toLowerCase();
+    //       const checkTime = row?.check_datetime
+    //         ? moment(row.check_datetime).format("hh:mm A")
+    //         : "-";
+
+    //       if (!existingRow) {
+    //         acc.push({
+    //           date,
+    //           checkIns:
+    //             attendanceType === "in" || attendanceType === "check-in"
+    //               ? [checkTime]
+    //               : [],
+    //           checkOuts:
+    //             attendanceType === "out" || attendanceType === "check-out"
+    //               ? [checkTime]
+    //               : [],
+    //           attendanceSourcesForCheckIn:
+    //             attendanceType === "in" || attendanceType === "check-in"
+    //               ? [row.attendance_source || "-"]
+    //               : [],
+    //           attendanceSourcesForCheckOut:
+    //             attendanceType === "out" || attendanceType === "check-out"
+    //               ? [row.attendance_source || "-"]
+    //               : [],
+    //           ...otherFields(row),
+    //         });
+    //       } else {
+    //         if (attendanceType === "in" || attendanceType === "check-in") {
+    //           existingRow.checkIns.push(checkTime);
+    //           existingRow.attendanceSourcesForCheckIn.push(
+    //             row.attendance_source || "-"
+    //           );
+    //         } else if (
+    //           attendanceType === "out" ||
+    //           attendanceType === "check-out"
+    //         ) {
+    //           existingRow.checkOuts.push(checkTime);
+    //           existingRow.attendanceSourcesForCheckOut.push(
+    //             row.attendance_source || "-"
+    //           );
+    //         }
+    //       }
+
+    //       return acc;
+    //     }, []);
+
+    //     function otherFields(row) {
+    //       // Add other fields as needed
+    //       return {
+    //         id: row.id,
+
+    //         checkIn:
+    //           row?.attendance_type.toLowerCase() === "in" ||
+    //           row?.attendance_type.toLowerCase() === "check-in"
+    //             ? "In"
+    //             : "-",
+    //         checkOut:
+    //           row?.attendance_type.toLowerCase() === "out" ||
+    //           row?.attendance_type.toLowerCase() === "check-out"
+    //             ? "Out"
+    //             : "-",
+    //         attendance_type: row?.attendance_type,
+    //         check_datetime: row?.check_datetime,
+    //         default_datetime: row?.default_datetime,
+    //         is_late: row?.is_late || "-",
+    //         late_reason: row?.late_reason || "-",
+    //         late_minutes: row?.late_minutes || "-",
+    //         salary: row?.salary,
+    //         profile_picture: row?.profile_picture,
+    //         position: row?.position || "-",
+    //         currency: row?.currency || "-",
+    //         userName: row?.userName || "-",
+    //         created_at: row?.created_at,
+    //         updated_at: row?.updated_at,
+    //         deduction: row?.deduct_salary,
+    //         cut_salary: row?.cut_salary || "-",
+    //         off_day: row?.off_day || "-",
+    //         notify_status: row?.notify_status || "",
+    //         notify_deduct_salary: row?.notify_deduct_salary || "",
+    //         edit: "edit",
+    //       };
+    //     }
+
+    //     // Concatenate check-ins, check-outs, and attendance_sources into a single comma-separated string
+    //     rowsdata = rowsdata.map((row) => ({
+    //       ...row,
+    //       checkIns: row.checkIns.join(", "),
+    //       checkOuts: row.checkOuts.join(", "),
+    //       attendanceSourcesForCheckIn:
+    //         row.attendanceSourcesForCheckIn.join(", "),
+    //       attendanceSourcesForCheckOut:
+    //         row.attendanceSourcesForCheckOut.join(", "),
+    //     }));
+
+    //     console.log("rowsss:::::::: ", rowsdata);
+
+    //     const attended_days = rowsdata.filter(
+    //       (row) =>
+    //         row?.attendance_type.toLowerCase() === "in" ||
+    //         row?.attendance_type.toLowerCase() === "check-in"
+    //     );
+    //     console.log("attended days: ", attended_days);
+
+    //     const attended_count = attended_days.length;
+    //     console.log("attended count: ", attended_count);
+
+    //     const leave_count = workingDays - attended_count;
+    //     console.log("leave days: ", leave_count);
+
+    //     const is_late = rowsdata.filter((row) => row?.is_late === 1);
+    //     const late_count = is_late.length;
+    //     console.log("is late: ", late_count);
+
+    //     const checkInRow = rowsdata.find((row) => isCheckIn(row));
+
+    //     const per_day_salary = firstCheckIn?.salary / 30;
+    //     const LEAVE_DAY_SALARY = per_day_salary * leave_count;
+    //     const LATE_DAY_SALARY = (per_day_salary * late_count) / 2;
+    //     // const TOTAl_SALARY =
+    //     //   firstCheckIn?.salary - (LEAVE_DAY_SALARY + LATE_DAY_SALARY);
+    //     const TOTAl_SALARY = (
+    //       firstCheckIn?.salary -
+    //       (LEAVE_DAY_SALARY + LATE_DAY_SALARY)
+    //     ).toFixed(2);
+
+    //     let deductionValue = "";
+    //     let cutSalaryValue = "";
+
+    //     if (checkInRow) {
+    //       console.log("checkinrows: ", checkInRow);
+    //       // Get the value of deduction
+    //       deductionValue = checkInRow.deduction || "";
+
+    //       // Get the value of cut_salary if deduction is 'one'
+    //       if (deductionValue === 1) {
+    //         cutSalaryValue = checkInRow.cut_salary || "";
+    //       }
+    //     }
+
+    //     console.log("Deduction Value:", deductionValue);
+    //     console.log("Cut Salary Value:", cutSalaryValue);
+
+    //     setEmpData(rowsdata);
+    //     setCutSalary(cutSalaryValue);
+    //     setloading(false);
+
+    //     setpageState((old) => ({
+    //       ...old,
+    //       isLoading: false,
+    //       data: rowsdata,
+    //       attended_count: attended_count,
+    //       leave_count: leave_count,
+    //       late_count: late_count,
+    //       dedution: deductionValue,
+    //       cut_salary: cutSalaryValue,
+    //       first_check: firstCheckIn,
+    //       workingDays: workingDays,
+    //       leaveDaySalary: LEAVE_DAY_SALARY,
+    //       lateDaySalary: LATE_DAY_SALARY,
+    //       totalSalary: TOTAl_SALARY,
+    //       perDaySalary: per_day_salary,
+    //       pageSize: result?.data?.Record?.per_page,
+    //       total: result?.data?.Record?.total,
+    //     }));
+    //   })
+    //   .catch((err) => {
+    //     setloading(false);
+    //     console.log("here is error");
+    //     console.log(err);
+    //     toast.error("Sorry something went wrong. Kindly refresh the page.", {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //     // navigate("/", {
+    //     //   state: {
+    //     //     error: "Something Went Wrong! Please Try Again",
+    //     //     continueURL: location.pathname,
+    //     //   },
+    //     // });
+    //   });
   };
 
   // ON LATE
@@ -769,7 +1004,10 @@ const SingleEmployee = ({ user }) => {
     if (btn === 1) {
       console.log("deducted salary: ", deduted_salary);
       UpdateData.append("is_late", 1);
-      UpdateData.append("late_minutes", Number(lateMinutes) <= 0 ? 0 : lateMinutes);
+      UpdateData.append(
+        "late_minutes",
+        Number(lateMinutes) <= 0 ? 0 : lateMinutes
+      );
       UpdateData.append("deduct_salary", 1);
       UpdateData.append("notify_status", "Direct");
       UpdateData.append("cut_salary", deduted_salary.toString());
@@ -813,7 +1051,10 @@ const SingleEmployee = ({ user }) => {
       ) {
         console.log("lates::::::::::::::");
         UpdateData.append("is_late", 1);
-        UpdateData.append("late_minutes",  Number(lateMinutes) <= 0 ? 0 : lateMinutes);
+        UpdateData.append(
+          "late_minutes",
+          Number(lateMinutes) <= 0 ? 0 : lateMinutes
+        );
         UpdateData.append("deduct_salary", 2);
       } else if (
         // moment(pageState?.first_check?.check_datetime, "HH:mm") >
@@ -822,7 +1063,10 @@ const SingleEmployee = ({ user }) => {
       ) {
         console.log("lates::::::::::::::");
         UpdateData.append("is_late", 2);
-        UpdateData.append("late_minutes",  Number(lateMinutes) <= 0 ? 0 : lateMinutes);
+        UpdateData.append(
+          "late_minutes",
+          Number(lateMinutes) <= 0 ? 0 : lateMinutes
+        );
         UpdateData.append("deduct_salary", 2);
       } else if (
         moment(pageState?.first_check?.check_datetime, "HH:mm") <=
@@ -1387,7 +1631,12 @@ const SingleEmployee = ({ user }) => {
                     onClick={() => setPasswordConfirm(true)}
                     // sx={{ border: "1px solid #DA1F26" }}
                   >
-                    <FaDownload size={14} className={`${currentMode === "dark" ? "text-white" : "text-black"} hover:text-primary`} />
+                    <FaDownload
+                      size={14}
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } hover:text-primary`}
+                    />
                   </IconButton>
                 </Tooltip>
               </div>
@@ -1416,16 +1665,20 @@ const SingleEmployee = ({ user }) => {
             {/* SALARY CALC & TABLE  */}
             <div className="my-5 mb-10">
               <div
-                className={`grid grid-cols-1 md:grid-cols-12  ${
+                className={`grid grid-cols-1 md:grid-cols-12 gap-3  ${
                   currentMode === "dark" ? "text-[#EEEEEE]" : "text-black"
                 }`}
               >
                 <div className="col-span-2 px-2 pb-2 text-sm h-fit">
                   <div
                     className={`${
-                     !themeBgImg 
-                     ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                     : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EEEEEE]"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
                     } rounded-xl shadow-sm p-3 mb-1`}
                   >
                     <label htmlFor="pick-image">
@@ -1471,30 +1724,38 @@ const SingleEmployee = ({ user }) => {
 
                   <div
                     className={`${
-                      !themeBgImg 
-                     ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                     : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EEEEEE]"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
                     } rounded-xl shadow-sm p-3 my-1`}
                   >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <h1 className="font-semibold">{t("monthly_salary")}</h1>
+                          <h1 className="font-semibold">
+                            {t("monthly_salary")}
+                          </h1>
                         </div>
                         <div className="font-bold">
                           {empData[0]?.salary
-                          ? `${empData[0]?.currency} ${empData[0]?.salary} `
-                          : "-"}
+                            ? `${empData[0]?.currency} ${empData[0]?.salary} `
+                            : "-"}
                         </div>
                       </div>
                       <div className="text-center">
                         <div className="flex items-center justify-center">
-                          <h1 className="font-semibold">{t("salary_per_day")}</h1>
+                          <h1 className="font-semibold">
+                            {t("salary_per_day")}
+                          </h1>
                         </div>
                         <div className="font-bold">
                           {empData[0]?.salary && empData[0]?.salary !== null
-                          ? `${empData[0]?.currency} ${pageState?.perDaySalary}`
-                          : "-"}
+                            ? `${empData[0]?.currency} ${pageState?.perDaySalary}`
+                            : "-"}
                         </div>
                       </div>
                     </div>
@@ -1503,9 +1764,13 @@ const SingleEmployee = ({ user }) => {
 
                   <div
                     className={`${
-                      !themeBgImg 
-                     ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                     : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EEEEEE]"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
                     } rounded-xl shadow-sm p-3 my-1`}
                   >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
@@ -1548,7 +1813,7 @@ const SingleEmployee = ({ user }) => {
                           </p>
                           {"  "}
                           <h1 className="font-semibold text-sm">
-                           {t("late_attendance_days")}
+                            {t("late_attendance_days")}
                           </h1>
                         </div>
                       </div>
@@ -1558,32 +1823,40 @@ const SingleEmployee = ({ user }) => {
                   {empData[0]?.salary ? (
                     <div
                       className={`${
-                        !themeBgImg 
-                        ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                        : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                        !themeBgImg
+                          ? currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                          : currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light"
                       } rounded-xl shadow-sm p-3 my-1`}
                     >
                       <div className="flex justify-center flex-col items-center gap-y-3 my-2">
                         <div className="text-center">
                           <div className="flex items-center justify-center">
-                            <h1 className="font-semibold">{t("leave_days_salary")}</h1>
+                            <h1 className="font-semibold">
+                              {t("leave_days_salary")}
+                            </h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
                           <div className="font-bold">
                             {empData[0]?.salary
-                            ? `${empData[0]?.currency} ${pageState?.leaveDaySalary} `
-                            : "-"}
+                              ? `${empData[0]?.currency} ${pageState?.leaveDaySalary} `
+                              : "-"}
                           </div>
                         </div>
                         <div className="text-center">
                           <div className="flex items-center justify-center">
-                            <h1 className="font-semibold">{t("late_days_salary")}</h1>
+                            <h1 className="font-semibold">
+                              {t("late_days_salary")}
+                            </h1>
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
                           <div className="font-bold">
                             {empData[0]?.salary && empData[0]?.salary !== null
-                            ? `${empData[0]?.currency} ${pageState?.lateDaySalary}`
-                            : "-"}
+                              ? `${empData[0]?.currency} ${pageState?.lateDaySalary}`
+                              : "-"}
                           </div>
                         </div>
                       </div>
@@ -1595,9 +1868,13 @@ const SingleEmployee = ({ user }) => {
 
                   <div
                     className={`${
-                      !themeBgImg 
-                      ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                      : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C]"
+                          : "bg-[#EEEEEE]"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
                     } rounded-xl shadow-sm p-3 my-1`}
                   >
                     <div className="flex justify-center flex-col items-center gap-y-3 my-2">
@@ -1607,8 +1884,8 @@ const SingleEmployee = ({ user }) => {
                         </div>
                         <div className="font-bold">
                           {empData[0]?.salary
-                          ? `${empData[0]?.currency} ${pageState?.totalSalary} `
-                          : "-"}
+                            ? `${empData[0]?.currency} ${pageState?.totalSalary} `
+                            : "-"}
                         </div>
                       </div>
                     </div>
@@ -1616,64 +1893,74 @@ const SingleEmployee = ({ user }) => {
                 </div>
 
                 {/* section 2 */}
-                <div className="col-span-10 ">
-                  <Box
-                    width={"100%"}
-                    height={"100%"}
-                    className={`single-emp ${currentMode}-mode-datatable `}
-                    sx={{ ...DataGridStyles, paddingLeft: "5px" }}
-                  >
-                    <DataGrid
-                      disableDensitySelector
-                      autoHeight
-                      disableSelectionOnClick
-                      rows={pageState.data}
-                      columns={columns}
-                      loading={pageState.isLoading}
-                      rowsPerPageOptions={[]}
-                      pagination
-                      componentsProps={{
-                        toolbar: {
-                          showQuickFilter: false,
-                          printOptions: {
-                            disableToolbarButton: User?.role !== 1,
-                          },
-                          csvOptions: {
-                            disableToolbarButton: User?.role !== 1,
-                          },
-         
-                        },
-                      }}
-                      width="auto"
-                      paginationMode="server"
-                      page={pageState.page - 1}
-                      pageSize={pageState.pageSize}
-                      sx={{
-                        boxShadow: 2,
-                        "& .MuiDataGrid-cell:hover": {
-                          cursor: "pointer",
-                        },
-                      }}
-                      getRowClassName={(params) =>
-                        params.indexRelativeToCurrentPage % 2 === 0
-                          ? "even"
-                          : "odd"
-                      }
-                      onPageChange={(newPage) => {
-                        setpageState((old) => ({
-                          ...old,
-                          page: newPage + 1,
-                        }));
-                      }}
-                      onPageSizeChange={(newPageSize) =>
-                        setpageState((old) => ({
-                          ...old,
-                          pageSize: newPageSize,
-                        }))
-                      }
-                    />
-                  </Box>
+                <div className={`${
+                  themeBgImg ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                  : (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+                } col-span-10 p-5 rounded-xl shadow-sm`}>
+                  <EmployeeCalendar
+                    isOffDay={isOffDay}
+                    pageState={pageState}
+                  />
                 </div>
+                
+              </div>
+
+              <div className="w-full my-5">
+                <Box
+                  width={"100%"}
+                  height={"100%"}
+                  className={`single-emp ${currentMode}-mode-datatable `}
+                  sx={{ ...DataGridStyles, paddingLeft: "5px" }}
+                >
+                  <DataGrid
+                    disableDensitySelector
+                    autoHeight
+                    disableSelectionOnClick
+                    rows={pageState.data}
+                    columns={columns}
+                    loading={pageState.isLoading}
+                    rowsPerPageOptions={[]}
+                    pagination
+                    componentsProps={{
+                      toolbar: {
+                        showQuickFilter: false,
+                        printOptions: {
+                          disableToolbarButton: User?.role !== 1,
+                        },
+                        csvOptions: {
+                          disableToolbarButton: User?.role !== 1,
+                        },
+                      },
+                    }}
+                    width="auto"
+                    paginationMode="server"
+                    page={pageState.page - 1}
+                    pageSize={pageState.pageSize}
+                    sx={{
+                      boxShadow: 2,
+                      "& .MuiDataGrid-cell:hover": {
+                        cursor: "pointer",
+                      },
+                    }}
+                    getRowClassName={(params) =>
+                      params.indexRelativeToCurrentPage % 2 === 0
+                        ? "even"
+                        : "odd"
+                    }
+                    onPageChange={(newPage) => {
+                      setpageState((old) => ({
+                        ...old,
+                        page: newPage + 1,
+                      }));
+                    }}
+                    onPageSizeChange={(newPageSize) =>
+                      setpageState((old) => ({
+                        ...old,
+                        pageSize: newPageSize,
+                      }))
+                    }
+                  />
+                </Box>
                 {showDailogue && (
                   <SalaryDeductDailogue
                     showDailogue={showDailogue}

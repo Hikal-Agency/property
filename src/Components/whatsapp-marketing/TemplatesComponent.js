@@ -9,7 +9,7 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import CreateTemplateModal from "./CreateTemplateModal";
 import { useStateContext } from "../../context/ContextProvider";
@@ -27,34 +27,38 @@ import Loader from "../Loader";
 import TemplatesCountCard from "./TemplatesCountCard";
 
 const TemplatesComponent = () => {
-  const { 
-    BACKEND_URL, 
-    currentMode, 
+  const {
+    BACKEND_URL,
+    currentMode,
     t,
     themeBgImg,
     blurDarkColor,
-    blurLightColor
+    blurLightColor,
+    isLangRTL,
+    i18n,
   } = useStateContext();
   const [createTemplateModal, setCreateTemplateModal] = useState({
     isOpen: false,
   });
+  const [isClosing, setIsClosing] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [updateTemplateModal, setUpdateTemplateModal] = useState({
     isOpen: false,
     template: {},
   });
   const [deleteTemplateModal, setDeleteTemplateModal] = useState({
-    isOpen: false, 
-    templateId: null
+    isOpen: false,
+    templateId: null,
   });
   const [templates, setTemplates] = useState([]);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
 
   const handleUpdateTemplate = (e, template) => {
-      setUpdateTemplateModal({
-        isOpen: true,
-        template,
-      });
+    setUpdateTemplateModal({
+      isOpen: true,
+      template,
+    });
   };
 
   const fetchTemplates = async () => {
@@ -114,8 +118,8 @@ const TemplatesComponent = () => {
         theme: "light",
       });
     }
-    setDeleteTemplateModal({isOpen: false, templateId: null});
-      setdeletebtnloading(false);
+    setDeleteTemplateModal({ isOpen: false, templateId: null });
+    setdeletebtnloading(false);
   };
 
   return (
@@ -127,12 +131,10 @@ const TemplatesComponent = () => {
           <Box className="flex items-center justify-between">
             <div className="w-full flex items-center justify-between pb-3">
               <div className="flex items-center">
-                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                <div className="bg-primary h-10 w-1 rounded-full"></div>
                 <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
+                  className={`text-lg font-semibold mx-2 uppercase ${
+                    currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
                   {t("title_message_templates")}
@@ -141,7 +143,7 @@ const TemplatesComponent = () => {
               <Button
                 className="bg-btn-primary"
                 style={{
-                  color: "white"
+                  color: "white",
                 }}
                 sx={{
                   ml: 1,
@@ -174,7 +176,9 @@ const TemplatesComponent = () => {
             <TemplatesCountCard
               icon={<BsWhatsapp size={18} />}
               type={t("whatsapp_templates")}
-              count={templates?.map((temp) => temp?.type === "whatsapp")?.length}
+              count={
+                templates?.map((temp) => temp?.type === "whatsapp")?.length
+              }
             />
             <TemplatesCountCard
               icon={<MdSms size={18} />}
@@ -239,12 +243,12 @@ const TemplatesComponent = () => {
                         </TableCell>
                         <TableCell>
                           <Box className="flex items-center text-white">
-                              {t("type")}
+                            {t("type")}
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Box className="flex items-center text-white">
-                              {t("label_action")}
+                            {t("label_action")}
                           </Box>
                         </TableCell>
                       </TableRow>
@@ -254,15 +258,37 @@ const TemplatesComponent = () => {
                         <TableRow
                           key={template?.id}
                           sx={{
-                            background: !themeBgImg ? (currentMode === "dark" ? "black" : "white") : (currentMode === "dark" ? blurDarkColor : blurLightColor),
+                            background: !themeBgImg
+                              ? currentMode === "dark"
+                                ? "black"
+                                : "white"
+                              : currentMode === "dark"
+                              ? blurDarkColor
+                              : blurLightColor,
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
                         >
-                          <TableCell sx={{color: currentMode === "dark" ? "white" : "black"}} component="th"  scope="row">
+                          <TableCell
+                            sx={{
+                              color: currentMode === "dark" ? "white" : "black",
+                            }}
+                            component="th"
+                            scope="row"
+                          >
                             {template?.name}
                           </TableCell>
-                          <TableCell sx={{color: currentMode === "dark" ? "white" : "black"}}>plain-text</TableCell>
-                          <TableCell sx={{color: currentMode === "dark" ? "white" : "black"}}>
+                          <TableCell
+                            sx={{
+                              color: currentMode === "dark" ? "white" : "black",
+                            }}
+                          >
+                            plain-text
+                          </TableCell>
+                          <TableCell
+                            sx={{
+                              color: currentMode === "dark" ? "white" : "black",
+                            }}
+                          >
                             <Box className="w-full flex items-center">
                               <p
                                 style={{ cursor: "pointer" }}
@@ -273,7 +299,11 @@ const TemplatesComponent = () => {
                                 } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
                               >
                                 <Tooltip title="Edit Template" arrow>
-                                  <button onClick={(e) => handleUpdateTemplate(e, template)}>
+                                  <button
+                                    onClick={(e) =>
+                                      handleUpdateTemplate(e, template)
+                                    }
+                                  >
                                     <AiOutlineEdit size={16} />
                                   </button>
                                 </Tooltip>
@@ -287,7 +317,14 @@ const TemplatesComponent = () => {
                                 } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
                               >
                                 <Tooltip title="Delete Template" arrow>
-                                  <button onClick={() => setDeleteTemplateModal({isOpen: true, templateId: template?.id})}>
+                                  <button
+                                    onClick={() =>
+                                      setDeleteTemplateModal({
+                                        isOpen: true,
+                                        templateId: template?.id,
+                                      })
+                                    }
+                                  >
                                     <BsTrash size={16} />
                                   </button>
                                 </Tooltip>
@@ -320,7 +357,14 @@ const TemplatesComponent = () => {
             />
           )}
           {deleteTemplateModal?.isOpen && (
-            <DeleteTemplateModal deleteTemplate={handleDelete} deleteTemplateModal={deleteTemplateModal} deletebtnloading={deletebtnloading} handleCloseDeleteTemplateModal={() => setDeleteTemplateModal({isOpen: false, templateId: null})}/>
+            <DeleteTemplateModal
+              deleteTemplate={handleDelete}
+              deleteTemplateModal={deleteTemplateModal}
+              deletebtnloading={deletebtnloading}
+              handleCloseDeleteTemplateModal={() =>
+                setDeleteTemplateModal({ isOpen: false, templateId: null })
+              }
+            />
           )}
         </Box>
       )}

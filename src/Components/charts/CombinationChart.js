@@ -101,6 +101,7 @@ const CombinationChart = () => {
           style={{
             height: "100%",
             width: "100%",
+            fontFamily: "'Noto Kufi Arabic', sans-serif",
           }}
         />
       ) : (

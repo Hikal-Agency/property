@@ -392,7 +392,10 @@ const SingleLead = ({
 
   // Replace last 4 digits with "*"
   const stearics =
-    LeadData?.leadContact?.replaceAll(" ", "")?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) + "****";
+    LeadData?.leadContact
+      ?.replaceAll(" ", "")
+      ?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) +
+    "****";
   let contact;
 
   if (hasPermission("number_masking")) {
@@ -469,7 +472,7 @@ const SingleLead = ({
           }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
-          {/* <button
+          <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
             className={`${
@@ -482,15 +485,18 @@ const SingleLead = ({
               color={"white"}
               className="hover:border hover:border-white hover:rounded-full"
             />
-          </button> */}
-
+          </button>
           <div
             style={style}
             className={` ${
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) ? (currentMode === "dark" && " border-primary border-r-2") : (currentMode === "dark" && " border-primary border-l-2")}
+            } ${
+              isLangRTL(i18n.language)
+                ? currentMode === "dark" && " border-primary border-r-2"
+                : currentMode === "dark" && " border-primary border-l-2"
+            }
              p-4 h-[100vh] w-[80vw] overflow-y-scroll 
             `}
           >
@@ -525,9 +531,11 @@ const SingleLead = ({
                           currentMode === "dark"
                             ? "text-[#FFFFFF] bg-[#262626]"
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
-                        } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                        } hover:bg-green-600 hover:text-white rounded-full shadow-sm p-1.5 mx-1 flex items-center`}
                       >
-                        <CallButton phone={LeadData?.leadContact?.replaceAll(" ", "")} />
+                        <CallButton
+                          phone={LeadData?.leadContact?.replaceAll(" ", "")}
+                        />
                       </p>
                     </Tooltip>
 
@@ -546,7 +554,7 @@ const SingleLead = ({
                           currentMode === "dark"
                             ? "text-[#FFFFFF] bg-[#262626]"
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
-                        } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                        } hover:bg-blue-600 hover:text-white rounded-full shadow-sm p-1.5 mx-1 flex items-center`}
                       >
                         <Tooltip title="Send Mail" arrow>
                           <EmailButton email={LeadData?.leadEmail} />
@@ -561,7 +569,7 @@ const SingleLead = ({
                         currentMode === "dark"
                           ? "text-[#FFFFFF] bg-[#262626]"
                           : "text-[#1C1C1C] bg-[#EEEEEE]"
-                      } hover:bg-teal-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                      } hover:bg-teal-600 hover:text-white rounded-full shadow-sm p-1.5 mx-1 flex items-center`}
                     >
                       <Tooltip title="Update Details" arrow>
                         <button onClick={() => HandleEditFunc(LeadData)}>
@@ -579,7 +587,7 @@ const SingleLead = ({
                           currentMode === "dark"
                             ? "text-[#FFFFFF] bg-[#262626]"
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
-                        } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                        } hover:bg-[#DA1F26] hover:text-white rounded-full shadow-sm p-1.5 mx-1 flex items-center`}
                       >
                         <Tooltip title="Delete Lead" arrow>
                           <button
@@ -608,7 +616,7 @@ const SingleLead = ({
                         currentMode === "dark"
                           ? "text-[#FFFFFF] bg-[#262626]"
                           : "text-[#1C1C1C] bg-[#EEEEEE]"
-                      } hover:bg-purple-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                      } hover:bg-purple-600 hover:text-white rounded-full shadow-sm p-1.5 mx-1 flex items-center`}
                     >
                       <Tooltip title="Add Listing" arrow>
                         <button onClick={handleOpenListingModal}>
@@ -633,7 +641,7 @@ const SingleLead = ({
                           currentMode === "dark"
                             ? "text-[#FFFFFF] bg-[#262626]"
                             : "text-[#1C1C1C] bg-[#EEEEEE]"
-                        } hover:bg-yellow-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                        } hover:bg-yellow-600 hover:text-white rounded-full shadow-sm p-1.5 mx-1 flex items-center`}
                       >
                         <Tooltip title="Request for Reshuffle" arrow>
                           {/* <button onClick={(e) => handleRequest(e, LeadData)}> */}
@@ -654,7 +662,7 @@ const SingleLead = ({
                             currentMode === "dark"
                               ? "text-[#FFFFFF] bg-[#262626]"
                               : "text-[#1C1C1C] bg-[#EEEEEE]"
-                          } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mx-1 flex items-center`}
+                          } hover:bg-red-600 hover:text-white rounded-full shadow-sm p-1.5 mx-1 flex items-center`}
                         >
                           <button onClick={() => HandleBlockIP(LeadData)}>
                             <BiBlock
@@ -672,17 +680,11 @@ const SingleLead = ({
                       target="_blank"
                       className="mx-2"
                     >
-                      <Button
-                        fullWidth
-                        sx={{ my: 0 }}
-                        variant="contained"
-                        style={{
-                          backgroundColor: primaryColor,
-                        }}
-                        size="medium"
+                      <button
+                        className="bg-primary text-white rounded-md card-hover p-2 shadow-sm"
                       >
                         {t("view_lead_details")?.toUpperCase()}
-                      </Button>
+                      </button>
 
                       {/* <Tooltip title="View Lead Dettails" arrow>
                         <Button
