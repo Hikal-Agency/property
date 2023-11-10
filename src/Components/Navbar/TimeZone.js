@@ -43,14 +43,39 @@ const TimeZone = () => {
     timezone.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handlePinTimeZone = async (e) => {
+  const pinnedTimezones = filteredTimezones?.filter((timezone) =>
+    pinnedZone.includes(timezone)
+  );
+
+  const unpinnedTimezones = filteredTimezones?.filter(
+    (timezone) => !pinnedZone.includes(timezone)
+  );
+
+  const handlePinTimeZone = async (e, timezone) => {
     e.stopPropagation();
     e.preventDefault();
+
+    // Fetch the previous pinned values from the state
+    const previousPinnedValues = pinnedZone || [];
+    // Check if the timezone is already pinned
+    const isPinned = previousPinnedValues.includes(timezone);
+
+    let updatedPinnedValues;
+
+    // Remove the timezone if it already exists
+    if (isPinned) {
+      updatedPinnedValues = previousPinnedValues.filter(
+        (existingTimezone) => existingTimezone !== timezone
+      );
+    } else {
+      // Append the new timezone
+      updatedPinnedValues = [...previousPinnedValues, timezone];
+    }
 
     try {
       const pinTimeZone = await axios.post(
         `${BACKEND_URL}/updateuser/${User?.id}`,
-        { pinned: timeZone },
+        { pinned: updatedPinnedValues },
         {
           headers: {
             "Content-Type": "application/json",
@@ -58,6 +83,7 @@ const TimeZone = () => {
           },
         }
       );
+      setPinnedZone(updatedPinnedValues);
 
       toast.success("Timezone Pinned.", {
         position: "top-right",
@@ -228,27 +254,34 @@ const TimeZone = () => {
                   </MenuItem>
                 </>
               ))} */}
-              {filteredTimezones?.slice(0, 3).map((timezone, index) => (
+              {pinnedTimezones?.map((timezone) => (
                 <MenuItem
                   key={timezone}
                   value={timezone}
                   onClick={handleTimezoneChange}
                 >
                   <span
-                    style={{ marginRight: "8px" }}
-                    onClick={handlePinTimeZone}
+                    style={{ marginRight: "8px", cursor: "pointer" }}
+                    onClick={(e) => handlePinTimeZone(e, timezone)}
                   >
-                    {"\u2691"}
+                    {"\u2690"}
                   </span>
                   {timezone}
                 </MenuItem>
               ))}
-              {filteredTimezones?.slice(3).map((timezone) => (
+
+              {unpinnedTimezones?.map((timezone) => (
                 <MenuItem
                   key={timezone}
                   value={timezone}
                   onClick={handleTimezoneChange}
                 >
+                  <span
+                    style={{ marginRight: "8px", cursor: "pointer" }}
+                    onClick={(e) => handlePinTimeZone(e, timezone)}
+                  >
+                    {"\u2691"}
+                  </span>
                   {timezone}
                 </MenuItem>
               ))}
