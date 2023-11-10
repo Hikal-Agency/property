@@ -53,7 +53,7 @@ const TimeZone = () => {
     (timezone) => !pinnedZone.includes(timezone)
   );
 
-  const handlePinTimeZone = async (e, timezone) => {
+  const handlePinTimeZone = async (e, timezone, type) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -107,7 +107,7 @@ const TimeZone = () => {
       );
       setPinnedZone(updatedPinnedValues);
 
-      toast.success("Timezone Pinned.", {
+      toast.success(`Timezone ${type === 0 ? "Unpinned" : "Pinned"}.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -286,7 +286,7 @@ const TimeZone = () => {
                 >
                   <span
                     style={{ marginRight: "8px", cursor: "pointer" }}
-                    onClick={(e) => handlePinTimeZone(e, timezone)}
+                    onClick={(e) => handlePinTimeZone(e, timezone, 0)}
                     value={pinnedZone}
                   >
                     {"\u2690"}
