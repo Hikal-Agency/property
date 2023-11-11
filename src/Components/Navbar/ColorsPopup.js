@@ -8,104 +8,168 @@ import {BiBlock} from "react-icons/bi";
 const colors = [
   "rgb(218,31,38)", // Main color
   "rgb(20, 77, 186)", // Dark blue
-  "rgb(101, 176, 207)", // Light blue
-  "rgb(128, 61, 191)", // Purple
   "rgb(38, 145, 68)", // Green
+  "rgb(128, 61, 191)", // Purple
   "rgb(233, 65, 150)", // Hotpink
+  "rgb(101, 176, 207)", // Light blue
   "rgb(51, 196, 160)", // Greenish Blue
   "rgb(229, 124, 0)", // Orange
-  "rgb(247, 193, 52)", // Yellow
 ];
 
 const solidColors = [
-  {
-    "#FFB4B7": {
+  { //red
+    "#ffbaba": {
       theme: "light",
+      primary: "rgb(218,31,38)",
     }
   },
-  {
+  { //red
+    "#4D0A0F": {//5e0202
+      theme: "dark",
+      primary: "rgb(218,31,38)",
+    }
+  },
+  { //blue
     "#849DD2": {
       theme: "light",
+      primary: "rgb(20, 77, 186)",
     }
   },
-  {
-    "#BCDAE8": {
-      theme: "light",
+  { //blue
+    "#0A2E73": {//00004d
+      theme: "dark",
+      primary: "rgb(20, 77, 186)",
     }
   },
-  {
-    "#B130D0": {
-      theme: "light",
-    }
-  },
-  {
+  { //green
     "#A4D3B4": {
       theme: "light",
+      primary: "rgb(38, 145, 68)",
     }
   },
-  {
+  { //green
+    "#104825": {
+      theme: "dark",
+      primary: "rgb(38, 145, 68)",
+    }
+  },
+  { //purple
+    "#D7A1F9": {
+      theme: "light",
+      primary: "rgb(128, 61, 191)",
+    }
+  },
+  { //purple
+    "#3D1D54": {
+      theme: "dark",
+      primary: "rgb(128, 61, 191)",
+    }
+  },
+  { //pink
     "#F996C5": {
       theme: "light",
+      primary: "rgb(233, 65, 150)",
     }
   },
-  {
+  { //pink
+    "#86144F": {
+      theme: "dark",
+      primary: "rgb(233, 65, 150)",
+    }
+  },
+  { //sky blue
+    "#BCDAE8": {
+      theme: "light",
+      primary: "rgb(101, 176, 207)",
+    }
+  },
+  { //sky blue
+    "#2F5066": {
+      theme: "dark",
+      primary: "rgb(101, 176, 207)",
+    }
+  },
+  { //mint
     "#A3E2CE": {
       theme: "light",
+      primary: "rgb(51, 196, 160)",
     }
   },
-  {
+  { //mint
+    "#106C4B": {
+      theme: "dark",
+      primary: "rgb(51, 196, 160)",
+    }
+  },
+  { //orange
     "#FFD08C": {
       theme: "light",
+      primary: "rgb(229, 124, 0)",
     }
   },
-  {
-    "#FFEDBE": {
-      theme: "light",
+  { //orange
+    "#714B00": {
+      theme: "dark",
+      primary: "rgb(229, 124, 0)",
     }
-  },
+  }
 ]; 
 
 const images = [
-  {
-    "blue_pink": {
-      bg: "https://images.unsplash.com/photo-1554034483-04fda0d3507b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      theme: "light",
-    }
-  },
-  {
-    "blue_ocean": {
-      bg: "https://images.unsplash.com/photo-1501696461415-6bd6660c6742?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
-      theme: "light",
-    }
-  },
-  {
-    "mint_orange": {
-      bg: "https://images.unsplash.com/photo-1620503374956-c942862f0372?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      theme: "light",
-    }
-  },
-  {
-    "pink_black": {
-      bg: "https://images.unsplash.com/photo-1520052205864-92d242b3a76b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHdhbGxwYXBlciUyMGxhbmRzY2FwZSUyMGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
-      theme: "light",
-    }
-  },
-  {
-    "blue_teal": {
-      bg: "https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fHdhbGxwYXBlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
-      theme: "dark",
-    }
-  },
-  {
+  { //red
     "pink_pink": {
       bg: "https://images.unsplash.com/photo-1503455637927-730bce8583c0?auto=format&fit=crop&q=60&w=600&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29saWQlMjBiYWNrZ3JvdW5kfGVufDB8MHwwfHx8MA%3D%3D",
       theme: "light",
+      primary: "rgb(218,31,38)",
     }
   },
-  {
+  { //blue
+    "blue_ocean": {
+      bg: "https://images.unsplash.com/photo-1501696461415-6bd6660c6742?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+      theme: "light",
+      primary: "rgb(20, 77, 186)",
+    }
+  },
+  { //green
+    "green_black_code": {
+      bg: "https://images.unsplash.com/photo-1538438253612-287c9fc9217e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      theme: "light",
+      primary: "rgb(38, 145, 68)",
+    }
+  },
+  { //purple
+    "orange_black_bridge": {
+      bg: "https://images.unsplash.com/photo-1464692805480-a69dfaafdb0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      theme: "light",
+      primary: "rgb(128, 61, 191)",
+    }
+  },
+  { //pink
+    "pink_black": {
+      bg: "https://images.unsplash.com/photo-1520052205864-92d242b3a76b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHdhbGxwYXBlciUyMGxhbmRzY2FwZSUyMGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
+      theme: "light",
+      primary: "rgb(233, 65, 150)",
+    }
+  },
+  { //skyblue
+    "blue_teal": {
+      bg: "https://images.unsplash.com/photo-1508108712903-49b7ef9b1df8?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      theme: "light",
+      primary: "rgb(101, 176, 207)",
+    }
+  },
+  { //mint
     "black_aurora": {
       bg: "https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?auto=format&fit=crop&q=60&w=600&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8",
       theme: "dark",
+      primary: "rgb(51, 196, 160)",
+    }
+  },
+  { //orange
+    "mint_orange": {
+      bg: "https://images.unsplash.com/photo-1620503374956-c942862f0372?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      theme: "light",
+      primary: "rgb(229, 124, 0)",
     }
   },
 ];
@@ -146,11 +210,15 @@ const ColorsPopup = ({ handleClose }) => {
   };
 
 
-  const handleSelectBgImg = async (bgImg, theme) => {
+  const handleSelectBgImg = async (bgImg, theme, primary) => {
     setThemeBgImg(bgImg);
 
     if (theme !== "") {
       setCurrentMode(theme);
+    }
+
+    if (primary !== "") {
+      setPrimaryColor(primary);
     }
 
     const token = localStorage.getItem("auth-token");
@@ -215,7 +283,7 @@ const ColorsPopup = ({ handleClose }) => {
       </Box>
         <div className="my-4 mx-auto place-items-center grid grid-cols-5 gap-y-5">
           <div>
-            <IconButton onClick={() => handleSelectBgImg("")}>
+            <IconButton onClick={() => handleSelectBgImg("", "light", "rgb(218,31,38)")}>
               <BiBlock size={18} color={currentMode === "dark" ? "#EEEEEE" : "#1C1C1C"} />
             </IconButton>
           </div>
@@ -232,11 +300,12 @@ const ColorsPopup = ({ handleClose }) => {
             const imagei = Object.keys(image)[0];
             const imageLink = image[imagei].bg;
             const imageTheme = image[imagei].theme;
+            const imagePrimary = image[imagei].primary;
 
             return (
               <div 
                 key={index}
-                onClick={() => handleSelectBgImg(imageLink, imageTheme)} 
+                onClick={() => handleSelectBgImg(imageLink, imageTheme, imagePrimary)} 
                 className="cursor-pointer rounded-md w-[40px] h-[40px]" 
                 style={{
                   backgroundImage: `url(${imageLink})`, 
@@ -260,11 +329,12 @@ const ColorsPopup = ({ handleClose }) => {
           {solidColors?.map((colorObject, index) => {
             const colorHex = Object.keys(colorObject)[0];
             const colorTheme = colorObject[colorHex].theme;
+            const colorPrimary = colorObject[colorHex].primary;
 
             return (
               <div
                 key={index}
-                onClick={() => handleSelectBgImg(colorHex, colorTheme)}
+                onClick={() => handleSelectBgImg(colorHex, colorTheme, colorPrimary)}
                 className="cursor-pointer rounded-md w-[35px] h-[35px]"
                 style={{
                   backgroundColor: colorHex,
