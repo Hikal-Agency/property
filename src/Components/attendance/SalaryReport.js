@@ -108,6 +108,22 @@ const SalaryReport = ({
   const fetchSalaryCalc = async () => {
     setLoading(true);
 
+    if (!reportMonth?.month || !reportMonth?.year) {
+      setLoading(false);
+      toast.error("Kindly select month and year first.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
+
     try {
       const response = await axios.post(
         `https://reports.hikalcrm.com/api/calculate_salary`,
@@ -495,245 +511,7 @@ const SalaryReport = ({
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5 p-5">
-                  {/* USER DETAILS  */}
-                  <div
-                    className={`p-4 rounded-xl shadow-sm card-hover
-                    ${
-                      currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    }`}
-                  >
-                    <h1 className="text-center uppercase font-semibold">
-                      {t("user_details")?.toUpperCase()}
-                    </h1>
-                    <hr className="my-4" />
-                    <div className="w-full">
-                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
-                        <BsTelephone size={16} className="text-primary" />
-                        <div className="col-span-7">{contact}</div>
-                      </div>
-                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
-                        <BsEnvelopeAt size={16} className="text-primary" />
-                        <div className="col-span-7">
-                          {LeadData?.leadEmail === "" ||
-                          LeadData?.leadEmail === "null" ||
-                          LeadData?.leadEmail === "undefined" ||
-                          LeadData?.leadEmail === "-" ||
-                          LeadData?.leadEmail === null ||
-                          LeadData?.leadEmail === undefined
-                            ? "-"
-                            : LeadData?.leadEmail}
-                        </div>
-                      </div>
-                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
-                        <BsType size={16} className="text-primary" />
-                        <div className="col-span-7">{LeadData?.language}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* PROJECT DETAILS  */}
-                  <div
-                    className={`p-4 rounded-xl shadow-sm card-hover
-                    ${
-                      currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    }`}
-                  >
-                    <h1 className="text-center uppercase font-semibold">
-                      {t("enquiry_details")?.toUpperCase()}
-                    </h1>
-                    <hr className="my-4" />
-                    <div className="w-full">
-                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
-                        <BsBuildings size={16} className="text-primary" />
-                        <div className="col-span-7">
-                          {LeadData?.project === "null"
-                            ? "-"
-                            : LeadData?.project}{" "}
-                          {LeadData?.leadType === "null"
-                            ? "-"
-                            : LeadData?.leadType}
-                        </div>
-                      </div>
-                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
-                        <BiBed size={16} className="text-primary" />
-                        <div className="col-span-7">
-                          {LeadData?.enquiryType === "null"
-                            ? "-"
-                            : LeadData?.enquiryType}
-                        </div>
-                      </div>
-                      <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
-                        <BsHouseGear size={16} className="text-primary" />
-                        <div className="col-span-7">
-                          {LeadData?.leadFor === "null"
-                            ? "-"
-                            : `${LeadData?.leadFor}`}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* STATUS  */}
-                  <div
-                    className={`sm:col-span-1 md:col-span-2 p-4 rounded-xl shadow-sm card-hover text-center
-                    ${
-                      currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    }`}
-                  >
-                    <h1 className="text-center uppercase flex items-center justify-center">
-                      <BsBookmarkFill size={16} className="mx-2 text-primary" />
-                      {t("label_feedback")?.toUpperCase()}
-                      <span className="mx-2 font-semibold">
-                        {t(
-                          "feedback_" +
-                            LeadData?.feedback
-                              ?.toLowerCase()
-                              ?.replaceAll(" ", "_")
-                        ) ?? "---"}
-                      </span>
-                    </h1>
-                    <hr className="my-4" />
-                    <div className="w-full">
-                      {LeadData?.notes === null ||
-                      LeadData?.notes === "" ||
-                      LeadData?.notes === "null" ||
-                      LeadData?.notes === "-" ? (
-                        <></>
-                      ) : (
-                        <div class="flex items-center gap-5 my-4 md:px-5">
-                          <BsChatLeftText
-                            size={16}
-                            className="text-primary mx-2"
-                          />
-                          <div
-                            className="text-start"
-                            style={{
-                              fontFamily: isArabic(LeadData?.notes)
-                                ? "Noto Kufi Arabic"
-                                : "inherit",
-                            }}
-                          >
-                            {LeadData?.notes}
-                          </div>
-                        </div>
-                      )}
-                      <div class="flex items-center gap-5 my-4 md:px-5">
-                        <BsPersonPlus size={16} className="text-primary mx-2" />
-                        <div className="">
-                          {t("lead_added_on")}{" "}
-                          {datetimeLong(LeadData?.creationDate)}
-                        </div>
-                      </div>
-                      <div class="flex items-center gap-5 my-4 md:px-5">
-                        <BsPersonGear size={16} className="text-primary mx-2" />
-                        <div className="">
-                          {t("last_updated_on")}{" "}
-                          {LeadData?.lastEdited === ""
-                            ? "-"
-                            : datetimeLong(LeadData?.lastEdited)}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* <div className="p-5">
-                  <div className="bg-primary h-0.5 w-full my-1"></div>
-                </div> */}
-
-                {/* LAST NOTE  */}
-                <div className="p-5">
-                  <div
-                    className={`w-full text-center
-                      ${currentMode === "dark" ? "text-white" : "text-black"}`}
-                  >
-                    <div className="w-full my-4">
-                      {lastNote ? (
-                        <div
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-white bg-black border-gray-800"
-                              : "text-black bg-[#EEEEEE] border-gray-300"
-                          } border-2 flex items-center my-2 gap-5 w-full rounded-xl shadow-sm`}
-                        >
-                          <div className="p-3 text-center text-sm">
-                            <div className="mb-1">{lastNoteAddedBy}</div>
-                            <div className="mt-1 text-[#AAAAAA]">
-                              {lastNoteDate}
-                            </div>
-                          </div>
-                          <div className="bg-primary h-10 w-0.5"></div>
-                          <div className="p-3 flex-grow text-start">
-                            <p
-                              style={{
-                                fontFamily: isArabic(lastNote)
-                                  ? "Noto Kufi Arabic"
-                                  : "inherit",
-                              }}
-                            >
-                              {lastNote}
-                            </p>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="italic text-xs text-primary text-center">
-                          {t("no_notes_available")}
-                        </div>
-                      )}
-                    </div>
-                    <div className="my-4 w-full">
-                      <form
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          AddNote();
-                        }}
-                      >
-                        <TextField
-                          sx={{
-                            ...darkModeColors,
-                            "& input": {
-                              fontFamily: "Noto Kufi Arabic",
-                            },
-                          }}
-                          id="note"
-                          type={"text"}
-                          label={t("label_note")}
-                          className="w-full"
-                          variant="outlined"
-                          size="small"
-                          multiline
-                          minRows={2}
-                          required
-                          value={AddNoteTxt}
-                          onChange={(e) => setAddNoteTxt(e.target.value)}
-                        />
-
-                        <button
-                          disabled={addNoteloading ? true : false}
-                          type="submit"
-                          className="mt-4 disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary group relative flex w-full justify-center rounded-xl shadow-sm border border-transparent p-1 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
-                        >
-                          {addNoteloading ? (
-                            <CircularProgress
-                              sx={{ color: "white" }}
-                              size={25}
-                              className="text-white"
-                            />
-                          ) : (
-                            <span>{t("add_new_note")?.toUpperCase()}</span>
-                          )}
-                        </button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
+                <div className="p-5">PDF will be here</div>
               </>
             )}
           </div>
