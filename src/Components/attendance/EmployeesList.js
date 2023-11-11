@@ -17,6 +17,7 @@ import { GrDownload } from "react-icons/gr";
 import axios from "../../axoisConfig";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
+import SalaryReport from "./SalaryReport";
 
 const EmployeesList = ({ user }) => {
   const [downloadLoading, setDownloadLoading] = useState(false);
@@ -33,6 +34,7 @@ const EmployeesList = ({ user }) => {
   } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
+  const [reportModal, setReportModal] = useState(false);
 
   const [selectedDay, setSelectedDay] = useState("today");
   // const [selectedDay, setSelectedDay] = useState("");
@@ -65,46 +67,6 @@ const EmployeesList = ({ user }) => {
 
     if (newWindow) {
       newWindow.opener = null;
-    }
-  };
-
-  const fetchSalaryCalc = async () => {
-    setDownloadLoading(true);
-
-    toast.success("Report will be downloaded in a while.", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-    try {
-      const response = await axios.get(`${BACKEND_URL}/attendance`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      console.log("salary Calc: ", response);
-
-      setDownloadLoading(false);
-    } catch (error) {
-      setDownloadLoading(false);
-      toast.error("Unable to download report.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     }
   };
 
@@ -195,13 +157,9 @@ const EmployeesList = ({ user }) => {
                 <div className="mr-6">
                   <IconButton
                     className="bg-btn-primary"
-                    onClick={fetchSalaryCalc}
+                    onClick={() => setReportModal(true)}
                   >
-                    {downloadLoading ? (
-                      <CircularProgress />
-                    ) : (
-                      <GrDownload color="#fffff" />
-                    )}
+                    <GrDownload color="#fffff" />
                   </IconButton>
                 </div>
                 <Select
@@ -352,6 +310,12 @@ const EmployeesList = ({ user }) => {
           </div>
         )}
       </div>
+      {reportModal && (
+        <SalaryReport
+          setReportModal={setReportModal}
+          reportModal={reportModal}
+        />
+      )}
     </>
   );
 };
