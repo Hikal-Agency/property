@@ -1,5 +1,6 @@
 import {
   Box,
+  CircularProgress,
   IconButton,
   MenuItem,
   Pagination,
@@ -18,6 +19,7 @@ import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 
 const EmployeesList = ({ user }) => {
+  const [downloadLoading, setDownloadLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const {
     currentMode,
@@ -63,6 +65,46 @@ const EmployeesList = ({ user }) => {
 
     if (newWindow) {
       newWindow.opener = null;
+    }
+  };
+
+  const fetchSalaryCalc = async () => {
+    setDownloadLoading(true);
+
+    toast.success("Report will be downloaded in a while.", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    try {
+      const response = await axios.get(`${BACKEND_URL}/attendance`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("salary Calc: ", response);
+
+      setDownloadLoading(false);
+    } catch (error) {
+      setDownloadLoading(false);
+      toast.error("Unable to download report.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -151,8 +193,15 @@ const EmployeesList = ({ user }) => {
             <Box sx={darkModeColors}>
               <div className="flex justify-end">
                 <div className="mr-6">
-                  <IconButton className="bg-btn-primary">
-                    <GrDownload color="#fffff" />
+                  <IconButton
+                    className="bg-btn-primary"
+                    onClick={fetchSalaryCalc}
+                  >
+                    {downloadLoading ? (
+                      <CircularProgress />
+                    ) : (
+                      <GrDownload color="#fffff" />
+                    )}
                   </IconButton>
                 </div>
                 <Select
