@@ -120,7 +120,7 @@ const TimeZone = () => {
 
       console.log("Response: ", pinTimeZone);
     } catch (error) {
-      toast.error("Unable set timezone.", {
+      toast.error("Unable to pin timezone.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
