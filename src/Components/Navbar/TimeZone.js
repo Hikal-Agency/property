@@ -57,6 +57,8 @@ const TimeZone = () => {
     e.stopPropagation();
     e.preventDefault();
 
+    console.log("timezone in handlechange:: ", timezone);
+
     console.log("pinnedZone in handlechange: ", pinnedZone);
 
     // Fetch the previous pinned values from the state
@@ -65,19 +67,6 @@ const TimeZone = () => {
     console.log("prev pinnedZones:: ", previousPinnedValues);
     console.log("prev pinnedZones:: ", previousPinnedValues.length);
 
-    if (previousPinnedValues.length > 2) {
-      toast.error("You can only pin up to 3 timezones.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return;
-    }
     // Check if the timezone is already pinned
     const isPinned = previousPinnedValues.includes(timezone);
 
@@ -89,6 +78,19 @@ const TimeZone = () => {
         (existingTimezone) => existingTimezone !== timezone
       );
     } else {
+      if (previousPinnedValues.length > 2) {
+        toast.error("You can only pin up to 3 timezones.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return;
+      }
       // Append the new timezone
       updatedPinnedValues = [...previousPinnedValues, timezone];
       // updatedPinnedValues = timezone;
@@ -135,7 +137,12 @@ const TimeZone = () => {
 
   const handleTimezoneChange = async (e) => {
     // const timeZone = e.target.innerText?.trim();
-    const timeZone = e.target.innerText?.trim().replace("⚑", "");
+    // const timeZone = e.target.innerText?.trim().replace("⚑", "");
+    const timeZone = e.target.innerText
+      ?.trim()
+      .replace(/[\u2691\u2690\n]/g, "");
+
+    // const updateTimzone = timeZone.slice(timeZone.indexOf("\u2691") + 1);
     console.log("timzone selected : ", e);
     console.log("trimmed timezone::: ", timeZone);
 
@@ -151,7 +158,7 @@ const TimeZone = () => {
         }
       );
 
-      setTimezone(e.target.innerText?.trim());
+      setTimezone(timeZone);
       toast.success("Timezone updated.", {
         position: "top-right",
         autoClose: 3000,
