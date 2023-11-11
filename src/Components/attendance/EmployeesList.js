@@ -1,9 +1,17 @@
-import { Box, MenuItem, Pagination, Select, Stack } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  MenuItem,
+  Pagination,
+  Select,
+  Stack,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
+import { GrDownload } from "react-icons/gr";
 
 import axios from "../../axoisConfig";
 import moment from "moment";
@@ -19,7 +27,7 @@ const EmployeesList = ({ user }) => {
     darkModeColors,
     t,
     primaryColor,
-    themeBgImg
+    themeBgImg,
   } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
@@ -142,6 +150,11 @@ const EmployeesList = ({ user }) => {
           >
             <Box sx={darkModeColors}>
               <div className="flex justify-end">
+                <div className="mr-6">
+                  <IconButton className="bg-btn-primary">
+                    <GrDownload color="#fffff" />
+                  </IconButton>
+                </div>
                 <Select
                   id="monthSelect"
                   size="small"
@@ -182,12 +195,13 @@ const EmployeesList = ({ user }) => {
                       <div
                         key={index}
                         className={`${
-                          !themeBgImg ? (currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-gray-200 text-black")
-                            : (currentMode === "dark"
+                          !themeBgImg
+                            ? currentMode === "dark"
+                              ? "bg-[#1c1c1c] text-white"
+                              : "bg-gray-200 text-black"
+                            : currentMode === "dark"
                             ? "blur-bg-dark text-white"
-                            : "blur-bg-light text-black")
+                            : "blur-bg-light text-black"
                         }  rounded-xl shadow-sm card-hover cursor-pointer gap-y-2`}
                         onClick={(e) => handleClick(e, item?.user_id)}
                       >
