@@ -52,6 +52,7 @@ const SingleEmployee = ({ user }) => {
   console.log("user: ", user);
 
   const [loading, setloading] = useState(true);
+  const [salaryCalc, setSalaryCalc] = useState({});
 
   const token = localStorage.getItem("auth-token");
 
@@ -65,6 +66,7 @@ const SingleEmployee = ({ user }) => {
   const [passwordConfirm, setPasswordConfirm] = useState(false);
   console.log("cut: ", cut_salary);
 
+  console.log("empdata:: ", empData);
   // offdays
   const [offDays, setOffDays] = useState(settings?.off_day || "");
   const isOffDay = (offDay) => {
@@ -522,22 +524,37 @@ const SingleEmployee = ({ user }) => {
       params.date_range = [startDate, endDate].join(",");
     }
 
+    const currentMonthNumber = moment().format("M");
+    const currentYear = moment().format("YYYY");
+
     try {
-      const [attendanceResponse, agencyResponse] = await Promise.all([
-        axios.get(`${BACKEND_URL}/attendance?user_id=${id}`, {
-          params,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-        axios.get(`${BACKEND_URL}/agencies/1`),
-      ]);
+      const [attendanceResponse, agencyResponse, salaryResponse] =
+        await Promise.all([
+          axios.get(`${BACKEND_URL}/attendance?user_id=${id}`, {
+            params,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+          axios.get(`${BACKEND_URL}/agencies/1`),
+          axios.post(`https://reports.hikalcrm.com/api/calculate_salary_user`, {
+            month: parseInt(currentMonthNumber, 10),
+            year: parseInt(currentYear, 10),
+            agency: 1,
+            user_id: id,
+          }),
+        ]);
 
       console.log("Fetched data: ", attendanceResponse.data);
       console.log("Fetched agency data: ", agencyResponse.data);
+      console.log("Fetched salary data: ", salaryResponse.data);
 
       const data = attendanceResponse.data.Record.data;
+
+      // salary calculation
+      const salaryCalc = salaryResponse?.data?.data[0];
+      setSalaryCalc(salaryCalc);
 
       // offdays
       setSettings({
@@ -1600,6 +1617,8 @@ const SingleEmployee = ({ user }) => {
     }
   };
 
+  console.log("salary calc:: ", salaryCalc);
+
   useEffect(() => {
     setopenBackDrop(false);
     // const token = localStorage.getItem("auth-token");
@@ -1741,9 +1760,7 @@ const SingleEmployee = ({ user }) => {
                           </h1>
                         </div>
                         <div className="font-bold">
-                          {empData[0]?.salary
-                            ? `${empData[0]?.currency} ${empData[0]?.salary} `
-                            : "-"}
+                          {`${empData[0]?.currency} ${salaryCalc?.salary} `}
                         </div>
                       </div>
                       <div className="text-center">
@@ -1753,9 +1770,7 @@ const SingleEmployee = ({ user }) => {
                           </h1>
                         </div>
                         <div className="font-bold">
-                          {empData[0]?.salary && empData[0]?.salary !== null
-                            ? `${empData[0]?.currency} ${pageState?.perDaySalary}`
-                            : "-"}
+                          {`${empData[0]?.currency} ${salaryCalc?.salary_per_day}`}
                         </div>
                       </div>
                     </div>
@@ -1789,7 +1804,7 @@ const SingleEmployee = ({ user }) => {
                       <div className="text-center">
                         <div className="flex items-center justify-center">
                           <p className="font-bold pr-2">
-                            {"  "} {pageState?.attended_count || "0"}
+                            {"  "} {salaryCalc?.present_days || "0"}
                           </p>
                           {"  "}
                           <h1 className="font-semibold text-sm">
@@ -1800,7 +1815,7 @@ const SingleEmployee = ({ user }) => {
                       <div className="text-center">
                         <div className="flex items-center justify-center">
                           <p className="font-bold pr-2">
-                            {"  "} {pageState?.leave_count || "0"}
+                            {"  "} {salaryCalc?.leave_days || "0"}
                           </p>
                           {"  "}
                           <h1 className="font-semibold">{t("leave_days")}</h1>
@@ -1809,7 +1824,7 @@ const SingleEmployee = ({ user }) => {
                       <div className="text-center">
                         <div className="flex items-center justify-center">
                           <p className="font-bold pr-2">
-                            {"  "} {pageState?.late_count || "0"}
+                            {"  "} {salaryCalc?.late_days || "0"}
                           </p>
                           {"  "}
                           <h1 className="font-semibold text-sm">
@@ -1841,9 +1856,7 @@ const SingleEmployee = ({ user }) => {
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
                           <div className="font-bold">
-                            {empData[0]?.salary
-                              ? `${empData[0]?.currency} ${pageState?.leaveDaySalary} `
-                              : "-"}
+                            {`${empData[0]?.currency} ${salaryCalc?.leave_day_salary} `}
                           </div>
                         </div>
                         <div className="text-center">
@@ -1854,9 +1867,7 @@ const SingleEmployee = ({ user }) => {
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
                           <div className="font-bold">
-                            {empData[0]?.salary && empData[0]?.salary !== null
-                              ? `${empData[0]?.currency} ${pageState?.lateDaySalary}`
-                              : "-"}
+                            {`${empData[0]?.currency} ${salaryCalc?.late_day_salary}`}
                           </div>
                         </div>
                       </div>
@@ -1883,9 +1894,7 @@ const SingleEmployee = ({ user }) => {
                           <h1 className="font-semibold">{t("total_salary")}</h1>
                         </div>
                         <div className="font-bold">
-                          {empData[0]?.salary
-                            ? `${empData[0]?.currency} ${pageState?.totalSalary} `
-                            : "-"}
+                          {`${empData[0]?.currency} ${salaryCalc?.net_salary} `}
                         </div>
                       </div>
                     </div>
@@ -1893,16 +1902,19 @@ const SingleEmployee = ({ user }) => {
                 </div>
 
                 {/* section 2 */}
-                <div className={`${
-                  themeBgImg ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-                  : (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                } col-span-10 p-5 rounded-xl shadow-sm`}>
-                  <EmployeeCalendar
-                    isOffDay={isOffDay}
-                    pageState={pageState}
-                  />
+                <div
+                  className={`${
+                    themeBgImg
+                      ? currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
+                      : currentMode === "dark"
+                      ? "bg-[#1C1C1C]"
+                      : "bg-[#EEEEEE]"
+                  } col-span-10 p-5 rounded-xl shadow-sm`}
+                >
+                  <EmployeeCalendar isOffDay={isOffDay} pageState={pageState} />
                 </div>
-                
               </div>
 
               <div className="w-full my-5">
