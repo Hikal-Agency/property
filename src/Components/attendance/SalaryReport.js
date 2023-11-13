@@ -41,6 +41,7 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import jsPDF from "jspdf";
 
 const SalaryReport = ({
   reportModal,
@@ -109,7 +110,6 @@ const SalaryReport = ({
 
   // generate report
   const generateReportPDF = (data) => {
-    console.log("data in pdf :: ", data);
     const doc = new jsPDF({
       format: [300, 300],
       unit: "mm",
@@ -137,32 +137,27 @@ const SalaryReport = ({
       const totalWidth = headers.length * 30;
       const fontSize = 7;
 
+      // Add the red line above the logo and text
+      doc.setDrawColor(218, 31, 38);
+      doc.setLineWidth(1);
+      doc.line(10, 25, doc.internal.pageSize.getWidth() - 10, 25);
+
       const currentDate = new Date();
       const monthName = new Intl.DateTimeFormat("en-US", {
         month: "long",
       }).format(currentDate);
       const year = currentDate.getFullYear();
-      const reportText = `Salary Evaluation Report`;
+      const reportMonthName = moment()
+        .month(reportMonth?.month - 1)
+        .format("MMMM");
+      const reportText = `Salary Evaluation Report for ${reportMonthName}`;
 
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.text(reportText, 20, 15);
 
-      const month = `${monthName} ${year}:  `;
-
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      doc.text(month, 18, 33);
-
       doc.setTextColor("#DA1F26");
       doc.setFont("helvetica", "bold");
-      doc.text(
-        `${empData[0]?.currency || "No Currency"} ${
-          pageState?.totalSalary || "-"
-        }`,
-        18 + doc.getTextWidth(month),
-        33
-      );
 
       const DateinNum = moment().format("YYYY-MM-DD");
       const date = `Date: ${DateinNum}`;
@@ -171,155 +166,42 @@ const SalaryReport = ({
       doc.setFont("helvetica", "normal");
       doc.text(date, doc.internal.pageSize.getWidth() - 45, 33);
 
-      // const usernameWidth = doc.getTextWidth(empData[0]?.userName || "No Name");
-      // const usernameX = (doc.internal.pageSize.getWidth() - usernameWidth) / 2;
-      // doc.setFont("helvetica", "bold");
-      // doc.setTextColor("#000");
-      // doc.setFontSize(14);
-      // doc.text(`${empData[0]?.userName || "No Name"}`, usernameX, 45);
-
-      const textVerticalPosition = 60;
-      const textFontSize = 9;
-
-      doc.setFontSize(textFontSize);
-      doc.setFont("helvetica", "normal");
-
-      doc.setLineWidth(1);
-
-      // const textElements = [
-      //   {
-      //     label: "Monthly salary:",
-      //     value: `${empData[0]?.currency || "No Currency"} ${
-      //       empData[0]?.salary || "0"
-      //     }`,
-      //   },
-      //   {
-      //     label: "Salary per day:",
-      //     value: `${pageState?.perDaySalary || "0"}`,
-      //   },
-      //   {
-      //     label: "Leave day salary:",
-      //     value: `${empData[0]?.currency || "No Currency"} ${
-      //       pageState?.leaveDaySalary || "0"
-      //     }`,
-      //   },
-      //   {
-      //     label: "Late day salary:",
-      //     value: `${empData[0]?.currency || "No Currency"} ${
-      //       pageState?.lateDaySalary || "0"
-      //     }`,
-      //   },
-      // ];
-
-      // const rightSideFields = [
-      //   { label: t("working_days"), value: `${pageState?.workingDays || "0"}` },
-      //   {
-      //     label: t("attended_days"),
-      //     value: `${pageState?.attended_count || "0"}`,
-      //   },
-      //   { label: t("leave_days"), value: `${pageState?.leave_count || "0"}` },
-      //   {
-      //     label: t("late_attendance_days"),
-      //     value: `${pageState?.late_count || "0"}`,
-      //   },
-      // ];
-
       const numColumns = 2;
       const columnWidth = (doc.internal.pageSize.getWidth() - 30) / numColumns;
-      let x = 15;
-      let y = textVerticalPosition;
-      let columnIndex = 0;
 
-      // textElements.forEach((element) => {
-      //   doc.setTextColor("#000");
-      //   const labelText = `${element.label} `;
-      //   const valueText = element.value;
-
-      //   doc.setFont("helvetica", "normal");
-      //   doc.setFontSize(9);
-
-      //   const labelWidth = doc.getTextWidth(labelText);
-      //   const valueWidth = doc.getTextWidth(valueText);
-      //   const remainingWidth = columnWidth - (x - 15);
-
-      //   if (labelWidth + valueWidth <= remainingWidth) {
-      //     doc.text(labelText, x, y);
-      //     doc.setTextColor("#DA1F26");
-      //     doc.setFont("helvetica", "bold");
-      //     doc.text(valueText, x + labelWidth, y);
-      //     y += 10;
-      //   } else {
-      //     columnIndex++;
-      //     x = 15 + columnIndex * columnWidth;
-      //     y = textVerticalPosition;
-      //     doc.text(labelText, x, y);
-      //     doc.setTextColor("#DA1F26");
-      //     doc.setFont("helvetica", "bold");
-      //     doc.text(valueText, x + labelWidth, y);
-      //     y += 10;
-      //   }
-      // });
-
-      // const xRight = doc.internal.pageSize.getWidth() - 15;
-      // let yRight = textVerticalPosition;
-
-      // rightSideFields.forEach((field) => {
-      //   doc.setTextColor("#000");
-      //   const labelText = `${field.label}`;
-      //   const valueText = field.value;
-
-      //   doc.setFont("helvetica", "normal");
-      //   doc.setFontSize(9);
-
-      //   const labelWidth = doc.getTextWidth(labelText);
-      //   const valueWidth = doc.getTextWidth(valueText);
-      //   const remainingWidth = xRight - 15;
-
-      //   if (labelWidth + valueWidth <= remainingWidth) {
-      //     doc.text(labelText, xRight - labelWidth, yRight);
-      //     doc.setTextColor("#DA1F26");
-      //     doc.setFont("helvetica", "bold");
-      //     doc.text(valueText, xRight - labelWidth - 5, yRight);
-      //     yRight += 10;
-      //   } else {
-      //     xRight -= columnWidth;
-      //     yRight = textVerticalPosition;
-      //     doc.text(labelText, xRight - labelWidth, yRight);
-      //     doc.setTextColor("#DA1F26");
-      //     doc.setFont("helvetica", "bold");
-      //     doc.text(valueText, xRight - labelWidth - 5, yRight);
-      //     yRight += 10;
-      //   }
-      // });
-
+      // Load the logo image
       const logoImg = new Image();
       logoImg.src = "/assets/hikal_watermark.png";
       logoImg.onload = () => {
-        const originalWidth = logoImg.width;
-        const originalHeight = logoImg.height;
+        const originalWidth = logoImg.width; // Get the original width of the logo
+        const originalHeight = logoImg.height; // Get the original height of the logo
 
-        const desiredWidth = 20;
-        const scaleFactor = desiredWidth / originalWidth;
+        const desiredWidth = 20; // Set the desired width of the logo
+        const scaleFactor = desiredWidth / originalWidth; // Calculate the scale factor
 
+        // Calculate the height to maintain the original aspect ratio
         const desiredHeight = originalHeight * scaleFactor;
 
+        // Calculate the position to place the logo in the top right corner
         const logoX = doc.internal.pageSize.getWidth() - desiredWidth - 15;
         const logoY = 8;
 
+        // Add the logo to the PDF with the adjusted dimensions
         doc.addImage(
           logoImg.src,
           "PNG",
           logoX,
           logoY,
           desiredWidth,
-          desiredHeight
+          desiredHeight // Use the adjusted height here
         );
+        // Add the table to the PDF
 
         doc.autoTable({
           head: [headers],
           body: tableData,
           tableWidth: totalWidth,
-          startY: 120,
+          startY: 40,
           headStyles: {
             fillColor: "#DA1F26",
           },
@@ -330,33 +212,13 @@ const SalaryReport = ({
           },
           autoSize: true,
           minCellWidth: 40,
-          margin: { top: 130, right: 15, bottom: 20, left: 15 },
+          margin: { top: 50, right: 15, bottom: 20, left: 15 },
         });
-
-        const signatureLineX = doc.internal.pageSize.getWidth() - 60;
-        const signatureLineY = doc.internal.pageSize.getHeight() - 40;
-        const signatureLineLength = 25;
-        const gapFromRight = 5;
-
-        doc.setFontSize(12);
-        doc.setTextColor("#000");
-        doc.text(
-          "_".repeat(signatureLineLength - gapFromRight),
-          signatureLineX,
-          signatureLineY
-        );
-
-        const textWidth = doc.getTextWidth("Signature");
-        const textX = signatureLineX + (signatureLineLength - textWidth) / 2;
-        const gapFromLine = 5;
-
-        doc.setFontSize(10);
-        doc.setTextColor("#000");
-        doc.text("Signature", textX, signatureLineY + gapFromLine);
 
         doc.save(`Salary-Report.pdf`);
       };
 
+      // Handle image load error
       logoImg.onerror = () => {
         console.error("Error loading the logo image.");
       };
@@ -432,6 +294,7 @@ const SalaryReport = ({
       setLoading(false);
     } catch (error) {
       setLoading(false);
+      console.log("ERROR::: ", error);
       toast.error("Unable to download report.", {
         position: "top-right",
         autoClose: 3000,
