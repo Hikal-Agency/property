@@ -38,9 +38,7 @@ import {
   BsAndroid2,
   BsChatText,
 } from "react-icons/bs";
-import {
-  GoCommentDiscussion
-} from "react-icons/go";
+import { GoCommentDiscussion } from "react-icons/go";
 import {
   MdDarkMode,
   MdKeyboardArrowDown,
@@ -180,8 +178,11 @@ const Navbar = () => {
   };
 
   const handleNavigate = (e, search) => {
-    e.preventDefault();
+    // e.preventDefault();
+    setSearchResults(null);
+    setSearchTerm("");
     navigate(`/lead/${search?.leadId || search?.id}`);
+    window.location.reload();
   };
 
   const handleClick = (event, navBtn) => {
@@ -358,13 +359,13 @@ const Navbar = () => {
   return (
     <>
       {/* CHAT  */}
-      <div 
+      <div
         className="fixed"
         style={{
           bottom: "20px",
           right: !isLangRTL(i18n.language) && "20px",
           left: isLangRTL(i18n.language) && "20px",
-          zIndex: 999
+          zIndex: 999,
         }}
       >
         <Tooltip title="Chat">
@@ -372,10 +373,7 @@ const Navbar = () => {
             onClick={openChat}
             className="cursor-pointer bg-primary hover:bg-[#AAAAAA] hover:border-[#AAAAAA] text-white border-2 p-3 rounded-full"
           >
-            <GoCommentDiscussion 
-              size={24} 
-              color={"#FFFFFF"}
-            />
+            <GoCommentDiscussion size={24} color={"#FFFFFF"} />
           </button>
         </Tooltip>
       </div>
@@ -589,16 +587,9 @@ const Navbar = () => {
                 alt="user-profile"
               />
               <p className="display-block sm:display-none">
-                <span
-                  className={`font-bold`}
-                >
-                  {User?.userName}
-                </span>
+                <span className={`font-bold`}>{User?.userName}</span>
               </p>
-              <MdKeyboardArrowDown
-                size={14}
-                className={``}
-              />
+              <MdKeyboardArrowDown size={14} className={``} />
             </div>
           </Tooltip>
           {/* LANG  */}
@@ -664,9 +655,9 @@ const Navbar = () => {
                 //   mx: 1,
                 // },
                 "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
-                {
-                  padding: "0 !important",
-                },
+                  {
+                    padding: "0 !important",
+                  },
               },
             }}
             transformOrigin={{ horizontal: "center", vertical: "top" }}

@@ -40,6 +40,7 @@ export const ContextProvider = ({ children }) => {
   const [LocationData, setLocationData] = useState();
   const [timeZone, setTimezone] = useState(null);
   const [timeZones, setTimezones] = useState([]);
+  const [pinnedZone, setPinnedZone] = useState([]);
   const [userCredits, setUserCredits] = useState("");
   const [UserLocationData, setUserLocationData] = useState();
   const [LastLocationData, setLastLocationData] = useState();
@@ -386,17 +387,19 @@ export const ContextProvider = ({ children }) => {
   }, [primaryColor]);
 
   useEffect(() => {
-  if(!themeBgImg?.startsWith("#")){
-    document.body.style.backgroundImage = `url(${themeBgImg})`;
-    document.body.style.backgroundRepeat = "no-repeat";
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.backgroundAttachment = "fixed";
-    // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
-    document.body.style.backgroundBlendMode = "overlay";
-  } else {
-    document.body.style.backgroundColor = themeBgImg;
-  }
+    if (!themeBgImg?.startsWith("#")) {
+      document.body.style.backgroundColor = "transparent";
+      document.body.style.backgroundImage = `url(${themeBgImg})`;
+      document.body.style.backgroundRepeat = "no-repeat";
+      document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundPosition = "center";
+      document.body.style.backgroundAttachment = "fixed";
+      // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+      document.body.style.backgroundBlendMode = "overlay";
+    } else {
+      document.body.style.backgroundImage = "none";
+      document.body.style.backgroundColor = themeBgImg;
+    }
   }, [themeBgImg]);
 
   const withOpacity = (rgb, opacity) => {
@@ -631,6 +634,8 @@ export const ContextProvider = ({ children }) => {
         setTimezone,
         timeZones,
         setTimezones,
+        pinnedZone,
+        setPinnedZone,
         reloadDataGrid,
         setreloadDataGrid,
         openBackDrop,

@@ -27,8 +27,12 @@ const TimeZone = () => {
     setTimezone,
     timeZones,
     setTimezones,
+    pinnedZone,
+    setPinnedZone,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
+
+  console.log("pinnedzone:::: ", pinnedZone);
 
   const [currentTime, setCurrentTime] = useState(
     timeZone
@@ -41,10 +45,107 @@ const TimeZone = () => {
     timezone.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const pinnedTimezones = filteredTimezones?.filter((timezone) =>
+    pinnedZone.includes(timezone)
+  );
+
+  const unpinnedTimezones = filteredTimezones?.filter(
+    (timezone) => !pinnedZone.includes(timezone)
+  );
+
+  const handlePinTimeZone = async (e, timezone, type) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    console.log("timezone in handlechange:: ", timezone);
+
+    console.log("pinnedZone in handlechange: ", pinnedZone);
+
+    // Fetch the previous pinned values from the state
+    const previousPinnedValues = pinnedZone || [];
+
+    console.log("prev pinnedZones:: ", previousPinnedValues);
+    console.log("prev pinnedZones:: ", previousPinnedValues.length);
+
+    // Check if the timezone is already pinned
+    const isPinned = previousPinnedValues.includes(timezone);
+
+    let updatedPinnedValues;
+
+    // Remove the timezone if it already exists
+    if (isPinned) {
+      updatedPinnedValues = previousPinnedValues.filter(
+        (existingTimezone) => existingTimezone !== timezone
+      );
+    } else {
+      if (previousPinnedValues.length > 2) {
+        toast.error("You can only pin up to 3 timezones.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return;
+      }
+      // Append the new timezone
+      updatedPinnedValues = [...previousPinnedValues, timezone];
+      // updatedPinnedValues = timezone;
+    }
+
+    try {
+      const pinTimeZone = await axios.post(
+        `${BACKEND_URL}/updateuser/${User?.id}`,
+        { pinned: updatedPinnedValues },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      setPinnedZone(updatedPinnedValues);
+
+      toast.success(`Timezone ${type === 0 ? "Unpinned" : "Pinned"}.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log("Response: ", pinTimeZone);
+    } catch (error) {
+      toast.error("Unable to pin timezone.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   const handleTimezoneChange = async (e) => {
-    const timeZone = e.target.innerText?.trim();
+    // const timeZone = e.target.innerText?.trim();
+    // const timeZone = e.target.innerText?.trim().replace("⚑", "");
+    const timeZone = e.target.innerText
+      ?.trim()
+      .replace(/[\u2691\u2690\n]/g, "");
+
+    // const updateTimzone = timeZone.slice(timeZone.indexOf("\u2691") + 1);
     console.log("timzone selected : ", e);
-    // localStorage.setItem("timezone", e.target.innerText?.trim());
+    console.log("trimmed timezone::: ", timeZone);
+
     try {
       const updateTimezone = await axios.post(
         `${BACKEND_URL}/updateuser/${User?.id}`,
@@ -57,7 +158,7 @@ const TimeZone = () => {
         }
       );
 
-      setTimezone(e.target.innerText?.trim());
+      setTimezone(timeZone);
       toast.success("Timezone updated.", {
         position: "top-right",
         autoClose: 3000,
@@ -172,7 +273,7 @@ const TimeZone = () => {
                 />
                 {/* </Box> */}
               </MenuItem>
-              {filteredTimezones?.map((timezone) => (
+              {/* {filteredTimezones?.map((timezone) => (
                 <>
                   <MenuItem
                     // onKeyDown={(e) => e.stopPropagation()}
@@ -183,6 +284,39 @@ const TimeZone = () => {
                     {timezone}
                   </MenuItem>
                 </>
+              ))} */}
+              {pinnedTimezones?.map((timezone) => (
+                <MenuItem
+                  key={timezone}
+                  value={timezone}
+                  onClick={handleTimezoneChange}
+                >
+                  <span
+                    style={{ marginRight: "8px", cursor: "pointer" }}
+                    onClick={(e) => handlePinTimeZone(e, timezone, 0)}
+                    value={pinnedZone}
+                  >
+                    {"\u2690"}
+                  </span>
+                  {timezone}
+                </MenuItem>
+              ))}
+
+              {unpinnedTimezones?.map((timezone) => (
+                <MenuItem
+                  key={timezone}
+                  value={timezone}
+                  onClick={handleTimezoneChange}
+                >
+                  <span
+                    style={{ marginRight: "8px", cursor: "pointer" }}
+                    onClick={(e) => handlePinTimeZone(e, timezone)}
+                    value={pinnedZone}
+                  >
+                    {"\u2691"}
+                  </span>
+                  {timezone}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
