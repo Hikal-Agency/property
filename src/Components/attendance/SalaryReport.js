@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -69,6 +69,8 @@ const SalaryReport = ({
     i18n,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
+
+  const [pdfUrl, setPdfUrl] = useState(null);
 
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
@@ -215,7 +217,16 @@ const SalaryReport = ({
           margin: { top: 50, right: 15, bottom: 20, left: 15 },
         });
 
-        doc.save(`Salary-Report.pdf`);
+        // Save the PDF as Blob
+        const pdfBlob = doc.output("blob");
+
+        // Create a Blob URL
+        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+
+        // Set the PDF URL in the component state
+        setPdfUrl(pdfBlobUrl);
+
+        // doc.save(`Salary-Report.pdf`);
       };
 
       // Handle image load error
@@ -257,7 +268,7 @@ const SalaryReport = ({
         }
       );
 
-      toast.success("Report will be downloaded in a while.", {
+      toast.success("Generating preview of report.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -635,7 +646,17 @@ const SalaryReport = ({
                   </div>
                 </div>
 
-                <div className="p-5">PDF will be here</div>
+                <div className="p-5">
+                  {pdfUrl && (
+                    <iframe
+                      src={pdfUrl}
+                      width="100%"
+                      height="600px"
+                      style={{ border: "none" }}
+                      title="PDF Preview"
+                    ></iframe>
+                  )}
+                </div>
               </>
             )}
           </div>
