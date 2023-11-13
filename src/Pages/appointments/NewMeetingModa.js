@@ -20,8 +20,6 @@ const NewMeetingModal = ({ newMeetingModal, handleClose }) => {
     currentMode, 
     t, 
     primaryColor,
-    isLangRTL,
-    i18n
   } = useStateContext();
   const [isCopied, setIsCopied] = useState(false);
   const [redirectAnimation, setRedirectAnimation] = useState(false);

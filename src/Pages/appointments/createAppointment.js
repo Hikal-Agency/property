@@ -36,6 +36,7 @@ const CreateAppointment = () => {
   })
   const [btnLoading, setBtnLoading] = useState(false);
 
+
   console.log("meetings count:: ", meetingsCount);
   useEffect(() => {
     setopenBackDrop(false);
@@ -71,7 +72,7 @@ const CreateAppointment = () => {
         }
       );
       const urlForModerator = joinAsModerator?.data?.url;
-      setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee: `${BACKEND_URL?.slice(0, BACKEND_URL?.length - 4)}/invite/${meetingID}`});
+      setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee: `${window.location.origin}/invite/${meetingID}`});
     } catch (error) {
       console.log(error);
       toast.error("Unable to create meeting at the moment.", {
