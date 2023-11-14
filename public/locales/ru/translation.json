@@ -762,5 +762,9 @@
     "client_meeting_link": "Ссылка на встречу клиента",
     "waiting_time_over": "Время ожидания лида истекло!",
     "reach_by_other_source": "Попробуйте связаться с лидом через другие каналы!",
-    "registered_lead_on": "Зарегистрированная дата и время лида"
+    "registered_lead_on": "Зарегистрированная дата и время лида",
+    "menu_hikal_meet": "Хикал Встреча",
+    "generate_report": "Создать отчет о посещаемости",
+    "generate_report_btn": "Создать отчет",
+    "report_month": "Выберите месяц"
 }
