@@ -764,5 +764,9 @@
     "client_meeting_link": "客户会议链接",
     "waiting_time_over": "等待线索的时间已经过期！",
     "reach_by_other_source": "请尝试通过其他媒介联系线索！",
-    "registered_lead_on": "线索的注册日期和时间"
+    "registered_lead_on": "线索的注册日期和时间",
+    "menu_hikal_meet": "希卡尔见面会",
+    "generate_report": "生成考勤报告",
+    "generate_report_btn": "生成报告",
+    "report_month": "选择月份"
 }

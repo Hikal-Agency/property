@@ -1242,9 +1242,10 @@ const Sidebarmui = () => {
           link: "/meetings",
         },
         {
-          name: t("menu_appointments"),
+          name: t("menu_hikal_meet"),
           icon: <BsCameraVideo size={16} />,
           link: "/appointments",
+          pro: true,
         },
         // {
         //   name: "Add Users",
@@ -1278,17 +1279,18 @@ const Sidebarmui = () => {
           name: t("menu_property_portfolio"),
           icon: <BsBuildings size={16} />,
           link: "/propertyPortfolio",
+          pro: true,
         },
-        {
-          name: t("menu_clients"),
-          icon: <ImUsers size={16} />,
-          link: "/clients",
-        },
-        {
-          name: "Contacts",
-          icon: <MdContactPage size={16} />,
-          link: "/contacts",
-        },
+        // {
+        //   name: t("menu_clients"),
+        //   icon: <ImUsers size={16} />,
+        //   link: "/clients",
+        // },
+        // {
+        //   name: "Contacts",
+        //   icon: <MdContactPage size={16} />,
+        //   link: "/contacts",
+        // },
 
         // NEWSLETTER
         // {

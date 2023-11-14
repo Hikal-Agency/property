@@ -765,5 +765,9 @@
     "client_meeting_link": "ग्राहक का बैठक का लिंक",
     "waiting_time_over": "लीड के लिए प्रतीक्षा समय समाप्त हो गया है!",
     "reach_by_other_source": "कृपया लीड से अन्य माध्यमों के माध्यम से संपर्क करने का प्रयास करें!",
-    "registered_lead_on": "लीड का पंजीकृत तारीख और समय"
+    "registered_lead_on": "लीड का पंजीकृत तारीख और समय",
+    "menu_hikal_meet": "हिकल मीट",
+    "generate_report": "उपस्थिति रिपोर्ट बनाएं",
+    "generate_report_btn": "रिपोर्ट बनाएं",
+    "report_month": "महीना चुनें"
 }

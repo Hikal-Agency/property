@@ -765,6 +765,7 @@
     "waiting_time_over": "The waiting time for the lead has been expired!",
     "reach_by_other_source": "Please try to reach out the lead through other mediums!",
     "registered_lead_on": "Registered date and time of the lead",
+    "menu_hikal_meet": "Hikal Meet",
     "generate_report" : "Generate Attendance Report",
     "generate_report_btn" : "Generate  Report",
     "report_month" : "Select Month"

@@ -764,5 +764,9 @@
     "client_meeting_link": "گاہک کا ملاقات کا لنک",
     "waiting_time_over": "لیڈ کے لئے انتظار کا وقت ختم ہوگیا ہے!",
     "reach_by_other_source": "براہ کرم دوسرے ذرائع سے لیڈ تک پہنچنے کی کوشش کریں!",
-    "registered_lead_on": "لیڈ کی رجسٹرڈ تاریخ اور وقت"
+    "registered_lead_on": "لیڈ کی رجسٹرڈ تاریخ اور وقت",
+    "menu_hikal_meet": "ہیکل میٹ",
+    "generate_report": "حاضری کا رپورٹ بنائیں",
+    "generate_report_btn": "رپورٹ بنائیں",
+    "report_month": "مہینہ منتخب کریں"
 }
