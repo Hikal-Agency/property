@@ -130,8 +130,10 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState(null);
-  const [searchResult, setSearchResults] = useState(null);
+  const [searchResult, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
+
+  console.log("search result:: ", searchResult);
 
   const handleSearch = async (e) => {
     // e.preventDefault();
@@ -155,7 +157,8 @@ const Navbar = () => {
         token
       );
 
-      if (postSearch?.data?.message !== "No Data") {
+      if (postSearch?.data !== "No Data") {
+        console.log("settted:::::: ");
         setSearchResults(postSearch);
       }
 
@@ -460,15 +463,24 @@ const Navbar = () => {
                 size="small"
               />
             </Box>
-            {searchResult?.data?.length > 0 && (
+            {searchResult != null && searchResult?.data?.length > 0 && (
               <div
                 className={`absolute mt-1 p-3 w-[170px] ${
                   currentMode === "dark" ? "bg-[#292828]" : "bg-[#e9e7e8]"
                 }`}
                 style={{
                   overflow:
-                    searchResult?.data?.length > 10 ? "auto" : "visible",
-                  maxHeight: searchResult?.data?.length > 10 ? "200px" : "auto",
+                    searchResult != null
+                      ? searchResult?.data?.length > 10
+                        ? "auto"
+                        : "visible"
+                      : "",
+                  maxHeight:
+                    searchResult != null
+                      ? searchResult?.data?.length > 10
+                        ? "200px"
+                        : "auto"
+                      : "",
                 }}
               >
                 {searchLoading === false ? (
