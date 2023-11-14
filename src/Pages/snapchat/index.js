@@ -2,8 +2,8 @@ import React from "react";
 import { useStateContext } from "../../context/ContextProvider";
 
 
-const Settings = () => {
-  const { t, themeBgImg, currentMode, Managers, BACKEND_URL } =
+const Snapchat = () => {
+  const { t, themeBgImg, currentMode } =
     useStateContext();
 
   return (
@@ -21,17 +21,13 @@ const Settings = () => {
               currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
-            {t("menu_settings")}
+            Snapchat
           </h1>
         </div>
       </div>
       {/* <Footer /> */}
     </>
   );
-  function TabPanel(props) {
-    const { children, value, index } = props;
-    return <div>{value === index && <div>{children}</div>}</div>;
-  }
 };
 
-export default Settings;
+export default Snapchat;
