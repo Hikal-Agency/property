@@ -36,6 +36,12 @@ const PasswordDialogue = ({
   const [password, setPassword] = useState();
   const [btnloading, setloading] = useState(false);
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      handleClick();
+    }
+  };
+
   const handleClick = async () => {
     setloading(true);
     if (!password) {
@@ -144,6 +150,7 @@ const PasswordDialogue = ({
               size="medium"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyPress={handleKeyPress}
               fullWidth
             />
 
@@ -154,12 +161,14 @@ const PasswordDialogue = ({
                 size="lg"
                 type="submit"
                 onClick={handleClick}
+                onKeyPress={handleKeyPress}
+                tabIndex={0}
               >
                 {/* <span>Confirm</span> */}
                 {btnloading ? (
                   <CircularProgress size={18} className="text-primary" />
                 ) : (
-                  <span>Confirm</span>
+                  <span className="text-white">Confirm</span>
                 )}
               </Button>
             </div>

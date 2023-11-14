@@ -1348,7 +1348,7 @@ const SingleEmployee = ({ user }) => {
       doc.setFont("helvetica", "bold");
       doc.text(reportText, 20, 15); // Adjust coordinates as needed
       const month = `${monthName} ${year}:  `;
-      const totalSalaryValue = `${currency} ${pageState?.totalSalary || "-"}`;
+      const totalSalaryValue = `${currency} ${salaryCalc?.net_salary || "-"}`;
 
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
@@ -1402,19 +1402,19 @@ const SingleEmployee = ({ user }) => {
       const textElements = [
         {
           label: "Monthly salary:",
-          value: `${currency} ${empData[0]?.salary || "0"}`,
+          value: `${currency} ${salaryCalc?.salary || "0"}`,
         },
         {
           label: "Salary per day:",
-          value: `${pageState?.perDaySalary || "0"}`,
+          value: `${salaryCalc?.salary_per_day || "0"}`,
         },
         {
           label: "Leave day salary:",
-          value: `${currency} ${pageState?.leaveDaySalary || "0"}`,
+          value: `${currency} ${salaryCalc?.leave_day_salary || "0"}`,
         },
         {
           label: "Late day salary:",
-          value: `${currency} ${pageState?.lateDaySalary || "0"}`,
+          value: `${currency} ${salaryCalc?.late_day_salary || "0"}`,
         },
         // {
         //   label: "Total Salary:",
@@ -1430,15 +1430,15 @@ const SingleEmployee = ({ user }) => {
         },
         {
           label: t("attended_days"),
-          value: `${pageState?.attended_count || "0"}`,
+          value: `${salaryCalc?.present_days || "0"}`,
         },
         {
           label: t("leave_days"),
-          value: `${pageState?.leave_count || "0"}`,
+          value: `${salaryCalc?.leave_days || "0"}`,
         },
         {
           label: t("late_attendance_days"),
-          value: `${pageState?.late_count || "0"}`,
+          value: `${salaryCalc?.late_days || "0"}`,
         },
       ];
 
