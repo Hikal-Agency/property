@@ -77,8 +77,8 @@ const SearchLeads = () => {
     document.body.addEventListener("click", cb);
 
     return () => {
-        document.body.removeEventListener("click", cb);
-    }
+      document.body.removeEventListener("click", cb);
+    };
   }, []);
   return (
     <div>
@@ -115,12 +115,13 @@ const SearchLeads = () => {
             {searchLoading === false ? (
               searchResult?.data &&
               searchResult?.data?.map((search) => (
-                <Box sx={{
+                <Box
+                  sx={{
                     "&:hover": {
-                        color: "var(--primary-color)", 
-                        fontWeight: "bold"
-                    }
-                }}
+                      color: "var(--primary-color)",
+                      fontWeight: "bold",
+                    },
+                  }}
                   key={search?.id}
                   className={`py-2 ${
                     currentMode === "dark" ? "text-white" : "text-dark"
