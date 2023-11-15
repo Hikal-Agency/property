@@ -137,12 +137,16 @@ const Navbar = () => {
 
   const handleSearch = async (e) => {
     console.log("handle search :: ");
-    // e.preventDefault();
+    const searchWord = e.target.value;
+    if (!e.target.value) {
+      setSearchTerm(null);
+      setSearchResults([]);
+      return;
+    }
     setSearchLoading(true);
     const token = localStorage.getItem("auth-token");
 
     setSearchTerm(e.target.value);
-    const searchWord = e.target.value;
     try {
       // const postSearch = await axios.get(`${BACKEND_URL}/searchleads`, {
       //   params: { search: searchWord },
