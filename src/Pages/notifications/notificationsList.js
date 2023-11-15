@@ -1,4 +1,4 @@
-import React, {  useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 
@@ -51,8 +51,9 @@ const NotificationsList = () => {
     formatNum,
     setUnreadNotifsCount,
     getNotifCounts,
-    unreadNotifsCount, t,
-    themeBgImg
+    unreadNotifsCount,
+    t,
+    themeBgImg,
   } = useStateContext();
   console.log("unread count ::: ", unreadNotifsCount);
   const token = localStorage.getItem("auth-token");
@@ -147,9 +148,9 @@ const NotificationsList = () => {
     const updated_data = new FormData();
 
     updated_data.append("user_id", User?.id);
-    if(User?.role=== 1) {
+    if (User?.role === 1) {
       updated_data.append("is_admin_read", 1);
-    } else if(User?.role === 3){
+    } else if (User?.role === 3) {
       updated_data.append("is_manager_read", 1);
     } else {
       updated_data.append("isRead", 1);
@@ -169,6 +170,7 @@ const NotificationsList = () => {
 
       console.log("status updated::: ", UpdateReadStatus);
       getNotifCounts();
+      setUnreadNotifsCount(0);
       toast.success("All notifications marked as read.", {
         position: "top-right",
         autoClose: 3000,
@@ -207,7 +209,8 @@ const NotificationsList = () => {
           <>
             <div
               className={`w-full p-4 ${
-                !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+                !themeBgImg &&
+                (currentMode === "dark" ? "bg-black" : "bg-white")
               }`}
             >
               {showFilter && (
@@ -334,7 +337,9 @@ const NotificationsList = () => {
                             </div>
                           ) : (
                             <>
-                              <h3 className="font-bold">{t("notification_type")}</h3>
+                              <h3 className="font-bold">
+                                {t("notification_type")}
+                              </h3>
                               <div>
                                 <FormControl>
                                   <RadioGroup
@@ -474,7 +479,7 @@ const NotificationsList = () => {
                               {hasPermission("filter_user_notifs") && (
                                 <div>
                                   <h3 className=" my-4 font-bold">
-                                   {t("filter_by_user")}
+                                    {t("filter_by_user")}
                                   </h3>
                                   <FormControl
                                     className={`${
@@ -529,7 +534,6 @@ const NotificationsList = () => {
                                             },
                                           }}
                                           variant="standard"
-                          
                                           InputProps={{
                                             startAdornment: (
                                               <InputAdornment position="start">
