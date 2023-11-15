@@ -8,16 +8,9 @@ import {
   Tooltip,
   Button,
   Badge,
-  MenuItem,
-  Select,
-  IconButton,
-  TextField,
-  Box,
-  CircularProgress,
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
-import { search } from "../../utils/axiosSearch";
 
 import { useStateContext } from "../../context/ContextProvider";
 import { ColorModeContext } from "../../context/theme";
@@ -35,8 +28,7 @@ import {
   BsClock,
   BsClockFill,
   BsApple,
-  BsAndroid2,
-  BsChatText,
+  BsAndroid2
 } from "react-icons/bs";
 import { GoCommentDiscussion } from "react-icons/go";
 import {
@@ -53,6 +45,7 @@ import {
 } from "react-icons/vsc";
 import "../../styles/animation.css";
 import ColorSchemeMenuItem from "./ColorSchemeMenuItem";
+import SearchLeads from "./SearchLeads";
 
 const NavButton = ({
   title,
@@ -129,69 +122,6 @@ const Navbar = () => {
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
 
-  const [searchTerm, setSearchTerm] = useState(null);
-  const [searchResult, setSearchResults] = useState([]);
-  const [searchLoading, setSearchLoading] = useState(false);
-
-  console.log("search result:: ", searchResult);
-
-  const handleSearch = async (e) => {
-    console.log("handle search :: ");
-    const searchWord = e.target.value;
-    if (!e.target.value) {
-      setSearchTerm(null);
-      setSearchResults([]);
-      return;
-    }
-    setSearchLoading(true);
-    const token = localStorage.getItem("auth-token");
-
-    setSearchTerm(e.target.value);
-    try {
-      // const postSearch = await axios.get(`${BACKEND_URL}/searchleads`, {
-      //   params: { search: searchWord },
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: "Bearer " + token,
-      //   },
-      // });
-
-      const postSearch = await search(
-        `${BACKEND_URL}/searchleads?search=${searchWord}`,
-        // {},
-        token
-      );
-
-      if (postSearch?.data !== "No Data") {
-        console.log("settted:::::: ");
-        setSearchResults(postSearch?.data);
-      }
-
-      setSearchLoading(false);
-      console.log("search result: ", postSearch);
-    } catch (error) {
-      setSearchLoading(false);
-      console.log("error: ", error);
-      toast.error("Unable to search", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
-  const handleNavigate = (e, search) => {
-    // e.preventDefault();
-    setSearchResults(null);
-    setSearchTerm("");
-    navigate(`/lead/${search?.leadId || search?.id}`);
-    window.location.reload();
-  };
 
   const handleClick = (event, navBtn) => {
     setCurrNavBtn(navBtn);
@@ -458,58 +388,7 @@ const Navbar = () => {
           ]}
 
           {/* search */}
-          <div className="">
-            <Box sx={darkModeColors}>
-              <TextField
-                type="text"
-                placeholder="Search Leads"
-                value={searchTerm}
-                onChange={handleSearch}
-                size="small"
-              />
-            </Box>
-            {searchResult?.data?.length > 0 && (
-              <div
-                className={`absolute mt-1 p-3 w-[170px] ${
-                  currentMode === "dark" ? "bg-[#292828]" : "bg-[#e9e7e8]"
-                }`}
-                style={{
-                  overflow:
-                    searchResult != null
-                      ? searchResult?.data?.length > 10
-                        ? "auto"
-                        : "visible"
-                      : "",
-                  maxHeight:
-                    searchResult != null
-                      ? searchResult?.data?.length > 10
-                        ? "200px"
-                        : "auto"
-                      : "",
-                }}
-              >
-                {searchLoading === false ? (
-                  searchResult?.data &&
-                  searchResult?.data?.map((search) => (
-                    <p
-                      key={search?.id}
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-dark"
-                      } cursor-pointer`}
-                      onClick={(e) => handleNavigate(e, search)}
-                    >
-                      {search?.leadName}
-                    </p>
-                  ))
-                ) : (
-                  <div className="flex justify-center">
-                    <CircularProgress />
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
+          <SearchLeads/>
           {/* MEETINGS  */}
           <NavButton
             title="Meetings"
