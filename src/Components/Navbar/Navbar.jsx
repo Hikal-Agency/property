@@ -136,6 +136,7 @@ const Navbar = () => {
   console.log("search result:: ", searchResult);
 
   const handleSearch = async (e) => {
+    console.log("handle search :: ");
     // e.preventDefault();
     setSearchLoading(true);
     const token = localStorage.getItem("auth-token");
@@ -159,7 +160,7 @@ const Navbar = () => {
 
       if (postSearch?.data !== "No Data") {
         console.log("settted:::::: ");
-        setSearchResults(postSearch);
+        setSearchResults(postSearch?.data);
       }
 
       setSearchLoading(false);
@@ -463,7 +464,7 @@ const Navbar = () => {
                 size="small"
               />
             </Box>
-            {searchResult != null && searchResult?.data?.length > 0 && (
+            {searchResult?.data?.length > 0 && (
               <div
                 className={`absolute mt-1 p-3 w-[170px] ${
                   currentMode === "dark" ? "bg-[#292828]" : "bg-[#e9e7e8]"
