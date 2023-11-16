@@ -29,6 +29,7 @@ export const ContextProvider = ({ children }) => {
     off_day: null,
   });
   const [activeMenu, setActiveMenu] = useState(true);
+  const [value, setValue] = useState(0);
   const [isClicked, setIsClicked] = useState(initialState);
   const [User, setUser] = useState({});
   const [Counters, setCounters] = useState([]);
@@ -706,6 +707,8 @@ export const ContextProvider = ({ children }) => {
         setCounters,
         settings,
         setSettings,
+        value,
+        setValue,
       }}
     >
       {children}

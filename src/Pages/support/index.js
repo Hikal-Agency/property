@@ -10,14 +10,16 @@ import axios from "../../axoisConfig";
 import { useSearchParams } from "react-router-dom";
 
 const Tickets = () => {
-  const { 
-    currentMode, 
-    darkModeColors, 
-    BACKEND_URL, 
+  const {
+    currentMode,
+    darkModeColors,
+    BACKEND_URL,
     t,
-    themeBgImg
+    themeBgImg,
+    value,
+    setValue,
   } = useStateContext();
-  const [value, setValue] = useState(0);
+  // const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -73,21 +75,28 @@ const Tickets = () => {
               }`}
             >
               {t("welcome_to")}{" "}
-              <span className={`${
-                !themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")
-              } font-bold`}>
+              <span
+                className={`${
+                  !themeBgImg
+                    ? "text-primary"
+                    : currentMode === "dark"
+                    ? "text-white"
+                    : "text-black"
+                } font-bold`}
+              >
                 HIKAL CRM
               </span>
               ! {t("here_to_assist")}.
             </h4>
             <div
               className={`${
-                !themeBgImg ? (currentMode === "dark"
-                  ? "bg-[#1c1c1c] text-white"
-                  : "bg-gray-200 text-black")
-                : (currentMode === "dark"
+                !themeBgImg
+                  ? currentMode === "dark"
+                    ? "bg-[#1c1c1c] text-white"
+                    : "bg-gray-200 text-black"
+                  : currentMode === "dark"
                   ? "blur-bg-dark text-white"
-                  : "blur-bg-light text-black")
+                  : "blur-bg-light text-black"
               } p-4 rounded-xl shadow-sm my-5 mb-10`}
             >
               <Box
@@ -113,7 +122,6 @@ const Tickets = () => {
                 >
                   <Tab label={t("create_new_ticket")} />
                   <Tab label={t("all_tickets")} />
-    
                 </Tabs>
               </Box>
               <div className="mt-3 pb-3">
