@@ -5,10 +5,12 @@ import { Button, Tooltip } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaBed } from "react-icons/fa";
 
 import { Md360 } from "react-icons/md";
 import { FaCheck, FaMinus } from "react-icons/fa";
 import { BsPatchQuestionFill } from "react-icons/bs";
+import BedInfo from "./BedInfo";
 
 const PropertyPortfolio = () => {
   const { currentMode, DevProData, setDevProData, BACKEND_URL, themeBgImg, t } =
@@ -129,7 +131,7 @@ const PropertyPortfolio = () => {
                                 <div className="uppercase font-semibold mb-3">
                                   <div>{project.project}</div>
                                 </div>
-                                <div className="flex items-center gap-3 my-2">
+                                {/* <div className="flex items-center gap-3 my-2">
                                   {project.studio === 1 ? (
                                     <FaCheck
                                       size={14}
@@ -226,8 +228,62 @@ const PropertyPortfolio = () => {
                                     />
                                   )}
                                   <p>{t("enquiry_6bed")}</p>
+                                </div> */}
+                                <div className="flex items-center">
+                                  <div className="mr-3">
+                                    <FaBed
+                                      size={14}
+                                      className="text-green-600"
+                                    />
+                                  </div>
+                                  <BedInfo
+                                    value={project.studio}
+                                    label="enquiry_studio"
+                                    t={t}
+                                  />
+
+                                  <BedInfo
+                                    value={project.onebed}
+                                    label="enquiry_1bed"
+                                    t={t}
+                                  />
+
+                                  <BedInfo
+                                    value={project.twobed}
+                                    label="enquiry_2bed"
+                                    t={t}
+                                  />
+
+                                  <BedInfo
+                                    value={project.threebed}
+                                    label="enquiry_3bed"
+                                    t={t}
+                                  />
+
+                                  <BedInfo
+                                    value={project.fourbed}
+                                    label="enquiry_4bed"
+                                    t={t}
+                                  />
+
+                                  <BedInfo
+                                    value={project.fivebed}
+                                    label="enquiry_5bed"
+                                    t={t}
+                                  />
+
+                                  <BedInfo
+                                    value={project.sixbed}
+                                    label="enquiry_6bed"
+                                    t={t}
+                                  />
+                                  <BedInfo
+                                    value={project.retail}
+                                    label="enquiry_retail"
+                                    t={t}
+                                  />
                                 </div>
-                                <div className="flex items-center gap-3 my-2">
+                                {/* <div className="flex items-center gap-3 my-2">
                                   {project.retail === 1 ? (
                                     <FaCheck
                                       size={14}
@@ -240,7 +296,7 @@ const PropertyPortfolio = () => {
                                     />
                                   )}
                                   <p>{t("enquiry_retail")}</p>
-                                </div>
+                                </div> */}
                                 {project.tour360 === 1 ? (
                                   <div className="flex items-center justify-end gap-3 text-white text-sm">
                                     <button
