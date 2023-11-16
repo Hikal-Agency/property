@@ -102,34 +102,35 @@ const PropertyPortfolio = () => {
                                 }
                                 `}
                             >
-                              <div
-                                className={`
-                                  fixed top-0 right-5 w-4 h-8 rounded-br-full
-                                  ${
-                                    project.projectStatus === "Available"
-                                      ? "bg-green-600"
-                                      : project.projectStatus === "Sold Out"
-                                      ? "bg-red-600"
-                                      : "bg-yellow-600"
-                                  }  
-                                `}
-                              ></div>
-                              <div
-                                className={`
-                                  fixed -top-1 right-3 w-4 h-8 rounded-bl-full
-                                  ${
-                                    project.projectStatus === "Available"
-                                      ? "bg-green-600"
-                                      : project.projectStatus === "Sold Out"
-                                      ? "bg-red-600"
-                                      : "bg-yellow-600"
-                                  }  
-                                `}
-                              ></div>
-
                               <div className="p-4">
-                                <div className="uppercase font-semibold mb-3">
+                                <div className="uppercase font-semibold mb-3 flex justify-between items-center">
                                   <div>{project.project}</div>
+                                  <div className="flex">
+                                    <div
+                                      className={`
+                                   top-0 right-5 w-4 h-8 rounded-br-full
+                                  ${
+                                    project.projectStatus === "Available"
+                                      ? "bg-green-600"
+                                      : project.projectStatus === "Sold Out"
+                                      ? "bg-red-600"
+                                      : "bg-yellow-600"
+                                  }  
+                                `}
+                                    ></div>
+                                    <div
+                                      className={`
+                                   -top-1 right-3 w-4 h-8 rounded-bl-full
+                                  ${
+                                    project.projectStatus === "Available"
+                                      ? "bg-green-600"
+                                      : project.projectStatus === "Sold Out"
+                                      ? "bg-red-600"
+                                      : "bg-yellow-600"
+                                  }  
+                                `}
+                                    ></div>
+                                  </div>
                                 </div>
                                 {/* <div className="flex items-center gap-3 my-2">
                                   {project.studio === 1 ? (
