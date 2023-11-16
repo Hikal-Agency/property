@@ -536,3 +536,16 @@
 		background-color:rgb(255,255,255);
 	}
 }
+
+
+/* ANIMATED SOURCE ICONS */
+  
+  .icon {
+    transform: translateY(0);
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .icon.animate {
+    transform: translateY(-30px);
+  }
+  

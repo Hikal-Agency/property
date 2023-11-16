@@ -91,6 +91,7 @@ import {
   SiGooglemeet 
 } from "react-icons/si";
 import JoinMeeting from "../liveleads/JoinMeeting";
+import SourceAnimation from "../_elements/SourceAnimation";
 
 
 const bulkUpdateBtnStyles = {
@@ -2013,11 +2014,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             }}
             className={"items-center"}
           >
-            <div className="flex items-end justify-end">
-              {(hasPermission("leadSource_counts") || User.role === 1) && (
-                <SourceCounter />
-              )}
-
+            <div className="flex items-end justify-end mb-2">
+              
               <div className="w-fit flex justify-end">
                 <Box
                   sx={{
@@ -2065,7 +2063,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   </FormControl>
                 </Box>
               </div>
-
+              
+              {(hasPermission("leadSource_counts") || User.role === 1) && (
+                // <SourceCounter />
+                <SourceAnimation />
+              )}
             </div>
           </Box>
         )}
