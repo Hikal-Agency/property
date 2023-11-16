@@ -7,8 +7,9 @@ import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 import UpdateTicketSelect from "./UpdateTicketSelect";
 
-const AllTickets = () => {
-  const { currentMode, DataGridStyles, BACKEND_URL, User,t } = useStateContext();
+const AllTickets = ({ value, setValue }) => {
+  const { currentMode, DataGridStyles, BACKEND_URL, User, t } =
+    useStateContext();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
