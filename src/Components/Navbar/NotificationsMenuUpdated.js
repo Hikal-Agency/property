@@ -58,10 +58,21 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
     reshuffle: <BsShuffle size={16} olor={"#ffffff"} />,
   };
 
+  const param = role => {
+    if(role === 1) {
+      return "is_admin_read";
+    } else if(role === 3) {
+      return "is_manager_read";
+    } else {
+      return "isRead";
+    }
+  }
+
   const fetchNotifications = async (page) => {
     try {
       setLoading(true);
-      const url = `${BACKEND_URL}/allnotifications?page=${page}&isRead=0`;
+      
+      const url = `${BACKEND_URL}/allnotifications?page=${page}&${param(User?.role)}=0`;
 
       const response = await axios.get(url, {
         headers: {
