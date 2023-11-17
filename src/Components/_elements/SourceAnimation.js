@@ -25,7 +25,8 @@ import {
 } from "react-icons/bs";
 import {
     FaSnapchatGhost,
-    FaTiktok
+    FaTiktok,
+    FaQuestion
 } from "react-icons/fa";
 import { 
     FcGoogle 
@@ -235,7 +236,10 @@ const SourceAnimation = () => {
             >
                 <img src={"/open-box.png"} className="p-1" style={{ zIndex: "10" }} />
                 {showIcons && (
-                    <div className="absolute bottom-[27px] left-[11px]" onAnimationEnd={handleAnimationEnd}>
+                    <div 
+                        className={`absolute bottom-[27px] ${isLangRTL(i18n.language) ? "right-[11px]" : "left-[11px]"}`} 
+                        onAnimationEnd={handleAnimationEnd}
+                    >
                         {sourceIcons.map((icon, index) => (
                             <div
                                 key={index}
@@ -265,7 +269,7 @@ const SourceAnimation = () => {
                     }}
                 >
                     <div 
-                        className="relative w-auto h-auto rounded-b-full bg-primary flex flex-col gap-1 justify-center p-2" 
+                        className="relative w-auto h-auto rounded-b-full flex flex-col gap-1 justify-center p-2" 
                         style={{
                             background: currentMode === "dark" ? "black" : "white",
                             color: currentMode === "dark" ? "white" : "black",
@@ -312,10 +316,11 @@ const SourceAnimation = () => {
                             })
                         ) : (
                             <div 
-                                className={`${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"} rounded-xl shadow-xl text-sm flex flex-col justify-center items-center gap-5 p-4`}
+                                className={`text-sm flex flex-col justify-center items-center gap-5 p-4`}
                                 style={{ zIndex: "1" }}
                             >
-                                <img src={"/social-media.png"} />
+                                {/* <img src={"/social-media.png"} width="300" /> */}
+                                <FaQuestion size={40} />
                                 {t("no_results_found")}
                             </div>
                         )}
