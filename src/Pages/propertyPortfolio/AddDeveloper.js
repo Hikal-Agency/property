@@ -332,7 +332,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                             <TextField
                               id="LeadEmailAddress"
                               type={"email"}
-                              label={t("form_developer_address")}
+                              label={t("form_developer_emailAddress")}
                               className="w-full"
                               sx={{
                                 "&": {
