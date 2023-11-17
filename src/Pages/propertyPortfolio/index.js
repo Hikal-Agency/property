@@ -13,6 +13,7 @@ import { BsPatchQuestionFill } from "react-icons/bs";
 import BedInfo from "./BedInfo";
 import { useState } from "react";
 import AddDeveloper from "./AddDeveloper";
+import AddProject from "./AddProject";
 
 const PropertyPortfolio = () => {
   const { currentMode, DevProData, setDevProData, BACKEND_URL, themeBgImg, t } =
@@ -354,6 +355,12 @@ const PropertyPortfolio = () => {
       </div>
       {openAddDev && (
         <AddDeveloper openAddDev={openAddDev} setOpenAddDev={setOpenAddDev} />
+      )}
+      {openAddProject && (
+        <AddProject
+          openAddProject={openAddProject}
+          setOpenAddProject={setOpenAddProject}
+        />
       )}
     </>
   );
