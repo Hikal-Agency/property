@@ -11,11 +11,15 @@ import { Md360 } from "react-icons/md";
 import { FaCheck, FaMinus } from "react-icons/fa";
 import { BsPatchQuestionFill } from "react-icons/bs";
 import BedInfo from "./BedInfo";
+import { useState } from "react";
+import AddDeveloper from "./AddDeveloper";
 
 const PropertyPortfolio = () => {
   const { currentMode, DevProData, setDevProData, BACKEND_URL, themeBgImg, t } =
     useStateContext();
   const navigate = useNavigate();
+  const [openAddDev, setOpenAddDev] = useState(false);
+  const [openAddProject, setOpenAddProject] = useState(false);
 
   const FetchProperty = async (token) => {
     await axios
@@ -66,11 +70,17 @@ const PropertyPortfolio = () => {
             </h1>
           </div>
           <div className="flex justify-end space-x-4">
-            <Button className="bg-btn-primary text-white px-4 py-4 rounded-md ">
+            <Button
+              onClick={() => setOpenAddDev(true)}
+              className="bg-btn-primary text-white px-4 py-4 rounded-md "
+            >
               <span className="text-white">{t("add_dev_btn")}</span>
             </Button>
-            <Button className="bg-btn-primary text-white px-4 py-4 rounded-md ">
-              <span classNAme="text-white">{t("add_project_btn")}</span>
+            <Button
+              onClick={() => setOpenAddProject(true)}
+              className="bg-btn-primary text-white px-4 py-4 rounded-md "
+            >
+              <span className="text-white">{t("add_project_btn")}</span>
             </Button>
           </div>
 
@@ -342,6 +352,9 @@ const PropertyPortfolio = () => {
           </div>
         </div>
       </div>
+      {openAddDev && (
+        <AddDeveloper openAddDev={openAddDev} setOpenAddDev={setOpenAddDev} />
+      )}
     </>
   );
 };

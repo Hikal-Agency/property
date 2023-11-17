@@ -770,5 +770,18 @@
     "generate_report_btn" : "Generate  Report",
     "report_month" : "Select Month",
     "add_dev_btn":"Add Developer",
-    "add_project_btn":"Add Project"
+    "add_project_btn":"Add Project",
+    "add_developer_modal":"Add Developer",
+    "submit_developer_btn":"Add Developer",
+    "developer_detail":"Developer Details",
+    "contact_detail":"Contact Details",
+    "r_manager_detail":"Relationship Manager Details",
+    "form_developer_name":"Developer",
+    "form_developer_founder":"Founder",
+    "form_developer_ceo":"CEO",
+    "form_developer_contact":"Developer Contact",
+    "form_developer_email":"Developer Email",
+    "form_developer_fullName":"Full Name",
+    "form_developer_emailAddress":"Email Address",
+    "form_developer_contactNumber":"Contact Number"
 }
