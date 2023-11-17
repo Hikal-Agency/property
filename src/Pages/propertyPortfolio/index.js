@@ -65,6 +65,14 @@ const PropertyPortfolio = () => {
               {t("menu_property_portfolio")}
             </h1>
           </div>
+          <div className="flex justify-end space-x-4">
+            <Button className="bg-btn-primary text-white px-4 py-4 rounded-md ">
+              <span className="text-white">{t("add_dev_btn")}</span>
+            </Button>
+            <Button className="bg-btn-primary text-white px-4 py-4 rounded-md ">
+              <span classNAme="text-white">{t("add_project_btn")}</span>
+            </Button>
+          </div>
 
           <div className="space-y-3">
             {/* {DevProData.length > 0 ? ( */}

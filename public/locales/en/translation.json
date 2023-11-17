@@ -768,5 +768,7 @@
     "menu_hikal_meet": "Hikal Meet",
     "generate_report" : "Generate Attendance Report",
     "generate_report_btn" : "Generate  Report",
-    "report_month" : "Select Month"
+    "report_month" : "Select Month",
+    "add_dev_btn":"Add Developer",
+    "add_project_btn":"Add Project"
 }
