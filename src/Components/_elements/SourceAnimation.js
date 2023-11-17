@@ -231,7 +231,7 @@ const SourceAnimation = () => {
         <div>
             <div 
                 onClick={handleClick}
-                className={`relative mx-4 p-1 rounded-full hover:shadow-xl card-hover w-[40px] h-[40px] flex justify-center items-center`}
+                className={`relative mx-4 p-1 mt-5 rounded-full hover:shadow-xl card-hover w-[40px] h-[40px] flex justify-center items-center`}
             >
                 <img src={"/open-box.png"} className="p-1" style={{ zIndex: "10" }} />
                 {showIcons && (

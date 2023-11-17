@@ -44,7 +44,6 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import SourceCounter from "../_elements/SourceCounter";
 
 import {
   FaSnapchatGhost,
@@ -2065,7 +2064,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               </div>
               
               {(hasPermission("leadSource_counts") || User.role === 1) && (
-                // <SourceCounter />
                 <SourceAnimation />
               )}
             </div>
