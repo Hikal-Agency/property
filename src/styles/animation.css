@@ -355,10 +355,6 @@
 }
 
 /* SOURCE COUNTERS  */
-
-  
-
-
 #fountainG{
 	position:relative;
 	width:156px;
@@ -539,13 +535,40 @@
 
 
 /* ANIMATED SOURCE ICONS */
-  
-  .icon {
+.icon {
     transform: translateY(0);
     transition: transform 0.5s ease-in-out;
-  }
+}
   
-  .icon.animate {
+.icon.animate {
     transform: translateY(-30px);
-  }
+}
+
+
+/* SOURCE COUNTERS MODAL */
+.source-counters-open {
+    animation: slideFromTop 1s ease-in-out;
+}
+
+.source-counters-close {
+    animation: slideToTop 1s ease-in-out;
+}
+
+@keyframes slideFromTop {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+}
+
+@keyframes slideToTop {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-100%);
+    }
+}
   
