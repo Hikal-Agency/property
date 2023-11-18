@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import ReactConfetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import moment from "moment";
+import { FaCheck } from "react-icons/fa";
 
 import axios from "../../axoisConfig";
 import ringtone from "../../assets/new-message-ringtone.mp3";
@@ -1385,6 +1386,12 @@ const Sidebarmui = () => {
           icon: <BsPerson size={16} />,
           pro: true,
           link: "/attendance_self",
+        },
+        {
+          name: t("mark_attendance"),
+          icon: <FaCheck size={16} />,
+          pro: true,
+          link: "/attendance",
         },
       ],
     },
