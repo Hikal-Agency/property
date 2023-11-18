@@ -44,6 +44,8 @@ const RegisterAttendance = () => {
 
   console.log("USer: ", User);
   const [loading, setLoading] = useState(false);
+  const [checkinLoading, setCheckInLoading] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [dataLoading, setDataLoading] = useState(true);
   const [attendanceTime, setAttendanceTime] = useState(null);
   const [attendanceType, setAttendanceType] = useState(null);
@@ -78,12 +80,16 @@ const RegisterAttendance = () => {
       const AddAttendance = new FormData();
 
       const attendanceType = status === "in" ? "Check-in" : "Check-out";
+      status === "in" ? setCheckInLoading(true) : setCheckoutLoading(true);
 
       AddAttendance.append("user_id", User?.id);
       AddAttendance.append("check_datetime", currentDateTime);
       AddAttendance.append("attendance_type", attendanceType);
       AddAttendance.append("attendance_source", "QR");
-      AddAttendance.append("default_datetime", attendanceType === "Check-in" ? "09:30 AM" : "06:30 PM");
+      AddAttendance.append(
+        "default_datetime",
+        attendanceType === "Check-in" ? "09:30 AM" : "06:30 PM"
+      );
       AddAttendance.append("agency_id", User?.agency || 1);
 
       const registerAttendance = await axios.post(
@@ -111,6 +117,7 @@ const RegisterAttendance = () => {
       navigate("/attendance_self");
     } catch (error) {
       console.error("Error writing document: ", error);
+
       toast.error(error.response.data.data, {
         position: "top-right",
         autoClose: 3000,
@@ -123,6 +130,8 @@ const RegisterAttendance = () => {
       });
     } finally {
       setLoading(false);
+      setCheckoutLoading(false);
+      setCheckInLoading(false);
     }
   };
 
@@ -326,11 +335,7 @@ const RegisterAttendance = () => {
         {/* HEADER  */}
         <div className="fixed top-0 w-full grid grid-cols-2 items-center gap-5 p-4">
           <Link to="/dashboard">
-            <img
-              className="w-[80px]"
-              src="/assets/whiteLogo.png"
-              alt="logo"
-            />
+            <img className="w-[80px]" src="/assets/whiteLogo.png" alt="logo" />
           </Link>
           <h1
             className={`${
@@ -345,7 +350,7 @@ const RegisterAttendance = () => {
         <div className="w-full h-full flex items-center justify-center">
           <div
             className={`w-[80%] sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[20%] text-white p-4 text-center rounded-xl shadow-md `}
-            style={{ 
+            style={{
               border: "1px solid #AAAAAA",
               background: "rgba(28,28,28,0.8)",
             }}
@@ -376,16 +381,16 @@ const RegisterAttendance = () => {
 
               {/* CHECK TIME  */}
               <div className="text-center text-sm">
-                <h3 className="">
-                    Check Time
-                </h3>
+                <h3 className="">Check Time</h3>
                 <h1 className="font-semibold">
-                  <LiveDateTimeComponent setAttendanceTime={setAttendanceTime} />
+                  <LiveDateTimeComponent
+                    setAttendanceTime={setAttendanceTime}
+                  />
                 </h1>
               </div>
 
               {/* CHECK IN AND OUT BUTTON  */}
-              {!dataLoading &&
+              {!dataLoading && (
                 <div className="my-3 gap-3 w-full h-full flex flex-col">
                   <button
                     onClick={() => MarkAttendance("in")}
@@ -393,9 +398,9 @@ const RegisterAttendance = () => {
                       loading ? "relative" : ""
                     }`}
                     style={{ textTransform: "capitalize", cursor: "pointer" }}
-                    disabled={loading}
+                    disabled={checkinLoading}
                   >
-                    {loading ? (
+                    {checkinLoading ? (
                       <CircularProgress size={20} color="inherit" />
                     ) : (
                       <span className="uppercase">Check In</span>
@@ -407,19 +412,17 @@ const RegisterAttendance = () => {
                       loading ? "relative" : ""
                     } `}
                     style={{ textTransform: "capitalize", cursor: "pointer" }}
-                    disabled={loading}
+                    disabled={checkoutLoading}
                   >
-                    {loading ? (
+                    {checkoutLoading ? (
                       <CircularProgress size={20} color="inherit" />
                     ) : (
                       <span className="uppercase">Check Out</span>
                     )}
                   </button>
                 </div>
-              }
+              )}
             </div>
-
-
           </div>
         </div>
       </div>
