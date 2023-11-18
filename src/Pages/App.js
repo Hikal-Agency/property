@@ -75,7 +75,7 @@ import ListingUsers from "./listingsUsers";
 import Buyers from "./listingsUsers/buyers";
 import AllLiveLeads from "./liveleads";
 import MeetInvite from "./MeetInvite";
-import Snapchat from "./snapchat";
+import Snapchat from "./SocialMedia/snapchat";
 
 const libraries = ["places"];
 

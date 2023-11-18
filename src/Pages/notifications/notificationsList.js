@@ -148,13 +148,7 @@ const NotificationsList = () => {
     const updated_data = new FormData();
 
     updated_data.append("user_id", User?.id);
-    if (User?.role === 1) {
-      updated_data.append("is_admin_read", 1);
-    } else if (User?.role === 3) {
-      updated_data.append("is_manager_read", 1);
-    } else {
       updated_data.append("isRead", 1);
-    }
 
     try {
       const UpdateReadStatus = await axios.post(
