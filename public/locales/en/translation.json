@@ -788,5 +788,10 @@
     "submit_project_btn":"Add Project",
     "project_details_form":"Project Details",
     "location_details":"Location Details",
-    "project_availability":"Availability"
+    "project_availability":"Availability",
+    "form_project_priceRange":"Price Range",
+    "form_project_location":"Location",
+    "form_project_area":"Area",
+    "form_project_360View":"360 View Link",
+    "form_project_status":"Status"
 }

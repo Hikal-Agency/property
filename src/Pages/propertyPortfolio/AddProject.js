@@ -12,6 +12,12 @@ import {
   Drawer,
   MenuItem,
   Box,
+  Typography,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormControl,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
@@ -59,24 +65,23 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
   const [error, setError] = useState(false);
 
   const [isClosing, setIsClosing] = useState(false);
-  const handleEmail = (e) => {
-    setEmailError(false);
-    const value = e.target.value;
-    console.log(value);
-    // const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  // const handleEmail = (e) => {
+  //   setEmailError(false);
+  //   const value = e.target.value;
+  //   console.log(value);
 
-    const emailRegex = /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  //   const emailRegex = /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-    if (emailRegex.test(value)) {
-      setEmailError(false);
-    } else {
-      setEmailError("Kindly enter a valid email.");
-      // setLeadEmail("");
-      return;
-    }
-    setLeadEmail(value);
-    console.log("Email state: ", LeadEmail);
-  };
+  //   if (emailRegex.test(value)) {
+  //     setEmailError(false);
+  //   } else {
+  //     setEmailError("Kindly enter a valid email.");
+  //     // setLeadEmail("");
+  //     return;
+  //   }
+  //   setLeadEmail(value);
+  //   console.log("Email state: ", LeadEmail);
+  // };
 
   const handleClose = () => {
     setIsClosing(true);
@@ -92,7 +97,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
   };
 
   const AddLead = () => {
-    setaddNoteloading(true);
+    // setaddNoteloading(true);
     const token = localStorage.getItem("auth-token");
 
     // const data = {
@@ -256,24 +261,32 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               required
                             />
                             <TextField
-                              id="notes"
-                              type={"text"}
-                              label={t("form_developer_founder")}
-                              className="w-full"
+                              id="Manager"
+                              select
                               sx={{
                                 "&": {
                                   marginBottom: "1.25rem !important",
                                 },
                               }}
-                              variant="outlined"
+                              // value={Manager}
+                              disabled={User?.role === 3 && true}
+                              label={t("form_developer_name")}
+                              // onChange={ChangeManager}
                               size="small"
-                              //   value={LeadNotes}
-                              //   onChange={(e) => setLeadNotes(e.target.value)}
-                            />
+                              className="w-full"
+                              displayEmpty
+                              required
+                            >
+                              {/* {Managers?.map((person, index) => (
+                                <MenuItem key={index} value={person?.id}>
+                                  {person?.userName}
+                                </MenuItem>
+                              ))} */}
+                            </TextField>
                             <TextField
                               id="Manager"
-                              type="text"
-                              label={t("form_developer_ceo")}
+                              type="number"
+                              label={t("form_project_priceRange")}
                               className="w-full"
                               sx={{
                                 marginBottom: "1.25rem !important",
@@ -303,7 +316,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                             <TextField
                               id="Project"
                               type={"text"}
-                              label={t("form_developer_contact")}
+                              label={t("form_project_location")}
                               className="w-full"
                               sx={{
                                 "&": {
@@ -317,7 +330,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                             <TextField
                               id="Project"
                               type={"text"}
-                              label={t("form_developer_email")}
+                              label={t("form_project_area")}
                               className="w-full"
                               sx={{
                                 "&": {
@@ -331,8 +344,8 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
 
                             <TextField
                               id="LeadEmailAddress"
-                              type={"email"}
-                              label={t("form_developer_emailAddress")}
+                              type={"text"}
+                              label={t("form_project_360View")}
                               className="w-full"
                               sx={{
                                 "&": {
@@ -357,57 +370,168 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               {t("project_availability")}
                             </h4>
                             <TextField
-                              id="LeadName"
-                              type={"text"}
-                              label={t("form_developer_fullName")}
-                              className="w-full"
+                              id="Manager"
+                              select
                               sx={{
                                 "&": {
                                   marginBottom: "1.25rem !important",
                                 },
                               }}
-                              variant="outlined"
+                              // value={Manager}
+                              disabled={User?.role === 3 && true}
+                              label={t("form_project_status")}
+                              // onChange={ChangeManager}
                               size="small"
+                              className="w-full"
+                              displayEmpty
                               required
-                            />
+                            >
+                              <MenuItem value="available">Available</MenuItem>
+                              <MenuItem value="sold-out">Sold-Out</MenuItem>
+                            </TextField>
 
-                            {error && (
-                              <Typography variant="body2" color="error">
-                                {error}
-                              </Typography>
-                            )}
-                            <TextField
-                              id="LeadEmailAddress"
-                              type={"email"}
-                              label={t("form_developer_emailAddress")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                            />
+                            <div className="flex jsutify-between">
+                              <FormControl>
+                                <FormLabel id="demo-radio-buttons-group-label">
+                                  Bedrooms
+                                </FormLabel>
+                                <RadioGroup
+                                  aria-labelledby="demo-radio-buttons-group-label"
+                                  // defaultValue="female"
+                                  name="radio-buttons-group"
+                                >
+                                  <FormControlLabel
+                                    value="studio"
+                                    control={<Radio />}
+                                    label="Studio"
+                                  />
+                                  <FormControlLabel
+                                    value="onebedroom"
+                                    control={<Radio />}
+                                    label="One Bedroom"
+                                  />
+                                  <FormControlLabel
+                                    value="twobedroom"
+                                    control={<Radio />}
+                                    label="Two Bedrooms"
+                                  />
+                                  <FormControlLabel
+                                    value="threebedroom"
+                                    control={<Radio />}
+                                    label="Three Bedrooms"
+                                  />
+                                  <FormControlLabel
+                                    value="fourbedroom"
+                                    control={<Radio />}
+                                    label="Four Bedrooms"
+                                  />
+                                  <FormControlLabel
+                                    value="fivebedroom"
+                                    control={<Radio />}
+                                    label="Five Bedrooms"
+                                  />
+                                </RadioGroup>
+                              </FormControl>
 
-                            <TextField
-                              id="LeadEmailAddress"
-                              type={"email"}
-                              label={t("form_developer_contactNumber")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                            />
+                              <FormControl>
+                                <RadioGroup
+                                  aria-labelledby="demo-radio-buttons-group-label"
+                                  // defaultValue="female"
+                                  name="radio-buttons-group"
+                                  required
+                                >
+                                  <FormControlLabel
+                                    value="sixbedroom"
+                                    control={<Radio />}
+                                    label="Six Bedroom"
+                                  />
+                                  <FormControlLabel
+                                    value="sevenbedroom"
+                                    control={<Radio />}
+                                    label="Seven Bedrooms"
+                                  />
+                                  <FormControlLabel
+                                    value="eightbedroom"
+                                    control={<Radio />}
+                                    label="Eight Bedrooms"
+                                  />
+                                  <FormControlLabel
+                                    value="ninebedroom"
+                                    control={<Radio />}
+                                    label="Nine Bedrooms"
+                                  />
+                                  <FormControlLabel
+                                    value="tenbedroom"
+                                    control={<Radio />}
+                                    label="Ten Bedrooms"
+                                  />
+                                  <FormControlLabel
+                                    value="retail"
+                                    control={<Radio />}
+                                    label="Retail"
+                                  />
+                                </RadioGroup>
+                              </FormControl>
+                            </div>
                           </Box>
                         </div>
                       </div>
 
-                      <div className="">
+                      <div className="min-w-fit w-full flex justify-center mr-4 items-center my-4 space-x-5">
+                        <label htmlFor="contained-button-file">
+                          <Button
+                            variant="contained"
+                            size="lg"
+                            className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                            // onClick={() =>
+                            //   setSelectImagesModal({
+                            //     isOpen: true,
+                            //   })
+                            // }
+                            style={{
+                              // backgroundColor: "#111827",
+                              color: "#ffffff",
+                              // border: "1px solid #DA1F26",
+                            }}
+                            component="span"
+                            disabled={loading ? true : false}
+                            // startIcon={loading ? null : <MdFileUpload />}
+                          >
+                            <span>{t("button_upload_image")}</span>
+                          </Button>
+                          {/* <p className="text-primary mt-2 italic">
+                          {allImages?.length > 0
+                            ? `${allImages?.length} images selected.`
+                            : null}
+                        </p> */}
+                        </label>
+
+                        <label htmlFor="contained-button-document">
+                          <Button
+                            variant="contained"
+                            size="lg"
+                            className="min-w-fit bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
+                            style={{
+                              color: "#ffffff",
+                            }}
+                            // onClick={() => {
+                            //   setDocumentModal(true);
+                            // }}
+                            component="span"
+                            disabled={loading ? true : false}
+                            // startIcon={loading ? null : <MdFileUpload />}
+                          >
+                            <span>{t("button_upload_document")}</span>
+                          </Button>
+                          {/* <p className="text-primary mt-2 italic">
+                          {allDocs?.length > 0
+                            ? `${allDocs?.length} documents selected.`
+                            : null}
+                        </p> */}
+                        </label>
+                      </div>
+
+                      <div className="mt-4">
                         <Button
                           className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
                           ripple={true}
