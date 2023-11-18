@@ -121,7 +121,7 @@ const PropertyPortfolio = () => {
                                 }
                                 `}
                             >
-                              <div className="p-4">
+                              <div className="p-4 cursor-pointer">
                                 <div className="uppercase font-semibold mb-3 flex justify-between items-center">
                                   <div>{project.project}</div>
                                   <div className="flex">
