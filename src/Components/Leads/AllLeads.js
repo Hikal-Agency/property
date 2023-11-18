@@ -44,7 +44,6 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import SourceCounter from "../_elements/SourceCounter";
 
 import {
   FaSnapchatGhost,
@@ -91,6 +90,7 @@ import {
   SiGooglemeet 
 } from "react-icons/si";
 import JoinMeeting from "../liveleads/JoinMeeting";
+import SourceAnimation from "../_elements/SourceAnimation";
 
 
 const bulkUpdateBtnStyles = {
@@ -1340,86 +1340,86 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         console.log("Rows Data: ", rowsdata);
 
         // count of leads per source
-        const facebook = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign facebook"
-        );
-        const fbCounts = facebook.length;
+        // const facebook = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign facebook"
+        // );
+        // const fbCounts = facebook.length;
 
-        const snapchat = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign snapchat"
-        );
-        const spCount = snapchat.length;
+        // const snapchat = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign snapchat"
+        // );
+        // const spCount = snapchat.length;
 
-        const tiktok = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign tiktok"
-        );
-        const ttCount = tiktok.length;
+        // const tiktok = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign tiktok"
+        // );
+        // const ttCount = tiktok.length;
 
-        const googleads = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign googleads"
-        );
-        const gCount = googleads.length;
+        // const googleads = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign googleads"
+        // );
+        // const gCount = googleads.length;
 
-        const youtube = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign youtube"
-        );
-        const yCount = youtube.length;
+        // const youtube = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign youtube"
+        // );
+        // const yCount = youtube.length;
 
-        const campaign = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign"
-        );
-        const cCount = campaign.length;
+        // const campaign = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign"
+        // );
+        // const cCount = campaign.length;
 
-        const cold = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "cold"
-        );
-        const coCount = cold.length;
+        // const cold = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "cold"
+        // );
+        // const coCount = cold.length;
 
-        const personal = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "personal"
-        );
-        const pCount = personal.length;
+        // const personal = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "personal"
+        // );
+        // const pCount = personal.length;
 
-        const message = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "message"
-        );
-        const mCount = message.length;
+        // const message = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "message"
+        // );
+        // const mCount = message.length;
 
-        const whatsapp = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "whatsapp"
-        );
-        const wCount = whatsapp.length;
+        // const whatsapp = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "whatsapp"
+        // );
+        // const wCount = whatsapp.length;
 
-        const comment = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "comment"
-        );
-        const comCount = comment.length;
+        // const comment = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "comment"
+        // );
+        // const comCount = comment.length;
 
-        const website = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "website"
-        );
-        const webCount = website.length;
+        // const website = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "website"
+        // );
+        // const webCount = website.length;
 
-        console.log("FB: ", fbCounts);
-        console.log("Snap: ", spCount);
-        console.log("wa: ", wCount);
-        console.log("ms: ", mCount);
+        // console.log("FB: ", fbCounts);
+        // console.log("Snap: ", spCount);
+        // console.log("wa: ", wCount);
+        // console.log("ms: ", mCount);
 
         setpageState((old) => ({
           ...old,
           isLoading: false,
-          fbCounts: fbCounts,
-          spCount: spCount,
-          ttCount: ttCount,
-          gCount: gCount,
-          yCount: yCount,
-          cCount: cCount,
-          pCount: pCount,
-          coCount: coCount,
-          mCount: mCount,
-          wCount: wCount,
-          comment: comCount,
-          webCount: webCount,
+        //   fbCounts: fbCounts,
+        //   spCount: spCount,
+        //   ttCount: ttCount,
+        //   gCount: gCount,
+        //   yCount: yCount,
+        //   cCount: cCount,
+        //   pCount: pCount,
+        //   coCount: coCount,
+        //   mCount: mCount,
+        //   wCount: wCount,
+        //   comment: comCount,
+        //   webCount: webCount,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
           from: result.data.coldLeads.from,
@@ -2013,11 +2013,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             }}
             className={"items-center"}
           >
-            <div className="flex items-end justify-end">
-              {(hasPermission("leadSource_counts") || User.role === 1) && (
-                <SourceCounter />
-              )}
-
+            <div className="flex items-end justify-end mb-2">
+              
               <div className="w-fit flex justify-end">
                 <Box
                   sx={{
@@ -2065,7 +2062,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   </FormControl>
                 </Box>
               </div>
-
+              
+              {(hasPermission("leadSource_counts") || User.role === 1) && (
+                <SourceAnimation />
+              )}
             </div>
           </Box>
         )}

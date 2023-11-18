@@ -112,13 +112,13 @@ const RenderManagers = ({ cellValues }) => {
       } else {
         UpdateLeadData.append("assignedToManager", 1);
         UpdateLeadData.append("feedback", "New");
-        UpdateLeadData.append("leadStatus", "Transferred");
-        UpdateLeadData.append("transferredFrom", salesperson2);
-        UpdateLeadData.append("transferredFromName", salesperson2);
-        UpdateLeadData.append(
-          "transferredDate",
-          moment().format("YYYY-MM-DD HH:mm:ss")
-        );
+        // UpdateLeadData.append("leadStatus", "Transferred");
+        // UpdateLeadData.append("transferredFrom", salesperson2);
+        // UpdateLeadData.append("transferredFromName", salesperson2);
+        // UpdateLeadData.append(
+        //   "transferredDate",
+        //   moment().format("YYYY-MM-DD HH:mm:ss")
+        // );
       }
     } else {
       newAssigned = newManager?.id;
@@ -136,18 +136,19 @@ const RenderManagers = ({ cellValues }) => {
       } else {
         UpdateLeadData.append("assignedToManager", newManager?.id);
         UpdateLeadData.append("feedback", "New");
-        UpdateLeadData.append("leadStatus", "Transferred");
-        UpdateLeadData.append("transferredFrom", salesperson2);
-        UpdateLeadData.append("transferredFromName", salesperson2);
-        UpdateLeadData.append(
-          "transferredDate",
-          moment().format("YYYY-MM-DD HH:mm:ss")
-        );
+        // UpdateLeadData.append("leadStatus", "Transferred");
+        // UpdateLeadData.append("transferredFrom", salesperson2);
+        // UpdateLeadData.append("transferredFromName", salesperson2);
+        // UpdateLeadData.append(
+        //   "transferredDate",
+        //   moment().format("YYYY-MM-DD HH:mm:ss")
+        // );
       }
     }
 
     // update transferred request
     if (cellValues?.row?.transferRequest === 1) {
+      UpdateLeadData.append("leadStatus", "Transferred");
       UpdateLeadData.append("transferRequest", 2);
     }
 

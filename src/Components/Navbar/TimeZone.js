@@ -29,6 +29,8 @@ const TimeZone = () => {
     setTimezones,
     pinnedZone,
     setPinnedZone,
+    isLangRTL,
+    i18n
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
@@ -292,11 +294,16 @@ const TimeZone = () => {
                   onClick={handleTimezoneChange}
                 >
                   <span
-                    style={{ marginRight: "8px", cursor: "pointer" }}
+                    style={{ 
+                      marginRight: !isLangRTL(i18n.language) && "8px", 
+                      marginLeft: isLangRTL(i18n.language) && "8px",
+                      cursor: "pointer", 
+                      fontSize: "20px" 
+                    }}
                     onClick={(e) => handlePinTimeZone(e, timezone, 0)}
                     value={pinnedZone}
                   >
-                    {"\u2690"}
+                    {"\u2691"}
                   </span>
                   {timezone}
                 </MenuItem>
@@ -309,11 +316,16 @@ const TimeZone = () => {
                   onClick={handleTimezoneChange}
                 >
                   <span
-                    style={{ marginRight: "8px", cursor: "pointer" }}
+                    style={{ 
+                      marginRight: !isLangRTL(i18n.language) && "8px", 
+                      marginLeft: isLangRTL(i18n.language) && "8px",
+                      cursor: "pointer", 
+                      fontSize: "18px" 
+                    }}
                     onClick={(e) => handlePinTimeZone(e, timezone)}
                     value={pinnedZone}
                   >
-                    {"\u2691"}
+                    {"\u2690"}
                   </span>
                   {timezone}
                 </MenuItem>
