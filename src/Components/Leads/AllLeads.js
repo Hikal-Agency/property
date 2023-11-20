@@ -18,7 +18,7 @@ import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineHistory, AiFillEdit } from "react-icons/ai";
-import { useLocation } from "react-router-dom";
+import { Form, useLocation } from "react-router-dom";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "./SingleLead";
@@ -695,8 +695,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             className={`w-full h-full px-1 flex items-center justify-center`}
           >
             {/* MEET LINK  */}
-            {(lead_origin === "liveleads" || lead_type === "liveleads") &&
-              cellValues.row.notes.startsWith("Live") &&
+            {
+            // (lead_origin === "liveleads" || lead_type === "liveleads") &&
+            //   cellValues.row.notes.startsWith("Live") &&
               (cellValues.row.meet_link === null ||
               cellValues.row.meet_link === "" ||
               cellValues.row.meet_link === "null" ? (
@@ -725,7 +726,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     </button>
                   </Tooltip>
                 </p>
-              ))}
+              )
+            )}
 
             {/* CALL  */}
             <Tooltip title="Call" arrow>
@@ -1630,17 +1632,30 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   // NEW MEETING 
   const AddMeetLinkFunction = async (
     mLeadId, 
+    mLeadName,
+    mLeadEmail,
     meetLink,
     adminLink
   ) => {
     setBtnLoading(true);
 
     const token = localStorage.getItem("auth-token");
+
+    // LEAD DATA 
     const AddLeadData = new FormData();
     AddLeadData.append("id", mLeadId);
     AddLeadData.append("meet_link", meetLink);
     AddLeadData.append("admin_link", adminLink);
 
+    // EMAIL DATA 
+    const AddEmailData = new FormData();
+    AddEmailData.append("notification", "common");
+    AddEmailData.append("email", mLeadEmail);
+    AddEmailData.append("title", "UAE Real Estate Market Consultation by Hikal");
+    AddEmailData.append("message", `<h3>Hi ${mLeadName}!</h3><p>We are pleased to inform you that your consultation has been scheduled successfully for now. The meeting link is <span>${meetLink}</span>.</p><p>If you have any questions or need further assistance, feel free to contact us at <span>+971 4 272 2249</span>.</p>`);
+    AddEmailData.append("style","span{font-weight: bold; color: #1245A8;}");
+
+    // UPDATE LEADS TABLE 
     await axios
     .post(`${BACKEND_URL}/leads/${mLeadId}`, AddLeadData, {
       headers: {
@@ -1676,6 +1691,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       });
       setBtnLoading(false);
     });
+
+    // SEND EMAIL TO LEAD 
+    await axios
+    .post(`${BACKEND_URL}/sendEmail/`, AddEmailData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((result) => {
+      console.log("Email sent successfully!");
+      setBtnLoading(false);
+      FetchLeads(token);
+    })
+    .catch((err) => {
+      setBtnLoading(false);
+    });
   };
 
   // REDIRECT TO MEETING 
@@ -1702,11 +1734,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
     const diff = (currentTime - leadTime) / (1000 * 60); //CONVERT MILLISECONDS TO MINUTES
 
-    if (diff < 5) {
+    // if (diff < 5) {
       setNameOfLead(params);
       try {
-
         setBtnLoading(true);
+        // CREATE MEETING 
         const createMeeting = await axios.get(
           `${BACKEND_URL}/create?name=${User?.userName.replaceAll(" ", "%20")}`,
           {
@@ -1717,6 +1749,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           }
         );
 
+        // JOIN AS MODERATOR 
         const meetingID = createMeeting?.data?.data?.meetingID;
         const joinAsModerator = await axios.post(
           `${BACKEND_URL}/join`,
@@ -1730,6 +1763,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             },
           }
         );
+
+        // ATTENDEE LINK 
         const joinAsAttendee = await axios.post(
           `${BACKEND_URL}/attendee`,
           JSON.stringify({
@@ -1749,7 +1784,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         // setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee});
         
         redirectToMeeting(urlForModerator);
-        AddMeetLinkFunction(params?.row?.leadId, urlForAttendee, urlForModerator);
+        AddMeetLinkFunction(params?.row?.leadId, params?.row?.leadName, params?.row?.leadEmail, urlForAttendee, urlForModerator);
 
       } catch (error) {
         console.log(error);
@@ -1765,9 +1800,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         });
       }
       setBtnLoading(false);
-    } else {
-      HandleAddMeetLinkBtn(params);
-    }
+    // } else {
+    //   HandleAddMeetLinkBtn(params);
+    // }
   };
 
   const HandleViewTimeline = (params) => {

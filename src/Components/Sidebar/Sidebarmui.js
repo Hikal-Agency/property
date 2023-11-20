@@ -748,6 +748,7 @@ const Sidebarmui = () => {
             {
               name: t("menu_live_call"),
               pro: false,
+              count: sidebarData?.UNASSIGNED?.live,
               link: "/unassigned/liveleads",
             },
           ],
