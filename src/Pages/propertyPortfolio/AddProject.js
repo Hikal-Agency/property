@@ -41,6 +41,7 @@ import {
   BsPersonGear,
   BsChatLeftText,
 } from "react-icons/bs";
+import PortfolioLocation from "./PortfolioLocation";
 
 const AddProject = ({ openAddProject, setOpenAddProject }) => {
   const {
@@ -63,6 +64,11 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [error, setError] = useState(false);
+  const [listingLocation, setListingLocation] = useState({
+    lat: 0,
+    lng: 0,
+    addressText: "",
+  });
 
   const [isClosing, setIsClosing] = useState(false);
   // const handleEmail = (e) => {
@@ -390,7 +396,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               <MenuItem value="sold-out">Sold-Out</MenuItem>
                             </TextField>
 
-                            <div className="flex jsutify-between">
+                            <div>
                               <FormControl>
                                 <FormLabel id="demo-radio-buttons-group-label">
                                   Bedrooms
@@ -400,40 +406,76 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                                   // defaultValue="female"
                                   name="radio-buttons-group"
                                 >
-                                  <FormControlLabel
-                                    value="studio"
-                                    control={<Radio />}
-                                    label="Studio"
-                                  />
-                                  <FormControlLabel
-                                    value="onebedroom"
-                                    control={<Radio />}
-                                    label="One Bedroom"
-                                  />
-                                  <FormControlLabel
-                                    value="twobedroom"
-                                    control={<Radio />}
-                                    label="Two Bedrooms"
-                                  />
-                                  <FormControlLabel
-                                    value="threebedroom"
-                                    control={<Radio />}
-                                    label="Three Bedrooms"
-                                  />
-                                  <FormControlLabel
-                                    value="fourbedroom"
-                                    control={<Radio />}
-                                    label="Four Bedrooms"
-                                  />
-                                  <FormControlLabel
-                                    value="fivebedroom"
-                                    control={<Radio />}
-                                    label="Five Bedrooms"
-                                  />
+                                  <div className="flex justify-between">
+                                    <div>
+                                      <FormControlLabel
+                                        value="studio"
+                                        control={<Radio />}
+                                        label="Studio"
+                                      />
+                                      <FormControlLabel
+                                        value="onebedroom"
+                                        control={<Radio />}
+                                        label="One Bedroom"
+                                      />
+                                      <FormControlLabel
+                                        value="twobedroom"
+                                        control={<Radio />}
+                                        label="Two Bedrooms"
+                                      />
+                                      <FormControlLabel
+                                        value="threebedroom"
+                                        control={<Radio />}
+                                        label="Three Bedrooms"
+                                      />
+                                      <FormControlLabel
+                                        value="fourbedroom"
+                                        control={<Radio />}
+                                        label="Four Bedrooms"
+                                      />
+                                      <FormControlLabel
+                                        value="fivebedroom"
+                                        control={<Radio />}
+                                        label="Five Bedrooms"
+                                      />
+                                    </div>
+                                    <div>
+                                      <FormControlLabel
+                                        value="sixbedroom"
+                                        control={<Radio />}
+                                        label="Six Bedroom"
+                                      />
+                                      <FormControlLabel
+                                        value="sevenbedroom"
+                                        control={<Radio />}
+                                        label="Seven Bedrooms"
+                                      />
+                                      <FormControlLabel
+                                        value="eightbedroom"
+                                        control={<Radio />}
+                                        label="Eight Bedrooms"
+                                      />
+                                      <FormControlLabel
+                                        value="ninebedroom"
+                                        control={<Radio />}
+                                        label="Nine Bedrooms"
+                                      />
+                                      <FormControlLabel
+                                        value="tenbedroom"
+                                        control={<Radio />}
+                                        label="Ten Bedrooms"
+                                      />
+                                      <FormControlLabel
+                                        value="retail"
+                                        control={<Radio />}
+                                        label="Retail"
+                                      />
+                                    </div>
+                                  </div>
                                 </RadioGroup>
                               </FormControl>
 
-                              <FormControl>
+                              {/* <FormControl>
                                 <RadioGroup
                                   aria-labelledby="demo-radio-buttons-group-label"
                                   // defaultValue="female"
@@ -471,7 +513,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                                     label="Retail"
                                   />
                                 </RadioGroup>
-                              </FormControl>
+                              </FormControl> */}
                             </div>
                           </Box>
                         </div>
@@ -529,6 +571,16 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                             : null}
                         </p> */}
                         </label>
+                      </div>
+
+                      {/* location */}
+                      <div>
+                        <PortfolioLocation
+                          listingLocation={listingLocation}
+                          currLocByDefault={true}
+                          setListingLocation={setListingLocation}
+                          required
+                        />
                       </div>
 
                       <div className="mt-4">
