@@ -1652,8 +1652,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     AddEmailData.append("notification", "common");
     AddEmailData.append("email", mLeadEmail);
     AddEmailData.append("title", "UAE Real Estate Market Consultation by Hikal");
-    AddEmailData.append("message", `<h3>Hi ${mLeadName}!</h3><p>We are pleased to inform you that your consultation has been scheduled successfully for now. The meeting link is <span>${meetLink}</span>.</p><p>If you have any questions or need further assistance, feel free to contact us at <span>+971 4 272 2249</span>.</p>`);
-    AddEmailData.append("style","span{font-weight: bold; color: #1245A8;}");
+    AddEmailData.append("message", `<h3>Hi ${mLeadName}!</h3><p>We are pleased to inform you that your consultation has been scheduled successfully for now.</p><h3 style%equal%"text-align: center;"><a href%equal%"${meetLink}" style%equal%"padding: 10px; border-radius: 10px; background-color: #DA1F26; color: #FFFFFF; font-weight: bold;">Click here to join the meeting!</a></h3><p>If you have any questions or need further assistance, feel free to contact us at <a href%equal%"tel:97142722249"><span>+971 4 272 2249</span></a>.</p>`);
+    AddEmailData.append("style","body{color: #000000;} span{font-weight: bold; color: #1245A8;}");
 
     // UPDATE LEADS TABLE 
     await axios
