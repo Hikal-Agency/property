@@ -320,6 +320,7 @@ export const ContextProvider = ({ children }) => {
           personal: response.data.data["unassigned"]["PERSONAL LEADS"],
           third_party: response.data.data["unassigned"]["THIRD PARTY LEADS"],
           warm: response.data.data["unassigned"]["WARM LEADS"],
+          live: response.data.data["unassigned"]["LIVE CALLS"],
         },
         ReshuffleLeadsCount: response.data.data["RESHUFFLED LEADS"],
         LiveCallCount: response.data.data["LIVE CALLS"],

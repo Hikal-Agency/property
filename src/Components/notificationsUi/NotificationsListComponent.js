@@ -42,7 +42,7 @@ const NotificationsListComponent = ({
     setpageState,
     primaryColor,
     unreadNotifsCount,
-    themeBgImg, 
+    themeBgImg,
     User
   } = useStateContext();
   const [loading, setLoading] = useState(false);
@@ -174,9 +174,17 @@ const NotificationsListComponent = ({
                 // onClick={(e) => UpdateReadStatus(e, notification?.id)}
                 style={{
                   background:
-                   isNotifRead(notification) 
-                      ? readColor?.bgColor
-                      : readColor?.bgColorRead,
+                    User?.role === 1 ? (notification?.is_admin_read === 0 || notification?.is_admin_read === null
+                      ? readColor?.bgColorRead
+                      : readColor?.bgColor)
+                    : User?.role === 3 ? (notification?.is_manager_read === 0 || notification?.is_manager_read === null
+                      ? readColor?.bgColorRead
+                      : readColor?.bgColor)
+                    : (
+                      notification?.isRead === 0 || notification?.isRead === null
+                      ? readColor?.bgColorRead
+                      : readColor?.bgColor
+                    )
                 }}
               >
                 <div

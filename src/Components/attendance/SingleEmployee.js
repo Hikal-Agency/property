@@ -14,6 +14,7 @@ import { TfiCheck, TfiClose } from "react-icons/tfi";
 import { Select, MenuItem } from "@mui/material";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { FaCheck } from "react-icons/fa";
 
 import moment from "moment";
 import {
@@ -1653,6 +1654,20 @@ const SingleEmployee = ({ user }) => {
               }}
             >
               <div className="flex mx-2">
+                {/* <Tooltip title="Mark Attendance" arrow className="mr-3">
+                  <IconButton
+                    className=" text-white"
+                    ripple={true}
+                    size="small"
+                  >
+                    <FaCheck
+                      size={14}
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } hover:text-primary`}
+                    />
+                  </IconButton>
+                </Tooltip> */}
                 <Tooltip title="Export Attendance Logs" arrow>
                   <IconButton
                     className={`p-1 disabled:opacity-50 disabled:cursor-not-allowed`}

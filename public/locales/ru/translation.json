@@ -766,5 +766,6 @@
     "menu_hikal_meet": "Хикал Встреча",
     "generate_report": "Создать отчет о посещаемости",
     "generate_report_btn": "Создать отчет",
-    "report_month": "Выберите месяц"
+    "report_month": "Выберите месяц",
+    "mark_attendance": "Отметить посещаемость"
 }
