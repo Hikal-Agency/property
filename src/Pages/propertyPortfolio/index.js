@@ -14,6 +14,7 @@ import BedInfo from "./BedInfo";
 import { useState } from "react";
 import AddDeveloper from "./AddDeveloper";
 import AddProject from "./AddProject";
+import SinglePropertyModal from "./SinglePropertyModal";
 
 const PropertyPortfolio = () => {
   const { currentMode, DevProData, setDevProData, BACKEND_URL, themeBgImg, t } =
@@ -21,6 +22,12 @@ const PropertyPortfolio = () => {
   const navigate = useNavigate();
   const [openAddDev, setOpenAddDev] = useState(false);
   const [openAddProject, setOpenAddProject] = useState(false);
+  const [openModal, setOpenModal] = useState({ open: false });
+
+  const handleOpenModal = (data) => {
+    console.log("open modal clicked:::::::::::::::");
+    setOpenModal({ open: true, project: data });
+  };
 
   const FetchProperty = async (token) => {
     await axios
@@ -121,7 +128,10 @@ const PropertyPortfolio = () => {
                                 }
                                 `}
                             >
-                              <div className="p-4 cursor-pointer">
+                              <div
+                                className="p-4 cursor-pointer"
+                                onClick={(e) => handleOpenModal(project)}
+                              >
                                 <div className="uppercase font-semibold mb-3 flex justify-between items-center">
                                   <div>{project.project}</div>
                                   <div className="flex">
@@ -360,6 +370,12 @@ const PropertyPortfolio = () => {
         <AddProject
           openAddProject={openAddProject}
           setOpenAddProject={setOpenAddProject}
+        />
+      )}
+      {openModal?.open && (
+        <SinglePropertyModal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
         />
       )}
     </>
