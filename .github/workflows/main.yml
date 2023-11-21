@@ -18,7 +18,7 @@ jobs:
 
     - name: Build and deploy
       run: |
-        npm run build
+        npm run build -- --max_old_space_size=4096
         # Add deployment command here (e.g., deploying to Netlify, Firebase, etc.)
 
 
