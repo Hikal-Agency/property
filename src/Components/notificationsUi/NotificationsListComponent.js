@@ -42,7 +42,8 @@ const NotificationsListComponent = ({
     setpageState,
     primaryColor,
     unreadNotifsCount,
-    themeBgImg
+    themeBgImg, 
+    User
   } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
@@ -146,6 +147,19 @@ const NotificationsListComponent = ({
     setFetch(false);
   }, [pageState.page, fetch, filter_notifyDate]);
 
+  const isNotifRead = (notification) => {
+    let readStatus = null;
+    if(User?.role === 1) {
+      readStatus = notification?.is_admin_read;  
+    } else if(User?.role === 3) {
+      readStatus = notification?.is_manager_read;
+    } else {
+      readStatus = notification?.isRead;
+    }
+
+    return readStatus === 1;
+  }
+
   return (
     <>
       {loading ? (
@@ -160,9 +174,9 @@ const NotificationsListComponent = ({
                 // onClick={(e) => UpdateReadStatus(e, notification?.id)}
                 style={{
                   background:
-                    notification?.isRead === 0 || notification?.isRead === null
-                      ? readColor?.bgColorRead
-                      : readColor?.bgColor,
+                   isNotifRead(notification) 
+                      ? readColor?.bgColor
+                      : readColor?.bgColorRead,
                 }}
               >
                 <div
@@ -178,8 +192,7 @@ const NotificationsListComponent = ({
                     className={` ${
                       currentMode === "dark" ? "text-white" : "text-dark"
                     } ${
-                      notification?.isRead === 0 ||
-                      notification?.isRead === null
+                     !isNotifRead(notification) 
                         ? "font-semibold"
                         : ""
                     }`}

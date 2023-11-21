@@ -26,6 +26,43 @@ import { FaDownload } from "react-icons/fa";
 import MyCalendar from "./MyCalendar";
 import EmployeeCalendar from "./EmployeeCalendar";
 
+const calculateExtraMins = (day) => {
+  const defaultCheckInTime = "09:30 AM";
+  const defaultCheckoutTime = "06:30 PM";
+
+  const checkIn = day?.check_datetime;
+  const checkOut = moment(
+    `${checkIn?.slice(0, 10)} ${day?.checkOuts}`,
+    "YYYY-MM-DD hh:mm A"
+  );
+
+  const defaultCheckInDateTime = moment(
+    `${checkIn?.slice(0, 10)} ${defaultCheckInTime}`,
+    "YYYY-MM-DD hh:mm A"
+  );
+  const defaultCheckOutDateTime = moment(
+    `${checkIn?.slice(0, 10)} ${defaultCheckoutTime}`,
+    "YYYY-MM-DD hh:mm A"
+  );
+
+  const actualCheckInDateTime = moment(checkIn, "YYYY-MM-DD HH:mm:ss");
+  const actualCheckOutDateTime = moment(checkOut, "YYYY-MM-DD HH:mm:ss");
+
+  const checkInDuration = moment.duration(
+    defaultCheckInDateTime.diff(actualCheckInDateTime)
+  );
+
+  const checkOutDuration = moment.duration(
+    actualCheckOutDateTime.diff(defaultCheckOutDateTime)
+  );
+
+  const extraCheckInMinutes = checkInDuration.asMinutes();
+  const extraCheckOutMinutes = checkOutDuration.asMinutes();
+
+  const total = Math.floor(extraCheckInMinutes + extraCheckOutMinutes);
+  return total;
+};
+
 const SingleEmployee = ({ user }) => {
   const {
     User,
@@ -64,6 +101,7 @@ const SingleEmployee = ({ user }) => {
   const [empData, setEmpData] = useState(null);
   const [showDailogue, setDialogue] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState(false);
+  const [totalExtraMins, setTotalExtraMins] = useState(0);
   console.log("cut: ", cut_salary);
 
   console.log("empdata:: ", empData);
@@ -200,41 +238,7 @@ const SingleEmployee = ({ user }) => {
       minWidth: 80,
       flex: 1,
       renderCell: (params) => {
-        console.log("Params:", params);
-        const checkTime = moment(params?.row?.check_datetime).format("HH:mm");
-        const checkoutTime = moment(
-          `${params?.row?.date} ${moment(
-            params?.row?.checkOuts?.split(",")[0],
-            "hh:mm A"
-          ).format("HH:mm:ss")}`
-        ).format("HH:mm");
-        const extraMinutes = moment(checkoutTime, "HH:mm").diff(
-          moment(params?.row?.defaultCheckout || "06:30 PM", "HH:mm"),
-          "minutes"
-        );
-
-        let lateMinutes = moment(checkTime, "HH:mm").diff(
-          moment(params?.row?.default_datetime || "09:30 AM", "HH:mm"),
-          "minutes"
-        );
-
-        if (isNaN(lateMinutes) || isNaN(extraMinutes)) {
-          return "-";
-        } else {
-          let totalMinutes = 0;
-          if (lateMinutes < 0) {
-            totalMinutes += lateMinutes;
-          }
-          if (extraMinutes > 0) {
-            totalMinutes += extraMinutes;
-          }
-
-          if (totalMinutes > 0) {
-            return totalMinutes?.toString()?.slice(1) + " minutes";
-          } else {
-            return "-";
-          }
-        }
+        return calculateExtraMins(params?.row) > 0 ? calculateExtraMins(params?.row) + " minutes" : "-";
       },
     },
 
@@ -1626,6 +1630,14 @@ const SingleEmployee = ({ user }) => {
     // eslint-disable-next-line
   }, [pageState.page, selectedMonth]);
 
+  useEffect(() => {
+    let sum = 0; 
+    empData?.forEach(day => {
+      sum += (calculateExtraMins(day) > 0 ? calculateExtraMins(day) : 0);
+    }) 
+    setTotalExtraMins(sum);
+  }, []);
+
   return (
     <>
       <div className="flex h-screen ">
@@ -1819,6 +1831,15 @@ const SingleEmployee = ({ user }) => {
                           </p>
                           {"  "}
                           <h1 className="font-semibold">{t("leave_days")}</h1>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="flex items-center justify-center">
+                          <p className="font-bold pr-2">
+                            {"  "} {totalExtraMins || "0"}
+                          </p>
+                          {"  "}
+                          <h1 className="font-semibold"> Extra minutes</h1>
                         </div>
                       </div>
                       <div className="text-center">
