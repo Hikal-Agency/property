@@ -1,6 +1,6 @@
 {
   "name": "hikal-crm",
-  "version": "0.1.0",
+  "version": "0",
   "private": true,
   "dependencies": {
     "@amcharts/amcharts5": "^5.3.12",
