@@ -1747,7 +1747,7 @@ const SingleEmployee = ({ user }) => {
             <div className="flex flex-col md:flex-row my-5 mb-10 ">
               <div
                 // className={`grid grid-cols-1 md:grid-cols-12 gap-3  ${
-                className={`md:col-span-6 gap-3  ${
+                className={`md:col-span-5 gap-3 w-[300px]  ${
                   currentMode === "dark" ? "text-[#EEEEEE]" : "text-black"
                 }`}
               >
@@ -1980,7 +1980,7 @@ const SingleEmployee = ({ user }) => {
                 </div> */}
               </div>
 
-              <div className="md:col-span-6 w-full mt-3 pb-3">
+              <div className="md:col-span-8 w-full mt-3 pb-3">
                 <TabPanel value={value} index={0}>
                   <div className="w-full my-5">
                     <Box
@@ -2057,6 +2057,8 @@ const SingleEmployee = ({ user }) => {
                         : currentMode === "dark"
                         ? "bg-[#1C1C1C]"
                         : "bg-[#EEEEEE]"
+                    } ${
+                      currentMode === "dark" ? "text-white" : "text-dark"
                     } col-span-10 p-5 rounded-xl shadow-sm`}
                   >
                     <EmployeeCalendar
