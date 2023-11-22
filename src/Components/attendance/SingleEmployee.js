@@ -1639,12 +1639,14 @@ const SingleEmployee = ({ user }) => {
   }, [pageState.page, selectedMonth]);
 
   useEffect(() => {
-    let sum = 0; 
-    empData?.forEach(day => {
-      sum += (calculateExtraMins(day) > 0 ? calculateExtraMins(day) : 0);
-    }) 
-    setTotalExtraMins(sum);
-  }, []);
+    if(empData?.length){
+      let sum = 0; 
+      empData?.forEach(day => {
+        sum += (calculateExtraMins(day) > 0 ? calculateExtraMins(day) : 0);
+      }) 
+      setTotalExtraMins(sum);
+    }
+  }, [empData]);
 
   return (
     <>
