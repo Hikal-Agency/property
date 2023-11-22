@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
 import usePermission from "../../utils/usePermission";
-import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
+import { Avatar, Box, IconButton, Tab, Tabs, Tooltip } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { MdModeEdit, MdMoneyOff, MdPendingActions } from "react-icons/md";
 import { TfiCheck, TfiClose } from "react-icons/tfi";
@@ -15,6 +15,8 @@ import { Select, MenuItem } from "@mui/material";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { FaCheck } from "react-icons/fa";
+import { AiOutlineTable } from "react-icons/ai";
+import { FaCalendarAlt } from "react-icons/fa";
 
 import moment from "moment";
 import {
@@ -54,6 +56,11 @@ const SingleEmployee = ({ user }) => {
 
   const [loading, setloading] = useState(true);
   const [salaryCalc, setSalaryCalc] = useState({});
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(value === 0 ? 1 : 0);
+  };
 
   const token = localStorage.getItem("auth-token");
 
@@ -1656,6 +1663,46 @@ const SingleEmployee = ({ user }) => {
                     />
                   </IconButton>
                 </Tooltip> */}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiTabs-indicator": {
+                      // height: "20%",
+                      borderRadius: "5px",
+                    },
+                    "& .Mui-selected": {
+                      color: "white !important",
+                      zIndex: "1",
+                    },
+                  }}
+                  className={`rounded-md overflow-hidden`}
+                >
+                  <Tabs value={value} onClick={handleChange} variant="standard">
+                    <Tab
+                      icon={
+                        <AiOutlineTable
+                          size={20}
+                          style={{
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        />
+                      }
+                    />
+                    <Tab
+                      icon={
+                        <FaCalendarAlt
+                          size={20}
+                          style={{
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        />
+                      }
+                    />
+                  </Tabs>
+                </Box>
+
                 <Tooltip title="Export Attendance Logs" arrow>
                   <IconButton
                     className={`p-1 disabled:opacity-50 disabled:cursor-not-allowed`}
@@ -1697,13 +1744,14 @@ const SingleEmployee = ({ user }) => {
             </Box>
 
             {/* SALARY CALC & TABLE  */}
-            <div className="my-5 mb-10">
+            <div className="flex flex-col md:flex-row my-5 mb-10 ">
               <div
-                className={`grid grid-cols-1 md:grid-cols-12 gap-3  ${
+                // className={`grid grid-cols-1 md:grid-cols-12 gap-3  ${
+                className={`md:col-span-6 gap-3  ${
                   currentMode === "dark" ? "text-[#EEEEEE]" : "text-black"
                 }`}
               >
-                <div className="col-span-2 px-2 pb-2 text-sm h-fit">
+                <div className=" px-2 pb-2 text-sm h-fit">
                   <div
                     className={`${
                       !themeBgImg
@@ -1917,7 +1965,7 @@ const SingleEmployee = ({ user }) => {
                 </div>
 
                 {/* section 2 */}
-                <div
+                {/* <div
                   className={`${
                     themeBgImg
                       ? currentMode === "dark"
@@ -1929,10 +1977,97 @@ const SingleEmployee = ({ user }) => {
                   } col-span-10 p-5 rounded-xl shadow-sm`}
                 >
                   <EmployeeCalendar isOffDay={isOffDay} pageState={pageState} />
-                </div>
+                </div> */}
               </div>
 
-              <div className="w-full my-5">
+              <div className="md:col-span-6 w-full mt-3 pb-3">
+                <TabPanel value={value} index={0}>
+                  <div className="w-full my-5">
+                    <Box
+                      width={"100%"}
+                      height={"100%"}
+                      className={`single-emp ${currentMode}-mode-datatable `}
+                      sx={{ ...DataGridStyles, paddingLeft: "5px" }}
+                    >
+                      <DataGrid
+                        disableDensitySelector
+                        autoHeight
+                        disableSelectionOnClick
+                        rows={pageState.data}
+                        columns={columns}
+                        loading={pageState.isLoading}
+                        rowsPerPageOptions={[]}
+                        pagination
+                        componentsProps={{
+                          toolbar: {
+                            showQuickFilter: false,
+                            printOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
+                            csvOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
+                          },
+                        }}
+                        width="auto"
+                        paginationMode="server"
+                        page={pageState.page - 1}
+                        pageSize={pageState.pageSize}
+                        sx={{
+                          boxShadow: 2,
+                          "& .MuiDataGrid-cell:hover": {
+                            cursor: "pointer",
+                          },
+                        }}
+                        getRowClassName={(params) =>
+                          params.indexRelativeToCurrentPage % 2 === 0
+                            ? "even"
+                            : "odd"
+                        }
+                        onPageChange={(newPage) => {
+                          setpageState((old) => ({
+                            ...old,
+                            page: newPage + 1,
+                          }));
+                        }}
+                        onPageSizeChange={(newPageSize) =>
+                          setpageState((old) => ({
+                            ...old,
+                            pageSize: newPageSize,
+                          }))
+                        }
+                      />
+                    </Box>
+                    {showDailogue && (
+                      <SalaryDeductDailogue
+                        showDailogue={showDailogue}
+                        setDialogue={setDialogue}
+                        FetchAttendance={FetchAttendance}
+                      />
+                    )}
+                  </div>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <div
+                    className={`${
+                      themeBgImg
+                        ? currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light"
+                        : currentMode === "dark"
+                        ? "bg-[#1C1C1C]"
+                        : "bg-[#EEEEEE]"
+                    } col-span-10 p-5 rounded-xl shadow-sm`}
+                  >
+                    <EmployeeCalendar
+                      isOffDay={isOffDay}
+                      pageState={pageState}
+                    />
+                  </div>
+                </TabPanel>
+              </div>
+
+              {/* <div className="w-full my-5">
                 <Box
                   width={"100%"}
                   height={"100%"}
@@ -1995,7 +2130,7 @@ const SingleEmployee = ({ user }) => {
                     FetchAttendance={FetchAttendance}
                   />
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -2016,6 +2151,10 @@ const SingleEmployee = ({ user }) => {
       )}
     </>
   );
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return <div>{value === index && <div>{children}</div>}</div>;
+  }
 };
 
 export default SingleEmployee;
