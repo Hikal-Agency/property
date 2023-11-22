@@ -10,6 +10,7 @@ import {
     BsTwitter,
     BsYoutube,
     BsFacebook,
+    BsInstagram,
     BsSnapchat,
     BsTiktok,
     BsMegaphone,
@@ -73,6 +74,12 @@ const SourceAnimation = () => {
             "Campaign Facebook": {
                 icon: <BsFacebook size={20} color={"white"} />,
                 bg: "#0e82e1",
+            }
+        },
+        {
+            "Campaign Instagram": {
+                icon: <BsInstagram size={20} color={"white"} />,
+                bg: "#be238d",
             }
         },
         {
