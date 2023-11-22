@@ -147,7 +147,7 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
     <>
     <div
       onClick={(e) => {
-        if(!e.target.closest(".MuiButtonBase-root")) {
+        if(!e.target.closest(".btn")) {
         setIPLeadsModalOpen(true);
         }
       }}
@@ -171,7 +171,7 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
                   <div className="flex items-center">
                     <Tooltip title="Approve" arrow>
                       <button
-                        className="rounded-full bg-[#4CAF50] text-white p-1.5 mx-1"
+                        className="btn rounded-full bg-[#4CAF50] text-white p-1.5 mx-1"
                         onClick={() => handleBlock(ip)}
                       >
                         <RxCheck size={16} />
@@ -180,7 +180,7 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
 
                     <Tooltip title="Reject" arrow>
                       <button
-                        className="rounded-full bg-[#DC2626] text-white p-1.5 mx-1"
+                        className="btn rounded-full bg-[#DC2626] text-white p-1.5 mx-1"
                         onClick={() => handleReject(ip)}
                       >
                         <RxCross2 size={16} />
@@ -191,7 +191,7 @@ const IPCard = ({ ip, isRequest, isRejected, fetchBlockedIPs }) => {
                   <Tooltip title="Unblock IP" arrow>
                     <button
                       onClick={() => handleUnblock(ip)}
-                      className="rounded-full bg-primary text-white p-1.5"
+                      className="btn rounded-full bg-primary text-white p-1.5"
                     >
                       <CgUnblock size={16} />
                     </button>

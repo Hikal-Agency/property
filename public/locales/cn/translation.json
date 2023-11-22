@@ -768,5 +768,6 @@
     "menu_hikal_meet": "希卡尔见面会",
     "generate_report": "生成考勤报告",
     "generate_report_btn": "生成报告",
-    "report_month": "选择月份"
+    "report_month": "选择月份",
+    "mark_attendance": "标记出席"
 }

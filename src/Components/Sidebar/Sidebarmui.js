@@ -28,6 +28,7 @@ import { MdContactPage } from "react-icons/md";
 
 import {
   BsStopCircle,
+  BsCheck2Circle,
   BsCalendarWeek,
   BsCashStack,
   BsFileEarmarkBarGraph,
@@ -747,6 +748,7 @@ const Sidebarmui = () => {
             {
               name: t("menu_live_call"),
               pro: false,
+              count: sidebarData?.UNASSIGNED?.live,
               link: "/unassigned/liveleads",
             },
           ],
@@ -1389,7 +1391,7 @@ const Sidebarmui = () => {
         },
         {
           name: t("mark_attendance"),
-          icon: <FaCheck size={16} />,
+          icon: <BsCheck2Circle size={16} />,
           pro: true,
           link: "/attendance",
         },
