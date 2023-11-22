@@ -57,6 +57,28 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [error, setError] = useState(false);
+  const [devData, setDevData] = useState({
+    developerName: null,
+    founder: null,
+    ceo: null,
+    developerContact: null,
+    developerEmail: null,
+    address: null,
+    rm_name: null,
+    rm_contact: null,
+    rm_email: null,
+    addedBy: null,
+  });
+
+  const handleChange = (e) => {
+    const data = e.target.value;
+    const name = e.target.name;
+
+    setDevData((prev) => ({
+      ...prev,
+      [name]: data,
+    }));
+  };
 
   const [isClosing, setIsClosing] = useState(false);
   const handleEmail = (e) => {
@@ -243,6 +265,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                             </h4>{" "}
                             <TextField
                               id="LeadEmailAddress"
+                              name="developerName"
                               type={"text"}
                               label={t("form_developer_name")}
                               className="w-full"
@@ -259,6 +282,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                               id="notes"
                               type={"text"}
                               label={t("form_developer_founder")}
+                              name="founder"
                               className="w-full"
                               sx={{
                                 "&": {
@@ -273,6 +297,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                             <TextField
                               id="Manager"
                               type="text"
+                              name="ceo"
                               label={t("form_developer_ceo")}
                               className="w-full"
                               sx={{
@@ -281,7 +306,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                                   currentMode === "dark"
                                     ? "#ffffff"
                                     : "#000000",
-                                pointerEvents: "none",
+                                // pointerEvents: "none",
                               }}
                               variant="outlined"
                               size="small"
@@ -303,6 +328,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                             <TextField
                               id="Project"
                               type={"text"}
+                              name="developerContact"
                               label={t("form_developer_contact")}
                               className="w-full"
                               sx={{
@@ -317,6 +343,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                             <TextField
                               id="Project"
                               type={"text"}
+                              name="developerEmail"
                               label={t("form_developer_email")}
                               className="w-full"
                               sx={{
@@ -332,6 +359,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                             <TextField
                               id="LeadEmailAddress"
                               type={"email"}
+                              name="address"
                               label={t("form_developer_emailAddress")}
                               className="w-full"
                               sx={{
@@ -359,6 +387,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                             <TextField
                               id="LeadName"
                               type={"text"}
+                              name="rm_name"
                               label={t("form_developer_fullName")}
                               className="w-full"
                               sx={{
@@ -368,7 +397,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                               }}
                               variant="outlined"
                               size="small"
-                              required
+                              // required
                             />
 
                             {error && (
@@ -380,6 +409,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                               id="LeadEmailAddress"
                               type={"email"}
                               label={t("form_developer_emailAddress")}
+                              name="rm_email"
                               className="w-full"
                               sx={{
                                 "&": {
@@ -392,8 +422,9 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
 
                             <TextField
                               id="LeadEmailAddress"
-                              type={"email"}
+                              type={"text"}
                               label={t("form_developer_contactNumber")}
+                              name="rm_contact"
                               className="w-full"
                               sx={{
                                 "&": {
