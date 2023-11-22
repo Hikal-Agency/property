@@ -34,7 +34,7 @@ const PropertyPortfolio = () => {
         },
       })
       .then((result) => {
-        setDevProData(result.data);
+        setDevProData(result.data?.data?.developers);
       })
       .catch((err) => {
 
