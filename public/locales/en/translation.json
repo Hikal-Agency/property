@@ -783,6 +783,7 @@
     "form_developer_email":"Developer Email",
     "form_developer_fullName":"Full Name",
     "form_developer_emailAddress":"Email Address",
+    "form_developer_address":"Address",
     "form_developer_contactNumber":"Contact Number",
     "add_project_modal":"Add Project",
     "submit_project_btn":"Add Project",
