@@ -25,9 +25,9 @@ const PropertyPortfolio = () => {
   const [openAddProject, setOpenAddProject] = useState(false);
   const [openModal, setOpenModal] = useState({ open: false });
 
-  const handleOpenModal = (data) => {
+  const handleOpenModal = (data, developer) => {
     console.log("open modal clicked:::::::::::::::");
-    setOpenModal({ open: true, project: data });
+    setOpenModal({ open: true, project: data, developer: developer });
   };
 
   const FetchProperty = async (token) => {
@@ -131,7 +131,9 @@ const PropertyPortfolio = () => {
                             >
                               <div
                                 className="p-4 cursor-pointer"
-                                onClick={(e) => handleOpenModal(project)}
+                                onClick={(e) =>
+                                  handleOpenModal(project, developer)
+                                }
                               >
                                 <div className="uppercase font-semibold mb-3 flex justify-between items-center">
                                   <div>{project?.projectName}</div>

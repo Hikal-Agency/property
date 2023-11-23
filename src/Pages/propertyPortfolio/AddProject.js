@@ -57,6 +57,12 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
     themeBgImg,
   } = useStateContext();
 
+  const [projectData, setprojectData] = useState({
+    projectName: null,
+    developer_id: null,
+    price: null,
+  });
+
   const { hasPermission } = usePermission();
 
   const [open, setOpen] = useState(false);

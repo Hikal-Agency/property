@@ -399,7 +399,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                                   }`}
                                   className="mr-2"
                                 />
-                                {listData?.addedBy_name}
+                                {openModal?.developer?.developerName}
                               </p>
                             </div>
                           </div>
