@@ -20,6 +20,7 @@ import {
     BsYoutube,
     BsTiktok,
     BsSnapchat,
+    BsInstagram,
     BsFacebook
 } from "react-icons/bs";
 import { 
@@ -64,6 +65,12 @@ const SourceCounter = () => {
             "Campaign Facebook": {
                 icon: <BsFacebook size={16} color={"white"} />,
                 bg: "#0e82e1",
+            }
+        },
+        {
+            "Campaign Instagram": {
+                icon: <BsInstagram size={16} color={"white"} />,
+                bg: "#B134AF",
             }
         },
         {

@@ -69,6 +69,7 @@ import {
   BsChatLeftText,
   BsGlobe2,
   BsFacebook,
+  BsInstagram,
   BsArchive
 } from "react-icons/bs";
 import { 
@@ -515,31 +516,34 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
         const sourceIcons = {
-          "campaign snapchat": () => (
-            <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
-          ),
+          // "campaign snapchat": () => (
+          //   <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
+          // ),
 
-          "campaign facebook": () => (
-            <BsFacebook size={16} color={"#0e82e1"} className="p-1" />
-          ),
+          // "campaign facebook": () => (
+          //   <BsFacebook size={16} color={"#0e82e1"} className="p-1" />
+          // ),
 
-          "campaign tiktok": () => (
-            <BsTiktok
-              size={16}
-              color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-              className="p-1"
-            />
-          ),
+          // "campaign tiktok": () => (
+          //   <BsTiktok
+          //     size={16}
+          //     color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+          //     className="p-1"
+          //   />
+          // ),
+          // "campaign instagram": () => (
+          //   <BsInstagram size={16} color={"#B134AF"} className="p-1" />
+          // ),
 
-          "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
+          // "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
 
-          "campaign youtube": () => (
-            <BsYoutube size={16} color={"#FF0000"} className="p-1" />
-          ),
+          // "campaign youtube": () => (
+          //   <BsYoutube size={16} color={"#FF0000"} className="p-1" />
+          // ),
 
-          "campaign twitter": () => (
-            <BsTwitter size={16} color={"#00acee"} className="p-1" />
-          ),
+          // "campaign twitter": () => (
+          //   <BsTwitter size={16} color={"#00acee"} className="p-1" />
+          // ),
 
           "bulk import": () => (
             <BsDownload size={16} color={primaryColor} className="p-1" />
@@ -553,7 +557,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             <BsMegaphone size={16} color={"#696969"} className="p-0.5" />
           ),
 
-          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
+          cold: () => (
+            <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />
+          ),
 
           personal: () => (
             <BsPersonRolodex size={16} color={"#6C7A89"} className="p-1" />
@@ -574,17 +580,102 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           comment: () => (
             <BsChatLeftText size={16} color={"#a9b3c6"} className="p-0.5" />
           ),
-
           website: () => (
             <BsGlobe2 size={16} color={"#AED6F1"} className="p-0.5" />
           ),
-
-          self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
+          self: () => (
+            <FaUser size={16} color={"#6C7A89"} className="p-0.5" />
+          ),
         };
         return (
           <>
             <div className="flex items-center justify-center">
-              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+              {cellValues.row.leadSource?.toLowerCase().includes("instagram") ? (
+                // INSTAGRAM 
+                <BsInstagram
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#B134AF"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // FACEBOOK 
+                <BsFacebook
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#0e82e1"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // TIKTOK 
+                <BsTiktok
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={currentMode === "dark" ? "#FFFFFF" : "#000000"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // SNAPCHAT 
+                <FaSnapchatGhost
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#f6d80a"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // GOOGLEADS 
+                <FcGoogle
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  // color={"#f6d80a"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // YOUTUBE 
+                <BsYoutube
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#FF0000"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // TWITTER 
+                <BsTwitter
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#00acee"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+                // WARM 
                 <BsArchive
                   style={{
                     width: "50%",

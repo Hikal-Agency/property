@@ -721,15 +721,16 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                         {t("label_language")}
                         <span className="ml-1 text-primary">*</span>
                       </MenuItem>
-                      <MenuItem value={"Arabic"}>Arabic</MenuItem>
                       <MenuItem value={"English"}>English</MenuItem>
-                      <MenuItem value={"Farsi"}>Farsi</MenuItem>
-                      <MenuItem value={"French"}>French</MenuItem>
-                      <MenuItem value={"Hindi"}>Hindi</MenuItem>
-                      <MenuItem value={"Russian"}>Russian</MenuItem>
-                      <MenuItem value={"Hebrew"}>Hebrew</MenuItem>
-                      <MenuItem value={"Spanish"}>Spanish</MenuItem>
-                      <MenuItem value={"Urdu"}>Urdu</MenuItem>
+                      <MenuItem value={"Arabic"} style={{ fontFamily: "Noto Kufi Arabic" }}>عربي <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Arabic)</span></MenuItem>
+                      <MenuItem value={"Chinese"} style={{ fontFamily: "Noto Sans TC" }}>中国人 <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Chinese)</span></MenuItem>
+                      <MenuItem value={"Farsi"} style={{ fontFamily: "Noto Kufi Arabic" }}>فارسی <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Farsi/Persian)</span></MenuItem>
+                      <MenuItem value={"French"}>Français <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(French)</span></MenuItem>
+                      <MenuItem value={"Hebrew"} style={{ fontFamily: "Noto Sans Hebrew" }}>עִברִית <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Hebrew)</span></MenuItem>
+                      <MenuItem value={"Hindi"}>हिंदी <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Hindi)</span></MenuItem>
+                      <MenuItem value={"Russian"}>Русский <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Russian)</span></MenuItem>
+                      <MenuItem value={"Spanish"}>Español <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Spanish)</span></MenuItem>
+                      <MenuItem value={"Urdu"} style={{ fontFamily: "Noto Kufi Arabic" }}>اردو <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Urdu)</span></MenuItem>
                     </TextField>
 
                     {!noSourceDropdown &&
@@ -756,6 +757,9 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       </MenuItem>
                       <MenuItem value={"Campaign Facebook"}>
                         {t("source_facebook")} Campaign
+                      </MenuItem>
+                      <MenuItem value={"Campaign Instagram"}>
+                        {t("source_instagram")} Campaign
                       </MenuItem>
                       <MenuItem value={"Campaign Snapchat"}>
                       {t("source_snapchat")}  Campaign

@@ -60,6 +60,21 @@ const RenderFeedback = ({ cellValues }) => {
   console.log("meeting address text: ", meetingLocation);
 
   const SelectStyles = {
+    // "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
+    //   {
+    //     color: currentMode === "dark" ? "white" : "black",
+    //     // borderColor: currentMode === "dark" ? "white" : "black",
+    //     fontSize: "12px",
+    //     fontWeight: "400",
+    //     // borderLeft: currentMode === "dark" ? "1px solid white" : "1px solid black",
+    //     // borderRight: currentMode === "dark" ? "1px solid white" : "1px solid black",
+    //     border: "none",
+    //   },
+    // "& .MuiOutlinedInput-notchedOutline": {
+    //   // borderColor: currentMode === "dark" ? "white" : "black",
+    //   border: "none",
+    // },
+
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
       {
         color: currentMode === "dark" ? "white" : "black",
