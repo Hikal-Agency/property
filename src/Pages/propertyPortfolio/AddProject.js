@@ -61,6 +61,16 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
     projectName: null,
     developer_id: null,
     price: null,
+    projectLocation: null,
+    area: null,
+    tourLink: null,
+    projectStatus: null,
+    bedrooms: null,
+    city: null,
+    country: null,
+    latLong: null,
+    location: null,
+    addedBy: User?.id,
   });
 
   const { hasPermission } = usePermission();
@@ -77,6 +87,8 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
   });
 
   const [isClosing, setIsClosing] = useState(false);
+
+  const handleChange = () => {};
   // const handleEmail = (e) => {
   //   setEmailError(false);
   //   const value = e.target.value;
@@ -262,6 +274,9 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               id="LeadEmailAddress"
                               type={"text"}
                               label={t("form_developer_name")}
+                              value={projectData?.projectName}
+                              name="projectName"
+                              onChange={handleChange}
                               className="w-full"
                               sx={{
                                 "&": {
@@ -280,10 +295,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                                   marginBottom: "1.25rem !important",
                                 },
                               }}
-                              // value={Manager}
-                              disabled={User?.role === 3 && true}
                               label={t("form_developer_name")}
-                              // onChange={ChangeManager}
                               size="small"
                               className="w-full"
                               displayEmpty
@@ -300,6 +312,9 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               type="number"
                               label={t("form_project_priceRange")}
                               className="w-full"
+                              value={projectData?.price}
+                              name="price"
+                              onChange={handleChange}
                               sx={{
                                 marginBottom: "1.25rem !important",
                                 color:
@@ -337,7 +352,9 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               }}
                               variant="outlined"
                               size="small"
-                              //   value={LeadProject}
+                              value={projectData?.location}
+                              name="location"
+                              onChange={handleChange}
                             />
                             <TextField
                               id="Project"
@@ -351,7 +368,9 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               }}
                               variant="outlined"
                               size="small"
-                              //   value={LeadProject}
+                              value={projectData?.area}
+                              name="area"
+                              onChange={handleChange}
                             />
 
                             <TextField
@@ -366,6 +385,9 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               }}
                               variant="outlined"
                               size="small"
+                              value={projectData?.tourLink}
+                              name="tourLink"
+                              onChange={handleChange}
                             />
                           </Box>
                         </div>
@@ -389,12 +411,12 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                                   marginBottom: "1.25rem !important",
                                 },
                               }}
-                              // value={Manager}
-                              disabled={User?.role === 3 && true}
                               label={t("form_project_status")}
-                              // onChange={ChangeManager}
                               size="small"
                               className="w-full"
+                              value={projectData?.projectStatus}
+                              name="projectStatus"
+                              onChange={handleChange}
                               displayEmpty
                               required
                             >
@@ -409,7 +431,6 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                                 </FormLabel>
                                 <RadioGroup
                                   aria-labelledby="demo-radio-buttons-group-label"
-                                  // defaultValue="female"
                                   name="radio-buttons-group"
                                 >
                                   <div className="flex justify-between">
@@ -480,46 +501,6 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                                   </div>
                                 </RadioGroup>
                               </FormControl>
-
-                              {/* <FormControl>
-                                <RadioGroup
-                                  aria-labelledby="demo-radio-buttons-group-label"
-                                  // defaultValue="female"
-                                  name="radio-buttons-group"
-                                  required
-                                >
-                                  <FormControlLabel
-                                    value="sixbedroom"
-                                    control={<Radio />}
-                                    label="Six Bedroom"
-                                  />
-                                  <FormControlLabel
-                                    value="sevenbedroom"
-                                    control={<Radio />}
-                                    label="Seven Bedrooms"
-                                  />
-                                  <FormControlLabel
-                                    value="eightbedroom"
-                                    control={<Radio />}
-                                    label="Eight Bedrooms"
-                                  />
-                                  <FormControlLabel
-                                    value="ninebedroom"
-                                    control={<Radio />}
-                                    label="Nine Bedrooms"
-                                  />
-                                  <FormControlLabel
-                                    value="tenbedroom"
-                                    control={<Radio />}
-                                    label="Ten Bedrooms"
-                                  />
-                                  <FormControlLabel
-                                    value="retail"
-                                    control={<Radio />}
-                                    label="Retail"
-                                  />
-                                </RadioGroup>
-                              </FormControl> */}
                             </div>
                           </Box>
                         </div>
