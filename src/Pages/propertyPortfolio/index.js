@@ -6,6 +6,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaBed } from "react-icons/fa";
+import { FaMoneyBill } from "react-icons/fa";
 
 import { Md360 } from "react-icons/md";
 import { FaCheck, FaMinus } from "react-icons/fa";
@@ -103,11 +104,11 @@ const PropertyPortfolio = () => {
                     } w-full p-4 space-y-5`}
                   >
                     <div className="font-semibold text-white text-center w-full bg-primary p-2 uppercase rounded-lg shadow-sm">
-                      {developer.developer}
+                      {developer.developerName}
                     </div>
-                    {developer?.projects.length > 0 ? (
+                    {developer?.projects?.length > 0 ? (
                       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                        {developer?.projects.map((project) => {
+                        {developer?.projects?.map((project) => {
                           return (
                             <div
                               className={`${
@@ -120,7 +121,7 @@ const PropertyPortfolio = () => {
                                   : "blur-bg-light"
                               } card-hover w-full h-full rounded-md space-y-1 border-t-2
                                 ${
-                                  project.projectStatus === "Available"
+                                  project?.projectStatus === "Available"
                                     ? "border-green-600"
                                     : project.projectStatus === "Sold Out"
                                     ? "border-red-600"
@@ -133,7 +134,7 @@ const PropertyPortfolio = () => {
                                 onClick={(e) => handleOpenModal(project)}
                               >
                                 <div className="uppercase font-semibold mb-3 flex justify-between items-center">
-                                  <div>{project.project}</div>
+                                  <div>{project?.projectName}</div>
                                   <div className="flex">
                                     <div
                                       className={`
@@ -273,12 +274,17 @@ const PropertyPortfolio = () => {
                                   />
 
                                   <BedInfo
-                                    value={project.onebed}
+                                    value={project.bedrooms}
                                     label="enquiry_1bed"
                                     t={t}
                                   />
-
                                   <BedInfo
+                                    value={project.retail}
+                                    label="enquiry_retail"
+                                    t={t}
+                                  />
+
+                                  {/* <BedInfo
                                     value={project.twobed}
                                     label="enquiry_2bed"
                                     t={t}
@@ -306,28 +312,19 @@ const PropertyPortfolio = () => {
                                     value={project.sixbed}
                                     label="enquiry_6bed"
                                     t={t}
-                                  />
-                                  <BedInfo
-                                    value={project.retail}
-                                    label="enquiry_retail"
-                                    t={t}
-                                  />
+                                  /> */}
                                 </div>
-                                {/* <div className="flex items-center gap-3 my-2">
-                                  {project.retail === 1 ? (
-                                    <FaCheck
+                                <div className="flex items-center">
+                                  <div className="my-3 mr-3">
+                                    <FaMoneyBill
                                       size={14}
                                       className="text-green-600"
                                     />
-                                  ) : (
-                                    <FaMinus
-                                      size={14}
-                                      className="text-red-600"
-                                    />
-                                  )}
-                                  <p>{t("enquiry_retail")}</p>
-                                </div> */}
-                                {project.tour360 === 1 ? (
+                                  </div>
+                                  {project?.price}
+                                </div>
+
+                                {project?.tour360 === 1 ? (
                                   <div className="flex items-center justify-end gap-3 text-white text-sm">
                                     <button
                                       onClick={() =>
