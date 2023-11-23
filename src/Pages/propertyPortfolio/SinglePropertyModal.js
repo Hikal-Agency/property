@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Tooltip, IconButton, Modal, Backdrop } from "@mui/material";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
@@ -32,7 +32,7 @@ import { FaMoneyBillWave } from "react-icons/fa";
 const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
   console.log("single property data::: ", openModal);
   let project = openModal?.project;
-  const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(false);
   const [listData, setListingData] = useState({});
   const [openEdit, setOpenEdit] = useState(false);
   const [leadNotFound, setLeadNotFound] = useState(false);
@@ -127,7 +127,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
 
   useEffect(() => {
     setopenBackDrop(false);
-    fetchSingleListing(lid);
+    // fetchSingleListing(lid);
   }, []);
 
   const mapContainerStyle = {
@@ -141,7 +141,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
     mapTypeControl: true,
   };
 
-  const latLongString = listData?.latlong;
+  const latLongString = project?.latlong;
   if (latLongString) {
     const [latValue, longValue] = latLongString.split(",");
     lat = latValue;
@@ -228,11 +228,11 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {project?.project}
+                        {project?.projectName}
                       </h1>
                     </div>
                     <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
-                      {listData?.images?.map((pic) =>
+                      {project?.images?.map((pic) =>
                         pic?.img_url ? (
                           <img
                             onClick={() =>
@@ -262,7 +262,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                         <div className="w-full p-1">
                           <div className="flex items-center">
                             <div className="bg-primary rounded-lg text-white p-2 mr-2 font-semibold">
-                              {listData?.price}
+                              {/* {project?.price} */}
                             </div>
                             <h1
                               className={`text-lg font-bold mr-2 ${
@@ -271,7 +271,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                                   : "text-black"
                               }`}
                               style={{
-                                fontFamily: isArabic(listData?.project)
+                                fontFamily: isArabic(project?.projectName)
                                   ? "Noto Kufi Arabic"
                                   : "inherit",
                               }}
@@ -324,9 +324,17 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
 
                             <div className="mx-1"></div>
 
-                            <div className="border border-primary p-2 font-semibold rounded-md shadow-sm">
-                              {listData?.listing_type}
-                            </div>
+                            {project?.tourlink && (
+                              <div className="border border-primary p-2 font-semibold rounded-md shadow-sm cursor-pointer">
+                                <a
+                                  href={project?.tourlink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  360 view
+                                </a>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -342,7 +350,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{listData?.address} </h6>
+                            <h6>{project?.projectLocation} </h6>
                           </div>
                           {/* Bedrooms  */}
                           <div className="flex space-x-3">
@@ -354,12 +362,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{listData?.bedrooms}</h6>
-                            <h6>
-                              {listData?.property_type === "null"
-                                ? "-"
-                                : listData?.property_type}
-                            </h6>
+                            <h6>{project?.bedrooms}</h6>
                           </div>
                           {/* baths  */}
                           <div className="flex space-x-3">
@@ -372,15 +375,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                               }`}
                             />
                             <h6>
-                              {listData?.bathrooms === "null"
-                                ? "-"
-                                : listData?.bathrooms}
-                            </h6>
-
-                            <h6>
-                              {listData?.leadFor === "null"
-                                ? "-"
-                                : listData?.leadFor}
+                              {project?.price === "null" ? "-" : project?.price}
                             </h6>
                           </div>
                         </div>
@@ -389,8 +384,8 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                           <div className="flex items-end justify-end h-full w-full">
                             <div className="text-right">
                               <p className="text-sm my-2">
-                                Listing added on{" "}
-                                {moment(listData?.created_at).format(
+                                Project added on{" "}
+                                {moment(project?.created_at).format(
                                   "YYYY-MM-DD HH:MM"
                                 )}
                               </p>
@@ -414,7 +409,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
 
                     {/* IN MAP  */}
 
-                    {listData?.latlong === null || listData?.latlong === "" ? (
+                    {project?.latlong === null || project?.latlong === "" ? (
                       <></>
                     ) : (
                       <div className="w-full my-5 h-[50vh] border border-primary">
@@ -452,7 +447,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
 
                     {/* <div className="bg-primary h-0.5 w-full my-5"></div> */}
 
-                    {(listData?.addedBy === User?.id ||
+                    {(project?.addedBy === User?.id ||
                       hasPermission("seller_details") ||
                       User.role === 1) && (
                       <div
@@ -486,7 +481,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                               </div>
 
                               <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                                {listData?.documents?.map((l) => {
+                                {project?.documents?.map((l) => {
                                   return l?.doc_url ? (
                                     // <div
                                     //   onClick={() =>
