@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import ReactConfetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import moment from "moment";
+import { FaCheck } from "react-icons/fa";
 
 import axios from "../../axoisConfig";
 import ringtone from "../../assets/new-message-ringtone.mp3";
@@ -27,6 +28,7 @@ import { MdContactPage } from "react-icons/md";
 
 import {
   BsStopCircle,
+  BsCheck2Circle,
   BsCalendarWeek,
   BsCashStack,
   BsFileEarmarkBarGraph,
@@ -746,6 +748,7 @@ const Sidebarmui = () => {
             {
               name: t("menu_live_call"),
               pro: false,
+              count: sidebarData?.UNASSIGNED?.live,
               link: "/unassigned/liveleads",
             },
           ],
@@ -1385,6 +1388,12 @@ const Sidebarmui = () => {
           icon: <BsPerson size={16} />,
           pro: true,
           link: "/attendance_self",
+        },
+        {
+          name: t("mark_attendance"),
+          icon: <BsCheck2Circle size={16} />,
+          pro: true,
+          link: "/attendance",
         },
       ],
     },

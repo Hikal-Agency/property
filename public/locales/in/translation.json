@@ -366,6 +366,7 @@
     "purpose_investment": "निवेश",
     "purpose_end_user": "अंत उपयोगकर्ता",
     "source_facebook": "फेसबुक",
+    "source_instagram": "इन्स्तग्रम",
     "source_snapchat": "स्नैपचैट",
     "source_tiktok": "टिकटॉक",
     "source_googleads": "गूगल विज्ञापन",
@@ -769,5 +770,6 @@
     "menu_hikal_meet": "हिकल मीट",
     "generate_report": "उपस्थिति रिपोर्ट बनाएं",
     "generate_report_btn": "रिपोर्ट बनाएं",
-    "report_month": "महीना चुनें"
+    "report_month": "महीना चुनें",
+    "mark_attendance": "उपस्थिति चिह्नित करें"
 }

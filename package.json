@@ -116,5 +116,9 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.2.6"
+  },
+  "overrides": {
+    "react-refresh": "0.11.0"
   }
 }
+

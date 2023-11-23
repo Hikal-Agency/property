@@ -1,43 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
 import moment from "moment";
 import {
   Backdrop,
   CircularProgress,
   Modal,
-  TextField,
-  Button,
-  Tooltip,
-  Drawer,
-  Select,
-  MenuItem,
-  Box,
+  TextField, Box
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
-import { datetimeLong } from "../_elements/formatDateTime";
 import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
-import AddNewListingModal from "../Listings/AddNewListingModal";
 
-import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
-import { IoIosAlert } from "react-icons/io";
+import { VscCallOutgoing, VscMail } from "react-icons/vsc";
 import { MdClose } from "react-icons/md";
-import { BiBlock, BiBed } from "react-icons/bi";
-import {
-  BsShuffle,
-  BsTelephone,
-  BsEnvelopeAt,
-  BsType,
-  BsHouseGear,
-  BsBuildings,
-  BsTrash,
-  BsBuildingGear,
-  BsPersonPlus,
-  BsBookmarkFill,
-  BsPersonGear,
-  BsChatLeftText,
-} from "react-icons/bs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
@@ -62,22 +37,17 @@ const SalaryReport = ({
     currentMode,
     User,
     BACKEND_URL,
-    isArabic,
-    primaryColor,
     t,
     isLangRTL,
     i18n,
   } = useStateContext();
-  const token = localStorage.getItem("auth-token");
 
   const [pdfUrl, setPdfUrl] = useState(null);
 
   const { hasPermission } = usePermission();
   const [AddNoteTxt, setAddNoteTxt] = useState("");
   const [reportDetails, setReportDetails] = useState([]);
-  const [singleLeadData, setsingleLeadData] = useState({});
   const [open, setOpen] = useState(false);
-  const [requestBtnLoading, setRequestBtnLoading] = useState(false);
 
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [lastNote, setLastNote] = useState("");
@@ -89,12 +59,6 @@ const SalaryReport = ({
     year: null,
   });
   const [reportMonthValue, setReportMonthValue] = useState("");
-  const [listingModalOpen, setListingModalOpen] = useState(false);
-  const [blockIPModalOpened, setBlockIPModalOpened] = useState({
-    lead: null,
-    isOpened: false,
-  });
-  const handleCloseListingModal = () => setListingModalOpen(false);
 
   console.log("salary report:: ", reportDetails);
 
@@ -583,7 +547,7 @@ const SalaryReport = ({
                       </Select> */}
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          value={reportMonthValue}
+                          value={reportMonthValue || new Date()?.toString()}
                           label={t("report_month")}
                           views={["month", "year"]}
                           onChange={(newValue) => {
@@ -609,6 +573,7 @@ const SalaryReport = ({
                                 year: parseInt(year, 10),
                               });
                             }
+                            console.log("val:",newValue)
 
                             setReportMonthValue(newValue?.$d);
                           }}

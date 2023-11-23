@@ -61,6 +61,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   const fetchNotifications = async (page) => {
     try {
       setLoading(true);
+      
       const url = `${BACKEND_URL}/allnotifications?page=${page}&isRead=0`;
 
       const response = await axios.get(url, {

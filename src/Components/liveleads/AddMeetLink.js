@@ -139,10 +139,10 @@ const AddMeetLink = ({
                 <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} p-3 rounded-xl card-hover w-full my-2`}>
                   <Tooltip title="Go to Meeting" arrow>
                     <button 
-                      className="break-words" 
+                      className="w-full break-words break-all" 
                       onClick={openLink}
                     >
-                      {LeadData?.admin_link}
+                      <span className="min-w-0">{LeadData?.admin_link}</span>
                     </button>
                   </Tooltip>
                 </div>
@@ -151,13 +151,13 @@ const AddMeetLink = ({
                 {t("client_meeting_link")}
                 <br />
                 <div className={`${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"} rounded-xl w-full my-2`}>
-                  <div className="flex justify-between items-center">
-                    <div className="p-3 break-words">
-                      {LeadData?.meet_link}
+                  <div className="grid grid-cols-12 w-full h-full justify-between items-center">
+                    <div className="col-span-10 p-3 w-full h-full break-words break-all">
+                      <span className="min-w-0">{LeadData?.meet_link}</span>
                     </div>
                     <button
                       onClick={copyLink}
-                      className="bg-primary text-white font-semibold p-3 rounded-md card-hover"
+                      className="col-span-2 w-full h-full bg-primary text-white font-semibold p-3 rounded-md card-hover"
                     >
                       {isCopied ? "Link Copied!" : "Copy Link"}
                     </button>

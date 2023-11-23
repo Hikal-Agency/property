@@ -365,6 +365,7 @@
     "purpose_investment": "Investissement",
     "purpose_end_user": "Utilisateur Final",
     "source_facebook": "Facebook",
+    "source_instagram": "Instagram",
     "source_snapchat": "Snapchat",
     "source_tiktok": "TikTok",
     "source_googleads": "GoogleAds",
@@ -768,5 +769,6 @@
     "menu_hikal_meet": "Rencontre Hikal",
     "generate_report": "Générer un rapport de présence",
     "generate_report_btn": "Générer le rapport",
-    "report_month": "Sélectionner le mois"
+    "report_month": "Sélectionner le mois",
+    "mark_attendance": "Marquer la présence"
 }

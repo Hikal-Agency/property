@@ -1,11 +1,6 @@
 import React, { useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import {
-  Card,
-  CardContent,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Card, CardContent, Typography, styled } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 
 const useStyles = styled({
@@ -62,7 +57,6 @@ const SingleTickt = ({ ticketData }) => {
       const reader = new FileReader();
 
       reader.onload = async () => {
-
         const formData = new FormData();
         formData.append("file", file);
 
@@ -106,7 +100,7 @@ const SingleTickt = ({ ticketData }) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
+      <div className="mt-3 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-3">
         <div
           className={`${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-gray-200"
@@ -243,7 +237,6 @@ const SingleTickt = ({ ticketData }) => {
               <b> {t("label_added_by")}: </b> {ticketData?.added_by} <br />
               <b> {t("assigned_to")}: </b> {ticketData?.assigned_to || "No one"}
             </Typography>
-    
           </div>
         </div>
       </div>

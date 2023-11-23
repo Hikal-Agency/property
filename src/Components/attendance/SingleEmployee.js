@@ -7,13 +7,16 @@ import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../Pages/profile/ImagePicker";
 import { DataGrid } from "@mui/x-data-grid";
 import usePermission from "../../utils/usePermission";
-import { Avatar, Box, IconButton, Tooltip } from "@mui/material";
+import { Avatar, Box, IconButton, Tab, Tabs, Tooltip } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import { MdModeEdit, MdMoneyOff, MdPendingActions } from "react-icons/md";
 import { TfiCheck, TfiClose } from "react-icons/tfi";
 import { Select, MenuItem } from "@mui/material";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { FaCheck } from "react-icons/fa";
+import { AiOutlineTable } from "react-icons/ai";
+import { FaCalendarAlt } from "react-icons/fa";
 
 import moment from "moment";
 import {
@@ -25,6 +28,43 @@ import PasswordDialogue from "./PasswordDialogue";
 import { FaDownload } from "react-icons/fa";
 import MyCalendar from "./MyCalendar";
 import EmployeeCalendar from "./EmployeeCalendar";
+
+const calculateExtraMins = (day) => {
+  const defaultCheckInTime = "09:30 AM";
+  const defaultCheckoutTime = "06:30 PM";
+
+  const checkIn = day?.check_datetime;
+  const checkOut = moment(
+    `${checkIn?.slice(0, 10)} ${day?.checkOuts}`,
+    "YYYY-MM-DD hh:mm A"
+  );
+
+  const defaultCheckInDateTime = moment(
+    `${checkIn?.slice(0, 10)} ${defaultCheckInTime}`,
+    "YYYY-MM-DD hh:mm A"
+  );
+  const defaultCheckOutDateTime = moment(
+    `${checkIn?.slice(0, 10)} ${defaultCheckoutTime}`,
+    "YYYY-MM-DD hh:mm A"
+  );
+
+  const actualCheckInDateTime = moment(checkIn, "YYYY-MM-DD HH:mm:ss");
+  const actualCheckOutDateTime = moment(checkOut, "YYYY-MM-DD HH:mm:ss");
+
+  const checkInDuration = moment.duration(
+    defaultCheckInDateTime.diff(actualCheckInDateTime)
+  );
+
+  const checkOutDuration = moment.duration(
+    actualCheckOutDateTime.diff(defaultCheckOutDateTime)
+  );
+
+  const extraCheckInMinutes = checkInDuration.asMinutes();
+  const extraCheckOutMinutes = checkOutDuration.asMinutes();
+
+  const total = Math.floor(extraCheckInMinutes + extraCheckOutMinutes);
+  return total;
+};
 
 const SingleEmployee = ({ user }) => {
   const {
@@ -53,6 +93,11 @@ const SingleEmployee = ({ user }) => {
 
   const [loading, setloading] = useState(true);
   const [salaryCalc, setSalaryCalc] = useState({});
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(value === 0 ? 1 : 0);
+  };
 
   const token = localStorage.getItem("auth-token");
 
@@ -64,6 +109,7 @@ const SingleEmployee = ({ user }) => {
   const [empData, setEmpData] = useState(null);
   const [showDailogue, setDialogue] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState(false);
+  const [totalExtraMins, setTotalExtraMins] = useState(0);
   console.log("cut: ", cut_salary);
 
   console.log("empdata:: ", empData);
@@ -200,41 +246,7 @@ const SingleEmployee = ({ user }) => {
       minWidth: 80,
       flex: 1,
       renderCell: (params) => {
-        console.log("Params:", params);
-        const checkTime = moment(params?.row?.check_datetime).format("HH:mm");
-        const checkoutTime = moment(
-          `${params?.row?.date} ${moment(
-            params?.row?.checkOuts?.split(",")[0],
-            "hh:mm A"
-          ).format("HH:mm:ss")}`
-        ).format("HH:mm");
-        const extraMinutes = moment(checkoutTime, "HH:mm").diff(
-          moment(params?.row?.defaultCheckout || "06:30 PM", "HH:mm"),
-          "minutes"
-        );
-
-        let lateMinutes = moment(checkTime, "HH:mm").diff(
-          moment(params?.row?.default_datetime || "09:30 AM", "HH:mm"),
-          "minutes"
-        );
-
-        if (isNaN(lateMinutes) || isNaN(extraMinutes)) {
-          return "-";
-        } else {
-          let totalMinutes = 0;
-          if (lateMinutes < 0) {
-            totalMinutes += lateMinutes;
-          }
-          if (extraMinutes > 0) {
-            totalMinutes += extraMinutes;
-          }
-
-          if (totalMinutes > 0) {
-            return totalMinutes?.toString()?.slice(1) + " minutes";
-          } else {
-            return "-";
-          }
-        }
+        return calculateExtraMins(params?.row) > 0 ? calculateExtraMins(params?.row) + " minutes" : "-";
       },
     },
 
@@ -1626,6 +1638,16 @@ const SingleEmployee = ({ user }) => {
     // eslint-disable-next-line
   }, [pageState.page, selectedMonth]);
 
+  useEffect(() => {
+    if(empData?.length){
+      let sum = 0; 
+      empData?.forEach(day => {
+        sum += (calculateExtraMins(day) > 0 ? calculateExtraMins(day) : 0);
+      }) 
+      setTotalExtraMins(sum);
+    }
+  }, [empData]);
+
   return (
     <>
       <div className="flex h-screen ">
@@ -1641,6 +1663,60 @@ const SingleEmployee = ({ user }) => {
               }}
             >
               <div className="flex mx-2">
+                {/* <Tooltip title="Mark Attendance" arrow className="mr-3">
+                  <IconButton
+                    className=" text-white"
+                    ripple={true}
+                    size="small"
+                  >
+                    <FaCheck
+                      size={14}
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } hover:text-primary`}
+                    />
+                  </IconButton>
+                </Tooltip> */}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiTabs-indicator": {
+                      // height: "20%",
+                      borderRadius: "5px",
+                    },
+                    "& .Mui-selected": {
+                      color: "white !important",
+                      zIndex: "1",
+                    },
+                  }}
+                  className={`rounded-md overflow-hidden`}
+                >
+                  <Tabs value={value} onClick={handleChange} variant="standard">
+                    <Tab
+                      icon={
+                        <AiOutlineTable
+                          size={20}
+                          style={{
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        />
+                      }
+                    />
+                    <Tab
+                      icon={
+                        <FaCalendarAlt
+                          size={20}
+                          style={{
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
+                          }}
+                        />
+                      }
+                    />
+                  </Tabs>
+                </Box>
+
                 <Tooltip title="Export Attendance Logs" arrow>
                   <IconButton
                     className={`p-1 disabled:opacity-50 disabled:cursor-not-allowed`}
@@ -1682,13 +1758,14 @@ const SingleEmployee = ({ user }) => {
             </Box>
 
             {/* SALARY CALC & TABLE  */}
-            <div className="my-5 mb-10">
+            <div className="flex flex-col md:flex-row my-5 mb-10 ">
               <div
-                className={`grid grid-cols-1 md:grid-cols-12 gap-3  ${
+                // className={`grid grid-cols-1 md:grid-cols-12 gap-3  ${
+                className={`md:col-span-5 gap-3 w-[300px]  ${
                   currentMode === "dark" ? "text-[#EEEEEE]" : "text-black"
                 }`}
               >
-                <div className="col-span-2 px-2 pb-2 text-sm h-fit">
+                <div className=" px-2 pb-2 text-sm h-fit">
                   <div
                     className={`${
                       !themeBgImg
@@ -1824,6 +1901,15 @@ const SingleEmployee = ({ user }) => {
                       <div className="text-center">
                         <div className="flex items-center justify-center">
                           <p className="font-bold pr-2">
+                            {"  "} {totalExtraMins || "0"}
+                          </p>
+                          {"  "}
+                          <h1 className="font-semibold"> Extra minutes</h1>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="flex items-center justify-center">
+                          <p className="font-bold pr-2">
                             {"  "} {salaryCalc?.late_days || "0"}
                           </p>
                           {"  "}
@@ -1902,7 +1988,7 @@ const SingleEmployee = ({ user }) => {
                 </div>
 
                 {/* section 2 */}
-                <div
+                {/* <div
                   className={`${
                     themeBgImg
                       ? currentMode === "dark"
@@ -1914,10 +2000,99 @@ const SingleEmployee = ({ user }) => {
                   } col-span-10 p-5 rounded-xl shadow-sm`}
                 >
                   <EmployeeCalendar isOffDay={isOffDay} pageState={pageState} />
-                </div>
+                </div> */}
               </div>
 
-              <div className="w-full my-5">
+              <div className="md:col-span-8 w-full mt-3 pb-3">
+                <TabPanel value={value} index={0}>
+                  <div className="w-full my-5">
+                    <Box
+                      width={"100%"}
+                      height={"100%"}
+                      className={`single-emp ${currentMode}-mode-datatable `}
+                      sx={{ ...DataGridStyles, paddingLeft: "5px" }}
+                    >
+                      <DataGrid
+                        disableDensitySelector
+                        autoHeight
+                        disableSelectionOnClick
+                        rows={pageState.data}
+                        columns={columns}
+                        loading={pageState.isLoading}
+                        rowsPerPageOptions={[]}
+                        pagination
+                        componentsProps={{
+                          toolbar: {
+                            showQuickFilter: false,
+                            printOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
+                            csvOptions: {
+                              disableToolbarButton: User?.role !== 1,
+                            },
+                          },
+                        }}
+                        width="auto"
+                        paginationMode="server"
+                        page={pageState.page - 1}
+                        pageSize={pageState.pageSize}
+                        sx={{
+                          boxShadow: 2,
+                          "& .MuiDataGrid-cell:hover": {
+                            cursor: "pointer",
+                          },
+                        }}
+                        getRowClassName={(params) =>
+                          params.indexRelativeToCurrentPage % 2 === 0
+                            ? "even"
+                            : "odd"
+                        }
+                        onPageChange={(newPage) => {
+                          setpageState((old) => ({
+                            ...old,
+                            page: newPage + 1,
+                          }));
+                        }}
+                        onPageSizeChange={(newPageSize) =>
+                          setpageState((old) => ({
+                            ...old,
+                            pageSize: newPageSize,
+                          }))
+                        }
+                      />
+                    </Box>
+                    {showDailogue && (
+                      <SalaryDeductDailogue
+                        showDailogue={showDailogue}
+                        setDialogue={setDialogue}
+                        FetchAttendance={FetchAttendance}
+                      />
+                    )}
+                  </div>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <div
+                    className={`${
+                      themeBgImg
+                        ? currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light"
+                        : currentMode === "dark"
+                        ? "bg-[#1C1C1C]"
+                        : "bg-[#EEEEEE]"
+                    } ${
+                      currentMode === "dark" ? "text-white" : "text-dark"
+                    } col-span-10 p-5 rounded-xl shadow-sm`}
+                  >
+                    <EmployeeCalendar
+                      isOffDay={isOffDay}
+                      pageState={pageState}
+                    />
+                  </div>
+                </TabPanel>
+              </div>
+
+              {/* <div className="w-full my-5">
                 <Box
                   width={"100%"}
                   height={"100%"}
@@ -1980,7 +2155,7 @@ const SingleEmployee = ({ user }) => {
                     FetchAttendance={FetchAttendance}
                   />
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -2001,6 +2176,10 @@ const SingleEmployee = ({ user }) => {
       )}
     </>
   );
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return <div>{value === index && <div>{children}</div>}</div>;
+  }
 };
 
 export default SingleEmployee;

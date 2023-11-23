@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import SingleTickt from "../../Components/support/SingleTickt";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import axios from "../../axoisConfig";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, IconButton } from "@mui/material";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 
 const SingleTicket = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const id = location.pathname.split("/")[3].replace(/%20/g, " ");
 
   console.log("Ticket Id: ", id);
 
-  const { currentMode, t, BACKEND_URL } = useStateContext();
+  const { currentMode, t, BACKEND_URL, value, setValue } = useStateContext();
 
   const [tickeData, setTicketData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   console.log("Ticket DAta: ", tickeData);
+
+  const goBack = () => {
+    setValue(1);
+    navigate("/support");
+  };
 
   const fetchTickets = async () => {
     setLoading(true);
@@ -75,6 +82,12 @@ const SingleTicket = () => {
                 } p-5 rounded-md my-5 mb-10 min-h-screen`}
               >
                 <div className="mt-3 pb-3 min-h-screen">
+                  <IconButton
+                    onClick={goBack}
+                    className="bg-btn-primary rounded-full mb-4"
+                  >
+                    <FaLongArrowAltLeft color="white" />
+                  </IconButton>
                   {loading ? (
                     <div className="fixed  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                       <CircularProgress />

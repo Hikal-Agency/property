@@ -12,7 +12,7 @@ import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import { GrDownload } from "react-icons/gr";
+import { BsDownload } from "react-icons/bs";
 
 import axios from "../../axoisConfig";
 import moment from "moment";
@@ -159,7 +159,7 @@ const EmployeesList = ({ user }) => {
                     className="bg-btn-primary"
                     onClick={() => setReportModal(true)}
                   >
-                    <GrDownload color="#fffff" />
+                    <BsDownload size={16} color={"#FFFFFF"} />
                   </IconButton>
                 </div>
                 <Select

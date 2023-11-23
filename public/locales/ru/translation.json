@@ -365,6 +365,7 @@
     "purpose_investment": "Инвестиция",
     "purpose_end_user": "Конечный пользователь",
     "source_facebook": "Facebook",
+    "source_instagram": "Instagram",
     "source_snapchat": "Snapchat",
     "source_tiktok": "TikTok",
     "source_googleads": "GoogleAds",
@@ -766,5 +767,6 @@
     "menu_hikal_meet": "Хикал Встреча",
     "generate_report": "Создать отчет о посещаемости",
     "generate_report_btn": "Создать отчет",
-    "report_month": "Выберите месяц"
+    "report_month": "Выберите месяц",
+    "mark_attendance": "Отметить посещаемость"
 }

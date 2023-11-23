@@ -11,6 +11,7 @@ import {
   Tooltip,
   Drawer,
 } from "@mui/material";
+
 import { useStateContext } from "../../context/ContextProvider";
 import { datetimeLong } from "../_elements/formatDateTime";
 import usePermission from "../../utils/usePermission";
@@ -680,9 +681,7 @@ const SingleLead = ({
                       target="_blank"
                       className="mx-2"
                     >
-                      <button
-                        className="bg-primary text-white rounded-md card-hover p-2 shadow-sm"
-                      >
+                      <button className="bg-primary text-white rounded-md card-hover p-2 shadow-sm">
                         {t("view_lead_details")?.toUpperCase()}
                       </button>
 

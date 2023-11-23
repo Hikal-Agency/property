@@ -147,14 +147,10 @@ const NotificationsList = () => {
     e.preventDefault();
     const updated_data = new FormData();
 
-    updated_data.append("user_id", User?.id);
-    if (User?.role === 1) {
-      updated_data.append("is_admin_read", 1);
-    } else if (User?.role === 3) {
-      updated_data.append("is_manager_read", 1);
-    } else {
-      updated_data.append("isRead", 1);
-    }
+    // if (User?.role !== 1) {
+      updated_data.append("user_id", User?.id);
+    // } 
+    updated_data.append("isRead", 1);
 
     try {
       const UpdateReadStatus = await axios.post(
@@ -273,7 +269,8 @@ const NotificationsList = () => {
                 </Box>
 
                 <div className="flex items-center space-x-5 mr-5">
-                  {displayMarkBtn && User?.role !== 1 && User?.role !== 2 ? (
+                  {/* {displayMarkBtn && User?.role !== 1 && User?.role !== 2 ? ( */}
+                  {displayMarkBtn ? (
                     <Tooltip title="Mark All As Read" arrow placement="bottom">
                       <IconButton>
                         <BsCheck2All

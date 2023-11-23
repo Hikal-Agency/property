@@ -7,9 +7,9 @@ import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
 import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
-import SourceCounter from "../../Components/_elements/SourceCounter";
 import { toast } from "react-toastify";
 import moment from "moment";
+import SourceAnimation from "../../Components/_elements/SourceAnimation";
 
 const AllHotLeads = () => {
   const { 
@@ -73,7 +73,7 @@ const AllHotLeads = () => {
               </div>
 
               {(hasPermission("leadSource_counts") || User.role === 1) && (
-                <SourceCounter />
+                <SourceAnimation />
               )}
             </div>
             <AllLeads

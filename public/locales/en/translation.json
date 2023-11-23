@@ -365,6 +365,7 @@
     "purpose_investment": "Investment",
     "purpose_end_user": "End-user",
     "source_facebook": "Facebook",
+    "source_instagram": "Instagram",
     "source_snapchat": "Snapchat",
     "source_tiktok": "TikTok",
     "source_googleads": "GoogleAds",
@@ -769,6 +770,7 @@
     "generate_report" : "Generate Attendance Report",
     "generate_report_btn" : "Generate  Report",
     "report_month" : "Select Month",
+<<<<<<< HEAD
     "add_dev_btn":"Add Developer",
     "add_project_btn":"Add Project",
     "add_developer_modal":"Add Developer",
@@ -795,4 +797,8 @@
     "form_project_area":"Area",
     "form_project_360View":"360 View Link",
     "form_project_status":"Status"
+=======
+    "mark_attendance" : "Mark Attendance"
+    
+>>>>>>> main
 }

@@ -113,13 +113,13 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
         UpdateLeadData.append("feedback", "New");
       } else {
         UpdateLeadData.append("assignedToSales", 1);
-        UpdateLeadData.append("leadStatus", "Transferred");
-        UpdateLeadData.append("transferredFrom", SalesPerson3.id);
-        UpdateLeadData.append("transferredFromName", SalesPerson3.userName);
-        UpdateLeadData.append(
-          "transferredDate",
-          moment().format("YYYY-MM-DD HH:mm:ss")
-        );
+        // UpdateLeadData.append("leadStatus", "Transferred");
+        // UpdateLeadData.append("transferredFrom", SalesPerson3.id);
+        // UpdateLeadData.append("transferredFromName", SalesPerson3.userName);
+        // UpdateLeadData.append(
+        //   "transferredDate",
+        //   moment().format("YYYY-MM-DD HH:mm:ss")
+        // );
         UpdateLeadData.append("feedback", "New");
       }
     } else {
@@ -135,20 +135,21 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
       if (SalesPerson3 === undefined) {
         UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
       } else {
-        UpdateLeadData.append("leadStatus", "Transferred");
         UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
-        UpdateLeadData.append("transferredFrom", SalesPerson3.id);
-        UpdateLeadData.append("transferredFromName", SalesPerson3.userName);
-        UpdateLeadData.append(
-          "transferredDate",
-          moment().format("YYYY-MM-DD HH:mm:ss")
-        );
+        // UpdateLeadData.append("leadStatus", "Transferred");
+        // UpdateLeadData.append("transferredFrom", SalesPerson3.id);
+        // UpdateLeadData.append("transferredFromName", SalesPerson3.userName);
+        // UpdateLeadData.append(
+        //   "transferredDate",
+        //   moment().format("YYYY-MM-DD HH:mm:ss")
+        // );
         UpdateLeadData.append("feedback", "New");
       }
     }
 
     // update transferred request
     if (cellValues?.row?.transferRequest === 1) {
+      UpdateLeadData.append("leadStatus", "Transferred");
       UpdateLeadData.append("transferRequest", 2);
     }
 

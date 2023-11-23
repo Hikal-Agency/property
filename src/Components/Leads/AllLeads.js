@@ -18,7 +18,7 @@ import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { AiOutlineHistory, AiFillEdit } from "react-icons/ai";
-import { useLocation } from "react-router-dom";
+import { Form, useLocation } from "react-router-dom";
 import moment from "moment/moment";
 import Pagination from "@mui/material/Pagination";
 import SingleLead from "./SingleLead";
@@ -44,7 +44,6 @@ import {
   useGridApiContext,
   useGridSelector,
 } from "@mui/x-data-grid";
-import SourceCounter from "../_elements/SourceCounter";
 
 import {
   FaSnapchatGhost,
@@ -70,6 +69,7 @@ import {
   BsChatLeftText,
   BsGlobe2,
   BsFacebook,
+  BsInstagram,
   BsArchive
 } from "react-icons/bs";
 import { 
@@ -91,6 +91,7 @@ import {
   SiGooglemeet 
 } from "react-icons/si";
 import JoinMeeting from "../liveleads/JoinMeeting";
+import SourceAnimation from "../_elements/SourceAnimation";
 
 
 const bulkUpdateBtnStyles = {
@@ -515,31 +516,34 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       renderCell: (cellValues) => {
         console.log("Start::", cellValues.row.leadSource);
         const sourceIcons = {
-          "campaign snapchat": () => (
-            <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
-          ),
+          // "campaign snapchat": () => (
+          //   <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
+          // ),
 
-          "campaign facebook": () => (
-            <BsFacebook size={16} color={"#0e82e1"} className="p-1" />
-          ),
+          // "campaign facebook": () => (
+          //   <BsFacebook size={16} color={"#0e82e1"} className="p-1" />
+          // ),
 
-          "campaign tiktok": () => (
-            <BsTiktok
-              size={16}
-              color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-              className="p-1"
-            />
-          ),
+          // "campaign tiktok": () => (
+          //   <BsTiktok
+          //     size={16}
+          //     color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
+          //     className="p-1"
+          //   />
+          // ),
+          // "campaign instagram": () => (
+          //   <BsInstagram size={16} color={"#B134AF"} className="p-1" />
+          // ),
 
-          "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
+          // "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
 
-          "campaign youtube": () => (
-            <BsYoutube size={16} color={"#FF0000"} className="p-1" />
-          ),
+          // "campaign youtube": () => (
+          //   <BsYoutube size={16} color={"#FF0000"} className="p-1" />
+          // ),
 
-          "campaign twitter": () => (
-            <BsTwitter size={16} color={"#00acee"} className="p-1" />
-          ),
+          // "campaign twitter": () => (
+          //   <BsTwitter size={16} color={"#00acee"} className="p-1" />
+          // ),
 
           "bulk import": () => (
             <BsDownload size={16} color={primaryColor} className="p-1" />
@@ -553,7 +557,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             <BsMegaphone size={16} color={"#696969"} className="p-0.5" />
           ),
 
-          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
+          cold: () => (
+            <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />
+          ),
 
           personal: () => (
             <BsPersonRolodex size={16} color={"#6C7A89"} className="p-1" />
@@ -574,17 +580,102 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           comment: () => (
             <BsChatLeftText size={16} color={"#a9b3c6"} className="p-0.5" />
           ),
-
           website: () => (
             <BsGlobe2 size={16} color={"#AED6F1"} className="p-0.5" />
           ),
-
-          self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
+          self: () => (
+            <FaUser size={16} color={"#6C7A89"} className="p-0.5" />
+          ),
         };
         return (
           <>
             <div className="flex items-center justify-center">
-              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+              {cellValues.row.leadSource?.toLowerCase().includes("instagram") ? (
+                // INSTAGRAM 
+                <BsInstagram
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#B134AF"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // FACEBOOK 
+                <BsFacebook
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#0e82e1"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // TIKTOK 
+                <BsTiktok
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={currentMode === "dark" ? "#FFFFFF" : "#000000"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // SNAPCHAT 
+                <FaSnapchatGhost
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#f6d80a"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // GOOGLEADS 
+                <FcGoogle
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  // color={"#f6d80a"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // YOUTUBE 
+                <BsYoutube
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#FF0000"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+                // TWITTER 
+                <BsTwitter
+                  style={{
+                    width: "50%",
+                    height: "50%",
+                    margin: "0 auto",
+                  }}
+                  size={16}
+                  color={"#00acee"}
+                  className="p-1"
+                />
+              ) : cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
+                // WARM 
                 <BsArchive
                   style={{
                     width: "50%",
@@ -695,8 +786,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             className={`w-full h-full px-1 flex items-center justify-center`}
           >
             {/* MEET LINK  */}
-            {(lead_origin === "liveleads" || lead_type === "liveleads") &&
-              cellValues.row.notes.startsWith("Live") &&
+            {
+            // (lead_origin === "liveleads" || lead_type === "liveleads") &&
+            //   cellValues.row.notes.startsWith("Live") &&
               (cellValues.row.meet_link === null ||
               cellValues.row.meet_link === "" ||
               cellValues.row.meet_link === "null" ? (
@@ -725,7 +817,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     </button>
                   </Tooltip>
                 </p>
-              ))}
+              )
+            )}
 
             {/* CALL  */}
             <Tooltip title="Call" arrow>
@@ -1340,86 +1433,86 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         console.log("Rows Data: ", rowsdata);
 
         // count of leads per source
-        const facebook = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign facebook"
-        );
-        const fbCounts = facebook.length;
+        // const facebook = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign facebook"
+        // );
+        // const fbCounts = facebook.length;
 
-        const snapchat = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign snapchat"
-        );
-        const spCount = snapchat.length;
+        // const snapchat = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign snapchat"
+        // );
+        // const spCount = snapchat.length;
 
-        const tiktok = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign tiktok"
-        );
-        const ttCount = tiktok.length;
+        // const tiktok = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign tiktok"
+        // );
+        // const ttCount = tiktok.length;
 
-        const googleads = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign googleads"
-        );
-        const gCount = googleads.length;
+        // const googleads = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign googleads"
+        // );
+        // const gCount = googleads.length;
 
-        const youtube = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign youtube"
-        );
-        const yCount = youtube.length;
+        // const youtube = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign youtube"
+        // );
+        // const yCount = youtube.length;
 
-        const campaign = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "campaign"
-        );
-        const cCount = campaign.length;
+        // const campaign = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "campaign"
+        // );
+        // const cCount = campaign.length;
 
-        const cold = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "cold"
-        );
-        const coCount = cold.length;
+        // const cold = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "cold"
+        // );
+        // const coCount = cold.length;
 
-        const personal = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "personal"
-        );
-        const pCount = personal.length;
+        // const personal = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "personal"
+        // );
+        // const pCount = personal.length;
 
-        const message = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "message"
-        );
-        const mCount = message.length;
+        // const message = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "message"
+        // );
+        // const mCount = message.length;
 
-        const whatsapp = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "whatsapp"
-        );
-        const wCount = whatsapp.length;
+        // const whatsapp = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "whatsapp"
+        // );
+        // const wCount = whatsapp.length;
 
-        const comment = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "comment"
-        );
-        const comCount = comment.length;
+        // const comment = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "comment"
+        // );
+        // const comCount = comment.length;
 
-        const website = rowsdata.filter(
-          (row) => row?.leadSource.toLowerCase() === "website"
-        );
-        const webCount = website.length;
+        // const website = rowsdata.filter(
+        //   (row) => row?.leadSource.toLowerCase() === "website"
+        // );
+        // const webCount = website.length;
 
-        console.log("FB: ", fbCounts);
-        console.log("Snap: ", spCount);
-        console.log("wa: ", wCount);
-        console.log("ms: ", mCount);
+        // console.log("FB: ", fbCounts);
+        // console.log("Snap: ", spCount);
+        // console.log("wa: ", wCount);
+        // console.log("ms: ", mCount);
 
         setpageState((old) => ({
           ...old,
           isLoading: false,
-          fbCounts: fbCounts,
-          spCount: spCount,
-          ttCount: ttCount,
-          gCount: gCount,
-          yCount: yCount,
-          cCount: cCount,
-          pCount: pCount,
-          coCount: coCount,
-          mCount: mCount,
-          wCount: wCount,
-          comment: comCount,
-          webCount: webCount,
+        //   fbCounts: fbCounts,
+        //   spCount: spCount,
+        //   ttCount: ttCount,
+        //   gCount: gCount,
+        //   yCount: yCount,
+        //   cCount: cCount,
+        //   pCount: pCount,
+        //   coCount: coCount,
+        //   mCount: mCount,
+        //   wCount: wCount,
+        //   comment: comCount,
+        //   webCount: webCount,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
           from: result.data.coldLeads.from,
@@ -1630,17 +1723,30 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   // NEW MEETING 
   const AddMeetLinkFunction = async (
     mLeadId, 
+    mLeadName,
+    mLeadEmail,
     meetLink,
     adminLink
   ) => {
     setBtnLoading(true);
 
     const token = localStorage.getItem("auth-token");
+
+    // LEAD DATA 
     const AddLeadData = new FormData();
     AddLeadData.append("id", mLeadId);
     AddLeadData.append("meet_link", meetLink);
     AddLeadData.append("admin_link", adminLink);
 
+    // EMAIL DATA 
+    const AddEmailData = new FormData();
+    AddEmailData.append("notification", "common");
+    AddEmailData.append("email", mLeadEmail);
+    AddEmailData.append("title", "UAE Real Estate Market Consultation by Hikal");
+    AddEmailData.append("message", `<h3>Hi ${mLeadName}!</h3><p>We are pleased to inform you that your consultation has been scheduled successfully for now.</p><h3 style%equal%"text-align: center;"><a href%equal%"${meetLink}" style%equal%"padding: 10px; border-radius: 10px; background-color: #DA1F26; color: #FFFFFF; font-weight: bold;">Click here to join the meeting!</a></h3><p>If you have any questions or need further assistance, feel free to contact us at <a href%equal%"tel:97142722249"><span>+971 4 272 2249</span></a>.</p>`);
+    AddEmailData.append("style","body{color: #000000;} span{font-weight: bold; color: #1245A8;}");
+
+    // UPDATE LEADS TABLE 
     await axios
     .post(`${BACKEND_URL}/leads/${mLeadId}`, AddLeadData, {
       headers: {
@@ -1676,6 +1782,23 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       });
       setBtnLoading(false);
     });
+
+    // SEND EMAIL TO LEAD 
+    await axios
+    .post(`${BACKEND_URL}/sendEmail/`, AddEmailData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((result) => {
+      console.log("Email sent successfully!");
+      setBtnLoading(false);
+      FetchLeads(token);
+    })
+    .catch((err) => {
+      setBtnLoading(false);
+    });
   };
 
   // REDIRECT TO MEETING 
@@ -1702,11 +1825,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
     const diff = (currentTime - leadTime) / (1000 * 60); //CONVERT MILLISECONDS TO MINUTES
 
-    if (diff < 5) {
+    // if (diff < 5) {
       setNameOfLead(params);
       try {
-
         setBtnLoading(true);
+        // CREATE MEETING 
         const createMeeting = await axios.get(
           `${BACKEND_URL}/create?name=${User?.userName.replaceAll(" ", "%20")}`,
           {
@@ -1717,6 +1840,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           }
         );
 
+        // JOIN AS MODERATOR 
         const meetingID = createMeeting?.data?.data?.meetingID;
         const joinAsModerator = await axios.post(
           `${BACKEND_URL}/join`,
@@ -1730,6 +1854,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             },
           }
         );
+
+        // ATTENDEE LINK 
         const joinAsAttendee = await axios.post(
           `${BACKEND_URL}/attendee`,
           JSON.stringify({
@@ -1749,7 +1875,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         // setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee});
         
         redirectToMeeting(urlForModerator);
-        AddMeetLinkFunction(params?.row?.leadId, urlForAttendee, urlForModerator);
+        AddMeetLinkFunction(params?.row?.leadId, params?.row?.leadName, params?.row?.leadEmail, urlForAttendee, urlForModerator);
 
       } catch (error) {
         console.log(error);
@@ -1765,9 +1891,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         });
       }
       setBtnLoading(false);
-    } else {
-      HandleAddMeetLinkBtn(params);
-    }
+    // } else {
+    //   HandleAddMeetLinkBtn(params);
+    // }
   };
 
   const HandleViewTimeline = (params) => {
@@ -2013,11 +2139,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             }}
             className={"items-center"}
           >
-            <div className="flex items-end justify-end">
-              {(hasPermission("leadSource_counts") || User.role === 1) && (
-                <SourceCounter />
-              )}
-
+            <div className="flex items-end justify-end mb-2">
+              
               <div className="w-fit flex justify-end">
                 <Box
                   sx={{
@@ -2065,7 +2188,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   </FormControl>
                 </Box>
               </div>
-
+              
+              {(hasPermission("leadSource_counts") || User.role === 1) && (
+                <SourceAnimation />
+              )}
             </div>
           </Box>
         )}

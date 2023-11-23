@@ -365,6 +365,7 @@
     "purpose_investment": "השקעה",
     "purpose_end_user": "משתמש סופי",
     "source_facebook": "פייסבוק",
+    "source_instagram": "אינסטגרם",
     "source_snapchat": "סנאפצ'ט",
     "source_tiktok": "טיקטוק",
     "source_googleads": "גוגל אדס",
@@ -768,5 +769,6 @@
     "menu_hikal_meet": "היקל פגשו",
     "generate_report": "יצירת דוח נוכחות",
     "generate_report_btn": "יצירת דוח",
-    "report_month": "בחר חודש"
+    "report_month": "בחר חודש",
+    "mark_attendance": "סמן נוכחות"
 }

@@ -29,6 +29,7 @@ export const ContextProvider = ({ children }) => {
     off_day: null,
   });
   const [activeMenu, setActiveMenu] = useState(true);
+  const [value, setValue] = useState(0);
   const [isClicked, setIsClicked] = useState(initialState);
   const [User, setUser] = useState({});
   const [Counters, setCounters] = useState([]);
@@ -319,6 +320,7 @@ export const ContextProvider = ({ children }) => {
           personal: response.data.data["unassigned"]["PERSONAL LEADS"],
           third_party: response.data.data["unassigned"]["THIRD PARTY LEADS"],
           warm: response.data.data["unassigned"]["WARM LEADS"],
+          live: response.data.data["unassigned"]["LIVE CALLS"],
         },
         ReshuffleLeadsCount: response.data.data["RESHUFFLED LEADS"],
         LiveCallCount: response.data.data["LIVE CALLS"],
@@ -706,6 +708,8 @@ export const ContextProvider = ({ children }) => {
         setCounters,
         settings,
         setSettings,
+        value,
+        setValue,
       }}
     >
       {children}

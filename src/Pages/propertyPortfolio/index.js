@@ -38,7 +38,7 @@ const PropertyPortfolio = () => {
         },
       })
       .then((result) => {
-        setDevProData(result.data);
+        setDevProData(result.data?.data?.developers);
       })
       .catch((err) => {
         toast.error("Something went wrong kindly force refresh the page.", {
