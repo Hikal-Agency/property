@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Tooltip, IconButton, Modal, Backdrop } from "@mui/material";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
@@ -21,19 +21,18 @@ import {
   TbMail,
   TbUserCircle,
 } from "react-icons/tb";
-import SelectImagesModal from "./SelectImagesModal";
-import SelectDocumentModal from "./SelectDocumentModal";
+import SelectImagesModal from "../listings/SelectImagesModal";
+import SelectDocumentModal from "../listings/SelectDocumentModal";
 import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
-import SingleImageModal from "./SingleImageModal";
-import SingleDocModal from "./SingleDocModal";
+import SingleImageModal from "../listings/SingleImageModal";
+import SingleDocModal from "../listings/SingleDocModal";
 import usePermission from "../../utils/usePermission";
+import { FaMoneyBillWave } from "react-icons/fa";
 
-const SingleListingsModal = ({
-  ListingData,
-  handleCloseSingleListingModel,
-  singleListingModelOpen,
-}) => {
-  const [loading, setloading] = useState(true);
+const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
+  console.log("single property data::: ", openModal);
+  let project = openModal?.project;
+  const [loading, setloading] = useState(false);
   const [listData, setListingData] = useState({});
   const [openEdit, setOpenEdit] = useState(false);
   const [leadNotFound, setLeadNotFound] = useState(false);
@@ -75,7 +74,9 @@ const SingleListingsModal = ({
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
-      handleCloseSingleListingModel();
+      setOpenModal({
+        open: false,
+      });
     }, 1000);
   };
 
@@ -126,7 +127,7 @@ const SingleListingsModal = ({
 
   useEffect(() => {
     setopenBackDrop(false);
-    fetchSingleListing(lid);
+    // fetchSingleListing(lid);
   }, []);
 
   const mapContainerStyle = {
@@ -140,7 +141,7 @@ const SingleListingsModal = ({
     mapTypeControl: true,
   };
 
-  const latLongString = listData?.latlong;
+  const latLongString = project?.latlong;
   if (latLongString) {
     const [latValue, longValue] = latLongString.split(",");
     lat = latValue;
@@ -163,7 +164,7 @@ const SingleListingsModal = ({
       > */}
       <Modal
         keepMounted
-        open={singleListingModelOpen}
+        open={openModal?.open}
         // onClose={handleCloseTimelineModel}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
@@ -220,8 +221,18 @@ const SingleListingsModal = ({
                 ) : (
                   <div className="w-full">
                     {/* IMAGES  */}
+                    <div className="w-full flex items-center pb-3">
+                      <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                      <h1
+                        className={`text-lg font-semibold ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                      >
+                        {project?.projectName}
+                      </h1>
+                    </div>
                     <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
-                      {listData?.images?.map((pic) =>
+                      {project?.images?.map((pic) =>
                         pic?.img_url ? (
                           <img
                             onClick={() =>
@@ -251,7 +262,7 @@ const SingleListingsModal = ({
                         <div className="w-full p-1">
                           <div className="flex items-center">
                             <div className="bg-primary rounded-lg text-white p-2 mr-2 font-semibold">
-                              {listData?.price}
+                              {/* {project?.price} */}
                             </div>
                             <h1
                               className={`text-lg font-bold mr-2 ${
@@ -260,12 +271,12 @@ const SingleListingsModal = ({
                                   : "text-black"
                               }`}
                               style={{
-                                fontFamily: isArabic(listData?.project)
+                                fontFamily: isArabic(project?.projectName)
                                   ? "Noto Kufi Arabic"
                                   : "inherit",
                               }}
                             >
-                              {listData?.project}
+                              {project?.projectStatus}
                             </h1>
                           </div>
                         </div>
@@ -313,9 +324,17 @@ const SingleListingsModal = ({
 
                             <div className="mx-1"></div>
 
-                            <div className="border border-primary p-2 font-semibold rounded-md shadow-sm">
-                              {listData?.listing_type}
-                            </div>
+                            {project?.tourlink && (
+                              <div className="border border-primary p-2 font-semibold rounded-md shadow-sm cursor-pointer">
+                                <a
+                                  href={project?.tourlink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  360 view
+                                </a>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -331,7 +350,7 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{listData?.address} </h6>
+                            <h6>{project?.projectLocation} </h6>
                           </div>
                           {/* Bedrooms  */}
                           <div className="flex space-x-3">
@@ -343,16 +362,11 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{listData?.bedrooms}</h6>
-                            <h6>
-                              {listData?.property_type === "null"
-                                ? "-"
-                                : listData?.property_type}
-                            </h6>
+                            <h6>{project?.bedrooms}</h6>
                           </div>
                           {/* baths  */}
                           <div className="flex space-x-3">
-                            <BiBath
+                            <FaMoneyBillWave
                               size={18}
                               className={`mr-2 ${
                                 currentMode === "dark"
@@ -361,15 +375,7 @@ const SingleListingsModal = ({
                               }`}
                             />
                             <h6>
-                              {listData?.bathrooms === "null"
-                                ? "-"
-                                : listData?.bathrooms}
-                            </h6>
-
-                            <h6>
-                              {listData?.leadFor === "null"
-                                ? "-"
-                                : listData?.leadFor}
+                              {project?.price === "null" ? "-" : project?.price}
                             </h6>
                           </div>
                         </div>
@@ -378,8 +384,8 @@ const SingleListingsModal = ({
                           <div className="flex items-end justify-end h-full w-full">
                             <div className="text-right">
                               <p className="text-sm my-2">
-                                Listing added on{" "}
-                                {moment(listData?.created_at).format(
+                                Project added on{" "}
+                                {moment(project?.created_at).format(
                                   "YYYY-MM-DD HH:MM"
                                 )}
                               </p>
@@ -393,7 +399,7 @@ const SingleListingsModal = ({
                                   }`}
                                   className="mr-2"
                                 />
-                                {listData?.addedBy_name}
+                                {openModal?.developer?.developerName}
                               </p>
                             </div>
                           </div>
@@ -403,7 +409,7 @@ const SingleListingsModal = ({
 
                     {/* IN MAP  */}
 
-                    {listData?.latlong === null || listData?.latlong === "" ? (
+                    {project?.latlong === null || project?.latlong === "" ? (
                       <></>
                     ) : (
                       <div className="w-full my-5 h-[50vh] border border-primary">
@@ -441,7 +447,7 @@ const SingleListingsModal = ({
 
                     {/* <div className="bg-primary h-0.5 w-full my-5"></div> */}
 
-                    {(listData?.addedBy === User?.id ||
+                    {(project?.addedBy === User?.id ||
                       hasPermission("seller_details") ||
                       User.role === 1) && (
                       <div
@@ -452,8 +458,15 @@ const SingleListingsModal = ({
                         } rounded-xl w-full p-4`}
                       >
                         <div className="w-full">
-                          <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
-                            <div className="sm:col-span-1 md:col-span-3 lg:col-span-2">
+                          {/* <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5"> */}
+                          <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
+                            <div
+                              className={`${
+                                currentMode === "dark"
+                                  ? "bg-[#1C1C1C]"
+                                  : "bg-[#FFFFFF]"
+                              } rounded-xl shadow-sm p-4`}
+                            >
                               <div className="w-full flex items-center pb-3">
                                 <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                                 <h1
@@ -463,137 +476,73 @@ const SingleListingsModal = ({
                                       : "text-black"
                                   }`}
                                 >
-                                  Seller details
+                                  Essential Document
                                 </h1>
                               </div>
 
-                              <div className="space-y-3">
-                                {/* SELLER NAME  */}
-                                <div className="flex space-x-3">
-                                  <TbUserCircle
-                                    size={18}
-                                    className={`mr-2 ${
-                                      currentMode === "dark"
-                                        ? "text-[#EEEEEE]"
-                                        : "text-[#333333]"
-                                    }`}
-                                  />
-                                  <h6>{listData?.seller_name}</h6>
-                                </div>
-                                {/* SELLER CONTACT  */}
-                                <div className="flex space-x-3">
-                                  <TbPhone
-                                    size={18}
-                                    className={`mr-2 ${
-                                      currentMode === "dark"
-                                        ? "text-[#EEEEEE]"
-                                        : "text-[#333333]"
-                                    }`}
-                                  />
-                                  <h6>{listData?.seller_contact}</h6>
-                                </div>
-                                {/* SELLER EMAIL  */}
-                                <div className="flex space-x-3">
-                                  <TbMail
-                                    size={18}
-                                    className={`mr-2 ${
-                                      currentMode === "dark"
-                                        ? "text-[#EEEEEE]"
-                                        : "text-[#333333]"
-                                    }`}
-                                  />
-                                  <h6>
-                                    {listData?.seller_email === "null"
-                                      ? ""
-                                      : listData?.seller_email}
-                                  </h6>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
-                              <div
-                                className={`${
-                                  currentMode === "dark"
-                                    ? "bg-[#1C1C1C]"
-                                    : "bg-[#FFFFFF]"
-                                } rounded-xl shadow-sm p-4`}
-                              >
-                                <div className="w-full flex items-center pb-3">
-                                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                                  <h1
-                                    className={`text-lg font-semibold ${
-                                      currentMode === "dark"
-                                        ? "text-white"
-                                        : "text-black"
-                                    }`}
-                                  >
-                                    Essential Document
-                                  </h1>
-                                </div>
-
-                                <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                                  {listData?.documents?.map((l) => {
-                                    return l?.doc_url ? (
-                                      // <div
-                                      //   onClick={() =>
-                                      //     setSingleDocModal({
-                                      //       isOpen: true,
-                                      //       url: l?.doc_url,
-                                      //       id: l?.id,
-                                      //     })
-                                      //   }
-                                      //   className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                      //   // hover:rounded-full hover:shadow-lg
-                                      // >
-                                      //   <div className="w-full text-center ">
-                                      //     <div className="w-full flex justify-center">
-                                      //       <BsFileEarmarkText
-                                      //         size={70}
-                                      //         color={"#AAAAAA"}
-                                      //         className="hover:-mt-1 hover:mb-1"
-                                      //       />
-                                      //     </div>
-                                      //     <div className="my-3">
-                                      //       {l?.doc_name}
-                                      //     </div>
-                                      //   </div>
-                                      // </div>
-                                      <div
-                                        onClick={() => {
-                                          window.open(l?.doc_url, "_blank");
-                                        }}
-                                        className="p-2 flex items-center justify-center hover:cursor-pointer"
+                              <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
+                                {project?.documents?.map((l) => {
+                                  return l?.doc_url ? (
+                                    // <div
+                                    //   onClick={() =>
+                                    //     setSingleDocModal({
+                                    //       isOpen: true,
+                                    //       url: l?.doc_url,
+                                    //       id: l?.id,
+                                    //     })
+                                    //   }
+                                    //   className="p-2 flex items-center justify-center hover:cursor-pointer"
+                                    //   // hover:rounded-full hover:shadow-lg
+                                    // >
+                                    //   <div className="w-full text-center ">
+                                    //     <div className="w-full flex justify-center">
+                                    //       <BsFileEarmarkText
+                                    //         size={70}
+                                    //         color={"#AAAAAA"}
+                                    //         className="hover:-mt-1 hover:mb-1"
+                                    //       />
+                                    //     </div>
+                                    //     <div className="my-3">
+                                    //       {l?.doc_name}
+                                    //     </div>
+                                    //   </div>
+                                    // </div>
+                                    <div
+                                      onClick={() => {
+                                        window.open(l?.doc_url, "_blank");
+                                      }}
+                                      className="p-2 flex items-center justify-center hover:cursor-pointer"
+                                    >
+                                      <a
+                                        href={l?.doc_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                       >
-                                        <a
-                                          href={l?.doc_url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                        >
-                                          <div className="w-full text-center">
-                                            <div className="w-full flex justify-center">
-                                              <BsFileEarmarkText
-                                                size={70}
-                                                color={"#AAAAAA"}
-                                                className="hover:-mt-1 hover:mb-1"
-                                              />
-                                            </div>
-                                            <div className="my-3">
-                                              {l?.doc_name}
-                                            </div>
+                                        <div className="w-full text-center">
+                                          <div className="w-full flex justify-center">
+                                            <BsFileEarmarkText
+                                              size={70}
+                                              color={"#AAAAAA"}
+                                              className="hover:-mt-1 hover:mb-1"
+                                            />
                                           </div>
-                                        </a>
-                                      </div>
-                                    ) : (
-                                      <div className="py-2 text-xs italic text-primary">
-                                        No documents to show
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                {/* )} */}
+                                          <div className="my-3">
+                                            {l?.doc_name}
+                                          </div>
+                                        </div>
+                                      </a>
+                                    </div>
+                                  ) : (
+                                    <div className="py-2 text-xs italic text-primary">
+                                      No documents to show
+                                    </div>
+                                  );
+                                })}
                               </div>
+                              {/* )} */}
                             </div>
                           </div>
+                          {/* </div> */}
                         </div>
                       </div>
                     )}
@@ -651,4 +600,4 @@ const SingleListingsModal = ({
   );
 };
 
-export default SingleListingsModal;
+export default SinglePropertyModal;

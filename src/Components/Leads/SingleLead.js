@@ -18,6 +18,7 @@ import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
 import BlockIPModal from "./BlockIPModal";
 import AddNewListingModal from "../Listings/AddNewListingModal";
+import { getCountryFromNumber } from "../_elements/CountryCodeChecker";
 
 import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
 import { IoIosAlert } from "react-icons/io";
@@ -36,6 +37,8 @@ import {
   BsBookmarkFill,
   BsPersonGear,
   BsChatLeftText,
+  BsClockHistory,
+  BsPhone
 } from "react-icons/bs";
 
 const SingleLead = ({
@@ -445,6 +448,44 @@ const SingleLead = ({
     return () => clearTimeout(timeout);
   }, []);
 
+  // COUNTRY AND TIMEZONE 
+  const [countryInfo, setCountryInfo] = useState({
+    countryCode: null,
+    countryName: null,
+    timezone: null
+  });
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    const numberToCheck = LeadData?.leadContact?.replaceAll(" ", "");
+    const {
+      countryCode,
+      countryName,
+      timezone
+    } = getCountryFromNumber(numberToCheck);
+    setCountryInfo({
+      countryCode,
+      countryName,
+      timezone
+    });
+  }, [LeadData, LeadModelOpen]);
+
+  useEffect(() => {
+    if (countryInfo.timezone) {
+      const updateCurrentTime = () => {
+        const currentTime = moment.tz(countryInfo.timezone).format("YYYY-MM-DD, h:mm:ss A [GMT]Z");
+        setCurrentTime(currentTime);
+      };
+
+      updateCurrentTime();
+      const intervalId = setInterval(updateCurrentTime, 1000);
+      return () => clearInterval(intervalId);
+    }
+    else {
+      setCurrentTime("");
+    }
+  }, [countryInfo.timezone]);
+  
   return (
     <>
       <Modal
@@ -518,6 +559,11 @@ const SingleLead = ({
                       className={`text-lg font-semibold ${
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
+                      style={{
+                        fontFamily: isArabic(LeadData?.notes)
+                          ? "Noto Kufi Arabic"
+                          : "inherit",
+                      }}
                     >
                       {LeadData?.leadName}
                     </h1>
@@ -738,7 +784,9 @@ const SingleLead = ({
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                         <BsType size={16} className="text-primary" />
-                        <div className="col-span-7">{LeadData?.language}</div>
+                        <div className="col-span-7">
+                          {LeadData?.language === "null" ? "" : LeadData?.language}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -844,11 +892,48 @@ const SingleLead = ({
                         <BsPersonGear size={16} className="text-primary mx-2" />
                         <div className="">
                           {t("last_updated_on")}{" "}
-                          {LeadData?.lastEdited === ""
+                          {LeadData?.lastEdited === "" || LeadData?.lastEdited === null || LeadData?.lastEdited === "-"
                             ? "-"
                             : datetimeLong(LeadData?.lastEdited)}
                         </div>
                       </div>
+
+                      {/* TIMEZONE  */}
+                      {countryInfo.countryName && (
+                        <div class="flex items-center gap-5 my-4 md:px-5">
+                          <BsClockHistory size={16} className="text-primary mx-2" />
+                          <div className="flex items-center gap-2" dir="ltr">
+                            <div>{countryInfo?.countryName}</div>
+                            {countryInfo.timezone && (
+                              <div className="bg-primary text-white px-2 py-1 rounded-md font-semibold">{currentTime}</div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* IP AND DEVICE  */}
+                      {LeadData?.ip === null ||
+                      LeadData?.ip === "" ||
+                      LeadData?.ip === "-" ? (
+                        <></>
+                      ) : (
+                        <div class="flex items-center gap-5 my-4 md:px-5">
+                          <BsPhone
+                            size={16}
+                            className="text-primary mx-2"
+                          />
+                          <div
+                            className="text-start flex items-center gap-2"
+                            style={{ fontFamily: "Noto Sans" }}
+                          >
+                            <div className="bg-primary text-white px-2 py-1 rounded-md font-semibold">
+                              {LeadData?.ip}
+                            </div>
+                            {LeadData?.device}
+                          </div>
+                        </div>
+                      )}
+                      
                     </div>
                   </div>
                 </div>
