@@ -80,6 +80,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [error, setError] = useState(false);
+  const [developer, setDeveloper] = useState([]);
   const [listingLocation, setListingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -88,7 +89,17 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
 
   const [isClosing, setIsClosing] = useState(false);
 
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    const data = e.target.value;
+    const name = e.target.name;
+
+    console.log("data,name:: ", data, name);
+
+    setprojectData((prev) => ({
+      ...prev,
+      [name]: data,
+    }));
+  };
   // const handleEmail = (e) => {
   //   setEmailError(false);
   //   const value = e.target.value;
@@ -118,6 +129,39 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
   const style = {
     transform: "translate(0%, 0%)",
     boxShadow: 24,
+  };
+
+  const getDevelopers = () => {
+    setLoading(true);
+    const token = localStorage.getItem("auth-token");
+
+    axios
+      .get(`${BACKEND_URL}/developers`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Result: ");
+        console.log("Result: ", result);
+        setDeveloper(result?.data?.data?.developers);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+        toast.error("Unable to fetch developers.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
   };
 
   const AddLead = () => {
@@ -170,6 +214,10 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
     //     });
     //   });
   };
+
+  useEffect(() => {
+    getDevelopers();
+  }, []);
 
   return (
     <>
@@ -301,11 +349,11 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               displayEmpty
                               required
                             >
-                              {/* {Managers?.map((person, index) => (
-                                <MenuItem key={index} value={person?.id}>
-                                  {person?.userName}
+                              {developer?.map((developer, index) => (
+                                <MenuItem key={index} value={developer?.id}>
+                                  {developer?.developerName}
                                 </MenuItem>
-                              ))} */}
+                              ))}
                             </TextField>
                             <TextField
                               id="Manager"
