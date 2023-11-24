@@ -899,13 +899,14 @@ const SingleLead = ({
                       </div>
 
                       {/* TIMEZONE  */}
-                      {countryInfo && (
+                      {countryInfo.countryName && (
                         <div class="flex items-center gap-5 my-4 md:px-5">
                           <BsClockHistory size={16} className="text-primary mx-2" />
                           <div className="flex items-center gap-2" dir="ltr">
                             <div>{countryInfo?.countryName}</div>
-                            {/* <div>{countryInfo?.timezone}</div> */}
-                            <div className="bg-primary text-white px-2 py-1 rounded-md font-semibold">{currentTime}</div>
+                            {countryInfo.timezone && (
+                              <div className="bg-primary text-white px-2 py-1 rounded-md font-semibold">{currentTime}</div>
+                            )}
                           </div>
                         </div>
                       )}
