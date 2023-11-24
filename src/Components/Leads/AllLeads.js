@@ -614,7 +614,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={"#0e82e1"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+              ) : cellValues.row.leadSource?.toLowerCase().includes("tiktok") ? (
                 // TIKTOK 
                 <BsTiktok
                   style={{
@@ -626,7 +626,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={currentMode === "dark" ? "#FFFFFF" : "#000000"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+              ) : cellValues.row.leadSource?.toLowerCase().includes("snapchat") ? (
                 // SNAPCHAT 
                 <FaSnapchatGhost
                   style={{
@@ -638,7 +638,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={"#f6d80a"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+              ) : cellValues.row.leadSource?.toLowerCase().includes("googleads") ? (
                 // GOOGLEADS 
                 <FcGoogle
                   style={{
@@ -650,7 +650,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   // color={"#f6d80a"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+              ) : cellValues.row.leadSource?.toLowerCase().includes("youtube") ? (
                 // YOUTUBE 
                 <BsYoutube
                   style={{
@@ -662,7 +662,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={"#FF0000"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
+              ) : cellValues.row.leadSource?.toLowerCase().includes("twitter") ? (
                 // TWITTER 
                 <BsTwitter
                   style={{
@@ -1625,6 +1625,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           project: row?.project || "-",
           is_blocked: row?.is_blocked,
           ip: row?.ip,
+          device: row?.device,
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",
           assignedToManager: row?.assignedToManager || null,

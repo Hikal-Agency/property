@@ -35,19 +35,23 @@
     "browser-image-compression": "^2.0.2",
     "chart.js": "^4.2.1",
     "clsx": "^1.2.1",
+    "countries-and-timezones": "^3.5.2",
     "country-list": "^2.3.0",
+    "country-timezone": "^1.0.8",
     "dayjs": "^1.11.7",
     "eslint": "^8.33.0",
     "file-saver": "^2.0.5",
     "firebase": "^9.22.2",
     "framer-motion": "^10.16.5",
+    "google-libphonenumber": "^3.2.33",
     "googleapis": "^118.0.0",
     "html-to-image": "^1.11.11",
+    "i18n-iso-countries": "^7.7.0",
     "i18next": "^23.5.1",
     "i18next-http-backend": "^2.2.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.31",
-    "libphonenumber-js": "^1.10.28",
+    "libphonenumber-js": "^1.10.51",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.2.0",
     "md5": "^2.3.0",
@@ -121,4 +125,3 @@
     "react-refresh": "0.11.0"
   }
 }
-
