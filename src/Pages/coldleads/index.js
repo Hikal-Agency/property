@@ -11,6 +11,12 @@ import {
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
 
+const correspondingParamName = (coldLeadType) => {
+  if(coldLeadType?.toLowercase() === "coldleadsverified") {
+    return ""
+  }
+}
+
 const ColdLeads = () => {
   const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
@@ -29,6 +35,8 @@ const ColdLeads = () => {
     setopenBackDrop(false);
     // eslint-disable-next-line
   }, [lead_type]);
+
+
   return (
     <>
       <div className="flex min-h-screen">
@@ -55,6 +63,9 @@ const ColdLeads = () => {
                 </span>
               </h1>
             </div>
+
+
+
             <AllLeads
               BACKEND_URL={BACKEND_URL}
               lead_type={lead_type}
