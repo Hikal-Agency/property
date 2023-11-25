@@ -141,7 +141,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
     mapTypeControl: true,
   };
 
-  const latLongString = project?.latlong;
+  const latLongString = project?.latLong;
   if (latLongString) {
     const [latValue, longValue] = latLongString.split(",");
     lat = latValue;
@@ -410,7 +410,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
 
                     {/* IN MAP  */}
 
-                    {project?.latlong === null || project?.latlong === "" ? (
+                    {project?.latLong === null || project?.latLong === "" ? (
                       <></>
                     ) : (
                       <div className="w-full my-5 h-[50vh] border border-primary">
