@@ -141,7 +141,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
     mapTypeControl: true,
   };
 
-  const latLongString = project?.latlong;
+  const latLongString = project?.latLong;
   if (latLongString) {
     const [latValue, longValue] = latLongString.split(",");
     lat = latValue;
@@ -362,7 +362,8 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{project?.bedrooms}</h6>
+                            {project?.bedrooms &&
+                              project?.bedrooms?.map((bed) => <h6>{bed} </h6>)}
                           </div>
                           {/* baths  */}
                           <div className="flex space-x-3">
@@ -409,7 +410,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
 
                     {/* IN MAP  */}
 
-                    {project?.latlong === null || project?.latlong === "" ? (
+                    {project?.latLong === null || project?.latLong === "" ? (
                       <></>
                     ) : (
                       <div className="w-full my-5 h-[50vh] border border-primary">

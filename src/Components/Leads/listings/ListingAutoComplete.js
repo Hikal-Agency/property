@@ -66,6 +66,8 @@ const ListingAutoComplete = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultLocation]);
 
+  console.log("default location === address text:: ", defaultLocation);
+
   return (
     <div ref={ref}>
       <TextField

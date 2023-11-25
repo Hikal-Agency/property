@@ -790,6 +790,7 @@
     "add_project_modal":"Add Project",
     "submit_project_btn":"Add Project",
     "project_details_form":"Project Details",
+    "project_form_name":"Project Name",
     "location_details":"Location Details",
     "project_availability":"Availability",
     "form_project_priceRange":"Price Range",
