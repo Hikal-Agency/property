@@ -45,17 +45,14 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 
+import { FaSnapchatGhost, FaUser } from "react-icons/fa";
 import {
-  FaSnapchatGhost,
-  FaUser,
-} from "react-icons/fa";
-import { 
-  BsShieldX, 
-  BsShieldCheck, 
+  BsShieldX,
+  BsShieldCheck,
   BsShieldMinus,
   BsShuffle,
-  BsSnow2, 
-  BsTrash, 
+  BsSnow2,
+  BsTrash,
   BsAlarm,
   BsTiktok,
   BsYoutube,
@@ -70,29 +67,17 @@ import {
   BsGlobe2,
   BsFacebook,
   BsInstagram,
-  BsArchive
+  BsArchive,
 } from "react-icons/bs";
-import { 
-  FcGoogle 
-} from "react-icons/fc";
-import { 
-  TbFileImport 
-} from "react-icons/tb";
-import { 
-  RiMailSendLine 
-} from "react-icons/ri";
-import { 
-  ImSearch 
-} from "react-icons/im";
-import { 
-  VscCallOutgoing 
-} from "react-icons/vsc";
-import { 
-  SiGooglemeet 
-} from "react-icons/si";
+import { FcGoogle } from "react-icons/fc";
+import { TbFileImport } from "react-icons/tb";
+import { RiMailSendLine } from "react-icons/ri";
+import { ImSearch } from "react-icons/im";
+import { VscCallOutgoing } from "react-icons/vsc";
+import { SiGooglemeet } from "react-icons/si";
 import JoinMeeting from "../liveleads/JoinMeeting";
 import SourceAnimation from "../_elements/SourceAnimation";
-
+import ColdcallFiles from "./ColdcallFiles";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -162,7 +147,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     darkModeColors,
     primaryColor,
     t,
-    isLangRTL, i18n
+    isLangRTL,
+    i18n,
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -170,6 +156,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
+  const [sortByVal, setSortByVal] = useState("");
 
   //View LEAD MODAL VARIABLES
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
@@ -321,7 +308,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
         // Replace last 4 digits with "*"
         const stearics =
-          contactNumber?.replaceAll(" ", "")?.slice(0, contactNumber?.replaceAll(" ", "")?.length - 4) + "****";
+          contactNumber
+            ?.replaceAll(" ", "")
+            ?.slice(0, contactNumber?.replaceAll(" ", "")?.length - 4) + "****";
         let finalNumber;
 
         if (hasPermission("number_masking")) {
@@ -557,9 +546,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             <BsMegaphone size={16} color={"#696969"} className="p-0.5" />
           ),
 
-          cold: () => (
-            <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />
-          ),
+          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
 
           personal: () => (
             <BsPersonRolodex size={16} color={"#6C7A89"} className="p-1" />
@@ -570,11 +557,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           ),
 
           message: () => (
-            <BsChatDots
-              size={16}
-              color={"#6A5ACD"}
-              className="p-0.5"
-            />
+            <BsChatDots size={16} color={"#6A5ACD"} className="p-0.5" />
           ),
 
           comment: () => (
@@ -583,15 +566,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           website: () => (
             <BsGlobe2 size={16} color={"#AED6F1"} className="p-0.5" />
           ),
-          self: () => (
-            <FaUser size={16} color={"#6C7A89"} className="p-0.5" />
-          ),
+          self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
         };
         return (
           <>
             <div className="flex items-center justify-center">
-              {cellValues.row.leadSource?.toLowerCase().includes("instagram") ? (
-                // INSTAGRAM 
+              {cellValues.row.leadSource
+                ?.toLowerCase()
+                .includes("instagram") ? (
+                // INSTAGRAM
                 <BsInstagram
                   style={{
                     width: "50%",
@@ -602,8 +585,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={"#B134AF"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("facebook") ? (
-                // FACEBOOK 
+              ) : cellValues.row.leadSource
+                  ?.toLowerCase()
+                  .includes("facebook") ? (
+                // FACEBOOK
                 <BsFacebook
                   style={{
                     width: "50%",
@@ -614,8 +599,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={"#0e82e1"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("tiktok") ? (
-                // TIKTOK 
+              ) : cellValues.row.leadSource
+                  ?.toLowerCase()
+                  .includes("tiktok") ? (
+                // TIKTOK
                 <BsTiktok
                   style={{
                     width: "50%",
@@ -626,8 +613,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={currentMode === "dark" ? "#FFFFFF" : "#000000"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("snapchat") ? (
-                // SNAPCHAT 
+              ) : cellValues.row.leadSource
+                  ?.toLowerCase()
+                  .includes("snapchat") ? (
+                // SNAPCHAT
                 <FaSnapchatGhost
                   style={{
                     width: "50%",
@@ -638,8 +627,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={"#f6d80a"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("googleads") ? (
-                // GOOGLEADS 
+              ) : cellValues.row.leadSource
+                  ?.toLowerCase()
+                  .includes("googleads") ? (
+                // GOOGLEADS
                 <FcGoogle
                   style={{
                     width: "50%",
@@ -650,8 +641,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   // color={"#f6d80a"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("youtube") ? (
-                // YOUTUBE 
+              ) : cellValues.row.leadSource
+                  ?.toLowerCase()
+                  .includes("youtube") ? (
+                // YOUTUBE
                 <BsYoutube
                   style={{
                     width: "50%",
@@ -662,8 +655,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={"#FF0000"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().includes("twitter") ? (
-                // TWITTER 
+              ) : cellValues.row.leadSource
+                  ?.toLowerCase()
+                  .includes("twitter") ? (
+                // TWITTER
                 <BsTwitter
                   style={{
                     width: "50%",
@@ -674,8 +669,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   color={"#00acee"}
                   className="p-1"
                 />
-              ) : cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
-                // WARM 
+              ) : cellValues.row.leadSource
+                  ?.toLowerCase()
+                  .startsWith("warm") ? (
+                // WARM
                 <BsArchive
                   style={{
                     width: "50%",
@@ -787,9 +784,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           >
             {/* MEET LINK  */}
             {
-            // (lead_origin === "liveleads" || lead_type === "liveleads") &&
-            //   cellValues.row.notes.startsWith("Live") &&
-              (cellValues.row.meet_link === null ||
+              // (lead_origin === "liveleads" || lead_type === "liveleads") &&
+              //   cellValues.row.notes.startsWith("Live") &&
+              cellValues.row.meet_link === null ||
               cellValues.row.meet_link === "" ||
               cellValues.row.meet_link === "null" ? (
                 <p
@@ -818,7 +815,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   </Tooltip>
                 </p>
               )
-            )}
+            }
 
             {/* CALL  */}
             <Tooltip title="Call" arrow>
@@ -830,7 +827,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
-                <CallButton phone={cellValues.row.leadContact?.replaceAll(" ", "")} />
+                <CallButton
+                  phone={cellValues.row.leadContact?.replaceAll(" ", "")}
+                />
               </p>
             </Tooltip>
 
@@ -1430,94 +1429,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           edit: "edit",
         }));
 
-        console.log("Rows Data: ", rowsdata);
-
-        // count of leads per source
-        // const facebook = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "campaign facebook"
-        // );
-        // const fbCounts = facebook.length;
-
-        // const snapchat = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "campaign snapchat"
-        // );
-        // const spCount = snapchat.length;
-
-        // const tiktok = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "campaign tiktok"
-        // );
-        // const ttCount = tiktok.length;
-
-        // const googleads = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "campaign googleads"
-        // );
-        // const gCount = googleads.length;
-
-        // const youtube = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "campaign youtube"
-        // );
-        // const yCount = youtube.length;
-
-        // const campaign = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "campaign"
-        // );
-        // const cCount = campaign.length;
-
-        // const cold = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "cold"
-        // );
-        // const coCount = cold.length;
-
-        // const personal = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "personal"
-        // );
-        // const pCount = personal.length;
-
-        // const message = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "message"
-        // );
-        // const mCount = message.length;
-
-        // const whatsapp = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "whatsapp"
-        // );
-        // const wCount = whatsapp.length;
-
-        // const comment = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "comment"
-        // );
-        // const comCount = comment.length;
-
-        // const website = rowsdata.filter(
-        //   (row) => row?.leadSource.toLowerCase() === "website"
-        // );
-        // const webCount = website.length;
-
-        // console.log("FB: ", fbCounts);
-        // console.log("Snap: ", spCount);
-        // console.log("wa: ", wCount);
-        // console.log("ms: ", mCount);
-
         setpageState((old) => ({
           ...old,
           isLoading: false,
-        //   fbCounts: fbCounts,
-        //   spCount: spCount,
-        //   ttCount: ttCount,
-        //   gCount: gCount,
-        //   yCount: yCount,
-        //   cCount: cCount,
-        //   pCount: pCount,
-        //   coCount: coCount,
-        //   mCount: mCount,
-        //   wCount: wCount,
-        //   comment: comCount,
-        //   webCount: webCount,
           data: rowsdata,
           pageSize: result.data.coldLeads.per_page,
           from: result.data.coldLeads.from,
           to: result.data.coldLeads.to,
-          // total: result.data.coldLeads.total,
           total: total,
         }));
         setCEOColumns([...CEOColumns]);
@@ -1721,9 +1639,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     // setUpdateLeadModelOpen(true);
   };
 
-  // NEW MEETING 
+  // NEW MEETING
   const AddMeetLinkFunction = async (
-    mLeadId, 
+    mLeadId,
     mLeadName,
     mLeadEmail,
     meetLink,
@@ -1733,92 +1651,101 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
     const token = localStorage.getItem("auth-token");
 
-    // LEAD DATA 
+    // LEAD DATA
     const AddLeadData = new FormData();
     AddLeadData.append("id", mLeadId);
     AddLeadData.append("meet_link", meetLink);
     AddLeadData.append("admin_link", adminLink);
 
-    // EMAIL DATA 
+    // EMAIL DATA
     const AddEmailData = new FormData();
     AddEmailData.append("notification", "common");
     AddEmailData.append("email", mLeadEmail);
-    AddEmailData.append("title", "UAE Real Estate Market Consultation by Hikal");
-    AddEmailData.append("message", `<h3>Hi ${mLeadName}!</h3><p>We are pleased to inform you that your consultation has been scheduled successfully for now.</p><h3 style%equal%"text-align: center;"><a href%equal%"${meetLink}" style%equal%"padding: 10px; border-radius: 10px; background-color: #DA1F26; color: #FFFFFF; font-weight: bold;">Click here to join the meeting!</a></h3><p>If you have any questions or need further assistance, feel free to contact us at <a href%equal%"tel:97142722249"><span>+971 4 272 2249</span></a>.</p>`);
-    AddEmailData.append("style","body{color: #000000;} span{font-weight: bold; color: #1245A8;}");
+    AddEmailData.append(
+      "title",
+      "UAE Real Estate Market Consultation by Hikal"
+    );
+    AddEmailData.append(
+      "message",
+      `<h3>Hi ${mLeadName}!</h3><p>We are pleased to inform you that your consultation has been scheduled successfully for now.</p><h3 style%equal%"text-align: center;"><a href%equal%"${meetLink}" style%equal%"padding: 10px; border-radius: 10px; background-color: #DA1F26; color: #FFFFFF; font-weight: bold;">Click here to join the meeting!</a></h3><p>If you have any questions or need further assistance, feel free to contact us at <a href%equal%"tel:97142722249"><span>+971 4 272 2249</span></a>.</p>`
+    );
+    AddEmailData.append(
+      "style",
+      "body{color: #000000;} span{font-weight: bold; color: #1245A8;}"
+    );
 
-    // UPDATE LEADS TABLE 
+    // UPDATE LEADS TABLE
     await axios
-    .post(`${BACKEND_URL}/leads/${mLeadId}`, AddLeadData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    })
-    .then((result) => {
-      console.log("Meeting link sent successfully!");
-      console.log(result);
-      toast.success("Meeting link sent successfully!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setBtnLoading(false);
-      FetchLeads(token);
-    })
-    .catch((err) => {
-      toast.error("Error in sending meeting link", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
+      .post(`${BACKEND_URL}/leads/${mLeadId}`, AddLeadData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Meeting link sent successfully!");
+        console.log(result);
+        toast.success("Meeting link sent successfully!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setBtnLoading(false);
+        FetchLeads(token);
+      })
+      .catch((err) => {
+        toast.error("Error in sending meeting link", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
 
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setBtnLoading(false);
       });
-      setBtnLoading(false);
-    });
 
-    // SEND EMAIL TO LEAD 
+    // SEND EMAIL TO LEAD
     await axios
-    .post(`${BACKEND_URL}/sendEmail/`, AddEmailData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    })
-    .then((result) => {
-      console.log("Email sent successfully!");
-      setBtnLoading(false);
-      FetchLeads(token);
-    })
-    .catch((err) => {
-      setBtnLoading(false);
-    });
+      .post(`${BACKEND_URL}/sendEmail/`, AddEmailData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Email sent successfully!");
+        setBtnLoading(false);
+        FetchLeads(token);
+      })
+      .catch((err) => {
+        setBtnLoading(false);
+      });
   };
 
-  // REDIRECT TO MEETING 
+  // REDIRECT TO MEETING
   const [redirectAnimation, setRedirectAnimation] = useState(false);
   const redirectToMeeting = (url) => {
     // console.log("URL")
     // setRedirectAnimation(true);
 
     // setTimeout(() => {
-      window.open(url, "_blank");
+    window.open(url, "_blank");
     //   setRedirectAnimation(false);
     // }, 3000);
   };
 
   const [newMeetingModal, setNewMeetingModal] = useState({
-    isOpen: false
-  })
-  const [ btnLoading, setBtnLoading ] = useState(false);
-  const [ nameOfLead, setNameOfLead ] = useState({});
+    isOpen: false,
+  });
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [nameOfLead, setNameOfLead] = useState({});
 
   const HandleSendMeetLinkBtn = async (params) => {
     const currentTime = new Date();
@@ -1827,71 +1754,76 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     const diff = (currentTime - leadTime) / (1000 * 60); //CONVERT MILLISECONDS TO MINUTES
 
     // if (diff < 5) {
-      setNameOfLead(params);
-      try {
-        setBtnLoading(true);
-        // CREATE MEETING 
-        const createMeeting = await axios.get(
-          `${BACKEND_URL}/create?name=${User?.userName.replaceAll(" ", "%20")}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              // Authorization: "Bearer " + token,
-            },
-          }
-        );
+    setNameOfLead(params);
+    try {
+      setBtnLoading(true);
+      // CREATE MEETING
+      const createMeeting = await axios.get(
+        `${BACKEND_URL}/create?name=${User?.userName.replaceAll(" ", "%20")}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + token,
+          },
+        }
+      );
 
-        // JOIN AS MODERATOR 
-        const meetingID = createMeeting?.data?.data?.meetingID;
-        const joinAsModerator = await axios.post(
-          `${BACKEND_URL}/join`,
-          JSON.stringify({
-            meetingID: meetingID,
-          }),
-          {
-            headers: {
-              "Content-Type": "application/json",
-              // Authorization: "Bearer " + token,
-            },
-          }
-        );
+      // JOIN AS MODERATOR
+      const meetingID = createMeeting?.data?.data?.meetingID;
+      const joinAsModerator = await axios.post(
+        `${BACKEND_URL}/join`,
+        JSON.stringify({
+          meetingID: meetingID,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + token,
+          },
+        }
+      );
 
-        // ATTENDEE LINK 
-        const joinAsAttendee = await axios.post(
-          `${BACKEND_URL}/attendee`,
-          JSON.stringify({
-            meetingID: meetingID,
-            // fullName: "Example Full Name".replaceAll(" ", "%20")
-            fullName: params?.row?.leadName.replaceAll(" ", "%20"),
-          }),
-          {
-            headers: {
-              "Content-Type": "application/json",
-              // Authorization: "Bearer " + token,
-            },
-          }
-        );
-        const urlForModerator = joinAsModerator?.data?.url;
-        const urlForAttendee = joinAsAttendee?.data?.url;
-        // setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee});
-        
-        redirectToMeeting(urlForModerator);
-        AddMeetLinkFunction(params?.row?.leadId, params?.row?.leadName, params?.row?.leadEmail, urlForAttendee, urlForModerator);
+      // ATTENDEE LINK
+      const joinAsAttendee = await axios.post(
+        `${BACKEND_URL}/attendee`,
+        JSON.stringify({
+          meetingID: meetingID,
+          // fullName: "Example Full Name".replaceAll(" ", "%20")
+          fullName: params?.row?.leadName.replaceAll(" ", "%20"),
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const urlForModerator = joinAsModerator?.data?.url;
+      const urlForAttendee = joinAsAttendee?.data?.url;
+      // setNewMeetingModal({isOpen: true, urlForModerator, urlForAttendee});
 
-      } catch (error) {
-        console.log(error);
-        toast.error("Unable to create meeting at the moment.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-      setBtnLoading(false);
+      redirectToMeeting(urlForModerator);
+      AddMeetLinkFunction(
+        params?.row?.leadId,
+        params?.row?.leadName,
+        params?.row?.leadEmail,
+        urlForAttendee,
+        urlForModerator
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to create meeting at the moment.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+    setBtnLoading(false);
     // } else {
     //   HandleAddMeetLinkBtn(params);
     // }
@@ -2119,10 +2051,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     setHoveredRow(params.row);
   };
 
-
   return (
     <>
       <div className="pb-10">
+        {lead_origin === "coldleads" && (
+          <ColdcallFiles
+            pageState={pageState}
+            setpageState={setpageState}
+            leadCategory={leadCategory}
+            bulkImportRef={bulkImportRef}
+            lead_type={lead_type}
+          />
+        )}
         {lead_origin === "unassigned" && lead_type === "fresh" && (
           <Box
             sx={{
@@ -2141,7 +2081,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             className={"items-center"}
           >
             <div className="flex items-end justify-end mb-2">
-              
               <div className="w-fit flex justify-end">
                 <Box
                   sx={{
@@ -2189,14 +2128,13 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                   </FormControl>
                 </Box>
               </div>
-              
+
               {(hasPermission("leadSource_counts") || User.role === 1) && (
                 <SourceAnimation />
               )}
             </div>
           </Box>
         )}
-
         <Box
           sx={{
             ...DataGridStyles,
@@ -2265,7 +2203,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           <div
             style={{ zIndex: "5 !important" }}
-            className={`absolute top-[7px] ${isLangRTL(i18n.language) ? 'left-[10px]' : 'right-[10px]'} z-[5]`}
+            className={`absolute top-[7px] ${
+              isLangRTL(i18n.language) ? "left-[10px]" : "right-[10px]"
+            } z-[5]`}
           >
             <TextField
               placeholder={t("search")}
@@ -2387,7 +2327,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
               LeadModelOpen={LeadModelOpen}
               setLeadModelOpen={setLeadModelOpen}
               handleLeadModelOpen={handleLeadModelOpen}
-              handleLeadModelClose={handleLeadModelClose}              
+              handleLeadModelClose={handleLeadModelClose}
               BACKEND_URL={BACKEND_URL}
               FetchLeads={FetchLeads}
               LeadData={singleLeadData}
@@ -2483,17 +2423,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
           )}
 
           {newMeetingModal?.isOpen && (
-            <JoinMeeting 
-              handleClose={() => setNewMeetingModal({isOpen: false})} 
+            <JoinMeeting
+              handleClose={() => setNewMeetingModal({ isOpen: false })}
               newMeetingModal={newMeetingModal}
             />
           )}
 
           {redirectAnimation && (
             <div className="flex fixed z-[100000] bg-black text-white top-0 left-0 w-screen h-screen flex-col justify-center items-center">
-              <h1 className="text-4xl mb-6">
-                Redirecting you to the meeting
-              </h1>
+              <h1 className="text-4xl mb-6">Redirecting you to the meeting</h1>
               <div id="fountainG">
                 <div id="fountainG_1" className="fountainG"></div>
                 <div id="fountainG_2" className="fountainG"></div>
