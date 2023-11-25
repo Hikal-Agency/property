@@ -95,6 +95,7 @@ const PortfolioLocation = ({
       handleCurrentLocationClick();
     }
   }, []);
+
   return (
     <>
       {load?.isLoaded ? (

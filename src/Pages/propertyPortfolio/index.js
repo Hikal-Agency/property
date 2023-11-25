@@ -32,7 +32,7 @@ const PropertyPortfolio = () => {
 
   const FetchProperty = async (token) => {
     await axios
-      .get(`${BACKEND_URL}/dev-projects`, {
+      .get(`${BACKEND_URL}/dev-with-projects`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -40,6 +40,7 @@ const PropertyPortfolio = () => {
       })
       .then((result) => {
         setDevProData(result.data?.data?.developers);
+        console.log("projects list :: ", result.data?.data?.developers);
       })
       .catch((err) => {
         toast.error("Something went wrong kindly force refresh the page.", {
@@ -164,104 +165,7 @@ const PropertyPortfolio = () => {
                                     ></div>
                                   </div>
                                 </div>
-                                {/* <div className="flex items-center gap-3 my-2">
-                                  {project.studio === 1 ? (
-                                    <FaCheck
-                                      size={14}
-                                      className="text-green-600"
-                                    />
-                                  ) : (
-                                    <FaMinus
-                                      size={14}
-                                      className="text-red-600"
-                                    />
-                                  )}
-                                  <p>{t("enquiry_studio")}</p>
-                                </div>
-                                <div className="flex items-center gap-3 my-2">
-                                  {project.onebed === 1 ? (
-                                    <FaCheck
-                                      size={14}
-                                      className="text-green-600"
-                                    />
-                                  ) : (
-                                    <FaMinus
-                                      size={14}
-                                      className="text-red-600"
-                                    />
-                                  )}
-                                  <p>{t("enquiry_1bed")}</p>
-                                </div>
-                                <div className="flex items-center gap-3 my-2">
-                                  {project.twobed === 1 ? (
-                                    <FaCheck
-                                      size={14}
-                                      className="text-green-600"
-                                    />
-                                  ) : (
-                                    <FaMinus
-                                      size={14}
-                                      className="text-red-600"
-                                    />
-                                  )}
-                                  <p>{t("enquiry_2bed")}</p>
-                                </div>
-                                <div className="flex items-center gap-3 my-2">
-                                  {project.threebed === 1 ? (
-                                    <FaCheck
-                                      size={14}
-                                      className="text-green-600"
-                                    />
-                                  ) : (
-                                    <FaMinus
-                                      size={14}
-                                      className="text-red-600"
-                                    />
-                                  )}
-                                  <p>{t("enquiry_3bed")}</p>
-                                </div>
-                                <div className="flex items-center gap-3 my-2">
-                                  {project.fourbed === 1 ? (
-                                    <FaCheck
-                                      size={14}
-                                      className="text-green-600"
-                                    />
-                                  ) : (
-                                    <FaMinus
-                                      size={14}
-                                      className="text-red-600"
-                                    />
-                                  )}
-                                  <p>{t("enquiry_4bed")}</p>
-                                </div>
-                                <div className="flex items-center gap-3 my-2">
-                                  {project.fivebed === 1 ? (
-                                    <FaCheck
-                                      size={14}
-                                      className="text-green-600"
-                                    />
-                                  ) : (
-                                    <FaMinus
-                                      size={14}
-                                      className="text-red-600"
-                                    />
-                                  )}
-                                  <p>{t("enquiry_5bed")}</p>
-                                </div>
-                                <div className="flex items-center gap-3 my-2">
-                                  {project.sixbed === 1 ? (
-                                    <FaCheck
-                                      size={14}
-                                      className="text-green-600"
-                                    />
-                                  ) : (
-                                    <FaMinus
-                                      size={14}
-                                      className="text-red-600"
-                                    />
-                                  )}
-                                  <p>{t("enquiry_6bed")}</p>
-                                </div> */}
+
                                 <div className="flex items-center">
                                   <div className="mr-3">
                                     <FaBed
@@ -269,6 +173,13 @@ const PropertyPortfolio = () => {
                                       className="text-green-600"
                                     />
                                   </div>
+                                  {/* {project?.bedrooms &&
+                                      project?.bedrooms !== null &&
+                                      project?.bedrooms.length > 0 &&
+                                      project?.bedrooms?.map((bed) => (
+                                        <h6>{bed} </h6>
+                                      ))} */}
+                                  <h6>{project?.bedrooms}</h6>
                                   <BedInfo
                                     value={project.studio}
                                     label="enquiry_studio"
@@ -285,36 +196,6 @@ const PropertyPortfolio = () => {
                                     label="enquiry_retail"
                                     t={t}
                                   />
-
-                                  {/* <BedInfo
-                                    value={project.twobed}
-                                    label="enquiry_2bed"
-                                    t={t}
-                                  />
-
-                                  <BedInfo
-                                    value={project.threebed}
-                                    label="enquiry_3bed"
-                                    t={t}
-                                  />
-
-                                  <BedInfo
-                                    value={project.fourbed}
-                                    label="enquiry_4bed"
-                                    t={t}
-                                  />
-
-                                  <BedInfo
-                                    value={project.fivebed}
-                                    label="enquiry_5bed"
-                                    t={t}
-                                  />
-
-                                  <BedInfo
-                                    value={project.sixbed}
-                                    label="enquiry_6bed"
-                                    t={t}
-                                  /> */}
                                 </div>
                                 <div className="flex items-center">
                                   <div className="my-3 mr-3">
@@ -369,6 +250,7 @@ const PropertyPortfolio = () => {
         <AddProject
           openAddProject={openAddProject}
           setOpenAddProject={setOpenAddProject}
+          FetchProperty={FetchProperty}
         />
       )}
       {openModal?.open && (

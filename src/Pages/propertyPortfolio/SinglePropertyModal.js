@@ -362,7 +362,8 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{project?.bedrooms}</h6>
+                            {project?.bedrooms &&
+                              project?.bedrooms?.map((bed) => <h6>{bed} </h6>)}
                           </div>
                           {/* baths  */}
                           <div className="flex space-x-3">

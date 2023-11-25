@@ -18,6 +18,8 @@ import {
   FormControlLabel,
   Radio,
   FormControl,
+  Checkbox,
+  FormGroup,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
@@ -43,7 +45,7 @@ import {
 } from "react-icons/bs";
 import PortfolioLocation from "./PortfolioLocation";
 
-const AddProject = ({ openAddProject, setOpenAddProject }) => {
+const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
   const {
     darkModeColors,
     currentMode,
@@ -57,6 +59,12 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
     themeBgImg,
   } = useStateContext();
 
+  const [listingLocation, setListingLocation] = useState({
+    lat: 0,
+    lng: 0,
+    addressText: "",
+  });
+
   const [projectData, setprojectData] = useState({
     projectName: null,
     developer_id: null,
@@ -65,29 +73,34 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
     area: null,
     tourLink: null,
     projectStatus: null,
-    bedrooms: null,
+    bedrooms: [],
     city: null,
     country: null,
-    latLong: null,
     location: null,
     addedBy: User?.id,
   });
 
-  const { hasPermission } = usePermission();
-
-  const [open, setOpen] = useState(false);
-
+  const [btnLoading, setBtnLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [error, setError] = useState(false);
   const [developer, setDeveloper] = useState([]);
-  const [listingLocation, setListingLocation] = useState({
-    lat: 0,
-    lng: 0,
-    addressText: "",
-  });
+  const token = localStorage.getItem("auth-token");
 
   const [isClosing, setIsClosing] = useState(false);
+
+  const handleBeds = (value) => {
+    setprojectData((prev) => {
+      if (prev.bedrooms.includes(value)) {
+        // Remove the value from the array if already selected
+        return {
+          ...prev,
+          bedrooms: prev.bedrooms.filter((item) => item !== value),
+        };
+      } else {
+        // Add the value to the array if not selected
+        return { ...prev, bedrooms: [...prev.bedrooms, value] };
+      }
+    });
+  };
 
   const handleChange = (e) => {
     const data = e.target.value;
@@ -100,23 +113,6 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
       [name]: data,
     }));
   };
-  // const handleEmail = (e) => {
-  //   setEmailError(false);
-  //   const value = e.target.value;
-  //   console.log(value);
-
-  //   const emailRegex = /^[A-Za-z0-9._+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-
-  //   if (emailRegex.test(value)) {
-  //     setEmailError(false);
-  //   } else {
-  //     setEmailError("Kindly enter a valid email.");
-  //     // setLeadEmail("");
-  //     return;
-  //   }
-  //   setLeadEmail(value);
-  //   console.log("Email state: ", LeadEmail);
-  // };
 
   const handleClose = () => {
     setIsClosing(true);
@@ -136,7 +132,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
     const token = localStorage.getItem("auth-token");
 
     axios
-      .get(`${BACKEND_URL}/developers`, {
+      .get(`${BACKEND_URL}/dev-with-projects`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -164,55 +160,88 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
       });
   };
 
-  const AddLead = () => {
-    // setaddNoteloading(true);
-    const token = localStorage.getItem("auth-token");
+  console.log("Project data::: ", projectData);
+  const AddDeveloper = () => {
+    setBtnLoading(true);
 
-    // const data = {
-    //   leadId: LeadData.leadId || LeadData.id,
-    //   leadNote: note || AddNoteTxt,
-    //   addedBy: User?.id,
-    //   addedByName: User?.userName,
-    // };
-    // axios
-    //   .post(`${BACKEND_URL}/leadNotes`, data, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: "Bearer " + token,
-    //     },
-    //   })
-    //   .then((result) => {
-    //     console.log("Result: ");
-    //     console.log("Result: ", result);
-    //     setaddNoteloading(false);
-    //     setAddNoteTxt("");
-    //     if (!note) {
-    //       toast.success("Note added Successfully", {
-    //         position: "top-right",
-    //         autoClose: 3000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "light",
-    //       });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     setaddNoteloading(false);
-    //     console.log(err);
-    //     toast.error("Soemthing Went Wrong! Please Try Again", {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //   });
+    if (
+      !projectData?.projectName ||
+      !projectData?.projectLocation ||
+      !projectData?.area ||
+      !projectData?.developer_id
+    ) {
+      setBtnLoading(false);
+      toast.error("Kindly fill all the required fields.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
+
+    projectData["latLong"] = [listingLocation?.lat, listingLocation?.lng].join(
+      ","
+    );
+    projectData["location"] = listingLocation?.addressText;
+    axios
+      .post(`${BACKEND_URL}/projects`, projectData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Result: ");
+        console.log("Result: ", result);
+        setBtnLoading(false);
+        setprojectData({
+          projectName: "",
+          developer_id: "",
+          price: "",
+          projectLocation: "",
+          area: "",
+          tourLink: "",
+          projectStatus: "",
+          bedrooms: "",
+          city: "",
+          country: "",
+          location: "",
+          addedBy: User?.id,
+        });
+        toast.success("Project added successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setOpenAddProject(false);
+        FetchProperty(token);
+      })
+      .catch((err) => {
+        setBtnLoading(false);
+        console.log(err);
+        toast.error("Soemthing Went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
   };
 
   useEffect(() => {
@@ -283,7 +312,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
-                      AddLead();
+                      AddDeveloper();
                     }}
                     disabled={loading ? true : false}
                   >
@@ -321,7 +350,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                             <TextField
                               id="LeadEmailAddress"
                               type={"text"}
-                              label={t("form_developer_name")}
+                              label={t("project_form_name")}
                               value={projectData?.projectName}
                               name="projectName"
                               onChange={handleChange}
@@ -347,6 +376,9 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               size="small"
                               className="w-full"
                               displayEmpty
+                              value={projectData?.developer_id}
+                              onChange={handleChange}
+                              name="developer_id"
                               required
                             >
                               {developer?.map((developer, index) => (
@@ -357,7 +389,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                             </TextField>
                             <TextField
                               id="Manager"
-                              type="number"
+                              type="text"
                               label={t("form_project_priceRange")}
                               className="w-full"
                               value={projectData?.price}
@@ -369,7 +401,6 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                                   currentMode === "dark"
                                     ? "#ffffff"
                                     : "#000000",
-                                pointerEvents: "none",
                               }}
                               variant="outlined"
                               size="small"
@@ -400,9 +431,10 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               }}
                               variant="outlined"
                               size="small"
-                              value={projectData?.location}
-                              name="location"
+                              value={projectData?.projectLocation}
+                              name="projectLocation"
                               onChange={handleChange}
+                              required
                             />
                             <TextField
                               id="Project"
@@ -419,6 +451,7 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                               value={projectData?.area}
                               name="area"
                               onChange={handleChange}
+                              required
                             />
 
                             <TextField
@@ -474,80 +507,131 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
 
                             <div>
                               <FormControl>
-                                <FormLabel id="demo-radio-buttons-group-label">
+                                <FormLabel id="demo-checkbox-group-label">
                                   Bedrooms
                                 </FormLabel>
-                                <RadioGroup
-                                  aria-labelledby="demo-radio-buttons-group-label"
-                                  name="radio-buttons-group"
-                                >
-                                  <div className="flex justify-between">
+                                <FormGroup>
+                                  <div className="flex">
                                     <div>
                                       <FormControlLabel
-                                        value="studio"
-                                        control={<Radio />}
+                                        control={<Checkbox />}
                                         label="Studio"
+                                        onChange={() => handleBeds("Studio")}
+                                        checked={projectData.bedrooms.includes(
+                                          "Studio"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="onebedroom"
-                                        control={<Radio />}
-                                        label="One Bedroom"
+                                        control={<Checkbox />}
+                                        label="1 Bedroom"
+                                        onChange={() => handleBeds("1 Bedroom")}
+                                        checked={projectData.bedrooms.includes(
+                                          "1 Bedroom"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="twobedroom"
-                                        control={<Radio />}
-                                        label="Two Bedrooms"
+                                        control={<Checkbox />}
+                                        label="2 Bedrooms"
+                                        onChange={() =>
+                                          handleBeds("2 Bedrooms")
+                                        }
+                                        checked={projectData.bedrooms.includes(
+                                          "2 Bedrooms"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="threebedroom"
-                                        control={<Radio />}
-                                        label="Three Bedrooms"
+                                        control={<Checkbox />}
+                                        label="3 Bedrooms"
+                                        onChange={() =>
+                                          handleBeds("3 Bedrooms")
+                                        }
+                                        checked={projectData.bedrooms.includes(
+                                          "3 Bedrooms"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="fourbedroom"
-                                        control={<Radio />}
-                                        label="Four Bedrooms"
+                                        control={<Checkbox />}
+                                        label="4 Bedrooms"
+                                        onChange={() =>
+                                          handleBeds("4 Bedrooms")
+                                        }
+                                        checked={projectData.bedrooms.includes(
+                                          "4 Bedrooms"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="fivebedroom"
-                                        control={<Radio />}
-                                        label="Five Bedrooms"
+                                        control={<Checkbox />}
+                                        label="5 Bedrooms"
+                                        onChange={() =>
+                                          handleBeds("5 Bedrooms")
+                                        }
+                                        checked={projectData.bedrooms.includes(
+                                          "5 Bedrooms"
+                                        )}
                                       />
                                     </div>
                                     <div>
                                       <FormControlLabel
-                                        value="sixbedroom"
-                                        control={<Radio />}
-                                        label="Six Bedroom"
+                                        control={<Checkbox />}
+                                        label="6 Bedrooms"
+                                        onChange={() =>
+                                          handleBeds("6 Bedrooms")
+                                        }
+                                        checked={projectData.bedrooms.includes(
+                                          "6 Bedrooms"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="sevenbedroom"
-                                        control={<Radio />}
-                                        label="Seven Bedrooms"
+                                        control={<Checkbox />}
+                                        label="7 Bedrooms"
+                                        onChange={() =>
+                                          handleBeds("7 Bedrooms")
+                                        }
+                                        checked={projectData.bedrooms.includes(
+                                          "7 Bedrooms"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="eightbedroom"
-                                        control={<Radio />}
-                                        label="Eight Bedrooms"
+                                        control={<Checkbox />}
+                                        label="8 Bedrooms"
+                                        onChange={() =>
+                                          handleBeds("8 Bedrooms")
+                                        }
+                                        checked={projectData.bedrooms.includes(
+                                          "8 Bedrooms"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="ninebedroom"
-                                        control={<Radio />}
-                                        label="Nine Bedrooms"
+                                        control={<Checkbox />}
+                                        label="9 Bedrooms"
+                                        onChange={() =>
+                                          handleBeds("9 Bedrooms")
+                                        }
+                                        checked={projectData.bedrooms.includes(
+                                          "9 Bedrooms"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="tenbedroom"
-                                        control={<Radio />}
-                                        label="Ten Bedrooms"
+                                        control={<Checkbox />}
+                                        label="10 Bedrooms"
+                                        onChange={() =>
+                                          handleBeds("10 Bedrooms")
+                                        }
+                                        checked={projectData.bedrooms.includes(
+                                          "10 Bedrooms"
+                                        )}
                                       />
                                       <FormControlLabel
-                                        value="retail"
-                                        control={<Radio />}
+                                        control={<Checkbox />}
                                         label="Retail"
+                                        onChange={() => handleBeds("Retail")}
+                                        checked={projectData.bedrooms.includes(
+                                          "Retail"
+                                        )}
                                       />
                                     </div>
                                   </div>
-                                </RadioGroup>
+                                </FormGroup>
                               </FormControl>
                             </div>
                           </Box>
@@ -627,9 +711,9 @@ const AddProject = ({ openAddProject, setOpenAddProject }) => {
                           }}
                           size="lg"
                           type="submit"
-                          disabled={loading ? true : false}
+                          disabled={btnLoading ? true : false}
                         >
-                          {loading ? (
+                          {btnLoading ? (
                             <CircularProgress
                               size={20}
                               sx={{ color: "white" }}
