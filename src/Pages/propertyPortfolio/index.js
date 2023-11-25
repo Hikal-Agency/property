@@ -173,13 +173,13 @@ const PropertyPortfolio = () => {
                                       className="text-green-600"
                                     />
                                   </div>
-                                  {/* {project?.bedrooms &&
-                                      project?.bedrooms !== null &&
-                                      project?.bedrooms.length > 0 &&
-                                      project?.bedrooms?.map((bed) => (
-                                        <h6>{bed} </h6>
-                                      ))} */}
-                                  <h6>{project?.bedrooms}</h6>
+                                  {project?.bedrooms &&
+                                    project?.bedrooms !== null &&
+                                    project?.bedrooms.length > 0 &&
+                                    project?.bedrooms?.map((bed) => (
+                                      <h6>{bed} </h6>
+                                    ))}
+                                  {/* <h6>{project?.bedrooms}</h6> */}
                                   <BedInfo
                                     value={project.studio}
                                     label="enquiry_studio"
