@@ -44,6 +44,7 @@ import {
   BsChatLeftText,
 } from "react-icons/bs";
 import PortfolioLocation from "./PortfolioLocation";
+import PropertyImageUpload from "./PropertyImageUpload";
 
 const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
   const {
@@ -59,10 +60,21 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
     themeBgImg,
   } = useStateContext();
 
+  const [allImages, setAllImages] = useState([]);
+
+  console.log("imagesss:: ", allImages);
+
   const [listingLocation, setListingLocation] = useState({
     lat: 0,
     lng: 0,
     addressText: "",
+  });
+
+  const [documentModal, setDocumentModal] = useState(false);
+
+  const [selectImagesModal, setSelectImagesModal] = useState({
+    isOpen: false,
+    listingId: null,
   });
 
   const [projectData, setprojectData] = useState({
@@ -189,6 +201,17 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
       ","
     );
     projectData["location"] = listingLocation?.addressText;
+
+    // if (allImages?.length > 0)
+    //   allImages?.forEach((image, index) => {
+    //     console.log("i am image: ", image);
+    //     // LeadData.append(`img_name[${index}]`, image);
+    //   });
+
+    if (allImages?.length > 0) {
+      projectData["images"] = [...allImages];
+    }
+
     axios
       .post(`${BACKEND_URL}/projects`, projectData, {
         headers: {
@@ -644,11 +667,11 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                             variant="contained"
                             size="lg"
                             className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-                            // onClick={() =>
-                            //   setSelectImagesModal({
-                            //     isOpen: true,
-                            //   })
-                            // }
+                            onClick={() =>
+                              setSelectImagesModal({
+                                isOpen: true,
+                              })
+                            }
                             style={{
                               // backgroundColor: "#111827",
                               color: "#ffffff",
@@ -675,9 +698,9 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                             style={{
                               color: "#ffffff",
                             }}
-                            // onClick={() => {
-                            //   setDocumentModal(true);
-                            // }}
+                            onClick={() => {
+                              setDocumentModal(true);
+                            }}
                             component="span"
                             disabled={loading ? true : false}
                             // startIcon={loading ? null : <MdFileUpload />}
@@ -729,6 +752,22 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                     </div>
                   </form>
                 </div>
+                {selectImagesModal?.isOpen && (
+                  <PropertyImageUpload
+                    selectImagesModal={selectImagesModal}
+                    handleClose={() => setSelectImagesModal({ isOpen: false })}
+                    allImages={allImages}
+                    setAllImages={setAllImages}
+                  />
+                )}
+                {/* {documentModal && (
+                  <AddDocumentModal
+                    documentModal={documentModal}
+                    handleClose={() => setDocumentModal(false)}
+                    allDocs={allDocs}
+                    setAllDocs={setAllDocs}
+                  />
+                )} */}
               </>
             )}
           </div>
