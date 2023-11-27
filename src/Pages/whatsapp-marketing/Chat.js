@@ -51,8 +51,8 @@ const Chat = () => {
         if (data?.length > 0) {
             setChatMessages([...data]);
           if (callback) callback();
-          setChatLoading(false);
         }
+          setChatLoading(false);
       });
     }
   };
@@ -375,19 +375,23 @@ const Chat = () => {
             const findChat = data.find((chat) => chat.id.user === phNo);
             if (findChat) {
               setAllChats([findChat]);
+            setActiveChat({
+              phoneNumber: findChat?.id?.user,
+              name: findChat?.name
+            });
             } else {
-              setAllChats({
+              setAllChats([{
                 id: {
                   user: phNo,
                 },
-                name: "",
+                name: "Unknown User",
                 lastMessage: "",
-              });
-            }
+              }]);
             setActiveChat({
-              phoneNumber: null,
-              name: "",
+              phoneNumber: phNo,
+              name: "Unknown User",
             });
+            }
           } else {
             setAllChats(() => {
               return data.filter((chat) => {
