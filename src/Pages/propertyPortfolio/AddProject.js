@@ -90,6 +90,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
     country: null,
     location: null,
     addedBy: User?.id,
+    images: [],
   });
 
   const [btnLoading, setBtnLoading] = useState(false);
@@ -173,6 +174,101 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
   };
 
   console.log("Project data::: ", projectData);
+  // const AddDeveloper = () => {
+  //   setBtnLoading(true);
+
+  //   if (
+  //     !projectData?.projectName ||
+  //     !projectData?.projectLocation ||
+  //     !projectData?.area ||
+  //     !projectData?.developer_id
+  //   ) {
+  //     setBtnLoading(false);
+  //     toast.error("Kindly fill all the required fields.", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+
+  //     return;
+  //   }
+
+  //   projectData["latLong"] = [listingLocation?.lat, listingLocation?.lng].join(
+  //     ","
+  //   );
+  //   projectData["location"] = listingLocation?.addressText;
+
+  //   // if (allImages?.length > 0)
+  //   //   allImages?.forEach((image, index) => {
+  //   //     console.log("i am image: ", image);
+  //   //     // LeadData.append(`img_name[${index}]`, image);
+  //   //   });
+
+  //   if (allImages?.length > 0) {
+  //     projectData["images"] = [...allImages];
+  //     console.log("all images sending :", [...allImages]);
+  //   }
+
+  //   axios
+  //     .post(`${BACKEND_URL}/projects`, projectData, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("Result: ");
+  //       console.log("Result: ", result);
+  //       setBtnLoading(false);
+  //       setprojectData({
+  //         projectName: "",
+  //         developer_id: "",
+  //         price: "",
+  //         projectLocation: "",
+  //         area: "",
+  //         tourLink: "",
+  //         projectStatus: "",
+  //         bedrooms: "",
+  //         city: "",
+  //         country: "",
+  //         location: "",
+  //         addedBy: User?.id,
+  //       });
+  //       toast.success("Project added successfully.", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+
+  //       setOpenAddProject(false);
+  //       FetchProperty(token);
+  //     })
+  //     .catch((err) => {
+  //       setBtnLoading(false);
+  //       console.log(err);
+  //       toast.error("Soemthing Went Wrong! Please Try Again", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     });
+  // };
+
   const AddDeveloper = () => {
     setBtnLoading(true);
 
@@ -202,26 +298,54 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
     );
     projectData["location"] = listingLocation?.addressText;
 
-    // if (allImages?.length > 0)
-    //   allImages?.forEach((image, index) => {
-    //     console.log("i am image: ", image);
-    //     // LeadData.append(`img_name[${index}]`, image);
-    //   });
-
+    // Create a FormData object to handle file uploads
+    const formData = new FormData();
     if (allImages?.length > 0) {
-      projectData["images"] = [...allImages];
+      // Append each image to the FormData object
+      allImages.forEach((image, index) => {
+        formData.append(`images[${index}]`, image);
+      });
     }
 
+    // Append other project data to the FormData object
+    // Object.entries(projectData).forEach(([key, value]) => {
+    //   formData.append(key, value);
+    // });
+
+    Object.entries(projectData).forEach(([key, value]) => {
+      // Check if the value is an array (e.g., bedrooms)
+      if (Array.isArray(value)) {
+        // Loop through the array and append each value separately
+        value.forEach((item, index) => {
+          formData.append(`${key}[${index}]`, item);
+        });
+      } else {
+        // Append non-array values directly
+        formData.append(key, value);
+      }
+    });
+
+    // formData.append("projectName", projectData?.projectName);
+    // formData.append("developer_id", projectData?.developer_id);
+    // formData.append("price", projectData?.price);
+    // formData.append("projectLocation", projectData?.projectLocation);
+    // formData.append("area", projectData?.area);
+    // formData.append("tourLink", projectData?.tourLink);
+    // formData.append("projectStatus", projectData?.projectStatus);
+    // formData.append("bedrooms", projectData?.bedrooms);
+    // formData.append("city", projectData?.city);
+    // formData.append("country", projectData?.country);
+    // formData.append("addedBy", projectData?.addedBy);
+    // formData.append("location", projectData?.location);
+
     axios
-      .post(`${BACKEND_URL}/projects`, projectData, {
+      .post(`${BACKEND_URL}/projects`, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
-        console.log("Result: ");
-        console.log("Result: ", result);
         setBtnLoading(false);
         setprojectData({
           projectName: "",
@@ -254,7 +378,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
       .catch((err) => {
         setBtnLoading(false);
         console.log(err);
-        toast.error("Soemthing Went Wrong! Please Try Again", {
+        toast.error("Something Went Wrong! Please Try Again", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
