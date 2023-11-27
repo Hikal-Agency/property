@@ -45,6 +45,7 @@ import {
 } from "react-icons/bs";
 import PortfolioLocation from "./PortfolioLocation";
 import PropertyImageUpload from "./PropertyImageUpload";
+import PropertyDocModal from "./PropertyDocumentUpload";
 
 const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
   const {
@@ -61,6 +62,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
   } = useStateContext();
 
   const [allImages, setAllImages] = useState([]);
+  const [allDocs, setAllDocs] = useState([]);
 
   console.log("imagesss:: ", allImages);
 
@@ -307,10 +309,12 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
       });
     }
 
-    // Append other project data to the FormData object
-    // Object.entries(projectData).forEach(([key, value]) => {
-    //   formData.append(key, value);
-    // });
+    if (allDocs?.length > 0) {
+      // Append each document to the FormData object
+      allDocs.forEach((doc, index) => {
+        formData.append(`documents[${index}]`, doc);
+      });
+    }
 
     Object.entries(projectData).forEach(([key, value]) => {
       // Check if the value is an array (e.g., bedrooms)
@@ -831,11 +835,11 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                           >
                             <span>{t("button_upload_document")}</span>
                           </Button>
-                          {/* <p className="text-primary mt-2 italic">
-                          {allDocs?.length > 0
-                            ? `${allDocs?.length} documents selected.`
-                            : null}
-                        </p> */}
+                          <p className="text-primary mt-2 italic">
+                            {allDocs?.length > 0
+                              ? `${allDocs?.length} documents selected.`
+                              : null}
+                          </p>
                         </label>
                       </div>
 
@@ -884,14 +888,14 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                     setAllImages={setAllImages}
                   />
                 )}
-                {/* {documentModal && (
-                  <AddDocumentModal
+                {documentModal && (
+                  <PropertyDocModal
                     documentModal={documentModal}
                     handleClose={() => setDocumentModal(false)}
                     allDocs={allDocs}
                     setAllDocs={setAllDocs}
                   />
-                )} */}
+                )}
               </>
             )}
           </div>
