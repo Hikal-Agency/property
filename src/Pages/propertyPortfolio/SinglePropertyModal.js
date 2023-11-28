@@ -29,8 +29,15 @@ import SingleDocModal from "../listings/SingleDocModal";
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
 import EditPropertyModal from "./EditPropertyModal";
+import PropertyDocModal from "./PropertyDocumentUpload";
+import PropertyImageUpload from "./PropertyImageUpload";
 
-const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
+const SinglePropertyModal = ({
+  ListingData,
+  setOpenModal,
+  openModal,
+  FetchProperty,
+}) => {
   console.log("single property data::: ", openModal);
   let project = openModal?.project;
   const [loading, setloading] = useState(false);
@@ -65,6 +72,10 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
     i18n,
     User,
   } = useStateContext();
+  const [allImages, setAllImages] = useState([]);
+  const [allDocs, setAllDocs] = useState([]);
+
+  const [documentModal, setDocumentModal] = useState(false);
 
   const [isClosing, setIsClosing] = useState(false);
   const handleClose = () => {
@@ -300,22 +311,22 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                             </Tooltip>
 
                             {/* UPLOAD PICTURES  */}
-                            <Tooltip title="Upload Pictures" arrow>
+                            {/* <Tooltip title="Upload Pictures" arrow>
                               <IconButton
                                 onClick={() =>
                                   setSelectImagesModal({
                                     isOpen: true,
-                                    listingId: lid,
+                                    listingId: project?.id,
                                   })
                                 }
                                 className={`rounded-full bg-btn-primary`}
                               >
                                 <BsImages size={16} color={"#FFFFFF"} />
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
 
                             {/* UPLOAD DOCUMENTS  */}
-                            <Tooltip title="Upload Documents" arrow>
+                            {/* <Tooltip title="Upload Documents" arrow>
                               <IconButton
                                 onClick={() =>
                                   setSelectDocumentModal({
@@ -327,7 +338,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                               >
                                 <BsFiles size={16} color={"#FFFFFF"} />
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
 
                             <div className="mx-1"></div>
 
@@ -575,19 +586,21 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                 )}
 
                 {selectImagesModal?.isOpen && (
-                  <SelectImagesModal
-                    fetchSingleListing={fetchSingleListing}
+                  <PropertyImageUpload
                     selectImagesModal={selectImagesModal}
                     handleClose={() => setSelectImagesModal({ isOpen: false })}
+                    allImages={allImages}
+                    setAllImages={setAllImages}
+                    update="update"
+                    project={project}
                   />
                 )}
                 {selectDocumentModal?.isOpen && (
-                  <SelectDocumentModal
-                    fetchSingleListing={fetchSingleListing}
-                    selectDocumentModal={selectDocumentModal}
-                    handleClose={() =>
-                      setSelectDocumentModal({ isOpen: false })
-                    }
+                  <PropertyDocModal
+                    documentModal={documentModal}
+                    handleClose={() => setDocumentModal(false)}
+                    allDocs={allDocs}
+                    setAllDocs={setAllDocs}
                   />
                 )}
                 {openEdit && (
@@ -596,6 +609,7 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                     openEdit={project}
                     setOpenModal={setOpenModal}
                     handleClose={() => setOpenEdit(false)}
+                    FetchProperty={FetchProperty}
                   />
                 )}
               </>
