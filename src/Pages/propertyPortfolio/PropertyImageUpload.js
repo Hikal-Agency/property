@@ -23,6 +23,7 @@ const PropertyImageUpload = ({
   handleClose,
   allImages,
   setAllImages,
+  update,
 }) => {
   const { currentMode, BACKEND_URL } = useStateContext();
 
@@ -64,84 +65,84 @@ const PropertyImageUpload = ({
     setImagePreviews(updatedPreviews);
   };
 
-  //   const handleUploadImages = async () => {
-  //     try {
-  //       setbtnloading(true);
+  const handleUploadImages = async () => {
+    try {
+      setbtnloading(true);
 
-  //       // Simulate image uploading delay (remove this in production)
-  //       await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Simulate image uploading delay (remove this in production)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  //       // const options = {
-  //       //   maxSizeMB: 1,
-  //       //   maxWidthOrHeight: 1920,
-  //       // };
+      // const options = {
+      //   maxSizeMB: 1,
+      //   maxWidthOrHeight: 1920,
+      // };
 
-  //       const ImageData = new FormData();
-  //       ImageData.append("id", selectImagesModal?.listingId);
+      const ImageData = new FormData();
+      ImageData.append("id", selectImagesModal?.listingId);
 
-  //       // allImages?.forEach((image) => {
-  //       //   ImageData.append("img_name", image);
-  //       // })
+      // allImages?.forEach((image) => {
+      //   ImageData.append("img_name", image);
+      // })
 
-  //       allImages?.forEach((image, index) => {
-  //         ImageData.append(`img_name[${index}]`, image);
-  //       });
+      allImages.forEach((image, index) => {
+        ImageData.append(`images[${index}]`, image);
+      });
 
-  //       const token = localStorage.getItem("auth-token");
-  //       await axios
-  //         .post(
-  //           `${BACKEND_URL}/listings/${selectImagesModal?.listingId}`,
-  //           ImageData,
-  //           {
-  //             headers: {
-  //               "Content-Type": "multipart/form-data",
-  //               Authorization: "Bearer " + token,
-  //             },
-  //           }
-  //         )
-  //         .then((result) => {
-  //           setbtnloading(false);
-  //           toast.success("Image uploaded successfuly", {
-  //             position: "top-right",
-  //             autoClose: 3000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           });
-  //           handleClose();
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //           setbtnloading(false);
-  //           toast.error("Something went wrong! Please Try Again", {
-  //             position: "top-right",
-  //             autoClose: 3000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           });
-  //         });
-  //     } catch (error) {
-  //       console.error(error);
-  //       setbtnloading(false);
-  //       toast.error("Something went wrong! Please try again", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     }
-  //   };
+      const token = localStorage.getItem("auth-token");
+      await axios
+        .post(
+          `${BACKEND_URL}/projects/${selectImagesModal?.listingId}`,
+          ImageData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: "Bearer " + token,
+            },
+          }
+        )
+        .then((result) => {
+          setbtnloading(false);
+          toast.success("Image uploaded successfuly", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          handleClose();
+        })
+        .catch((err) => {
+          console.log(err);
+          setbtnloading(false);
+          toast.error("Something went wrong! Please Try Again", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+    } catch (error) {
+      console.error(error);
+      setbtnloading(false);
+      toast.error("Something went wrong! Please try again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const handleAddMoreImages = () => {
     if (allImages.length < 10) {
@@ -252,6 +253,9 @@ const PropertyImageUpload = ({
               if (allImages?.length === 0) {
                 imagesInputRef.current?.click();
               } else {
+                // if (update) {
+                //   handleUploadImages();
+                // }
                 handleClose();
               }
             }}

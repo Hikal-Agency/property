@@ -41,6 +41,7 @@ const PropertyPortfolio = () => {
   const [loading, setLoading] = useState(false);
   const [openAddProject, setOpenAddProject] = useState(false);
   const [openModal, setOpenModal] = useState({ open: false });
+  const token = localStorage.getItem("auth-token");
 
   const handleSearchQueryChange = (event) => {
     setSearchQuery(event.target.value);
@@ -51,7 +52,7 @@ const PropertyPortfolio = () => {
     setOpenModal({ open: true, project: data, developer: developer });
   };
 
-  const FetchProperty = async (token) => {
+  const FetchProperty = async () => {
     await axios
       .get(`${BACKEND_URL}/dev-with-projects`, {
         headers: {
@@ -507,6 +508,7 @@ const PropertyPortfolio = () => {
         <SinglePropertyModal
           openModal={openModal}
           setOpenModal={setOpenModal}
+          FetchProperty={FetchProperty}
         />
       )}
     </>

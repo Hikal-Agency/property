@@ -27,13 +27,20 @@ import { useEffect, useState } from "react";
 import ListingLocation from "./PortfolioLocation";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
+import PropertyImageUpload from "./PropertyImageUpload";
+import PropertyDocModal from "./PropertyDocumentUpload";
 
 const style = {
   transform: "translate(0%, 0%)",
   boxShadow: 24,
 };
 
-const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
+const EditPropertyModal = ({
+  openEdit,
+  setOpenEdit,
+  setOpenModal,
+  FetchProperty,
+}) => {
   console.log("edit porperty ::: ", openEdit);
   const LeadData = openEdit;
   const token = localStorage.getItem("auth-token");
@@ -43,9 +50,20 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
     useStateContext();
   const [developer, setDeveloper] = useState([]);
 
+  const [documentModal, setDocumentModal] = useState(false);
+
+  const [selectImagesModal, setSelectImagesModal] = useState({
+    isOpen: false,
+    listingId: null,
+  });
+  const [allImages, setAllImages] = useState([]);
+  const [allDocs, setAllDocs] = useState([]);
+
+  console.log("update images::: ", allImages);
+  console.log("update docs::: ", allDocs);
+
   const [loading, setloading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
-  const [displayMap, setDisplayMap] = useState(false);
   const [listingLocation, setListingLocation] = useState({
     lat: parseFloat(splitLocation[0]),
     lng: parseFloat(splitLocation[1]),
@@ -91,9 +109,6 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
       }
     });
   };
-
-  const [value, setValue] = useState();
-  const [error, setError] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -193,7 +208,7 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
       });
   };
 
-  const submitListing = async (e) => {
+  const updateProperty = async (e) => {
     setBtnLoading(true);
     e.preventDefault();
 
@@ -229,6 +244,24 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
 
     const Data = new FormData();
 
+    if (allImages?.length > 0) {
+      // Append each image to the FormData object
+
+      allImages.forEach((image, index) => {
+        console.log("appending images::: ", image);
+
+        Data.append(`images[${index}]`, image);
+      });
+    }
+
+    if (allDocs?.length > 0) {
+      // Append each document to the FormData object
+      allDocs.forEach((doc, index) => {
+        console.log("appending documents::: ", doc);
+        Data.append(`documents[${index}]`, doc);
+      });
+    }
+
     Object.entries(projectData).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         value.forEach((item, index) => {
@@ -245,7 +278,7 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
         Data,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: "Bearer " + token,
           },
         }
@@ -265,6 +298,7 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
       });
 
       handleClose();
+      FetchProperty();
       //   fetchSingleListing();
     } catch (error) {
       console.error("Error:", error);
@@ -281,16 +315,6 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
         theme: "light",
       });
     }
-  };
-
-  const handleCurrentLocationClick = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setListingLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-        addressText: "", // You may want to update this if you have an address
-      });
-    });
   };
 
   useEffect(() => {
@@ -346,15 +370,7 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
               className=" hover:border hover:border-white hover:rounded-full"
             />
           </button>
-          {/* <div
-              style={style}
-              className={`overflow-y-scroll md:w-[70%] border-2 border-solid shadow-lg  ${
-                currentMode === "dark"
-                  ? "bg-black border-gray-800"
-                  : "bg-white border-gray-200"
-              }                p-4 h-[100vh] w-[80vw] overflow-y-scroll
-              `}
-            > */}
+
           <div
             style={style}
             className={` ${
@@ -513,7 +529,7 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
                         type={"text"}
                         label={t("form_project_360View")}
                         className="w-full"
-                        name="area"
+                        name="tourLink"
                         sx={{
                           "&": {
                             marginBottom: "1.25rem !important",
@@ -670,6 +686,60 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
                           </FormGroup>
                         </FormControl>
                       </div>
+
+                      <div className="min-w-fit w-full flex justify-center mr-4 items-center my-4 space-x-5">
+                        <label htmlFor="contained-button-file">
+                          <Button
+                            variant="contained"
+                            size="lg"
+                            className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                            onClick={() =>
+                              setSelectImagesModal({
+                                isOpen: true,
+                              })
+                            }
+                            style={{
+                              // backgroundColor: "#111827",
+                              color: "#ffffff",
+                              // border: "1px solid #DA1F26",
+                            }}
+                            component="span"
+                            disabled={loading ? true : false}
+                            // startIcon={loading ? null : <MdFileUpload />}
+                          >
+                            <span>{t("button_upload_image")}</span>
+                          </Button>
+                          {/* <p className="text-primary mt-2 italic">
+                          {allImages?.length > 0
+                            ? `${allImages?.length} images selected.`
+                            : null}
+                        </p> */}
+                        </label>
+
+                        <label htmlFor="contained-button-document">
+                          <Button
+                            variant="contained"
+                            size="lg"
+                            className="min-w-fit bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
+                            style={{
+                              color: "#ffffff",
+                            }}
+                            onClick={() => {
+                              setDocumentModal(true);
+                            }}
+                            component="span"
+                            disabled={loading ? true : false}
+                            // startIcon={loading ? null : <MdFileUpload />}
+                          >
+                            <span>{t("button_upload_document")}</span>
+                          </Button>
+                          <p className="text-primary mt-2 italic">
+                            {allDocs?.length > 0
+                              ? `${allDocs?.length} documents selected.`
+                              : null}
+                          </p>
+                        </label>
+                      </div>
                     </Box>
                   </div>
                 </div>
@@ -779,7 +849,7 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
                       width: "100%",
                       borderRadius: "6px",
                     }}
-                    onClick={submitListing}
+                    onClick={updateProperty}
                   >
                     {btnLoading ? (
                       <CircularProgress
@@ -794,6 +864,22 @@ const EditPropertyModal = ({ openEdit, setOpenEdit, setOpenModal }) => {
                 </div>
               </form>
             </div>
+            {selectImagesModal?.isOpen && (
+              <PropertyImageUpload
+                selectImagesModal={selectImagesModal}
+                handleClose={() => setSelectImagesModal({ isOpen: false })}
+                allImages={allImages}
+                setAllImages={setAllImages}
+              />
+            )}
+            {documentModal && (
+              <PropertyDocModal
+                documentModal={documentModal}
+                handleClose={() => setDocumentModal(false)}
+                allDocs={allDocs}
+                setAllDocs={setAllDocs}
+              />
+            )}
           </div>
         </div>
       </Modal>
