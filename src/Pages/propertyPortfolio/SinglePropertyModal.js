@@ -28,6 +28,7 @@ import SingleImageModal from "../listings/SingleImageModal";
 import SingleDocModal from "../listings/SingleDocModal";
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
+import EditPropertyModal from "./EditPropertyModal";
 
 const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
   console.log("single property data::: ", openModal);
@@ -65,10 +66,6 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
     User,
   } = useStateContext();
 
-  const handleEdit = () => {
-    setOpenEdit(listData);
-  };
-
   const [isClosing, setIsClosing] = useState(false);
   const handleClose = () => {
     setIsClosing(true);
@@ -80,6 +77,16 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
     }, 1000);
   };
 
+  const handleEdit = () => {
+    setOpenEdit(listData);
+
+    // setTimeout(() => {
+    //   setIsClosing(false);
+    //   setOpenModal({
+    //     open: false,
+    //   });
+    // }, 1000);
+  };
   // const { lid } = useParams();
   const lid = ListingData;
   console.log("lid ===================", lid);
@@ -584,10 +591,10 @@ const SinglePropertyModal = ({ ListingData, setOpenModal, openModal }) => {
                   />
                 )}
                 {openEdit && (
-                  <EditListingModal
+                  <EditPropertyModal
                     setOpenEdit={setOpenEdit}
-                    openEdit={openEdit}
-                    fetchSingleListing={fetchSingleListing}
+                    openEdit={project}
+                    setOpenModal={setOpenModal}
                     handleClose={() => setOpenEdit(false)}
                   />
                 )}
