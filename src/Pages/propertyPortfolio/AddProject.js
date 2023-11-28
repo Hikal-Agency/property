@@ -811,11 +811,11 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                           >
                             <span>{t("button_upload_image")}</span>
                           </Button>
-                          {/* <p className="text-primary mt-2 italic">
-                          {allImages?.length > 0
-                            ? `${allImages?.length} images selected.`
-                            : null}
-                        </p> */}
+                          <p className="text-primary mt-2 italic">
+                            {allImages?.length > 0
+                              ? `${allImages?.length} images selected.`
+                              : null}
+                          </p>
                         </label>
 
                         <label htmlFor="contained-button-document">
