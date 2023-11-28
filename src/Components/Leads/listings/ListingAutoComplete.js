@@ -63,6 +63,7 @@ const ListingAutoComplete = ({
 
   useEffect(() => {
     setValue(defaultLocation);
+    console.log("addres suggestion is changed:: ", value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultLocation]);
 

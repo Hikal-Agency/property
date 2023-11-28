@@ -70,12 +70,14 @@ const EditPropertyModal = ({
     addressText: LeadData?.location || "",
   });
   const [isClosing, setIsClosing] = useState(false);
-  const handleClose = () => {
+  const handleClose = (close) => {
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
       setOpenEdit(false);
-      setOpenModal({ open: false });
+      if (close !== "close") {
+        setOpenModal({ open: false });
+      }
     }, 1000);
   };
 
@@ -358,7 +360,7 @@ const EditPropertyModal = ({
             w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
-            onClick={handleClose}
+            onClick={() => handleClose("close")}
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
             }
