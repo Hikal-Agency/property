@@ -5,13 +5,12 @@ import {
   CircularProgress,
   MenuItem,
   Modal,
-  Select,
   TextField,
   FormControl,
   IconButton,
   InputLabel,
 } from "@mui/material";
-
+import Select from "react-select";
 import axios from "../../axoisConfig";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -19,6 +18,8 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdClose } from "react-icons/md";
+import { enquiry_options, property_options, purpose_options } from "../_elements/SelectOptions";
+import { selectStyles } from "../_elements/SelectStyles";
 
 const UpdateBookedDeal = ({
   LeadModelOpen,
@@ -29,7 +30,7 @@ const UpdateBookedDeal = ({
   BACKEND_URL,
   FetchLeads,
 }) => {
-  const { darkModeColors, currentMode, User, t, isLangRTL, i18n } =
+  const { darkModeColors, currentMode, User, t, isLangRTL, i18n, primaryColor } =
     useStateContext();
   const [isClosing, setIsClosing] = useState(false);
 
@@ -64,16 +65,16 @@ const UpdateBookedDeal = ({
   const [LeadNotes, setLeadNotes] = useState("");
 
   //eslint-disable-next-line
-  const ChangeLeadStatus = (event) => {
-    setLeadStatus(event.target.value);
-  };
+  // const ChangeLeadStatus = (event) => {
+  //   setLeadStatus(event.target.value);
+  // };
   //eslint-disable-next-line
-  const ChangeLeadSource = (event) => {
-    setLeadSource(event.target.value);
-  };
-  const ChangeFeedback = (event) => {
-    setFeedback(event.target.value);
-  };
+  // const ChangeLeadSource = (event) => {
+  //   setLeadSource(event.target.value);
+  // };
+  // const ChangeFeedback = (event) => {
+  //   setFeedback(event.target.value);
+  // };
 
   const handleClose = () => {
     setIsClosing(true);
@@ -84,32 +85,32 @@ const UpdateBookedDeal = ({
   };
 
   //eslint-disable-next-line
-  const ChangeManager = (event) => {
-    setManager(event.target.value);
-    const SalesPersons = Manager2.filter(function (el) {
-      return el.uid === event.target.value;
-    });
-    setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
-  };
-  //eslint-disable-next-line
-  const ChangeSalesPerson = (event) => {
-    setSalesPerson2(event.target.value);
-  };
+  // const ChangeManager = (event) => {
+  //   setManager(event.target.value);
+  //   const SalesPersons = Manager2.filter(function (el) {
+  //     return el.uid === event.target.value;
+  //   });
+  //   setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
+  // };
+  // //eslint-disable-next-line
+  // const ChangeSalesPerson = (event) => {
+  //   setSalesPerson2(event.target.value);
+  // };
 
-  const ChangeLanguagePrefered = (e) => {
-    setLanguagePrefered(e.target.value);
-  };
+  // const ChangeLanguagePrefered = (e) => {
+  //   setLanguagePrefered(e.target.value);
+  // };
 
   const ChangeEnquiryType = (e) => {
-    setEnquiryType(e.target.value);
+    setEnquiryType(e.value);
   };
 
   const ChangePropertyType = (e) => {
-    setPropertyType(e.target.value);
+    setPropertyType(e.value);
   };
 
   const ChangeForType = (e) => {
-    setForType(e.target.value);
+    setForType(e.value);
   };
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
@@ -196,17 +197,17 @@ const UpdateBookedDeal = ({
     const UpdateLeadData = new FormData();
     // UpdateLeadData.append("id", User.id);
     UpdateLeadData.append("id", LeadData.leadId);
-    UpdateLeadData.append("leadName", LeadName);
-    UpdateLeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
-    UpdateLeadData.append("leadEmail", LeadEmail);
+    // UpdateLeadData.append("leadName", LeadName);
+    // UpdateLeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
+    // UpdateLeadData.append("leadEmail", LeadEmail);
     UpdateLeadData.append("enquiryType", EnquiryType);
     UpdateLeadData.append("leadType", PropertyType);
     UpdateLeadData.append("project", LeadProject);
     UpdateLeadData.append("booked_amount", booked_amount);
     UpdateLeadData.append("leadFor", ForType);
-    UpdateLeadData.append("language", LanguagePrefered);
-    UpdateLeadData.append("feedback", Feedback);
-    UpdateLeadData.append("leadStatus", LeadStatus);
+    // UpdateLeadData.append("language", LanguagePrefered);
+    // UpdateLeadData.append("feedback", Feedback);
+    // UpdateLeadData.append("leadStatus", LeadStatus);
     // UpdateLeadData.append("leadSource", LeadSource);
     // UpdateLeadData.append("notes", LeadNotes);
     // UpdateLeadData.append("assignedToManager", Manager);
@@ -302,21 +303,10 @@ const UpdateBookedDeal = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            } ${currentMode === "dark" && (isLangRTL(i18n.language) ? "border-r-2 border-primary" : "border-l-2 border-primary")}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
             `}
           >
-            {/* <IconButton
-              sx={{
-                position: "absolute",
-                right: 12,
-                top: 10,
-                color: (theme) => theme.palette.grey[500],
-              }}
-              onClick={handleClose}
-            >
-              <IoMdClose size={18} />
-            </IconButton> */}
             {loading ? (
               <div className="">
                 <CircularProgress size={20} />
@@ -326,7 +316,7 @@ const UpdateBookedDeal = ({
                   }`}
                 >
                   {" "}
-                  Fetching Your Lead
+                  Fetching your data
                 </span>
               </div>
             ) : (
@@ -338,7 +328,7 @@ const UpdateBookedDeal = ({
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
-                    Update Booked Deal Details
+                    {t("update_booked_deal")}
                   </h1>
                 </div>
 
@@ -359,8 +349,8 @@ const UpdateBookedDeal = ({
                           variant="outlined"
                           size="small"
                           value={booked_amount}
-                          sx={{
-                            marginBottom: "1.35rem !important",
+                          style={{
+                            marginBottom: "20px",
                           }}
                           onChange={(e) => setBookedAmount(e.target.value)}
                         />
@@ -373,13 +363,31 @@ const UpdateBookedDeal = ({
                           variant="outlined"
                           size="small"
                           value={LeadProject}
-                          sx={{
-                            marginBottom: "1.35rem !important",
+                          style={{
+                            marginBottom: "20px",
                           }}
                           onChange={(e) => setLeadProject(e.target.value)}
                         />
 
-                        <FormControl fullWidth variant="outlined" size="medium">
+                        {/* ENQUIRY TYPE  */}
+                        <Select
+                          id="enquiry"
+                          value={EnquiryType
+                            ? {
+                              value: enquiry_options(t).find((option) => option.value === EnquiryType),
+                              label: enquiry_options(t).find((option) => option.value === EnquiryType).label
+                            }
+                            : null
+                          }
+                          onChange={ChangeEnquiryType}
+                          options={enquiry_options(t)}
+                          placeholder={t("label_enquiry")}
+                          className="w-full"
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+
+                        {/* <FormControl fullWidth variant="outlined" size="medium">
                           <InputLabel id="">Enquiry for</InputLabel>
                           <Select
                             id="enquiry"
@@ -407,9 +415,26 @@ const UpdateBookedDeal = ({
                             <MenuItem value={"Retail"}>Retail</MenuItem>
                             <MenuItem value={"Other"}>Others</MenuItem>
                           </Select>
-                        </FormControl>
+                        </FormControl> */}
 
-                        <FormControl fullWidth variant="outlined" size="medium">
+                        {/* PROPERTY TYPE  */}
+                        <Select
+                          id="property-type"
+                          value={PropertyType
+                            ? {
+                              value: property_options(t).find((option) => option.value === PropertyType),
+                              label: property_options(t).find((option) => option.value === PropertyType).label
+                            }
+                            : null
+                          }
+                          onChange={ChangePropertyType}
+                          options={property_options(t)}
+                          placeholder={t("label_property")}
+                          className="w-full"
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                        {/* <FormControl fullWidth variant="outlined" size="medium">
                           <InputLabel id="">Property type</InputLabel>
                           <Select
                             id="property-type"
@@ -434,9 +459,26 @@ const UpdateBookedDeal = ({
                             <MenuItem value={"Commercial"}>Commercial</MenuItem>
                             <MenuItem value={"Townhouse"}>Townhouse</MenuItem>
                           </Select>
-                        </FormControl>
+                        </FormControl> */}
 
-                        <FormControl fullWidth variant="outlined" size="medium">
+                        {/* PURPOSE  */}
+                        <Select
+                          id="for"
+                          value={ForType
+                            ? {
+                              value: purpose_options(t).find((option) => option.value === ForType),
+                              label: purpose_options(t).find((option) => option.value === ForType).label
+                            }
+                            : null
+                          }
+                          onChange={ChangeForType}
+                          options={purpose_options(t)}
+                          placeholder={t("label_purpose_of_enquiry")}
+                          className="w-full"
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                        {/* <FormControl fullWidth variant="outlined" size="medium">
                           <InputLabel id="">Purpose of enquiry</InputLabel>
                           <Select
                             id="for"
@@ -457,43 +499,9 @@ const UpdateBookedDeal = ({
                             <MenuItem value={"Investment"}>Investment</MenuItem>
                             <MenuItem value={"End-user"}>End-User</MenuItem>
                           </Select>
-                        </FormControl>
+                        </FormControl> */}
                       </Box>
                     </div>
-
-                    {/* <div>
-                    <Box sx={darkModeColors}>
-                      <h4
-                        className={`${
-                          currentMode === "dark"
-                            ? "text-red-600"
-                            : "text-red-600"
-                        } text-center font-bold pb-5`}
-                      >
-                        Status
-                      </h4>
-
-                      <FormControl fullWidth variant="outlined" size="medium">
-                        <InputLabel id="">Feedback</InputLabel>
-                        <Select
-                          id="for"
-                          value={Feedback}
-                          label="Feedback"
-                          onChange={ChangeFeedback}
-                          className="w-full mb-5"
-                          displayEmpty
-                          required
-                        >
-                          <MenuItem value="" disabled>
-                            ---NONE---
-                          </MenuItem>
-                          <MenuItem value={"Closed Deal"}>Closed Deal</MenuItem>
-                          <MenuItem value={"Booked"}>Booked</MenuItem>
-                          <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </div> */}
                   </div>
 
                   <Button

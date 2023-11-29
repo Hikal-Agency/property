@@ -5,12 +5,12 @@ import {
   Dialog,
   IconButton,
   MenuItem,
-  Select,
   InputAdornment,
   TextField,
   FormControl,
   Tooltip,
 } from "@mui/material";
+import Select from "react-select";
 import usePermission from "../../utils/usePermission";
 import {
   DataGrid,
@@ -76,6 +76,9 @@ import {
 import { TbWorldWww } from "react-icons/tb";
 import moment from "moment";
 import DeleteLeadModel from "./DeleteLead";
+import { pageStyles, renderStyles } from "../_elements/SelectStyles";
+import { renderOTPIcons } from "../_elements/OTPIconsDataGrid";
+import { renderSourceIcons } from "../_elements/SourceIconsDataGrid";
 
 const BookedDeals = ({
   BACKEND_URL,
@@ -137,7 +140,7 @@ const BookedDeals = ({
 
 
   const handleRangeChange = (e) => {
-    const value = e.target.value;
+    const value = e.value;
 
     setPageRange(value);
 
@@ -165,23 +168,6 @@ const BookedDeals = ({
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
     setTimelineModelOpen(true);
-  };
-
-  const SelectStyles = {
-    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
-      {
-        color: currentMode === "dark" ? "white" : "black",
-        // borderColor: currentMode === "dark" ? "white" : "black",
-        fontSize: "0.9rem",
-        fontWeight: "500",
-        // borderLeft: currentMode === "dark" ? "1px solid white" : "1px solid black",
-        // borderRight: currentMode === "dark" ? "1px solid white" : "1px solid black",
-        border: "none",
-      },
-    "& .MuiOutlinedInput-notchedOutline": {
-      // borderColor: currentMode === "dark" ? "white" : "black",
-      border: "none",
-    },
   };
 
   const RenderFeedback = ({ cellValues }) => {
@@ -288,10 +274,27 @@ const BookedDeals = ({
 
     return (
       <Box
-        className={`w-full h-full flex items-center justify-center`}
-        sx={SelectStyles}
+        className={`renderDD w-full h-full flex items-center justify-center`}
       >
-        <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
+        <Select
+          id="feedback"
+          value={
+            Feedback
+              ? { label: Feedback, value: Feedback }
+              : null
+          }
+          onChange={(selectedOption) => ChangeFeedback(selectedOption?.value || null)}
+          options={[
+            { label: t("feedback_booked"), value: "Booked" },
+            { label: t("feedback_closed"), value: "Closed Deal" },
+            { label: t("feedback_cancelled"), value: "Dead" },
+          ]}
+          placeholder={`---${t("label_select")?.toUpperCase()}---`}
+          className="w-full"
+          menuPortalTarget={document.body}
+          styles={renderStyles(currentMode, primaryColor)}
+        />
+        {/* <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
           <Select
             id="feedback"
             value={Feedback}
@@ -321,7 +324,7 @@ const BookedDeals = ({
             <MenuItem value={"Closed Deal"}>{t("feedback_closed")}</MenuItem>
             <MenuItem value={"Dead"}>{t("feedback_cancelled")}</MenuItem>
           </Select>
-        </FormControl>
+        </FormControl> */}
         {DialogueVal && (
           <>
             <Dialog
@@ -665,7 +668,7 @@ const BookedDeals = ({
               <>-</>
             ) : (
               <>
-                AED {cellValues.row.booked_amount}
+                {cellValues.row.booked_amount}
               </>
             )}
           </div>
@@ -681,166 +684,16 @@ const BookedDeals = ({
       // headerClassName: headerClasses.header,
       headerClassName: "break-normal",
       flex: 1,
-      renderCell: (cellValues) => {
-        if (lead_origin === "transfferedleads") {
-          return (
-            <div style={{ fontSize: 11 }}>
-              <p>{cellValues.row.transferredFromName || "-"}</p>
-            </div>
-          );
-        } else {
-          return (
-            <div className="p-1 rounded-md">
-              {cellValues.formattedValue === "Verified" && (
-                <Tooltip title="Verified" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-[#238e41] p-1 text-center">
-                      <BsShieldCheck size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
-              )}
-
-              {cellValues.formattedValue === "Not Verified" && (
-                <Tooltip title="Not Verified" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-primary p-1 text-center">
-                      <BsShieldX size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
-              )}
-
-              {cellValues.formattedValue !== "Not Verified" &&
-                cellValues.formattedValue !== "Verified" && (
-                  <Tooltip title="No OTP used" arrow>
-                    <div
-                      className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                    >
-                      <span className="text-[#AAAAAA] p-1 text-center">
-                        <BsShieldMinus size={16} />
-                      </span>
-                    </div>
-                  </Tooltip>
-                )}
-            </div>
-          );
-        }
-      },
+      renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode)
     },
 
     {
       field: "leadSource",
       headerName: t("lead_source"),
       flex: 1,
-      minWidth: 30,
+      minWidth: 40,
       headerAlign: "center",
-      renderCell: (cellValues) => {
-        console.log("Start::", cellValues.row.leadSource);
-        const sourceIcons = {
-          "campaign snapchat": () => (
-            <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
-          ),
-
-          "campaign facebook": () => (
-            <FaFacebookF size={16} color={"#0e82e1"} className="p-1" />
-          ),
-
-          "campaign tiktok": () => (
-            <FaTiktok
-              size={16}
-              color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-              className="p-1"
-            />
-          ),
-
-          "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
-
-          "campaign youtube": () => (
-            <FaYoutube size={16} color={"#FF0000"} className="p-1" />
-          ),
-
-          "campaign twitter": () => (
-            <FaTwitter size={16} color={"#00acee"} className="p-1" />
-          ),
-
-          "bulk import": () => (
-            <BiImport size={16} className="p-1 text-primary" />
-          ),
-
-          "property finder": () => (
-            <GiMagnifyingGlass size={16} color={"#ef5e4e"} className="p-1" />
-          ),
-
-          campaign: () => (
-            <MdCampaign size={16} color={"#696969"} className="p-0.5" />
-          ),
-
-          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
-
-          personal: () => (
-            <BsPersonCircle size={16} color={"#6C7A89"} className="p-1" />
-          ),
-
-          whatsapp: () => (
-            <FaWhatsapp size={16} color={"#53cc60"} className="p-1" />
-          ),
-
-          message: () => (
-            <BiMessageRoundedDots
-              size={16}
-              color={"#6A5ACD"}
-              className="p-0.5"
-            />
-          ),
-
-          comment: () => (
-            <FaRegComments size={16} color={"#a9b3c6"} className="p-0.5" />
-          ),
-
-          website: () => (
-            <TbWorldWww size={16} color={"#AED6F1"} className="p-0.5" />
-          ),
-
-          self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
-        };
-        return (
-          <>
-            <div className="flex items-center justify-center">
-              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
-                <BiArchive
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#AEC6CF"}
-                  className="p-0.5"
-                />
-              ) : (
-                <Box
-                  sx={{
-                    "& svg": {
-                      width: "50%",
-                      height: "50%",
-                      margin: "0 auto",
-                    },
-                  }}
-                >
-                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
-                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
-                    : "-"}
-                </Box>
-              )}
-            </div>
-          </>
-        );
-      },
+      renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode)
     },
     {
       field: "language",
@@ -855,6 +708,7 @@ const BookedDeals = ({
       headerName: t("label_action"),
       flex: 1,
       minWidth: 100,
+      maxWidth: "auto",
       sortable: false,
       filterable: false,
       headerAlign: "center",
@@ -1206,7 +1060,10 @@ const BookedDeals = ({
 
   // ROW CLICK FUNCTION
   const handleRowClick = (params, event) => {
-    if (!event.target.closest(".deleteLeadBtn")) {
+    if (
+      !event.target.closest(".deleteLeadBtn") &&
+      !event.target.closest(".renderDD")
+    ) {
       setsingleLeadData(params.row);
       handleLeadModelOpen();
     }
@@ -1235,7 +1092,20 @@ const BookedDeals = ({
 
           <p className="mr-3">Rows Per Page</p>
 
-          <Select
+          <Select 
+            id="select-page-size-label"
+            value={{ label: pageState.pageSize, value: pageState.pageSize }}
+            onChange={handleRangeChange}
+            options={[14, 30, 50, 75, 100].map((size) => ({
+              label: size,
+              value: size,
+            }))}
+            className="min-w-[60px] my-2"
+            menuPortalTarget={document.body}
+            styles={pageStyles(currentMode, primaryColor)}
+          />
+
+          {/* <Select
             labelId="select-page-size-label"
             value={pageState.pageSize}
             onChange={handleRangeChange}
@@ -1258,7 +1128,7 @@ const BookedDeals = ({
                 {size}
               </MenuItem>
             ))}
-          </Select>
+          </Select> */}
 
           <Pagination
             sx={{

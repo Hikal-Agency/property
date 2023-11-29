@@ -5,9 +5,9 @@ import {
   FormControl,
   IconButton,
   MenuItem,
-  // Select,
 } from "@mui/material";
-import Select from "@mui/material/Select";
+// import Select from "@mui/material/Select";
+import Select from "react-select";
 import { Box } from "@mui/system";
 import { socket } from "../../Pages/App";
 import moment from "moment";
@@ -18,6 +18,11 @@ import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import UpdateLead from "./UpdateLead";
+import { renderStyles } from "../_elements/SelectStyles";
+
+import {
+  BsPersonCheck
+} from "react-icons/bs";
 
 const RenderManagers = ({ cellValues }) => {
   const [manager2, setmanager2] = useState(cellValues?.row?.assignedToManager);
@@ -36,7 +41,8 @@ const RenderManagers = ({ cellValues }) => {
     Managers,
     fetchSidebarData,
     User,
-    t
+    t,
+    primaryColor
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -63,16 +69,14 @@ const RenderManagers = ({ cellValues }) => {
     [cellValues?.row?.assignedToSales]
   );
 
-  // const ChangeManager = (e) => {
-  //   setnewManager(e.target.value);
-  //   setDialogue(true);
-  // };
   const ChangeManager = (e) => {
     console.log(manager2);
-    console.log("New Manager", e.target);
+    // console.log("New Manager", e.target);
+    console.log("New Manager", e.value);
 
     let selectedItem;
-    selectedItem = Managers.find((item) => item.id === Number(e.target.value));
+    // selectedItem = Managers.find((item) => item.id === Number(e.target.value));
+    selectedItem = Managers.find((item) => item.id === Number(e.value));
     setnewManager(selectedItem);
 
     let oldsales;
@@ -83,8 +87,8 @@ const RenderManagers = ({ cellValues }) => {
     let old_selectedItem;
 
     old_selectedItem = Managers.find((item) => item.id === Number(manager2));
-    console.log("old: ", old_selectedItem);
-    console.log("new: ", selectedItem);
+    // console.log("old: ", old_selectedItem);
+    // console.log("new: ", selectedItem);
 
     setDialogue(true);
     // setmanager2(old_selectedItem);
@@ -215,43 +219,37 @@ const RenderManagers = ({ cellValues }) => {
 
   return (
     <Box
-      className={` w-full h-full flex items-center justify-center`}
-      sx={SelectStyles}
+      className={`renderDD w-full h-full flex items-center justify-center`}
+      // sx={SelectStyles}
     >
-      {/* <Select
+      <Select 
         id="manager"
-        value={manager2 || ""}
-        label="Manager"
+        value={
+          String(manager2) === "1" || !manager2 || manager2 === "0"
+          ? null
+          : {
+            label: Managers.find(manager => manager.id === manager2)?.userName, 
+            value: manager2
+          }
+        }
         onChange={ChangeManager}
-        size="medium"
-        className="w-[100%] h-[75%]"
-        displayEmpty
-        required
-      >
-        <MenuItem value="0" disabled>
-          - - - - -
-        </MenuItem>
-        {/* {Managers.map((manager, index) => {
-          return (
-            <MenuItem key={index} value={manager?.id}>
-              {manager?.userName}
-            </MenuItem>
-          );
-        })} 
-        {Managers.length > 0 ? (
-          Managers.map((manager, index) => (
-            <MenuItem key={index} value={manager?.id}>
-              {manager?.userName}
-            </MenuItem>
-          ))
-        ) : (
-          <MenuItem value="">
-            <em>No manager</em>
-          </MenuItem>
-        )}
-      </Select> */}
+        options={[
+          {
+            label: "---", //"---" + t("label_manager") + "---",
+            value: null,
+          },
+          ...(Managers?.map((manager) => ({
+            label: manager.userName,
+            value: manager.id,
+          })) ?? []),
+        ]}
+        placeholder={t("label_manager")}
+        className={`w-full`}
+        menuPortalTarget={document.body}
+        styles={renderStyles(currentMode, primaryColor)}
+      />
 
-      <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
+      {/* <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
         <Select
           id="manager"
           // value={manager2 ?? "select_manager"}
@@ -284,9 +282,9 @@ const RenderManagers = ({ cellValues }) => {
               </MenuItem>
             ))}
         </Select>
-      </FormControl>
+      </FormControl>*/}
 
-      {Dialogue && (
+      {Dialogue && ( 
         <>
           <Dialog
             sx={{
@@ -295,7 +293,7 @@ const RenderManagers = ({ cellValues }) => {
               },
               "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
                 {
-                  backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                  // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
                 },
             }}
             open={Dialogue}
@@ -314,20 +312,20 @@ const RenderManagers = ({ cellValues }) => {
             >
               <IoMdClose size={18} />
             </IconButton>
-            <div className="px-10 py-5">
+            <div className={`px-10 py-5 ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-white text-black"}`}>
               <div className="flex flex-col justify-center items-center">
-                <IoIosAlert
+                <BsPersonCheck
                   size={50}
                   className="text-primary text-2xl"
                 />
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   {t("want_to_change_manager")}{" "}{t("from")}{" "}
-                  <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                  <span className="text-sm bg-gray-500 px-2 py-1 rounded-md font-bold">
                     {Managers.find((item) => item.id === Number(manager2))
                       ?.userName ?? "No manager"}
                   </span>{" "}
                   {t("to")}{" "}
-                  <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                  <span className="text-sm bg-primary px-2 py-1 rounded-md font-bold">
                     {newManager?.userName}
                     {/* //{" "}
                     {
@@ -349,13 +347,13 @@ const RenderManagers = ({ cellValues }) => {
               </div>
               <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                 <Button
-                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                  className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                   ripple={true}
                   size="lg"
                   onClick={() => UpdateManager(cellValues)}
                 >
                   {btnloading ? (
-                    <CircularProgress size={18} sx={{ color: "white" }} />
+                    <CircularProgress size={16} sx={{ color: "white" }} />
                   ) : (
                     <span>{t("confirm")}</span>
                   )}
@@ -365,10 +363,10 @@ const RenderManagers = ({ cellValues }) => {
                   onClick={() => setDialogue(false)}
                   ripple={true}
                   variant="outlined"
-                  className={`shadow-none  rounded-md text-sm  ${
+                  className={`shadow-none p-3 rounded-md text-sm  ${
                     currentMode === "dark"
                       ? "text-white border-white"
-                      : "text-primary border-primary"
+                      : "text-black border-black"
                   }`}
                 >
                   {t("cancel")}

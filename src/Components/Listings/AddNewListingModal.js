@@ -1,3 +1,11 @@
+import { useEffect, useState } from "react";
+import PhoneInput, {
+  formatPhoneNumberIntl,
+  isValidPhoneNumber,
+  isPossiblePhoneNumber,
+} from "react-phone-number-input";
+import { toast } from "react-toastify";
+import Select from "react-select";
 import {
   Modal,
   Backdrop,
@@ -9,22 +17,25 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import PhoneInput, {
-  formatPhoneNumberIntl,
-  isValidPhoneNumber,
-  isPossiblePhoneNumber,
-} from "react-phone-number-input";
 import classNames from "classnames";
-import { IoMdClose } from "react-icons/io";
-import { useStateContext } from "../../context/ContextProvider";
-import { useEffect, useState } from "react";
 import ListingLocation from "../Leads/listings/ListingLocation";
-import { MdFileUpload } from "react-icons/md";
 import axios from "../../axoisConfig";
-import { toast } from "react-toastify";
 import AddImageModal from "../../Pages/listings/AddImageModal";
 import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
-import { MdClose } from "react-icons/md";
+import { useStateContext } from "../../context/ContextProvider";
+import { selectStyles } from "../_elements/SelectStyles";
+import { 
+  property_options, 
+  enquiry_options,
+  bathroom_options,
+  listing_options
+} from "../_elements/SelectOptions";
+
+import { 
+  MdFileUpload,
+  MdClose 
+} from "react-icons/md";
+
 const style = {
   transform: "translate(0%, 0%)",
   boxShadow: 24,
@@ -35,7 +46,7 @@ const AddNewListingModal = ({
   setListingModalOpen,
   handleCloseListingModal,
 }) => {
-  const { currentMode, darkModeColors, User, BACKEND_URL, t, isLangRTL, i18n } =
+  const { currentMode, darkModeColors, User, BACKEND_URL, t, isLangRTL, i18n, primaryColor } =
     useStateContext();
   const [loading, setloading] = useState(false);
   const [displayMap, setDisplayMap] = useState(false);
@@ -107,7 +118,7 @@ const AddNewListingModal = ({
 
     setProjectDetails((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value.value ? value.value : value,
     }));
   };
 
@@ -116,7 +127,7 @@ const AddNewListingModal = ({
 
     setOtherDetails((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value.value ? value.value : value,
     }));
   };
 
@@ -436,7 +447,7 @@ const AddNewListingModal = ({
                 disabled={loading ? true : false}
               >
                 <div className="grid grid-cols-1 mt-5 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 px-4 md:px-10 ">
-                  <div className="px-1">
+                  <div className="px-3">
                     <Box sx={darkModeColors}>
                       <h4
                         className={`${
@@ -446,16 +457,15 @@ const AddNewListingModal = ({
                         {t("label_seller_details")}
                       </h4>
 
+                      {/* SELLER NAME  */}
                       <TextField
                         id="legalName"
                         type={"text"}
                         label={t("label_legal_name")}
                         name="leadName"
                         className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px"
                         }}
                         variant="outlined"
                         size="small"
@@ -463,7 +473,8 @@ const AddNewListingModal = ({
                         value={removeNull(sellerDetails?.leadName)}
                         onChange={handleChange}
                       />
-
+                      
+                      {/* CONTACT NUMBER  */}
                       <PhoneInput
                         placeholder={t("label_contact_number")}
                         onChange={(value) => setValue(value)}
@@ -477,13 +488,14 @@ const AddNewListingModal = ({
                         })} mb-5`}
                         size="small"
                         style={{
+                          marginBottom: "20px",
                           background: `${
                             currentMode === "dark" ? "#000000" : "#fff"
                           }`,
                           "& .PhoneInputCountryIconImg": {
                             color: "#fff",
                           },
-                          color: "#808080",
+                          color: "#AAAAAA",
                           border: `1px solid ${
                             currentMode === "dark" ? "#fff" : "#ccc"
                           }`,
@@ -502,32 +514,31 @@ const AddNewListingModal = ({
                         </Typography>
                       )}
 
+                      {/* EMAIL  */}
                       <TextField
                         id="notes"
                         type={"text"}
                         label={t("label_email")}
                         name="leadEmail"
                         className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px"
                         }}
                         variant="outlined"
                         size="small"
                         value={removeNull(sellerDetails?.leadEmail)}
                         onChange={handleChange}
                       />
+
+                      {/* PRICE  */}
                       <TextField
                         id="notes"
                         type={"text"}
                         label={t("label_property_price")}
                         className="w-full"
                         name="propertyPrice"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px"
                         }}
                         variant="outlined"
                         size="small"
@@ -538,7 +549,7 @@ const AddNewListingModal = ({
                     </Box>
                   </div>
 
-                  <div className="px-4">
+                  <div className="px-3">
                     <Box sx={darkModeColors}>
                       <h4
                         className={`${
@@ -548,49 +559,29 @@ const AddNewListingModal = ({
                         {t("project_details")}
                       </h4>
 
-                      <TextField
+                      {/* PROPERTY TYPE  */}
+                      <Select
                         id="property-type"
-                        value={projectDetails?.property_type}
-                        label={t("label_property_type")}
-                        onChange={handleProjectDetails}
-                        size="small"
-                        className="w-full mb-5"
-                        name="property_type"
-                        displayEmpty
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
-                        }}
-                        select
-                      >
-                        <MenuItem value="" disabled>
-                          {t("label_property_type")}
-                          <span className="ml-1" style={{ color: "red" }}>
-                            *
-                          </span>
-                        </MenuItem>
-                        <MenuItem value={"Apartment"}>
-                          {t("property_apartment")}
-                        </MenuItem>
-                        <MenuItem value={"Villa"}>
-                          {t("property_villa")}
-                        </MenuItem>
-                        <MenuItem value={"Rental"}>
-                          {t("property_rental")}
-                        </MenuItem>
-                      </TextField>
+                        value={property_options(t).find(option => option.value === projectDetails?.property_type?.value)}
+                        onChange={(selectedOption) => handleProjectDetails({ target: { name: 'property_type', value: selectedOption } })}
+                        // onChange={handleProjectDetails}
+                        options={property_options(t)}
+                        placeholder={t("label_property_type")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                        required
+                      />
 
+                      {/* PROJECT / NAME OF THE BUILDING   */}
                       <TextField
                         id="notes"
                         type={"text"}
                         label={t("project_name_of_building")}
                         className="w-full"
                         name="project"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px",
                         }}
                         variant="outlined"
                         size="small"
@@ -599,126 +590,35 @@ const AddNewListingModal = ({
                         onChange={handleProjectDetails}
                       />
 
-                      <TextField
+                      {/* ENQUIRY   */}
+                      <Select
                         id="enquiry"
-                        label={t("number_of_bedrooms")}
-                        value={projectDetails?.bedrooms}
-                        onChange={handleProjectDetails}
-                        size="small"
-                        name="bedrooms"
+                        value={enquiry_options(t).find(option => option.value === projectDetails?.bedrooms?.value)}
+                        onChange={(selectedOption) => handleProjectDetails({ target: { name: 'bedrooms', value: selectedOption } })}
+                        options={enquiry_options(t)}
+                        placeholder={t("number_of_bedrooms")}
                         className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
-                        }}
-                        displayEmpty
-                        select
-                      >
-                        <MenuItem value="" disabled>
-                          {t("number_of_bedrooms")}
-                          <span className="ml-1" style={{ color: "red" }}>
-                            *
-                          </span>
-                        </MenuItem>
-                        <MenuItem value={"Studio"}>
-                          {t("enquiry_studio")}
-                        </MenuItem>
-                        <MenuItem value={"1 Bedroom"}>
-                          {t("enquiry_1bed")}
-                        </MenuItem>
-                        <MenuItem value={"2 Bedrooms"}>
-                          {t("enquiry_2bed")}
-                        </MenuItem>
-                        <MenuItem value={"3 Bedrooms"}>
-                          {t("enquiry_3bed")}
-                        </MenuItem>
-                        <MenuItem value={"4 Bedrooms"}>
-                          {t("enquiry_4bed")}
-                        </MenuItem>
-                        <MenuItem value={"5 Bedrooms"}>
-                          {t("enquiry_5bed")}
-                        </MenuItem>
-                        <MenuItem value={"6 Bedrooms"}>
-                          {t("enquiry_6bed")}
-                        </MenuItem>
-                        <MenuItem value={"7 Bedrooms"}>
-                          {t("enquiry_7bed")}
-                        </MenuItem>
-                        <MenuItem value={"8 Bedrooms"}>
-                          {t("enquiry_8bed")}
-                        </MenuItem>
-                        <MenuItem value={"9 Bedrooms"}>
-                          {t("enquiry_9bed")}
-                        </MenuItem>
-                        <MenuItem value={"10 Bedrooms"}>
-                          {t("enquiry_10bed")}
-                        </MenuItem>
-                        <MenuItem value={"Retail"}>
-                          {t("enquiry_retail")}
-                        </MenuItem>
-                      </TextField>
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                        required
+                      />
 
-                      <TextField
+                      {/* BATHROOM  */}
+                      <Select
                         id="for"
-                        value={projectDetails?.bathrooms}
-                        label={t("number_of_bathrooms")}
-                        onChange={handleProjectDetails}
-                        size="small"
+                        value={bathroom_options(t).find(option => option.value === projectDetails?.bathrooms?.value)}
+                        onChange={(selectedOption) => handleProjectDetails({ target: { name: 'bathrooms', value: selectedOption } })}
+                        options={bathroom_options(t)}
+                        placeholder={t("number_of_bathrooms")}
                         className="w-full"
-                        name="bathrooms"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
-                        }}
-                        displayEmpty
-                        select
-                      >
-                        <MenuItem value="" disabled>
-                          {t("number_of_bathrooms")}
-                          <span className="ml-1" style={{ color: "red" }}>
-                            *
-                          </span>
-                        </MenuItem>
-                        <MenuItem value={"1 Bathroom"}>
-                          {t("bathroom_1")}
-                        </MenuItem>
-                        <MenuItem value={"2 Bathrooms"}>
-                          {t("bathroom_2")}
-                        </MenuItem>
-                        <MenuItem value={"3 Bathrooms"}>
-                          {t("bathroom_3")}
-                        </MenuItem>
-                        <MenuItem value={"4 Bathrooms"}>
-                          {t("bathroom_4")}
-                        </MenuItem>
-                        <MenuItem value={"5 Bathrooms"}>
-                          {t("bathroom_5")}
-                        </MenuItem>
-                        <MenuItem value={"6 Bathrooms"}>
-                          {t("bathroom_6")}
-                        </MenuItem>
-                        <MenuItem value={"7 Bathrooms"}>
-                          {t("bathroom_7")}
-                        </MenuItem>
-                        <MenuItem value={"8 Bathrooms"}>
-                          {t("bathroom_8")}
-                        </MenuItem>
-                        <MenuItem value={"9 Bathrooms"}>
-                          {t("bathroom_9")}
-                        </MenuItem>
-                        <MenuItem value={"10 Bathrooms"}>
-                          {t("bathroom_10")}
-                        </MenuItem>
-                        <MenuItem value={"Unavailabe"}>
-                          {t("label_unavailable")}
-                        </MenuItem>
-                      </TextField>
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                        required
+                      />
                     </Box>
                   </div>
 
-                  <div className="px-4">
+                  <div className="px-3">
                     <Box sx={darkModeColors}>
                       <h4
                         className={`${
@@ -728,7 +628,19 @@ const AddNewListingModal = ({
                         {t("label_other_details")}
                       </h4>
 
-                      <TextField
+                      {/* LISTING TYPE  */}
+                      <Select
+                        id="type"
+                        value={listing_options(t).find(option => option.value === otherDetails?.listingType?.value)}
+                        onChange={(selectedOption) => handleOtherDetails({ target: { name: 'listingType', value: selectedOption } })}
+                        options={listing_options(t)}
+                        placeholder={t("label_listing_type")}
+                        className="w-full"
+                        required
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      {/* <TextField
                         id="type"
                         value={otherDetails?.listingType}
                         label={t("label_listing_type")}
@@ -751,17 +663,17 @@ const AddNewListingModal = ({
                         <MenuItem value={"Off-plan"}>
                           {t("category_off_plan")}
                         </MenuItem>
-                      </TextField>
+                      </TextField> */}
+
+                      {/* CITY  */}
                       <TextField
                         id="leadCity"
                         type={"text"}
                         label={t("label_city")}
                         className="w-full"
                         name="city"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px"
                         }}
                         variant="outlined"
                         size="small"
@@ -769,16 +681,16 @@ const AddNewListingModal = ({
                         onChange={handleOtherDetails}
                         required
                       />
+
+                      {/* COUNTRY  */}
                       <TextField
                         id="leadCountry"
                         type={"text"}
                         label={t("label_country")}
                         className="w-full"
                         name="country"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px"
                         }}
                         variant="outlined"
                         size="small"
@@ -787,15 +699,14 @@ const AddNewListingModal = ({
                         onChange={handleOtherDetails}
                       />
 
+                      {/* ADDRESS  */}
                       <TextField
                         id="LeadEmailAddress"
                         type={"text"}
                         label={t("label_address")}
                         className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px"
                         }}
                         variant="outlined"
                         size="small"
@@ -803,16 +714,16 @@ const AddNewListingModal = ({
                         value={otherDetails?.address}
                         onChange={handleOtherDetails}
                       />
+
+                      {/* AREA  */}
                       <TextField
                         id="LeadEmailAddress"
                         type={"text"}
                         label={t("label_area")}
                         className="w-full"
                         name="area"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px"
                         }}
                         variant="outlined"
                         size="small"
@@ -820,61 +731,61 @@ const AddNewListingModal = ({
                         onChange={handleOtherDetails}
                       />
                     </Box>
-
-                    <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">
-                      <label htmlFor="contained-button-file">
-                        <Button
-                          variant="contained"
-                          size="medium"
-                          className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-                          onClick={() =>
-                            setSelectImagesModal({
-                              isOpen: true,
-                            })
-                          }
-                          style={{
-                            // backgroundColor: "#111827",
-                            color: "#ffffff",
-                            // border: "1px solid #DA1F26",
-                          }}
-                          component="span"
-                          disabled={loading ? true : false}
-                          startIcon={loading ? null : <MdFileUpload />}
-                        >
-                          <span>{t("button_upload_image")}</span>
-                        </Button>
-                        <p className="text-primary mt-2 italic">
-                          {allImages?.length > 0
-                            ? `${allImages?.length} images selected.`
-                            : null}
-                        </p>
-                      </label>
-
-                      <label htmlFor="contained-button-document">
-                        <Button
-                          variant="contained"
-                          size="medium"
-                          className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
-                          style={{
-                            color: "#ffffff",
-                          }}
-                          onClick={() => {
-                            setDocumentModal(true);
-                          }}
-                          component="span"
-                          disabled={loading ? true : false}
-                          startIcon={loading ? null : <MdFileUpload />}
-                        >
-                          <span>{t("button_upload_document")}</span>
-                        </Button>
-                        <p className="text-primary mt-2 italic">
-                          {allDocs?.length > 0
-                            ? `${allDocs?.length} documents selected.`
-                            : null}
-                        </p>
-                      </label>
-                    </div>
                   </div>
+                </div>
+
+                <div className="w-full flex items-center justify-center gap-5 grid grid-cols-2 px-7">
+                  <label htmlFor="contained-button-file" className="p-4">
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                      onClick={() =>
+                        setSelectImagesModal({
+                          isOpen: true,
+                        })
+                      }
+                      style={{
+                        // backgroundColor: "#111827",
+                        color: "#ffffff",
+                        // border: "1px solid #DA1F26",
+                      }}
+                      component="span"
+                      disabled={loading ? true : false}
+                      startIcon={loading ? null : <MdFileUpload />}
+                    >
+                      <span>{t("button_upload_image")}</span>
+                    </Button>
+                    <p className="text-primary mt-2 italic">
+                      {allImages?.length > 0
+                        ? `${allImages?.length} images selected.`
+                        : null}
+                    </p>
+                  </label>
+
+                  <label htmlFor="contained-button-document" className="p-4">
+                    <Button
+                      variant="contained"
+                      size="medium"
+                      className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
+                      style={{
+                        color: "#ffffff",
+                      }}
+                      onClick={() => {
+                        setDocumentModal(true);
+                      }}
+                      component="span"
+                      disabled={loading ? true : false}
+                      startIcon={loading ? null : <MdFileUpload />}
+                    >
+                      <span>{t("button_upload_document")}</span>
+                    </Button>
+                    <p className="text-primary mt-2 italic">
+                      {allDocs?.length > 0
+                        ? `${allDocs?.length} documents selected.`
+                        : null}
+                    </p>
+                  </label>
                 </div>
 
                 <div className="w-full grid grid-cols-1 gap-5 pt-5 px-4 md:px-10">

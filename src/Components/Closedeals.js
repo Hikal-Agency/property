@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useStateContext } from "../context/ContextProvider";
 import moment from "moment/moment";
 
-import { MenuItem, Pagination, Select, Tooltip } from "@mui/material";
+import { Pagination, Tooltip } from "@mui/material";
+import Select from "react-select";
 import { Box } from "@mui/system";
 import {
   DataGrid,
@@ -13,6 +13,8 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 
+import { useStateContext } from "../context/ContextProvider";
+import { pageStyles, selectStyles } from "./_elements/SelectStyles";
 import axios from "../axoisConfig";
 import UpdateClosedLead from "./Leads/UpdateClosedLead";
 import Timeline from "../Pages/timeline";
@@ -44,6 +46,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { TbWorldWww } from "react-icons/tb";
+import { renderSourceIcons } from "./_elements/SourceIconsDataGrid";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
@@ -68,7 +71,7 @@ const Closedeals = ({ pageState, setpageState }) => {
   };
 
   const handleRangeChange = (e) => {
-    const value = e.target.value;
+    const value = e.value;
 
     setPageRange(value);
 
@@ -91,107 +94,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       flex: 1,
       minWidth: 40,
       headerAlign: "center",
-      renderCell: (cellValues) => {
-        const sourceIcons = {
-          "campaign snapchat": () => (
-            <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
-          ),
-
-          "campaign facebook": () => (
-            <FaFacebookF size={16} color={"#0e82e1"} className="p-1" />
-          ),
-
-          "campaign tiktok": () => (
-            <FaTiktok
-              size={16}
-              color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-              className="p-1"
-            />
-          ),
-
-          "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
-
-          "campaign youtube": () => (
-            <FaYoutube size={16} color={"#FF0000"} className="p-1" />
-          ),
-
-          "campaign twitter": () => (
-            <FaTwitter size={16} color={"#00acee"} className="p-1" />
-          ),
-
-          "bulk import": () => (
-            <BiImport size={16} className="text-primary p-1" />
-          ),
-
-          "property finder": () => (
-            <GiMagnifyingGlass size={16} color={"#ef5e4e"} className="p-1" />
-          ),
-
-          campaign: () => (
-            <MdCampaign size={16} color={"#696969"} className="p-0.5" />
-          ),
-
-          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
-
-          personal: () => (
-            <BsPersonCircle size={16} color={"#0ec7ff"} className="p-1" />
-          ),
-
-          whatsapp: () => (
-            <FaWhatsapp size={16} color={"#53cc60"} className="p-1" />
-          ),
-
-          message: () => (
-            <BiMessageRoundedDots
-              size={16}
-              color={"#6A5ACD"}
-              className="p-0.5"
-            />
-          ),
-
-          comment: () => (
-            <FaRegComments size={16} color={"#a9b3c6"} className="p-0.5" />
-          ),
-
-          website: () => (
-            <TbWorldWww size={16} color={"#AED6F1"} className="p-0.5" />
-          ),
-
-          self: () => <FaRegUser size={16} color={"#6C7A89"} className="p-1" />,
-        };
-        return (
-          <>
-            <div className="flex items-center justify-center">
-              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
-                <BiArchive
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#AEC6CF"}
-                  className="p-0.5"
-                />
-              ) : (
-                <Box
-                  sx={{
-                    "& svg": {
-                      width: "50%",
-                      height: "50%",
-                      margin: "0 auto",
-                    },
-                  }}
-                >
-                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
-                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
-                    : "-"}
-                </Box>
-              )}
-            </div>
-          </>
-        );
-      },
+      renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode)
     },
     // LEAD NAME
     {
@@ -202,7 +105,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerAlign: "center",
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
+          <div className="w-full">
             <p
               style={{
                 fontFamily: isArabic(cellValues?.formattedValue)
@@ -272,9 +175,13 @@ const Closedeals = ({ pageState, setpageState }) => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <span className="font-semibold">
-            AED {cellValues.formattedValue}
-          </span>
+          <div className="flex flex-col w-full ">
+            {cellValues.formattedValue && (
+              <div className="bg-primary w-full text-white font-semibold rounded-md p-2">
+                AED {cellValues.formattedValue}
+              </div>
+            )}
+          </div>
         );
       },
     },
@@ -680,7 +587,20 @@ const Closedeals = ({ pageState, setpageState }) => {
 
           <p className="mr-3">Rows Per Page</p>
 
-          <Select
+          <Select 
+            id="select-page-size-label"
+            value={{ label: pageState.pageSize, value: pageState.pageSize }}
+            onChange={handleRangeChange}
+            options={[14, 30, 50, 75, 100].map((size) => ({
+              label: size,
+              value: size,
+            }))}
+            className="min-w-[60px] my-2"
+            menuPortalTarget={document.body}
+            styles={pageStyles(currentMode, primaryColor)}
+          />
+
+          {/* <Select
             labelId="select-page-size-label"
             value={pageState.pageSize}
             onChange={handleRangeChange}
@@ -703,7 +623,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                 {size}
               </MenuItem>
             ))}
-          </Select>
+          </Select> */}
 
           <Pagination
             sx={{

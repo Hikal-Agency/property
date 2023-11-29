@@ -5,12 +5,13 @@ import {
   InputAdornment,
   TextField,
   styled,
-  Select,
+  // Select,
   MenuItem,
   Tooltip,
   FormControl,
   InputLabel,
 } from "@mui/material";
+import Select from "react-select";
 import readXlsxFile from "read-excel-file";
 import "../../styles/index.css";
 import usePermission from "../../utils/usePermission";
@@ -35,6 +36,8 @@ import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
 import AddMeetLink from "../liveleads/AddMeetLink";
 import Timeline from "../../Pages/timeline";
+import { pageStyles, selectBgStyles, selectStyles } from "../_elements/SelectStyles";
+import { feedback_options } from "../_elements/SelectOptions";
 
 import {
   DataGrid,
@@ -78,6 +81,8 @@ import { SiGooglemeet } from "react-icons/si";
 import JoinMeeting from "../liveleads/JoinMeeting";
 import SourceAnimation from "../_elements/SourceAnimation";
 import ColdcallFiles from "./ColdcallFiles";
+import { renderSourceIcons } from "../_elements/SourceIconsDataGrid";
+import { renderOTPIcons } from "../_elements/OTPIconsDataGrid";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -86,19 +91,6 @@ const bulkUpdateBtnStyles = {
   transform: "translateX(-50%)",
   fontWeight: "500",
 };
-
-const feedbacks = [
-  "All",
-  "New",
-  "Follow Up",
-  "Meeting",
-  "Low Budget",
-  "Not Interested",
-  "No Answer",
-  "Unreachable",
-  "Dead",
-  "Wrong Number",
-];
 
 const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const token = localStorage.getItem("auth-token");
@@ -147,8 +139,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     darkModeColors,
     primaryColor,
     t,
-    isLangRTL,
-    i18n,
+    isLangRTL, i18n,
+    blurDarkColor,
+    blurLightColor
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -168,6 +161,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   const [AddReminderModelOpen, setAddReminderModelOpen] = useState(false);
   const [AddMeetLinkModelOpen, setAddMeetLinkModelOpen] = useState(false);
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
+
+  const [singleLeadSliderOpen, setSingleLeadSliderOpen] = useState(false);
+
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
   const handleUpdateLeadModelClose = () => {
     setLeadModelOpen(false);
@@ -205,7 +201,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
   const handleRangeChange = (e) => {
     setError(false);
-    const value = e.target.value;
+    // const value = e.target.value;
+    const value = e.value;
 
     if (value === "" || (value >= 10 && value <= 100)) {
       setPageRange(value);
@@ -400,7 +397,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
-        <RenderManagers cellValues={cellValues} lead_origin={lead_origin} />
+        <RenderManagers className="renderDD" cellValues={cellValues} lead_origin={lead_origin} />
       ),
     },
     {
@@ -411,7 +408,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
-        <RenderSalesperson cellValues={cellValues} lead_origin={lead_origin} />
+        <RenderSalesperson className="renderDD" cellValues={cellValues} lead_origin={lead_origin} />
       ),
     },
     {
@@ -421,9 +418,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 100,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
+      renderCell: (cellValues) => <RenderFeedback className="renderDD" cellValues={cellValues}  />,
+      // onFeedbackClick={handleFeedbackClick}
     },
-
     {
       field: "priority",
       headerName: t("label_priority"),
@@ -431,16 +428,15 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
+      renderCell: (cellValues) => <RenderPriority className="renderDD" cellValues={cellValues} />,
     },
-
     {
       field: "otp",
       headerName:
         lead_origin === "transfferedleads"
           ? t("label_ex_agent")
           : t("label_otp"),
-      minWidth: 30,
+      minWidth: 40,
       headerAlign: "center",
       headerClassName: "break-normal",
       hide: true,
@@ -453,46 +449,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
             </div>
           );
         } else {
-          return (
-            <div className="p-1 rounded-md">
-              {cellValues.formattedValue === "Verified" && (
-                <Tooltip title="Verified" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-[#238e41] p-1 text-center">
-                      <BsShieldCheck size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
-              )}
-
-              {cellValues.formattedValue === "Not Verified" && (
-                <Tooltip title="Not Verified" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-primary p-1 text-center">
-                      <BsShieldX size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
-              )}
-
-              {cellValues.formattedValue !== "Not Verified" &&
-                cellValues.formattedValue !== "Verified" && (
-                  <Tooltip title="No OTP used" arrow>
-                    <div
-                      className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                    >
-                      <span className="text-[#AAAAAA] p-1 text-center">
-                        <BsShieldMinus size={16} />
-                      </span>
-                    </div>
-                  </Tooltip>
-                )}
-            </div>
-          );
+          return renderOTPIcons(cellValues, currentMode);
         }
       },
     },
@@ -500,208 +457,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       field: "leadSource",
       headerName: t("label_source"),
       flex: 1,
-      minWidth: 40,
+      minWidth: 50,
       headerAlign: "center",
-      renderCell: (cellValues) => {
-        console.log("Start::", cellValues.row.leadSource);
-        const sourceIcons = {
-          // "campaign snapchat": () => (
-          //   <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
-          // ),
-
-          // "campaign facebook": () => (
-          //   <BsFacebook size={16} color={"#0e82e1"} className="p-1" />
-          // ),
-
-          // "campaign tiktok": () => (
-          //   <BsTiktok
-          //     size={16}
-          //     color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-          //     className="p-1"
-          //   />
-          // ),
-          // "campaign instagram": () => (
-          //   <BsInstagram size={16} color={"#B134AF"} className="p-1" />
-          // ),
-
-          // "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
-
-          // "campaign youtube": () => (
-          //   <BsYoutube size={16} color={"#FF0000"} className="p-1" />
-          // ),
-
-          // "campaign twitter": () => (
-          //   <BsTwitter size={16} color={"#00acee"} className="p-1" />
-          // ),
-
-          "bulk import": () => (
-            <BsDownload size={16} color={primaryColor} className="p-1" />
-          ),
-
-          "property finder": () => (
-            <BsLink45Deg size={16} color={"#ef5e4e"} className="p-1" />
-          ),
-
-          campaign: () => (
-            <BsMegaphone size={16} color={"#696969"} className="p-0.5" />
-          ),
-
-          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
-
-          personal: () => (
-            <BsPersonRolodex size={16} color={"#6C7A89"} className="p-1" />
-          ),
-
-          whatsapp: () => (
-            <BsWhatsapp size={16} color={"#53cc60"} className="p-1" />
-          ),
-
-          message: () => (
-            <BsChatDots size={16} color={"#6A5ACD"} className="p-0.5" />
-          ),
-
-          comment: () => (
-            <BsChatLeftText size={16} color={"#a9b3c6"} className="p-0.5" />
-          ),
-          website: () => (
-            <BsGlobe2 size={16} color={"#AED6F1"} className="p-0.5" />
-          ),
-          self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
-        };
-        return (
-          <>
-            <div className="flex items-center justify-center">
-              {cellValues.row.leadSource
-                ?.toLowerCase()
-                .includes("instagram") ? (
-                // INSTAGRAM
-                <BsInstagram
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#B134AF"}
-                  className="p-1"
-                />
-              ) : cellValues.row.leadSource
-                  ?.toLowerCase()
-                  .includes("facebook") ? (
-                // FACEBOOK
-                <BsFacebook
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#0e82e1"}
-                  className="p-1"
-                />
-              ) : cellValues.row.leadSource
-                  ?.toLowerCase()
-                  .includes("tiktok") ? (
-                // TIKTOK
-                <BsTiktok
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={currentMode === "dark" ? "#FFFFFF" : "#000000"}
-                  className="p-1"
-                />
-              ) : cellValues.row.leadSource
-                  ?.toLowerCase()
-                  .includes("snapchat") ? (
-                // SNAPCHAT
-                <FaSnapchatGhost
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#f6d80a"}
-                  className="p-1"
-                />
-              ) : cellValues.row.leadSource
-                  ?.toLowerCase()
-                  .includes("googleads") ? (
-                // GOOGLEADS
-                <FcGoogle
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  // color={"#f6d80a"}
-                  className="p-1"
-                />
-              ) : cellValues.row.leadSource
-                  ?.toLowerCase()
-                  .includes("youtube") ? (
-                // YOUTUBE
-                <BsYoutube
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#FF0000"}
-                  className="p-1"
-                />
-              ) : cellValues.row.leadSource
-                  ?.toLowerCase()
-                  .includes("twitter") ? (
-                // TWITTER
-                <BsTwitter
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#00acee"}
-                  className="p-1"
-                />
-              ) : cellValues.row.leadSource
-                  ?.toLowerCase()
-                  .startsWith("warm") ? (
-                // WARM
-                <BsArchive
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#AEC6CF"}
-                  className="p-0.5"
-                />
-              ) : (
-                <Box
-                  sx={{
-                    "& svg": {
-                      width: "50%",
-                      height: "50%",
-                      margin: "0 auto",
-                    },
-                  }}
-                >
-                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
-                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
-                    : "-"}
-                </Box>
-              )}
-            </div>
-          </>
-        );
-      },
+      renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode),
     },
     {
       field: "language",
@@ -719,7 +477,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         );
       },
     },
-
     {
       field: "creationDate",
       headerName:
@@ -747,7 +504,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         }
       },
     },
-
     {
       field: "notes",
       headerName: "Note",
@@ -767,7 +523,6 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         );
       },
     },
-
     {
       field: "edit",
       headerName: t("label_action"),
@@ -1608,16 +1363,36 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     }
   }, [pageState.page, pageState.perpage, lead_type, reloadDataGrid]);
 
+  const excludedColumns = [
+    "assignedToManager",
+    "assignedToSales",
+    "feedback",
+    "priority"
+  ];
+
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
-    if (
-      !event.target.closest(".reminderBtn") &&
-      !event.target.closest(".timelineBtn")
-    ) {
-      console.log("Single lead clicked::::::: ", params.row);
-      setsingleLeadData(params.row);
-      handleLeadModelOpen();
-    }
+    // if (event && 
+    //   event.target &&
+    //   event.target.className && 
+    //   (event.target.className.includes("renderDD") ||
+    //   event.target.closest(".renderDD"))
+    // ) {
+    //   if (!excludedColumns.includes(params.field)) {
+    //     console.log("RENDER");
+    //   }
+    // }
+    // else { 
+      if (
+        !event.target.closest(".reminderBtn") &&
+        !event.target.closest(".timelineBtn") &&
+        !event.target.closest(".renderDD")
+      ) {
+        console.log("Single lead clicked::::::: ", params.row);
+        setsingleLeadData(params.row);
+        handleLeadModelOpen();
+      }
+    // }
     // console.log("Single lead clicked::::::: ", params.row);
     // setsingleLeadData(params.row);
     // handleLeadModelOpen();
@@ -1939,7 +1714,20 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           <p className="mr-3">{t("rows_per_page")}</p>
 
-          <Select
+          <Select 
+            id="select-page-size-label"
+            value={{ label: pageState.pageSize, value: pageState.pageSize }}
+            onChange={handleRangeChange}
+            options={[14, 30, 50, 75, 100].map((size) => ({
+              label: size,
+              value: size,
+            }))}
+            className="min-w-[60px] my-2"
+            menuPortalTarget={document.body}
+            styles={pageStyles(currentMode, primaryColor)}
+          />
+
+          {/* <Select
             labelId="select-page-size-label"
             value={pageState.pageSize}
             onChange={handleRangeChange}
@@ -1962,7 +1750,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                 {size}
               </MenuItem>
             ))}
-          </Select>
+          </Select> */}
 
           <Pagination
             sx={{
@@ -2053,7 +1841,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
   return (
     <>
-      <div className="pb-10">
+      <div className="pb-10 mb-10">
         {(lead_origin === "coldleads" || (lead_origin==="unassigned" && lead_type=== "coldleads")) && (
           <ColdcallFiles
             pageState={pageState}
@@ -2089,7 +1877,26 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     maxWidth: "200px",
                   }}
                 >
-                  <FormControl fullWidth>
+                  <Select 
+                    id="un-feedback"
+                    options={[
+                      {
+                        value: "All",
+                        label: `${t("all")} ${" "} ${t("label_feedback")}`,
+                      },
+                      ...feedback_options(t)
+                    ]} 
+                    value={feedback_options(t).find(option => option.value === unassignedFeedback)}
+                    // value={unassignedFeedback}
+                    onChange={(event) => {
+                      setUnassignedFeedback(event.value);
+                    }}
+                    placeholder={t("label_feedback")}
+                    className={`w-full`}
+                    menuPortalTarget={document.body}
+                    styles={selectBgStyles(currentMode, primaryColor, blurDarkColor, blurLightColor)}
+                  />
+                  {/* <FormControl fullWidth>
                     <InputLabel>{t("label_feedback")}</InputLabel>
                     <Select
                       label={t("label_feedback")}
@@ -2125,7 +1932,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                         </MenuItem>
                       ))}
                     </Select>
-                  </FormControl>
+                  </FormControl> */}
                 </Box>
               </div>
 
@@ -2203,9 +2010,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           <div
             style={{ zIndex: "5 !important" }}
-            className={`absolute top-[7px] ${
-              isLangRTL(i18n.language) ? "left-[10px]" : "right-[10px]"
-            } z-[5]`}
+            className={`absolute top-[7px] ${isLangRTL(i18n.language) ? 'left-[10px]' : 'right-[10px]'} z-[2]`}
           >
             <TextField
               placeholder={t("search")}

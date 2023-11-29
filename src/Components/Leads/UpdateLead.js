@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
+import Select from "react-select";
 import axios from "../../axoisConfig";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -23,6 +23,13 @@ import PhoneInput, {
   isPossiblePhoneNumber,
 } from "react-phone-number-input";
 import classNames from "classnames";
+import { selectStyles } from "../_elements/SelectStyles";
+import { 
+  enquiry_options,
+  language_options,
+  property_options,
+  purpose_options 
+} from "../_elements/SelectOptions";
 import { MdClose } from "react-icons/md";
 
 const UpdateLead = ({
@@ -42,10 +49,11 @@ const UpdateLead = ({
     BACKEND_URL,
     setSalesPerson: setAllSalesPersons,
     SalesPerson: AllSalesPersons,
-    t,
+    t, isArabic,
     Managers,
     isLangRTL,
     i18n,
+    primaryColor
     // SalesPerson,
   } = useStateContext();
   const [value, setValue] = useState();
@@ -102,16 +110,16 @@ const UpdateLead = ({
   };
 
   const ChangePropertyType = (event) => {
-    setPropertyType(event.target.value);
+    setPropertyType(event.value);
   };
   const ChangeEnquiryType = (event) => {
-    setEnquiryType(event.target.value);
+    setEnquiryType(event.value);
   };
   const ChangeForType = (event) => {
-    setForType(event.target.value);
+    setForType(event.value);
   };
   const ChangeLanguagePrefered = (event) => {
-    setLanguagePrefered(event.target.value);
+    setLanguagePrefered(event.value);
   };
   // eslint-disable-next-line
   const ChangeLeadStatus = (event) => {
@@ -383,20 +391,14 @@ const UpdateLead = ({
               className="hover:border hover:border-white hover:rounded-full"
             />
           </button>
-          {/* <div
-            style={style}
-            className={`w-[calc(100%-30px)] md:w-[85%]  ${
-              currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-            } absolute top-1/2 left-1/2 p-5 rounded-md border boder-[#AAAAAA]`}
-          > */}
           <div
             style={style}
             className={` ${
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            } ${currentMode === "dark" && (isLangRTL(i18n.language) ? "border-r-2 border-primary" : "border-l-2 border-primary")}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
             `}
           >
             {loading ? (
@@ -409,31 +411,26 @@ const UpdateLead = ({
               </div>
             ) : (
               <>
-                {/* <IconButton
-                  sx={{
-                    position: "absolute",
-                    right: 12,
-                    top: 10,
-                    color: (theme) => theme.palette.grey[500],
-                  }}
-                  onClick={handleLeadModelClose}
-                >
-                  <IoMdClose size={18} />
-                </IconButton> */}
-                <h1
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  } text-center font-semibold text-lg pb-10`}
-                >
-                  {t("update_lead_details")}
-                </h1>
+                <div className="w-full flex items-center pb-3 mb-3">
+                  <div className="bg-primary h-10 w-1 rounded-full my-1"></div>
+                  <h1
+                    className={`text-lg font-semibold mx-2 ${
+                      currentMode === "dark"
+                        ? "text-white"
+                        : "text-black"
+                    }`}
+                  >
+                    {t("update_lead_details")}
+                  </h1>
+                </div>
+
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     UpdateLeadFunc();
                   }}
                 >
-                  <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5">
+                  <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 p-4">
                     <div>
                       <Box sx={darkModeColors}>
                         <h4
@@ -446,109 +443,40 @@ const UpdateLead = ({
                           {t("agent_details")}
                         </h4>
 
-                        <>
-                          {/* <FormHelperText
-                            sx={{
-                              color: currentMode === "dark" ? "white" : "black",
-                            }}
-                          >
-                            Manager
-                          </FormHelperText> */}
-                          {/* <label className="text-sm text-gray-500">
-                            Manager
-                          </label> */}
-                          {/* <Select
-                            id="Manager"
-                            value={User?.role === 1 ? Manager : ""}
-                            disabled={User?.role !== 1 && true}
-                            label="Manager"
-                            onChange={ChangeManager}
-                            size="medium"
-                            className="w-full mb-5"
-                            displayEmpty
-                            required
-                          >
-                            <MenuItem value="0" disabled>
-                              Manager
-                            </MenuItem>
-                            {Manager2?.map((person, index) => (
-                              <MenuItem key={index} value={person?.id || ""}>
-                                {person?.userName}
-                              </MenuItem>
-                            ))}
-                          </Select> */}
-                          <TextField
-                            id="Manager"
-                            type="text"
-                            label={t("label_manager")}
-                            className="w-full"
-                            sx={{
-                              marginBottom: "1.25rem !important",
-                              color:
-                                currentMode === "dark" ? "#ffffff" : "#000000",
-                              pointerEvents: "none",
-                            }}
-                            variant="outlined"
-                            size="small"
-                            value={
-                              Managers?.find((person) => person?.id === Manager)
-                                ?.userName || t("no_manager")
-                            }
-                            onChange={(e) => {
-                              e.preventDefault();
-                            }}
-                            readOnly={true}
-                          />
-                        </>
+                        {/* MANAGER  */}
+                        <TextField
+                          id="Manager"
+                          type="text"
+                          label={t("label_manager")}
+                          className="w-full"
+                          style={{
+                            marginBottom: "20px",
+                            pointerEvents: "none",
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={
+                            Managers?.find((person) => person?.id === Manager)
+                              ?.userName || t("no_manager")
+                          }
+                          onChange={(e) => {
+                            e.preventDefault();
+                          }}
+                          readOnly={true}
+                        />
 
+                        {/* AGENT  */}
                         {noAgents
                           ? ""
-                          : // <p
-                            //   style={{
-                            //     color: "#0000005c",
-                            //     textAlign: "left",
-                            //     width: "85%",
-                            //   }}
-                            // >
-                            //   No Agents
-                            // </p>
-                            (User.role === 1 || User.role === 3) && (
+                          : (User.role === 1 || User.role === 3) && (
                               <>
-                                {/* <label className="text-sm text-gray-500">
-                              Sales Agent
-                            </label> */}
-                                {/* <FormHelperText
-                              sx={{
-                                color:
-                                  currentMode === "dark" ? "white" : "black",
-                              }}
-                            >
-                              SalesPerson
-                            </FormHelperText>
-                            <Select
-                              id="SalesPerson"
-                              value={SalesPerson2 || ""}
-                              onChange={ChangeSalesPerson}
-                              size="medium"
-                              className="w-full mb-5"
-                              displayEmpty
-                              // required={SalesPerson.length > 0 ? true : false}
-                            >
-                              <MenuItem value="">Sales Person</MenuItem>
-                              {SalesPerson?.map((person, index) => (
-                                <MenuItem key={index} value={person?.id || ""}>
-                                  {person?.userName}
-                                </MenuItem>
-                              ))}
-                            </Select> */}
                                 <TextField
                                   id="Salesperson"
                                   type="text"
                                   label={t("label_agent")}
                                   className="w-full"
                                   style={{
-                                    marginBottom: "1.25rem !important",
-                                    color: "#ffffff",
+                                    marginBottom: "20px",
                                     pointerEvents: "none",
                                   }}
                                   variant="outlined"
@@ -573,8 +501,7 @@ const UpdateLead = ({
                             type="text"
                             className="w-full mb-5"
                             style={{
-                              marginBottom: "1.25rem !important",
-                              color: "#ffffff",
+                              marginBottom: "20px",
                               pointerEvents: "none",
                             }}
                             variant="outlined"
@@ -597,22 +524,33 @@ const UpdateLead = ({
                         >
                           {t("project_details")}
                         </h4>
+                        {/* PROJECT NAME  */}
                         <TextField
                           id="Project"
                           type={"text"}
                           className="w-full"
-                          sx={{ marginBottom: "1.25rem !important" }}
+                          style={{ 
+                            marginBottom: "20px" 
+                          }}
                           label={t("label_project_name")}
                           variant="outlined"
                           size="small"
                           value={LeadProject}
                           onChange={(e) => setLeadProject(e.target.value)}
                         />
+                        {/* ENQUIRY  */}
+                        <Select
+                          id="enquiry"
+                          value={enquiry_options(t).find((option) => option.value === EnquiryType)}
+                          onChange={ChangeEnquiryType}
+                          options={enquiry_options(t)}
+                          placeholder={t("label_enquiry_about")}
+                          className="w-full"
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
 
-                        {/* <label className="text-sm text-gray-500">
-                        Enquiry About
-                      </label> */}
-                        <TextField
+                        {/* <TextField
                           id="enquiry"
                           value={EnquiryType}
                           label={t("label_enquiry_for")}
@@ -655,12 +593,20 @@ const UpdateLead = ({
                           <MenuItem value={"Other"}>
                             {t("enquiry_others")}
                           </MenuItem>
-                        </TextField>
+                        </TextField> */}
 
-                        {/* <label className="text-sm text-gray-500">
-                        Property Type
-                      </label> */}
-                        <TextField
+                        {/* PROPERTY TYPE  */}
+                        <Select
+                          id="property-type"
+                          value={property_options(t).find((option) => option.value === PropertyType)}
+                          onChange={ChangePropertyType}
+                          options={property_options(t)}
+                          placeholder={t("label_property_type")}
+                          className="w-full"
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                        {/* <TextField
                           id="property-type"
                           value={PropertyType}
                           label={t("label_property_type")}
@@ -694,10 +640,20 @@ const UpdateLead = ({
                           <MenuItem value={"Townhouse"}>
                             {t("property_townhouse")}
                           </MenuItem>
-                        </TextField>
+                        </TextField> */}
 
-                        {/* <label className="text-sm text-gray-500">For</label> */}
-                        <TextField
+                        {/* PURPOSE  */}
+                        <Select
+                          id="for"
+                          value={purpose_options(t).find((option) => option.value === ForType)}
+                          onChange={ChangeForType}
+                          options={purpose_options(t)}
+                          placeholder={t("label_purpose_of_enquiry")}
+                          className="w-full"
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                        {/* <TextField
                           id="for"
                           sx={{
                             marginBottom: "1.25rem !important",
@@ -719,7 +675,7 @@ const UpdateLead = ({
                           <MenuItem value={"End-user"}>
                             {t("purpose_end_user")}
                           </MenuItem>
-                        </TextField>
+                        </TextField> */}
                       </Box>
                     </div>
 
@@ -734,12 +690,13 @@ const UpdateLead = ({
                         >
                           {t("lead_details")}
                         </h4>
+                        {/* LEAD NAME  */}
                         <TextField
                           id="LeadName"
                           type={"text"}
                           label={t("label_lead_name")}
                           className="w-full"
-                          sx={{ marginBottom: "1.25rem !important" }}
+                          style={{ marginBottom: "20px" }}
                           variant="outlined"
                           size="small"
                           required
@@ -747,6 +704,7 @@ const UpdateLead = ({
                           onChange={(e) => setLeadName(e.target.value)}
                         />
 
+                        {/* CONTACT  */}
                         <PhoneInput
                           placeholder={t("label_contact_number")}
                           value={LeadContact}
@@ -762,6 +720,7 @@ const UpdateLead = ({
                            mb-5`}
                           size="small"
                           style={{
+                            marginBottom: "20px",
                             background: `${
                               currentMode === "dark" ? "#1C1C1C" : "#fff"
                             }`,
@@ -789,12 +748,13 @@ const UpdateLead = ({
                           </Typography>
                         )}
 
+                        {/* EMAIL  */}
                         <TextField
                           id="LeadEmailAddress"
                           type={"email"}
                           className="w-full"
                           label={t("label_email_address")}
-                          sx={{ marginBottom: "1.25rem !important" }}
+                          style={{ marginBottom: "20px" }}
                           variant="outlined"
                           size="small"
                           value={LeadEmail === "undefined" ? "" : LeadEmail}
@@ -804,7 +764,18 @@ const UpdateLead = ({
                           onChange={handleEmail}
                         />
 
-                        <TextField
+                        {/* LANGUAGE  */}
+                        <Select
+                          id="LanguagePrefered"
+                          value={language_options.find(option => option.value === LanguagePrefered)}
+                          onChange={ChangeLanguagePrefered}
+                          options={language_options}
+                          placeholder={t("label_language")}
+                          className="w-full"
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                        {/* <TextField
                           sx={{
                             marginBottom: "1.25rem !important",
                           }}
@@ -828,7 +799,7 @@ const UpdateLead = ({
                           <MenuItem value={"Russian"}>Russian</MenuItem>
                           <MenuItem value={"Spanish"}>Spanish</MenuItem>
                           <MenuItem value={"Urdu"}>Urdu</MenuItem>
-                        </TextField>
+                        </TextField> */}
                       </Box>
                     </div>
                   </div>
