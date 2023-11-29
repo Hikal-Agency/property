@@ -21,6 +21,9 @@ const SingleImageModal = ({
   singleImageModal,
   handleClose,
   fetchSingleListing,
+  FetchProperty,
+  module,
+  closeSingleModal,
 }) => {
   const { BACKEND_URL } = useStateContext();
 
@@ -50,29 +53,30 @@ const SingleImageModal = ({
     try {
       const url = `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images/download?image_ids[0]=${id}`;
       const token = localStorage.getItem("auth-token");
-  
+
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        responseType: 'blob', // Set the response type to 'blob' to download the image
+        responseType: "blob", // Set the response type to 'blob' to download the image
       });
-  
+
       if (response.status === 200) {
         // Create a blob URL and trigger a download
-        const blob = new Blob([response.data], { type: response.headers['content-type'] });
-        const link = document.createElement('a');
+        const blob = new Blob([response.data], {
+          type: response.headers["content-type"],
+        });
+        const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
-        link.download = 'picture.png'; // Set the desired file name
+        link.download = "picture.png"; // Set the desired file name
         link.click();
       } else {
-        console.error('Failed to download image');
+        console.error("Failed to download image");
       }
     } catch (error) {
-      console.error('Error while downloading image:', error);
+      console.error("Error while downloading image:", error);
     }
   }
-  
 
   const handleDownloadSingle = () => {
     downloadImage(singleImageModal?.id);
@@ -84,19 +88,32 @@ const SingleImageModal = ({
       setDeleteBtnLoading(true);
       const token = localStorage.getItem("auth-token");
       console.log("TOken: ", singleImageModal?.id);
-      await axios.delete(
-        `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images`,
-
-        {
-          data: JSON.stringify({
-            image_ids: [singleImageModal?.id],
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      if (module === "property") {
+        await axios.delete(
+          `${BACKEND_URL}/destroy/images/${singleImageModal?.listingId}`,
+          {
+            params: {
+              image_id: singleImageModal?.id,
+            },
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+      } else {
+        await axios.delete(
+          `${BACKEND_URL}/listings/${singleImageModal?.listingId}/images`,
+          {
+            data: JSON.stringify({
+              image_ids: [singleImageModal?.id],
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+      }
       toast.success("Image deleted succesfuly!", {
         position: "top-right",
         autoClose: 3000,
@@ -107,7 +124,12 @@ const SingleImageModal = ({
         progress: undefined,
         theme: "light",
       });
-      fetchSingleListing();
+      if (module !== "property") {
+        fetchSingleListing();
+      } else {
+        closeSingleModal();
+        FetchProperty();
+      }
       handleClose();
     } catch (error) {
       console.log(error);
@@ -165,18 +187,22 @@ const SingleImageModal = ({
           </button>
           <div className="absolute bottom-4 right-4">
             <div className="flex items-center">
-              <button
-                onClick={handleClick}
-                className="text-white bg-primary p-2 rounded-full mx-2"
-              >
-                <AiOutlineDownload size={19} />
-              </button>
-              <button
-                onClick={handleCopyLink}
-                className="text-white bg-primary p-2 rounded-full mx-2"
-              >
-                <GiShare size={19} />
-              </button>
+              {module !== "property" && (
+                <>
+                  <button
+                    onClick={handleClick}
+                    className="text-white bg-primary p-2 rounded-full mx-2"
+                  >
+                    <AiOutlineDownload size={19} />
+                  </button>
+                  <button
+                    onClick={handleCopyLink}
+                    className="text-white bg-primary p-2 rounded-full mx-2"
+                  >
+                    <GiShare size={19} />
+                  </button>
+                </>
+              )}
               <button
                 onClick={handleDelete}
                 className="text-white bg-primary p-2 rounded-full mx-2"

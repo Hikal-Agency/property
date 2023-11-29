@@ -99,7 +99,7 @@ const SinglePropertyModal = ({
     // }, 1000);
   };
   // const { lid } = useParams();
-  const lid = ListingData;
+  const lid = project?.id;
   console.log("lid ===================", lid);
 
   const openDoc = (open, url) => {
@@ -113,7 +113,7 @@ const SinglePropertyModal = ({
     try {
       setloading(true);
       const token = localStorage.getItem("auth-token");
-      const listing = await axios.get(`${BACKEND_URL}/listings?id=${lid}`, {
+      const listing = await axios.get(`${BACKEND_URL}/projects/${lid}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -258,7 +258,7 @@ const SinglePropertyModal = ({
                                 isOpen: true,
                                 url: pic?.img_url,
                                 id: pic?.id,
-                                listingId: listData?.id,
+                                listingId: project?.id,
                               })
                             }
                             src={pic?.img_url}
@@ -573,7 +573,13 @@ const SinglePropertyModal = ({
                   <SingleImageModal
                     singleImageModal={singleImageModal}
                     handleClose={() => setSingleImageModal({ isOpen: false })}
-                    fetchSingleListing={fetchSingleListing}
+                    FetchProperty={FetchProperty}
+                    module="property"
+                    closeSingleModal={() =>
+                      setOpenModal({
+                        open: false,
+                      })
+                    }
                   />
                 )}
 
@@ -610,6 +616,11 @@ const SinglePropertyModal = ({
                     setOpenModal={setOpenModal}
                     handleClose={() => setOpenEdit(false)}
                     FetchProperty={FetchProperty}
+                    closeSingleModal={() =>
+                      setOpenModal({
+                        open: false,
+                      })
+                    }
                   />
                 )}
               </>
