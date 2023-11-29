@@ -21,6 +21,7 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import RichEditor from "./richEditorComp/RichEditor";
 import TurndownService from "turndown";
+import { useCallback } from "react";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -35,7 +36,6 @@ const SendMessageModal = ({
   sendMessageModal,
   setSendMessageModal,
   selectedContacts,
-  whatsappSenderNo,
 }) => {
   const {
     currentMode,
@@ -43,7 +43,9 @@ const SendMessageModal = ({
     setUserCredits,
     isArabic,
     isEnglish,
-    formatNum, t
+    formatNum,
+    User,
+    t,
   } = useStateContext();
 
   const [messageValue, setMessageValue] = useState("");
@@ -169,8 +171,7 @@ const SendMessageModal = ({
     }
   }
 
-
-  async function sendWhatsappMessage(messageText, contactList) {
+  async function sendWhatsappMessage() {
     try {
       setbtnloading(true);
 
@@ -180,28 +181,37 @@ const SendMessageModal = ({
           id: waDevice,
         });
         socket.on("whatsapp_check_device_send_msg_modal", (result) => {
-          if (result) {
-            socket.emit("whatsapp_send-bulk-image", {
-              contacts: contactList,
-              img: imgBinary,
-              id: waDevice,
-              caption: messageText,
-            });
+           if (result) {
+          turndownService.addRule("strikethrough", {
+            filter: ["del", "s", "strike"],
+            replacement: function (content) {
+              return "~" + content + "~";
+            },
+          });
+          const messageText = turndownService.turndown(messageValue);
+          const waDevice = localStorage.getItem("authenticated-wa-device");
 
-            setbtnloading(false);
-            // setSendMessageModal({ open: false });
-            setMessagesSent(true);
-            toast.success("Messages are being sent. ", {
-              position: "top-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          }
+          socket.emit("whatsapp_send-bulk-image", {
+            contacts: selectedContacts,
+            img: imgBinary,
+            id: waDevice,
+            caption: messageText,
+          });
+
+          setbtnloading(false);
+          setMessagesSent(true);
+          toast.success("Messages are being sent. ", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
         });
+
       } else {
         toast.error("Connect your device first! ", {
           position: "top-right",
@@ -275,15 +285,8 @@ const SendMessageModal = ({
 
   const handleSendMessage = (event) => {
     event.preventDefault();
-    turndownService.addRule("strikethrough", {
-      filter: ["del", "s", "strike"],
-      replacement: function (content) {
-        return "~" + content + "~";
-      },
-    });
-    const messageText = turndownService.turndown(messageValue);
     if (sendMessageModal.isWhatsapp) {
-      sendWhatsappMessage(messageText, selectedContacts);
+      sendWhatsappMessage();
     } else {
       if (
         smsTextValue?.trim()?.length &&
@@ -333,6 +336,7 @@ const SendMessageModal = ({
     fetchTemplates();
   }, []);
 
+
   return (
     <>
       <Modal
@@ -365,9 +369,7 @@ const SendMessageModal = ({
           </IconButton>
           {messagesSent ? (
             <div>
-              <p className="text-2xl mb-4">
-                {t("messages_being_sent")}:
-              </p>
+              <p className="text-2xl mb-4">{t("messages_being_sent")}:</p>
               <ul className="ml-5">
                 {selectedContacts?.map((contact) => {
                   return (
@@ -473,15 +475,18 @@ const SendMessageModal = ({
                                   }`}
                                 >
                                   {formatNum(smsTextValue?.trim()?.length)}
-                                     {lang && (
-                                  <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
-                                )}
+                                  {lang && (
+                                    <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
+                                  )}
                                   <p className="ml-2">
-                                    {parseInt((smsTextValue?.trim()?.length - 1) / ((lang === "English"
-                                      ? charLimitForEnglish
-                                      : charLimitForArabic)) + 1
-                                    )}
-                                    {" "}message(s)
+                                    {parseInt(
+                                      (smsTextValue?.trim()?.length - 1) /
+                                        (lang === "English"
+                                          ? charLimitForEnglish
+                                          : charLimitForArabic) +
+                                        1
+                                    )}{" "}
+                                    message(s)
                                   </p>
                                 </div>
                               </div>
@@ -505,7 +510,9 @@ const SendMessageModal = ({
                                   d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
                                 />
                               </svg>
-                              <span className="sr-only">{t("full_screen")}</span>
+                              <span className="sr-only">
+                                {t("full_screen")}
+                              </span>
                             </button>
                           </div>
                           <div className="px-4 h-full py-2 bg-white rounded-b-lg">
@@ -547,7 +554,8 @@ const SendMessageModal = ({
                             <div className="flex items-center justify-between px-3 py-2 border-b">
                               <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
                                 <div className="flex flex-wrap items-center">
-                                  {smsTextValue?.trim()?.length} {t("characters")}
+                                  {smsTextValue?.trim()?.length}{" "}
+                                  {t("characters")}
                                 </div>
                               </div>
                               <button
@@ -569,7 +577,9 @@ const SendMessageModal = ({
                                     d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
                                   />
                                 </svg>
-                                <span className="sr-only">{t("full_screen")}</span>
+                                <span className="sr-only">
+                                  {t("full_screen")}
+                                </span>
                               </button>
                             </div>
                             <div className="px-4 h-full py-2 bg-white rounded-b-lg">
@@ -620,7 +630,11 @@ const SendMessageModal = ({
                       color: "white",
                     }}
                     disabled={
-                      smsTextValue?.trim()?.length === 0 ? true : false
+                      sendMessageModal.isWhatsapp
+                        ? false
+                        : smsTextValue?.trim()?.length === 0
+                        ? true
+                        : false
                     }
                     sx={{ py: "6px", mr: 2 }}
                     className={`${
@@ -645,7 +659,9 @@ const SendMessageModal = ({
                         />{" "}
                         {selectedContacts?.length === 1
                           ? t("send_message")
-                          : t("send_message_to", {n: selectedContacts?.length})}
+                          : t("send_message_to", {
+                              n: selectedContacts?.length,
+                            })}
                       </>
                     )}
                   </Button>
