@@ -128,7 +128,10 @@ const PropertyPortfolio = () => {
     const token = localStorage.getItem("auth-token");
     if (searchQuery !== "") {
       SearchListings(token);
+    } else {
+      FetchProperty(token);
     }
+
     // eslint-disable-next-line
   }, [searchQuery]);
 
