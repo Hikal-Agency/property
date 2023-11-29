@@ -45,6 +45,7 @@ const PortfolioLocation = ({
           },
         },
         (results, status) => {
+          console.log("location result:: ", result);
           if (status === "OK") {
             if (showOnly) {
               map.panTo({ lat: listingLocation.lat, lng: listingLocation.lng });
