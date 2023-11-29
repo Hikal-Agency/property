@@ -53,7 +53,10 @@ const SendMessageModal = ({
   const [tabValue, setTabValue] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState(false);
   const [templates, setTemplates] = useState([]);
-  const [imgBinary, setImgBinary] = useState("");
+  const [selectedImg, setSelectedImg] = useState({
+    file: null, 
+    binary: ""
+  });
   const [smsTextValue, setsmsTextValue] = useState("");
   const [messagesSent, setMessagesSent] = useState(false);
   const [defaultMessageValue, setDefaultMessageValue] = useState("");
@@ -106,7 +109,7 @@ const SendMessageModal = ({
     reader.readAsDataURL(files[0]);
 
     reader.onload = (e) => {
-      setImgBinary(e.target.result);
+      setSelectedImg({file: files[0], binary: e.target.result});
     };
   };
 
@@ -180,7 +183,7 @@ const SendMessageModal = ({
         socket.emit("whatsapp_check_device_exists_send_msg_modal", {
           id: waDevice,
         });
-        socket.on("whatsapp_check_device_send_msg_modal", (result) => {
+        socket.on("whatsapp_check_device_send_msg_modal", async (result) => {
            if (result) {
           turndownService.addRule("strikethrough", {
             filter: ["del", "s", "strike"],
@@ -191,11 +194,17 @@ const SendMessageModal = ({
           const messageText = turndownService.turndown(messageValue);
           const waDevice = localStorage.getItem("authenticated-wa-device");
 
-          socket.emit("whatsapp_send-bulk-image", {
-            contacts: selectedContacts,
-            img: imgBinary,
-            id: waDevice,
-            caption: messageText,
+          const data = new FormData();
+          
+          data.append("contacts", JSON.stringify(selectedContacts));
+          data.append("img", selectedImg?.file);
+          data.append("id", waDevice);
+          data.append("caption", messageText);
+
+          await axios.post(process.env.REACT_APP_SOCKET_URL + "/whatsapp/sendBulkMessage" , data, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
           });
 
           setbtnloading(false);
@@ -426,7 +435,7 @@ const SendMessageModal = ({
                 <Tab label={t("templates")} />
               </Tabs>
               <form onSubmit={handleSendMessage} action="">
-                {sendMessageModal.isWhatsapp && !imgBinary && (
+                {sendMessageModal.isWhatsapp && !selectedImg?.file && (
                   <Button
                     onClick={uploadImage}
                     type="button"
@@ -441,11 +450,11 @@ const SendMessageModal = ({
                 )}
                 {tabValue === 0 && (
                   <div style={{ height: 250, overflowY: "scroll" }}>
-                    {imgBinary && (
+                    {selectedImg?.binary && (
                       <img
                         className="w-[200px] p-3 rounded"
                         alt=""
-                        src={imgBinary}
+                        src={selectedImg?.binary}
                       />
                     )}
 
@@ -536,11 +545,11 @@ const SendMessageModal = ({
                   selectedTemplate ? (
                     <>
                       <div style={{ height: 250, overflowY: "scroll" }}>
-                        {imgBinary && (
+                        {selectedImg?.file && (
                           <img
                             className="w-[200px] p-3 rounded"
                             alt=""
-                            src={imgBinary}
+                            src={selectedImg?.binary}
                           />
                         )}
 

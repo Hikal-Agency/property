@@ -18,6 +18,8 @@ import MessageFromOther from "./MessageFromOther";
 import { IoMdSend } from "react-icons/io";
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 import { toast } from "react-toastify";
+import axiosInstance from "../../../axoisConfig";
+import { useState } from "react";
 
 const Conversation = ({
   data,
@@ -25,6 +27,7 @@ const Conversation = ({
   chatMessages,
   handleSendMessage,
   chatLoading,
+  setBtnLoading,
   btnLoading,
   allChats,
   currentMode,
@@ -36,24 +39,33 @@ const Conversation = ({
   messagesContainerRef,
 }) => {
   const imagePickerRef = useRef();
+  const [imgLoading, setImgLoading] = useState(false);
 
-
-  async function sendWhatsappImage(contact, imgBinary) {
+  async function sendWhatsappImage(contact, file) {
     try {
-
       const waDevice = localStorage.getItem("authenticated-wa-device");
       if (waDevice) {
         socket.emit("whatsapp_check_device_exists_send_msg_modal", {
           id: waDevice,
         });
-        socket.on("whatsapp_check_device_send_msg_modal", (result) => {
+        socket.on("whatsapp_check_device_send_msg_modal", async (result) => {
           if (result) {
-            socket.emit("whatsapp_send-bulk-image", {
-              contacts: [contact],
-              img: imgBinary,
-              id: waDevice,
-              caption: "",
-            });
+            const data = new FormData();
+
+            data.append("contacts", JSON.stringify([contact]));
+            data.append("img", file);
+            data.append("id", waDevice);
+            data.append("caption", "");
+
+            await axiosInstance.post(
+              process.env.REACT_APP_SOCKET_URL + "/whatsapp/sendBulkMessage",
+              data,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
           }
         });
       } else {
@@ -117,6 +129,7 @@ const Conversation = ({
         theme: "light",
       });
     }
+    setImgLoading(false);
   }
 
   const handleChangeImage = (e) => {
@@ -128,15 +141,8 @@ const Conversation = ({
       files = e.target.files;
     }
 
-    console.log(e.target.files[0]);
-
-    const reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-
-    reader.onload = (e) => {
-      const imgBinary = e.target.result;
-      sendWhatsappImage(activeChat?.phoneNumber, imgBinary);
-    };
+    setImgLoading(true);
+    sendWhatsappImage(activeChat?.phoneNumber, files[0]);
   };
   return (
     <>
@@ -208,7 +214,6 @@ const Conversation = ({
               <Box className="pl-6 py-3 border-[rgb(246,246,246)] border-b w-full">
                 <Box className="flex items-center w-full">
                   <Avatar
-                  
                     sx={{
                       width: 35,
                       height: 35,
@@ -233,46 +238,44 @@ const Conversation = ({
                 <div className="bg-gray-100 flex-1 flex flex-col items-center justify-center">
                   <CircularProgress color="error" size={18} />
                   <p className="mt-3">Loading the chat..</p>
-                  </div>
+                </div>
               ) : chatMessages.length > 0 ? (
-                  <div
-                    ref={messagesContainerRef}
-                    style={{
-                      backgroundImage:
-                        "url(https://i.pinimg.com/600x315/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg)",
-                      backgroundPosition: "center",
-                      backgroundColor: "rgba(255, 255, 255, 0.6)",
-                      backgroundBlendMode: "overlay",
-                    }}
-                    className="overflow-y-scroll p-3 flex-1 flex flex-col items-end"
-                  >
-                    {chatMessages?.map((message, index) => {
-                      if (
-                        message.id.fromMe &&
-                        message.to === activeChat.phoneNumber + "@c.us"
-                      ) {
-                        return (
-                          <MessageFromMe
-                            data={data}
-                            key={index}
-                            message={message}
-                          />
-                        );
-                      } else if (
-                        message.from ===
-                        activeChat.phoneNumber + "@c.us"
-                      ) {
-                        return (
-                          <MessageFromOther key={index} message={message} />
-                        );
-                      }
-                    })}
-                  </div>
+                <div
+                  ref={messagesContainerRef}
+                  style={{
+                    backgroundImage:
+                      "url(https://i.pinimg.com/600x315/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg)",
+                    backgroundPosition: "center",
+                    backgroundColor: "rgba(255, 255, 255, 0.6)",
+                    backgroundBlendMode: "overlay",
+                  }}
+                  className="overflow-y-scroll p-3 flex-1 flex flex-col items-end"
+                >
+                  {chatMessages?.map((message, index) => {
+                    if (
+                      message.id.fromMe &&
+                      message.to === activeChat.phoneNumber + "@c.us"
+                    ) {
+                      return (
+                        <MessageFromMe
+                          data={data}
+                          key={index}
+                          message={message}
+                        />
+                      );
+                    } else if (
+                      message.from ===
+                      activeChat.phoneNumber + "@c.us"
+                    ) {
+                      return <MessageFromOther key={index} message={message} />;
+                    }
+                  })}
+                </div>
               ) : (
                 <div className="bg-gray-100 flex-1 flex flex-col items-center justify-center">
                   <BsFillChatLeftDotsFill size={40} />
                   <p className="mt-3">Start the Conversation!</p>
-                  </div>
+                </div>
               )}
               {activeChat.phoneNumber && (
                 <form
@@ -312,9 +315,10 @@ const Conversation = ({
                     sx={{ transform: "translateY(-50%)" }}
                     className="absolute top-[50%] left-5"
                   >
-                    <IconButton onClick={() => imagePickerRef.current.click()}>
+                  {imgLoading ? <CircularProgress size={18} sx={{ color: "black" }} /> : <IconButton onClick={() => imagePickerRef.current.click()}>
                       <BsImage size={18} />
-                    </IconButton>
+                    </IconButton>}
+                    
                   </Box>
                   <input
                     onInput={handleChangeImage}
