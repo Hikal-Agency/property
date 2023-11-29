@@ -1,26 +1,46 @@
 import {
   CircularProgress,
   Modal,
-  Backdrop, IconButton
+  Backdrop, 
+  Box,
+  Typography
 } from "@mui/material";
+import PhoneInput, {
+  formatPhoneNumberIntl,
+  isValidPhoneNumber,
+  isPossiblePhoneNumber,
+} from "react-phone-number-input";
+import classNames from "classnames";
 import { useStateContext } from "../../context/ContextProvider";
 import { TextField } from "@mui/material";
+import Select from "react-select";
 import React, { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import "../../styles/app.css";
-
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { GridCloseIcon } from "@mui/x-data-grid";
+import { selectStyles } from "../_elements/SelectStyles";
+
+import { MdClose } from "react-icons/md";
+import { t } from "i18next";
 
 const style = {
-  transform: "translate(-50%, -50%)",
+  transform: "translate(-0%, -0%)",
   boxShadow: 24,
 };
 
 const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
-  const { Managers, User } = useStateContext();
-  const { BACKEND_URL, currentMode } = useStateContext();
+  const { 
+    BACKEND_URL, 
+    currentMode,
+    isLangRTL,
+    i18n, t,
+    darkModeColors,
+    primaryColor,
+    Managers, 
+    User 
+  } = useStateContext();
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
   const [fetchingRoles, setFetchingRoles] = useState(true);
@@ -29,6 +49,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
   const [emailError, setEmailError] = useState(false);
   const [filterRole, setFilterRole] = useState([]);
   const [allRoles, setAllRoles] = useState([]);
+  const [filterUser, setFilterUser] = useState([]);
 
   const handlePassword = (e) => {
     setPasswordError(false);
@@ -55,6 +76,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
       password: e.target.value,
     });
   };
+
   const handleEmail = (e) => {
     setEmailError(false);
     const email = e.target.value;
@@ -69,12 +91,18 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     setformdata({ ...formdata, userEmail: email });
   };
 
-  console.log("user role: ", UserRole);
-
   const ChangeUserRole = (event) => {
-    const selectedRole = event.target.value;
+    const defaultParent = 102;
+    const selectedRole = event.value;
     setUserRole(selectedRole);
-    setformdata({ ...formdata, role: selectedRole });
+    if (selectedRole === 3) {
+      fetchUserRole();
+    }
+    setformdata({ 
+      ...formdata, 
+      role: selectedRole,
+      isParent: defaultParent 
+    });
   };
 
   // sql injuction,
@@ -84,7 +112,14 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
   }
 
   const RegisterUser = async () => {
-    const { userName, userEmail, password, c_password, loginId } = formdata;
+    const { 
+      userName, 
+      userEmail,
+      password, 
+      c_password, 
+      loginId,
+    } = formdata;
+    
     if (
       !isSafeInput(userName) ||
       !isSafeInput(userEmail) ||
@@ -107,22 +142,24 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
     if (formdata.password === formdata.c_password) {
       setloading(true);
-      const form = { ...formdata };
-      form["addedBy"] = User?.id;
+      const form = { 
+        ...formdata,
+        addedBy: User?.id,
+        userContact: LeadContact, 
+      };
+      // let isParent;
+      // if (UserRole !== 1 || UserRole !== 7 || UserRole !== 3) {
+      //   isParent = 102;
+      // } else {
+      //   form["isParent"] = isParent;
+      // }
 
-      let isParent;
-      if (UserRole !== 1 || UserRole !== 7 || UserRole !== 3) {
-        isParent = 102;
-      } else {
-        form["isParent"] = isParent;
-      }
-
-      console.log("formdata::: ", form);
+      // console.log("formdata::: ", form);
 
       await axios
         .post(`${BACKEND_URL}/register`, form)
         .then((result) => {
-          console.log("result", result);
+          // console.log("result", result);
           if (result.data.success) {
             toast.success("Registration Completed Successfully", {
               position: "top-right",
@@ -139,7 +176,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
           addUserModelClose();
         })
         .catch((err) => {
-          console.log("error : ", err);
+          // console.log("error : ", err);
           toast.error("Something went Wrong! Please Try Again", {
             position: "top-right",
             autoClose: 3000,
@@ -176,7 +213,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
     setFilterRole(filterRole);
 
-    console.log("filtered Roles: ", filterRole);
+    // console.log("filtered Roles: ", filterRole);
     setAllRoles(data);
     setFetchingRoles(false);
   };
@@ -185,12 +222,99 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     fetchData();
   }, []);
 
-  console.log("User Model: ", formdata);
+  // console.log("User Model: ", formdata);
+
+  // MODAL CLOSE 
+  const [isClosing, setIsClosing] = useState(false);
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      addUserModelClose();
+    }, 1000);
+  };
+
+  // USER ROLE SELECTION 
+  const role_options = allRoles.map((role) => ({
+    value: role.id, 
+    label: role.role, 
+  }));
+  const selectedOption = role_options.find((role) => role.value === UserRole);
+
+  // MANAGER SELECTION 
+  const manager_options = Managers.map((manager) => ({
+    value: manager.id,
+    label: manager.userName,
+  }));
+
+  // SUPERVISOR SELECTION 
+  const sup_options = filterUser.map((parent) => ({
+    value: parent.id,
+    label: parent.userName,
+  }))
+
+  // USER CONTACT 
+  const [LeadContact, setLeadContact] = useState("");
+  const [value, setValue] = useState("");
+  const [error, setError] = useState(false);
+  const handleContact = () => {
+    setError(false);
+    const inputValue = value;
+    // console.log("Phone: ", inputValue);
+    if (inputValue && isPossiblePhoneNumber(inputValue)) {
+      // console.log("Possible: ", inputValue);
+      if (isValidPhoneNumber(inputValue)) {
+        setLeadContact(formatPhoneNumberIntl(inputValue));
+        // console.log("Valid lead contact: ", LeadContact);
+        // console.log("Valid input: ", inputValue);
+        setError(false);
+      } else {
+        setError("Not a valid number.");
+      }
+    } else {
+      setError("Not a valid number.");
+    }
+  };
+
+  // CHANGE PARENT 
+  const ChangeParent = (event) => {
+    const selectedParent = event.value;
+    setformdata({ ...formdata, isParent: selectedParent });
+  };
+
+  // SUPERVISORS 
+  const fetchUserRole = async () => {
+    const token = localStorage.getItem("auth-token");
+    // FETCH ROLE 1 
+    // const r1Result = await axios.get(`${BACKEND_URL}/users?role=1`, {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: "Bearer " + token,
+    //   },
+    // });
+    // FETCH ROLE 2 
+    const r2Result = await axios.get(`${BACKEND_URL}/users?role=2`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    // const dataR1 = r1Result.data.managers?.data || [];
+    const dataR2 = r2Result.data.managers?.data || [];
+
+    const combinedData = [
+      // ...dataR1,
+      ...dataR2
+    ];
+    setFilterUser(combinedData);
+  }
+
   return (
     <Modal
       keepMounted
       open={handleOpenModel}
-      onClose={addUserModelClose}
+      onClose={handleClose}
       aria-labelledby="keep-mounted-modal-title"
       aria-describedby="keep-mounted-modal-description"
       closeAfterTransition
@@ -200,291 +324,290 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
       }}
       className="relative"
     >
-      {/* <IconButton
-        sx={{
-          position: "absolute",
-          right: 12,
-          top: 10,
-          color: "#000000",
-        }}
-        onClick={addUserModelClose}
-      >
-        <CloseIcon size={18} color="#000000" />
-      </IconButton> */}
       <div
-        style={style}
-        className={`w-[calc(100%-20px)] md:w-[50%]  ${
-          currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-        } absolute top-1/2 left-1/2 p-5 pt-0 rounded-md`}
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
+            ? isLangRTL(i18n.language)
+              ? "modal-close-left"
+              : "modal-close-right"
+            : ""
+        } w-[100vw] h-[100vh] flex items-start justify-end`}
       >
-        <div className="relative overflow-hidden">
-          <div className={``}>
-            <div className="flex pt-3 items-center justify-center pl-3">
-              {fetchingRoles ? (
-                <CircularProgress />
-              ) : (
-                <div>
-                  <div className="pt-20 w-[calc(100vw-50px)] md:max-w-[600px] space-y-4 md:space-y-6 bg-white pb-5 px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
-                    <IconButton
-                      sx={{
-                        position: "absolute",
-                        right: 12,
-                        top: 20,
-                        color: currentMode === "dark" ? "#ffffff" : "#000000",
-                      }}
-                      onClick={addUserModelClose}
-                    >
-                      <GridCloseIcon size={18} />
-                    </IconButton>
-                    <div>
-                      <h2 className="text-center text-xl font-bold text-[#1c1c1c] mt-3">
-                        Create A New Account
-                      </h2>
-                    </div>
+        <button
+          // onClick={handleLeadModelClose}
+          onClick={handleClose}
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
+          bg-primary w-fit h-fit p-3 my-4 z-10`}
+        >
+          <MdClose
+            size={18}
+            color={"white"}
+            className="hover:border hover:border-white hover:rounded-full"
+          />
+        </button>
+        <div
+          style={style}
+          className={` ${
+            currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+          } ${
+            isLangRTL(i18n.language)
+              ? currentMode === "dark" && " border-primary border-r-2"
+              : currentMode === "dark" && " border-primary border-l-2"
+          }
+          p-4 h-[100vh] w-[80vw] overflow-y-scroll 
+          `}
+        >
+          {fetchingRoles ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <div className="w-full flex items-center pb-3 ">
+                <div
+                  className={`${
+                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                  } bg-primary h-10 w-1 rounded-full my-1`}
+                ></div>
+                <h1
+                  className={`text-lg font-semibold ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
+                >
+                  {t("button_add_user")}
+                </h1>
+              </div>
 
-                    <form
-                      className="mt-8 space-y-6"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        RegisterUser();
-                      }}
-                    >
-                      <input
-                        type="hidden"
-                        name="remember"
-                        defaultValue="true"
-                      />
-                      <div className="grid grid-cols-6 gap-x-3 gap-y-5 rounded-md">
-                        <div className="col-span-6">
-                          <TextField
-                            id="username"
-                            type={"text"}
-                            label="Username"
-                            className="w-full mt-3"
-                            variant="outlined"
-                            size="medium"
-                            required
-                            value={formdata?.userName}
-                            onChange={(e) => {
-                              setformdata({
-                                ...formdata,
-                                userName: e.target.value,
-                              });
-                            }}
-                          />
+              <div className="w-full">
+                <form
+                  className="p-4"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    RegisterUser();
+                  }}
+                >
+                  <input
+                    type="hidden"
+                    name="remember"
+                    defaultValue="true"
+                  />
+                  <Box sx={darkModeColors}>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                      {/* USER DETAILS  */}
+                      <div className="p-4">
+                        <div className="text-primary w-full text-center font-semibold mb-5">
+                          {t("user_details")}
                         </div>
-                        <div className="col-span-6">
-                          <TextField
-                            id="email"
-                            type={"email"}
-                            label="User Email Address"
-                            className="w-full"
-                            variant="outlined"
-                            size="medium"
-                            // error={!!emailError}
-                            required
-                            value={formdata?.userEmail}
-                            onChange={handleEmail}
-                          />
-                        </div>
+                        {/* USER NAME  */}
+                        <TextField
+                          id="username"
+                          type={"text"}
+                          label={t("label_user_name")}
+                          className="w-full"
+                          style={{
+                            marginBottom: "20px",
+                          }}
+                          variant="outlined"
+                          size="small"
+                          required
+                          value={formdata?.userName}
+                          onChange={(e) => {
+                            setformdata({
+                              ...formdata,
+                              userName: e.target.value,
+                            });
+                          }}
+                        />
+                        {/* USER EMAIL  */}
+                        <TextField
+                          id="userEmail"
+                          type={"email"}
+                          label={t("label_email_address")}
+                          className="w-full"
+                          style={{
+                            marginBottom: "20px",
+                          }}
+                          variant="outlined"
+                          size="small"
+                          // error={!!emailError}
+                          required
+                          value={formdata?.userEmail}
+                          onChange={handleEmail}
+                        />
                         {emailError && (
-                          <div className="col-span-6">
-                            <p className="italic text-primary">{emailError}</p>
-                          </div>
+                          <p className="italic text-primary">{emailError}</p>
+                        )}
+                        {/* USER CONTACT  */}
+                        <PhoneInput
+                          id="userContact"
+                          placeholder={t("label_contact_number")}
+                          value={value}
+                          onChange={handleContact}
+                          // onKeyUp={handleContact}
+                          error={error}
+                          className={` ${classNames({
+                            "dark-mode": currentMode === "dark",
+                            "phone-input-light": currentMode !== "dark",
+                            "phone-input-dark": currentMode === "dark",
+                          })} mb-5`}
+                          size="small"
+                          style={{
+                            background: "transparent",
+                            "& .PhoneInputCountryIconImg": {
+                              color: "#fff",
+                            },
+                            color: currentMode === "dark" ? "white" : "black",
+                            border: `1px solid ${
+                              currentMode === "dark" ? "#EEEEEE" : "#666666"
+                            }`,
+                            borderRadius: "5px",
+                            outline: "none",
+                          }}
+                          inputStyle={{
+                            outline: "none !important",
+                          }}
+                        />
+                        {error && (
+                          <Typography variant="body2" color="error">
+                            {error}
+                          </Typography>
+                        )}
+                        {/* USER ROLE  */}
+                        <Select
+                          id="user-role"
+                          value={selectedOption}
+                          onChange={ChangeUserRole}
+                          options={role_options}
+                          placeholder={t("account_type")}
+                          menuPortalTarget={document.body}
+                          className="w-full"
+                          styles={{
+                            ...selectStyles(currentMode, primaryColor)
+                          }}
+                        />
+
+                        {/* IF AGENT, SELECT MANAGER  */}
+                        {UserRole === 7 && (
+                          <Select
+                            id="parentId"
+                            value={manager_options.find((option) => option.value === formdata?.isParent)}
+                            onChange={ChangeParent}
+                            options={manager_options}
+                            placeholder={t("label_select_manager")}
+                            className="w-full"
+                            styles={selectStyles(currentMode, primaryColor)}
+                          />
                         )}
 
-                        <div className="col-span-3">
-                          <TextField
-                            select
-                            id="user-role"
-                            value={UserRole}
-                            label="User Role"
-                            onChange={ChangeUserRole}
-                            size="medium"
-                            className="w-full"
-                            displayEmpty
-                            required
-                          >
-                            <MenuItem value="" disabled>
-                              User Role
-                            </MenuItem>
-
-                            {allRoles?.map((role, index) => {
-                              return (
-                                <MenuItem key={index} value={role?.id}>
-                                  {role?.role}
-                                </MenuItem>
-                              );
-                            })}
-                          </TextField>
-                        </div>
-                        <div className="col-span-3">
-                          {UserRole === 7 && (
-                            <TextField
-                              select
-                              id="managerId"
-                              type={"text"}
-                              label="Select Manager"
-                              className="w-full mb-3"
-                              variant="outlined"
-                              size="medium"
-                              sx={{ marginBottom: "7px" }}
-                              required
-                              value={formdata?.isParent}
-                              onChange={(e) => {
-                                setformdata({
-                                  ...formdata,
-                                  isParent: e.target.value,
-                                });
-                              }}
-                            >
-                              <MenuItem value="" disabled>
-                                Manager
-                              </MenuItem>
-                              {Managers?.map((manager, key) => {
-                                return (
-                                  <MenuItem value={manager?.id} key={key}>
-                                    {manager?.userName}
-                                  </MenuItem>
-                                );
-                              })}
-                            </TextField>
-                          )}
-
-                          {UserRole === 3 && (
-                            <TextField
-                              select
-                              id="managerId"
-                              type={"text"}
-                              label="Select Manager"
-                              className="w-full mb-3"
-                              variant="outlined"
-                              size="medium"
-                              sx={{ marginBottom: "7px" }}
-                              required
-                              value={formdata?.isParent}
-                              onChange={(e) => {
-                                setformdata({
-                                  ...formdata,
-                                  isParent: e.target.value,
-                                });
-                              }}
-                            >
-                              <MenuItem value="" disabled>
-                                Manager
-                              </MenuItem>
-                              {filterRole?.map((parent, key) => {
-                                return (
-                                  <MenuItem value={parent?.id} key={key}>
-                                    {parent?.role}
-                                  </MenuItem>
-                                );
-                              })}
-                            </TextField>
-                          )}
-
-                          <TextField
-                            id="login-id"
-                            type={"text"}
-                            label="Login ID"
-                            className="w-full"
-                            variant="outlined"
-                            size="medium"
-                            required
-                            value={formdata?.loginId}
-                            onChange={(e) => {
-                              setformdata({
-                                ...formdata,
-                                loginId: e.target.value,
-                              });
-                            }}
+                        {/* IF MANAGER, SELECT SUPERVISOR  */}
+                        {UserRole === 3 && (
+                          <Select
+                            id="parentId"
+                            value={sup_options.find((option) => option.value === formdata?.isParent)}
+                            onChange={ChangeParent}
+                            options={sup_options}
+                            placeholder={t("label_select_manager")}
+                            className="w-full mb-3"
+                            styles={selectStyles(currentMode, primaryColor)}
                           />
-                        </div>
-                        {User?.role === 1 && (
-                          <div className="col-span-6">
-                            <TextField
-                              id="agency"
-                              type={"number"}
-                              label="Agency Id"
-                              className="w-full mt-3"
-                              variant="outlined"
-                              size="medium"
-                              required
-                              value={formdata?.agency}
-                              onChange={(e) => {
-                                setformdata({
-                                  ...formdata,
-                                  agency: e.target.value,
-                                });
-                              }}
-                            />
-                          </div>
                         )}
+                      </div>
 
-                        <div className="col-span-3">
-                          <TextField
-                            id="password"
-                            type={"password"}
-                            label="Password"
-                            className="w-full"
-                            variant="outlined"
-                            size="medium"
-                            required
-                            value={formdata?.password}
-                            onChange={handlePassword}
-                            helperText={"Example: Abc123@#"}
-                          />
+                      {/* LOGIN DETAILS  */}
+                      <div className="p-4">
+                        <div className="text-primary w-full text-center font-semibold mb-5">
+                          {t("login_details")}
                         </div>
-                        <div className="col-span-3">
-                          <TextField
-                            id="confirm-password"
-                            type={"password"}
-                            label="Confirm Password"
-                            className="w-full"
-                            variant="outlined"
-                            size="medium"
-                            required
-                            value={formdata?.c_password}
-                            onChange={(e) => {
-                              setPasswordError(false);
-                              setformdata({
-                                ...formdata,
-                                c_password: e.target.value,
-                              });
-                            }}
-                          />
-                        </div>
+                        {/* LOGIN ID  */}
+                        <TextField
+                          id="login-id"
+                          type={"text"}
+                          label={t("login_id")}
+                          className="w-full"
+                          style={{
+                            marginBottom: "20px"
+                          }}
+                          variant="outlined"
+                          size="small"
+                          required
+                          value={formdata?.loginId}
+                          onChange={(e) => {
+                            setformdata({
+                              ...formdata,
+                              loginId: e.target.value,
+                            });
+                          }}
+                        />
+                        {/* PASSWORD  */}
+                        <TextField
+                          id="password"
+                          type={"password"}
+                          label={t("label_new_password")}
+                          className="w-full"
+                          style={{
+                            marginBottom: "20px"
+                          }}
+                          variant="outlined"
+                          size="small"
+                          required
+                          value={formdata?.password}
+                          onChange={handlePassword}
+                          placeholder={"Abc123@#"}
+                        />
+                        {/* CONFIRM PASSWORD  */}
+                        <TextField
+                          id="confirm-password"
+                          type={"password"}
+                          label={t("label_confirm_password")}
+                          className="w-full"
+                          style={{
+                            marginBottom: "20px"
+                          }}
+                          variant="outlined"
+                          size="small"
+                          required
+                          value={formdata?.c_password}
+                          onChange={(e) => {
+                            setPasswordError(false);
+                            setformdata({
+                              ...formdata,
+                              c_password: e.target.value,
+                            });
+                          }}
+                        />
                         {passwordError && (
-                          <div className="col-span-6">
-                            <p className="italic text-primary">
-                              {passwordError}
-                            </p>
-                          </div>
+                          <p className="italic text-primary">
+                            {passwordError}
+                          </p>
                         )}
                       </div>
-                      <div>
-                        <button
-                          disabled={loading ? true : false}
-                          type="submit"
-                          className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary py-3 px-4 text-white  focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
-                        >
-                          {loading ? (
-                            <CircularProgress
-                              sx={{ color: "white" }}
-                              size={25}
-                              className="text-white"
-                            />
-                          ) : (
-                            <span>Create</span>
-                          )}
-                        </button>
-                      </div>
-                    </form>
+                    </div>
+                  </Box>
+                  <div className="p-4">
+                    <button
+                      disabled={loading ? true : false}
+                      type="submit"
+                      className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary py-3 px-4 text-white  focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
+                    >
+                      {loading ? (
+                        <CircularProgress
+                          sx={{ color: "white" }}
+                          size={18}
+                          className="text-white"
+                        />
+                      ) : (
+                        <span>{t("button_add_user")}</span>
+                      )}
+                    </button>
                   </div>
-                </div>
-              )}
-            </div>
-          </div>
+                </form>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </Modal>

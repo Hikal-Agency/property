@@ -202,6 +202,12 @@ export const ContextProvider = ({ children }) => {
     },
   };
 
+  const MenuItemStyles = {
+    "& .MuiMenuItem-root": {
+      backgroundColor: currentMode === "dark" ? blurDarkColor : blurLightColor,
+    }
+  };
+
   const darkModeColors = {
     // For DARK MODE
     // SELECT STATEMENT LABLE COLOR
@@ -254,6 +260,11 @@ export const ContextProvider = ({ children }) => {
     },
     "& .MuiTabs-indicator": {
       backgroundColor: `${primaryColor} !important`,
+    },
+
+    // DROPDOWN SELECT 
+    "& .MuiPaper-root, .MuiPopover-paper, .MuiMenu-paper": {
+      backgroundColor: currentMode === "dark" ? blurDarkColor : blurLightColor,
     },
   };
 

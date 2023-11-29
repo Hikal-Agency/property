@@ -8,7 +8,8 @@ import {
   MenuItem,
   // Select,
 } from "@mui/material";
-import Select from "@mui/material/Select";
+// import Select from "@mui/material/Select";
+import Select from "react-select";
 import moment from "moment";
 import { socket } from "../../Pages/App";
 
@@ -17,6 +18,11 @@ import React, { useState, useEffect } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
+import { renderStyles } from "../_elements/SelectStyles";
+
+import {
+  BsPersonCheck
+} from "react-icons/bs";
 
 const RenderSalesperson = ({ cellValues, lead_origin }) => {
   const [SalesPerson2, setSalesPerson2] = useState(
@@ -42,6 +48,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     fetchSidebarData,
     User,
     t,
+    primaryColor
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -62,10 +69,10 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
   };
 
   const ChangeSalesPerson = (e) => {
-    console.log(e.target);
     let selectedItem;
     selectedItem = SalesPersonsList.find(
-      (item) => item.id === Number(e.target.value)
+      // (item) => item.id === Number(e.target.value)
+      (item) => item.id === Number(e.value)
     );
     let old_selectedItem;
 
@@ -270,7 +277,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
 
   return (
     <Box
-      className={`w-full h-full flex items-center justify-center`}
+      className={`renderDD w-full h-full flex items-center justify-center`}
       sx={SelectStyles}
     >
       {noAgents ? (
@@ -284,57 +291,86 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
           {t("no_agents")}
         </p>
       ) : (
-        <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
-          <Select
-            id="SalesPerson"
-            value={
-              !SalesPerson2 || SalesPerson2 === "0" || SalesPerson === 102
-                ? "selected_agent"
-                : SalesPerson2
+        <Select 
+          id="SalesPerson"
+          value={
+            !SalesPerson2 || SalesPerson2 === "0" || SalesPerson === "1" || SalesPerson2 === null
+            ? {
+              label: "",
+              value: null
             }
-            name="salesperson"
-            label={t("label_sales_agent")}
-            onChange={ChangeSalesPerson}
-            size="medium"
-            className="w-[100%] h-[75%]"
-            sx={{
-              "& .MuiSelect-select": {
-                fontSize: 11,
-              },
-              color:
-                currentMode === "dark"
-                  ? "#ffffff !important"
-                  : "#000000 !important",
-              "& .MuiSelect-icon": {
-                color:
-                  currentMode === "dark"
-                    ? "#ffffff !important"
-                    : "#000000 !important",
-              },
-            }}
-            displayEmpty
-            required
-          >
-            <MenuItem value={"selected_agent"} selected>
-              {" "}
-              ---{t("label_agent")}---
-            </MenuItem>
+            : {
+              label: SalesPersonsList.find(salesperson => salesperson.id === SalesPerson2)?.userName, 
+              value: SalesPerson2
+            }
+          }
+          onChange={ChangeSalesPerson}
+          options={[
+            {
+              label: "---", //"---" + t("label_manager") + "---",
+              value: null,
+            },
+            ...(SalesPersonsList?.map((salesperson) => ({
+              label: salesperson.userName,
+              value: salesperson.id,
+            })) ?? []),
+          ]}
+          placeholder={t("label_sales_agent")}
+          className={`w-full`}
+          menuPortalTarget={document.body}
+          styles={renderStyles(currentMode, primaryColor)}
+        />
+        // <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
+        //   <Select
+        //     id="SalesPerson"
+        //     value={
+        //       !SalesPerson2 || SalesPerson2 === "0" || SalesPerson === 102
+        //         ? "selected_agent"
+        //         : SalesPerson2
+        //     }
+        //     name="salesperson"
+        //     label={t("label_sales_agent")}
+        //     onChange={ChangeSalesPerson}
+        //     size="medium"
+        //     className="w-[100%] h-[75%]"
+        //     sx={{
+        //       "& .MuiSelect-select": {
+        //         fontSize: 11,
+        //       },
+        //       color:
+        //         currentMode === "dark"
+        //           ? "#ffffff !important"
+        //           : "#000000 !important",
+        //       "& .MuiSelect-icon": {
+        //         color:
+        //           currentMode === "dark"
+        //             ? "#ffffff !important"
+        //             : "#000000 !important",
+        //       },
+        //     }}
+        //     displayEmpty
+        //     required
+        //   >
+        //     <MenuItem value={"selected_agent"} selected>
+        //       {" "}
+        //       ---{t("label_agent")}---
+        //     </MenuItem>
 
-            {SalesPersonsList?.length > 0 &&
-              SalesPersonsList?.map((salesperson, index) => {
-                return (
-                  <MenuItem
-                    key={index}
-                    value={salesperson?.id}
-                    data
-                    name={salesperson?.userName}
-                  >
-                    {salesperson?.userName}
-                  </MenuItem>
-                );
-              })}
-          </Select>
-        </FormControl>
+        //     {SalesPersonsList?.length > 0 &&
+        //       SalesPersonsList?.map((salesperson, index) => {
+        //         return (
+        //           <MenuItem
+        //             key={index}
+        //             value={salesperson?.id}
+        //             data
+        //             name={salesperson?.userName}
+        //           >
+        //             {salesperson?.userName}
+        //           </MenuItem>
+        //         );
+        //       })}
+        //   </Select>
+        // </FormControl>
       )}
 
       {Dialogue && (
@@ -346,7 +382,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
               },
               "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
                 {
-                  backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                  // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
                 },
             }}
             open={Dialogue}
@@ -365,47 +401,47 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
             >
               <IoMdClose size={18} />
             </IconButton>
-            <div className="px-10 py-5">
+            <div className={`px-10 py-5 ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-white text-black"}`}>
               <div className="flex flex-col justify-center items-center">
-                <IoIosAlert size={50} className="text-primary text-2xl" />
+                <BsPersonCheck size={50} className="text-primary text-2xl" />
                 <h1 className="font-semibold pt-3 text-lg text-center">
                   {t("want_to_change_agent")} {t("from")}{" "}
-                  <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                  <span className="text-sm bg-gray-500 px-2 py-1 rounded-md font-bold">
                     {SalesPerson3?.userName ?? "No Agent"}
                   </span>{" "}
                   {t("to")}{" "}
-                  <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                  <span className="text-sm bg-primary px-2 py-1 rounded-md font-bold">
                     {newSalesPerson?.userName}
                   </span>{" "}
                   ?
                 </h1>
               </div>
-              <div className="action buttons mt-5 flex items-center justify-center ">
+              <div className="action buttons mt-5 flex items-center gap-3 justify-center ">
                 <Button
-                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                  className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                   ripple={true}
                   size="lg"
                   onClick={() => UpdateSalesPerson(cellValues)}
                 >
                   {btnloading ? (
-                    <CircularProgress size={18} sx={{ color: "white" }} />
+                    <CircularProgress size={16} sx={{ color: "white" }} />
                   ) : (
                     <span>{t("confirm")}</span>
                   )}
                 </Button>
 
-                {/* <Button
+                <Button
                   onClick={() => setDialogue(false)}
                   ripple={true}
                   variant="outlined"
-                  className={`shadow-none  rounded-md text-sm  ${
+                  className={`shadow-none p-3 rounded-md text-sm  ${
                     currentMode === "dark"
                       ? "text-white border-white"
-                      : "text-main-red-color border-main-red-color"
+                      : "text-black border-black"
                   }`}
                 >
                   Cancel
-                </Button> */}
+                </Button>
               </div>
             </div>
           </Dialog>

@@ -8,7 +8,8 @@ import {
   MenuItem,
   // Select,
 } from "@mui/material";
-import Select from "@mui/material/Select";
+// import Select from "@mui/material/Select";
+import Select from "react-select";
 import { socket } from "../../Pages/App";
 
 import axios from "../../axoisConfig";
@@ -16,6 +17,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
+import { renderStyles } from "../_elements/SelectStyles.jsx";
+import { priority_options } from "../_elements/SelectOptions.js";
 
 import { TbFlag3Filled, TbFlag3 } from "react-icons/tb";
 
@@ -26,7 +29,7 @@ const RenderPriority = ({ cellValues }) => {
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   // eslint-disable-next-line
   const [confirmbtnloading, setconfirmbtnloading] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, fetchSidebarData, User, t} =
+  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, fetchSidebarData, User, t, primaryColor} =
     useStateContext();
 
   const [selectedPriority, setSelectedPriority] = useState(Priority);
@@ -39,10 +42,10 @@ const RenderPriority = ({ cellValues }) => {
   };
   
   const handlePriorityChange = (newPriority) => {
-    setSelectedPriority(newPriority);
+    setSelectedPriority(newPriority.value);
     setIsDropdownOpen(false);
     
-    setnewPriority(newPriority);
+    setnewPriority(newPriority.value);
     setPriorityDialogue(true);
   };
 
@@ -50,7 +53,7 @@ const RenderPriority = ({ cellValues }) => {
   console.log("Priority: ", Priority);
 
   const ChangePriority = (e) => {
-    setnewPriority(e.target.value);
+    setnewPriority(e.value);
     setPriorityDialogue(true);
   };
 
@@ -157,36 +160,105 @@ fetchSidebarData();
     }
   }
 
+  const customOptions = ({
+    innerProps,
+    data 
+  }) => (
+    <div {...innerProps}>
+      {data.icon && (
+        <div 
+          className={`flex items-center justify-start ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+          style={{
+            padding: "5px 3px",
+            borderRadius: "5px",
+            marginTop: "5px",
+            marginBottom: "5px",
+            wordWrap: "break-word",
+          }}
+        >
+          <span>
+            {data.icon}
+          </span>
+          <span>
+            {data.label}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+
   return (
-    <div className="w-full h-full">
-      <Box 
-      sx={SelectStyles}
-      className={`w-full h-full flex items-center justify-center`} >
-        <IconButton onClick={handleFlagClick} style={{ zIndex: 1001 }}>
-          {getFlagIcon()}
-        </IconButton>
-        {isDropdownOpen && (
-          <FormControl className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
-          sx={{".MuiSelect-select": {
-            fontSize: 11,
-          }}}>
-            <Select
-              id="priority"
-              value={selectedPriority}
-              onChange={(e) => handlePriorityChange(e.target.value)}
-            >
-              <MenuItem value={"High"}>{t("priority_high")}</MenuItem>
-              <MenuItem value={"Medium"}>{t("priority_medium")}</MenuItem>
-              <MenuItem value={"Low"}>{t("priority_low")}</MenuItem>
-            </Select>
-          </FormControl>
-        )}
-      </Box>
-       
-      <Box
-        className={`w-full h-full flex items-center justify-center`}
+    <div className="renderDD w-full h-full flex items-center justify-center">
+      <Select 
+        id="priority"
+        value={selectedPriority}
+        onChange={handlePriorityChange}
+        options={priority_options(t)}
+        placeholder={getFlagIcon()}
+        className={`w-full h-full`}
+        isSearchable={false}
+        components={{
+          Option: customOptions,
+        }}
+        menuPortalTarget={document.body}
+        styles={{
+          ...renderStyles(currentMode, primaryColor),
+          control: provided => ({
+            ...provided,
+            background: "transparent",
+            borderColor: "transparent",
+            color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+            height: "100%",
+            textAlign: "center", 
+            display: "flex",
+            justifyContent: "center",
+          }),
+          // valueContainer: (provided) => ({
+          //   ...provided,
+          //   padding: "1px 0px 1px 2px",
+          //   display: "flex",
+          //   justifyContent: "center",
+          //   alignItems: "center",
+          // }),
+          placeholder: provided => ({
+            ...provided,
+            color: currentMode === "dark" ? "#EEEEEE" : "#333333",
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }),
+          indicatorsContainer: (provided) => ({
+            ...provided,
+            display: "none",
+          }),
+        }}
+      />
+
+        {/* <Box 
         sx={SelectStyles}
-      >
+        className={`w-full h-full flex items-center justify-center`} >
+          <IconButton onClick={handleFlagClick} style={{ zIndex: 1001 }}>
+            {getFlagIcon()}
+          </IconButton>
+          {isDropdownOpen && (
+            <FormControl className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
+            sx={{".MuiSelect-select": {
+              fontSize: 11,
+            }}}>
+              <Select
+                id="priority"
+                value={selectedPriority}
+                onChange={(e) => handlePriorityChange(e.target.value)}
+              >
+                <MenuItem value={"High"}>{t("priority_high")}</MenuItem>
+                <MenuItem value={"Medium"}>{t("priority_medium")}</MenuItem>
+                <MenuItem value={"Low"}>{t("priority_low")}</MenuItem>
+              </Select>
+            </FormControl>
+          )}
+        </Box> */}
         {/* <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
           <Select
           sx={{
@@ -227,7 +299,7 @@ fetchSidebarData();
                 },
                 "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
                   {
-                    backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                    // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
                   },
               }}
               open={PriorityDialogue}
@@ -246,9 +318,9 @@ fetchSidebarData();
               >
                 <IoMdClose size={18} />
               </IconButton>
-              <div className="px-10 py-5">
+              <div className={`px-10 py-5 ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-white text-black"}`}>
                 <div className="flex flex-col justify-center items-center">
-                  <IoIosAlert
+                  <TbFlag3
                     size={50}
                     className="text-primary text-2xl"
                   />
@@ -258,7 +330,7 @@ fetchSidebarData();
                       {Priority === null ? "Null" : t("priority_" + Priority?.toLowerCase())}
                     </span>{" "}
                     {t("to")}{" "}
-                    <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                    <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
                       {t("priority_" + newPriority?.toLowerCase())}
                     </span>{" "}
                     ?
@@ -266,13 +338,13 @@ fetchSidebarData();
                 </div>
                 <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                   <Button
-                    className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                    className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                     ripple={true}
                     size="lg"
                     onClick={() => UpdatePriority(cellValues)}
                   >
                     {btnloading ? (
-                      <CircularProgress size={18} sx={{ color: "white" }} />
+                      <CircularProgress size={16} sx={{ color: "white" }} />
                     ) : (
                       <span>{t("confirm")}</span>
                     )}
@@ -282,7 +354,7 @@ fetchSidebarData();
                     onClick={() => setPriorityDialogue(false)}
                     ripple={true}
                     variant="outlined"
-                    className={`shadow-none  rounded-md text-sm  ${
+                    className={`shadow-none p-3 rounded-md text-sm  ${
                       currentMode === "dark"
                         ? "text-white border-white"
                         : "text-primary border-primary"
@@ -295,7 +367,6 @@ fetchSidebarData();
             </Dialog>
           </>
         )}
-      </Box>
     </div>
   );
 };

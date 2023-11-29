@@ -5,13 +5,13 @@ import {
   InputAdornment,
   TextField,
   styled,
-  Select,
   MenuItem,
   Tooltip,
   FormControl,
   InputLabel,
 } from "@mui/material";
 import "../../styles/index.css";
+import Select from "react-select";
 import usePermission from "../../utils/usePermission";
 import { BiImport } from "react-icons/bi";
 import {
@@ -26,6 +26,11 @@ import {
 import axios from "../../axoisConfig";
 import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
+import { 
+  selectBgStyles,
+  pageStyles
+} from "../../Components/_elements/SelectStyles";
+import { renderSourceIcons, sourceIcons } from "../../Components/_elements/SourceIconsDataGrid";
 
 import { AiOutlineHistory, AiFillEdit } from "react-icons/ai";
 import { BiSearch, BiMessageRoundedDots, BiArchive } from "react-icons/bi";
@@ -68,6 +73,8 @@ import { langs } from "../../langCodes";
 import AddReminder from "../../Components/reminder/AddReminder";
 import RenderPriority from "../../Components/Leads/RenderPriority";
 import Timeline from "../timeline";
+import { feedback_options, source_options } from "../../Components/_elements/SelectOptions";
+import { renderOTPIcons } from "../../Components/_elements/OTPIconsDataGrid";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -77,6 +84,59 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
+// FEEDBACK 
+const leadTypes = (t) => [
+  { 
+    id: "all",
+    label: t("feedback_all"),
+  },
+  { 
+    id: "new",
+    label: t("feedback_new"),
+  },
+  { 
+    id: "follow up",
+    label: t("feedback_follow_up") 
+  },
+  { 
+    id: "meeting",
+    label: t("feedback_meeting") 
+  },
+  { 
+    id: "booked", 
+    label: t("feedback_booked") 
+  },
+  { 
+    id: "low budget",
+    label: t("feedback_low_budget") 
+  },
+  { 
+    id: "not interested",
+    label: t("feedback_not_interested") 
+  },
+  { 
+    id: "no answer", 
+    label: t("feedback_no_answer") 
+  },
+  { 
+    id: "unreachable", 
+    label: t("feedback_unreachable") 
+  },
+  { 
+    id: "wrong number", 
+    label: t("feedback_wrong_number")
+  },
+  { 
+    id: "duplicate", 
+    label: t("feedback_duplicate") 
+  },
+  { 
+    id: "dead",
+    label: t("feedback_dead") 
+  },
+];
+
+// LEAD CATEGORY 
 const leadOrigins = [
   { id: "hotleads" },
   { id: "coldleads" },
@@ -85,52 +145,64 @@ const leadOrigins = [
   { id: "warmleads" },
   { id: "transfferedleads" },
 ];
-const leadTypes = [
-  { id: "all" },
-  { id: "new" },
-  { id: "no answer" },
-  { id: "meeting" },
-  { id: "follow up" },
-  { id: "low budget" },
-  { id: "not interested" },
-  { id: "unreachable" },
-  { id: "dead" },
-  { id: "wrong number" },
-];
 
-const enquiryTypes = [
+// ENQUIRY TYPE 
+const enquiryTypes = (t) => [
   {
     id: "studio",
+    label: t("enquiry_studio"),
   },
   {
     id: "1 bedroom",
+    label: t("enquiry_1bed"),
   },
   {
     id: "2 bedrooms",
+    label: t("enquiry_2bed"),
   },
   {
     id: "3 bedrooms",
+    label: t("enquiry_3bed"),
   },
   {
     id: "4 bedrooms",
+    label: t("enquiry_4bed"),
   },
   {
     id: "5 bedrooms",
+    label: t("enquiry_5bed"),
   },
   {
     id: "6 bedrooms",
+    label: t("enquiry_6bed"),
+  },
+  {
+    value: "7 bedrooms",
+    label: t("enquiry_7bed"),
+  },
+  {
+    value: "8 bedrooms",
+    label: t("enquiry_8bed"),
+  },
+  {
+    value: "9 bedrooms",
+    label: t("enquiry_9bed"),
+  },
+  {
+    value: "10 bedrooms",
+    label: t("enquiry_10bed"),
   },
   {
     id: "retail",
+    label: t("enquiry_retail"),
   },
   {
-    id: "others",
+    value: "other",
+    label: t("enquiry_others"),
   },
 ];
 
 const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
-  const token = localStorage.getItem("auth-token");
-
   const {
     currentMode,
     pageState,
@@ -147,8 +219,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     isArabic,
     darkModeColors,
     primaryColor,
-    t,
+    t, themeBgImg,
+    blurDarkColor,
+    blurLightColor
   } = useStateContext();
+
+  const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState({});
   const [deleteloading, setdeleteloading] = useState(false);
   const [deletebtnloading, setdeletebtnloading] = useState(false);
@@ -160,7 +236,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [deleteModelOpen, setDeleteModelOpen] = useState(false);
   const [unassignedFeedback, setUnassignedFeedback] = useState("All");
   const [leadOriginSelected, setLeadOriginSelected] = useState(leadOrigins[0]);
-  const [leadTypeSelected, setLeadTypeSelected] = useState(leadTypes[0]);
+  const [leadTypeSelected, setLeadTypeSelected] = useState(leadTypes(t)[0]);
   const [enquiryTypeSelected, setEnquiryTypeSelected] = useState({ id: 0 });
   const [managerSelected, setManagerSelected] = useState("");
   const [agentSelected, setAgentSelected] = useState("");
@@ -223,7 +299,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   const handleRangeChange = (e) => {
     setError(false);
-    const value = e.target.value;
+    const value = e.value;
 
     if (value === "" || (value >= 10 && value <= 100)) {
       setPageRange(value);
@@ -342,18 +418,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          // <div className="w-full ">
-          //   <p
-          //     className="text-center capitalize"
-          //     style={{
-          // fontFamily: isArabic(cellValues?.formattedValue)
-          //         ? "Noto Kufi Arabic"
-          //         : "inherit",
-          //     }}
-          //   >
-          //     {cellValues?.formattedValue}
-          //   </p>
-          // </div>
           <div
             style={{
               fontFamily: isArabic(cellValues?.formattedValue)
@@ -387,7 +451,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 : cellValues.row.enquiryType}
             </p>
             <p>
-              {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
+              {cellValues.row.leadType === "null" ? "-" : cellValues.row.leadType}
             </p>
           </div>
         );
@@ -436,10 +500,11 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         lead_origin === "transfferedleads"
           ? t("label_transferred_from")
           : t("label_otp"),
-      minWidth: 30,
+      minWidth: 40,
       headerAlign: "center",
       flex: 1,
-      renderCell: (cellValues) => {
+      renderCell: (cellValues) => 
+      {
         if (lead_origin === "transfferedleads") {
           return (
             <div style={{ fontSize: 11 }}>
@@ -447,46 +512,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             </div>
           );
         } else {
-          return (
-            <div className="p-1 rounded-md">
-              {cellValues.formattedValue === "Verified" && (
-                <Tooltip title="Verified" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-[#238e41] p-1 text-center">
-                      <BsShieldCheck size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
-              )}
-
-              {cellValues.formattedValue === "Not Verified" && (
-                <Tooltip title="Not Verified" arrow>
-                  <div
-                    className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                    <span className="text-primary p-1 text-center">
-                      <BsShieldX size={16} />
-                    </span>
-                  </div>
-                </Tooltip>
-              )}
-
-              {cellValues.formattedValue !== "Not Verified" &&
-                cellValues.formattedValue !== "Verified" && (
-                  <Tooltip title="No OTP used" arrow>
-                    <div
-                      className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                    >
-                      <span className="text-[#AAAAAA] p-1 text-center">
-                        <BsShieldMinus size={16} />
-                      </span>
-                    </div>
-                  </Tooltip>
-                )}
-            </div>
-          );
+          return renderOTPIcons(cellValues, currentMode);
         }
       },
     },
@@ -494,109 +520,9 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       field: "leadSource",
       headerName: t("label_source"),
       flex: 1,
-      minWidth: 30,
+      minWidth: 50,
       headerAlign: "center",
-      renderCell: (cellValues) => {
-        const sourceIcons = {
-          "campaign snapchat": () => (
-            <FaSnapchatGhost size={16} color={"#f6d80a"} className="p-1" />
-          ),
-
-          "campaign facebook": () => (
-            <FaFacebookF size={16} color={"#0e82e1"} className="p-1" />
-          ),
-
-          "campaign tiktok": () => (
-            <FaTiktok
-              size={16}
-              color={`${currentMode === "dark" ? "#ffffff" : "#000000"}`}
-              className="p-1"
-            />
-          ),
-
-          "campaign googleads": () => <FcGoogle size={16} className="p-1" />,
-
-          "campaign youtube": () => (
-            <FaYoutube size={16} color={"#FF0000"} className="p-1" />
-          ),
-
-          "campaign twitter": () => (
-            <FaTwitter size={16} color={"#00acee"} className="p-1" />
-          ),
-
-          "bulk import": () => (
-            <BiImport size={16} className="text-primary p-1" />
-          ),
-
-          "property finder": () => (
-            <GiMagnifyingGlass size={16} color={"#ef5e4e"} className="p-1" />
-          ),
-
-          campaign: () => (
-            <MdCampaign size={16} color={"#696969"} className="p-0.5" />
-          ),
-
-          cold: () => <BsSnow2 size={16} color={"#0ec7ff"} className="p-1" />,
-
-          personal: () => (
-            <BsPersonCircle size={16} color={"#6C7A89"} className="p-1" />
-          ),
-
-          whatsapp: () => (
-            <FaWhatsapp size={16} color={"#53cc60"} className="p-1" />
-          ),
-
-          message: () => (
-            <BiMessageRoundedDots
-              size={16}
-              color={"#6A5ACD"}
-              className="p-0.5"
-            />
-          ),
-
-          comment: () => (
-            <FaRegComments size={16} color={"#a9b3c6"} className="p-0.5" />
-          ),
-
-          website: () => (
-            <TbWorldWww size={16} color={"#AED6F1"} className="p-0.5" />
-          ),
-
-          self: () => <FaUser size={16} color={"#6C7A89"} className="p-0.5" />,
-        };
-        return (
-          <>
-            <div className="flex items-center justify-center">
-              {cellValues.row.leadSource?.toLowerCase().startsWith("warm") ? (
-                <BiArchive
-                  style={{
-                    width: "50%",
-                    height: "50%",
-                    margin: "0 auto",
-                  }}
-                  size={16}
-                  color={"#AEC6CF"}
-                  className="p-0.5"
-                />
-              ) : (
-                <Box
-                  sx={{
-                    "& svg": {
-                      width: "50%",
-                      height: "50%",
-                      margin: "0 auto",
-                    },
-                  }}
-                >
-                  {sourceIcons[cellValues.row.leadSource?.toLowerCase()]
-                    ? sourceIcons[cellValues.row.leadSource?.toLowerCase()]()
-                    : "-"}
-                </Box>
-              )}
-            </div>
-          </>
-        );
-      },
+      renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode),
     },
     {
       field: "language",
@@ -619,6 +545,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
       headerName: t("label_action"),
       flex: 1,
       minWidth: 100,
+      maxWidth: 200,
       sortable: false,
       filterable: false,
       headerAlign: "center",
@@ -852,6 +779,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   const [CEOColumns, setCEOColumns] = useState(columns);
 
   const FetchLeads = async (token) => {
+    console.log("leadTypeSelected ============= ", leadTypeSelected);
     console.log("lead type is");
     console.log(lead_type);
     console.log("lead origin is");
@@ -1436,14 +1364,25 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
-    if (
-      !event.target.closest(".editLeadBtn") &&
-      !event.target.closest(".deleteLeadBtn")
-    ) {
-      console.log("Single lead clicked::::::: ", params.row);
-      setsingleLeadData(params.row);
-      handleLeadModelOpen();
-    }
+    // if (event && 
+    //   event.target &&
+    //   event.target.className && 
+    //   (event.target.className.includes("renderDD") ||
+    //   event.target.closest(".renderDD"))
+    // ) {
+    //   console.log("RENDER");
+    // }
+    // else { 
+      if (
+        !event.target.closest(".editLeadBtn") &&
+        !event.target.closest(".deleteLeadBtn") &&
+        !event.target.closest(".renderDD")
+      ) {
+        console.log("Single lead clicked::::::: ", params.row);
+        setsingleLeadData(params.row);
+        handleLeadModelOpen();
+      }
+    // }
   };
   // REMINDER BTN CLICK FUNC
   const HandleReminderBtn = async (params) => {
@@ -1565,7 +1504,20 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
           <p className="mr-3">Rows Per Page</p>
 
-          <Select
+          <Select 
+            id="select-page-size-label"
+            value={{ label: pageState.pageSize, value: pageState.pageSize }}
+            onChange={handleRangeChange}
+            options={[14, 30, 50, 75, 100].map((size) => ({
+              label: size,
+              value: size,
+            }))}
+            className="min-w-[60px] my-2"
+            menuPortalTarget={document.body}
+            styles={pageStyles(currentMode, primaryColor)}
+          />
+
+          {/* <Select
             labelId="select-page-size-label"
             value={pageState.pageSize}
             onChange={handleRangeChange}
@@ -1588,7 +1540,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 {size}
               </MenuItem>
             ))}
-          </Select>
+          </Select> */}
 
           <Pagination
             sx={{
@@ -1661,62 +1613,6 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
   return (
     <>
       <div className="p-4 w-full">
-        {/* {leadOriginSelected?.id === "unassigned" &&
-          leadTypeSelected?.id === "fresh" && (
-            <Box
-              sx={{
-                ...darkModeColors,
-                "& .MuiSelect-select": {
-                  padding: "2px",
-                  paddingLeft: "6px !important",
-                  paddingRight: "20px",
-                  borderRadius: "8px",
-                },
-                "& .MuiInputBase-root": {
-                  width: "max-content",
-                  marginRight: "5px",
-                },
-              }}
-            >
-              <Select
-                id="un-feedback"
-                value={unassignedFeedback}
-                className={`w-full mt-1 mb-5`}
-                onChange={(event) => {
-                  setUnassignedFeedback(event.target.value);
-                }}
-                displayEmpty
-                size="small"
-                required
-                sx={{
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "&:hover:not (.Mui-disabled):before": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                }}
-              >
-                <MenuItem
-                  value="0"
-                  disabled
-                  selected
-                  sx={{
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  }}
-                >
-                  Feedback
-                </MenuItem>
-                {feedbacks?.map((feedback, index) => (
-                  <MenuItem key={index} value={feedback || ""}>
-                    {feedback}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Box>
-          )}
-        <Box></Box> */}
-
         <div className="w-full flex items-center pb-3">
           <div className="bg-primary h-10 w-1 rounded-full"></div>
           <h1
@@ -1769,97 +1665,52 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         >
           {/* LEAD CATEGORY  */}
           <Box className="m-1" sx={{ minWidth: "90px" }}>
-            <FormControl fullWidth>
-              <InputLabel>{t("label_category")}</InputLabel>
-              <Select
-                id="leadOrigin"
-                label={t("label_category")}
-                value={leadOriginSelected?.id || "hotleads"}
-                onChange={(event) => {
-                  searchRef.current.querySelector("input").value = "";
-                  setLeadOriginSelected(
-                    leadOrigins.find(
-                      (origin) => origin.id === event.target.value
-                    )
-                  );
-                }}
-                className={`w-full py-2 px-3`}
-                displayEmpty
-                required
-                sx={{
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "& .MuiSelect-select": {
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "&:hover:not (.Mui-disabled):before": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  minWidth: "90px !important",
-                }}
-              >
-                <MenuItem value="0" disabled>
-                  {t("label_lead_origin")}
-                </MenuItem>
-                {leadOrigins?.map((origin, index) => (
-                  <MenuItem key={index} value={origin?.id || ""}>
-                    {t("origin_" + origin?.id)}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            {/* LEAD CATEGORY  */}
+            <Select
+              id="lead_category"
+              options={leadOrigins.map((origin) => ({
+                value: origin.id,
+                label: t("origin_" + origin.id),
+              }))}
+              value={{
+                value: leadOriginSelected?.id || "hotleads",
+                label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
+              }}
+              onChange={(selectedOption) => {
+                searchRef.current.querySelector("input").value = "";
+                setLeadOriginSelected(
+                  leadOrigins.find((origin) => origin.id === selectedOption.value)
+                );
+              }}
+              className="w-full"
+              menuPortalTarget={document.body}
+              styles={selectBgStyles(currentMode, primaryColor, blurDarkColor, blurLightColor)}
+            />
           </Box>
 
           {/* FEEDBACK  */}
           <Box className="m-1" sx={{ minWidth: "90px" }}>
-            <FormControl fullWidth>
-              <InputLabel>{t("label_feedback")}</InputLabel>
-              <Select
-                id="leadType"
-                label={t("label_feedback")}
-                value={leadTypeSelected?.id || "all"}
-                onChange={(event) => {
-                  searchRef.current.querySelector("input").value = "";
-                  setLeadTypeSelected(
-                    leadTypes.find((type) => type.id === event.target.value)
-                  );
-                }}
-                className={`w-full py-2 px-3`}
-                displayEmpty
-                required
-                sx={{
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "&:hover:not (.Mui-disabled):before": {
-                    borderColor: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  "& .MuiSelect-select": {
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  },
-                  minWidth: "90px !important",
-                }}
-              >
-                <MenuItem
-                  value="0"
-                  disabled
-                  sx={{
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  }}
-                >
-                  {t("label_feedback")}
-                </MenuItem>
-                {leadTypes?.map((type, index) => (
-                  <MenuItem key={index} value={type?.id || ""}>
-                    {t(
-                      "feedback_" +
-                        type?.id?.toLowerCase()?.replaceAll(" ", "_")
-                    )}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Select
+              id="leadType"
+              options={leadTypes(t).map((type) => ({
+                value: type.id,
+                label: t("feedback_" + type.id.toLowerCase().replaceAll(" ", "_")),
+              }))}
+              value={{
+                value: leadTypeSelected?.id || "all",
+                // label: t("feedback_" + (leadTypeSelected?.id || "all").toLowerCase().replaceAll(" ", "_")),
+                label: leadTypeSelected?.label || "All",
+              }}
+              onChange={({value: selectedOption}) => {
+                searchRef.current.querySelector("input").value = "";
+                setLeadTypeSelected(
+                  leadTypes(t).find((type) => type.id === selectedOption)
+                );
+              }}
+              className="w-full"
+              menuPortalTarget={document.body}
+              styles={selectBgStyles(currentMode, primaryColor, blurDarkColor, blurLightColor)}
+            />
           </Box>
 
           {/* ENQUIRY TYPE  */}
@@ -1873,7 +1724,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
             >
               {enquiryTypeSelected?.id ? (
                 <strong
-                  className="ml-4 text-red-600 cursor-pointer"
+                  className="ml-4 text-sm cursor-pointer"
                   onClick={() => setEnquiryTypeSelected({ id: 0 })}
                 >
                   {t("clear")}
@@ -1883,57 +1734,27 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               )}
             </label>
             <Box className="m-1" sx={{ minWidth: "90px" }}>
-              <FormControl fullWidth>
-                <InputLabel>{t("label_enquiry")}</InputLabel>
-                <Select
-                  label={t("label_enquiry")}
-                  id="enquiryType"
-                  value={enquiryTypeSelected?.id}
-                  className={`w-full py-2 px-3`}
-                  onChange={(event) => {
-                    searchRef.current.querySelector("input").value = "";
-                    setEnquiryTypeSelected(
-                      enquiryTypes.find(
-                        (type) => type.id === event.target.value
-                      )
-                    );
-                  }}
-                  displayEmpty
-                  size="small"
-                  required
-                  sx={{
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor:
-                        currentMode === "dark" ? "#ffffff" : "#000000",
-                    },
-                    "&:hover:not (.Mui-disabled):before": {
-                      borderColor:
-                        currentMode === "dark" ? "#ffffff" : "#000000",
-                    },
-                    "& .MuiSelect-select": {
-                      color: currentMode === "dark" ? "#ffffff" : "#000000",
-                    },
-                    minWidth: "90px !important",
-                  }}
-                >
-                  <MenuItem
-                    value="0"
-                    disabled
-                    sx={{
-                      color: currentMode === "dark" ? "#ffffff" : "#000000",
-                    }}
-                  >
-                    <span className="text-gray-400">- - -</span>
-                  </MenuItem>
-                  {enquiryTypes?.map((type, index) => (
-                    <MenuItem key={index} value={type?.id || ""}>
-                      {isNaN(parseInt(type?.id))
-                        ? t("enquiry_" + type?.id)
-                        : t("enquiry_" + type?.id[0] + "bed")}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <Select
+                label={t("label_enquiry")}
+                id="enquiryType"
+                value={{
+                  value: enquiryTypeSelected?.id || "",
+                  label: enquiryTypeSelected?.label || t("label_enquiry"),
+                }}
+                options={enquiryTypes(t).map((type) => ({
+                  value: type.id,
+                  label: type.label,
+                }))}
+                onChange={({value: selectedOption}) => {
+                  searchRef.current.querySelector("input").value = "";
+                  setEnquiryTypeSelected(
+                    enquiryTypes(t).find((type) => type.id === selectedOption)
+                  );
+                }}
+                className={`w-full`}
+                menuPortalTarget={document.body}
+                styles={selectBgStyles(currentMode, primaryColor, blurDarkColor, blurLightColor)}
+              />
             </Box>
           </div>
 
@@ -1949,7 +1770,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               >
                 {leadSourceSelected ? (
                   <strong
-                    className="ml-4 text-red-600 cursor-pointer"
+                    className="ml-4 text-sm cursor-pointer"
                     onClick={() => setLeadSourceSelected(0)}
                   >
                     {t("clear")}
@@ -1959,79 +1780,29 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 )}
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
-                <FormControl fullWidth>
-                  <InputLabel>{t("label_source")}</InputLabel>
-                  <Select
-                    label={t("label_source")}
-                    id="leadSource"
-                    value={leadSourceSelected}
-                    className={`w-full py-2 px-3`}
-                    onChange={(event) => {
-                      searchRef.current.querySelector("input").value = "";
-                      setLeadSourceSelected(event.target.value);
-                    }}
-                    displayEmpty
-                    size="small"
-                    required
-                    sx={{
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor:
-                          currentMode === "dark" ? "#ffffff" : "#000000",
-                      },
-                      "&:hover:not (.Mui-disabled):before": {
-                        borderColor:
-                          currentMode === "dark" ? "#ffffff" : "#000000",
-                      },
-                      "& .MuiSelect-select": {
-                        color: currentMode === "dark" ? "#ffffff" : "#000000",
-                      },
-                      minWidth: "90px !important",
-                    }}
-                  >
-                    <MenuItem
-                      value="0"
-                      disabled
-                      sx={{
-                        color: currentMode === "dark" ? "#ffffff" : "#000000",
-                      }}
-                    >
-                      <span className="text-gray-400">- - -</span>
-                    </MenuItem>
-                    <MenuItem value={"Website"}>{t("source_website")}</MenuItem>
-                    <MenuItem value={"Campaign Facebook"}>
-                      {t("source_facebook")}
-                    </MenuItem>
-                    <MenuItem value={"Campaign Snapchat"}>
-                      {t("source_snapchat")}
-                    </MenuItem>
-                    <MenuItem value={"Campaign Tiktok"}>
-                      {t("source_tiktok")}
-                    </MenuItem>
-                    <MenuItem value={"Campaign GoogleAds"}>
-                      {t("source_googleads")}
-                    </MenuItem>
-                    <MenuItem value={"Campaign YouTube"}>
-                      {t("source_youtube")}
-                    </MenuItem>
-                    <MenuItem value={"Campaign"}>
-                      {t("source_campaign")}
-                    </MenuItem>
-                    <MenuItem value={"Whatsapp"}>
-                      {t("source_whatsapp")}
-                    </MenuItem>
-                    <MenuItem value={"Comment"}>{t("source_comment")}</MenuItem>
-                    <MenuItem value={"Message"}>{t("source_message")}</MenuItem>
-                    <MenuItem value={"Property Finder"}>
-                      {t("source_property_finder")}
-                    </MenuItem>
-                    <MenuItem value={"Bulk Import"}>
-                      {t("source_bulk_import")}
-                    </MenuItem>
-                    <MenuItem value={"Personal"}>
-                      {t("source_personal")}
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+                <Select
+                  label={t("label_source")}
+                  id="leadSource"
+                  value={
+                    leadSourceSelected 
+                    ? {
+                      value: leadSourceSelected,
+                      label: source_options(t).find((option) => option.value === leadSourceSelected).label,
+                    }
+                    : {
+                      value: "",
+                      label: t("label_source")
+                    }
+                  }
+                  options={source_options(t)}
+                  onChange={(selectedOption) => {
+                    searchRef.current.querySelector("input").value = "";
+                    setLeadSourceSelected(selectedOption.value);
+                  }}
+                  className={`w-full`}
+                  menuPortalTarget={document.body}
+                  styles={selectBgStyles(currentMode, primaryColor, blurDarkColor, blurLightColor)}
+                />
               </Box>
             </div>
           )}
@@ -2048,8 +1819,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               sx={{
                 minWidth: "90px",
                 "& label": {
-                  top: "-6px",
+                  top: "-7px",
                 },
+                "& input": {
+                  background: themeBgImg && (currentMode === "dark" ? blurDarkColor : blurLightColor),
+                  borderRadius: "4px",
+                }
               }}
               onChange={(e) => {
                 searchRef.current.querySelector("input").value = "";
@@ -2071,7 +1846,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               >
                 {managerSelected ? (
                   <strong
-                    className="ml-4 text-red-600 cursor-pointer"
+                    className="ml-4 text-sm cursor-pointer"
                     onClick={() => setManagerSelected("")}
                   >
                     {t("clear")}
@@ -2081,52 +1856,29 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 )}
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
-                <FormControl fullWidth>
-                  <InputLabel style={{ top: "-6px" }}>
-                    {t("label_manager")}
-                  </InputLabel>
-                  <Select
-                    label={t("label_manager")}
-                    id="Manager"
-                    value={managerSelected || ""}
-                    onChange={(event) => {
-                      searchRef.current.querySelector("input").value = "";
-                      setManagerSelected(event.target.value);
-                    }}
-                    className={`w-full py-2 px-3`}
-                    displayEmpty
-                    required
-                    sx={{
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor:
-                          currentMode === "dark" ? "#ffffff" : "#000000",
-                      },
-                      "&:hover:not (.Mui-disabled):before": {
-                        borderColor:
-                          currentMode === "dark" ? "#ffffff" : "#000000",
-                      },
-                      "& .MuiSelect-select": {
-                        color: currentMode === "dark" ? "#ffffff" : "#000000",
-                      },
-                      minWidth: "100px !important",
-                    }}
-                  >
-                    <MenuItem
-                      value=""
-                      disabled
-                      sx={{
-                        color: currentMode === "dark" ? "#ffffff" : "#000000",
-                      }}
-                    >
-                      {/* <span className="text-gray-400"></span> */}
-                    </MenuItem>
-                    {managers?.map((manager, index) => (
-                      <MenuItem key={index} value={manager?.id || ""}>
-                        {manager?.userName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Select
+                  label={t("label_manager")}
+                  id="Manager"
+                  value={managerSelected
+                    ? {
+                      value: managerSelected,
+                      label: managers.find(manager => manager.id === managerSelected).userName
+                    }
+                    : {
+                      value: "",
+                      label: t("label_manager")
+                    }
+                  }
+                  onChange={(selectedOption) => {
+                    searchRef.current.querySelector("input").value = "";
+                    setManagerSelected(selectedOption.value);
+                  }}
+                  options={managers.map(manager => ({ value: manager.id, label: manager.userName }))}
+                  placeholder={t("label_manager")}
+                  className={`w-full`}
+                  menuPortalTarget={document.body}
+                  styles={selectBgStyles(currentMode, primaryColor, blurDarkColor, blurLightColor)}
+                />
               </Box>
             </div>
           )}
@@ -2143,7 +1895,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               >
                 {agentSelected ? (
                   <strong
-                    className="ml-4 text-red-600 cursor-pointer"
+                    className="ml-4 text-sm cursor-pointer"
                     onClick={() => {
                       setAgentSelected("");
                     }}
@@ -2155,48 +1907,32 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 )}
               </label>
               <Box className="m-1" sx={{ minWidth: "90px" }}>
-                <FormControl fullWidth>
-                  <InputLabel style={{ top: "-6px" }}>
-                    {t("label_agent")}
-                  </InputLabel>
-                  <Select
-                    label={t("label_agent")}
-                    id="Agent"
-                    value={agentSelected || ""}
-                    onChange={(event) => {
-                      searchRef.current.querySelector("input").value = "";
-                      setAgentSelected(event.target.value);
-                    }}
-                    className={`w-full py-2 px-3`}
-                    displayEmpty
-                    required
-                    sx={{
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor:
-                          currentMode === "dark" ? "#ffffff" : "#000000",
-                      },
-                      "&:hover:not (.Mui-disabled):before": {
-                        borderColor:
-                          currentMode === "dark" ? "#ffffff" : "#000000",
-                      },
-                      "& .MuiSelect-select": {
-                        color: currentMode === "dark" ? "#ffffff" : "#000000",
-                      },
-                      minWidth: "100px",
-                    }}
-                  >
-                    <MenuItem selected value="" disabled>
-                      {/* <span className="text-gray-400">Agent</span> */}
-                    </MenuItem>
-                    {allAgents
-                      ?.filter((agent) => agent.role === 7)
-                      .map((agent, index) => (
-                        <MenuItem key={index} value={agent.id || ""}>
-                          {agent.userName}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </FormControl>
+                <Select
+                  label={t("label_agent")}
+                  id="Agent"
+                  value={
+                    agentSelected
+                      ? {
+                          value: agentSelected,
+                          label: allAgents.find((agent) => agent.id === agentSelected).userName,
+                        }
+                      : {
+                          value: "",
+                          label: t("label_agent"),
+                        }
+                  }
+                  onChange={(selectedOption) => {
+                    searchRef.current.querySelector("input").value = "";
+                    setAgentSelected(selectedOption.value);
+                  }}
+                  options={allAgents
+                    ?.filter((agent) => agent.role === 7)
+                    .map((agent) => ({ value: agent.id, label: agent.userName }))}
+                  placeholder={t("label_agent")}
+                  className={`w-full`}
+                  menuPortalTarget={document.body}
+                  styles={selectBgStyles(currentMode, primaryColor, blurDarkColor, blurLightColor)}
+                />
               </Box>
             </div>
           )}

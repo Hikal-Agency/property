@@ -798,7 +798,15 @@
     "form_project_area":"Area",
     "form_project_360View":"360 View Link",
     "form_project_status":"Status",
-    "mark_attendance" : "Mark Attendance"
+    "mark_attendance" : "Mark Attendance",
+    "professional_details": "Professional Details",
+    "login_details": "Login Details",
+    "account_type": "Account Type",
+    "login_id": "Login ID/Username",
+    "source_telegram": "Telegram",
+    "source_wechat": "WeChat",
+    "source_twitter": "Twitter",
+    "update_booked_deal": "Update Booked Deal"
     
 
 }

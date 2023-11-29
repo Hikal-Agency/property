@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import { useStateContext } from "../../context/ContextProvider";
 import { socket } from "../../Pages/App";
 import { Button } from "@material-tailwind/react";
@@ -22,6 +23,14 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import classNames from "classnames";
 import Loader from "../Loader";
+import { selectStyles } from "../_elements/SelectStyles";
+import { 
+  source_options,
+  language_options,
+  property_options,
+  enquiry_options,
+  purpose_options 
+} from "../_elements/SelectOptions";
 
 const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdown }) => {
   const [loading, setloading] = useState(false);
@@ -41,11 +50,45 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
     blurDarkColor,
     blurLightColor
   } = useStateContext();
-  console.log("Salesperson: ", SalesPerson);
-  console.log("MAnagers: ", Managers);
-  const [Manager2, setManager2] = useState([]);
-  // const [SalesPerson, setSalesPerson] = useState([]);
 
+  const ChangeLeadSource = (selectedOption) => {
+    setLeadSource(selectedOption.value);
+  };
+
+  const ChangeLanguagePrefered = (selectedOption) => {
+    setLanguagePrefered(selectedOption.value);
+  };
+
+  const ChangeForType = (selectedOption) => {
+    setForType(selectedOption.value);
+  };
+
+  const ChangePropertyType = (selectedOption) => {
+    setPropertyType(selectedOption.value);
+  };
+
+  const ChangeEnquiryType = (selectedOption) => {
+    setEnquiryType(selectedOption.value);
+  };
+
+  const ChangeManager = (event) => {
+    setManager(event.value);
+    const SalesPersons = Manager2.filter(function (el) {
+      return el.uid === event.value;
+    });
+    // setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
+  };
+
+  const ChangeSalesPerson = (event) => {
+    // console.log("clicked");
+    setSalesPerson2(event.value);
+  };
+  
+
+  // ------------------------
+  // console.log("Salesperson: ", SalesPerson);
+  // console.log("MAnagers: ", Managers);
+  const [Manager2, setManager2] = useState([]);
   const [PropertyType, setPropertyType] = useState("");
   const [EnquiryType, setEnquiryType] = useState("");
   const [ForType, setForType] = useState("");
@@ -101,39 +144,17 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
     }
   };
 
-
-  const ChangePropertyType = (event) => {
-    setPropertyType(event.target.value);
-  };
-  const ChangeEnquiryType = (event) => {
-    setEnquiryType(event.target.value);
-  };
-  const ChangeForType = (event) => {
-    setForType(event.target.value);
-  };
-  const ChangeLanguagePrefered = (event) => {
-    setLanguagePrefered(event.target.value);
-  };
-  // eslint-disable-next-line
-  const ChangeLeadStatus = (event) => {
-    setLeadStatus(event.target.value);
-  };
-  const ChangeLeadSource = (event) => {
-    console.log("source: ", event.target.value);
-    setLeadSource(event.target.value);
-  };
-  // eslint-disable-next-line
-  const ChangeManager = (event) => {
-    setManager(event.target.value);
-    const SalesPersons = Manager2.filter(function (el) {
-      return el.uid === event.target.value;
-    });
-    // setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
-  };
-  const ChangeSalesPerson = (event) => {
-    console.log("clicked");
-    setSalesPerson2(event.target.value);
-  };
+  // const ChangeManager = (event) => {
+  //   setManager(event.target.value);
+  //   const SalesPersons = Manager2.filter(function (el) {
+  //     return el.uid === event.target.value;
+  //   });
+  //   // setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
+  // };
+  // const ChangeSalesPerson = (event) => {
+  //   console.log("clicked");
+  //   setSalesPerson2(event.target.value);
+  // };
 
   const AddLead = async () => {
     setloading(true);
@@ -348,7 +369,9 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
             } p-5 rounded-lg `} >
               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 mt-5">
                 <div className="px-4">
-                  <Box sx={darkModeColors}>
+                  <Box sx={
+                    darkModeColors
+                    }>
                     <h4
                       className={`${
                         currentMode === "dark" ? `text-white` : "text-black"
@@ -357,99 +380,123 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       {t("agent_details")}
                     </h4>
                     {hasPermission("addlead_manager_dropdown") && (
-                      <>
-                        <TextField
-                          id="Manager"
-                          select
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                            },
-                          }}
-                          value={Manager}
-                          disabled={User?.role === 3 && true}
-                          label={t("label_sales_manager")}
-                          onChange={ChangeManager}
-                          size="small"
-                          className="w-full"
-                          displayEmpty
-                        >
-                          <MenuItem value="">
-                            {t("label_select_manager")}
-                            <span className="ml-1 text-primary">*</span>
-                          </MenuItem>
+                      <Select
+                        id="Manager"
+                        options={Managers.map((person) => ({
+                          value: person.id,
+                          label: person.userName,
+                        }))}
+                        value={
+                          String(Manager) === "1" || !Manager || Manager === "0"
+                          ? null
+                          : {
+                              label: Managers.find((manager) => manager.id === Manager)?.userName,
+                              value: Manager,
+                            }
+                        }
+                        isDisabled={User?.role === 3}
+                        onChange={ChangeManager}
+                        placeholder={t("label_select_manager")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      // <>
+                        // <TextField
+                        //   id="Manager"
+                        //   select
+                        //   sx={{
+                        //     "&": {
+                        //       marginBottom: "1.25rem !important",
+                        //     },
+                        //   }}
+                        //   value={Manager}
+                        //   disabled={User?.role === 3 && true}
+                        //   label={t("label_sales_manager")}
+                        //   onChange={ChangeManager}
+                        //   size="small"
+                        //   className="w-full"
+                        //   displayEmpty
+                        // >
+                        //   <MenuItem value="">
+                        //     {t("label_select_manager")}
+                        //     <span className="ml-1 text-primary">*</span>
+                        //   </MenuItem>
 
-                          {Managers?.map((person, index) => (
-                            <MenuItem key={index} value={person?.id}>
-                              {person?.userName}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      </>
+                        //   {Managers?.map((person, index) => (
+                        //     <MenuItem key={index} value={person?.id}>
+                        //       {person?.userName}
+                        //     </MenuItem>
+                        //   ))}
+                        // </TextField>
+                      // </>
                     )}
 
                     {hasPermission("addlead_agent_dropdown") && (
-                      <>
-                        {/* <InputLabel id="sales-person-label">
-                          Select Sales Person
-                        </InputLabel> */}
-                        {/* <TextField
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                            },
-                          }}
-                          id="SalesPerson"
-                          label="Sales Person"
-                          value={SalesPerson2}
-                          onChange={ChangeSalesPerson}
-                          size="medium"
-                          select
-                          className="w-full mb-5"
-                          displayEmpty
-                        >
-                          <MenuItem value="">
-                            Select Sales Person
-                          </MenuItem>
-                          {SalesPerson.map((person, index) => (
-                            <MenuItem key={index} value={person?.id}>
-                              {person?.userName}
-                            </MenuItem>
-                          ))}
-                        </TextField> */}
-                        <TextField
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                            },
-                          }}
-                          select
-                          id="SalesPerson"
-                          label={t("label_sales_agent")}
-                          value={SalesPerson2}
-                          onChange={ChangeSalesPerson}
-                          size="small"
-                          className="w-full"
-                          displayEmpty
-                        >
-                          <MenuItem value="">Select Agent</MenuItem>
-                          {User.role === 1
-                            ? SalesPerson[`manager-${Manager}`]?.map(
-                                (agent, index) => (
-                                  <MenuItem key={index} value={agent?.id}>
-                                    {agent?.userName}
-                                  </MenuItem>
-                                )
-                              )
-                            : SalesPerson[`manager-${User?.id}`]?.map(
-                                (agent, index) => (
-                                  <MenuItem key={index} value={agent?.id}>
-                                    {agent?.userName}
-                                  </MenuItem>
-                                )
-                              )}
-                        </TextField>
-                      </>
+                      <Select
+                        id="SalesPerson"
+                        options={
+                          User.role === 1
+                            ? SalesPerson[`manager-${Manager}`]?.map((agent) => ({
+                                value: agent?.id,
+                                label: agent?.userName,
+                              }))
+                            : SalesPerson[`manager-${User?.id}`]?.map((agent) => ({
+                                value: agent?.id,
+                                label: agent?.userName,
+                              }))
+                        }
+                        // value={SalesPerson2}
+                        value={
+                          SalesPerson2
+                            ? {
+                                label: SalesPerson[`manager-${Manager}`]?.find(
+                                  (agent) => agent?.id === SalesPerson2
+                                )?.userName,
+                                value: SalesPerson2,
+                              }
+                            : null
+                        }
+                        onChange={ChangeSalesPerson}
+                        placeholder={t("label_sales_agent")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      // <>
+                      //   <TextField
+                      //     sx={{
+                      //       "&": {
+                      //         marginBottom: "1.25rem !important",
+                      //       },
+                      //     }}
+                      //     select
+                      //     id="SalesPerson"
+                      //     label={t("label_sales_agent")}
+                      //     value={SalesPerson2}
+                      //     onChange={ChangeSalesPerson}
+                      //     size="small"
+                      //     className="w-full"
+                      //     displayEmpty
+                      //   >
+                      //     <MenuItem value="">Select Agent</MenuItem>
+                      //     {User.role === 1
+                      //       ? SalesPerson[`manager-${Manager}`]?.map(
+                      //           (agent, index) => (
+                      //             <MenuItem key={index} value={agent?.id}>
+                      //               {agent?.userName}
+                      //             </MenuItem>
+                      //           )
+                      //         )
+                      //       : SalesPerson[`manager-${User?.id}`]?.map(
+                      //           (agent, index) => (
+                      //             <MenuItem key={index} value={agent?.id}>
+                      //               {agent?.userName}
+                      //             </MenuItem>
+                      //           )
+                      //         )}
+                      //   </TextField>
+                      // </>
                     )}
 
                     <TextField
@@ -460,6 +507,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       sx={{
                         "&": {
                           marginBottom: "1.25rem !important",
+                          zIndex: 1,
                         },
                       }}
                       variant="outlined"
@@ -537,7 +585,17 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       onChange={(e) => setLeadProject(e.target.value)}
                     />
 
-                    <TextField
+                    {/* ENQUIRY TYPE  */}
+                    <Select 
+                      id="enquiry"
+                      options={enquiry_options(t)} 
+                      value={enquiry_options(t).find(option => option.value === EnquiryType)}
+                      onChange={ChangeEnquiryType}
+                      placeholder={t("label_enquiry_for")}
+                      className={`mb-5`}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    {/* <TextField
                       id="enquiry"
                       label={t("label_enquiry_for")}
                       value={EnquiryType}
@@ -565,9 +623,19 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       <MenuItem value={"6 Bedrooms"}>{t("enquiry_6bed")}</MenuItem>
                       <MenuItem value={"Retail"}>{t("enquiry_retail")}</MenuItem>
                       <MenuItem value={"Other"}>{t("enquiry_others")}</MenuItem>
-                    </TextField>
+                    </TextField> */}
 
-                    <TextField
+                    {/* PROPERTY TYPE  */}
+                    <Select 
+                      id="property-type"
+                      options={property_options(t)} 
+                      value={property_options(t).find(option => option.value === PropertyType)}
+                      onChange={ChangePropertyType}
+                      placeholder={t("label_property_type")}
+                      className={`mb-5`}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    {/* <TextField
                       id="property-type"
                       value={PropertyType}
                       label={t("label_property_type")}
@@ -592,9 +660,19 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       <MenuItem value={"mansion"}>{t("property_mansion")}</MenuItem>
                       <MenuItem value={"Commercial"}>{t("property_commercial")}</MenuItem>
                       <MenuItem value={"Townhouse"}>{t("property_townhouse")}</MenuItem>
-                    </TextField>
+                    </TextField> */}
 
-                    <TextField
+                    {/* PURPOSE OF ENQUIRY  */}
+                    <Select 
+                      id="for"
+                      options={purpose_options(t)} 
+                      value={purpose_options(t).find(option => option.value === ForType)}
+                      onChange={ChangeForType}
+                      placeholder={t("label_purpose_of_enquiry")}
+                      className={`mb-5`}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    {/* <TextField
                       id="for"
                       value={ForType}
                       label={t("label_purpose_of_enquiry")}
@@ -615,7 +693,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       </MenuItem>
                       <MenuItem value={"Investment"}>{t("purpose_investment")}</MenuItem>
                       <MenuItem value={"End-user"}>{t("purpose_end_user")}</MenuItem>
-                    </TextField>
+                    </TextField> */}
                   </Box>
                 </div>
 
@@ -659,7 +737,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       style={{
                         background: `${
                           !themeBgImg 
-                          ? (currentMode === "dark" ? "#000000" : "#fff")
+                          ? (currentMode === "dark" ? "#000000" : "#FFFFFF")
                           : "transparent"
                           // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
                         }`,
@@ -668,7 +746,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                         },
                         color: currentMode === "dark" ? "white" : "black",
                         border: `1px solid ${
-                          currentMode === "dark" ? "#fff" : "#8a9697"
+                          currentMode === "dark" ? "#EEEEEE" : "#666666"
                         }`,
                         borderRadius: "5px",
                         outline: "none",
@@ -702,7 +780,17 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       onChange={handleEmail}
                     />
 
-                    <TextField
+                    {/* LANGUAGE  */}
+                    <Select 
+                      id="LanguagePrefered"
+                      options={language_options} 
+                      value={language_options.find(option => option.value === LanguagePrefered)}
+                      onChange={ChangeLanguagePrefered}
+                      placeholder={t("label_language")}
+                      className={`mb-5`}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    {/* <TextField
                       id="LanguagePrefered"
                       value={LanguagePrefered}
                       onChange={ChangeLanguagePrefered}
@@ -731,61 +819,70 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       <MenuItem value={"Russian"}>Русский <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Russian)</span></MenuItem>
                       <MenuItem value={"Spanish"}>Español <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Spanish)</span></MenuItem>
                       <MenuItem value={"Urdu"} style={{ fontFamily: "Noto Kufi Arabic" }}>اردو <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Urdu)</span></MenuItem>
-                    </TextField>
+                    </TextField> */}
 
+                    {/* LEAD SOURCE  */}
                     {!noSourceDropdown &&
+                      <Select 
+                        id="LeadSource"
+                        options={source_options(t)} 
+                        value={source_options(t).find(option => option.value === LeadSource)}
+                        onChange={ChangeLeadSource}
+                        placeholder={t("label_source")}
+                        className={`mb-5`}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      // <TextField
+                      //   id="LeadSource"
+                      //   value={LeadSource}
+                      //   label={t("label_source")}
+                      //   onChange={ChangeLeadSource}
+                      //   size="small"
+                      //   className="w-full"
+                      //   sx={{
+                      //     "&": {
+                      //       marginBottom: "1.25rem !important",
+                      //     },
+                      //   }}
+                      //   displayEmpty
+                      //   select
+                      //   required
+                      // >
+                      //   <MenuItem value="" disabled>
+                      //     {t("label_source")}
+                      //     <span className="ml-1 text-primary">*</span>
+                      //   </MenuItem>
+                      //   <MenuItem value={"Campaign Facebook"}>
+                      //     {t("source_facebook")} Campaign
+                      //   </MenuItem>
+                      //   <MenuItem value={"Campaign Instagram"}>
+                      //     {t("source_instagram")} Campaign
+                      //   </MenuItem>
+                      //   <MenuItem value={"Campaign Snapchat"}>
+                      //   {t("source_snapchat")}  Campaign
+                      //   </MenuItem>
+                      //   <MenuItem value={"Campaign TikTok"}>
+                      //     {t("source_tiktok")} Campaign
+                      //   </MenuItem>
+                      //   <MenuItem value={"Campaign GoogleAds"}>
+                      // {t("source_googleads")} Campaign
+                      //   </MenuItem>
+                      //   <MenuItem value={"Campaign YouTube"}>
+                      //     {t("source_youtube")} Campaign
+                      //   </MenuItem>
+                      //   <MenuItem value={"Campaign"}>{t("source_campaign")}</MenuItem>
+                      //   <MenuItem value={"WhatsApp"}>{t("source_whatsapp")}</MenuItem>
+                      //   <MenuItem value={"Comment"}>{t("source_comment")}</MenuItem>
+                      //   <MenuItem value={"Message"}>{t("source_message")}</MenuItem>
+                      //   <MenuItem value={"Website"}>{t("source_website")}</MenuItem>
+                      //   <MenuItem value={"Secondary"}>{t("source_secondary")}</MenuItem>
 
-                    <TextField
-                      id="LeadSource"
-                      value={LeadSource}
-                      label={t("label_source")}
-                      onChange={ChangeLeadSource}
-                      size="small"
-                      className="w-full"
-                      sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                        },
-                      }}
-                      displayEmpty
-                      select
-                      required
-                    >
-                      <MenuItem value="" disabled>
-                        {t("label_source")}
-                        <span className="ml-1 text-primary">*</span>
-                      </MenuItem>
-                      <MenuItem value={"Campaign Facebook"}>
-                        {t("source_facebook")} Campaign
-                      </MenuItem>
-                      <MenuItem value={"Campaign Instagram"}>
-                        {t("source_instagram")} Campaign
-                      </MenuItem>
-                      <MenuItem value={"Campaign Snapchat"}>
-                      {t("source_snapchat")}  Campaign
-                      </MenuItem>
-                      <MenuItem value={"Campaign TikTok"}>
-                        {t("source_tiktok")} Campaign
-                      </MenuItem>
-                      <MenuItem value={"Campaign GoogleAds"}>
-                    {t("source_googleads")} Campaign
-                      </MenuItem>
-                      <MenuItem value={"Campaign YouTube"}>
-                        {t("source_youtube")} Campaign
-                      </MenuItem>
-                      <MenuItem value={"Campaign"}>{t("source_campaign")}</MenuItem>
-                      <MenuItem value={"WhatsApp"}>{t("source_whatsapp")}</MenuItem>
-                      <MenuItem value={"Comment"}>{t("source_comment")}</MenuItem>
-                      <MenuItem value={"Message"}>{t("source_message")}</MenuItem>
-                      <MenuItem value={"Website"}>{t("source_website")}</MenuItem>
-                      <MenuItem value={"Secondary"}>{t("source_secondary")}</MenuItem>
+                      //   <MenuItem value={"Property Finder"}>
+                      //     {t("source_property_finder")}
+                      //   </MenuItem>
 
-                      <MenuItem value={"Property Finder"}>
-                        {t("source_property_finder")}
-                      </MenuItem>
-
-                      <MenuItem value={"Personal"}>{t("source_personal")}</MenuItem>
-                    </TextField>
+                      //   <MenuItem value={"Personal"}>{t("source_personal")}</MenuItem>
+                      // </TextField>
                     }
                   </Box>
                 </div>

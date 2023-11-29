@@ -100,16 +100,16 @@ const SingleLead = ({
 
   // EDIT BTN CLICK FUNC
   const HandleEditFunc = (params) => {
-    console.log("LEADID: ", params);
+    // console.log("LEADID: ", params);
     setsingleLeadData(params);
     handleUpdateLeadModelOpen();
-    handleLeadModelClose();
+    // handleLeadModelClose();
   };
 
   // OPEN listing modal
   const handleOpenListingModal = () => {
     setListingModalOpen(true);
-    handleLeadModelClose();
+    // handleLeadModelClose();
   };
 
   // RESHUFFLE LEAD HAND FUNCTION

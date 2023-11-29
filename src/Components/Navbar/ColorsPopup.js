@@ -18,101 +18,115 @@ const colors = [
 
 const solidColors = [
   { //red
-    "#ffbaba": {
+    "#F3D5DD": {
       theme: "light",
       primary: "rgb(218,31,38)",
     }
   },
+  { //cool-skyblue
+    "#94BFD0": {
+      theme: "light",
+      primary: "rgb(20, 77, 186)",
+    }
+  },
+  { //earth-pale-green
+    "#BFD3C1": {
+      theme: "light",
+      primary: "rgb(38, 145, 68)",
+    }
+  },
+  { //pastel-lavender
+    "#D5DDF3": {
+      theme: "light",
+      primary: "rgb(128, 61, 191)",
+    }
+  },
+  { //earth-beige
+    "#F4E1C1": {
+      theme: "light",
+      primary: "rgb(229, 124, 0)",
+    }
+  },
+
   { //red
-    "#4D0A0F": {//5e0202
+    "#4d0b0e": {
       theme: "dark",
       primary: "rgb(218,31,38)",
     }
   },
   { //blue
-    "#849DD2": {
-      theme: "light",
-      primary: "rgb(20, 77, 186)",
-    }
-  },
-  { //blue
-    "#0A2E73": {//00004d
+    "#001F3F": {
       theme: "dark",
       primary: "rgb(20, 77, 186)",
     }
   },
   { //green
-    "#A4D3B4": {
-      theme: "light",
-      primary: "rgb(38, 145, 68)",
-    }
-  },
-  { //green
-    "#104825": {
+    "#003300": {
       theme: "dark",
-      primary: "rgb(38, 145, 68)",
+      primary: "rgb(38, 145, 68)"
     }
   },
   { //purple
-    "#D7A1F9": {
-      theme: "light",
-      primary: "rgb(128, 61, 191)",
-    }
-  },
-  { //purple
-    "#3D1D54": {
+    "#2E0854": {
       theme: "dark",
       primary: "rgb(128, 61, 191)",
     }
   },
   { //pink
-    "#F996C5": {
-      theme: "light",
-      primary: "rgb(233, 65, 150)",
-    }
-  },
-  { //pink
-    "#86144F": {
+    "#4d1532": {
       theme: "dark",
       primary: "rgb(233, 65, 150)",
     }
   },
-  { //sky blue
-    "#BCDAE8": {
-      theme: "light",
-      primary: "rgb(101, 176, 207)",
-    }
-  },
-  { //sky blue
-    "#2F5066": {
-      theme: "dark",
-      primary: "rgb(101, 176, 207)",
-    }
-  },
-  { //mint
-    "#A3E2CE": {
-      theme: "light",
-      primary: "rgb(51, 196, 160)",
-    }
-  },
-  { //mint
-    "#106C4B": {
-      theme: "dark",
-      primary: "rgb(51, 196, 160)",
-    }
-  },
-  { //orange
-    "#FFD08C": {
-      theme: "light",
-      primary: "rgb(229, 124, 0)",
-    }
-  },
-  { //orange
-    "#714B00": {
-      theme: "dark",
-      primary: "rgb(229, 124, 0)",
-    }
-  }
+
+  // { //red
+  //   "#ffbaba": {
+  //     theme: "light",
+  //     primary: "rgb(218,31,38)",
+  //   }
+  // },
+  // { //blue
+  //   "#849DD2": {
+  //     theme: "light",
+  //     primary: "rgb(20, 77, 186)",
+  //   }
+  // },
+  // { //green
+  //   "#A4D3B4": {
+  //     theme: "light",
+  //     primary: "rgb(38, 145, 68)",
+  //   }
+  // },
+  // { //purple
+  //   "#D7A1F9": {
+  //     theme: "light",
+  //     primary: "rgb(128, 61, 191)",
+  //   }
+  // },
+  // { //pink
+  //   "#F996C5": {
+  //     theme: "light",
+  //     primary: "rgb(233, 65, 150)",
+  //   }
+  // },
+  // { //sky blue
+  //   "#BCDAE8": {
+  //     theme: "light",
+  //     primary: "rgb(101, 176, 207)",
+  //   }
+  // },
+  // { //mint
+  //   "#A3E2CE": {
+  //     theme: "light",
+  //     primary: "rgb(51, 196, 160)",
+  //   }
+  // },
+  // { //orange
+  //   "#FFD08C": {
+  //     theme: "light",
+  //     primary: "rgb(229, 124, 0)",
+  //   }
+  // },
 ]; 
 
 const images = [
@@ -218,7 +232,8 @@ const ColorsPopup = ({ handleClose }) => {
     }
 
     if (primary !== "") {
-      setPrimaryColor(primary);
+      // setPrimaryColor(primary);
+      handleSelectTheme(primary)
     }
 
     const token = localStorage.getItem("auth-token");
@@ -249,6 +264,7 @@ const ColorsPopup = ({ handleClose }) => {
       });
     }
   };
+
   return (
     <Container
       onMouseLeave={handleClose}
