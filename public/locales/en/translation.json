@@ -770,6 +770,7 @@
     "generate_report" : "Generate Attendance Report",
     "generate_report_btn" : "Generate  Report",
     "report_month" : "Select Month",
+    "mark_attendance" : "Mark Attendance",
 
     "add_dev_btn":"Add Developer",
     "add_project_btn":"Add Project",
@@ -798,7 +799,6 @@
     "form_project_area":"Area",
     "form_project_360View":"360 View Link",
     "form_project_status":"Status",
-    "mark_attendance" : "Mark Attendance",
     "professional_details": "Professional Details",
     "login_details": "Login Details",
     "account_type": "Account Type",
