@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
-import { Tooltip, IconButton, Modal, Backdrop } from "@mui/material";
+import {
+  Tooltip,
+  IconButton,
+  Modal,
+  Backdrop,
+  CircularProgress,
+} from "@mui/material";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
 import axios from "../../axoisConfig";
@@ -12,7 +18,13 @@ import Loader from "../../Components/Loader";
 import { load } from "../App";
 
 import { BiBed, BiBath } from "react-icons/bi";
-import { BsImages, BsFiles, BsPen, BsFileEarmarkText } from "react-icons/bs";
+import {
+  BsImages,
+  BsFiles,
+  BsPen,
+  BsFileEarmarkText,
+  BsTrash,
+} from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
 import { MdLocationPin, MdClose } from "react-icons/md";
 import {
@@ -41,6 +53,7 @@ const SinglePropertyModal = ({
   console.log("single property data::: ", openModal);
   let project = openModal?.project;
   const [loading, setloading] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [listData, setListingData] = useState({});
   const [openEdit, setOpenEdit] = useState(false);
   const [leadNotFound, setLeadNotFound] = useState(false);
@@ -109,6 +122,52 @@ const SinglePropertyModal = ({
   let lat = "";
   let long = "";
 
+  const handleDeleteDocument = async (id) => {
+    setBtnLoading(true);
+    try {
+      const token = localStorage.getItem("auth-token");
+      const deleteDoc = await axios.delete(
+        `${BACKEND_URL}/destroy/documents/${project?.id}`,
+        {
+          params: {
+            document_id: id,
+          },
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("Document deleted successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setBtnLoading(false);
+      handleClose();
+      FetchProperty();
+    } catch (error) {
+      setBtnLoading(false);
+      console.log("Error", error);
+
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
   const fetchSingleListing = async () => {
     try {
       setloading(true);
@@ -526,30 +585,53 @@ const SinglePropertyModal = ({
                                     //     </div>
                                     //   </div>
                                     // </div>
-                                    <div
-                                      onClick={() => {
-                                        window.open(l?.doc_url, "_blank");
-                                      }}
-                                      className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                    >
-                                      <a
-                                        href={l?.doc_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                    <div className="relative w-min">
+                                      <div
+                                        onClick={() => {
+                                          window.open(l?.doc_url, "_blank");
+                                        }}
+                                        className="p-2 flex items-center justify-center hover:cursor-pointer"
                                       >
-                                        <div className="w-full text-center">
-                                          <div className="w-full flex justify-center">
-                                            <BsFileEarmarkText
-                                              size={70}
-                                              color={"#AAAAAA"}
-                                              className="hover:-mt-1 hover:mb-1"
+                                        <a
+                                          href={l?.doc_url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          <div className="w-full text-center">
+                                            <div className="w-full flex justify-center">
+                                              <BsFileEarmarkText
+                                                size={70}
+                                                color={"#AAAAAA"}
+                                                className="hover:-mt-1 hover:mb-1"
+                                              />
+                                            </div>
+                                            <div className="my-3">
+                                              {l?.doc_name}
+                                            </div>
+                                          </div>
+                                        </a>
+                                      </div>
+                                      <div className="absolute top-0 -right-4 p-1 cursor-pointer">
+                                        <IconButton
+                                          className="bg-btn-primary"
+                                          onClick={() =>
+                                            handleDeleteDocument(l?.id)
+                                          }
+                                        >
+                                          {btnLoading ? (
+                                            <CircularProgress />
+                                          ) : (
+                                            <BsTrash
+                                              size={20}
+                                              color={
+                                                currentMode === "dark"
+                                                  ? "#ffffff"
+                                                  : "#000000"
+                                              }
                                             />
-                                          </div>
-                                          <div className="my-3">
-                                            {l?.doc_name}
-                                          </div>
-                                        </div>
-                                      </a>
+                                          )}
+                                        </IconButton>
+                                      </div>
                                     </div>
                                   ) : (
                                     <div className="py-2 text-xs italic text-primary">
