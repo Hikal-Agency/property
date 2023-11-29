@@ -35,6 +35,7 @@ const ListingAutoComplete = ({
     ({ description }) =>
     () => {
       setValue(description, false);
+      setListingLocation((prev) => ({ ...prev, addressText: description }));
       clearSuggestions();
 
       getGeocode({ address: description }).then((results) => {
@@ -63,6 +64,7 @@ const ListingAutoComplete = ({
 
   useEffect(() => {
     setValue(defaultLocation);
+    console.log("addres suggestion is changed:: ", value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultLocation]);
 
