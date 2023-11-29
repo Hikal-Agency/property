@@ -35,6 +35,7 @@ const ListingAutoComplete = ({
     ({ description }) =>
     () => {
       setValue(description, false);
+      setListingLocation((prev) => ({ ...prev, addressText: description }));
       clearSuggestions();
 
       getGeocode({ address: description }).then((results) => {
