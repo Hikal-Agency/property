@@ -8,6 +8,7 @@ import {
   Box,
 } from "@mui/material";
 import { useRef } from "react";
+import { socket } from "../../App";
 import { BsFillChatLeftDotsFill } from "react-icons/bs";
 import ConversationItem from "./ConversationItem";
 import MessageFromMe from "./MessageFromMe";
@@ -16,6 +17,7 @@ import { BsImage } from "react-icons/bs";
 import MessageFromOther from "./MessageFromOther";
 import { IoMdSend } from "react-icons/io";
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
+import { toast } from "react-toastify";
 
 const Conversation = ({
   data,
@@ -35,6 +37,88 @@ const Conversation = ({
 }) => {
   const imagePickerRef = useRef();
 
+
+  async function sendWhatsappImage(contact, imgBinary) {
+    try {
+
+      const waDevice = localStorage.getItem("authenticated-wa-device");
+      if (waDevice) {
+        socket.emit("whatsapp_check_device_exists_send_msg_modal", {
+          id: waDevice,
+        });
+        socket.on("whatsapp_check_device_send_msg_modal", (result) => {
+          if (result) {
+            socket.emit("whatsapp_send-bulk-image", {
+              contacts: [contact],
+              img: imgBinary,
+              id: waDevice,
+              caption: "",
+            });
+          }
+        });
+      } else {
+        toast.error("Connect your device first! ", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+
+      // const responses = await Promise.all(
+      //   contactList.map((contact) => {
+      //     var urlencoded = new URLSearchParams();
+      //     urlencoded.append("token", ULTRA_MSG_TOKEN);
+      //     urlencoded.append("to", "+" + contact);
+
+      //     const modifiedMessageText = messageText
+      //       .toString()
+      //       .replaceAll("**", "*");
+      //     urlencoded.append("body", modifiedMessageText);
+
+      //     var myHeaders = new Headers();
+      //     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      //     return fetch(`${ULTRA_MSG_API}/instance24405/messages/chat`, {
+      //       headers: myHeaders,
+      //       method: "POST",
+      //       body: urlencoded,
+      //     }).then((response) => response.json());
+      //   })
+      // );
+      // const allSentMessages = [];
+      // responses.forEach((response, index) => {
+      //   if (!response?.error) {
+      //     const messageInfo = {
+      //       msg_to: contactList[index],
+      //       msg_from: whatsappSenderNo,
+      //       message: messageText,
+      //       type: "sent",
+      //       userID: User?.id,
+      //       source: "whatsapp",
+      //       status: 1,
+      //     };
+      //     allSentMessages.push(messageInfo);
+      //   }
+      // });
+
+      // saveMessages(allSentMessages);
+    } catch (error) {
+      console.log(error);
+      toast.error("There is some issue!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
+
   const handleChangeImage = (e) => {
     e.preventDefault();
     let files;
@@ -47,12 +131,12 @@ const Conversation = ({
     console.log(e.target.files[0]);
 
     const reader = new FileReader();
-    reader.onload = () => {
-      console.log("Result::", reader.result);
-      const src = reader.result.slice(reader.result.indexOf("64,") + 3);
-      handleSendMessage(null, "img", src );
-    };
     reader.readAsDataURL(files[0]);
+
+    reader.onload = (e) => {
+      const imgBinary = e.target.result;
+      sendWhatsappImage(activeChat?.phoneNumber, imgBinary);
+    };
   };
   return (
     <>

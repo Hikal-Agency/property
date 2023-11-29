@@ -18,7 +18,7 @@ const Chat = () => {
     selectedDevice,
     setSelectedDevice,
     BACKEND_URL,
-    t
+    t,
   } = useStateContext();
   const [loading, setloading] = useState(true);
   const [qr, setQr] = useState("");
@@ -42,81 +42,40 @@ const Chat = () => {
   });
 
   const messagesContainerRef = useRef();
-  
+
   const fetchChatMessages = async (contact, callback) => {
     const waDevice = localStorage.getItem("authenticated-wa-device");
     if (waDevice) {
       socket.emit("whatsapp_get_chat", { id: waDevice, contact: contact });
       socket.on("whatsapp_chat", (data) => {
         if (data?.length > 0) {
-            setChatMessages([...data]);
+          setChatMessages([...data]);
           if (callback) callback();
         }
-          setChatLoading(false);
+        setChatLoading(false);
       });
     }
   };
 
-  const handleSendMessage = (e = null, type, base64 = null) => {
-    e?.preventDefault();
+  const handleSendMessage = (e) => {
+    e.preventDefault();
     const waDevice = localStorage.getItem("authenticated-wa-device");
     setBtnLoading(true);
-    if (type === "text") {
-      if (messageInputRef.current?.querySelector("input").value && socket?.id) {
-        socket.emit("whatsapp_send-message", {
-          id: waDevice,
-          to: activeChat.phoneNumber + "@c.us",
-          msg: messageInputRef?.current?.querySelector("input").value,
-          type: "text",
-        });
-
-        socket.on("whatsapp_sent", () => {
-          fetchChatMessages(activeChat.phoneNumber, () => {
-            setBtnLoading(false);
-          });
-          if(messageInputRef.current) {
-            messageInputRef.current.querySelector("input").value = "";
-          }
-        });
-
-        socket.on("whatsapp_failed", () => {
-          toast.error("Message Couldn't be sent", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        });
-      } else {
-        toast.error("Server is disconnected!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-    } else if (type === "img") {
-      setBtnLoading(true);
+    if (messageInputRef.current?.querySelector("input").value && socket?.id) {
       socket.emit("whatsapp_send-message", {
-        to: activeChat.phoneNumber + "@c.us",
         id: waDevice,
-        type: "img",
-        base64: base64,
+        to: activeChat.phoneNumber + "@c.us",
+        msg: messageInputRef?.current?.querySelector("input").value,
+        type: "text",
       });
 
       socket.on("whatsapp_sent", () => {
         fetchChatMessages(activeChat.phoneNumber, () => {
           setBtnLoading(false);
         });
-          if(messageInputRef.current) {
-        messageInputRef.current.querySelector("input").value = "";
-          }
+        if (messageInputRef.current) {
+          messageInputRef.current.querySelector("input").value = "";
+        }
       });
 
       socket.on("whatsapp_failed", () => {
@@ -129,6 +88,16 @@ const Chat = () => {
           progress: undefined,
           theme: "light",
         });
+      });
+    } else {
+      toast.error("Server is disconnected!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
     }
   };
@@ -188,16 +157,20 @@ const Chat = () => {
 
   const fetchDevices = async () => {
     setloading(true);
-      const token = localStorage.getItem("auth-token");
-      const response = await axios.get(`${BACKEND_URL}/instances`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+    const token = localStorage.getItem("auth-token");
+    const response = await axios.get(`${BACKEND_URL}/instances`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
 
-      setDevicesList(response.data.instances.data?.filter((device) => device?.user_id === User?.id));
-      setloading(false);
+    setDevicesList(
+      response.data.instances.data?.filter(
+        (device) => device?.user_id === User?.id
+      )
+    );
+    setloading(false);
   };
 
   const connectDevice = async (deviceName, phoneNo) => {
@@ -209,7 +182,9 @@ const Chat = () => {
       },
     });
     const findDevice = devices.data.instances.data.find(
-      (device) => `${device.user_id}-${device.instance_name}` === deviceName && device.user_id === User?.id
+      (device) =>
+        `${device.user_id}-${device.instance_name}` === deviceName &&
+        device.user_id === User?.id
     );
 
     if (findDevice) {
@@ -291,7 +266,7 @@ const Chat = () => {
           Authorization: "Bearer " + token,
         },
       });
-      
+
       document.location.reload();
     }
   };
@@ -312,22 +287,22 @@ const Chat = () => {
         socket.on("whatsapp_profile_picture", (url) => {
           localStorage.setItem("authenticated-wa-device", info.sessionId);
           console.log("url: ", url);
-            setData({
-              userInfo: info,
-              userProfilePic: url,
-            });
-            localStorage.setItem(
-              "authenticated-wa-account",
-              JSON.stringify({
-                info: info,
-                profile_pic_url: url,
-              })
-            );
-            connectDevice(info.sessionId, info?.me?.user);
-            setQr(null);
-            setloading(false);
-            setWALoadingScreen(false);
-            setReady(true);
+          setData({
+            userInfo: info,
+            userProfilePic: url,
+          });
+          localStorage.setItem(
+            "authenticated-wa-account",
+            JSON.stringify({
+              info: info,
+              profile_pic_url: url,
+            })
+          );
+          connectDevice(info.sessionId, info?.me?.user);
+          setQr(null);
+          setloading(false);
+          setWALoadingScreen(false);
+          setReady(true);
         });
       });
 
@@ -347,7 +322,7 @@ const Chat = () => {
       });
 
       socket.on("whatsapp_logged-out", (data) => {
-        console.log("Logged")
+        console.log("Logged");
         if (data.status) {
           disconnectDevice(data.id);
           setloading(false);
@@ -367,7 +342,6 @@ const Chat = () => {
     if (waDevice) {
       socket.emit("whatsapp_get-all-chats", { id: waDevice });
       socket.on("whatsapp_all-chats", (data) => {
-        console.log("All Chats:", data);
         if (data.length > 0) {
           setLoadingConversations(false);
           const phNo = searchParams.get("phoneNumber");
@@ -375,22 +349,24 @@ const Chat = () => {
             const findChat = data.find((chat) => chat.id.user === phNo);
             if (findChat) {
               setAllChats([findChat]);
-            setActiveChat({
-              phoneNumber: findChat?.id?.user,
-              name: findChat?.name
-            });
+              setActiveChat({
+                phoneNumber: findChat?.id?.user,
+                name: findChat?.name,
+              });
             } else {
-              setAllChats([{
-                id: {
-                  user: phNo,
+              setAllChats([
+                {
+                  id: {
+                    user: phNo,
+                  },
+                  name: "Unknown User",
+                  lastMessage: "",
                 },
+              ]);
+              setActiveChat({
+                phoneNumber: phNo,
                 name: "Unknown User",
-                lastMessage: "",
-              }]);
-            setActiveChat({
-              phoneNumber: phNo,
-              name: "Unknown User",
-            });
+              });
             }
           } else {
             setAllChats(() => {
@@ -404,8 +380,7 @@ const Chat = () => {
     }
   }, [User, ready, activeChat.phoneNumber, searchParams]);
 
-
-    useEffect(() => {
+  useEffect(() => {
     const cb = () => {
       if (User && ready) {
         fetchChatMessages(searchParams.get("phoneNumber"));
@@ -507,11 +482,12 @@ const Chat = () => {
                       data={data}
                       setActiveChat={setActiveChat}
                       allChats={allChats}
+                      fetchChatMessages={fetchChatMessages}
                       logout={logout}
+                      handleSendMessage={handleSendMessage}
                       handleLogout={handleLogout}
                       chatMessages={chatMessages}
                       loadingConversations={loadingConversations}
-                      handleSendMessage={handleSendMessage}
                       chatLoading={chatLoading}
                       btnLoading={btnLoading}
                       messageInputRef={messageInputRef}
