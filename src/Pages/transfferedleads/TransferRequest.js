@@ -18,8 +18,9 @@ const TransferRequest = (props) => {
     themeBgImg,
   } = useStateContext();
 
-  const lead_type2 = location.pathname.split("/")[2];
-  var lead_type = lead_type2.replace(/%20/g, " ");
+  //   const lead_type2 = location.pathname.split("/")[2];
+  //   var lead_type = lead_type2.replace(/%20/g, " ");
+  var lead_type = "new";
 
   useEffect(() => {
     setopenBackDrop(false);
