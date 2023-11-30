@@ -16,6 +16,7 @@ import { saveAs } from "file-saver";
 import { useStateContext } from "../../context/ContextProvider";
 
 import { MdClose } from "react-icons/md";
+import usePermission from "../../utils/usePermission";
 
 const SingleImageModal = ({
   singleImageModal,
@@ -26,6 +27,7 @@ const SingleImageModal = ({
   closeSingleModal,
 }) => {
   const { BACKEND_URL } = useStateContext();
+  const { hasPermission } = usePermission();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [deleteBtnLoading, setDeleteBtnLoading] = useState(false);
@@ -203,20 +205,40 @@ const SingleImageModal = ({
                   </button>
                 </>
               )}
-              <button
-                onClick={handleDelete}
-                className="text-white bg-primary p-2 rounded-full mx-2"
-              >
-                {deleteBtnLoading ? (
-                  <CircularProgress
-                    size={14}
-                    sx={{ color: "white" }}
-                    className="text-white"
-                  />
-                ) : (
-                  <FiTrash size={19} />
-                )}
-              </button>
+
+              {module === "property" ? (
+                hasPermission("property_delete_img") && (
+                  <button
+                    onClick={handleDelete}
+                    className="text-white bg-primary p-2 rounded-full mx-2"
+                  >
+                    {deleteBtnLoading ? (
+                      <CircularProgress
+                        size={14}
+                        sx={{ color: "white" }}
+                        className="text-white"
+                      />
+                    ) : (
+                      <FiTrash size={19} />
+                    )}
+                  </button>
+                )
+              ) : (
+                <button
+                  onClick={handleDelete}
+                  className="text-white bg-primary p-2 rounded-full mx-2"
+                >
+                  {deleteBtnLoading ? (
+                    <CircularProgress
+                      size={14}
+                      sx={{ color: "white" }}
+                      className="text-white"
+                    />
+                  ) : (
+                    <FiTrash size={19} />
+                  )}
+                </button>
+              )}
 
               <Menu
                 elevation={0}

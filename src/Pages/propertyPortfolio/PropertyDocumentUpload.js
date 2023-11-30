@@ -12,6 +12,7 @@ import axios from "../../axoisConfig";
 import { HiOutlineDocument } from "react-icons/hi";
 
 import { useStateContext } from "../../context/ContextProvider";
+import usePermission from "../../utils/usePermission";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -28,6 +29,7 @@ const PropertyDocModal = ({
   const { currentMode, BACKEND_URL } = useStateContext();
   const documentsInputRef = useRef(null);
   const [btnloading, setbtnloading] = useState(false);
+  const { hasPermission } = usePermission();
 
   const handleSelectImages = (e) => {
     e.preventDefault();

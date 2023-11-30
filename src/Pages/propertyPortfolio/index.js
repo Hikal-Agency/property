@@ -23,6 +23,7 @@ import { useState } from "react";
 import AddDeveloper from "./AddDeveloper";
 import AddProject from "./AddProject";
 import SinglePropertyModal from "./SinglePropertyModal";
+import usePermission from "../../utils/usePermission";
 
 const PropertyPortfolio = () => {
   const {
@@ -36,6 +37,7 @@ const PropertyPortfolio = () => {
   } = useStateContext();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const { hasPermission } = usePermission();
 
   const [openAddDev, setOpenAddDev] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -154,18 +156,22 @@ const PropertyPortfolio = () => {
             </h1>
           </div>
           <div className="flex justify-end space-x-4">
-            <Button
-              onClick={() => setOpenAddDev(true)}
-              className="bg-btn-primary text-white px-4 py-4 rounded-md "
-            >
-              <span className="text-white">{t("add_dev_btn")}</span>
-            </Button>
-            <Button
-              onClick={() => setOpenAddProject(true)}
-              className="bg-btn-primary text-white px-4 py-4 rounded-md "
-            >
-              <span className="text-white">{t("add_project_btn")}</span>
-            </Button>
+            {hasPermission("property_add_dev_project") && (
+              <>
+                <Button
+                  onClick={() => setOpenAddDev(true)}
+                  className="bg-btn-primary text-white px-4 py-4 rounded-md "
+                >
+                  <span className="text-white">{t("add_dev_btn")}</span>
+                </Button>
+                <Button
+                  onClick={() => setOpenAddProject(true)}
+                  className="bg-btn-primary text-white px-4 py-4 rounded-md "
+                >
+                  <span className="text-white">{t("add_project_btn")}</span>
+                </Button>
+              </>
+            )}
             {searchQuery && (
               <Button
                 onClick={clearFilter}

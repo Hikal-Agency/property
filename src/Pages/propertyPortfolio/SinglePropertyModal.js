@@ -360,14 +360,16 @@ const SinglePropertyModal = ({
                         <div className="w-full p-1">
                           <div className="flex items-center gap-1 justify-end">
                             {/* EDIT DETAILS  */}
-                            <Tooltip title="Edit Listing Details" arrow>
-                              <IconButton
-                                className={`rounded-full bg-btn-primary`}
-                                onClick={handleEdit}
-                              >
-                                <BsPen size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip>
+                            {hasPermission("property_update_dev_project") && (
+                              <Tooltip title="Edit Listing Details" arrow>
+                                <IconButton
+                                  className={`rounded-full bg-btn-primary`}
+                                  onClick={handleEdit}
+                                >
+                                  <BsPen size={16} color={"#FFFFFF"} />
+                                </IconButton>
+                              </Tooltip>
+                            )}
 
                             {/* UPLOAD PICTURES  */}
                             {/* <Tooltip title="Upload Pictures" arrow>
@@ -611,27 +613,29 @@ const SinglePropertyModal = ({
                                           </div>
                                         </a>
                                       </div>
-                                      <div className="absolute top-0 -right-4 p-1 cursor-pointer">
-                                        <IconButton
-                                          className="bg-btn-primary"
-                                          onClick={() =>
-                                            handleDeleteDocument(l?.id)
-                                          }
-                                        >
-                                          {btnLoading ? (
-                                            <CircularProgress />
-                                          ) : (
-                                            <BsTrash
-                                              size={20}
-                                              color={
-                                                currentMode === "dark"
-                                                  ? "#ffffff"
-                                                  : "#000000"
-                                              }
-                                            />
-                                          )}
-                                        </IconButton>
-                                      </div>
+                                      {hasPermission("property_delete_doc") && (
+                                        <div className="absolute top-0 -right-4 p-1 cursor-pointer">
+                                          <IconButton
+                                            className="bg-btn-primary"
+                                            onClick={() =>
+                                              handleDeleteDocument(l?.id)
+                                            }
+                                          >
+                                            {btnLoading ? (
+                                              <CircularProgress />
+                                            ) : (
+                                              <BsTrash
+                                                size={20}
+                                                color={
+                                                  currentMode === "dark"
+                                                    ? "#ffffff"
+                                                    : "#000000"
+                                                }
+                                              />
+                                            )}
+                                          </IconButton>
+                                        </div>
+                                      )}
                                     </div>
                                   ) : (
                                     <div className="py-2 text-xs italic text-primary">
