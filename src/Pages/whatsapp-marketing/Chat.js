@@ -89,17 +89,7 @@ const Chat = () => {
           theme: "light",
         });
       });
-    } else {
-      toast.error("Server is disconnected!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
+    } 
   };
 
   const handleLogout = () => {

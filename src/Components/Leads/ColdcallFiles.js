@@ -304,6 +304,10 @@ const ColdcallFiles = ({
           >
             {coldcallFiles?.map((file) => {
               return (
+                <div
+                  className={`px-5 shadow-lg mr-2 rounded-lg py-3 inline-block ${file?.index === activeFile && 'border border-primary'}`}
+                  onClick={() => fetchFileLeads(file?.notes, file?.index)}
+                >
                     <Badge
                 badgeContent={file?.count}
                 sx={{
@@ -313,18 +317,14 @@ const ColdcallFiles = ({
                   },
                 }}
               >
-                <div
-                  className={`px-5 shadow-lg mr-2 rounded-lg py-3 inline-block ${file?.index === activeFile && 'border'}`}
-                  onClick={() => fetchFileLeads(file?.notes, file?.index)}
-                >
                 
                   <div className="flex flex-col items-center">
                     <FaRegFileAlt size={34} className="mb-2" />
                     <p>{file?.notes}</p>
                     <p>{file["DATE(creationDate)"]}</p>
                   </div>
-                </div>
               </Badge>
+                </div>
               );
             })}
           </div>
