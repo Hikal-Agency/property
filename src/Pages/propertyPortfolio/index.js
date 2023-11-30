@@ -2,12 +2,16 @@ import React, { useEffect } from "react";
 
 import axios from "../../axoisConfig";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   CircularProgress,
   InputAdornment,
   TextField,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +27,7 @@ import { useState } from "react";
 import AddDeveloper from "./AddDeveloper";
 import AddProject from "./AddProject";
 import SinglePropertyModal from "./SinglePropertyModal";
+import { MdOutlineExpandLess } from "react-icons/md";
 
 const PropertyPortfolio = () => {
   const {
@@ -32,6 +37,8 @@ const PropertyPortfolio = () => {
     BACKEND_URL,
     themeBgImg,
     t,
+    blurDarkColor,
+    blurLightColor,
     darkModeColors,
   } = useStateContext();
   const navigate = useNavigate();
@@ -214,18 +221,45 @@ const PropertyPortfolio = () => {
                 DevProData?.map((developer) => {
                   return (
                     <>
-                      <div
-                        className={`${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        } w-full p-4 space-y-5`}
+                      <Accordion
+                        className={"bg-primary mt-4"}
+                        sx={{
+                          backgroundColor: !themeBgImg
+                            ? currentMode === "dark"
+                              ? "#1C1C1C"
+                              : "#EEEEEE"
+                            : currentMode === "dark"
+                            ? blurDarkColor
+                            : blurLightColor,
+                          color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+                          borderRadius: "10px",
+                          marginBottom: "20px",
+                        }}
                       >
-                        <div className="font-semibold text-white text-center w-full bg-primary p-2 uppercase rounded-lg shadow-sm">
-                          {developer.developerName}
-                        </div>
-                        {developer?.projects?.length > 0 ? (
-                          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                            {developer?.projects?.map((project) => {
-                              return (
+                        <AccordionSummary
+                          expandIcon={
+                            <MdOutlineExpandLess
+                              className={`${
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
+                              }`}
+                            />
+                          }
+                          aria-controls="panel1a-content"
+                          id="panel1a-header"
+                        >
+                          <Typography
+                            variant="h6"
+                            className={`font-semibold text-white text-center w-full bg-primary p-2 uppercase rounded-lg shadow-sm`}
+                          >
+                            {developer.developerName}
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          {developer?.projects?.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+                              {developer?.projects?.map((project) => (
                                 <div
                                   className={`${
                                     !themeBgImg
@@ -236,14 +270,16 @@ const PropertyPortfolio = () => {
                                       ? "blur-bg-dark"
                                       : "blur-bg-light"
                                   } card-hover w-full h-full rounded-md space-y-1 border-t-2
-                                ${
-                                  project?.projectStatus === "Available"
-                                    ? "border-green-600"
-                                    : project.projectStatus === "Sold Out"
-                                    ? "border-red-600"
-                                    : "border-yellow-600"
-                                }
-                                `}
+                                                      ${
+                                                        project?.projectStatus ===
+                                                        "Available"
+                                                          ? "border-green-600"
+                                                          : project.projectStatus ===
+                                                            "Sold Out"
+                                                          ? "border-red-600"
+                                                          : "border-yellow-600"
+                                                      }
+                                                  `}
                                 >
                                   <div
                                     className="p-4 cursor-pointer"
@@ -256,31 +292,34 @@ const PropertyPortfolio = () => {
                                       <div className="flex">
                                         <div
                                           className={`
-                                   top-0 right-5 w-4 h-8 rounded-br-full
-                                  ${
-                                    project.projectStatus === "Available"
-                                      ? "bg-green-600"
-                                      : project.projectStatus === "Sold Out"
-                                      ? "bg-red-600"
-                                      : "bg-yellow-600"
-                                  }  
-                                `}
+                                                          top-0 right-5 w-4 h-8 rounded-br-full
+                                                          ${
+                                                            project.projectStatus ===
+                                                            "Available"
+                                                              ? "bg-green-600"
+                                                              : project.projectStatus ===
+                                                                "Sold Out"
+                                                              ? "bg-red-600"
+                                                              : "bg-yellow-600"
+                                                          }  
+                                                        `}
                                         ></div>
                                         <div
                                           className={`
-                                   -top-1 right-3 w-4 h-8 rounded-bl-full
-                                  ${
-                                    project.projectStatus === "Available"
-                                      ? "bg-green-600"
-                                      : project.projectStatus === "Sold Out"
-                                      ? "bg-red-600"
-                                      : "bg-yellow-600"
-                                  }  
-                                `}
+                                                          -top-1 right-3 w-4 h-8 rounded-bl-full
+                                                          ${
+                                                            project.projectStatus ===
+                                                            "Available"
+                                                              ? "bg-green-600"
+                                                              : project.projectStatus ===
+                                                                "Sold Out"
+                                                              ? "bg-red-600"
+                                                              : "bg-yellow-600"
+                                                          }  
+                                                        `}
                                         ></div>
                                       </div>
                                     </div>
-
                                     <div className="flex items-center">
                                       <div className="mr-3">
                                         <FaBed
@@ -291,18 +330,16 @@ const PropertyPortfolio = () => {
                                       {project?.bedrooms &&
                                         project?.bedrooms !== null &&
                                         project?.bedrooms.length > 0 &&
-                                        project?.bedrooms?.map((bed) => (
-                                          <h6>
+                                        project?.bedrooms?.map((bed, index) => (
+                                          <h6 key={index}>
                                             {bed} <span>&nbsp;</span>{" "}
                                           </h6>
                                         ))}
-                                      {/* <h6>{project?.bedrooms}</h6> */}
                                       <BedInfo
                                         value={project.studio}
                                         label="enquiry_studio"
                                         t={t}
                                       />
-
                                       <BedInfo
                                         value={project.bedrooms}
                                         label="enquiry_1bed"
@@ -323,7 +360,6 @@ const PropertyPortfolio = () => {
                                       </div>
                                       {project?.price}
                                     </div>
-
                                     {project?.tour360 === 1 ? (
                                       <div className="flex items-center justify-end gap-3 text-white text-sm">
                                         <button
@@ -345,15 +381,24 @@ const PropertyPortfolio = () => {
                                     )}
                                   </div>
                                 </div>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          <p className="italic text-sm text-center">
-                            {t("no_projects")}
-                          </p>
-                        )}
-                      </div>
+                                // <Accordion key={project.projectId}>
+                                //   <AccordionSummary
+                                //     expandIcon={<MdOutlineExpandLess />}
+                                //     aria-controls="panel1a-content"
+                                //     id="panel1a-header"
+                                //   >
+
+                                //   </AccordionSummary>
+                                // </Accordion>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="italic text-sm text-center">
+                              {t("no_projects")}
+                            </p>
+                          )}
+                        </AccordionDetails>
+                      </Accordion>
                     </>
                   );
                 })
