@@ -305,25 +305,27 @@ const ColdcallFiles = ({
             {coldcallFiles?.map((file) => {
               return (
                 <div
-                  className={`px-5 shadow-lg mr-2 rounded-lg py-3 inline-block ${file?.index === activeFile && 'border border-primary'}`}
+                  className={`px-5 shadow-lg mr-2 rounded-lg py-3 inline-block ${
+                    file?.index === activeFile && "border border-primary"
+                  }`}
                   onClick={() => fetchFileLeads(file?.notes, file?.index)}
                 >
-                    <Badge
-                badgeContent={file?.count}
-                sx={{
-                  "& .MuiBadge-badge": {
-                    background: primaryColor,
-                    color: "white",
-                  },
-                }}
-              >
-                
-                  <div className="flex flex-col items-center">
-                    <FaRegFileAlt size={34} className="mb-2" />
-                    <p>{file?.notes}</p>
-                    <p>{file["DATE(creationDate)"]}</p>
-                  </div>
-              </Badge>
+                  <Badge
+                  max={5000}
+                    badgeContent={file?.total || 0}
+                    sx={{
+                      "& .MuiBadge-badge": {
+                        background: primaryColor,
+                        color: "white",
+                      },
+                    }}
+                  >
+                    <div className="flex flex-col items-center">
+                      <FaRegFileAlt size={34} className="mb-2" />
+                      <p>{file?.notes}</p>
+                      <p>{file["DATE(creationDate)"]}</p>
+                    </div>
+                  </Badge>
                 </div>
               );
             })}
