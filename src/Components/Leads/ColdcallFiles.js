@@ -5,6 +5,7 @@ import { langs } from "../../langCodes";
 import axiosInstance from "../../axoisConfig";
 import { toast } from "react-toastify";
 import {
+  Badge,
   Box,
   Button,
   FormControl,
@@ -53,7 +54,7 @@ const ColdcallFiles = ({
   const [coldcallFiles, setColdcallFiles] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
   const [allFiles, setAllFiles] = useState([]);
-  const { BACKEND_URL, currentMode } = useStateContext();
+  const { BACKEND_URL, currentMode, primaryColor } = useStateContext();
   const [sortByVal, setSortByVal] = useState("");
 
   const fetchColdLeadsData = async (type) => {
@@ -303,16 +304,27 @@ const ColdcallFiles = ({
           >
             {coldcallFiles?.map((file) => {
               return (
+                    <Badge
+                badgeContent={file?.count}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    background: primaryColor,
+                    color: "white",
+                  },
+                }}
+              >
                 <div
-                  className={`px-5 py-3 rounded inline-block ${file?.index === activeFile && 'border'}`}
+                  className={`px-5 shadow-lg mr-2 rounded-lg py-3 inline-block ${file?.index === activeFile && 'border'}`}
                   onClick={() => fetchFileLeads(file?.notes, file?.index)}
                 >
+                
                   <div className="flex flex-col items-center">
                     <FaRegFileAlt size={34} className="mb-2" />
                     <p>{file?.notes}</p>
                     <p>{file["DATE(creationDate)"]}</p>
                   </div>
                 </div>
+              </Badge>
               );
             })}
           </div>
