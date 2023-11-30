@@ -484,6 +484,7 @@ const Chat = () => {
                       allChats={allChats}
                       fetchChatMessages={fetchChatMessages}
                       logout={logout}
+                      setBtnLoading={setBtnLoading}
                       handleSendMessage={handleSendMessage}
                       handleLogout={handleLogout}
                       chatMessages={chatMessages}

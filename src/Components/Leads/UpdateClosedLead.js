@@ -288,21 +288,10 @@ const UpdateLead = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) ? "border-r-2" : "border-l-2"}
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            } ${currentMode === "dark" && (isLangRTL(i18n.language) ? "border-primary border-r-2" : "border-primary border-l-2")}
+             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
             `}
           >
-            <IconButton
-              sx={{
-                position: "absolute",
-                right: 12,
-                top: 10,
-                color: (theme) => theme.palette.grey[500],
-              }}
-              onClick={handleLeadModelClose}
-            >
-              <IoMdClose size={18} />
-            </IconButton>
             {loading ? (
               <div className="w-full flex items-center justify-center space-x-1">
                 <CircularProgress size={20} />
@@ -312,14 +301,18 @@ const UpdateLead = ({
               </div>
             ) : (
               <>
-                <h1
-                  className={`${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  } text-center font-bold text-lg pb-10`}
-                >
-                  {t("update_closed_details")}
-                </h1>
+                <div className="w-full flex items-center pb-3 mb-5">
+                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                  <h1
+                    className={`text-lg font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    {t("update_closed_details")}
+                  </h1>
+                </div>
                 <form
+                  className="p-4"
                   onSubmit={(e) => {
                     e.preventDefault();
                     UpdateLeadFunc();
@@ -356,6 +349,9 @@ const UpdateLead = ({
                                 readOnly={true}
                                 fullWidth
                                 size="small"
+                                style={{
+                                  marginBottom: "15px"
+                                }}
                               />
                             )}
                           />
@@ -368,6 +364,9 @@ const UpdateLead = ({
                           label={t("closed_amount")}
                           value={leadAmount}
                           size="small"
+                          style={{
+                            marginBottom: "15px"
+                          }}
                           onChange={(e) => {
                             setLeadAmount(e.target.value);
                           }}
@@ -380,6 +379,9 @@ const UpdateLead = ({
                           label={t("label_unit")}
                           value={unitNo}
                           size="small"
+                          style={{
+                            marginBottom: "15px"
+                          }}
                           onChange={(e) => {
                             setUnitNo(e.target.value);
                           }}

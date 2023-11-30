@@ -526,7 +526,7 @@ function App() {
           padding: 0,
         }}
       >
-        <div className="flex" style={{ width: "100vw" }}>
+        <div className="flex" id="body-div " style={{ width: "100vw" }}>
           {hasSidebarOrNavbar() && <Sidebarmui />}
           <div
             className={`w-[100%] overflow-x-hidden ${
