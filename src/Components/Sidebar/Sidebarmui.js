@@ -1263,6 +1263,11 @@ const Sidebarmui = () => {
           pro: true,
           link: "/blocked",
         },
+        {
+          name: t("menu_reshuffled_request"),
+          icon: <BsShuffle size={16} />,
+          link: "/reshuffleRequest",
+        },
         // REPORTS
         {
           name: t("menu_reports"),
