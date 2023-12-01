@@ -274,6 +274,16 @@ export const renderSourceIcons = (cellValues, currentMode) => {
                     }}
                 />
                 </Tooltip>
+            ) : cellValues.row.leadSource?.toLowerCase().includes("secondary") ? (
+                // COMMENT 
+                <Tooltip title={cellValues.row.leadSource} arrow>
+                <img
+                    src={"/secondary.png"} 
+                    style={{
+                        height: "25px",
+                    }}
+                />
+                </Tooltip>
             ) : cellValues.row.leadSource?.toLowerCase() === "property finder" ? (
                 // THIRD PARTY 
                 <Tooltip title={cellValues.row.leadSource} arrow>

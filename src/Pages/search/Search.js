@@ -122,14 +122,14 @@ const leadTypes = (t) => [
     id: "unreachable", 
     label: t("feedback_unreachable") 
   },
-  { 
-    id: "wrong number", 
-    label: t("feedback_wrong_number")
-  },
-  { 
-    id: "duplicate", 
-    label: t("feedback_duplicate") 
-  },
+  // { 
+  //   id: "wrong number", 
+  //   label: t("feedback_wrong_number")
+  // },
+  // { 
+  //   id: "duplicate", 
+  //   label: t("feedback_duplicate") 
+  // },
   { 
     id: "dead",
     label: t("feedback_dead") 
@@ -139,10 +139,11 @@ const leadTypes = (t) => [
 // LEAD CATEGORY 
 const leadOrigins = [
   { id: "hotleads" },
-  { id: "coldleads" },
+  { id: "liveleads" },
   { id: "thirdpartyleads" },
-  { id: "personalleads" },
   { id: "warmleads" },
+  { id: "coldleads" },
+  { id: "personalleads" },
   { id: "transfferedleads" },
 ];
 
@@ -831,6 +832,48 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Dead`;
       }
     }
+    // LIVE LEADS 
+    else if (leadOriginSelected?.id === "liveleads") {
+      if (leadTypeSelected?.id === "all") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6`;
+      } else if (leadTypeSelected?.id === "new") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=New`;
+      } else if (leadTypeSelected?.id === "no answer") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=No Answer`;
+      } else if (leadTypeSelected?.id === "meeting") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Meeting`;
+      } else if (leadTypeSelected?.id === "follow up") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Follow Up`;
+      } else if (leadTypeSelected?.id === "low budget") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Low Budget`;
+      } else if (leadTypeSelected?.id === "not interested") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=6&feedback=Not Interested`;
+      } else if (leadTypeSelected?.id === "unreachable") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Unreachable`;
+      } else if (leadTypeSelected?.id === "dead") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Dead`;
+      }
+    }
     // LEADS URL GENERATON FOR COLD LEADS PAGE
     else if (leadOriginSelected?.id === "coldleads") {
       if (leadTypeSelected?.id === "all") {
@@ -1010,9 +1053,13 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Dead`;
       }
-    } else if (leadOriginSelected?.id === "transfferedleads") {
+    } 
+    // RESHUFFLED LEADS 
+    else if (leadOriginSelected?.id === "transfferedleads") {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=1&coldCall=0&leadStatus=Transferred`;
-    } else if (leadOriginSelected?.id === "unassigned") {
+    } 
+    // UNASSIGNED 
+    else if (leadOriginSelected?.id === "unassigned") {
       if (leadTypeSelected?.id === "fresh") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -1664,7 +1711,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           className={"items-center mb-1"}
         >
           {/* LEAD CATEGORY  */}
-          <Box className="m-1" sx={{ minWidth: "90px" }}>
+          <Box className="m-1" sx={{ minWidth: "100px" }}>
             {/* LEAD CATEGORY  */}
             <Select
               id="lead_category"
@@ -1689,7 +1736,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           </Box>
 
           {/* FEEDBACK  */}
-          <Box className="m-1" sx={{ minWidth: "90px" }}>
+          <Box className="m-1" sx={{ minWidth: "100px" }}>
             <Select
               id="leadType"
               options={leadTypes(t).map((type) => ({
@@ -1733,7 +1780,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 ""
               )}
             </label>
-            <Box className="m-1" sx={{ minWidth: "90px" }}>
+            <Box className="m-1" sx={{ minWidth: "100px" }}>
               <Select
                 label={t("label_enquiry")}
                 id="enquiryType"
@@ -1779,7 +1826,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ""
                 )}
               </label>
-              <Box className="m-1" sx={{ minWidth: "90px" }}>
+              <Box className="m-1" sx={{ minWidth: "100px" }}>
                 <Select
                   label={t("label_source")}
                   id="leadSource"
@@ -1808,7 +1855,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           )}
 
           {/* PROJECT NAME  */}
-          <Box className="m-1" sx={{ minWidth: "90px" }}>
+          <Box className="m-1" sx={{ minWidth: "100px" }}>
             <TextField
               className={`w-full py-2 px-3`}
               id="Project"
@@ -1817,7 +1864,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               variant="outlined"
               size="medium"
               sx={{
-                minWidth: "90px",
+                minWidth: "100px",
                 "& label": {
                   top: "-7px",
                 },
@@ -1855,7 +1902,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ""
                 )}
               </label>
-              <Box className="m-1" sx={{ minWidth: "90px" }}>
+              <Box className="m-1" sx={{ minWidth: "100px" }}>
                 <Select
                   label={t("label_manager")}
                   id="Manager"
@@ -1906,7 +1953,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                   ""
                 )}
               </label>
-              <Box className="m-1" sx={{ minWidth: "90px" }}>
+              <Box className="m-1" sx={{ minWidth: "100px" }}>
                 <Select
                   label={t("label_agent")}
                   id="Agent"
