@@ -560,7 +560,7 @@ const SingleLead = ({
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                       style={{
-                        fontFamily: isArabic(LeadData?.notes)
+                        fontFamily: isArabic(LeadData?.leadName)
                           ? "Noto Kufi Arabic"
                           : "inherit",
                       }}
