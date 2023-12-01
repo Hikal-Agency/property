@@ -4,6 +4,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
+import { Box, Tab, Tabs } from "@mui/material";
 
 const TransferRequest = (props) => {
   const navigate = useNavigate();
@@ -15,8 +16,16 @@ const TransferRequest = (props) => {
     setopenBackDrop,
     BACKEND_URL,
     t,
+    darkModeColors,
     themeBgImg,
   } = useStateContext();
+
+  const [value, setValue] = useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const [tabValue, setTabValue] = useState(0);
 
   //   const lead_type2 = location.pathname.split("/")[2];
   //   var lead_type = lead_type2.replace(/%20/g, " ");
@@ -45,7 +54,7 @@ const TransferRequest = (props) => {
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                {`${t("reshuffled")} ${t("leads")}`}{" "}
+                {`${t("menu_reshuffled_request")} `}{" "}
                 <span className="capitalize">
                   (
                   {t(
@@ -58,6 +67,70 @@ const TransferRequest = (props) => {
                 </span>
               </h1>
             </div>
+
+            {/* TABS */}
+            <div className="grid grid-cols-1">
+              <div className={``}>
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiTabs-indicator": {
+                      height: "100%",
+                      borderRadius: "5px",
+                    },
+                    "& .Mui-selected": {
+                      color: "white !important",
+                      zIndex: "1",
+                    },
+                  }}
+                  className={`w-full rounded-md overflow-hidden ${
+                    !themeBgImg
+                      ? currentMode === "dark"
+                        ? "bg-[#1C1C1C]"
+                        : "bg-[#EEEEEE]"
+                      : currentMode === "dark"
+                      ? "blur-bg-dark"
+                      : "blur-bg-light"
+                  }`}
+                >
+                  <div className="flex justify-between">
+                    <Tabs
+                      value={value}
+                      onChange={handleChange}
+                      variant="standard"
+                      className="w-full px-1 m-1"
+                    >
+                      <Tab label={t("fresh")} />
+                      <Tab label={t("menu_thirdparty")} />
+                      <Tab label={t("menu_archived")} />
+                      <Tab label={t("menu_secondary")} />
+                      <Tab label={t("menu_cold")} />
+                      <Tab label={t("menu_personal")} />
+                      <Tab label={t("menu_location_live")} />
+                    </Tabs>
+                  </div>
+                </Box>
+                <div className="pb-5">
+                  <TabPanel value={value} index={0}>
+                    {/* <CallLogBoard
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                    /> */}
+                    {/* <AllLeads
+                      BACKEND_URL={BACKEND_URL}
+                      lead_origin="transfferedleads"
+                      lead_type={lead_type}
+                      isLoading={loading}
+                      tabValue={tabValue}
+                      setTabValue={setTabValue}
+                    /> */}
+                  </TabPanel>
+                </div>
+              </div>
+            </div>
+            {/* TABS END */}
+
             <AllLeads
               BACKEND_URL={BACKEND_URL}
               lead_origin="transfferedleads"
@@ -68,6 +141,11 @@ const TransferRequest = (props) => {
       </div>
     </>
   );
+
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return <div>{value === index && <div>{children}</div>}</div>;
+  }
 };
 
 export default TransferRequest;
