@@ -133,16 +133,12 @@ const ShowLocation = ({
                   readOnly={true}
                 />
               </FormControl>
-              {/* </Box>
-          <Box sx={darkModeColors} className="w-full p-4"> */}
+              
               {meetingLocation && [
                 meetingLocation.lat && meetingLocation.lng ? (
                   <LocationPicker
                     showOnly={true}
                     meetingLocation={meetingLocation}
-                    className={`${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
                   />
                 ) : (
                   <div className="mt-8 text-center text-[#da1f26]">

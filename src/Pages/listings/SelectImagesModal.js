@@ -167,7 +167,7 @@ const SelectImagesModal = ({
         style={style}
         className={`w-[calc(100%-20px)] md:w-[70%]  ${
           currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-        } absolute top-1/2 left-1/2 p-5 pt-5 rounded-md`}
+        } absolute top-1/2 left-1/2 p-5 pt-5 rounded-md border border-[#AAAAAA] border-1`}
       >
         <IconButton
           sx={{

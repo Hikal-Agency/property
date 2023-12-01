@@ -47,6 +47,7 @@ import { FcGoogle } from "react-icons/fc";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { TbWorldWww } from "react-icons/tb";
 import { renderSourceIcons } from "./_elements/SourceIconsDataGrid";
+import { renderOTPIcons } from "./_elements/OTPIconsDataGrid";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
@@ -214,48 +215,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 30,
       headerAlign: "center",
       flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="p-1 rounded-md">
-            {cellValues.formattedValue === "Verified" && (
-              <Tooltip title="Verified" arrow>
-                <div
-                  className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                >
-                  <span className="text-[#238e41] p-1 text-center">
-                    <BsShieldCheck size={16} />
-                  </span>
-                </div>
-              </Tooltip>
-            )}
-
-            {cellValues.formattedValue === "Not Verified" && (
-              <Tooltip title="Not Verified" arrow>
-                <div
-                  className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                  >
-                  <span className="text-primary p-1 text-center">
-                    <BsShieldX size={16} />
-                  </span>
-                </div>
-              </Tooltip>
-            )}
-
-            {cellValues.formattedValue !== "Not Verified" &&
-              cellValues.formattedValue !== "Verified" && (
-              <Tooltip title="No OTP used" arrow>
-                <div
-                  className={`mx-1 w-full h-full flex justify-center items-center text-center`}
-                >
-                  <span className="text-[#AAAAAA] p-1 text-center">
-                    <BsShieldMinus size={16} />
-                  </span>
-                </div>
-              </Tooltip>
-              )}
-          </div>
-        );
-      },
+      renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode)
     },
     {
       field: "",

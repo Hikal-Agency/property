@@ -110,7 +110,11 @@ const LocationPicker = ({
             defaultLocation={meetingLocation.addressText}
             setMeetingLocation={setMeetingLocation}
             isDisabled={showOnly}
-            className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
+            sx={{
+              ".Mui-disabled": {
+                color: currentMode === "dark" ? "#FFFFFF" : "#000000"
+              }
+            }}
           />
           <div style={{ marginTop: 30 }}></div>
           <GoogleMap

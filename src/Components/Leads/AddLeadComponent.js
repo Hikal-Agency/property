@@ -29,7 +29,8 @@ import {
   language_options,
   property_options,
   enquiry_options,
-  purpose_options 
+  purpose_options, 
+  lead_options
 } from "../_elements/SelectOptions";
 
 const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdown }) => {
@@ -53,6 +54,10 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
 
   const ChangeLeadSource = (selectedOption) => {
     setLeadSource(selectedOption.value);
+  };
+
+  const ChangeLeadCategory = (selectedOption) => {
+    setLeadCategory(selectedOption.value);
   };
 
   const ChangeLanguagePrefered = (selectedOption) => {
@@ -95,6 +100,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
   const [LanguagePrefered, setLanguagePrefered] = useState("");
   const [LeadStatus, setLeadStatus] = useState("");
   const [LeadSource, setLeadSource] = useState(noSourceDropdown ? "Secondary" : "");
+  const [LeadCategory, setLeadCategory] = useState("0");
   const [Manager, setManager] = useState("");
   const [SalesPerson2, setSalesPerson2] = useState("");
   const [LeadName, setLeadName] = useState("");
@@ -197,8 +203,12 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
       coldCall = 3;
     } else if (LeadSource.toLowerCase() === "personal") {
       coldCall = 2;
-    } else if (LeadSource.toLowerCase() === "secondary") {
-      coldCall = 5;
+    } 
+    // else if (LeadSource.toLowerCase() === "secondary") {
+    //   coldCall = 5;
+    // }
+    else {
+      coldCall = LeadCategory;
     }
     if (LeadName) LeadData.append("leadName", LeadName);
     if (LeadContact) LeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
@@ -884,6 +894,16 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       //   <MenuItem value={"Personal"}>{t("source_personal")}</MenuItem>
                       // </TextField>
                     }
+
+                    <Select 
+                      id="LeadCategory"
+                      options={lead_options(t)} 
+                      value={lead_options(t).find(option => option.value === LeadCategory)}
+                      onChange={ChangeLeadCategory}
+                      placeholder={t("label_category")}
+                      className={`mb-5`}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
                   </Box>
                 </div>
               </div>

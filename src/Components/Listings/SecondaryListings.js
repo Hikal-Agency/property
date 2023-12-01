@@ -32,7 +32,14 @@ const SecondaryListings = ({
   setLoading,
 }) => {
   console.log("loading status: ", loading);
-  const { currentMode, BACKEND_URL, t, themeBgImg } = useStateContext();
+  const { 
+    currentMode, 
+    BACKEND_URL, 
+    t, 
+    themeBgImg,
+    isLangRTL,
+    i18n 
+  } = useStateContext();
   const { hasPermission } = usePermission();
   const static_img = "assets/no-image.png";
   const hikalre = "fullLogoRE.png";
@@ -185,7 +192,7 @@ const SecondaryListings = ({
                       )}
 
                       <div
-                        className={`absolute top-0 right-0 p-2`}
+                        className={`absolute top-0 ${isLangRTL(i18n.language) ? "left-0" : "right-0"} p-2`}
                       >
                         <div className="flex flex-col gap-2">
                           <Tooltip title="View Property" arrow>
@@ -214,7 +221,7 @@ const SecondaryListings = ({
                         </div>
                       </div>
                       <div
-                        className={`absolute top-[200px] right-0 p-2 rounded-b-full`}
+                        className={`absolute top-[200px] ${isLangRTL(i18n.language) ? "left-0" : "right-0"} p-2 rounded-b-full`}
                       >
                         <img
                           src={currentMode === "dark" ? hikalrewhite : hikalre}
@@ -259,7 +266,7 @@ const SecondaryListings = ({
                       </div>
 
                       <div className="my-2">
-                        <div className="flex space-x-3 items-center">
+                        <div className="flex gap-2 items-center">
                           <BiBed className={`${
                             !themeBgImg ? "text-[#AAAAAA]"
                             : (currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#333333]")
@@ -279,7 +286,7 @@ const SecondaryListings = ({
                         </div>
                       </div>
                       <div className="my-2 w-full flex items-center justify-between">
-                        <div className="flex space-x-3 items-center">
+                        <div className="flex gap-2 items-center">
                           <BiBath className={`${
                             !themeBgImg ? "text-[#AAAAAA]"
                             : (currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#333333]")
