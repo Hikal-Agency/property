@@ -20,16 +20,45 @@ const TransferRequest = (props) => {
     themeBgImg,
   } = useStateContext();
 
-  const [value, setValue] = useState(0);
+  const leadTypes = [
+    {
+      name: "Fresh Leads",
+      value: "freshleads",
+    },
+    {
+      name: "Third Party",
+      value: "thirdpartyleads",
+    },
+    {
+      name: "Archived",
+      value: "archive",
+    },
+    {
+      name: "Personal",
+      value: "personalleads",
+    },
+    {
+      name: "Cold",
+      value: "coldleads",
+    },
+    {
+      name: "Secondary",
+      value: "buyers",
+    },
+    {
+      name: "Live",
+      value: "liveleads",
+    },
+  ];
+
+  const [value, setValue] = useState(leadTypes[0]?.value);
   const handleChange = (event, newValue) => {
+    console.log("NEw tab value:: ", newValue);
     setValue(newValue);
   };
 
-  const [tabValue, setTabValue] = useState(0);
-
   //   const lead_type2 = location.pathname.split("/")[2];
   //   var lead_type = lead_type2.replace(/%20/g, " ");
-  var lead_type = "new";
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -55,13 +84,7 @@ const TransferRequest = (props) => {
                 }`}
               >
                 {`${t("menu_reshuffled_request")} `}{" "}
-                <span className="capitalize">
-                  (
-                  {t(
-                    "feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_")
-                  )}
-                  )
-                </span>{" "}
+                <span className="capitalize">({t("feedback_" + value)})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>
@@ -100,13 +123,16 @@ const TransferRequest = (props) => {
                       variant="standard"
                       className="w-full px-1 m-1"
                     >
-                      <Tab label={t("fresh")} />
+                      {/* <Tab value={} label={t("fresh")} />
                       <Tab label={t("menu_thirdparty")} />
                       <Tab label={t("menu_archived")} />
                       <Tab label={t("menu_secondary")} />
                       <Tab label={t("menu_cold")} />
                       <Tab label={t("menu_personal")} />
-                      <Tab label={t("menu_location_live")} />
+                      <Tab label={t("menu_location_live")} /> */}
+                      {leadTypes?.map((leadType) => (
+                        <Tab value={leadType?.value} label={leadType?.name} />
+                      ))}
                     </Tabs>
                   </div>
                 </Box>
@@ -133,8 +159,9 @@ const TransferRequest = (props) => {
 
             <AllLeads
               BACKEND_URL={BACKEND_URL}
-              lead_origin="transfferedleads"
-              lead_type={lead_type}
+              lead_origin={value}
+              lead_type={value}
+              transferRequest="transferRequest"
             />
           </div>
         )}
