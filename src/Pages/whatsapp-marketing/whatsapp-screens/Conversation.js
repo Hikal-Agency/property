@@ -66,6 +66,7 @@ const Conversation = ({
                 },
               }
             );
+            imagePickerRef.current.value = "";
           }
         });
       } else {
