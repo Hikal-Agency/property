@@ -5,6 +5,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
 import { Box, Tab, Tabs } from "@mui/material";
+import TransferTabs from "./TransferTabs";
 
 const TransferRequest = (props) => {
   const navigate = useNavigate();
@@ -116,25 +117,25 @@ const TransferRequest = (props) => {
                       : "blur-bg-light"
                   }`}
                 >
-                  <div className="flex justify-between">
+                  <TransferTabs
+                    leadTypes={leadTypes}
+                    value={value}
+                    setValue={setValue}
+                    handleChange={handleChange}
+                  />
+                  {/* <div className="flex justify-between">
                     <Tabs
                       value={value}
                       onChange={handleChange}
                       variant="standard"
                       className="w-full px-1 m-1"
                     >
-                      {/* <Tab value={} label={t("fresh")} />
-                      <Tab label={t("menu_thirdparty")} />
-                      <Tab label={t("menu_archived")} />
-                      <Tab label={t("menu_secondary")} />
-                      <Tab label={t("menu_cold")} />
-                      <Tab label={t("menu_personal")} />
-                      <Tab label={t("menu_location_live")} /> */}
+                     
                       {leadTypes?.map((leadType) => (
                         <Tab value={leadType?.value} label={leadType?.name} />
                       ))}
                     </Tabs>
-                  </div>
+                  </div> */}
                 </Box>
                 <div className="pb-5">
                   <TabPanel value={value} index={0}>

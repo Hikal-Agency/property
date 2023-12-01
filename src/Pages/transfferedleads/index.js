@@ -1,15 +1,11 @@
-import React, { 
-  useEffect, 
-  useState } from "react";
-import { 
-  useNavigate, 
-  useLocation } from "react-router-dom";
-import { 
-  useStateContext 
-} from "../../context/ContextProvider";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useStateContext } from "../../context/ContextProvider";
 
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
+import TransferTabs from "./TransferTabs";
+import { Box } from "@mui/material";
 
 const TransferredLeads = (props) => {
   const navigate = useNavigate();
@@ -21,11 +17,46 @@ const TransferredLeads = (props) => {
     setopenBackDrop,
     BACKEND_URL,
     t,
-    themeBgImg
+    themeBgImg,
+    darkModeColors,
   } = useStateContext();
 
-  const lead_type2 = location.pathname.split("/")[2];
-  var lead_type = lead_type2.replace(/%20/g, " ");
+  const leadTypes = [
+    {
+      name: "Fresh Leads",
+      value: "freshleads",
+    },
+    {
+      name: "Third Party",
+      value: "thirdpartyleads",
+    },
+    {
+      name: "Archived",
+      value: "archive",
+    },
+    {
+      name: "Personal",
+      value: "personalleads",
+    },
+    {
+      name: "Cold",
+      value: "coldleads",
+    },
+    {
+      name: "Secondary",
+      value: "buyers",
+    },
+    {
+      name: "Live",
+      value: "liveleads",
+    },
+  ];
+
+  const [value, setValue] = useState(leadTypes[0]?.value);
+  const handleChange = (event, newValue) => {
+    console.log("NEw tab value:: ", newValue);
+    setValue(newValue);
+  };
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -50,18 +81,54 @@ const TransferredLeads = (props) => {
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                {`${t("reshuffled")} ${t("leads")}`} 
-                {" "}
-                <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
+                {`${t("reshuffled")} ${t("leads")}`}{" "}
+                <span className="capitalize">({t("feedback_" + value)})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>
               </h1>
             </div>
+
+            {/* TABS */}
+            <div className="grid grid-cols-1">
+              <div className={``}>
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiTabs-indicator": {
+                      height: "100%",
+                      borderRadius: "5px",
+                    },
+                    "& .Mui-selected": {
+                      color: "white !important",
+                      zIndex: "1",
+                    },
+                  }}
+                  className={`w-full mb-4 rounded-md overflow-hidden ${
+                    !themeBgImg
+                      ? currentMode === "dark"
+                        ? "bg-[#1C1C1C]"
+                        : "bg-[#EEEEEE]"
+                      : currentMode === "dark"
+                      ? "blur-bg-dark"
+                      : "blur-bg-light"
+                  }`}
+                >
+                  <TransferTabs
+                    leadTypes={leadTypes}
+                    value={value}
+                    setValue={setValue}
+                    handleChange={handleChange}
+                  />
+                </Box>
+              </div>
+            </div>
+            {/* TABS END */}
             <AllLeads
               BACKEND_URL={BACKEND_URL}
-              lead_origin="transfferedleads"
-              lead_type={lead_type}
+              lead_origin={value}
+              lead_type={value}
+              transferRequest="transferRequest"
             />
           </div>
         )}

@@ -178,7 +178,7 @@ const routes = [
     pageName: "Blocked IPs",
   },
   {
-    path: "/reshuffleleads/:lead_type",
+    path: "/reshuffleleads",
     element: <TransferredLeads />,
     pageName: "Transferred Leads",
   },

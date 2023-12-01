@@ -956,7 +956,7 @@ const Sidebarmui = () => {
           name: t("menu_reshuffled"),
           icon: <BsShuffle size={16} />,
           pro: false,
-          // link: "/reshuffleleads",
+          link: "/reshuffleleads",
           submenu: [
             {
               name: t("feedback_all"),
