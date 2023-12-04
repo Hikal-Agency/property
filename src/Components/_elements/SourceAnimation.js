@@ -45,10 +45,19 @@ const SourceAnimation = () => {
         currentMode,
         primaryColor,
         Counters,
+        SourceCounters,
         t,
         isLangRTL,
         i18n
     } = useStateContext();
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem("auth-token");
+    //     if (token) {
+    //         SourceCounters(token);
+    //     }
+    // }, []);
+
     const sourceIcons = [
         <BsFacebook size={18} color={"#0E82E1"} />,
         <FaSnapchatGhost size={18} color={"#EDBD34"} />,
@@ -68,43 +77,43 @@ const SourceAnimation = () => {
     ];
     const sourceCounters = [
         {
-            "Campaign Facebook": {
+            "Facebook": {
                 icon: <BsFacebook size={20} color={"white"} />,
                 bg: "#0E82E1",
             }
         },
         {
-            "Campaign Instagram": {
+            "Instagram": {
                 icon: <BsInstagram size={20} color={"white"} />,
                 bg: "#BE238D",
             }
         },
         {
-            "Campaign Snapchat": {
+            "Snapchat": {
                 icon: <BsSnapchat size={18} color={"white"} />,
                 bg: "#EDBD34", //"#F6D80A",
             }
         },
         {
-            "Campaign TikTok": {
+            "TikTok": {
                 icon: <BsTiktok size={18} color={"white"} />,
                 bg: "#000000",
             }
         },
         {
-            "Campaign YouTube": {
+            "YouTube": {
                 icon: <BsYoutube size={20} color={"white"} />,
                 bg: "#C4302B",
             }
         },
         {
-            "Campaign GoogleAds": {
+            "GoogleAds": {
                 icon: <FcGoogle size={20} />,
                 bg: currentMode === "dark" ? "#000000" : "#FFFFFF",
             }
         },
         {
-            "Campaign Twitter": {
+            "Twitter": {
                 icon: <BsTwitter size={20} color={"white"} />,
                 bg: "#00ACEE",
             }
@@ -217,6 +226,10 @@ const SourceAnimation = () => {
         event.stopPropagation();
         clearInterval(animationInterval);
         setShowIcons(false);
+        const token = localStorage.getItem("auth-token");
+        if (token) {
+            SourceCounters(token);
+        }
         handleSourceCounterOpen();
     };
     return (
@@ -268,35 +281,36 @@ const SourceAnimation = () => {
                         }}
                     >
                         {Counters.counters && Counters.counters.length > 0 ? (
-                            sourceCounters.map((counterObject, index) => {
-                                const leadSource = Object.keys(counterObject)[0];
-                                const { icon, bg } = counterObject[leadSource];
-                                const counterData = Counters.counters.find(
-                                    (counter) => counter.leadSource === leadSource
-                                );
-                                if (!counterData) return null;
+                            Counters.counters.map((source) => {
+                                const matchingSource = sourceCounters.find((counterObject, index) => {
+                                    const counterObjectLeadSource = Object.keys(counterObject)[0]?.toLowerCase().trim();
+                                    const sourceCounterLeadSource = source.leadSource?.toLowerCase().trim();
+                                    return counterObjectLeadSource && sourceCounterLeadSource && counterObjectLeadSource?.includes(sourceCounterLeadSource);
+                                });
+
+                                if (!matchingSource) return null;
+
+                                const leadSource = Object.keys(matchingSource)[0];
+                                const { icon, bg } = matchingSource[leadSource];
+
                                 return (
-                                    <Tooltip title={leadSource} arrow>
+                                    <Tooltip title={leadSource} key={leadSource} arrow>
                                         <div className="p-2">
                                             <div
-                                                className="shadow-sm card-hover flex items-center justify-between"
-                                                style={{
-                                                    border: `1px solid #AAAAAA`
-                                                }}
+                                            className="shadow-sm card-hover flex items-center justify-between"
+                                            style={{
+                                                border: `1px solid #AAAAAA`,
+                                            }}
                                             >
                                                 <div
                                                     className="p-2 h-full flex items-center justify-center"
                                                     style={{
-                                                        backgroundColor: bg
+                                                    backgroundColor: bg,
                                                     }}
                                                 >
                                                     {icon}
                                                 </div>
-                                                <div
-                                                    className="p-2 px-3"
-                                                >
-                                                    {counterData.count}
-                                                </div>
+                                                <div className="p-2 px-3">{source.count}</div>
                                             </div>
                                         </div>
                                     </Tooltip>

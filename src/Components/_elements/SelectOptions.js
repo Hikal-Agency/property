@@ -50,6 +50,38 @@ export const feedback_options = (t) => [
   },
 ];
 
+// LEAD CATEGORY 
+export const lead_options = (t) => [
+  {
+    value: "0",
+    label: t("menu_fresh"),
+  },
+  {
+    value: "5",
+    label: t("secondary_buyers"),
+  },
+  {
+    value: "3",
+    label: t("menu_thirdparty"),
+  },
+  {
+    value: "4",
+    label: t("menu_archived"),
+  },
+  {
+    value: "6",
+    label: t("menu_live_call"),
+  },
+  {
+    value: "1",
+    label: t("menu_cold"),
+  },
+  {
+    value: "2",
+    label: t("menu_personal"),
+  },
+];
+
 // LANGUAGE 
 export const language_options = [
     { 
@@ -192,10 +224,10 @@ export const source_options = (t) => [
       value: "Website",
       label: `${t("source_website")}`,
     },
-    {
-      value: "Secondary",
-      label: `${t("source_secondary")}`,
-    },
+    // {
+    //   value: "Secondary",
+    //   label: `${t("source_secondary")}`,
+    // },
     {
       value: "Property Finder",
       label: `${t("source_property_finder")}`,

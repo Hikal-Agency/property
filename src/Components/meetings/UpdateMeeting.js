@@ -9,7 +9,7 @@ import {
   MenuItem,
   Box,
 } from "@mui/material";
-
+import Select from "react-select";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import React, { useState, useEffect } from "react";
@@ -24,6 +24,7 @@ import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import { MdAccessTime } from "react-icons/md";
 import moment from "moment";
 import { MdClose } from "react-icons/md";
+import { selectStyles } from "../_elements/SelectStyles";
 
 const UpdateMeeting = ({
   meetingModalOpen,
@@ -44,6 +45,7 @@ const UpdateMeeting = ({
     t,
     isLangRTL,
     i18n,
+    primaryColor
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(
@@ -235,12 +237,6 @@ const UpdateMeeting = ({
           timeout: 500,
         }}
       >
-        {/* <div
-          style={style}
-          className={`w-[calc(100%-20px)] md:w-[50%]  ${
-            currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-          } absolute top-1/2 left-1/2 p-4 rounded-md`}
-        > */}
         <div
           className={`${
             isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
@@ -295,174 +291,199 @@ const UpdateMeeting = ({
                 update();
               }}
             >
-              <div className="grid sm:grid-cols-1 gap-5 px-4 pt-4">
-                <div className="flex flex-col justify-center items-center gap-8">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      value={meetingDateValue}
-                      label={t("label_meeting_date")}
-                      views={["year", "month", "day"]}
-                      onChange={(newValue) => {
-                        setMeetingDateValue(newValue);
-                        const formattedDate = moment(newValue?.$d).format(
-                          "YYYY-MM-DD"
-                        );
-                        setMeetingDate(formattedDate);
-                      }}
-                      format="yyyy-MM-dd"
-                      renderInput={(params) => (
-                        <TextField
-                          sx={{
-                            "& input": {
-                              color: currentMode === "dark" ? "white" : "black",
-                            },
-                            "& .MuiSvgIcon-root": {
-                              color: currentMode === "dark" ? "white" : "black",
-                            },
-                          }}
-                          fullWidth
-                          size="small"
-                          label={t("label_meeting_date")}
-                          {...params}
-                          onKeyDown={(e) => e.preventDefault()}
-                          readOnly={true}
-                        />
-                      )}
-                      minDate={dayjs().startOf("day").toDate()}
-                    />
-                  </LocalizationProvider>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <MobileTimePicker
-                      // ampm={false}
-                      format="hh:mm A"
-                      value={meetingTimeValue}
-                      onChange={(newValue) => {
-                        setMeetingTime(
-                          formatNum(newValue?.$d?.getHours()) +
-                            ":" +
-                            formatNum(newValue?.$d?.getMinutes())
-                        );
-                        setMeetingTimeValue(newValue);
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          fullWidth
-                          label={t("label_meeting_time")}
-                          size="small"
-                          sx={{
-                            "& .MuiFormLabel-root": {
-                              background:
-                                currentMode === "dark" ? "#111827" : "",
-                              color: currentMode === "dark" ? "white" : "",
-                            },
-                            "& input": {
-                              color: currentMode === "dark" ? "white" : "black",
-                            },
-                            "& .MuiSvgIcon-root": {
-                              color: currentMode === "dark" ? "white" : "black",
-                            },
-                            "&": {
-                              borderRadius: "4px",
-                              border:
-                                currentMode === "dark" ? "1px solid white" : "",
-                            },
-                            "&:focus": {
-                              border: "",
-                            },
-                          }}
-                          onKeyDown={(e) => e.preventDefault()}
-                          readOnly={true}
-                          InputProps={{
-                            endAdornment: (
-                              <IconButton>
-                                {currentMode === "dark" ? (
-                                  <MdAccessTime color={"#ffffff"} />
-                                ) : (
-                                  <MdAccessTime color={"#000000"} />
-                                )}
-                              </IconButton>
-                            ),
-                          }}
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                  <FormControl fullWidth>
-                    <TextField
-                      sx={SelectStyles}
-                      select
-                      size="small"
-                      labelId="meeting-status"
-                      label={t("label_meeting_status")}
-                      value={meetingStatus}
-                      onChange={(e) => {
-                        setMeetingStatus(e.target.value);
-                      }}
-                    >
-                      <MenuItem value={"Pending"}>
-                        {t("status_pending")}
-                      </MenuItem>
-                      <MenuItem value={"Postponed"}>
-                        {t("status_postponed")}
-                      </MenuItem>
-                      <MenuItem value={"Attended"}>
-                        {t("status_attended")}
-                      </MenuItem>
-                      <MenuItem value={"Cancelled"}>
-                        {t("status_cancelled")}
-                      </MenuItem>
-                    </TextField>
-                  </FormControl>
-                  <Box sx={darkModeColors} className="w-full">
-                    <FormControl fullWidth>
-                      <TextField
-                        id="text"
-                        type={"text"}
-                        label={t("label_meeting_notes")}
-                        size="small"
-                        className="w-full"
-                        variant="outlined"
-                        sx={{
-                          "& input": {
-                            fontFamily: isArabic(meetingNotes)
-                              ? "Noto Kufi Arabic"
-                              : "inherit",
-                          },
+              <div className="w-full px-4 pt-4">
+                <Box sx={darkModeColors}>
+                <div className="flex flex-col justify-center items-center">
+                    {/* DATE  */}
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        value={meetingDateValue}
+                        label={t("label_meeting_date")}
+                        views={["year", "month", "day"]}
+                        onChange={(newValue) => {
+                          setMeetingDateValue(newValue);
+                          const formattedDate = moment(newValue?.$d).format(
+                            "YYYY-MM-DD"
+                          );
+                          setMeetingDate(formattedDate);
                         }}
-                        name="text"
-                        value={meetingNotes}
-                        onChange={(e) => {
-                          setMeetingNotes(e.target.value);
-                        }}
-                        required
+                        format="yyyy-MM-dd"
+                        renderInput={(params) => (
+                          <TextField
+                            sx={{
+                              "& input": {
+                                color: currentMode === "dark" ? "white" : "black",
+                              },
+                              "& .MuiSvgIcon-root": {
+                                color: currentMode === "dark" ? "white" : "black",
+                              },
+                              marginBottom: "20px"
+                            }}
+                            fullWidth
+                            size="small"
+                            label={t("label_meeting_date")}
+                            {...params}
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                          />
+                        )}
+                        minDate={dayjs().startOf("day").toDate()}
                       />
-                    </FormControl>
-                  </Box>
-                  {meetingLocation.lat && meetingLocation.lng && (
-                    <LocationPicker
-                      meetingLocation={meetingLocation}
-                      setMeetingLocation={setMeetingLocation}
+                    </LocalizationProvider>
+                    {/* TIME  */}
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <MobileTimePicker
+                        // ampm={false}
+                        format="hh:mm A"
+                        value={meetingTimeValue}
+                        onChange={(newValue) => {
+                          setMeetingTime(
+                            formatNum(newValue?.$d?.getHours()) +
+                              ":" +
+                              formatNum(newValue?.$d?.getMinutes())
+                          );
+                          setMeetingTimeValue(newValue);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            fullWidth
+                            label={t("label_meeting_time")}
+                            size="small"
+                            sx={{
+                              // "& .MuiFormLabel-root": {
+                              //   background:
+                              //     currentMode === "dark" ? "#111827" : "",
+                              //   color: currentMode === "dark" ? "white" : "",
+                              // },
+                              "& input": {
+                                color: currentMode === "dark" ? "white" : "black",
+                              },
+                              "& .MuiSvgIcon-root": {
+                                color: currentMode === "dark" ? "white" : "black",
+                              },
+                              // "&": {
+                              //   borderRadius: "4px",
+                              //   border:
+                              //     currentMode === "dark" ? "1px solid white" : "",
+                              // },
+                              "&:focus": {
+                                border: "",
+                              },
+                              marginBottom: "20px"
+                            }}
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                            InputProps={{
+                              endAdornment: (
+                                <IconButton>
+                                  {currentMode === "dark" ? (
+                                    <MdAccessTime color={"#ffffff"} />
+                                  ) : (
+                                    <MdAccessTime color={"#000000"} />
+                                  )}
+                                </IconButton>
+                              ),
+                            }}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                    {/* STATUS  */}
+                    <Select
+                      id="meeting-status"
+                      value={{ value: meetingStatus, label: t(`status_${meetingStatus.toLowerCase()}`) }}
+                      onChange={(selectedOption) => {
+                        setMeetingStatus(selectedOption.value);
+                      }}
+                      options={[
+                        { value: 'Pending', label: t('status_pending') },
+                        { value: 'Postponed', label: t('status_postponed') },
+                        { value: 'Attended', label: t('status_attended') },
+                        { value: 'Cancelled', label: t('status_cancelled') },
+                      ]}
+                      isSearchable={false}
+                      className="w-full"
+                      menuPortalTarget={document.body}
+                      styles={selectStyles(currentMode, primaryColor)}
                     />
-                  )}
-                </div>
+                    {/* <FormControl fullWidth>
+                      <TextField
+                        sx={SelectStyles}
+                        select
+                        size="small"
+                        labelId="meeting-status"
+                        label={t("label_meeting_status")}
+                        value={meetingStatus}
+                        onChange={(e) => {
+                          setMeetingStatus(e.target.value);
+                        }}
+                      >
+                        <MenuItem value={"Pending"}>
+                          {t("status_pending")}
+                        </MenuItem>
+                        <MenuItem value={"Postponed"}>
+                          {t("status_postponed")}
+                        </MenuItem>
+                        <MenuItem value={"Attended"}>
+                          {t("status_attended")}
+                        </MenuItem>
+                        <MenuItem value={"Cancelled"}>
+                          {t("status_cancelled")}
+                        </MenuItem>
+                      </TextField>
+                    </FormControl> */}
+
+                    {/* NOTES  */}
+                    <TextField
+                      id="text"
+                      type={"text"}
+                      label={t("label_meeting_notes")}
+                      size="small"
+                      className="w-full"
+                      variant="outlined"
+                      sx={{
+                        "& input": {
+                          fontFamily: isArabic(meetingNotes)
+                            ? "Noto Kufi Arabic"
+                            : "inherit",
+                        },
+                        marginBottom: "20px"
+                      }}
+                      name="text"
+                      value={meetingNotes}
+                      onChange={(e) => {
+                        setMeetingNotes(e.target.value);
+                      }}
+                      required
+                    />
+                    {meetingLocation.lat && meetingLocation.lng && (
+                      <LocationPicker
+                        meetingLocation={meetingLocation}
+                        setMeetingLocation={setMeetingLocation}
+                      />
+                    )}
+                  </div>
+                </Box>
               </div>
 
-              <Button
-                className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
-                ripple={true}
-                size="lg"
-                type="submit"
-                disabled={btnloading ? true : false}
-              >
-                {btnloading ? (
-                  <div className="flex items-center justify-center space-x-1">
-                    <CircularProgress size={18} sx={{ color: "white" }} />
-                  </div>
-                ) : (
-                  <span> {t("btn_update_meeting")}</span>
-                )}
-              </Button>
+              <div className="p-4">
+                <Button
+                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
+                  ripple={true}
+                  size="lg"
+                  type="submit"
+                  disabled={btnloading ? true : false}
+                >
+                  {btnloading ? (
+                    <div className="flex items-center justify-center space-x-1">
+                      <CircularProgress size={18} sx={{ color: "white" }} />
+                    </div>
+                  ) : (
+                    <span> {t("btn_update_meeting")}</span>
+                  )}
+                </Button>
+              </div>
             </form>
           </div>
         </div>

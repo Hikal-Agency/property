@@ -62,6 +62,7 @@
     "menu_verified": "Verified",
     "menu_invalid": "Invalid",
     "menu_reshuffled": "Reshuffled",
+    "menu_reshuffled_request": "Reshuffle Requests",
     "menu_not_checked": "Not Checked",
     "menu_cold": "Cold",
     "menu_archived": "Archived",
@@ -188,7 +189,7 @@
     "instance": "Instance",
     "purchase": "Purchase",
     "category_secondary": "Secondary",
-    "source_secondary": "Seconary",
+    "source_secondary": "Secondary",
     "source_personal": "Personal",
     "label_beds": "Beds",
     "label_property_price": "Property Price",
@@ -806,7 +807,11 @@
     "source_telegram": "Telegram",
     "source_wechat": "WeChat",
     "source_twitter": "Twitter",
-    "update_booked_deal": "Update Booked Deal"
+    "update_booked_deal": "Update Booked Deal",
+
+    "documents": "Documents",
+    "origin_liveleads": "Live Call Leads",
+    "sold": "Sold"
     
 
 }

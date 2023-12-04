@@ -4,10 +4,10 @@ import { useStateContext } from "../../context/ContextProvider";
 
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
+import { Box, Tab, Tabs } from "@mui/material";
 import TransferTabs from "./TransferTabs";
-import { Box } from "@mui/material";
 
-const TransferredLeads = (props) => {
+const TransferRequest = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setloading] = useState(true);
@@ -17,8 +17,8 @@ const TransferredLeads = (props) => {
     setopenBackDrop,
     BACKEND_URL,
     t,
-    themeBgImg,
     darkModeColors,
+    themeBgImg,
   } = useStateContext();
 
   const leadTypes = [
@@ -58,6 +58,9 @@ const TransferredLeads = (props) => {
     setValue(newValue);
   };
 
+  //   const lead_type2 = location.pathname.split("/")[2];
+  //   var lead_type = lead_type2.replace(/%20/g, " ");
+
   useEffect(() => {
     setopenBackDrop(false);
     setloading(false);
@@ -81,7 +84,7 @@ const TransferredLeads = (props) => {
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                {`${t("reshuffled")} ${t("leads")}`}{" "}
+                {`${t("menu_reshuffled_request")} `}{" "}
                 <span className="capitalize">({t("feedback_" + value)})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
@@ -104,7 +107,7 @@ const TransferredLeads = (props) => {
                       zIndex: "1",
                     },
                   }}
-                  className={`w-full mb-4 rounded-md overflow-hidden ${
+                  className={`w-full rounded-md overflow-hidden ${
                     !themeBgImg
                       ? currentMode === "dark"
                         ? "bg-[#1C1C1C]"
@@ -124,6 +127,7 @@ const TransferredLeads = (props) => {
               </div>
             </div>
             {/* TABS END */}
+
             <AllLeads
               BACKEND_URL={BACKEND_URL}
               lead_origin={value}
@@ -135,6 +139,11 @@ const TransferredLeads = (props) => {
       </div>
     </>
   );
+
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return <div>{value === index && <div>{children}</div>}</div>;
+  }
 };
 
-export default TransferredLeads;
+export default TransferRequest;

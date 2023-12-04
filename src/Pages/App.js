@@ -76,6 +76,7 @@ import Buyers from "./listingsUsers/buyers";
 import AllLiveLeads from "./liveleads";
 import MeetInvite from "./MeetInvite";
 import Snapchat from "./SocialMedia/snapchat";
+import TransferRequest from "./transfferedleads/TransferRequest";
 
 const libraries = ["places"];
 
@@ -177,9 +178,14 @@ const routes = [
     pageName: "Blocked IPs",
   },
   {
-    path: "/reshuffleleads/:lead_type",
+    path: "/reshuffleleads",
     element: <TransferredLeads />,
     pageName: "Transferred Leads",
+  },
+  {
+    path: "/reshuffleRequest",
+    element: <TransferRequest />,
+    pageName: "Transferred Leads Request",
   },
   {
     path: "/closedeals",
@@ -315,9 +321,9 @@ const routes = [
     element: <UpdateUser />,
   },
   {
-    path: "/snapchat", 
-    pageName: "Snapchat", 
-    element: <Snapchat/>, 
+    path: "/snapchat",
+    pageName: "Snapchat",
+    element: <Snapchat />,
   },
   {
     path: "/users",

@@ -956,57 +956,57 @@ const Sidebarmui = () => {
           name: t("menu_reshuffled"),
           icon: <BsShuffle size={16} />,
           pro: false,
-          // link: "/reshuffleleads",
-          submenu: [
-            {
-              name: t("feedback_all"),
-              pro: false,
-              count: sidebarData?.ReshuffleLeadsCount?.all,
-              link: "/reshuffleleads/all",
-            },
-            {
-              name: t("feedback_new"),
-              pro: false,
-              count: sidebarData?.ReshuffleLeadsCount?.new,
-              link: "/reshuffleleads/new",
-            },
-            {
-              name: t("feedback_follow_up"),
-              pro: false,
-              count: sidebarData?.ReshuffleLeadsCount?.follow_up,
-              link: "/reshuffleleads/follow up",
-            },
-            {
-              name: t("feedback_meeting"),
-              pro: false,
-              count: sidebarData?.ReshuffleLeadsCount?.Meeting,
-              link: "/reshuffleleads/meeting",
-            },
-            {
-              name: t("feedback_low_budget"),
-              pro: false,
-              count: sidebarData?.ReshuffleLeadsCount?.low_budget,
-              link: "/reshuffleleads/low budget",
-            },
-            {
-              name: t("feedback_no_answer"),
-              pro: false,
-              count: sidebarData?.ReshuffleLeadsCount?.no_answer,
-              link: "/reshuffleleads/no answer",
-            },
-            {
-              name: t("feedback_not_interested"),
-              pro: false,
-              count: sidebarData?.ReshuffleLeadsCount?.not_interested,
-              link: "/reshuffleleads/not interested",
-            },
-            {
-              name: t("feedback_unreachable"),
-              pro: false,
-              count: sidebarData?.ReshuffleLeadsCount?.unreachable,
-              link: "/reshuffleleads/unreachable",
-            },
-          ],
+          link: "/reshuffleleads",
+          // submenu: [
+          //   {
+          //     name: t("feedback_all"),
+          //     pro: false,
+          //     count: sidebarData?.ReshuffleLeadsCount?.all,
+          //     link: "/reshuffleleads/all",
+          //   },
+          //   {
+          //     name: t("feedback_new"),
+          //     pro: false,
+          //     count: sidebarData?.ReshuffleLeadsCount?.new,
+          //     link: "/reshuffleleads/new",
+          //   },
+          //   {
+          //     name: t("feedback_follow_up"),
+          //     pro: false,
+          //     count: sidebarData?.ReshuffleLeadsCount?.follow_up,
+          //     link: "/reshuffleleads/follow up",
+          //   },
+          //   {
+          //     name: t("feedback_meeting"),
+          //     pro: false,
+          //     count: sidebarData?.ReshuffleLeadsCount?.Meeting,
+          //     link: "/reshuffleleads/meeting",
+          //   },
+          //   {
+          //     name: t("feedback_low_budget"),
+          //     pro: false,
+          //     count: sidebarData?.ReshuffleLeadsCount?.low_budget,
+          //     link: "/reshuffleleads/low budget",
+          //   },
+          //   {
+          //     name: t("feedback_no_answer"),
+          //     pro: false,
+          //     count: sidebarData?.ReshuffleLeadsCount?.no_answer,
+          //     link: "/reshuffleleads/no answer",
+          //   },
+          //   {
+          //     name: t("feedback_not_interested"),
+          //     pro: false,
+          //     count: sidebarData?.ReshuffleLeadsCount?.not_interested,
+          //     link: "/reshuffleleads/not interested",
+          //   },
+          //   {
+          //     name: t("feedback_unreachable"),
+          //     pro: false,
+          //     count: sidebarData?.ReshuffleLeadsCount?.unreachable,
+          //     link: "/reshuffleleads/unreachable",
+          //   },
+          // ],
         },
         // ARCHIVED
         {
@@ -1262,6 +1262,11 @@ const Sidebarmui = () => {
           icon: <BsDashCircle size={16} />,
           pro: true,
           link: "/blocked",
+        },
+        {
+          name: t("menu_reshuffled_request"),
+          icon: <BsShuffle size={16} />,
+          link: "/reshuffleRequest",
         },
         // REPORTS
         {

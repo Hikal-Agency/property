@@ -1,3 +1,4 @@
+// SELECT WITHOUT BG 
 export const selectStyles = (currentMode, primaryColor) => ({
     control: provided => ({
         ...provided,
@@ -41,9 +42,9 @@ export const selectStyles = (currentMode, primaryColor) => ({
     menuList: provided => ({
         ...provided,
         "&::-webkit-scrollbar": {
-            width: "0 !important",
+            width: "2px !important",
         },
-        scrollbarWidth: "none",
+        scrollbarWidth: "2px",
     }),
     option: (provided, state) => ({
         ...provided,
@@ -75,6 +76,7 @@ export const selectStyles = (currentMode, primaryColor) => ({
     }),
 });
 
+// SELECT WITH BG 
 export const selectBgStyles = (currentMode, primaryColor, blurDarkColor, blurLightColor) => ({
     control: provided => ({
         ...provided,
@@ -118,9 +120,9 @@ export const selectBgStyles = (currentMode, primaryColor, blurDarkColor, blurLig
     menuList: provided => ({
         ...provided,
         "&::-webkit-scrollbar": {
-            width: "0 !important",
+            width: "2px !important",
         },
-        scrollbarWidth: "none",
+        scrollbarWidth: "2px",
     }),
     option: (provided, state) => ({
         ...provided,
@@ -152,6 +154,7 @@ export const selectBgStyles = (currentMode, primaryColor, blurDarkColor, blurLig
     }),
 });
 
+// PAGINATION 
 export const pageStyles = (currentMode, primaryColor) => ({
     control: provided => ({
         ...provided,
@@ -230,6 +233,7 @@ export const pageStyles = (currentMode, primaryColor) => ({
     }),
 });
 
+// DATAGRID  
 export const renderStyles = (currentMode, primaryColor) => ({
     control: provided => ({
         ...provided,
@@ -281,10 +285,9 @@ export const renderStyles = (currentMode, primaryColor) => ({
     menuList: provided => ({
         ...provided,
         "&::-webkit-scrollbar": {
-            width: "0 !important",
+            width: "2px !important",
         },
-        scrollbarWidth: "none",
-        width: "auto"
+        scrollbarWidth: "2px",
     }),
     option: (provided, state) => ({
         ...provided,

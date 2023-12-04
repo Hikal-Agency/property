@@ -36,7 +36,11 @@ import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
 import AddMeetLink from "../liveleads/AddMeetLink";
 import Timeline from "../../Pages/timeline";
-import { pageStyles, selectBgStyles, selectStyles } from "../_elements/SelectStyles";
+import {
+  pageStyles,
+  selectBgStyles,
+  selectStyles,
+} from "../_elements/SelectStyles";
 import { feedback_options } from "../_elements/SelectOptions";
 
 import {
@@ -92,7 +96,12 @@ const bulkUpdateBtnStyles = {
   fontWeight: "500",
 };
 
-const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
+const AllLeads = ({
+  lead_type,
+  lead_origin,
+  leadCategory,
+  transferRequest,
+}) => {
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState({});
   const [deleteloading, setdeleteloading] = useState(false);
@@ -139,9 +148,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     darkModeColors,
     primaryColor,
     t,
-    isLangRTL, i18n,
+    isLangRTL,
+    i18n,
     blurDarkColor,
-    blurLightColor
+    blurLightColor,
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -397,7 +407,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
-        <RenderManagers className="renderDD" cellValues={cellValues} lead_origin={lead_origin} />
+        <RenderManagers
+          className="renderDD"
+          cellValues={cellValues}
+          lead_origin={lead_origin}
+        />
       ),
     },
     {
@@ -408,7 +422,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
-        <RenderSalesperson className="renderDD" cellValues={cellValues} lead_origin={lead_origin} />
+        <RenderSalesperson
+          className="renderDD"
+          cellValues={cellValues}
+          lead_origin={lead_origin}
+        />
       ),
     },
     {
@@ -418,7 +436,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       minWidth: 100,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderFeedback className="renderDD" cellValues={cellValues}  />,
+      renderCell: (cellValues) => (
+        <RenderFeedback className="renderDD" cellValues={cellValues} />
+      ),
       // onFeedbackClick={handleFeedbackClick}
     },
     {
@@ -428,7 +448,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       headerAlign: "center",
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderPriority className="renderDD" cellValues={cellValues} />,
+      renderCell: (cellValues) => (
+        <RenderPriority className="renderDD" cellValues={cellValues} />
+      ),
     },
     {
       field: "otp",
@@ -725,6 +747,11 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
       FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
         pageState.page
       }&perpage=${pageState.perpage || 14}&coldCall=5`;
+      if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=5&leadStatus=Transferred`;
+      }
     }
 
     // LEADS URL GENERATON FOR FRESH LEADS SECTION
@@ -763,6 +790,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Unreachable`;
+      } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&leadStatus=Transferred`;
       }
     }
     // LEADS URL GENERATON FOR COLD LEADS PAGE
@@ -813,6 +844,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Unreachable`;
+      } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=1&leadStatus=Transferred`;
       }
     }
     // LEADS URL GENERATON FOR THIRD PARTY LEADS PAGE
@@ -851,6 +886,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Unreachable`;
+      } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=3&leadStatus=Transferred`;
       }
     }
     // LEADS URL GENERATON FOR PERSONAL LEADS PAGE
@@ -889,6 +928,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Unreachable`;
+      } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=2&leadStatus=Transferred`;
       }
     }
     // LEADS URL GENERATON FOR ARCHIVED LEADS PAGE
@@ -927,6 +970,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Unreachable`;
+      } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=4&leadStatus=Transferred`;
       }
     }
 
@@ -1015,6 +1062,10 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Unreachable`;
+      } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&leadStatus=Transferred`;
       }
     }
 
@@ -1367,14 +1418,14 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     "assignedToManager",
     "assignedToSales",
     "feedback",
-    "priority"
+    "priority",
   ];
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
-    // if (event && 
+    // if (event &&
     //   event.target &&
-    //   event.target.className && 
+    //   event.target.className &&
     //   (event.target.className.includes("renderDD") ||
     //   event.target.closest(".renderDD"))
     // ) {
@@ -1382,16 +1433,16 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
     //     console.log("RENDER");
     //   }
     // }
-    // else { 
-      if (
-        !event.target.closest(".reminderBtn") &&
-        !event.target.closest(".timelineBtn") &&
-        !event.target.closest(".renderDD")
-      ) {
-        console.log("Single lead clicked::::::: ", params.row);
-        setsingleLeadData(params.row);
-        handleLeadModelOpen();
-      }
+    // else {
+    if (
+      !event.target.closest(".reminderBtn") &&
+      !event.target.closest(".timelineBtn") &&
+      !event.target.closest(".renderDD")
+    ) {
+      console.log("Single lead clicked::::::: ", params.row);
+      setsingleLeadData(params.row);
+      handleLeadModelOpen();
+    }
     // }
     // console.log("Single lead clicked::::::: ", params.row);
     // setsingleLeadData(params.row);
@@ -1714,7 +1765,7 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           <p className="mr-3">{t("rows_per_page")}</p>
 
-          <Select 
+          <Select
             id="select-page-size-label"
             value={{ label: pageState.pageSize, value: pageState.pageSize }}
             onChange={handleRangeChange}
@@ -1842,7 +1893,8 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
   return (
     <>
       <div className="pb-10 mb-10">
-        {(lead_origin === "coldleads" || (lead_origin==="unassigned" && lead_type=== "coldleads")) && (
+        {(lead_origin === "coldleads" ||
+          (lead_origin === "unassigned" && lead_type === "coldleads")) && (
           <ColdcallFiles
             pageState={pageState}
             setpageState={setpageState}
@@ -1877,16 +1929,18 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     maxWidth: "200px",
                   }}
                 >
-                  <Select 
+                  <Select
                     id="un-feedback"
                     options={[
                       {
                         value: "All",
                         label: `${t("all")} ${" "} ${t("label_feedback")}`,
                       },
-                      ...feedback_options(t)
-                    ]} 
-                    value={feedback_options(t).find(option => option.value === unassignedFeedback)}
+                      ...feedback_options(t),
+                    ]}
+                    value={feedback_options(t).find(
+                      (option) => option.value === unassignedFeedback
+                    )}
                     // value={unassignedFeedback}
                     onChange={(event) => {
                       setUnassignedFeedback(event.value);
@@ -1894,7 +1948,12 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
                     placeholder={t("label_feedback")}
                     className={`w-full`}
                     menuPortalTarget={document.body}
-                    styles={selectBgStyles(currentMode, primaryColor, blurDarkColor, blurLightColor)}
+                    styles={selectBgStyles(
+                      currentMode,
+                      primaryColor,
+                      blurDarkColor,
+                      blurLightColor
+                    )}
                   />
                   {/* <FormControl fullWidth>
                     <InputLabel>{t("label_feedback")}</InputLabel>
@@ -2010,7 +2069,9 @@ const AllLeads = ({ lead_type, lead_origin, leadCategory }) => {
 
           <div
             style={{ zIndex: "5 !important" }}
-            className={`absolute top-[7px] ${isLangRTL(i18n.language) ? 'left-[10px]' : 'right-[10px]'} z-[2]`}
+            className={`absolute top-[7px] ${
+              isLangRTL(i18n.language) ? "left-[10px]" : "right-[10px]"
+            } z-[2]`}
           >
             <TextField
               placeholder={t("search")}

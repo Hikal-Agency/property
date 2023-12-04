@@ -64,6 +64,7 @@ const SingleListingsModal = ({
     isLangRTL,
     i18n,
     User,
+    t
   } = useStateContext();
 
   const handleEdit = () => {
@@ -207,6 +208,8 @@ const SingleListingsModal = ({
               currentMode === "dark"
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
+            } ${
+              currentMode === "dark" && (isLangRTL(i18n.language) ? "border-primary border-r-2" : "border-primary border-l-2")
             }
               p-4 h-[100vh] w-[80vw] overflow-y-scroll
               `}
@@ -243,18 +246,16 @@ const SingleListingsModal = ({
                     </div>
 
                     <div
-                      className={`${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#EEEEEE]"
-                      } rounded-xl w-full p-4`}
+                      className={`w-full py-5`}
                     >
                       <div className="grid sm:grid-cols-1 md:grid-cols-2">
                         <div className="w-full p-1">
                           <div className="flex items-center">
-                            <div className="bg-primary rounded-lg text-white p-2 mr-2 font-semibold">
+                            <div className={`bg-primary rounded-md text-white p-2 ${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} font-semibold`}>
                               {listData?.price}
                             </div>
                             <h1
-                              className={`text-lg font-bold mr-2 ${
+                              className={`text-lg font-bold mx-2 ${
                                 currentMode === "dark"
                                   ? "text-white"
                                   : "text-black"
@@ -270,7 +271,7 @@ const SingleListingsModal = ({
                           </div>
                         </div>
                         <div className="w-full p-1">
-                          <div className="flex items-center gap-1 justify-end">
+                          <div className="flex items-center gap-2 justify-end">
                             {/* EDIT DETAILS  */}
                             <Tooltip title="Edit Listing Details" arrow>
                               <IconButton
@@ -314,7 +315,11 @@ const SingleListingsModal = ({
                             <div className="mx-1"></div>
 
                             <div className="border border-primary p-2 font-semibold rounded-md shadow-sm">
-                              {listData?.listing_type}
+                              {listData?.listing_type === "Off-plan" 
+                              ? t("category_off_plan") 
+                              : listData?.listing_type === "Secondary"
+                              ? t("category_secondary")
+                              : listData?.listing_type}
                             </div>
                           </div>
                         </div>
@@ -322,26 +327,26 @@ const SingleListingsModal = ({
                       <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
                         <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
                           {/* ADDRESS  */}
-                          <div className="flex space-x-3">
+                          <div className="flex gap-3">
                             <TbCurrentLocation
                               size={18}
-                              className={`mr-2 ${
+                              className={
                                 currentMode === "dark"
                                   ? "text-[#EEEEEE]"
                                   : "text-[#333333]"
-                              }`}
+                              }
                             />
                             <h6>{listData?.address} </h6>
                           </div>
                           {/* Bedrooms  */}
-                          <div className="flex space-x-3">
+                          <div className="flex gap-3">
                             <BiBed
                               size={18}
-                              className={`mr-2 ${
+                              className={
                                 currentMode === "dark"
                                   ? "text-[#EEEEEE]"
                                   : "text-[#333333]"
-                              }`}
+                              }
                             />
                             <h6>{listData?.bedrooms}</h6>
                             <h6>
@@ -351,14 +356,14 @@ const SingleListingsModal = ({
                             </h6>
                           </div>
                           {/* baths  */}
-                          <div className="flex space-x-3">
+                          <div className="flex gap-3">
                             <BiBath
                               size={18}
-                              className={`mr-2 ${
+                              className={
                                 currentMode === "dark"
                                   ? "text-[#EEEEEE]"
                                   : "text-[#333333]"
-                              }`}
+                              }
                             />
                             <h6>
                               {listData?.bathrooms === "null"
@@ -391,7 +396,7 @@ const SingleListingsModal = ({
                                       ? "#EEEEEE"
                                       : "#333333"
                                   }`}
-                                  className="mr-2"
+                                  className="mx-2"
                                 />
                                 {listData?.addedBy_name}
                               </p>
@@ -406,7 +411,7 @@ const SingleListingsModal = ({
                     {listData?.latlong === null || listData?.latlong === "" ? (
                       <></>
                     ) : (
-                      <div className="w-full my-5 h-[50vh] border border-primary">
+                      <div className="w-full h-[50vh] border border-primary">
                         {!load?.isLoaded ? (
                           <div>Your map is loading...</div>
                         ) : (
@@ -445,17 +450,76 @@ const SingleListingsModal = ({
                       hasPermission("seller_details") ||
                       User.role === 1) && (
                       <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#000000]"
-                            : "bg-[#EEEEEE]"
-                        } rounded-xl w-full p-4`}
+                        className={`w-full py-5`}
                       >
-                        <div className="w-full">
-                          <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
-                            <div className="sm:col-span-1 md:col-span-3 lg:col-span-2">
+                        <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
+                          <div className="sm:col-span-1 md:col-span-3 lg:col-span-2">
+                            <div className="w-full flex items-center pb-3">
+                              <div className={`bg-primary h-10 w-1 rounded-full ${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} my-1`}></div>
+                              <h1
+                                className={`text-lg font-semibold ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-black"
+                                }`}
+                              >
+                                {t("label_seller_details")}
+                              </h1>
+                            </div>
+
+                            <div className="space-y-3">
+                              {/* SELLER NAME  */}
+                              <div className="flex gap-3">
+                                <TbUserCircle
+                                  size={18}
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-[#EEEEEE]"
+                                      : "text-[#333333]"
+                                  }
+                                />
+                                <h6>{listData?.seller_name}</h6>
+                              </div>
+                              {/* SELLER CONTACT  */}
+                              <div className="flex gap-3">
+                                <TbPhone
+                                  size={18}
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-[#EEEEEE]"
+                                      : "text-[#333333]"
+                                  }
+                                />
+                                <h6>{listData?.seller_contact}</h6>
+                              </div>
+                              {/* SELLER EMAIL  */}
+                              <div className="flex gap-3">
+                                <TbMail
+                                  size={18}
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-[#EEEEEE]"
+                                      : "text-[#333333]"
+                                  }
+                                />
+                                <h6>
+                                  {listData?.seller_email === "null"
+                                    ? ""
+                                    : listData?.seller_email}
+                                </h6>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
+                            <div
+                              className={`${
+                                currentMode === "dark"
+                                  ? "bg-[#000000]"
+                                  : "bg-[#EEEEEE]"
+                              } rounded-xl shadow-sm p-4`}
+                            >
                               <div className="w-full flex items-center pb-3">
-                                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                                <div className={`bg-primary h-10 w-1 rounded-full ${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} my-1`}></div>
                                 <h1
                                   className={`text-lg font-semibold ${
                                     currentMode === "dark"
@@ -463,135 +527,70 @@ const SingleListingsModal = ({
                                       : "text-black"
                                   }`}
                                 >
-                                  Seller details
+                                  {t("documents")}
                                 </h1>
                               </div>
 
-                              <div className="space-y-3">
-                                {/* SELLER NAME  */}
-                                <div className="flex space-x-3">
-                                  <TbUserCircle
-                                    size={18}
-                                    className={`mr-2 ${
-                                      currentMode === "dark"
-                                        ? "text-[#EEEEEE]"
-                                        : "text-[#333333]"
-                                    }`}
-                                  />
-                                  <h6>{listData?.seller_name}</h6>
-                                </div>
-                                {/* SELLER CONTACT  */}
-                                <div className="flex space-x-3">
-                                  <TbPhone
-                                    size={18}
-                                    className={`mr-2 ${
-                                      currentMode === "dark"
-                                        ? "text-[#EEEEEE]"
-                                        : "text-[#333333]"
-                                    }`}
-                                  />
-                                  <h6>{listData?.seller_contact}</h6>
-                                </div>
-                                {/* SELLER EMAIL  */}
-                                <div className="flex space-x-3">
-                                  <TbMail
-                                    size={18}
-                                    className={`mr-2 ${
-                                      currentMode === "dark"
-                                        ? "text-[#EEEEEE]"
-                                        : "text-[#333333]"
-                                    }`}
-                                  />
-                                  <h6>
-                                    {listData?.seller_email === "null"
-                                      ? ""
-                                      : listData?.seller_email}
-                                  </h6>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
-                              <div
-                                className={`${
-                                  currentMode === "dark"
-                                    ? "bg-[#1C1C1C]"
-                                    : "bg-[#FFFFFF]"
-                                } rounded-xl shadow-sm p-4`}
-                              >
-                                <div className="w-full flex items-center pb-3">
-                                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                                  <h1
-                                    className={`text-lg font-semibold ${
-                                      currentMode === "dark"
-                                        ? "text-white"
-                                        : "text-black"
-                                    }`}
-                                  >
-                                    Essential Document
-                                  </h1>
-                                </div>
-
-                                <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                                  {listData?.documents?.map((l) => {
-                                    return l?.doc_url ? (
-                                      // <div
-                                      //   onClick={() =>
-                                      //     setSingleDocModal({
-                                      //       isOpen: true,
-                                      //       url: l?.doc_url,
-                                      //       id: l?.id,
-                                      //     })
-                                      //   }
-                                      //   className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                      //   // hover:rounded-full hover:shadow-lg
-                                      // >
-                                      //   <div className="w-full text-center ">
-                                      //     <div className="w-full flex justify-center">
-                                      //       <BsFileEarmarkText
-                                      //         size={70}
-                                      //         color={"#AAAAAA"}
-                                      //         className="hover:-mt-1 hover:mb-1"
-                                      //       />
-                                      //     </div>
-                                      //     <div className="my-3">
-                                      //       {l?.doc_name}
-                                      //     </div>
-                                      //   </div>
-                                      // </div>
-                                      <div
-                                        onClick={() => {
-                                          window.open(l?.doc_url, "_blank");
-                                        }}
-                                        className="p-2 flex items-center justify-center hover:cursor-pointer"
+                              <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
+                                {listData?.documents?.map((l) => {
+                                  return l?.doc_url ? (
+                                    // <div
+                                    //   onClick={() =>
+                                    //     setSingleDocModal({
+                                    //       isOpen: true,
+                                    //       url: l?.doc_url,
+                                    //       id: l?.id,
+                                    //     })
+                                    //   }
+                                    //   className="p-2 flex items-center justify-center hover:cursor-pointer"
+                                    //   // hover:rounded-full hover:shadow-lg
+                                    // >
+                                    //   <div className="w-full text-center ">
+                                    //     <div className="w-full flex justify-center">
+                                    //       <BsFileEarmarkText
+                                    //         size={70}
+                                    //         color={"#AAAAAA"}
+                                    //         className="hover:-mt-1 hover:mb-1"
+                                    //       />
+                                    //     </div>
+                                    //     <div className="my-3">
+                                    //       {l?.doc_name}
+                                    //     </div>
+                                    //   </div>
+                                    // </div>
+                                    <div
+                                      onClick={() => {
+                                        window.open(l?.doc_url, "_blank");
+                                      }}
+                                      className="p-2 flex items-center justify-center hover:cursor-pointer"
+                                    >
+                                      <a
+                                        href={l?.doc_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                       >
-                                        <a
-                                          href={l?.doc_url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                        >
-                                          <div className="w-full text-center">
-                                            <div className="w-full flex justify-center">
-                                              <BsFileEarmarkText
-                                                size={70}
-                                                color={"#AAAAAA"}
-                                                className="hover:-mt-1 hover:mb-1"
-                                              />
-                                            </div>
-                                            <div className="my-3">
-                                              {l?.doc_name}
-                                            </div>
+                                        <div className="w-full text-center">
+                                          <div className="w-full flex justify-center">
+                                            <BsFileEarmarkText
+                                              size={70}
+                                              color={"#AAAAAA"}
+                                              className="hover:-mt-1 hover:mb-1"
+                                            />
                                           </div>
-                                        </a>
-                                      </div>
-                                    ) : (
-                                      <div className="py-2 text-xs italic text-primary">
-                                        No documents to show
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                {/* )} */}
+                                          <div className="my-3">
+                                            {l?.doc_name}
+                                          </div>
+                                        </div>
+                                      </a>
+                                    </div>
+                                  ) : (
+                                    <div className="py-2 text-xs italic text-primary">
+                                      No documents to show
+                                    </div>
+                                  );
+                                })}
                               </div>
+                              {/* )} */}
                             </div>
                           </div>
                         </div>
