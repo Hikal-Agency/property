@@ -46,7 +46,7 @@ const AddNewListingModal = ({
   setListingModalOpen,
   handleCloseListingModal,
 }) => {
-  const { currentMode, darkModeColors, User, BACKEND_URL, t, isLangRTL, i18n, primaryColor } =
+  const { currentMode, darkModeColors, User, BACKEND_URL, t, isLangRTL, i18n, primaryColor, fontFam } =
     useStateContext();
   const [loading, setloading] = useState(false);
   const [displayMap, setDisplayMap] = useState(false);
@@ -448,7 +448,17 @@ const AddNewListingModal = ({
               >
                 <div className="grid grid-cols-1 mt-5 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 px-4 md:px-10 ">
                   <div className="px-3">
-                    <Box sx={darkModeColors}>
+                    <Box sx={{
+                      ...darkModeColors,
+                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                        left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                      },
+                      "& legend": {
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                      }
+                    }}>
                       <h4
                         className={`${
                           currentMode === "dark" ? "text-primary" : "text-black"
@@ -495,7 +505,10 @@ const AddNewListingModal = ({
                           "& .PhoneInputCountryIconImg": {
                             color: "#fff",
                           },
-                          color: "#AAAAAA",
+                          "& .PhoneInputCountrySelectArrow": {
+                            display: "none",
+                          },
+                          color: currentMode === "dark" ? "#FFFFFF" : "#000000",
                           border: `1px solid ${
                             currentMode === "dark" ? "#fff" : "#ccc"
                           }`,
@@ -550,7 +563,17 @@ const AddNewListingModal = ({
                   </div>
 
                   <div className="px-3">
-                    <Box sx={darkModeColors}>
+                    <Box sx={{
+                      ...darkModeColors,
+                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                        left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                      },
+                      "& legend": {
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                      }
+                    }}>
                       <h4
                         className={`${
                           currentMode === "dark" ? "text-primary" : "text-black"
@@ -619,7 +642,17 @@ const AddNewListingModal = ({
                   </div>
 
                   <div className="px-3">
-                    <Box sx={darkModeColors}>
+                    <Box sx={{
+                      ...darkModeColors,
+                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                        left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                      },
+                      "& legend": {
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                      }
+                    }}>
                       <h4
                         className={`${
                           currentMode === "dark" ? "text-primary" : "text-black"
@@ -746,13 +779,12 @@ const AddNewListingModal = ({
                         })
                       }
                       style={{
-                        // backgroundColor: "#111827",
                         color: "#ffffff",
-                        // border: "1px solid #DA1F26",
+                        fontFamily: fontFam,
                       }}
                       component="span"
                       disabled={loading ? true : false}
-                      startIcon={loading ? null : <MdFileUpload />}
+                      startIcon={loading ? null : <MdFileUpload size={18} className="mx-2" />}
                     >
                       <span>{t("button_upload_image")}</span>
                     </Button>
@@ -770,13 +802,14 @@ const AddNewListingModal = ({
                       className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
                       style={{
                         color: "#ffffff",
+                        fontFamily: fontFam,
                       }}
                       onClick={() => {
                         setDocumentModal(true);
                       }}
                       component="span"
                       disabled={loading ? true : false}
-                      startIcon={loading ? null : <MdFileUpload />}
+                      startIcon={loading ? null : <MdFileUpload size={18} className="mx-2" />}
                     >
                       <span>{t("button_upload_document")}</span>
                     </Button>
@@ -875,6 +908,7 @@ const AddNewListingModal = ({
                       marginTop: "10px",
                       width: "100%",
                       borderRadius: "6px",
+                      fontFamily: fontFam,
                     }}
                     onClick={submitListing}
                   >
