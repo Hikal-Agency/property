@@ -101,7 +101,7 @@ const AllLeads = ({
   lead_origin,
   leadCategory,
   transferRequest,
-  transferleads
+  transferleads,
 }) => {
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState({});
@@ -800,7 +800,7 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&transferRequest=1`;
-      } else  if (transferRequest === "transferleads") {
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&leadStatus=Transferred`;
@@ -858,7 +858,7 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&transferRequest=1`;
-      } else  if (transferRequest === "transferleads") {
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&leadStatus=Transferred`;
@@ -904,7 +904,7 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&transferRequest=1`;
-      } else  if (transferRequest === "transferleads") {
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&leadStatus=Transferred`;
@@ -950,7 +950,7 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&transferRequest=1`;
-      } else  if (transferRequest === "transferleads") {
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&leadStatus=Transferred`;
@@ -996,7 +996,7 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&transferRequest=1`;
-      } else  if (transferRequest === "transferleads") {
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&leadStatus=Transferred`;
@@ -1092,7 +1092,7 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&transferRequest=1`;
-      } else  if (transferRequest === "transferleads") {
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&leadStatus=Transferred`;
@@ -1315,30 +1315,14 @@ const AllLeads = ({
         lead_type !== "coldLeadsVerified" &&
         lead_type !== "coldLeadsInvalid" &&
         lead_type !== "coldLeadsNotChecked" &&
-        lead_origin !== "unassigned"
+        lead_origin !== "unassigned" &&
+        transferRequest !== "transferleads" &&
+        transferRequest !== "transferRequest"
       ) {
         url += `&feedback=${lead_type}`;
       }
     }
 
-    if (lead_origin === "unassigned") {
-      url += "&unassigned=1";
-      if (lead_type === "cold") {
-        coldCallCode = 1;
-      } else if (lead_type === "warm") {
-        coldCallCode = 4;
-      } else if (lead_type === "personal") {
-        coldCallCode = 2;
-      } else if (lead_type === "thirdpartyleads") {
-        coldCallCode = 3;
-      } else if (lead_type === "liveleads") {
-        coldCallCode = 6;
-      } else if (lead_type === "buyers") {
-        coldCallCode = 5;
-      }
-    }
-
-    // transfered leads
     if (lead_origin === "unassigned") {
       url += "&unassigned=1";
       if (lead_type === "cold") {
@@ -1368,8 +1352,15 @@ const AllLeads = ({
       url += `&is_whatsapp=0`;
     }
 
-    if (lead_origin === "transfferedleads") {
+    if (
+      lead_origin === "transfferedleads" ||
+      transferRequest === "transferleads"
+    ) {
       url += `&status=Transferred`;
+    }
+
+    if (transferRequest === "transferRequest") {
+      url += `&transferRequest=1`;
     }
 
     await axios
