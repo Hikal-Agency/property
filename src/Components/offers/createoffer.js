@@ -33,7 +33,10 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     User,
     t,
     primaryColor,
-    themeBgImg
+    themeBgImg,
+    fontFam,
+    isLangRTL,
+    i18n
   } = useStateContext();
   const [validFromDate, setValidFromDate] = useState("");
   const [validFromDateValue, setValidFromDateValue] = useState({});
@@ -193,15 +196,27 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
       themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
     }`}>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
-        <Box sx={darkModeColors} className="p-2">
+        <Box sx={{
+          ...darkModeColors,
+          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+            left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+            right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+            transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+          },
+          "& legend": {
+            textAlign: isLangRTL(i18n.language) ? "right" : "left",
+          }
+        }} className="p-2">
           <TextField
             type={"text"}
             label={t("label_offer_title")}
             className="w-full"
-            style={{ marginBottom: "15px" }}
+            style={{ 
+              marginBottom: "20px",
+            }}
             variant="outlined"
             name="offerTitle"
-            size="medium"
+            size="small"
             value={offerData.offerTitle}
             onChange={(e) =>
               setOfferData({ ...offerData, offerTitle: e.target.value })
@@ -215,9 +230,9 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
             minRows={4} 
             className="w-full"
             name="offerDescription"
-            style={{ marginBottom: "15px" }}
+            style={{ marginBottom: "20px" }}
             variant="outlined"
-            size="medium"
+            size="small"
             value={offerData.offerDescription}
             required
             onChange={(e) =>
@@ -250,6 +265,10 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                     {...params}
                     onKeyDown={(e) => e.preventDefault()}
                     readOnly={true}
+                    size={"small"}
+                    style={{
+                      marginBottom: "20px"
+                    }}
                   />
                 )}
               />
@@ -278,6 +297,10 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                     {...params}
                     onKeyDown={(e) => e.preventDefault()}
                     readOnly={true}
+                    size={"small"}
+                    style={{
+                      marginBottom: "20px"
+                    }}
                   />
                 )}
               />
@@ -291,7 +314,12 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 !themeBgImg && (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")}
               } rounded-lg p-5`}
             >
-              <Box sx={darkModeColors}>
+              <Box sx={{
+                ...darkModeColors,
+                "& .MuiTypography-root": {
+                  fontFamily: fontFam,
+                }
+              }}>
                 <label className="font-semibold mb-1">
                   <span className="text-primary">{`${t("offer")} ${t("label_validity")}`}</span>
                 </label>
@@ -361,10 +389,11 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                 style={{
                   color: "#ffffff",
                   border: "1px solid white",
+                  fontFamily: fontFam,
                 }}
                 component="span" // Required so the button doesn't automatically submit form
                 disabled={loading ? true : false}
-                startIcon={loading ? null : <MdFileUpload />}
+                startIcon={loading ? null : <MdFileUpload className="mx-2" size={16} />}
               >
                 <span>{t("button_upload_image")}</span>
               </Button>
@@ -377,7 +406,8 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
         type="submit"
         size="medium"
         style={{
-          color: "white"
+          color: "white",
+          fontFamily: fontFam
         }}
         className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
         onClick={handleClick}
