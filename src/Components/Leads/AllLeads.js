@@ -1308,6 +1308,24 @@ const AllLeads = ({
       }
     }
 
+    // transfered leads
+    if (lead_origin === "unassigned") {
+      url += "&unassigned=1";
+      if (lead_type === "cold") {
+        coldCallCode = 1;
+      } else if (lead_type === "warm") {
+        coldCallCode = 4;
+      } else if (lead_type === "personal") {
+        coldCallCode = 2;
+      } else if (lead_type === "thirdpartyleads") {
+        coldCallCode = 3;
+      } else if (lead_type === "liveleads") {
+        coldCallCode = 6;
+      } else if (lead_type === "buyers") {
+        coldCallCode = 5;
+      }
+    }
+
     if (coldCallCode !== "") {
       url += `&coldCall=${coldCallCode}`;
     }
