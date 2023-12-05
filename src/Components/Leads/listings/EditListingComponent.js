@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import Select from "react-select";
 import PhoneInput, {
   formatPhoneNumberIntl,
   isValidPhoneNumber,
@@ -22,6 +23,8 @@ import { useEffect, useState } from "react";
 import ListingLocation from "./ListingLocation";
 import axios from "../../../axoisConfig";
 import { toast } from "react-toastify";
+import { bathroom_options, enquiry_options, listing_options, property_options } from "../../_elements/SelectOptions";
+import { selectStyles } from "../../_elements/SelectStyles";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -41,6 +44,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     isLangRTL, 
     i18n ,
     t,
+    primaryColor
   } =
     useStateContext();
   const [loading, setloading] = useState(false);
@@ -51,13 +55,13 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     addressText: LeadData?.location || "",
   });
   const [isClosing, setIsClosing] = useState(false);
-  // const handleClose = () => {
-  //   setIsClosing(true);
-  //   setTimeout(() => {
-  //     setIsClosing(false);
-  //     handleCloseSingleListingModel();
-  //   }, 1000);
-  // };
+  const handleEditClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      handleClose();
+    }, 1000);
+  };
 
   const [sellerDetails, setSellerDetails] = useState({
     leadName: LeadData?.seller_name,
@@ -350,12 +354,27 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
     });
   }, [listingLocation]);
 
+  const status_options = (t) => [
+    {
+      value: "New",
+      label: t("feedback_new")
+    },
+    {
+      value: "Available",
+      label: t("available")
+    }, 
+    {
+      value: "Sold",
+      label: t("sold")
+    }
+  ];
+
   return (
     <>
       <Modal
         keepMounted
         open={openEdit}
-        onClose={() => handleClose()}
+        onClose={() => handleEditClose()}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -377,7 +396,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
           w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
-            onClick={handleClose}
+            onClick={handleEditClose}
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
             }
@@ -389,33 +408,20 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
               className=" hover:border hover:border-white hover:rounded-full"
             />
           </button>
-          {/* <div
-            style={style}
-            className={`overflow-y-scroll md:w-[70%] border-2 border-solid shadow-lg  ${
-              currentMode === "dark"
-                ? "bg-black border-gray-800"
-                : "bg-white border-gray-200"
-            }                p-4 h-[100vh] w-[80vw] overflow-y-scroll
-            `}
-          > */}
           <div
             style={style}
             className={` ${
               currentMode === "dark"
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
+            } ${
+              currentMode === "dark" && (isLangRTL(i18n.language) ? "border-primary border-r-2" : "border-primary border-l-2")
             }
               p-4 h-[100vh] w-[80vw] md:w-[70%] overflow-y-scroll
               `}
           >
             <div className="w-full flex items-center py-1 mb-2">
-              {/* <div className="bg-[#DA1F26] h-10 w-1 rounded-full mr-2 my-1"></div> */}
-              <div
-                className={`text-lg bg-primary font-semibold rounded-xl w-1 h-10 ${
-                  currentMode === "dark" ? "text-white" : "text-white"
-                }`}
-              >
-              </div>
+              <div className={`text-lg bg-primary font-semibold rounded-xl w-1 h-10`}></div>
               <h1
                 className={`text-lg font-semibold mx-3 ${
                   currentMode === "dark" ? "text-white" : "text-black"
@@ -444,16 +450,15 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         {t("label_seller_details")}
                       </h4>
 
+                      {/* SELLER NAME  */}
                       <TextField
                         id="legalName"
                         type={"text"}
                         label={t("label_legal_name")}
                         name="leadName"
                         className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px",
                         }}
                         variant="outlined"
                         size="small"
@@ -462,6 +467,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         onChange={handleChange}
                       />
 
+                      {/* SELLER CONTACT  */}
                       <PhoneInput
                         placeholder={t("label_contact_number")}
                         onChange={(value) => setValue(value)}
@@ -475,59 +481,40 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         })} mb-5`}
                         size="small"
                         style={{
-                          background: `${
-                            currentMode === "dark" ? "#000000" : "#fff"
-                          }`,
+                          // background: `${
+                          //   currentMode === "dark" ? "#000000" : "#fff"
+                          // }`,
                           "& .PhoneInputCountryIconImg": {
                             color: "#fff",
                           },
-                          color: "#808080",
+                          // color: "#808080",
                           border: `1px solid ${
                             currentMode === "dark" ? "#fff" : "#ccc"
                           }`,
                           borderRadius: "5px",
                           outline: "none",
+                          marginBottom: "20px"
                         }}
                         inputStyle={{
                           outline: "none !important",
                         }}
                         required
                       />
-
                       {error && (
                         <Typography variant="body2" color="error">
                           {error}
                         </Typography>
                       )}
 
-                      {/* <TextField
-                        id="notes"
-                        type={"text"}
-                        label="Contacts"
-                        className="w-full"
-                        name="leadContact"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        required
-                        value={removeNull(sellerDetails?.leadContact)}
-                        onChange={handleChange}
-                      /> */}
-
+                      {/* SELLER EMAIL  */}
                       <TextField
                         id="notes"
                         type={"text"}
                         label={t("label_email_address")}
                         name="leadEmail"
                         className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px",
                         }}
                         variant="outlined"
                         size="small"
@@ -535,16 +522,16 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         value={removeNull(sellerDetails?.leadEmail)}
                         onChange={handleChange}
                       />
+
+                      {/* PROPERTY PRICE  */}
                       <TextField
                         id="notes"
                         type={"text"}
                         label={t("label_property_price")}
                         className="w-full"
                         name="propertyPrice"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        stylex={{
+                          marginBottom: "20px",
                         }}
                         variant="outlined"
                         size="small"
@@ -565,7 +552,47 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         {t("project_details")}
                       </h4>
 
+                      {/* PROJECT NAME  */}
                       <TextField
+                        id="notes"
+                        type={"text"}
+                        label={t("project_name_of_building")}
+                        className="w-full"
+                        name="project"
+                        style={{
+                          marginBottom: "20px",
+                        }}
+                        variant="outlined"
+                        size="small"
+                        required
+                        value={projectDetails?.project}
+                        onChange={handleProjectDetails}
+                      />
+
+                      {/* PROPERTY TYPE  */}
+                      <Select
+                        id="property-type"
+                        value={projectDetails?.property_type
+                          ? {
+                            value: property_options(t).find(option => option.value === projectDetails?.property_type),
+                            label: property_options(t).find(option => option.value === projectDetails?.property_type).label,
+                          }
+                          : null
+                        }
+                        options={property_options(t)}
+                        onChange={(selectedOption) => {
+                          setProjectDetails((prev) => ({
+                            ...prev,
+                            property_type: selectedOption.value,
+                          }));
+                        }}
+                        placeholder={t("label_property_type")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+
+                      {/* <TextField
                         id="property-type"
                         value={projectDetails?.property_type}
                         label={t("label_property_type")}
@@ -574,10 +601,8 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         className="w-full mb-5"
                         name="property_type"
                         displayEmpty
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px",
                         }}
                         select
                       >
@@ -590,27 +615,31 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         <MenuItem value={"Apartment"}>{t("property_apartment")}</MenuItem>
                         <MenuItem value={"Villa"}>{t("property_villa")}</MenuItem>
                         <MenuItem value={"retail"}>{t("enquiry_retail")}</MenuItem>
-                      </TextField>
+                      </TextField> */}
 
-                      <TextField
-                        id="notes"
-                        type={"text"}
-                        label={t("project_name_of_building")}
-                        className="w-full"
-                        name="project"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                      {/* BEDRROMS  */}
+                      <Select
+                        id="enquiry"
+                        value={projectDetails?.bedrooms
+                          ? {
+                            value: enquiry_options(t).find(option => option.value === projectDetails?.bedrooms),
+                            label: enquiry_options(t).find(option => option.value === projectDetails?.bedrooms).label,
+                          }
+                          : null
+                        }
+                        options={enquiry_options(t)}
+                        onChange={(selectedOption) => {
+                          setProjectDetails((prev) => ({
+                            ...prev,
+                            bedrooms: selectedOption.value,
+                          }));
                         }}
-                        variant="outlined"
-                        size="small"
-                        required
-                        value={projectDetails?.project}
-                        onChange={handleProjectDetails}
+                        placeholder={t("number_of_bedrooms")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
                       />
-
-                      <TextField
+                      {/* <TextField
                         id="enquiry"
                         label={t("number_of_bedrooms")}
                         value={projectDetails?.bedrooms}
@@ -620,7 +649,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         className="w-full"
                         sx={{
                           "&": {
-                            marginBottom: "1.25rem !important",
+                            marginBottom: "20px",
                           },
                         }}
                         displayEmpty
@@ -644,9 +673,32 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         <MenuItem value={"9 Bedrooms"}>{t("enquiry_9bed")}</MenuItem>
                         <MenuItem value={"10 Bedrooms"}>{t("enquiry_10bed")}</MenuItem>
                         <MenuItem value={"Retail"}>{t("enquiry_retail")}</MenuItem>
-                      </TextField>
+                      </TextField> */}
 
-                      <TextField
+                      {/* BATHROOMS  */}
+                      <Select
+                        id="for"
+                        value={projectDetails?.bathrooms
+                          ? {
+                            value: bathroom_options(t).find(option => option.value === projectDetails?.bathrooms),
+                            label: bathroom_options(t).find(option => option.value === projectDetails?.bathrooms).label,
+                          }
+                          : null
+                        }
+                        options={bathroom_options(t)}
+                        onChange={(selectedOption) => {
+                          setProjectDetails((prev) => ({
+                            ...prev,
+                            bathrooms: selectedOption.value,
+                          }));
+                        }}
+                        placeholder={t("number_of_bathrooms")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+
+                      {/* <TextField
                         id="for"
                         value={projectDetails?.bathrooms}
                         label={t("number_of_bathrooms")}
@@ -656,7 +708,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         name="bathrooms"
                         sx={{
                           "&": {
-                            marginBottom: "1.25rem !important",
+                            marginBottom: "20px",
                           },
                         }}
                         displayEmpty
@@ -679,7 +731,51 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         <MenuItem value={"9 Bathrooms"}>{t("bathroom_9")}</MenuItem>
                         <MenuItem value={"10 Bathrooms"}>{t("bathroom_10")}</MenuItem>
                         <MenuItem value={"Unavailabe"}>{t("label_unavailable")}</MenuItem>
-                      </TextField>
+                      </TextField> */}
+
+                      {/* LISTING TYPE  */}
+                      <Select
+                        id="type"
+                        value={otherDetails?.listingType
+                          ? {
+                            value: listing_options(t).find(option => option.value === otherDetails?.listingType),
+                            label: listing_options(t).find(option => option.value === otherDetails?.listingType).label,
+                          }
+                          : null
+                        }
+                        options={listing_options(t)}
+                        onChange={(selectedOption) => {
+                          setOtherDetails((prev) => ({
+                            ...prev,
+                            listingType: selectedOption.value,
+                          }));
+                        }}
+                        placeholder={t("label_listing_type")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      {/* <TextField
+                        id="type"
+                        value={otherDetails?.listingType}
+                        label={t("label_listing_type")}
+                        onChange={handleOtherDetails}
+                        size="small"
+                        className="w-full"
+                        name="listingType"
+                        sx={{
+                          "&": {
+                            marginBottom: "20px",
+                          },
+                        }}
+                        displayEmpty
+                        select
+                        required
+                      >
+                        <MenuItem value={"Secondary"}>{t("menu_secondary")}</MenuItem>
+                        <MenuItem value={"Off-plan"}>{t("category_off_plan")}</MenuItem>
+                      </TextField> */}
+
                     </Box>
                   </div>
 
@@ -693,36 +789,14 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         {t("label_other_details")}
                       </h4>
 
-                      <TextField
-                        id="type"
-                        value={otherDetails?.listingType}
-                        label={t("label_listing_type")}
-                        onChange={handleOtherDetails}
-                        size="small"
-                        className="w-full"
-                        name="listingType"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
-                        }}
-                        displayEmpty
-                        select
-                        required
-                      >
-                        <MenuItem value={"Secondary"}>{t("menu_secondary")}</MenuItem>
-                        <MenuItem value={"Off-plan"}>{t("category_off_plan")}</MenuItem>
-                      </TextField>
-
+                      {/* ADDRESS  */}
                       <TextField
                         id="LeadEmailAddress"
                         type={"text"}
                         label={t("label_address")}
                         className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px",
                         }}
                         variant="outlined"
                         size="small"
@@ -730,32 +804,32 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         value={otherDetails?.address}
                         onChange={handleOtherDetails}
                       />
+
+                      {/* AREA  */}
                       <TextField
                         id="LeadArea"
                         type={"text"}
                         label="Area"
                         className="w-full"
                         name="area"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px",
                         }}
                         variant="outlined"
                         size="small"
                         value={otherDetails?.area}
                         onChange={handleOtherDetails}
                       />
+
+                      {/* CITY  */}
                       <TextField
                         id="leadCity"
                         type={"text"}
                         label="City"
                         className="w-full"
                         name="city"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px",
                         }}
                         variant="outlined"
                         size="small"
@@ -763,16 +837,16 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         onChange={handleOtherDetails}
                         required
                       />
+
+                      {/* COUNTRY  */}
                       <TextField
                         id="leadCountry"
                         type={"text"}
                         label="Country"
                         className="w-full"
                         name="country"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                          },
+                        style={{
+                          marginBottom: "20px",
                         }}
                         variant="outlined"
                         size="small"
@@ -781,7 +855,30 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         onChange={handleOtherDetails}
                       />
 
-                      <TextField
+                      {/* STATUS  */}
+                      <Select
+                        id="listing-status"
+                        value={otherDetails?.listing_status
+                          ? {
+                            value: otherDetails?.listing_status,
+                            label: status_options(t).find(option => option.value === otherDetails?.listing_status).label,
+                          }
+                          : null
+                        }
+                        options={status_options(t)}
+                        onChange={(selectedOption) => {
+                          setOtherDetails((prev) => ({
+                            ...prev,
+                            listing_status: selectedOption.value,
+                          }));
+                        }}
+                        placeholder={t("status")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      
+                      {/* <TextField
                         id="listing-status"
                         value={otherDetails?.listing_status}
                         label="Listing Status"
@@ -795,7 +892,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         displayEmpty
                         sx={{
                           "&": {
-                            marginBottom: "1.25rem !important",
+                            marginBottom: "20px",
                           },
                           "& .MuiSelect-select .MuiSelect-outlined .Mui-disabled .MuiInputBase-input .MuiOutlinedInput-input .Mui-disabled .MuiInputBase-inputSizeSmall css-jedpe8-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input":
                             {
@@ -810,7 +907,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                             *
                           </span>
                         </MenuItem>
-                        <MenuItem value={"New"}>New</MenuItem>
+                        <MenuItem value={"Available"}>Available</MenuItem>
                         <MenuItem
                           value={"Sold"}
                           selected={
@@ -819,7 +916,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         >
                           Sold
                         </MenuItem>
-                      </TextField>
+                      </TextField> */}
                     </Box>
                   </div>
                 </div>

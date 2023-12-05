@@ -73,6 +73,9 @@ const AutoComplete = ({ isDisabled, defaultLocation, setMeetingLocation }) => {
             // color: currentMode === "dark" ? "white" : "black",
             fontFamily: isArabic(value) ? "Noto Kufi Arabic" : "inherit",
           },
+          "& .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled": {
+            WebkitTextFillColor: currentMode === "dark" ? "#FFFFFF" : "#000000"
+          }
         }}
         disabled={isDisabled ? true : !ready}
         onChange={handleInput}

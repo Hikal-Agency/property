@@ -22,7 +22,22 @@ import {
 } from "react-icons/bi";
 import {
   BsSnow2,
-  BsPersonCircle
+  BsPersonCircle,
+  BsInstagram,
+  BsFacebook,
+  BsSnapchat,
+  BsTiktok,
+  BsYoutube,
+  BsTwitter,
+  BsMegaphone,
+  BsWhatsapp,
+  BsChatDots,
+  BsChatLeftText,
+  BsGlobe2,
+  BsLink45Deg,
+  BsDownload,
+  BsArchive,
+  BsPersonRolodex
 } from "react-icons/bs";
 import { 
   FaFacebookF,
@@ -53,10 +68,10 @@ const Reports = () => {
     setDashboardData,
     setSales_chart_data,
     BACKEND_URL,
-    pageState, 
     t,
     themeBgImg,
-    primaryColor
+    primaryColor,
+    darkModeColors
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -239,24 +254,110 @@ const Reports = () => {
     }
   };
 
-  const sourceCounters = {
-    "Campaign Facebook": <FaFacebookF size={14} color={"#0e82e1"} />,
-    "Campaign Snapchat": <FaSnapchatGhost size={16} color={"#f6d80a"} />,
-    "Campaign TikTok": <FaTiktok size={14} color={currentMode === "dark" ? "white" : "black"} />,
-    "Campaign YouTube": <FaYoutube size={18} color={"#c4302b"} />,
-    "Campaign GoogleAds": <FcGoogle size={18} />,
-    "Campaign Twitter": <FaTwitter size={16} color={"#00acee"} />,
-    "Campaign": <MdCampaign size={16} color={"#696969"} />,
-    "WhatsApp": <FaWhatsapp size={16} color={"#53cc60"} />,
-    "Message": <BiMessageRoundedDots size={16} color={"#6A5ACD"} />,
-    "Comment": <FaRegComments size={16} color={"#a9b3c6"} />,
-    "Website": <TbWorldWww size={16} color={"#AED6F1"} />,
-    "Property Finder": <GiMagnifyingGlass size={16} color={"#ef5e4e"} />,
-    "Bulk Import": <BiImport size={16} color={primaryColor} />,
-    "Warm": <BiArchive size={16} color={"#AEC6CF"} />,
-    "Cold": <BsSnow2 size={16} color={"#0ec7ff"} />,
-    "Personal": <BsPersonCircle size={16} color={"#6C7A89"} />,
-  };
+  const sourceCounters = [
+    {
+        "Facebook": {
+            icon: <BsFacebook size={20} color={"white"} />,
+            bg: "#0E82E1",
+        }
+    },
+    {
+        "Instagram": {
+            icon: <BsInstagram size={20} color={"white"} />,
+            bg: "#BE238D",
+        }
+    },
+    {
+        "Snapchat": {
+            icon: <BsSnapchat size={18} color={"white"} />,
+            bg: "#EDBD34", //"#F6D80A",
+        }
+    },
+    {
+        "TikTok": {
+            icon: <BsTiktok size={18} color={"white"} />,
+            bg: "#000000",
+        }
+    },
+    {
+        "YouTube": {
+            icon: <BsYoutube size={20} color={"white"} />,
+            bg: "#C4302B",
+        }
+    },
+    {
+        "GoogleAds": {
+            icon: <FcGoogle size={20} />,
+            bg: currentMode === "dark" ? "#000000" : "#FFFFFF",
+        }
+    },
+    {
+        "Twitter": {
+            icon: <BsTwitter size={20} color={"white"} />,
+            bg: "#00ACEE",
+        }
+    },
+    {
+        "Campaign": {
+            icon: <BsMegaphone size={20} color={"white"} />,
+            bg: "#696969",
+        }
+    },
+    {
+        "WhatsApp": {
+            icon: <BsWhatsapp size={20} color={"white"} />,
+            bg: "#53CC60",
+        }
+    },
+    {
+        "Message": {
+            icon: <BsChatDots size={20} color={"white"} />,
+            bg: "#6A5ACD",
+        }
+    },
+    {
+        "Comment": {
+            icon: <BsChatLeftText size={20} color={"white"} />,
+            bg: "#A9B3C6",
+        }
+    },
+    {
+        "Website": {
+            icon: <BsGlobe2 size={20} color={"white"} />,
+            bg: "#AED6F1",
+        }
+    },
+    {
+        "Property Finder": {
+            icon: <BsLink45Deg size={22} color={"white"} />,
+            bg: "#EF5E4E",
+        }
+    },
+    {
+        "Bulk Import": {
+            icon: <BsDownload size={20} color={"white"} />,
+            bg: primaryColor,
+        }
+    },
+    {
+        "Warm": {
+            icon: <BsArchive size={20} color={"white"} />,
+            bg: "#AEC6CF",
+        }
+    },
+    {
+        "Cold": {
+            icon: <BsSnow2 size={20} color={"white"} />,
+            bg: "#0EC7FF",
+        }
+    },
+    {
+        "Personal": {
+            icon: <BsPersonRolodex size={20} color={"white"} />,
+            bg: "#6C7A89",
+        }
+    },
+  ];
 
   const fetchCounter = async (token) => {
     const currentDate = moment(countFilter).format("YYYY-MM-DD");
@@ -334,15 +435,17 @@ const Reports = () => {
         <div className="flex min-h-screen">
           <div
             className={`w-full ${
-              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
+              !themeBgImg && (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+            } ${
+              currentMode === "dark" ? "text-white" : "text-black"
             }`}
           >
             {hasPermission("leadSource_counts") && (
-              <div className="bg-primary p-4 rounded-b-lg shadow-md">
-                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5 flex justify-between">
-                  <div className="w-full flex items-center gap-5">
-                    <h1 className={`text-white uppercase font-semibold`}>
-                      Lead Source
+              <div className={`${themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")} ${currentMode === "dark" ? "text-white" : "text-black"} p-4`}>
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-3 flex justify-between">
+                  <div className="w-full flex items-center gap-3">
+                    <h1 className={`capitalize font-semibold`}>
+                      {t("lead_source")}
                     </h1>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
@@ -356,18 +459,19 @@ const Reports = () => {
                           setCountFilter(formattedDate);
                         }}
                         renderInput={(params) => (
+                          <Box sx={darkModeColors}>
                           <TextField
                             size="small"
                             sx={{
                               "& input": {
-                                color: "#ffffff",
+                                color: currentMode === "dark" ? "1px solid #EEEEEE" : "1px solid #333333",
                               },
                               "&": {
                                 borderRadius: "4px",
-                                border: "1px solid #AAAAAA",
+                                border: currentMode === "dark" ? "1px solid #EEEEEE" : "1px solid #333333",
                               },
                               "& .MuiSvgIcon-root": {
-                                color: "#AAAAAA",
+                                color: currentMode === "dark" ? "1px solid #EEEEEE" : "1px solid #333333",
                               },
                             }}
                             label="Date"
@@ -375,35 +479,136 @@ const Reports = () => {
                             onKeyDown={(e) => e.preventDefault()}
                             readOnly={true}
                           />
+                          </Box>
                         )}
                       />
                     </LocalizationProvider>
                   </div>
-                  <div className="lg:col-span-2 gap-4 flex flex-wrap justify-end">
+                  <div className="lg:col-span-2 gap-3 flex flex-wrap justify-end">
                     {counters && counters?.length > 0
-                      ? counters?.map((counter) => (
-                        <Tooltip title={counter?.leadSource} arrow>
-                          <Box
-                            className={`
-                              ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"}
-                              card-hover p-0.5 flex justify-between items-center shadow-md rounded-sm w-fit
-                            `}
-                            sx={{
-                              // height: "30px",
-                              // minWidth: "60px",
-                              // maxWidth: "100px",
-                            }}
-                          >
-                            <div className="px-2">{sourceCounters[counter?.leadSource]}</div>
-                            <div className="px-2 font-semibold">{counter?.count}</div>
-                          </Box>
-                        </Tooltip>
-                      )) : ""
+                      ? counters?.map((counter) => {
+                        const matchingSource = sourceCounters.find(
+                          sourceCounter => counter?.leadSource.toLowerCase().includes(Object.keys(sourceCounter)[0].toLowerCase())
+                        );
+
+                        if (!matchingSource) return null;
+
+                        const leadSource = Object.keys(matchingSource)[0];
+                        const { icon, bg } = matchingSource[leadSource];
+
+                        return (
+                          <Tooltip title={counter?.leadSource} key={counter?.leadSource} arrow>
+                            <div className="px-1">
+                                <div
+                                className="shadow-sm card-hover flex items-center justify-between"
+                                style={{
+                                    border: `1px solid #AAAAAA`,
+                                }}
+                                >
+                                    <div
+                                        className="p-2 h-full flex items-center justify-center"
+                                        style={{
+                                        backgroundColor: bg,
+                                        }}
+                                    >
+                                        {icon}
+                                    </div>
+                                    <div className="p-2 px-3 font-bold">{counter?.count}</div>
+                                </div>
+                            </div>
+                          </Tooltip>
+                        )
+                      }) : ""
                     }
                   </div>
                 </div>
               </div>
             )}
+
+            {/* <div className="p-4 flex flex-col gap-5"> */}
+              {/* TURNOVER  */}
+              {/* <div className={`p-4 rounded-xl shadow-sm ${
+                themeBgImg 
+                ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light") 
+                : (currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]")}`}
+              >
+                <div className="flex w-full justify-center">
+                  <h1 className={`text-lg uppercase font-semibold`}>
+                    {t("label_turnover")}
+                  </h1>
+                </div>
+                <div className="h-0.5 w-full rounded-full bg-primary my-5"></div>
+                <div className="grid gap-5">
+                  MONTHLY CLOSED DEALS AND AMOUNT
+                </div>
+              </div> */}
+
+              {/* PERFORMANCE  */}
+              {/* <div className={`p-4 rounded-xl shadow-sm ${
+                themeBgImg 
+                ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light") 
+                : (currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]")}`}
+              >
+                <div className="flex w-full justify-center">
+                  <h1 className={`text-lg uppercase font-semibold`}>
+                    {t("achievement")}
+                  </h1>
+                </div>
+                <div className="h-0.5 w-full rounded-full bg-primary my-5"></div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                  <div className="">
+                    CLOSED DEALS AND MEETINGS
+                  </div>
+                  <div className="">
+                    MONTHLY AGENT'S TARGET
+                  </div>
+                </div>
+              </div> */}
+
+              {/* PROJECTS  */}
+              {/* <div className={`p-4 rounded-xl shadow-sm ${
+                themeBgImg 
+                ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light") 
+                : (currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]")}`}
+              >
+                <div className="flex w-full justify-center">
+                  <h1 className={`text-lg uppercase font-semibold`}>
+                    {t("projects")}
+                  </h1>
+                </div>
+                <div className="h-0.5 w-full rounded-full bg-primary my-5"></div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                  <div className="">
+                    CLOSED DEALS AND PROJECTS
+                  </div>
+                  <div className="">
+                    LEADS AND PROJECTS
+                  </div>
+                </div>
+              </div> */}
+
+              {/* LEADS QUALITY  */}
+              {/* <div className={`p-4 rounded-xl shadow-sm ${
+                themeBgImg 
+                ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light") 
+                : (currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]")}`}
+              >
+                <div className="flex w-full justify-center">
+                  <h1 className={`text-lg uppercase font-semibold`}>
+                    {t("leads")}
+                  </h1>
+                </div>
+                <div className="h-0.5 w-full rounded-full bg-primary my-5"></div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                  <div className="">
+                    MONTHLY LEADS CATEGORY WITH FEEDBACK
+                  </div>
+                  <div className="">
+                    MONTHLY LEADS WITH LEAD SOURCE 
+                  </div>
+                </div>
+              </div>
+            </div> */}
 
             <div className="mb-10 p-4">
               <div className="mb-5">
@@ -428,24 +633,23 @@ const Reports = () => {
                         {t("sales")}
                       </span>
                       <span className="float-right">
-                        <select
-                          className={`${
-                            !themeBgImg ? (currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-[#EEEEEE] text-black")
-                            : (currentMode === "dark"
-                            ? "blur-bg-dark text-white"
-                            : "blur-bg-light text-black")
-                          } text-xs rounded-lg p-1`}
-                          value={selectedMonthSales}
-                          onChange={(e) => {
-                            setSelectedMonthSales(e.target.value);
-                          }}
-                        >
-                          <option value="alltime">{t("all_time")}</option>
-                          <option value="lastmonth">{t("last_month")}</option>
-                          <option value="thismonth">{t("this_month")}</option>
-                        </select>
+                        <Box sx={darkModeColors}>
+                          <select
+                            className={`${
+                              currentMode === "dark"
+                              ? "bg-[#1c1c1c] text-white"
+                              : "bg-[#EEEEEE] text-black"
+                            } text-xs rounded-lg p-1`}
+                            value={selectedMonthSales}
+                            onChange={(e) => {
+                              setSelectedMonthSales(e.target.value);
+                            }}
+                          >
+                            <option value="alltime">{t("all_time")}</option>
+                            <option value="lastmonth">{t("last_month")}</option>
+                            <option value="thismonth">{t("this_month")}</option>
+                          </select>
+                        </Box>
                       </span>
                     </h6>
                     <div className="justify-between items-center">
@@ -529,24 +733,23 @@ const Reports = () => {
                     <h6 className="mb-2 p-2">
                       <span className="font-semibold">{t("performance")?.toUpperCase()}</span>
                       <span className="float-right">
-                        <select
-                          className={`${
-                            !themeBgImg ? (currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-[#EEEEEE] text-black")
-                            : (currentMode === "dark"
-                            ? "blur-bg-dark text-white"
-                            : "blur-bg-light text-black")
-                          } text-xs rounded-lg p-1`}
-                          value={selectedMonth}
-                          onChange={(e) => {
-                            setSelectedMonth(e.target.value);
-                          }}
-                        >
-                          <option value="alltime">{t("all_time")}</option>
-                          <option value="lastmonth">{t("last_month")}</option>
-                          <option value="thismonth">{t("this_month")}</option>
-                        </select>
+                        <Box sx={darkModeColors}>
+                          <select
+                            className={`${
+                              currentMode === "dark"
+                              ? "bg-[#1c1c1c] text-white"
+                              : "bg-[#EEEEEE] text-black"
+                            } text-xs rounded-lg p-1`}
+                            value={selectedMonth}
+                            onChange={(e) => {
+                              setSelectedMonth(e.target.value);
+                            }}
+                          >
+                            <option value="alltime">{t("all_time")}</option>
+                            <option value="lastmonth">{t("last_month")}</option>
+                            <option value="thismonth">{t("this_month")}</option>
+                          </select>
+                        </Box>
                       </span>
                     </h6>
                     <div className="justify-between items-center">
@@ -619,24 +822,23 @@ const Reports = () => {
                   <h6 className="mb-2 p-2">
                     <span className="font-semibold">{t("project")?.toUpperCase()}</span>
                     <span className="float-right">
-                      <select
-                        className={`${
-                          !themeBgImg ? (currentMode === "dark"
-                          ? "bg-[#1c1c1c] text-white"
-                          : "bg-[#EEEEEE] text-black")
-                          : (currentMode === "dark"
-                          ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black")
-                        } text-xs rounded-lg p-1`}
-                        value={selectedMonthProject}
-                        onChange={(e) => {
-                          setSelectedMonthProject(e.target.value);
-                        }}
-                      >
-                        <option value="alltime">{t("all_time")}</option>
-                        <option value="lastmonth">{t("last_month")}</option>
-                        <option value="thismonth">{t("this_month")}</option>
-                      </select>
+                      <Box sx={darkModeColors}>
+                        <select
+                          className={`${
+                            currentMode === "dark"
+                            ? "bg-[#1c1c1c] text-white"
+                            : "bg-[#EEEEEE] text-black"
+                          } text-xs rounded-lg p-1`}
+                          value={selectedMonthProject}
+                          onChange={(e) => {
+                            setSelectedMonthProject(e.target.value);
+                          }}
+                        >
+                          <option value="alltime">{t("all_time")}</option>
+                          <option value="lastmonth">{t("last_month")}</option>
+                          <option value="thismonth">{t("this_month")}</option>
+                        </select>
+                      </Box>
                     </span>
                   </h6>
                   <div className="justify-between items-center">

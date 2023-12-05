@@ -128,7 +128,7 @@ const TransferredLeads = (props) => {
               BACKEND_URL={BACKEND_URL}
               lead_origin={value}
               lead_type={value}
-              transferRequest="transferRequest"
+              transferRequest="transferleads"
             />
           </div>
         )}

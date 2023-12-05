@@ -123,37 +123,7 @@ const TransferRequest = (props) => {
                     setValue={setValue}
                     handleChange={handleChange}
                   />
-                  {/* <div className="flex justify-between">
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      variant="standard"
-                      className="w-full px-1 m-1"
-                    >
-                     
-                      {leadTypes?.map((leadType) => (
-                        <Tab value={leadType?.value} label={leadType?.name} />
-                      ))}
-                    </Tabs>
-                  </div> */}
                 </Box>
-                <div className="pb-5">
-                  <TabPanel value={value} index={0}>
-                    {/* <CallLogBoard
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    /> */}
-                    {/* <AllLeads
-                      BACKEND_URL={BACKEND_URL}
-                      lead_origin="transfferedleads"
-                      lead_type={lead_type}
-                      isLoading={loading}
-                      tabValue={tabValue}
-                      setTabValue={setTabValue}
-                    /> */}
-                  </TabPanel>
-                </div>
               </div>
             </div>
             {/* TABS END */}
