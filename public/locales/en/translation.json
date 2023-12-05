@@ -811,7 +811,10 @@
 
     "documents": "Documents",
     "origin_liveleads": "Live Call Leads",
-    "sold": "Sold"
+    "sold": "Sold",
+
+    "menu_cms" : "CMS",
+    "menu_onboarding" : "OnBoarding"
     
 
 }
