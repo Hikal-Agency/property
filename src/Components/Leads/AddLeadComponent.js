@@ -48,8 +48,8 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
     primaryColor,
     t,
     themeBgImg,
-    blurDarkColor,
-    blurLightColor
+    isLangRTL,
+    i18n
   } = useStateContext();
 
   const ChangeLeadSource = (selectedOption) => {
@@ -379,9 +379,17 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
             } p-5 rounded-lg `} >
               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 mt-5">
                 <div className="px-4">
-                  <Box sx={
-                    darkModeColors
-                    }>
+                  <Box sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                      left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                      transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                    }
+                    }}>
                     <h4
                       className={`${
                         currentMode === "dark" ? `text-white` : "text-black"
@@ -571,7 +579,17 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                 </div>
 
                 <div className="px-4">
-                  <Box sx={darkModeColors}>
+                  <Box sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                      left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                      transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                    }
+                  }}>
                     <h4
                       className={`${
                         currentMode === "dark" ? `text-white` : "text-black"
@@ -708,7 +726,17 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                 </div>
 
                 <div className="px-4">
-                  <Box sx={darkModeColors}>
+                  <Box sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                      left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                      transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                    }
+                  }}>
                     <h4
                       className={`${
                         currentMode === "dark" ? `text-white` : "text-black"
