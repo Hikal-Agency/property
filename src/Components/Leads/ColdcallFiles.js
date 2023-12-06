@@ -13,6 +13,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import moment from "moment";
 
 const getLangCode = (language) => {
   if (language) {
@@ -57,17 +58,23 @@ const ColdcallFiles = ({
   const { BACKEND_URL, currentMode, primaryColor } = useStateContext();
   const [sortByVal, setSortByVal] = useState("");
 
-  // console.log(lead_type);
-
   const fetchColdLeadsData = async (type) => {
     try {
       setFilesLoading(true);
 
       let url = BACKEND_URL + "/total-cold?";
-      if (type) {
-        url += `&${type}=1`;
+
+      console.log("cold::", leadCategory, lead_type)
+      if(leadCategory === "hot" && lead_type === "coldleads") {
+        url += `&unassigned=1&verified=1`;
       } else {
-        url += `&feedback=${lead_type}`;
+        if (type) {
+          url += `&${type}=1`;
+        } else {
+          if(lead_type !== "all"){
+            url += `&feedback=${lead_type}&verified=1`;
+          }
+        }
       }
 
       const token = localStorage.getItem("auth-token");
@@ -144,7 +151,7 @@ const ColdcallFiles = ({
     }
   }, [sortByVal]);
 
-  const fetchFileLeads = async (fileName, index) => {
+  const fetchFileLeads = async (file, index) => {
     setActiveFile(index);
     try {
       setpageState((old) => ({
@@ -152,9 +159,17 @@ const ColdcallFiles = ({
         isLoading: true,
       }));
 
+      const currDay = file["DATE(creationDate)"];
+
+const originalDate = moment(currDay);
+
+const nextDay = originalDate.add(1, 'days');
+
+const nextDayString = nextDay.format('YYYY-MM-DD');
+
       const url = `${BACKEND_URL}/coldLeads?page=1&perpage=${
         pageState.perpage || 14
-      }&coldCall=1&notes=${fileName}`;
+      }&coldCall=1&notes=${file?.notes}&date_range=${currDay},${nextDayString}`;
 
       const result = await axiosInstance.get(url, {
         headers: {
@@ -310,7 +325,7 @@ const ColdcallFiles = ({
                   className={`px-5 shadow-lg mr-2 rounded-lg py-3 inline-block ${
                     file?.index === activeFile && "border border-primary"
                   }`}
-                  onClick={() => fetchFileLeads(file?.notes, file?.index)}
+                  onClick={() => fetchFileLeads(file, file?.index)}
                 >
                   <Badge
                   max={5000}
