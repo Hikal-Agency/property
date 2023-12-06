@@ -64,7 +64,6 @@ const ColdcallFiles = ({
 
       let url = BACKEND_URL + "/total-cold?";
 
-      console.log("cold::", leadCategory, lead_type)
       if(leadCategory === "hot" && lead_type === "coldleads") {
         url += `&unassigned=1&verified=1`;
       } else {
@@ -72,8 +71,9 @@ const ColdcallFiles = ({
           url += `&${type}=1`;
         } else {
           if(lead_type !== "all"){
-            url += `&feedback=${lead_type}&verified=1`;
+            url += `&feedback=${lead_type}`;
           }
+          url += `&verified=1`;
         }
       }
 
