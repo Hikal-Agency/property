@@ -85,7 +85,7 @@ const TransferRequest = (props) => {
                 }`}
               >
                 {`${t("menu_reshuffled_request")} `}{" "}
-                <span className="capitalize">({t("feedback_" + value)})</span>{" "}
+                <span className="capitalize">({t(value)})</span>{" "}
                 <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
                   {pageState?.total}
                 </span>
