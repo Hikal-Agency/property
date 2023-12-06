@@ -57,6 +57,8 @@ const ColdcallFiles = ({
   const { BACKEND_URL, currentMode, primaryColor } = useStateContext();
   const [sortByVal, setSortByVal] = useState("");
 
+  // console.log(lead_type);
+
   const fetchColdLeadsData = async (type) => {
     try {
       setFilesLoading(true);
