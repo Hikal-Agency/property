@@ -814,7 +814,16 @@
     "sold": "Sold",
 
     "menu_cms" : "CMS",
-    "menu_onboarding" : "OnBoarding"
+    "onboarding_title" : "Client Onboarding Form",
+    "boarding_business_details" : "Business Details",
+    "boarding_social_profiles" : "Social Profiles",
+    "form_business_details" : "Business Details",
+    "form_country" : "Country",
+    "form_person_name" : "Name of person to Contact",
+    "form_person_contact" : "Contact Number",
+    "form_email_address" : "Email Address",
+    "form_logo" : "Logo",
+    "form_document" : "Documents"
     
 
 }

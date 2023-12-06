@@ -1413,7 +1413,7 @@ const Sidebarmui = () => {
         {
           name: t("menu_onboarding"),
           icon: <IoPersonAddOutline size={16} />,
-          pro: true,
+          // pro: true,
           link: "/onboarding",
         },
       ],

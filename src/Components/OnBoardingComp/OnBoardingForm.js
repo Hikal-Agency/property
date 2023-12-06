@@ -24,7 +24,7 @@ import { t } from "i18next";
 
 const currentDate = dayjs();
 
-const CreateOffer = ({ isLoading }) => {
+const OnBoardingForm = ({ isLoading }) => {
   const {
     currentMode,
     darkModeColors,
@@ -211,12 +211,19 @@ const CreateOffer = ({ isLoading }) => {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
           }}
-          className="p-2"
+          className={`p-4 ${
+            !themeBgImg &&
+            (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+          }`}
         >
+          <h3 className="text-primary text-center font-semibold text-lg">{` ${t(
+            "boarding_business_details"
+          )}`}</h3>
+          <br></br>
           <TextField
             type={"text"}
-            label={t("label_offer_title")}
-            className="w-full"
+            label={t("form_business_details")}
+            className="w-full mt-3"
             style={{
               marginBottom: "20px",
             }}
@@ -231,9 +238,7 @@ const CreateOffer = ({ isLoading }) => {
           />
           <TextField
             type="text"
-            label={t("label_offer_description")}
-            multiline
-            minRows={4}
+            label={t("form_person_name")}
             className="w-full"
             name="offerDescription"
             style={{ marginBottom: "20px" }}
@@ -441,4 +446,4 @@ const CreateOffer = ({ isLoading }) => {
   );
 };
 
-export default CreateOffer;
+export default OnBoardingForm;
