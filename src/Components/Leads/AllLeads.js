@@ -5,11 +5,7 @@ import {
   InputAdornment,
   TextField,
   styled,
-  // Select,
-  MenuItem,
   Tooltip,
-  FormControl,
-  InputLabel,
 } from "@mui/material";
 import Select from "react-select";
 import readXlsxFile from "read-excel-file";
@@ -54,29 +50,10 @@ import {
 
 import { FaSnapchatGhost, FaUser } from "react-icons/fa";
 import {
-  BsShieldX,
-  BsShieldCheck,
-  BsShieldMinus,
   BsShuffle,
-  BsSnow2,
   BsTrash,
   BsAlarm,
-  BsTiktok,
-  BsYoutube,
-  BsTwitter,
-  BsDownload,
-  BsLink45Deg,
-  BsMegaphone,
-  BsPersonRolodex,
-  BsWhatsapp,
-  BsChatDots,
-  BsChatLeftText,
-  BsGlobe2,
-  BsFacebook,
-  BsInstagram,
-  BsArchive,
 } from "react-icons/bs";
-import { FcGoogle } from "react-icons/fc";
 import { TbFileImport } from "react-icons/tb";
 import { RiMailSendLine } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
