@@ -382,7 +382,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                   <Box sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                      left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                      left: isLangRTL(i18n.language) ? "inherit" : "inherit",
                       right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                       transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
                     },
@@ -582,7 +582,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                   <Box sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                      left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                      left: isLangRTL(i18n.language) ? "inherit" : "inherit",
                       right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                       transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
                     },
@@ -729,7 +729,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                   <Box sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                      left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                      left: isLangRTL(i18n.language) ? "inherit" : "inherit",
                       right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                       transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
                     },
