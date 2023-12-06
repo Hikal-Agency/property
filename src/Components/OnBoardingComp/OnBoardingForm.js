@@ -8,7 +8,13 @@ import {
   FormControlLabel,
   Button,
   CircularProgress,
+  MenuItem,
+  InputAdornment,
+  Checkbox,
+  FormLabel,
 } from "@mui/material";
+import { FaLinkedin } from "react-icons/fa";
+
 import { useStateContext } from "../../context/ContextProvider";
 import dayjs from "dayjs";
 import { MdFileUpload } from "react-icons/md";
@@ -21,6 +27,9 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { Textarea } from "@material-tailwind/react";
 import { t } from "i18next";
+import { ImFacebook2 } from "react-icons/im";
+import { FaInstagramSquare, FaTiktok, FaSnapchat } from "react-icons/fa";
+import { IoLogoYoutube } from "react-icons/io";
 
 const currentDate = dayjs();
 
@@ -186,10 +195,33 @@ const OnBoardingForm = ({ isLoading }) => {
     }
   };
 
-  // useEffect(() => {
-  //   setValidFromDateValue(dayjs("2023-01-01"));
-  //   setValidToDateValue(dayjs("2023-01-01"));
-  // }, []);
+  const social_links = [
+    {
+      name: "linkedin",
+      icon: <FaLinkedin color="#0A66C2" size={20} />,
+    },
+    {
+      name: "facebook",
+      icon: <ImFacebook2 color="#0866FF" size={20} />,
+    },
+    {
+      name: "instagram",
+      icon: <FaInstagramSquare color="#C40FEC" size={20} />,
+    },
+    {
+      name: "tiktok",
+      icon: <FaTiktok color="#2CF5F0" size={20} />,
+    },
+    {
+      name: "snapchat",
+      icon: <FaSnapchat color="#FFFC09" size={20} />,
+    },
+    {
+      name: "youtube",
+      icon: <IoLogoYoutube color="#FE0808" size={20} />,
+    },
+  ];
+
   return (
     <div
       className={`p-3 rounded-lg ${
@@ -197,7 +229,7 @@ const OnBoardingForm = ({ isLoading }) => {
         (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
       }`}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-5 py-5">
         <Box
           sx={{
             ...darkModeColors,
@@ -214,7 +246,7 @@ const OnBoardingForm = ({ isLoading }) => {
           className={`p-4 ${
             !themeBgImg &&
             (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-          }`}
+          } col-span-2`}
         >
           <h3 className="text-primary text-center font-semibold text-lg">{` ${t(
             "boarding_business_details"
@@ -237,6 +269,21 @@ const OnBoardingForm = ({ isLoading }) => {
             required
           />
           <TextField
+            id="enquiry"
+            label={t("form_country")}
+            size="small"
+            className="w-full"
+            sx={{
+              "&": {
+                marginBottom: "1.25rem !important",
+              },
+            }}
+            displayEmpty
+            select
+          >
+            <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
+          </TextField>
+          <TextField
             type="text"
             label={t("form_person_name")}
             className="w-full"
@@ -250,177 +297,225 @@ const OnBoardingForm = ({ isLoading }) => {
               setOfferData({ ...offerData, offerDescription: e.target.value })
             }
           />
+          <div className="grid grid-cols-2 gap-3 mb-1">
+            <TextField
+              type="text"
+              label={t("form_person_contact")}
+              className="w-full"
+              name="offerDescription"
+              style={{ marginBottom: "20px" }}
+              variant="outlined"
+              size="small"
+              value={offerData.offerDescription}
+              required
+              onChange={(e) =>
+                setOfferData({ ...offerData, offerDescription: e.target.value })
+              }
+            />
+            <TextField
+              type="email"
+              label={t("form_email_address")}
+              className="w-full"
+              name="offerDescription"
+              style={{ marginBottom: "20px" }}
+              variant="outlined"
+              size="small"
+              value={offerData.offerDescription}
+              required
+              onChange={(e) =>
+                setOfferData({ ...offerData, offerDescription: e.target.value })
+              }
+            />
+          </div>
 
           <div className="grid grid-cols-2 gap-3 mb-1">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label={`${t("offer")} ${t("label_valid_from")}`}
-                className="w-full"
-                style={{ marginBottom: "15px" }}
-                value={validFromDateValue}
-                views={["year", "month", "day"]}
-                minDate={currentDate.toDate()}
-                onChange={(newValue) => {
-                  setValidFromDateValue(newValue);
-                  setValidFromDate(
-                    formatNum(newValue?.$d?.getUTCFullYear()) +
-                      "-" +
-                      formatNum(newValue?.$d?.getUTCMonth() + 1) +
-                      "-" +
-                      formatNum(newValue?.$d?.getUTCDate() + 1)
-                  );
+            <label htmlFor="contained-button-file">
+              <Button
+                variant="contained"
+                size="lg"
+                className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                style={{
+                  // backgroundColor: "#111827",
+                  color: "#ffffff",
+                  // border: "1px solid #DA1F26",
                 }}
-                format="yyyy-MM-dd"
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    onKeyDown={(e) => e.preventDefault()}
-                    readOnly={true}
-                    size={"small"}
-                    style={{
-                      marginBottom: "20px",
-                    }}
-                  />
-                )}
-              />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label={`${t("offer")} ${t("label_valid_till")}`}
-                className="w-full"
-                style={{ marginBottom: "15px" }}
-                value={validToDateValue}
-                views={["year", "month", "day"]}
-                minDate={currentDate.toDate()}
-                onChange={(newValue) => {
-                  setValidToDateValue(newValue);
-                  setValidToDate(
-                    formatNum(newValue?.$d?.getUTCFullYear()) +
-                      "-" +
-                      formatNum(newValue?.$d?.getUTCMonth() + 1) +
-                      "-" +
-                      formatNum(newValue?.$d?.getUTCDate() + 1)
-                  );
+                component="span"
+                disabled={loading ? true : false}
+                // startIcon={loading ? null : <MdFileUpload />}
+              >
+                <span>{t("form_logo")}</span>
+              </Button>
+            </label>
+
+            <label htmlFor="contained-button-document">
+              <Button
+                variant="contained"
+                size="lg"
+                className="min-w-fit bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
+                style={{
+                  color: "#ffffff",
                 }}
-                format="yyyy-MM-dd"
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    onKeyDown={(e) => e.preventDefault()}
-                    readOnly={true}
-                    size={"small"}
-                    style={{
-                      marginBottom: "20px",
-                    }}
-                  />
-                )}
-              />
-            </LocalizationProvider>
+                component="span"
+                disabled={loading ? true : false}
+              >
+                <span>{t("form_document")}</span>
+              </Button>
+            </label>
           </div>
         </Box>
-        <Box sx={darkModeColors} className="p-2">
-          {User?.role !== 3 && (
-            <div
-              className={`${
-                !themeBgImg &&
-                (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-              }
+        <div
+          className={`${
+            !themeBgImg &&
+            (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+          }
               } rounded-lg p-5`}
-            >
-              <Box
-                sx={{
-                  ...darkModeColors,
-                  "& .MuiTypography-root": {
-                    fontFamily: fontFam,
-                  },
-                }}
-              >
-                <label className="font-semibold mb-1">
-                  <span className="text-primary">{`${t("offer")} ${t(
-                    "label_validity"
-                  )}`}</span>
-                </label>
-                <br></br>
-                <FormControl>
-                  <RadioGroup defaultValue="Both" name="radio-buttons-group">
-                    <FormControlLabel
-                      className="mt-1"
-                      value="manager"
-                      name="validToManager"
-                      control={<Radio />}
-                      label={t("sales_managers")}
-                      onChange={(e) =>
-                        setOfferData({
-                          ...offerData,
-                          validToManager: 1,
-                          validToSales: 0,
-                        })
-                      }
-                    />
-                    <FormControlLabel
-                      className="mt-1"
-                      value="agent"
-                      name="validToSales"
-                      control={<Radio />}
-                      onChange={(e) =>
-                        setOfferData({
-                          ...offerData,
-                          validToSales: 1,
-                          validToManager: 0,
-                        })
-                      }
-                      label={t("sales_agents")}
-                    />
-                    <FormControlLabel
-                      className="mt-1"
-                      value="Both"
-                      onChange={(e) =>
-                        setOfferData({
-                          ...offerData,
-                          validToSales: 1,
-                          validToManager: 1,
-                        })
-                      }
-                      control={<Radio />}
-                      label={t("managers_and_agents")}
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Box>
-            </div>
-          )}
+        >
+          <Box
+            sx={{
+              ...darkModeColors,
+              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                {
+                  left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
+              "& legend": {
+                textAlign: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            }}
+            className="p-2"
+          >
+            <h3 className="text-primary text-center font-semibold text-lg">{` ${t(
+              "boarding_social_profiles"
+            )}`}</h3>
+            <br></br>
 
-          {/* <div className="grid grid-cols-2 gap-3 mt-3"> */}
-          <input
-            accept="image/*"
-            style={{ display: "none" }}
-            id="contained-button-file"
-            type="file"
-            onChange={handleImgUpload}
-          />
-          <label htmlFor="contained-button-file">
-            <Button
-              variant="contained"
-              size="medium"
-              className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
-              style={{
-                color: "#ffffff",
-                border: "1px solid white",
-                fontFamily: fontFam,
-              }}
-              component="span" // Required so the button doesn't automatically submit form
-              disabled={loading ? true : false}
-              startIcon={
-                loading ? null : <MdFileUpload className="mx-2" size={16} />
-              }
-            >
-              <span>{t("button_upload_image")}</span>
-            </Button>
-          </label>
-          {/* </div> */}
-        </Box>
+            {social_links?.map((social) => (
+              <TextField
+                type={"text"}
+                className="w-full mt-3"
+                style={{
+                  marginBottom: "20px",
+                }}
+                variant="outlined"
+                name={social?.name}
+                size="small"
+                value={offerData.offerTitle}
+                onChange={(e) =>
+                  setOfferData({ ...offerData, offerTitle: e.target.value })
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {social?.icon}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ))}
+          </Box>
+        </div>
       </div>
 
+      <div
+        className={`${
+          !themeBgImg &&
+          (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+        }
+              } rounded-lg p-5`}
+      >
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+              {
+                left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+          className="p-2"
+        >
+          <h3 className="text-primary text-center font-semibold text-lg">{` ${t(
+            "form_account_details"
+          )}`}</h3>
+          <br></br>
+
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5">
+            <div>
+              <TextField
+                id="enquiry"
+                label={t("form_account_type")}
+                size="small"
+                className="w-full"
+                sx={{
+                  "&": {
+                    marginBottom: "1.25rem !important",
+                  },
+                }}
+                displayEmpty
+                select
+              >
+                <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
+              </TextField>
+              <TextField
+                type="number"
+                label={t("form_account_usersList")}
+                className="w-full"
+                name="offerDescription"
+                style={{ marginBottom: "20px" }}
+                variant="outlined"
+                size="small"
+                value={offerData.offerDescription}
+                required
+                onChange={(e) =>
+                  setOfferData({
+                    ...offerData,
+                    offerDescription: e.target.value,
+                  })
+                }
+              />
+
+              <FormControlLabel
+                control={<Checkbox defaultChecked />}
+                label="Terms And Condition"
+              />
+            </div>
+            <div className="px-4">
+              <FormControl>
+                <FormLabel
+                  id="demo-radio-buttons-group-label"
+                  className={`${
+                    currentMode === "dark" ? "#ffffff" : "#000000"
+                  }`}
+                >
+                  Gender
+                </FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  defaultValue="female"
+                  name="radio-buttons-group"
+                >
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="123 AED Monthly"
+                  />
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio />}
+                    label="123 AED Yearly"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
+          </div>
+        </Box>
+      </div>
       <Button
         type="submit"
         size="medium"
