@@ -101,6 +101,7 @@ const AllLeads = ({
   lead_origin,
   leadCategory,
   transferRequest,
+  transferleads,
 }) => {
   const token = localStorage.getItem("auth-token");
   const [singleLeadData, setsingleLeadData] = useState({});
@@ -750,6 +751,11 @@ const AllLeads = ({
       if (transferRequest === "transferRequest") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=5&transferRequest=1`;
+      }
+      if (transferRequest === "transferleads") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=5&leadStatus=Transferred`;
       }
     }
@@ -791,6 +797,10 @@ const AllLeads = ({
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Unreachable`;
       } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&transferRequest=1`;
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&leadStatus=Transferred`;
@@ -847,6 +857,10 @@ const AllLeads = ({
       } else if (transferRequest === "transferRequest") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=1&transferRequest=1`;
+      } else if (transferRequest === "transferleads") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&leadStatus=Transferred`;
       }
     }
@@ -887,6 +901,10 @@ const AllLeads = ({
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Unreachable`;
       } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=3&transferRequest=1`;
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&leadStatus=Transferred`;
@@ -931,6 +949,10 @@ const AllLeads = ({
       } else if (transferRequest === "transferRequest") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=2&transferRequest=1`;
+      } else if (transferRequest === "transferleads") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&leadStatus=Transferred`;
       }
     }
@@ -971,6 +993,10 @@ const AllLeads = ({
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Unreachable`;
       } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=4&transferRequest=1`;
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&leadStatus=Transferred`;
@@ -1063,6 +1089,10 @@ const AllLeads = ({
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Unreachable`;
       } else if (transferRequest === "transferRequest") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&transferRequest=1`;
+      } else if (transferRequest === "transferleads") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&leadStatus=Transferred`;
@@ -1285,7 +1315,9 @@ const AllLeads = ({
         lead_type !== "coldLeadsVerified" &&
         lead_type !== "coldLeadsInvalid" &&
         lead_type !== "coldLeadsNotChecked" &&
-        lead_origin !== "unassigned"
+        lead_origin !== "unassigned" &&
+        transferRequest !== "transferleads" &&
+        transferRequest !== "transferRequest"
       ) {
         url += `&feedback=${lead_type}`;
       }
@@ -1320,8 +1352,15 @@ const AllLeads = ({
       url += `&is_whatsapp=0`;
     }
 
-    if (lead_origin === "transfferedleads") {
+    if (
+      lead_origin === "transfferedleads" ||
+      transferRequest === "transferleads"
+    ) {
       url += `&status=Transferred`;
+    }
+
+    if (transferRequest === "transferRequest") {
+      url += `&transferRequest=1`;
     }
 
     await axios
