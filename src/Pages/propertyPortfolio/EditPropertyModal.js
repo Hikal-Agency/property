@@ -45,6 +45,7 @@ const EditPropertyModal = ({
   const LeadData = openEdit;
   const token = localStorage.getItem("auth-token");
   const splitLocation = LeadData?.latLong?.split(",");
+  
 
   const { currentMode, darkModeColors, User, BACKEND_URL, isLangRTL, i18n, t } =
     useStateContext();

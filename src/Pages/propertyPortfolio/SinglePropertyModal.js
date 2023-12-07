@@ -8,6 +8,7 @@ import {
   Modal,
   Backdrop,
   CircularProgress,
+  Button,
 } from "@mui/material";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
@@ -68,14 +69,19 @@ const SinglePropertyModal = ({
     url: "",
     id: null,
   });
-  const [selectImagesModal, setSelectImagesModal] = useState({
-    isOpen: false,
-    listingId: null,
-  });
+
   const [selectDocumentModal, setSelectDocumentModal] = useState({
     isOpen: false,
     listingId: null,
   });
+
+  const [documentModal, setDocumentModal] = useState(false);
+
+  const [selectImagesModal, setSelectImagesModal] = useState({
+    isOpen: false,
+    listingId: null,
+  });
+  const [allDocs, setAllDocs] = useState([]);
   const {
     currentMode,
     setopenBackDrop,
@@ -84,11 +90,9 @@ const SinglePropertyModal = ({
     isLangRTL,
     i18n,
     User,
+    t,
   } = useStateContext();
   const [allImages, setAllImages] = useState([]);
-  const [allDocs, setAllDocs] = useState([]);
-
-  const [documentModal, setDocumentModal] = useState(false);
 
   const [isClosing, setIsClosing] = useState(false);
   const handleClose = () => {
@@ -358,21 +362,77 @@ const SinglePropertyModal = ({
                           </div>
                         </div>
                         <div className="w-full p-1">
-                          <div className="flex items-center gap-1 justify-end">
-                            {/* EDIT DETAILS  */}
-                            {hasPermission("property_update_dev_project") && (
-                              <Tooltip title="Edit Listing Details" arrow>
-                                <IconButton
-                                  className={`rounded-full bg-btn-primary`}
-                                  onClick={handleEdit}
-                                >
-                                  <BsPen size={16} color={"#FFFFFF"} />
-                                </IconButton>
-                              </Tooltip>
-                            )}
+                          {hasPermission("property_upload_img_doc") && (
+                            <div className="flex items-center gap-1 justify-end">
+                              {/* UPLOAD IMAGE AND DOCUMENT  */}
+                              <div className="min-w-fit  flex justify-center items-center mr-3 my-4 space-x-5">
+                                <label htmlFor="contained-button-file">
+                                  <Button
+                                    variant="contained"
+                                    size="lg"
+                                    className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                                    onClick={() =>
+                                      setSelectImagesModal({
+                                        isOpen: true,
+                                      })
+                                    }
+                                    style={{
+                                      // backgroundColor: "#111827",
+                                      color: "#ffffff",
+                                      // border: "1px solid #DA1F26",
+                                    }}
+                                    component="span"
+                                    disabled={loading ? true : false}
+                                    // startIcon={loading ? null : <MdFileUpload />}
+                                  >
+                                    <span>{t("button_upload_image")}</span>
+                                  </Button>
+                                  <p className="text-primary mt-2 italic">
+                                    {allImages?.length > 0
+                                      ? `${allImages?.length} images selected.`
+                                      : null}
+                                  </p>
+                                </label>
 
-                            {/* UPLOAD PICTURES  */}
-                            {/* <Tooltip title="Upload Pictures" arrow>
+                                <label htmlFor="contained-button-document">
+                                  <Button
+                                    variant="contained"
+                                    size="lg"
+                                    className="min-w-fit bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
+                                    style={{
+                                      color: "#ffffff",
+                                    }}
+                                    onClick={() => {
+                                      setDocumentModal(true);
+                                    }}
+                                    component="span"
+                                    disabled={loading ? true : false}
+                                    // startIcon={loading ? null : <MdFileUpload />}
+                                  >
+                                    <span>{t("button_upload_document")}</span>
+                                  </Button>
+                                  <p className="text-primary mt-2 italic">
+                                    {allDocs?.length > 0
+                                      ? `${allDocs?.length} documents selected.`
+                                      : null}
+                                  </p>
+                                </label>
+                              </div>
+
+                              {/* EDIT DETAILS  */}
+                              {hasPermission("property_update_dev_project") && (
+                                <Tooltip title="Edit Listing Details" arrow>
+                                  <IconButton
+                                    className={`rounded-full bg-btn-primary`}
+                                    onClick={handleEdit}
+                                  >
+                                    <BsPen size={16} color={"#FFFFFF"} />
+                                  </IconButton>
+                                </Tooltip>
+                              )}
+
+                              {/* UPLOAD PICTURES  */}
+                              {/* <Tooltip title="Upload Pictures" arrow>
                               <IconButton
                                 onClick={() =>
                                   setSelectImagesModal({
@@ -386,8 +446,8 @@ const SinglePropertyModal = ({
                               </IconButton>
                             </Tooltip> */}
 
-                            {/* UPLOAD DOCUMENTS  */}
-                            {/* <Tooltip title="Upload Documents" arrow>
+                              {/* UPLOAD DOCUMENTS  */}
+                              {/* <Tooltip title="Upload Documents" arrow>
                               <IconButton
                                 onClick={() =>
                                   setSelectDocumentModal({
@@ -401,20 +461,21 @@ const SinglePropertyModal = ({
                               </IconButton>
                             </Tooltip> */}
 
-                            <div className="mx-1"></div>
+                              <div className="mx-1"></div>
 
-                            {project?.tourlink && (
-                              <div className="border border-primary p-2 font-semibold rounded-md shadow-sm cursor-pointer">
-                                <a
-                                  href={project?.tourlink}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  360 view
-                                </a>
-                              </div>
-                            )}
-                          </div>
+                              {project?.tourlink && (
+                                <div className="border border-primary p-2 font-semibold rounded-md shadow-sm cursor-pointer">
+                                  <a
+                                    href={project?.tourlink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    360 view
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
@@ -687,7 +748,7 @@ const SinglePropertyModal = ({
                     project={project}
                   />
                 )}
-                {selectDocumentModal?.isOpen && (
+                {documentModal && (
                   <PropertyDocModal
                     documentModal={documentModal}
                     handleClose={() => setDocumentModal(false)}
