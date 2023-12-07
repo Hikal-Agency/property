@@ -50,10 +50,12 @@ const SinglePropertyModal = ({
   setOpenModal,
   openModal,
   FetchProperty,
+  loading,
+  setloading,
 }) => {
   console.log("single property data::: ", openModal);
   let project = openModal?.project;
-  const [loading, setloading] = useState(false);
+  // const [loading, setloading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [listData, setListingData] = useState({});
   const [openEdit, setOpenEdit] = useState(false);
@@ -208,6 +210,10 @@ const SinglePropertyModal = ({
 
   useEffect(() => {
     setopenBackDrop(false);
+    if (allDocs?.length > 0 || allImages?.length > 0) {
+      handleClose();
+      FetchProperty();
+    }
     // fetchSingleListing(lid);
   }, []);
 
@@ -746,6 +752,7 @@ const SinglePropertyModal = ({
                     setAllImages={setAllImages}
                     update="update"
                     project={project}
+                    FetchProperty={FetchProperty}
                   />
                 )}
                 {documentModal && (
@@ -754,6 +761,9 @@ const SinglePropertyModal = ({
                     handleClose={() => setDocumentModal(false)}
                     allDocs={allDocs}
                     setAllDocs={setAllDocs}
+                    project={project}
+                    update="update"
+                    FetchProperty={FetchProperty}
                   />
                 )}
                 {openEdit && (
