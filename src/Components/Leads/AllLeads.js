@@ -1282,6 +1282,8 @@ const AllLeads = ({
       coldCallCode = 5;
     } else if (lead_origin === "transfferedleads") {
       coldCallCode = 0;
+    } else if (lead_origin === "archive") {
+      coldCallCode = 4;
     }
 
     let url = `${BACKEND_URL}/search?title=${term}&page=${pageState.page}`;
