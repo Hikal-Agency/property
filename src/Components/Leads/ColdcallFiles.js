@@ -161,15 +161,15 @@ const ColdcallFiles = ({
 
       const currDay = file["DATE(creationDate)"];
 
-const originalDate = moment(currDay);
+      const originalDate = moment(currDay);
 
-const nextDay = originalDate.add(1, 'days');
+      const nextDay = originalDate.add(1, 'days');
 
-const nextDayString = nextDay.format('YYYY-MM-DD');
+      const nextDayString = nextDay.format('YYYY-MM-DD');
 
       const url = `${BACKEND_URL}/coldLeads?page=1&perpage=${
         pageState.perpage || 14
-      }&coldCall=1&notes=${file?.notes}&date_range=${currDay},${nextDayString}`;
+      }&coldCall=1&is_whatsapp=1&notes=${file?.notes}&date_range=${currDay},${nextDayString}&addedBy=${file?.addedBy}`;
 
       const result = await axiosInstance.get(url, {
         headers: {
@@ -327,7 +327,7 @@ const nextDayString = nextDay.format('YYYY-MM-DD');
                   }`}
                   onClick={() => fetchFileLeads(file, file?.index)}
                 >
-                  <Badge
+                  {/* <Badge
                   max={5000}
                     badgeContent={file?.total || 0}
                     sx={{
@@ -336,13 +336,13 @@ const nextDayString = nextDay.format('YYYY-MM-DD');
                         color: "white",
                       },
                     }}
-                  >
+                  > */}
                     <div className="flex flex-col items-center">
                       <FaRegFileAlt size={34} className="mb-2" />
                       <p>{file?.notes}</p>
                       <p>{file["DATE(creationDate)"]}</p>
                     </div>
-                  </Badge>
+                  {/* </Badge> */}
                 </div>
               );
             })}

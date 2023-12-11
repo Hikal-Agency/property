@@ -436,28 +436,17 @@ const UpdateLead = ({
                 >
                   <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 p-4">
                     <div>
-                      <Box
-                        sx={{
-                          ...darkModeColors,
-                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              left: isLangRTL(i18n.language)
-                                ? "inherit"
-                                : "1.75rem",
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
-                          "& legend": {
-                            textAlign: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        }}
-                      >
+                      <Box sx={{
+                        ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                          left: isLangRTL(i18n.language) ? "inherit" : "inherit",
+                          right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                          transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                        },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                        }
+                      }}>
                         <h4
                           className={`${
                             currentMode === "dark"
@@ -539,28 +528,17 @@ const UpdateLead = ({
                     </div>
 
                     <div>
-                      <Box
-                        sx={{
-                          ...darkModeColors,
-                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              left: isLangRTL(i18n.language)
-                                ? "inherit"
-                                : "1.75rem",
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
-                          "& legend": {
-                            textAlign: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        }}
-                      >
+                      <Box sx={{
+                        ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                          left: isLangRTL(i18n.language) ? "inherit" : "inherit",
+                          right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                          transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                        },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                        }
+                        }}>
                         <h4
                           className={`${
                             currentMode === "dark"
@@ -732,28 +710,17 @@ const UpdateLead = ({
                     </div>
 
                     <div>
-                      <Box
-                        sx={{
-                          ...darkModeColors,
-                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              left: isLangRTL(i18n.language)
-                                ? "inherit"
-                                : "1.75rem",
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
-                          "& legend": {
-                            textAlign: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        }}
-                      >
+                      <Box sx={{
+                        ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                          left: isLangRTL(i18n.language) ? "inherit" : "inherit",
+                          right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                          transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                        },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                        }
+                      }}>
                         <h4
                           className={`${
                             currentMode === "dark"
