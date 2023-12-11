@@ -24,11 +24,11 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import classNames from "classnames";
 import { selectStyles } from "../_elements/SelectStyles";
-import { 
+import {
   enquiry_options,
   language_options,
   property_options,
-  purpose_options 
+  purpose_options,
 } from "../_elements/SelectOptions";
 import { MdClose } from "react-icons/md";
 
@@ -49,11 +49,12 @@ const UpdateLead = ({
     BACKEND_URL,
     setSalesPerson: setAllSalesPersons,
     SalesPerson: AllSalesPersons,
-    t, isArabic,
+    t,
+    isArabic,
     Managers,
     isLangRTL,
     i18n,
-    primaryColor
+    primaryColor,
     // SalesPerson,
   } = useStateContext();
   const [value, setValue] = useState();
@@ -397,7 +398,12 @@ const UpdateLead = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${currentMode === "dark" && (isLangRTL(i18n.language) ? "border-r-2 border-primary" : "border-l-2 border-primary")}
+            } ${
+              currentMode === "dark" &&
+              (isLangRTL(i18n.language)
+                ? "border-r-2 border-primary"
+                : "border-l-2 border-primary")
+            }
              p-4 h-[100vh] w-[80vw] overflow-y-scroll 
             `}
           >
@@ -415,9 +421,7 @@ const UpdateLead = ({
                   <div className="bg-primary h-10 w-1 rounded-full my-1"></div>
                   <h1
                     className={`text-lg font-semibold mx-2 ${
-                      currentMode === "dark"
-                        ? "text-white"
-                        : "text-black"
+                      currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
                     {t("update_lead_details")}
@@ -432,17 +436,28 @@ const UpdateLead = ({
                 >
                   <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 p-4">
                     <div>
-                      <Box sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                          left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
-                          right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                          transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                        },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                        }
-                      }}>
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              left: isLangRTL(i18n.language)
+                                ? "inherit"
+                                : "1.75rem",
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
                         <h4
                           className={`${
                             currentMode === "dark"
@@ -524,17 +539,28 @@ const UpdateLead = ({
                     </div>
 
                     <div>
-                      <Box sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                          left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
-                          right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                          transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                        },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                        }
-                        }}>
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              left: isLangRTL(i18n.language)
+                                ? "inherit"
+                                : "1.75rem",
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
                         <h4
                           className={`${
                             currentMode === "dark"
@@ -549,8 +575,8 @@ const UpdateLead = ({
                           id="Project"
                           type={"text"}
                           className="w-full"
-                          style={{ 
-                            marginBottom: "20px" 
+                          style={{
+                            marginBottom: "20px",
                           }}
                           label={t("label_project_name")}
                           variant="outlined"
@@ -561,7 +587,9 @@ const UpdateLead = ({
                         {/* ENQUIRY  */}
                         <Select
                           id="enquiry"
-                          value={enquiry_options(t).find((option) => option.value === EnquiryType)}
+                          value={enquiry_options(t).find(
+                            (option) => option.value === EnquiryType
+                          )}
                           onChange={ChangeEnquiryType}
                           options={enquiry_options(t)}
                           placeholder={t("label_enquiry_about")}
@@ -618,7 +646,9 @@ const UpdateLead = ({
                         {/* PROPERTY TYPE  */}
                         <Select
                           id="property-type"
-                          value={property_options(t).find((option) => option.value === PropertyType)}
+                          value={property_options(t).find(
+                            (option) => option.value === PropertyType
+                          )}
                           onChange={ChangePropertyType}
                           options={property_options(t)}
                           placeholder={t("label_property_type")}
@@ -665,7 +695,9 @@ const UpdateLead = ({
                         {/* PURPOSE  */}
                         <Select
                           id="for"
-                          value={purpose_options(t).find((option) => option.value === ForType)}
+                          value={purpose_options(t).find(
+                            (option) => option.value === ForType
+                          )}
                           onChange={ChangeForType}
                           options={purpose_options(t)}
                           placeholder={t("label_purpose_of_enquiry")}
@@ -700,17 +732,28 @@ const UpdateLead = ({
                     </div>
 
                     <div>
-                      <Box sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                          left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
-                          right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                          transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                        },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                        }
-                      }}>
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              left: isLangRTL(i18n.language)
+                                ? "inherit"
+                                : "1.75rem",
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
                         <h4
                           className={`${
                             currentMode === "dark"
@@ -751,9 +794,9 @@ const UpdateLead = ({
                           size="small"
                           style={{
                             marginBottom: "20px",
-                            background: `${
-                              currentMode === "dark" ? "#1C1C1C" : "#fff"
-                            }`,
+                            // background: `${
+                            //   currentMode === "dark" ? "#1C1C1C" : "#fff"
+                            // }`,
                             "& .PhoneInputCountryIconImg": {
                               color: "#fff",
                             },
@@ -797,7 +840,9 @@ const UpdateLead = ({
                         {/* LANGUAGE  */}
                         <Select
                           id="LanguagePrefered"
-                          value={language_options.find(option => option.value === LanguagePrefered)}
+                          value={language_options.find(
+                            (option) => option.value === LanguagePrefered
+                          )}
                           onChange={ChangeLanguagePrefered}
                           options={language_options}
                           placeholder={t("label_language")}
