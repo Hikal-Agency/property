@@ -827,7 +827,13 @@
     "form_document" : "Documents",
     "form_account_details" : "Account Details",
     "form_account_type" : "Account Type",
-    "form_account_usersList" : "Number Of Users"
+    "form_account_usersList" : "Number Of Users",
+    "form_account_stripe" : "Stripe",
+    "form_account_paypal" : "Paypal",
+    "form_account_credit" : "Credit/Debit Cards",
+    "form_account_bank" : "Bank Transfer",
+    "form_account_custom" : "Add Custom Type"
+
     
 
 }

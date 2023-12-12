@@ -30,6 +30,12 @@ import { t } from "i18next";
 import { ImFacebook2 } from "react-icons/im";
 import { FaInstagramSquare, FaTiktok, FaSnapchat } from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io";
+import {
+  CountryDropdown,
+  RegionDropdown,
+  CountryRegionData,
+} from "react-country-region-selector";
+import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
 
 const currentDate = dayjs();
 
@@ -54,12 +60,29 @@ const OnBoardingForm = ({ isLoading }) => {
   const [loading, setloading] = useState(false);
   const [img, setImg] = useState();
 
-  const [offerData, setOfferData] = useState({
-    offerTitle: "",
-    offerDescription: "",
+  const [country, setCountry] = useState("");
+
+  const [onBoardData, setBoardData] = useState({
+    bussiness_name: "",
+    country: "",
+    name_of_person: "",
+    contact: "",
+    email: "",
+    logo: "",
+    documents: [],
+    account_type: "",
+    no_of_users: "",
+    payment_duration: "",
     validToManager: 1,
     validToSales: 1,
   });
+
+  const selectCountry = (e) => {
+    setBoardData((prev) => ({
+      ...prev,
+      country: e,
+    }));
+  };
 
   const handleImgUpload = (e) => {
     const file = e.target.files[0];
@@ -74,9 +97,9 @@ const OnBoardingForm = ({ isLoading }) => {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    const { offerTitle, offerDescription } = offerData;
+    const { bussiness_name, country } = onBoardData;
 
-    if (!offerTitle || !offerDescription || !validFromDate || !validToDate) {
+    if (!bussiness_name || !country || !validFromDate || !validToDate) {
       toast.error("Please fill all the required fields", {
         position: "top-right",
         autoClose: 3000,
@@ -105,7 +128,7 @@ const OnBoardingForm = ({ isLoading }) => {
       return;
     }
 
-    console.log("OFFer Data: ", offerData);
+    console.log("OFFer Data: ", onBoardData);
     console.log("OFFer Valid from: ", validFromDate);
     console.log("OFFer Valid To: ", validToDate);
 
@@ -116,15 +139,6 @@ const OnBoardingForm = ({ isLoading }) => {
     console.log("img: ", img);
     console.log("User", user);
 
-    let validToSales;
-    let validToManager;
-
-    if (User?.role === 3) {
-      validToSales = 1;
-    } else {
-      validToSales = offerData.validToSales;
-      validToManager = offerData.validToManager;
-    }
     const creationDate = new Date();
     const Offer = new FormData();
 
@@ -132,31 +146,25 @@ const OnBoardingForm = ({ isLoading }) => {
       "creationDate",
       moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
     );
-    Offer.append("offerTitle", offerData.offerTitle);
+    Offer.append("bussiness_name", onBoardData.bussiness_name);
     Offer.append("offer_image", img);
-    Offer.append("offerDescription", offerData.offerDescription);
+    Offer.append("country", onBoardData.country);
     Offer.append("status", "Open");
-    Offer.append("validFrom", validFromDate);
-    Offer.append("validTill", validToDate);
-    Offer.append("offerFrom", User?.id);
     Offer.append("offerAgency", User?.agency);
-    if (User?.role !== 3) {
-      Offer.append("validToManager", validToManager);
-    }
-    Offer.append("validToSales", validToSales);
-
-    console.log("Offer append: ", Offer);
-    console.log("Click img state: ", img);
 
     try {
-      const submitOffer = await axios.post(`${BACKEND_URL}/offers`, Offer, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const submitOnBoard = await axios.post(
+        `${BACKEND_URL}/onboarding/store`,
+        Offer,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
-      console.log("OFFer submitted: ", submitOffer);
+      console.log("OFFer submitted: ", submitOnBoard);
 
       toast.success("Offer Added Successfully", {
         position: "top-right",
@@ -169,9 +177,9 @@ const OnBoardingForm = ({ isLoading }) => {
         theme: "light",
       });
 
-      setOfferData({
-        offerTitle: "",
-        offerDescription: "",
+      setBoardData({
+        bussiness_name: "",
+        country: "",
         validToManager: "",
         validToSales: "",
       });
@@ -260,18 +268,34 @@ const OnBoardingForm = ({ isLoading }) => {
               marginBottom: "20px",
             }}
             variant="outlined"
-            name="offerTitle"
+            name="bussiness_name"
             size="small"
-            value={offerData.offerTitle}
+            value={onBoardData.bussiness_name}
             onChange={(e) =>
-              setOfferData({ ...offerData, offerTitle: e.target.value })
+              setBoardData({ ...onBoardData, bussiness_name: e.target.value })
             }
             required
           />
-          <TextField
+          <CountryDropdown
+            value={onBoardData?.country}
+            onChange={selectCountry}
+            label={t("form_country")}
+            className="country-dropdown-container"
+            style={{
+              width: "100%",
+              borderRadius: "5px",
+              padding: "6px 4px",
+              border: `1px solid ${currentMode === "dark" ? "#fff" : "#000"}`,
+              background: "none",
+              marginBottom: "20px",
+              color: "#000 ",
+            }}
+          />
+          {/* <TextField
             id="enquiry"
             label={t("form_country")}
             size="small"
+            value={onBoardData?.country}
             className="w-full"
             sx={{
               "&": {
@@ -282,19 +306,19 @@ const OnBoardingForm = ({ isLoading }) => {
             select
           >
             <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
-          </TextField>
+          </TextField> */}
           <TextField
             type="text"
             label={t("form_person_name")}
             className="w-full"
-            name="offerDescription"
+            name="country"
             style={{ marginBottom: "20px" }}
             variant="outlined"
             size="small"
-            value={offerData.offerDescription}
+            value={onBoardData.country}
             required
             onChange={(e) =>
-              setOfferData({ ...offerData, offerDescription: e.target.value })
+              setBoardData({ ...onBoardData, country: e.target.value })
             }
           />
           <div className="grid grid-cols-2 gap-3 mb-1">
@@ -302,28 +326,28 @@ const OnBoardingForm = ({ isLoading }) => {
               type="text"
               label={t("form_person_contact")}
               className="w-full"
-              name="offerDescription"
+              name="name_of_person"
               style={{ marginBottom: "20px" }}
               variant="outlined"
               size="small"
-              value={offerData.offerDescription}
+              value={onBoardData.name_of_person}
               required
               onChange={(e) =>
-                setOfferData({ ...offerData, offerDescription: e.target.value })
+                setBoardData({ ...onBoardData, name_of_person: e.target.value })
               }
             />
             <TextField
               type="email"
               label={t("form_email_address")}
               className="w-full"
-              name="offerDescription"
+              name="email"
               style={{ marginBottom: "20px" }}
               variant="outlined"
               size="small"
-              value={offerData.offerDescription}
+              value={onBoardData.email}
               required
               onChange={(e) =>
-                setOfferData({ ...offerData, offerDescription: e.target.value })
+                setBoardData({ ...onBoardData, email: e.target.value })
               }
             />
           </div>
@@ -400,9 +424,12 @@ const OnBoardingForm = ({ isLoading }) => {
                 variant="outlined"
                 name={social?.name}
                 size="small"
-                value={offerData.offerTitle}
+                value={onBoardData[social?.name]}
                 onChange={(e) =>
-                  setOfferData({ ...offerData, offerTitle: e.target.value })
+                  setBoardData({
+                    ...onBoardData,
+                    [social?.name]: e.target.value,
+                  })
                 }
                 InputProps={{
                   startAdornment: (
@@ -459,22 +486,57 @@ const OnBoardingForm = ({ isLoading }) => {
                 displayEmpty
                 select
               >
-                <MenuItem value={"Studio"}>{t("enquiry_studio")}</MenuItem>
+                <MenuItem value={"stripe"}>
+                  <FaStripe
+                    size={30}
+                    color="blue"
+                    style={{ marginRight: "10px" }}
+                  />
+                  {t("form_account_stripe")}
+                </MenuItem>
+                <MenuItem value={"paypal"}>
+                  <FaPaypal
+                    size={20}
+                    color="blue"
+                    style={{ marginRight: "10px" }}
+                  />
+
+                  {t("form_account_paypal")}
+                </MenuItem>
+
+                <MenuItem value={"credit"}>
+                  <FaCreditCard
+                    size={20}
+                    color="blue"
+                    style={{ marginRight: "10px" }}
+                  />
+
+                  {t("form_account_credit")}
+                </MenuItem>
+                <MenuItem value={"bank"}>
+                  <FaUniversity
+                    size={20}
+                    color="blue"
+                    style={{ marginRight: "10px" }}
+                  />
+
+                  {t("form_account_bank")}
+                </MenuItem>
               </TextField>
               <TextField
                 type="number"
                 label={t("form_account_usersList")}
                 className="w-full"
-                name="offerDescription"
+                name="country"
                 style={{ marginBottom: "20px" }}
                 variant="outlined"
                 size="small"
-                value={offerData.offerDescription}
+                value={onBoardData.country}
                 required
                 onChange={(e) =>
-                  setOfferData({
-                    ...offerData,
-                    offerDescription: e.target.value,
+                  setBoardData({
+                    ...onBoardData,
+                    country: e.target.value,
                   })
                 }
               />
@@ -492,7 +554,7 @@ const OnBoardingForm = ({ isLoading }) => {
                     currentMode === "dark" ? "#ffffff" : "#000000"
                   }`}
                 >
-                  Gender
+                  Payment Duration
                 </FormLabel>
                 <RadioGroup
                   row
