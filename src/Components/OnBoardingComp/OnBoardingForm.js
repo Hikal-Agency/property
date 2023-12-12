@@ -280,6 +280,7 @@ const OnBoardingForm = ({ isLoading }) => {
             value={onBoardData?.country}
             onChange={selectCountry}
             label={t("form_country")}
+            className="country-dropdown-container"
             style={{
               width: "100%",
               borderRadius: "5px",
@@ -287,6 +288,7 @@ const OnBoardingForm = ({ isLoading }) => {
               border: `1px solid ${currentMode === "dark" ? "#fff" : "#000"}`,
               background: "none",
               marginBottom: "20px",
+              color: "#000 ",
             }}
           />
           {/* <TextField
