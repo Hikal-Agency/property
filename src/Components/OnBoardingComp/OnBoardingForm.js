@@ -559,16 +559,22 @@ const OnBoardingForm = ({ isLoading }) => {
                 <RadioGroup
                   row
                   aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="female"
+                  defaultValue="monthly"
                   name="radio-buttons-group"
+                  onChange={(e) =>
+                    setBoardData({
+                      ...onBoardData,
+                      payment_duration: e.target.value,
+                    })
+                  }
                 >
                   <FormControlLabel
-                    value="female"
+                    value="monthly"
                     control={<Radio />}
                     label="123 AED Monthly"
                   />
                   <FormControlLabel
-                    value="male"
+                    value="yearly"
                     control={<Radio />}
                     label="123 AED Yearly"
                   />
