@@ -531,17 +531,20 @@ const OnBoardingForm = ({ isLoading }) => {
                 style={{ marginBottom: "20px" }}
                 variant="outlined"
                 size="small"
-                value={onBoardData.country}
+                value={onBoardData.no_of_users}
                 required
                 onChange={(e) =>
                   setBoardData({
                     ...onBoardData,
-                    country: e.target.value,
+                    no_of_users: e.target.value,
                   })
                 }
               />
 
               <FormControlLabel
+                onChange={(e) =>
+                  setBoardData({ ...onBoardData, email: e.target.value })
+                }
                 control={<Checkbox defaultChecked />}
                 label="Terms And Condition"
               />
