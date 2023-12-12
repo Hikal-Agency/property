@@ -806,5 +806,31 @@
     "source_telegram": "تليجرام",
     "source_wechat": "ويتشات",
     "source_twitter": "تويتر",
-    "update_booked_deal": "تحديث الصفقة المحجوزة"
+    "update_booked_deal": "تحديث الصفقة المحجوزة",
+
+    "documents": "المستندات",
+    "origin_liveleads": "عروض المكالمات الحية",
+    "sold": "تم البيع",
+    "menu_cms": "نظام إدارة المحتوى",
+    "menu_onboarding": "إعداد العميل",
+    "onboarding_title": "استمارة تسجيل العميل",
+    "boarding_business_details": "تفاصيل العمل",
+    "boarding_social_profiles": "الملفات الاجتماعية",
+    "form_business_details": "تفاصيل العمل",
+    "form_country": "بلد العمل",
+    "form_person_name": "اسم الشخص للاتصال",
+    "form_person_contact": "رقم الاتصال",
+    "form_email_address": "عنوان البريد الإلكتروني",
+    "form_logo": "شعار العمل",
+    "form_document": "المستندات",
+    "form_account_details": "تفاصيل الحساب",
+    "form_account_type": "نوع الحساب",
+    "form_account_usersList": "عدد المستخدمين",
+    "menu_reshuffled_request": "طلبات إعادة الترتيب",
+
+    "form_account_stripe" : "شريط",
+    "form_account_paypal" : "باي بال",
+    "form_account_credit" : "بطاقات الائتمان / الخصم",
+    "form_account_bank" : "تحويل بنكي",
+    "form_account_custom" : "إضافة نوع مخصص"
 }

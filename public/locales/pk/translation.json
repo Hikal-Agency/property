@@ -806,5 +806,31 @@
     "source_telegram": "ٹیلیگرام",
     "source_wechat": "وی چیٹ",
     "source_twitter": "ٹویٹر",
-    "update_booked_deal": "بک کردہ ڈیل کا اپ ڈیٹ"
+    "update_booked_deal": "بک کردہ ڈیل کا اپ ڈیٹ",
+
+    "documents": "دستاویزات",
+    "origin_liveleads": "لائیو کال لیڈز",
+    "sold": "فروخت ہوگئی",
+    "menu_cms" : "سی ایم ایس",
+    "menu_onboarding" : "آن بورڈنگ",
+    "onboarding_title" : "کلائنٹ آن بورڈنگ فارم",
+    "boarding_business_details" : "بزنس ڈیٹیلز",
+    "boarding_social_profiles" : "سوشل پروفائلز",
+    "form_business_details" : "بزنس ڈیٹیلز",
+    "form_country" : "کنٹری آف آپریشن",
+    "form_person_name" : "رابطے کیلئے شخص کا نام",
+    "form_person_contact" : "رابطہ نمبر",
+    "form_email_address" : "ای میل ایڈریس",
+    "form_logo" : "لوگو",
+    "form_document" : "دستاویزات",
+    "form_account_details" : "اکاؤنٹ ڈیٹیلز",
+    "form_account_type" : "اکاؤنٹ کی قسم",
+    "form_account_usersList" : "صارفین کی تعداد",
+    "menu_reshuffled_request": "ری شفل درخواستیں",
+
+    "form_account_stripe" : "اسٹرائپ",
+    "form_account_paypal" : "پے پال",
+    "form_account_credit" : "کریڈٹ/ڈیبٹ کارڈز",
+    "form_account_bank" : "بینک ٹرانسفر",
+    "form_account_custom" : "کسٹم ٹائپ شامل کریں"
 }

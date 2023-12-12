@@ -806,5 +806,31 @@
     "source_telegram": "Telegram",
     "source_wechat": "WeChat",
     "source_twitter": "Twitter",
-    "update_booked_deal": "Mettre à jour l'affaire réservée"
+    "update_booked_deal": "Mettre à jour l'affaire réservée",
+
+    "documents": "Documents",
+    "origin_liveleads": "Leads d'appels en direct",
+    "sold": "Vendu",
+    "menu_cms" : "CMS",
+    "menu_onboarding" : "Intégration",
+    "onboarding_title" : "Formulaire d'intégration du client",
+    "boarding_business_details" : "Détails de l'entreprise",
+    "boarding_social_profiles" : "Profils sociaux",
+    "form_business_details" : "Détails de l'entreprise",
+    "form_country" : "Pays d'exploitation",
+    "form_person_name" : "Nom de la personne à contacter",
+    "form_person_contact" : "Numéro de contact",
+    "form_email_address" : "Adresse e-mail",
+    "form_logo" : "Logo",
+    "form_document" : "Documents",
+    "form_account_details" : "Détails du compte",
+    "form_account_type" : "Type de compte",
+    "form_account_usersList" : "Nombre d'utilisateurs",
+    "menu_reshuffled_request": "Demandes de remaniement",
+
+    "form_account_stripe" : "Stripe",
+    "form_account_paypal" : "Paypal",
+    "form_account_credit" : "Cartes de crédit/débit",
+    "form_account_bank" : "Virement bancaire",
+    "form_account_custom" : "Ajouter un type personnalisé"
 }

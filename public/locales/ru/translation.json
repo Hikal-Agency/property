@@ -806,5 +806,31 @@
     "source_telegram": "Telegram",
     "source_wechat": "WeChat",
     "source_twitter": "Twitter",
-    "update_booked_deal": "Обновить забронированную сделку"
+    "update_booked_deal": "Обновить забронированную сделку",
+
+    "documents": "Документы",
+    "origin_liveleads": "Лиды с живым звонком",
+    "sold": "Продано",
+    "menu_cms" : "CMS",
+    "menu_onboarding" : "Ввод в эксплуатацию",
+    "onboarding_title" : "Форма клиентской активации",
+    "boarding_business_details" : "Детали бизнеса",
+    "boarding_social_profiles" : "Социальные профили",
+    "form_business_details" : "Детали бизнеса",
+    "form_country" : "Страна операции",
+    "form_person_name" : "Имя лица для связи",
+    "form_person_contact" : "Контактный номер",
+    "form_email_address" : "Адрес электронной почты",
+    "form_logo" : "Логотип",
+    "form_document" : "Документы",
+    "form_account_details" : "Детали учетной записи",
+    "form_account_type" : "Тип учетной записи",
+    "form_account_usersList" : "Количество пользователей",
+    "menu_reshuffled_request": "Запрос на пересдачу",
+
+    "form_account_stripe" : "Страйп",
+    "form_account_paypal" : "PayPal",
+    "form_account_credit" : "Кредитные/дебетовые карты",
+    "form_account_bank" : "Банковский перевод",
+    "form_account_custom" : "Добавить пользовательский тип"
 }

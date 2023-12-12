@@ -806,5 +806,31 @@
     "source_telegram": "טלגרם",
     "source_wechat": "WeChat",
     "source_twitter": "טוויטר",
-    "update_booked_deal": "עדכון עסקה שהוזמנה"
+    "update_booked_deal": "עדכון עסקה שהוזמנה",
+
+    "documents": "מסמכים",
+    "origin_liveleads": "לידים משיחה חיה",
+    "sold": "נמכר",
+    "menu_cms" : "CMS",
+    "menu_onboarding" : "הכנסה",
+    "onboarding_title" : "טופס הכנסת לקוח",
+    "boarding_business_details" : "פרטי עסק",
+    "boarding_social_profiles" : "פרופילים חברתיים",
+    "form_business_details" : "פרטי עסק",
+    "form_country" : "מדינת הפעולה",
+    "form_person_name" : "שם האדם ליצירת קשר",
+    "form_person_contact" : "מספר טלפון ליצירת קשר",
+    "form_email_address" : "כתובת דואר אלקטרוני",
+    "form_logo" : "לוגו",
+    "form_document" : "מסמכים",
+    "form_account_details" : "פרטי החשבון",
+    "form_account_type" : "סוג החשבון",
+    "form_account_usersList" : "מספר המשתמשים",
+    "menu_reshuffled_request": "בקשות לשינוי סידור",
+
+    "form_account_stripe" : "Stripe",
+    "form_account_paypal" : "Paypal",
+    "form_account_credit" : "כרטיסי אשראי/חיוב יומיומי",
+    "form_account_bank" : "העברה בנקאית",
+    "form_account_custom" : "הוסף סוג מותאם אישית"
 }
