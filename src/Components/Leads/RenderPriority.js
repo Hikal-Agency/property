@@ -29,26 +29,33 @@ const RenderPriority = ({ cellValues }) => {
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   // eslint-disable-next-line
   const [confirmbtnloading, setconfirmbtnloading] = useState(false);
-  const { currentMode, setreloadDataGrid, reloadDataGrid, BACKEND_URL, fetchSidebarData, User, t, primaryColor} =
-    useStateContext();
+  const {
+    currentMode,
+    setreloadDataGrid,
+    reloadDataGrid,
+    BACKEND_URL,
+    fetchSidebarData,
+    User,
+    t,
+    primaryColor,
+  } = useStateContext();
 
   const [selectedPriority, setSelectedPriority] = useState(Priority);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  
+
   const handleFlagClick = (e) => {
     e.stopPropagation();
     setIsDropdownOpen(true);
   };
-  
+
   const handlePriorityChange = (newPriority) => {
     setSelectedPriority(newPriority.value);
     setIsDropdownOpen(false);
-    
+
     setnewPriority(newPriority.value);
     setPriorityDialogue(true);
   };
-
 
   console.log("Priority: ", Priority);
 
@@ -70,6 +77,10 @@ const RenderPriority = ({ cellValues }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    setSelectedPriority(cellValues?.row?.priority);
+  }, [cellValues]);
 
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
@@ -104,14 +115,17 @@ const RenderPriority = ({ cellValues }) => {
       })
       .then((result) => {
         console.log("Priority Updated successfull");
-fetchSidebarData();
+        fetchSidebarData();
         console.log(result);
         socket.emit("notification_priority_update", {
-          from: {id: User?.id, userName: User?.userName}, 
-          leadName: cellValues?.row?.leadName, 
+          from: { id: User?.id, userName: User?.userName },
+          leadName: cellValues?.row?.leadName,
           newPriority,
-          participants: [cellValues?.row?.assignedToManager || 0, cellValues?.row?.assignedToSales || 0]
-        })
+          participants: [
+            cellValues?.row?.assignedToManager || 0,
+            cellValues?.row?.assignedToSales || 0,
+          ],
+        });
         toast.success("Priority Updated Successfully", {
           position: "top-right",
           autoClose: 3000,
@@ -149,25 +163,26 @@ fetchSidebarData();
 
   const getFlagIcon = () => {
     if (!Priority) {
+      return <TbFlag3 size={20} className="text-[#AAAAAA]" />;
+    } else {
       return (
-        <TbFlag3 size={20} className="text-[#AAAAAA]" />
-      )
+        <TbFlag3Filled
+          size={20}
+          className={`text-${priorityColors[selectedPriority]}-500`}
+        />
+      );
     }
-    else {
-      return (
-        <TbFlag3Filled size={20} className={`text-${priorityColors[selectedPriority]}-500`} />
-      )
-    }
-  }
+  };
 
-  const customOptions = ({
-    innerProps,
-    data 
-  }) => (
+  const customOptions = ({ innerProps, data }) => (
     <div {...innerProps}>
       {data.icon && (
-        <div 
-          className={`flex items-center justify-start ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+        <div
+          className={`flex items-center justify-start ${
+            currentMode === "dark"
+              ? "bg-black text-white"
+              : "bg-white text-black"
+          }`}
           style={{
             padding: "5px 3px",
             borderRadius: "5px",
@@ -176,12 +191,8 @@ fetchSidebarData();
             wordWrap: "break-word",
           }}
         >
-          <span>
-            {data.icon}
-          </span>
-          <span>
-            {data.label}
-          </span>
+          <span>{data.icon}</span>
+          <span>{data.label}</span>
         </div>
       )}
     </div>
@@ -189,7 +200,7 @@ fetchSidebarData();
 
   return (
     <div className="renderDD w-full h-full flex items-center justify-center">
-      <Select 
+      <Select
         id="priority"
         value={selectedPriority}
         onChange={handlePriorityChange}
@@ -203,13 +214,13 @@ fetchSidebarData();
         menuPortalTarget={document.body}
         styles={{
           ...renderStyles(currentMode, primaryColor),
-          control: provided => ({
+          control: (provided) => ({
             ...provided,
             background: "transparent",
             borderColor: "transparent",
             color: currentMode === "dark" ? "#FFFFFF" : "#000000",
             height: "100%",
-            textAlign: "center", 
+            textAlign: "center",
             display: "flex",
             justifyContent: "center",
           }),
@@ -220,7 +231,7 @@ fetchSidebarData();
           //   justifyContent: "center",
           //   alignItems: "center",
           // }),
-          placeholder: provided => ({
+          placeholder: (provided) => ({
             ...provided,
             color: currentMode === "dark" ? "#EEEEEE" : "#333333",
             width: "100%",
@@ -236,7 +247,7 @@ fetchSidebarData();
         }}
       />
 
-        {/* <Box 
+      {/* <Box 
         sx={SelectStyles}
         className={`w-full h-full flex items-center justify-center`} >
           <IconButton onClick={handleFlagClick} style={{ zIndex: 1001 }}>
@@ -259,7 +270,7 @@ fetchSidebarData();
             </FormControl>
           )}
         </Box> */}
-        {/* <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
+      {/* <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
           <Select
           sx={{
             "& .MuiSelect-select": {
@@ -290,83 +301,88 @@ fetchSidebarData();
           </Select>
         </FormControl> */}
 
-        {PriorityDialogue && (
-          <>
-            <Dialog
-              sx={{
-                "& .MuiPaper-root": {
-                  boxShadow: "none !important",
+      {PriorityDialogue && (
+        <>
+          <Dialog
+            sx={{
+              "& .MuiPaper-root": {
+                boxShadow: "none !important",
+              },
+              "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                {
+                  // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
                 },
-                "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                  {
-                    // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
-                  },
+            }}
+            open={PriorityDialogue}
+            onClose={(e) => setPriorityDialogue(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <IconButton
+              sx={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                color: (theme) => theme.palette.grey[500],
               }}
-              open={PriorityDialogue}
-              onClose={(e) => setPriorityDialogue(false)}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
+              onClick={() => setPriorityDialogue(false)}
             >
-              <IconButton
-                sx={{
-                  position: "absolute",
-                  right: 12,
-                  top: 10,
-                  color: (theme) => theme.palette.grey[500],
-                }}
-                onClick={() => setPriorityDialogue(false)}
-              >
-                <IoMdClose size={18} />
-              </IconButton>
-              <div className={`px-10 py-5 ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-white text-black"}`}>
-                <div className="flex flex-col justify-center items-center">
-                  <TbFlag3
-                    size={50}
-                    className="text-primary text-2xl"
-                  />
-                  <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("want_to_change_priority")}{" "}{t("from")}{" "}
-                    <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                      {Priority === null ? "Null" : t("priority_" + Priority?.toLowerCase())}
-                    </span>{" "}
-                    {t("to")}{" "}
-                    <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
-                      {t("priority_" + newPriority?.toLowerCase())}
-                    </span>{" "}
-                    ?
-                  </h1>
-                </div>
-                <div className="action buttons mt-5 flex items-center justify-center space-x-2">
-                  <Button
-                    className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
-                    ripple={true}
-                    size="lg"
-                    onClick={() => UpdatePriority(cellValues)}
-                  >
-                    {btnloading ? (
-                      <CircularProgress size={16} sx={{ color: "white" }} />
-                    ) : (
-                      <span>{t("confirm")}</span>
-                    )}
-                  </Button>
-
-                  <Button
-                    onClick={() => setPriorityDialogue(false)}
-                    ripple={true}
-                    variant="outlined"
-                    className={`shadow-none p-3 rounded-md text-sm  ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-primary border-primary"
-                    }`}
-                  >
-                    {t("cancel")}
-                  </Button>
-                </div>
+              <IoMdClose size={18} />
+            </IconButton>
+            <div
+              className={`px-10 py-5 ${
+                currentMode === "dark"
+                  ? "bg-[#1C1C1C] text-white"
+                  : "bg-white text-black"
+              }`}
+            >
+              <div className="flex flex-col justify-center items-center">
+                <TbFlag3 size={50} className="text-primary text-2xl" />
+                <h1 className="font-semibold pt-3 text-lg text-center">
+                  {t("want_to_change_priority")} {t("from")}{" "}
+                  <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
+                    {Priority === null
+                      ? "Null"
+                      : t("priority_" + Priority?.toLowerCase())}
+                  </span>{" "}
+                  {t("to")}{" "}
+                  <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
+                    {t("priority_" + newPriority?.toLowerCase())}
+                  </span>{" "}
+                  ?
+                </h1>
               </div>
-            </Dialog>
-          </>
-        )}
+              <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                <Button
+                  className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                  ripple={true}
+                  size="lg"
+                  onClick={() => UpdatePriority(cellValues)}
+                >
+                  {btnloading ? (
+                    <CircularProgress size={16} sx={{ color: "white" }} />
+                  ) : (
+                    <span>{t("confirm")}</span>
+                  )}
+                </Button>
+
+                <Button
+                  onClick={() => setPriorityDialogue(false)}
+                  ripple={true}
+                  variant="outlined"
+                  className={`shadow-none p-3 rounded-md text-sm  ${
+                    currentMode === "dark"
+                      ? "text-white border-white"
+                      : "text-primary border-primary"
+                  }`}
+                >
+                  {t("cancel")}
+                </Button>
+              </div>
+            </div>
+          </Dialog>
+        </>
+      )}
     </div>
   );
 };
