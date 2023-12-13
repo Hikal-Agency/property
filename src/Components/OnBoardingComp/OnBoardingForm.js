@@ -72,9 +72,7 @@ const OnBoardingForm = ({ isLoading }) => {
     documents: [],
     account_type: "",
     no_of_users: "",
-    payment_duration: "",
-    validToManager: 1,
-    validToSales: 1,
+    payment_duration: "monthly",
   });
 
   const selectCountry = (e) => {
@@ -99,7 +97,7 @@ const OnBoardingForm = ({ isLoading }) => {
 
     const { bussiness_name, country } = onBoardData;
 
-    if (!bussiness_name || !country || !validFromDate || !validToDate) {
+    if (!bussiness_name || !country) {
       toast.error("Please fill all the required fields", {
         position: "top-right",
         autoClose: 3000,
@@ -113,49 +111,32 @@ const OnBoardingForm = ({ isLoading }) => {
       return;
     }
 
-    // check if validTo date is greater than validFrom date
-    if (new Date(validToDate) < new Date(validFromDate)) {
-      toast.error("Valid To date cannot be before Valid From date", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return;
-    }
-
     console.log("OFFer Data: ", onBoardData);
-    console.log("OFFer Valid from: ", validFromDate);
-    console.log("OFFer Valid To: ", validToDate);
 
     setloading(true);
     const token = localStorage.getItem("auth-token");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    console.log("img: ", img);
-    console.log("User", user);
-
     const creationDate = new Date();
-    const Offer = new FormData();
+    const Board = new FormData();
 
-    Offer.append(
+    Board.append(
       "creationDate",
       moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
     );
-    Offer.append("bussiness_name", onBoardData.bussiness_name);
-    Offer.append("offer_image", img);
-    Offer.append("country", onBoardData.country);
-    Offer.append("status", "Open");
-    Offer.append("offerAgency", User?.agency);
+    Board.append("bussiness_name", onBoardData.bussiness_name);
+    // Board.append("offer_image", img);
+    Board.append("country", onBoardData.country);
+    Board.append("name_of_person", onBoardData.name_of_person);
+    Board.append("contact", onBoardData.contact);
+    Board.append("email", onBoardData.email);
+    Board.append("account_type", onBoardData?.account_type);
+    Board.append("no_of_users", onBoardData?.no_of_users);
 
     try {
       const submitOnBoard = await axios.post(
         `${BACKEND_URL}/onboarding/store`,
-        Offer,
+        Board,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -164,9 +145,9 @@ const OnBoardingForm = ({ isLoading }) => {
         }
       );
 
-      console.log("OFFer submitted: ", submitOnBoard);
+      console.log("Client request submitted: ", submitOnBoard);
 
-      toast.success("Offer Added Successfully", {
+      toast.success("Registeration Successfull.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -180,11 +161,15 @@ const OnBoardingForm = ({ isLoading }) => {
       setBoardData({
         bussiness_name: "",
         country: "",
-        validToManager: "",
-        validToSales: "",
+        name_of_person: "",
+        contact: "",
+        email: "",
+        account_type: "",
+        no_of_users: "",
+        documents: [],
+        logo: "",
+        payment_duration: "monthly",
       });
-      setValidFromDate("");
-      setValidToDate("");
 
       setloading(false);
     } catch (error) {
@@ -311,14 +296,14 @@ const OnBoardingForm = ({ isLoading }) => {
             type="text"
             label={t("form_person_name")}
             className="w-full"
-            name="country"
+            name="name_of_person"
             style={{ marginBottom: "20px" }}
             variant="outlined"
             size="small"
-            value={onBoardData.country}
+            value={onBoardData.name_of_person}
             required
             onChange={(e) =>
-              setBoardData({ ...onBoardData, country: e.target.value })
+              setBoardData({ ...onBoardData, name_of_person: e.target.value })
             }
           />
           <div className="grid grid-cols-2 gap-3 mb-1">
@@ -326,14 +311,14 @@ const OnBoardingForm = ({ isLoading }) => {
               type="text"
               label={t("form_person_contact")}
               className="w-full"
-              name="name_of_person"
+              name="contact"
               style={{ marginBottom: "20px" }}
               variant="outlined"
               size="small"
-              value={onBoardData.name_of_person}
+              value={onBoardData.contact}
               required
               onChange={(e) =>
-                setBoardData({ ...onBoardData, name_of_person: e.target.value })
+                setBoardData({ ...onBoardData, contact: e.target.value })
               }
             />
             <TextField
@@ -483,6 +468,10 @@ const OnBoardingForm = ({ isLoading }) => {
                     marginBottom: "1.25rem !important",
                   },
                 }}
+                value={onBoardData?.account_type}
+                onChange={(e) =>
+                  setBoardData({ ...onBoardData, account_type: e.target.value })
+                }
                 displayEmpty
                 select
               >
@@ -527,7 +516,7 @@ const OnBoardingForm = ({ isLoading }) => {
                 type="number"
                 label={t("form_account_usersList")}
                 className="w-full"
-                name="country"
+                name="no_of_users"
                 style={{ marginBottom: "20px" }}
                 variant="outlined"
                 size="small"
