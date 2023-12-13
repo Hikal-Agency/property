@@ -806,5 +806,31 @@
     "source_telegram": "Telegram",
     "source_wechat": "WeChat",
     "source_twitter": "Twitter",
-    "update_booked_deal": "更新已预订交易"
+    "update_booked_deal": "更新已预订交易",
+
+    "documents": "文件",
+    "origin_liveleads": "现场通话线索",
+    "sold": "已售",
+    "menu_cms": "内容管理系统",
+    "menu_onboarding": "入职",
+    "onboarding_title": "客户入职表格",
+    "boarding_business_details": "业务详情",
+    "boarding_social_profiles": "社交资料",
+    "form_business_details": "业务详情",
+    "form_country": "运营国家",
+    "form_person_name": "联系人姓名",
+    "form_person_contact": "联系方式",
+    "form_email_address": "电子邮件地址",
+    "form_logo": "标识",
+    "form_document": "文件",
+    "form_account_details": "账户详情",
+    "form_account_type": "账户类型",
+    "form_account_usersList": "用户数量",
+    "menu_reshuffled_request": "重新洗牌请求",
+
+    "form_account_stripe" : "Stripe（条纹）",
+    "form_account_paypal" : "Paypal（贝宝）",
+    "form_account_credit" : "信用卡/借记卡",
+    "form_account_bank" : "银行转账",
+    "form_account_custom" : "添加自定义类型"
 }

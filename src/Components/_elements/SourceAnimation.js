@@ -282,10 +282,17 @@ const SourceAnimation = () => {
                     >
                         {Counters.counters && Counters.counters.length > 0 ? (
                             Counters.counters.map((source) => {
-                                const matchingSource = sourceCounters.find((counterObject, index) => {
+                                const matchingSource = sourceCounters.find((counterObject) => {
                                     const counterObjectLeadSource = Object.keys(counterObject)[0]?.toLowerCase().trim();
                                     const sourceCounterLeadSource = source.leadSource?.toLowerCase().trim();
-                                    return counterObjectLeadSource && sourceCounterLeadSource && counterObjectLeadSource?.includes(sourceCounterLeadSource);
+                                    // console.log("SOURCE COUNTER ============ ", sourceCounterLeadSource);
+                                    // console.log("COUNTER OBJECT ============ ", counterObjectLeadSource);
+                                    return (
+                                        counterObjectLeadSource && 
+                                        sourceCounterLeadSource && 
+                                        // counterObjectLeadSource?.includes(sourceCounterLeadSource)
+                                        sourceCounterLeadSource.includes(counterObjectLeadSource)
+                                    );
                                 });
 
                                 if (!matchingSource) return null;
