@@ -77,6 +77,7 @@ import AllLiveLeads from "./liveleads";
 import MeetInvite from "./MeetInvite";
 import Snapchat from "./SocialMedia/snapchat";
 import TransferRequest from "./transfferedleads/TransferRequest";
+import OnBoarding from "./OnBoarding";
 
 const libraries = ["places"];
 
@@ -191,6 +192,11 @@ const routes = [
     path: "/closedeals",
     pageName: "Close Deals",
     element: <ClosedealsPage />,
+  },
+  {
+    path: "/onboarding",
+    pageName: "OnBoarding",
+    element: <OnBoarding />,
   },
   // {
   //   path: "/timeline/:id",

@@ -255,8 +255,6 @@ const PropertyPortfolio = () => {
                               }`}
                             />
                           }
-                        
-                          
                           aria-controls="panel1a-content"
                           id="panel1a-header"
                         >
@@ -567,6 +565,8 @@ const PropertyPortfolio = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           FetchProperty={FetchProperty}
+          loading={loading}
+          setloading={setLoading}
         />
       )}
     </>

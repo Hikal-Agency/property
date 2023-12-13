@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Modal,
   Backdrop,
@@ -24,14 +24,46 @@ const PropertyImageUpload = ({
   allImages,
   setAllImages,
   update,
+  project,
+  FetchProperty,
 }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, User } = useStateContext();
 
   const imagesInputRef = useRef(null);
   const [btnloading, setbtnloading] = useState(false);
   const [imagePreviews, setImagePreviews] = useState([]);
 
   console.log("all images in child: ", allImages);
+  console.log("single property image upload :::: ", project);
+  const [projectData, setprojectData] = useState({});
+  const [listingLocation, setListingLocation] = useState({});
+
+  useEffect(() => {
+    if (update) {
+      setprojectData({
+        projectName: project?.projectName,
+        developer_id: project?.developer_id,
+        price: project?.price,
+        projectLocation: project?.projectLocation,
+        area: project?.area,
+        tourLink: project?.tourLink,
+        projectStatus: project?.projectStatus,
+        bedrooms: project?.bedrooms || [],
+        city: project?.city,
+        country: project?.country,
+        location: project?.location,
+        addedBy: User?.id,
+        images: project?.images || [],
+      });
+
+      const splitLocation = project?.latLong?.split(",");
+      setListingLocation({
+        lat: parseFloat(splitLocation[0]),
+        lng: parseFloat(splitLocation[1]),
+        addressText: project?.location || "",
+      });
+    }
+  }, [update]);
 
   const handleSelectImages = (e) => {
     e.preventDefault();
@@ -68,40 +100,49 @@ const PropertyImageUpload = ({
   const handleUploadImages = async () => {
     try {
       setbtnloading(true);
+      const lat = listingLocation?.lat;
+      const lng = listingLocation?.lng;
+      const location = [lat, lng].join(",");
 
-      // Simulate image uploading delay (remove this in production)
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      projectData["latLong"] = [
+        listingLocation?.lat,
+        listingLocation?.lng,
+      ].join(",");
+      projectData["location"] = listingLocation?.addressText;
 
-      // const options = {
-      //   maxSizeMB: 1,
-      //   maxWidthOrHeight: 1920,
-      // };
+      const Data = new FormData();
 
-      const ImageData = new FormData();
-      ImageData.append("id", selectImagesModal?.listingId);
+      if (allImages?.length > 0) {
+        // Append each image to the FormData object
 
-      // allImages?.forEach((image) => {
-      //   ImageData.append("img_name", image);
-      // })
+        allImages.forEach((image, index) => {
+          console.log("appending images::: ", image);
 
-      allImages.forEach((image, index) => {
-        ImageData.append(`images[${index}]`, image);
+          Data.append(`images[${index}]`, image);
+        });
+      }
+
+      Object.entries(projectData).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            Data.append(`${key}[${index}]`, item);
+          });
+        } else {
+          Data.append(key, value);
+        }
       });
 
       const token = localStorage.getItem("auth-token");
       await axios
-        .post(
-          `${BACKEND_URL}/projects/${selectImagesModal?.listingId}`,
-          ImageData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: "Bearer " + token,
-            },
-          }
-        )
+        .post(`${BACKEND_URL}/projects/${project?.id}`, Data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        })
         .then((result) => {
           setbtnloading(false);
+          console.log("image uploaded :: ", result);
           toast.success("Image uploaded successfuly", {
             position: "top-right",
             autoClose: 3000,
@@ -112,7 +153,9 @@ const PropertyImageUpload = ({
             progress: undefined,
             theme: "light",
           });
+
           handleClose();
+          FetchProperty();
         })
         .catch((err) => {
           console.log(err);
@@ -253,9 +296,10 @@ const PropertyImageUpload = ({
               if (allImages?.length === 0) {
                 imagesInputRef.current?.click();
               } else {
-                // if (update) {
-                //   handleUploadImages();
-                // }
+                if (update) {
+                  handleUploadImages();
+                  return;
+                }
                 handleClose();
               }
             }}

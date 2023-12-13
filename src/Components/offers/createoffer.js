@@ -18,25 +18,25 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 
 import axios from "../../axoisConfig";
-import {toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Textarea } from "@material-tailwind/react";
 import { t } from "i18next";
 
 const currentDate = dayjs();
 
-const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
-  const { 
-    currentMode, 
-    darkModeColors, 
-    formatNum, 
-    BACKEND_URL, 
+const CreateOffer = ({ isLoading }) => {
+  const {
+    currentMode,
+    darkModeColors,
+    formatNum,
+    BACKEND_URL,
     User,
     t,
     primaryColor,
     themeBgImg,
     fontFam,
     isLangRTL,
-    i18n
+    i18n,
   } = useStateContext();
   const [validFromDate, setValidFromDate] = useState("");
   const [validFromDateValue, setValidFromDateValue] = useState({});
@@ -60,7 +60,6 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     setImg(file);
   };
 
- 
   console.log("img state: ", img);
 
   const handleClick = async (e) => {
@@ -132,7 +131,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
     Offer.append("validTill", validToDate);
     Offer.append("offerFrom", User?.id);
     Offer.append("offerAgency", User?.agency);
-    if(User?.role !== 3) {
+    if (User?.role !== 3) {
       Offer.append("validToManager", validToManager);
     }
     Offer.append("validToSales", validToSales);
@@ -192,26 +191,33 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
   //   setValidToDateValue(dayjs("2023-01-01"));
   // }, []);
   return (
-    <div className={`p-3 rounded-lg ${
-      themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-    }`}>
+    <div
+      className={`p-3 rounded-lg ${
+        themeBgImg &&
+        (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+      }`}
+    >
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
-        <Box sx={{
-          ...darkModeColors,
-          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-            left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
-            right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-            transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-          },
-          "& legend": {
-            textAlign: isLangRTL(i18n.language) ? "right" : "left",
-          }
-        }} className="p-2">
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+              {
+                left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+          className="p-2"
+        >
           <TextField
             type={"text"}
             label={t("label_offer_title")}
             className="w-full"
-            style={{ 
+            style={{
               marginBottom: "20px",
             }}
             variant="outlined"
@@ -227,7 +233,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
             type="text"
             label={t("label_offer_description")}
             multiline
-            minRows={4} 
+            minRows={4}
             className="w-full"
             name="offerDescription"
             style={{ marginBottom: "20px" }}
@@ -267,7 +273,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                     readOnly={true}
                     size={"small"}
                     style={{
-                      marginBottom: "20px"
+                      marginBottom: "20px",
                     }}
                   />
                 )}
@@ -299,7 +305,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
                     readOnly={true}
                     size={"small"}
                     style={{
-                      marginBottom: "20px"
+                      marginBottom: "20px",
                     }}
                   />
                 )}
@@ -311,17 +317,23 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
           {User?.role !== 3 && (
             <div
               className={`${
-                !themeBgImg && (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")}
+                !themeBgImg &&
+                (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+              }
               } rounded-lg p-5`}
             >
-              <Box sx={{
-                ...darkModeColors,
-                "& .MuiTypography-root": {
-                  fontFamily: fontFam,
-                }
-              }}>
+              <Box
+                sx={{
+                  ...darkModeColors,
+                  "& .MuiTypography-root": {
+                    fontFamily: fontFam,
+                  },
+                }}
+              >
                 <label className="font-semibold mb-1">
-                  <span className="text-primary">{`${t("offer")} ${t("label_validity")}`}</span>
+                  <span className="text-primary">{`${t("offer")} ${t(
+                    "label_validity"
+                  )}`}</span>
                 </label>
                 <br></br>
                 <FormControl>
@@ -374,30 +386,32 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
           )}
 
           {/* <div className="grid grid-cols-2 gap-3 mt-3"> */}
-            <input
-              accept="image/*"
-              style={{ display: "none" }}
-              id="contained-button-file"
-              type="file"
-              onChange={handleImgUpload}
-            />
-            <label htmlFor="contained-button-file">
-              <Button
-                variant="contained"
-                size="medium"
-                className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
-                style={{
-                  color: "#ffffff",
-                  border: "1px solid white",
-                  fontFamily: fontFam,
-                }}
-                component="span" // Required so the button doesn't automatically submit form
-                disabled={loading ? true : false}
-                startIcon={loading ? null : <MdFileUpload className="mx-2" size={16} />}
-              >
-                <span>{t("button_upload_image")}</span>
-              </Button>
-            </label>
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="contained-button-file"
+            type="file"
+            onChange={handleImgUpload}
+          />
+          <label htmlFor="contained-button-file">
+            <Button
+              variant="contained"
+              size="medium"
+              className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+              style={{
+                color: "#ffffff",
+                border: "1px solid white",
+                fontFamily: fontFam,
+              }}
+              component="span" // Required so the button doesn't automatically submit form
+              disabled={loading ? true : false}
+              startIcon={
+                loading ? null : <MdFileUpload className="mx-2" size={16} />
+              }
+            >
+              <span>{t("button_upload_image")}</span>
+            </Button>
+          </label>
           {/* </div> */}
         </Box>
       </div>
@@ -407,7 +421,7 @@ const CreateOffer = ({ tabValue, setTabValue, isLoading }) => {
         size="medium"
         style={{
           color: "white",
-          fontFamily: fontFam
+          fontFamily: fontFam,
         }}
         className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
         onClick={handleClick}

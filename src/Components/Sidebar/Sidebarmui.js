@@ -13,6 +13,8 @@ import ReactConfetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import moment from "moment";
 import { FaCheck } from "react-icons/fa";
+import { IoPeopleCircleSharp } from "react-icons/io5";
+import { IoPersonAddOutline } from "react-icons/io5";
 
 import axios from "../../axoisConfig";
 import ringtone from "../../assets/new-message-ringtone.mp3";
@@ -1399,6 +1401,20 @@ const Sidebarmui = () => {
           icon: <BsCheck2Circle size={16} />,
           pro: true,
           link: "/attendance",
+        },
+      ],
+    },
+    // ONBOARDING
+    {
+      title: t("menu_cms"),
+      icon: <IoPeopleCircleSharp size={18} />,
+      pro: true,
+      links: [
+        {
+          name: t("menu_onboarding"),
+          icon: <IoPersonAddOutline size={16} />,
+          // pro: true,
+          link: "/onboarding",
         },
       ],
     },

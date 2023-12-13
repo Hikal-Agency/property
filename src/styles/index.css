@@ -14,6 +14,8 @@ body {
   overflow-x: hidden;
 }
 
+
+
 /* search bar */
 
 .search {
@@ -67,6 +69,10 @@ body {
           background-position: 100% center;
       }
   }
+}
+
+.country-dropdown-container label {
+  color: #fff !important; 
 }
 
 .credits {
@@ -634,6 +640,11 @@ label[for="bulkImport"] .MuiButtonBase-root {
   .MuiDataGrid-columnHeaderDraggableContainer,
 .MuiDataGrid-main .MuiDataGrid-row > div:first-child .MuiDataGrid-cellContent {
   padding-left: 10px;
+}
+
+/* mui input label padding remove */
+.css-donb6r .MuiFormLabel-root, .css-donb6r .MuiInputLabel-root, .css-donb6r .MuiInputLabel-formControl{
+  left:0 !important
 }
 
 .MuiDataGrid-main

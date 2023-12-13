@@ -29,9 +29,7 @@ import moment from "moment";
 import { renderStyles } from "../_elements/SelectStyles.jsx";
 import { feedback_options } from "../_elements/SelectOptions.js";
 
-import {
-  BsBookmarkCheck
-} from "react-icons/bs";
+import { BsBookmarkCheck } from "react-icons/bs";
 
 const RenderFeedback = ({ cellValues }) => {
   const {
@@ -43,7 +41,7 @@ const RenderFeedback = ({ cellValues }) => {
     User,
     t,
     primaryColor,
-    darkModeColors
+    darkModeColors,
   } = useStateContext();
 
   const [btnloading, setbtnloading] = useState(false);
@@ -65,6 +63,8 @@ const RenderFeedback = ({ cellValues }) => {
     setnewFeedback(e.value);
     setDialogue(true);
   };
+
+  console.log("Render Feedback===> ", cellValues?.row?.feedback);
 
   // console.log("meeting address text: ", meetingLocation);
 
@@ -246,10 +246,10 @@ const RenderFeedback = ({ cellValues }) => {
       className={`renderDD w-full h-full flex items-center justify-center `}
       sx={SelectStyles}
     >
-      <Select 
+      <Select
         id="feedback"
-        options={feedback_options(t)} 
-        value={feedback_options(t).find(option => option.value === Feedback)}
+        options={feedback_options(t)}
+        value={feedback_options(t).find((option) => option.value === Feedback)}
         onChange={ChangeFeedback}
         placeholder={t("label_feedback")}
         className={`w-full`}
@@ -341,12 +341,18 @@ const RenderFeedback = ({ cellValues }) => {
             >
               <IoMdClose size={18} />
             </IconButton>
-            <div className={`px-10 py-5 ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-white text-black"}`}>
+            <div
+              className={`px-10 py-5 ${
+                currentMode === "dark"
+                  ? "bg-[#1C1C1C] text-white"
+                  : "bg-white text-black"
+              }`}
+            >
               {/* FEEDBACK  */}
               <div className="flex flex-col justify-center items-center">
                 <BsBookmarkCheck size={50} className="text-primary text-2xl" />
                 <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
-                  {t("want_to_change_feedback")} {t("from")} {" "}
+                  {t("want_to_change_feedback")} {t("from")}{" "}
                   <span className="text-sm bg-gray-500 px-2 py-1 rounded-md font-bold">
                     {Feedback
                       ? t(
@@ -367,7 +373,7 @@ const RenderFeedback = ({ cellValues }) => {
                   ?
                 </h1>
               </div>
-              
+
               {/* MEETING  */}
               {newFeedback === "Meeting" ? (
                 <form
@@ -377,7 +383,7 @@ const RenderFeedback = ({ cellValues }) => {
                   }}
                 >
                   <div className="flex flex-col justify-center items-center gap-4 mt-4">
-                    <Box sx={darkModeColors} >
+                    <Box sx={darkModeColors}>
                       {/* DATE  */}
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
@@ -504,11 +510,10 @@ const RenderFeedback = ({ cellValues }) => {
                     </Button>
                   </div>
                 </form>
-              ) 
-              // BOKKED 
-              : newFeedback === "Booked" ? (
+              ) : // BOKKED
+              newFeedback === "Booked" ? (
                 <>
-                  <Box sx={darkModeColors} >
+                  <Box sx={darkModeColors}>
                     <TextField
                       id="booked_amount"
                       type={"number"}
@@ -519,7 +524,7 @@ const RenderFeedback = ({ cellValues }) => {
                       }}
                       label="Booked Amount "
                       className="w-full"
-                      style={{ 
+                      style={{
                         marginBottom: "20px",
                         marginTop: "10px",
                       }}

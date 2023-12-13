@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Modal,
   Backdrop,
@@ -20,16 +20,48 @@ const style = {
 };
 
 const PropertyDocModal = ({
-  fetchSingleListing,
+  FetchProperty,
   documentModal,
   handleClose,
   allDocs,
   setAllDocs,
+  project,
+  update,
 }) => {
-  const { currentMode, BACKEND_URL } = useStateContext();
+  const { currentMode, BACKEND_URL, User } = useStateContext();
   const documentsInputRef = useRef(null);
   const [btnloading, setbtnloading] = useState(false);
   const { hasPermission } = usePermission();
+
+  const [projectData, setprojectData] = useState({});
+  const [listingLocation, setListingLocation] = useState({});
+
+  useEffect(() => {
+    if (update) {
+      setprojectData({
+        projectName: project?.projectName,
+        developer_id: project?.developer_id,
+        price: project?.price,
+        projectLocation: project?.projectLocation,
+        area: project?.area,
+        tourLink: project?.tourLink,
+        projectStatus: project?.projectStatus,
+        bedrooms: project?.bedrooms || [],
+        city: project?.city,
+        country: project?.country,
+        location: project?.location,
+        addedBy: User?.id,
+        images: project?.images || [],
+      });
+
+      const splitLocation = project?.latLong?.split(",");
+      setListingLocation({
+        lat: parseFloat(splitLocation[0]),
+        lng: parseFloat(splitLocation[1]),
+        addressText: project?.location || "",
+      });
+    }
+  }, [update]);
 
   const handleSelectImages = (e) => {
     e.preventDefault();
@@ -38,78 +70,91 @@ const PropertyDocModal = ({
     setAllDocs(AllFiles);
   };
 
-  //   const handleUploadDocs = async () => {
-  //     try {
-  //       setbtnloading(true);
+  const handleUploadDocs = async () => {
+    try {
+      setbtnloading(true);
+      const lat = listingLocation?.lat;
+      const lng = listingLocation?.lng;
+      const location = [lat, lng].join(",");
 
-  //       // Simulate image uploading delay (remove this in production)
-  //       await new Promise((resolve) => setTimeout(resolve, 1000));
+      projectData["latLong"] = [
+        listingLocation?.lat,
+        listingLocation?.lng,
+      ].join(",");
+      projectData["location"] = listingLocation?.addressText;
 
-  //       const DocData = new FormData();
+      const Data = new FormData();
+      if (allDocs?.length > 0) {
+        // Append each document to the FormData object
+        allDocs.forEach((doc, index) => {
+          console.log("appending documents::: ", doc);
+          Data.append(`documents[${index}]`, doc);
+        });
+      }
 
-  //       // allDocs?.forEach((doc) => {
-  //       //   DocData.append("doc_name", doc);
-  //       // })
+      Object.entries(projectData).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            Data.append(`${key}[${index}]`, item);
+          });
+        } else {
+          Data.append(key, value);
+        }
+      });
 
-  //       allDocs?.forEach((doc, index) => {
-  //         DocData.append(`doc_name[${index}]`, doc);
-  //       });
-
-  //       const token = localStorage.getItem("auth-token");
-  //       //   await axios
-  //       //     .post(
-  //       //       `${BACKEND_URL}/listings/${selectDocumentModal?.listingId}`,
-  //       //       DocData,
-  //       //       {
-  //       //         headers: {
-  //       //           "Content-Type": "multipart/form-data",
-  //       //           Authorization: "Bearer " + token,
-  //       //         },
-  //       //       }
-  //       //     )
-  //       //     .then((result) => {
-  //       //       setbtnloading(false);
-  //       //       toast.success("Document is uploaded successfuly", {
-  //       //         position: "top-right",
-  //       //         autoClose: 3000,
-  //       //         hideProgressBar: false,
-  //       //         closeOnClick: true,
-  //       //         pauseOnHover: true,
-  //       //         draggable: true,
-  //       //         progress: undefined,
-  //       //         theme: "light",
-  //       //       });
-  //       //       fetchSingleListing();
-  //       //       handleClose();
-  //       //     })
-  //       //     .catch((err) => {
-  //       //       console.log(err);
-  //       //       setbtnloading(false);
-  //       //       toast.error("Something went wrong! Please Try Again", {
-  //       //         position: "top-right",
-  //       //         autoClose: 3000,
-  //       //         hideProgressBar: false,
-  //       //         closeOnClick: true,
-  //       //         pauseOnHover: true,
-  //       //         draggable: true,
-  //       //         progress: undefined,
-  //       //         theme: "light",
-  //       //       });
-  //       //     });
-  //     } catch (error) {
-  //       console.log(error);
-  //       toast.error("Something went wrong!", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     }
-  //   };
+      const token = localStorage.getItem("auth-token");
+      await axios
+        .post(`${BACKEND_URL}/projects/${project?.id}`, Data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          setbtnloading(false);
+          console.log("image uploaded :: ", result);
+          toast.success("Image uploaded successfuly", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          handleClose();
+          FetchProperty();
+        })
+        .catch((err) => {
+          console.log(err);
+          setbtnloading(false);
+          toast.error("Something went wrong! Please Try Again", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+    } catch (error) {
+      console.error(error);
+      setbtnloading(false);
+      toast.error("Something went wrong! Please try again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   return (
     <Modal
@@ -170,6 +215,10 @@ const PropertyDocModal = ({
               if (allDocs?.length === 0) {
                 documentsInputRef.current?.click();
               } else {
+                if (update) {
+                  handleUploadDocs();
+                  return;
+                }
                 handleClose();
               }
             }}

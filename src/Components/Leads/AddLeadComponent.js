@@ -24,16 +24,20 @@ import PhoneInput, {
 import classNames from "classnames";
 import Loader from "../Loader";
 import { selectStyles } from "../_elements/SelectStyles";
-import { 
+import {
   source_options,
   language_options,
   property_options,
   enquiry_options,
-  purpose_options, 
-  lead_options
+  purpose_options,
+  lead_options,
 } from "../_elements/SelectOptions";
 
-const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdown }) => {
+const AddLeadComponent = ({
+  handleCloseAddLeadModal,
+  FetchLeads,
+  noSourceDropdown,
+}) => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
   const { hasPermission } = usePermission();
@@ -49,7 +53,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
     t,
     themeBgImg,
     isLangRTL,
-    i18n
+    i18n,
   } = useStateContext();
 
   const ChangeLeadSource = (selectedOption) => {
@@ -88,7 +92,6 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
     // console.log("clicked");
     setSalesPerson2(event.value);
   };
-  
 
   // ------------------------
   // console.log("Salesperson: ", SalesPerson);
@@ -99,7 +102,9 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
   const [ForType, setForType] = useState("");
   const [LanguagePrefered, setLanguagePrefered] = useState("");
   const [LeadStatus, setLeadStatus] = useState("");
-  const [LeadSource, setLeadSource] = useState(noSourceDropdown ? "Secondary" : "");
+  const [LeadSource, setLeadSource] = useState(
+    noSourceDropdown ? "Secondary" : ""
+  );
   const [LeadCategory, setLeadCategory] = useState("0");
   const [Manager, setManager] = useState("");
   const [SalesPerson2, setSalesPerson2] = useState("");
@@ -203,7 +208,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
       coldCall = 3;
     } else if (LeadSource.toLowerCase() === "personal") {
       coldCall = 2;
-    } 
+    }
     // else if (LeadSource.toLowerCase() === "secondary") {
     //   coldCall = 5;
     // }
@@ -211,7 +216,8 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
       coldCall = LeadCategory;
     }
     if (LeadName) LeadData.append("leadName", LeadName);
-    if (LeadContact) LeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
+    if (LeadContact)
+      LeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
     if (LeadEmail) LeadData.append("leadEmail", LeadEmail);
     if (EnquiryType) LeadData.append("enquiryType", EnquiryType);
     if (PropertyType) LeadData.append("leadType", PropertyType);
@@ -221,12 +227,12 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
     if (LeadStatus) LeadData.append("leadStatus", LeadStatus);
     if (LeadSource) LeadData.append("leadSource", LeadSource);
 
-    if(!LeadSource && noSourceDropdown) {
+    if (!LeadSource && noSourceDropdown) {
       LeadData.append("leadSource", "Secondary");
     }
     LeadData.append("feedback", "New"); //Always appended
     LeadData.append("agency_id", User?.agency); //Always appended
-    
+
     if (coldCall) LeadData.append("coldCall", coldCall);
     if (LeadNotes) LeadData.append("notes", LeadNotes);
 
@@ -287,7 +293,7 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
           theme: "light",
         });
 
-        if(handleCloseAddLeadModal) {
+        if (handleCloseAddLeadModal) {
           handleCloseAddLeadModal();
         }
 
@@ -373,23 +379,37 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                 {t("title_add_new_lead_details")}
               </h1>
             </div>
-              
-            <div className={`${
-              themeBgImg && (currentMode === "dark" ? "blur-bg-dark shadow-sm" : "blur-bg-light shadow-sm")
-            } p-5 rounded-lg `} >
+
+            <div
+              className={`${
+                themeBgImg &&
+                (currentMode === "dark"
+                  ? "blur-bg-dark shadow-sm"
+                  : "blur-bg-light shadow-sm")
+              } p-5 rounded-lg `}
+            >
               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 mt-5">
                 <div className="px-4">
-                  <Box sx={{
-                    ...darkModeColors,
-                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                      left: isLangRTL(i18n.language) ? "inherit" : "inherit",
-                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                      transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                    },
-                    "& legend": {
-                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                    }
-                    }}>
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          left: isLangRTL(i18n.language)
+                            ? "inherit"
+                            : "inherit",
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      "& legend": {
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                      },
+                    }}
+                  >
                     <h4
                       className={`${
                         currentMode === "dark" ? `text-white` : "text-black"
@@ -406,11 +426,13 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                         }))}
                         value={
                           String(Manager) === "1" || !Manager || Manager === "0"
-                          ? null
-                          : {
-                              label: Managers.find((manager) => manager.id === Manager)?.userName,
-                              value: Manager,
-                            }
+                            ? null
+                            : {
+                                label: Managers.find(
+                                  (manager) => manager.id === Manager
+                                )?.userName,
+                                value: Manager,
+                              }
                         }
                         isDisabled={User?.role === 3}
                         onChange={ChangeManager}
@@ -420,33 +442,33 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                         styles={selectStyles(currentMode, primaryColor)}
                       />
                       // <>
-                        // <TextField
-                        //   id="Manager"
-                        //   select
-                        //   sx={{
-                        //     "&": {
-                        //       marginBottom: "1.25rem !important",
-                        //     },
-                        //   }}
-                        //   value={Manager}
-                        //   disabled={User?.role === 3 && true}
-                        //   label={t("label_sales_manager")}
-                        //   onChange={ChangeManager}
-                        //   size="small"
-                        //   className="w-full"
-                        //   displayEmpty
-                        // >
-                        //   <MenuItem value="">
-                        //     {t("label_select_manager")}
-                        //     <span className="ml-1 text-primary">*</span>
-                        //   </MenuItem>
+                      // <TextField
+                      //   id="Manager"
+                      //   select
+                      //   sx={{
+                      //     "&": {
+                      //       marginBottom: "1.25rem !important",
+                      //     },
+                      //   }}
+                      //   value={Manager}
+                      //   disabled={User?.role === 3 && true}
+                      //   label={t("label_sales_manager")}
+                      //   onChange={ChangeManager}
+                      //   size="small"
+                      //   className="w-full"
+                      //   displayEmpty
+                      // >
+                      //   <MenuItem value="">
+                      //     {t("label_select_manager")}
+                      //     <span className="ml-1 text-primary">*</span>
+                      //   </MenuItem>
 
-                        //   {Managers?.map((person, index) => (
-                        //     <MenuItem key={index} value={person?.id}>
-                        //       {person?.userName}
-                        //     </MenuItem>
-                        //   ))}
-                        // </TextField>
+                      //   {Managers?.map((person, index) => (
+                      //     <MenuItem key={index} value={person?.id}>
+                      //       {person?.userName}
+                      //     </MenuItem>
+                      //   ))}
+                      // </TextField>
                       // </>
                     )}
 
@@ -455,14 +477,18 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                         id="SalesPerson"
                         options={
                           User.role === 1
-                            ? SalesPerson[`manager-${Manager}`]?.map((agent) => ({
-                                value: agent?.id,
-                                label: agent?.userName,
-                              }))
-                            : SalesPerson[`manager-${User?.id}`]?.map((agent) => ({
-                                value: agent?.id,
-                                label: agent?.userName,
-                              }))
+                            ? SalesPerson[`manager-${Manager}`]?.map(
+                                (agent) => ({
+                                  value: agent?.id,
+                                  label: agent?.userName,
+                                })
+                              )
+                            : SalesPerson[`manager-${User?.id}`]?.map(
+                                (agent) => ({
+                                  value: agent?.id,
+                                  label: agent?.userName,
+                                })
+                              )
                         }
                         // value={SalesPerson2}
                         value={
@@ -543,7 +569,8 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                           className="w-full"
                           sx={{
                             marginBottom: "1.25rem !important",
-                            color: currentMode === "dark" ? "#ffffff" : "#000000",
+                            color:
+                              currentMode === "dark" ? "#ffffff" : "#000000",
                             pointerEvents: "none",
                           }}
                           variant="outlined"
@@ -579,23 +606,32 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                 </div>
 
                 <div className="px-4">
-                  <Box sx={{
-                    ...darkModeColors,
-                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                      left: isLangRTL(i18n.language) ? "inherit" : "inherit",
-                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                      transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                    },
-                    "& legend": {
-                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                    }
-                  }}>
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          left: isLangRTL(i18n.language)
+                            ? "inherit"
+                            : "inherit",
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      "& legend": {
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                      },
+                    }}
+                  >
                     <h4
                       className={`${
                         currentMode === "dark" ? `text-white` : "text-black"
                       } text-center font-semibold pb-5`}
                     >
-                    {t("project_details")}
+                      {t("project_details")}
                     </h4>
                     <TextField
                       id="Project"
@@ -614,10 +650,12 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     />
 
                     {/* ENQUIRY TYPE  */}
-                    <Select 
+                    <Select
                       id="enquiry"
-                      options={enquiry_options(t)} 
-                      value={enquiry_options(t).find(option => option.value === EnquiryType)}
+                      options={enquiry_options(t)}
+                      value={enquiry_options(t).find(
+                        (option) => option.value === EnquiryType
+                      )}
                       onChange={ChangeEnquiryType}
                       placeholder={t("label_enquiry_for")}
                       className={`mb-5`}
@@ -654,10 +692,12 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     </TextField> */}
 
                     {/* PROPERTY TYPE  */}
-                    <Select 
+                    <Select
                       id="property-type"
-                      options={property_options(t)} 
-                      value={property_options(t).find(option => option.value === PropertyType)}
+                      options={property_options(t)}
+                      value={property_options(t).find(
+                        (option) => option.value === PropertyType
+                      )}
                       onChange={ChangePropertyType}
                       placeholder={t("label_property_type")}
                       className={`mb-5`}
@@ -691,10 +731,12 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     </TextField> */}
 
                     {/* PURPOSE OF ENQUIRY  */}
-                    <Select 
+                    <Select
                       id="for"
-                      options={purpose_options(t)} 
-                      value={purpose_options(t).find(option => option.value === ForType)}
+                      options={purpose_options(t)}
+                      value={purpose_options(t).find(
+                        (option) => option.value === ForType
+                      )}
                       onChange={ChangeForType}
                       placeholder={t("label_purpose_of_enquiry")}
                       className={`mb-5`}
@@ -726,17 +768,26 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                 </div>
 
                 <div className="px-4">
-                  <Box sx={{
-                    ...darkModeColors,
-                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                      left: isLangRTL(i18n.language) ? "inherit" : "inherit",
-                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                      transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                    },
-                    "& legend": {
-                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                    }
-                  }}>
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          left: isLangRTL(i18n.language)
+                            ? "inherit"
+                            : "inherit",
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      "& legend": {
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                      },
+                    }}
+                  >
                     <h4
                       className={`${
                         currentMode === "dark" ? `text-white` : "text-black"
@@ -774,15 +825,17 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       size="small"
                       style={{
                         background: `${
-                          !themeBgImg 
-                          ? (currentMode === "dark" ? "#000000" : "#FFFFFF")
-                          : "transparent"
+                          !themeBgImg
+                            ? currentMode === "dark"
+                              ? "#000000"
+                              : "#FFFFFF"
+                            : "transparent"
                           // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
                         }`,
                         "& .PhoneInputCountryIconImg": {
                           color: "#fff",
                         },
-                        color: currentMode === "dark" ? "white" : "black",
+                        // color: currentMode === "dark" ? "white" : "black",
                         border: `1px solid ${
                           currentMode === "dark" ? "#EEEEEE" : "#666666"
                         }`,
@@ -819,10 +872,12 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     />
 
                     {/* LANGUAGE  */}
-                    <Select 
+                    <Select
                       id="LanguagePrefered"
-                      options={language_options} 
-                      value={language_options.find(option => option.value === LanguagePrefered)}
+                      options={language_options}
+                      value={language_options.find(
+                        (option) => option.value === LanguagePrefered
+                      )}
                       onChange={ChangeLanguagePrefered}
                       placeholder={t("label_language")}
                       className={`mb-5`}
@@ -860,16 +915,20 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                     </TextField> */}
 
                     {/* LEAD SOURCE  */}
-                    {!noSourceDropdown &&
-                      <Select 
-                        id="LeadSource"
-                        options={source_options(t)} 
-                        value={source_options(t).find(option => option.value === LeadSource)}
-                        onChange={ChangeLeadSource}
-                        placeholder={t("label_source")}
-                        className={`mb-5`}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
+                    {
+                      !noSourceDropdown && (
+                        <Select
+                          id="LeadSource"
+                          options={source_options(t)}
+                          value={source_options(t).find(
+                            (option) => option.value === LeadSource
+                          )}
+                          onChange={ChangeLeadSource}
+                          placeholder={t("label_source")}
+                          className={`mb-5`}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                      )
                       // <TextField
                       //   id="LeadSource"
                       //   value={LeadSource}
@@ -923,10 +982,12 @@ const AddLeadComponent = ({ handleCloseAddLeadModal, FetchLeads, noSourceDropdow
                       // </TextField>
                     }
 
-                    <Select 
+                    <Select
                       id="LeadCategory"
-                      options={lead_options(t)} 
-                      value={lead_options(t).find(option => option.value === LeadCategory)}
+                      options={lead_options(t)}
+                      value={lead_options(t).find(
+                        (option) => option.value === LeadCategory
+                      )}
                       onChange={ChangeLeadCategory}
                       placeholder={t("label_category")}
                       className={`mb-5`}
