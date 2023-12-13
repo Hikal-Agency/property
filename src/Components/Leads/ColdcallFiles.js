@@ -263,6 +263,19 @@ const nextDayString = nextDay.format('YYYY-MM-DD');
       ) : coldcallFiles?.length > 0 ? (
         <div>
           <div className="flex justify-end items-center">
+          {activeFile &&  
+            <Button
+              className={` text-white mr-2 uppercase rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+              ripple="true"
+              size="lg"
+              style={{
+                color: "white",
+              }}
+              type="submit"
+            >
+             BULK ASSIGN
+            </Button>
+          }
             <Button
               onClick={() => bulkImportRef.current.click()}
               className={` text-white uppercase rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
