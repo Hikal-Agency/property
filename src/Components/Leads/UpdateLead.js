@@ -90,11 +90,11 @@ const UpdateLead = ({
   const handlePhone = () => {
     setError(false);
     let inputValue = value;
-    if (inputValue && !inputValue.startsWith("+")) {
-      inputValue = "+" + inputValue;
+    // if (inputValue && !inputValue.startsWith("+")) {
+    //   inputValue = "+" + inputValue;
 
-      console.log("replaced : ", inputValue);
-    }
+    //   console.log("replaced : ", inputValue);
+    // }
     console.log("Phone: ", inputValue);
     if (inputValue && isPossiblePhoneNumber(inputValue)) {
       console.log("Possible: ", inputValue);
