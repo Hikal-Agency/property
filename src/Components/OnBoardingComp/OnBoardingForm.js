@@ -36,6 +36,7 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
+import { useRef } from "react";
 
 const currentDate = dayjs();
 
@@ -61,6 +62,7 @@ const OnBoardingForm = ({ isLoading }) => {
   const [img, setImg] = useState();
 
   const [country, setCountry] = useState("");
+  const imagesInputRef = useRef(null);
 
   const [onBoardData, setBoardData] = useState({
     bussiness_name: "",
@@ -87,7 +89,10 @@ const OnBoardingForm = ({ isLoading }) => {
 
     console.log("Uploaded img: ", file);
 
-    setImg(file);
+    setBoardData({
+      ...onBoardData,
+      logo: file,
+    });
   };
 
   console.log("img state: ", img);
@@ -132,6 +137,15 @@ const OnBoardingForm = ({ isLoading }) => {
     Board.append("email", onBoardData.email);
     Board.append("account_type", onBoardData?.account_type);
     Board.append("no_of_users", onBoardData?.no_of_users);
+    Board.append("payment_duration", onBoardData?.payment_duration);
+    Board.append("logo", onBoardData?.logo);
+
+    social_links.forEach((social) => {
+      const socialLinkValue = onBoardData[social?.name];
+      if (socialLinkValue) {
+        Board.append(social.name, socialLinkValue);
+      }
+    });
 
     try {
       const submitOnBoard = await axios.post(
@@ -169,6 +183,15 @@ const OnBoardingForm = ({ isLoading }) => {
         documents: [],
         logo: "",
         payment_duration: "monthly",
+      });
+
+      social_links.forEach((social) => {
+        const socialLinkValue = onBoardData[social?.name];
+        if (socialLinkValue) {
+          setBoardData({
+            socialLinkValue: "",
+          });
+        }
       });
 
       setloading(false);
@@ -350,11 +373,30 @@ const OnBoardingForm = ({ isLoading }) => {
                 }}
                 component="span"
                 disabled={loading ? true : false}
+                onClick={() => {
+                  imagesInputRef.current?.click();
+                }}
                 // startIcon={loading ? null : <MdFileUpload />}
               >
                 <span>{t("form_logo")}</span>
               </Button>
+              {onBoardData?.logo && (
+                <span
+                  className={`text-sm italic  mt-3 ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }`}
+                >
+                  logo selected.
+                </span>
+              )}
             </label>
+            <input
+              type="file"
+              alt=""
+              hidden
+              ref={imagesInputRef}
+              onInput={handleImgUpload}
+            />
 
             <label htmlFor="contained-button-document">
               <Button
