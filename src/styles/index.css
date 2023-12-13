@@ -642,6 +642,11 @@ label[for="bulkImport"] .MuiButtonBase-root {
   padding-left: 10px;
 }
 
+/* mui input label padding remove */
+.css-donb6r .MuiFormLabel-root, .css-donb6r .MuiInputLabel-root, .css-donb6r .MuiInputLabel-formControl{
+  left:0 !important
+}
+
 .MuiDataGrid-main
   .MuiDataGrid-columnHeaderCheckbox
   .MuiDataGrid-columnHeaderDraggableContainer {
