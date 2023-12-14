@@ -304,7 +304,6 @@ const OnBoardingForm = ({ isLoading }) => {
               border: `1px solid ${currentMode === "dark" ? "#fff" : "#000"}`,
               background: "none",
               marginBottom: "20px",
-              color: "#000 ",
             }}
           />
           {/* <TextField
