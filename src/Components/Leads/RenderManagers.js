@@ -1,23 +1,18 @@
 import { Button } from "@material-tailwind/react";
 import {
   CircularProgress,
-  Dialog,
-  FormControl,
-  IconButton,
-  MenuItem,
+  Dialog, IconButton
 } from "@mui/material";
 // import Select from "@mui/material/Select";
 import Select from "react-select";
 import { Box } from "@mui/system";
 import { socket } from "../../Pages/App";
-import moment from "moment";
 
 import axios from "../../axoisConfig";
 import React, { useEffect, useState } from "react";
-import { IoIosAlert, IoMdClose } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
-import UpdateLead from "./UpdateLead";
 import { renderStyles } from "../_elements/SelectStyles";
 
 import {
@@ -46,20 +41,7 @@ const RenderManagers = ({ cellValues }) => {
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
-  const SelectStyles = {
-    "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
-      {
-        color: currentMode === "dark" ? "white !important" : "black !important",
-        // borderColor: currentMode === "dark" ? "white" : "black",
-        border: "none",
-        fontSize: "12px",
-        fontWeight: "400",
-      },
-    "& .MuiOutlinedInput-notchedOutline": {
-      // borderColor: currentMode === "dark" ? "white" : "black",
-      border: "none",
-    },
-  };
+ 
   useEffect(
     () => {
       setmanager2(cellValues?.row?.assignedToManager);
