@@ -368,7 +368,7 @@ const ColdcallFiles = ({
           </div>
         </div>
       ) : (
-        <div className={`${currentMode === "light" ? "text-black": "text-light"} flex justify-center items-center py-5 mt-4`}>
+        <div className={`${currentMode === "light" ? "text-black": "text-white"} flex justify-center items-center py-5 mt-4`}>
           Nothing yet
         </div>
       )}
