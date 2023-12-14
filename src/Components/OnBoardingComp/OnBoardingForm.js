@@ -37,6 +37,7 @@ import {
 } from "react-country-region-selector";
 import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
 import { useRef } from "react";
+import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
 
 const currentDate = dayjs();
 
@@ -76,6 +77,8 @@ const OnBoardingForm = ({ isLoading }) => {
     no_of_users: "",
     payment_duration: "monthly",
   });
+  const [allDocs, setAllDocs] = useState([]);
+  const [documentModal, setDocumentModal] = useState(false);
 
   const selectCountry = (e) => {
     setBoardData((prev) => ({
@@ -146,6 +149,11 @@ const OnBoardingForm = ({ isLoading }) => {
         Board.append(social.name, socialLinkValue);
       }
     });
+
+    if (allDocs?.length > 0)
+      allDocs?.forEach((doc, index) => {
+        Board.append(`documents[${index}]`, doc);
+      });
 
     try {
       const submitOnBoard = await axios.post(
@@ -407,10 +415,18 @@ const OnBoardingForm = ({ isLoading }) => {
                   color: "#ffffff",
                 }}
                 component="span"
+                onClick={() => {
+                  setDocumentModal(true);
+                }}
                 disabled={loading ? true : false}
               >
                 <span>{t("form_document")}</span>
               </Button>
+              <p className="text-primary mt-2 italic">
+                {allDocs?.length > 0
+                  ? `${allDocs?.length} documents selected.`
+                  : null}
+              </p>
             </label>
           </div>
         </Box>
@@ -639,6 +655,15 @@ const OnBoardingForm = ({ isLoading }) => {
           <span>{t("create")}</span>
         )}
       </Button>
+
+      {documentModal && (
+        <AddDocumentModal
+          documentModal={documentModal}
+          handleClose={() => setDocumentModal(false)}
+          allDocs={allDocs}
+          setAllDocs={setAllDocs}
+        />
+      )}
     </div>
   );
 };
