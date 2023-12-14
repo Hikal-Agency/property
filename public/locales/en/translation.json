@@ -62,7 +62,6 @@
     "menu_verified": "Verified",
     "menu_invalid": "Invalid",
     "menu_reshuffled": "Reshuffled",
-    "menu_reshuffled_request": "Reshuffle Requests",
     "menu_not_checked": "Not Checked",
     "menu_cold": "Cold",
     "menu_archived": "Archived",
@@ -812,7 +811,6 @@
     "documents": "Documents",
     "origin_liveleads": "Live Call Leads",
     "sold": "Sold",
-
     "menu_cms" : "CMS",
     "menu_onboarding" : "Onboarding",
     "onboarding_title" : "Client Onboarding Form",
@@ -828,12 +826,12 @@
     "form_account_details" : "Account Details",
     "form_account_type" : "Account Type",
     "form_account_usersList" : "Number Of Users",
+    "menu_reshuffled_request": "Reshuffle Requests",
+    
     "form_account_stripe" : "Stripe",
     "form_account_paypal" : "Paypal",
     "form_account_credit" : "Credit/Debit Cards",
     "form_account_bank" : "Bank Transfer",
     "form_account_custom" : "Add Custom Type"
-
-    
 
 }

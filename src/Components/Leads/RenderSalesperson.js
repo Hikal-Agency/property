@@ -20,9 +20,7 @@ import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { renderStyles } from "../_elements/SelectStyles";
 
-import {
-  BsPersonCheck
-} from "react-icons/bs";
+import { BsPersonCheck } from "react-icons/bs";
 
 const RenderSalesperson = ({ cellValues, lead_origin }) => {
   const [SalesPerson2, setSalesPerson2] = useState(
@@ -48,7 +46,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     fetchSidebarData,
     User,
     t,
-    primaryColor
+    primaryColor,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
@@ -226,6 +224,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     const managerId = cellValues?.row?.assignedToManager;
     console.log("managerID: ", managerId);
     const agents = SalesPerson[`manager-${managerId}`];
+    console.log("agents====> ", agents);
     if (
       managerId &&
       ((User?.role === 2 && managerId !== User?.id && managerId !== 102) ||
@@ -291,18 +290,53 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
           {t("no_agents")}
         </p>
       ) : (
-        <Select 
+        // <Select
+        //   id="SalesPerson"
+        //   value={
+        //     !SalesPerson2 ||
+        //     SalesPerson2 === "0" ||
+        //     SalesPerson === "1" ||
+        //     SalesPerson2 === null ||
+        //     SalesPerson2 === "null"
+        //       ? null
+        //       : {
+        //           label: SalesPersonsList.find(
+        //             (salesperson) => salesperson.id === SalesPerson2
+        //           )?.userName,
+        //           value: SalesPerson2,
+        //         }
+        //   }
+        //   onChange={ChangeSalesPerson}
+        //   options={[
+        //     {
+        //       label: "---", //"---" + t("label_manager") + "---",
+        //       value: null,
+        //     },
+        //     ...(SalesPersonsList?.map((salesperson) => ({
+        //       label: salesperson.userName,
+        //       value: salesperson.id,
+        //     })) ?? []),
+        //   ]}
+        //   placeholder={t("label_sales_agent")}
+        //   className={`w-full`}
+        //   menuPortalTarget={document.body}
+        //   styles={renderStyles(currentMode, primaryColor)}
+        // />
+        <Select
           id="SalesPerson"
           value={
-            !SalesPerson2 || SalesPerson2 === "0" || SalesPerson === "1" || SalesPerson2 === null
-            ? {
-              label: "",
-              value: null
-            }
-            : {
-              label: SalesPersonsList.find(salesperson => salesperson.id === SalesPerson2)?.userName, 
-              value: SalesPerson2
-            }
+            !SalesPerson2 ||
+            SalesPerson2 === "0" ||
+            SalesPerson === "1" ||
+            SalesPerson2 === null ||
+            SalesPerson2 === "null"
+              ? null
+              : {
+                  label: SalesPersonsList.find(
+                    (salesperson) => salesperson.id === SalesPerson2
+                  )?.userName,
+                  value: SalesPerson2,
+                }
           }
           onChange={ChangeSalesPerson}
           options={[
@@ -315,7 +349,15 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
               value: salesperson.id,
             })) ?? []),
           ]}
-          placeholder={t("label_sales_agent")}
+          placeholder={
+            !SalesPerson2 ||
+            SalesPerson2 === "0" ||
+            SalesPerson === "1" ||
+            SalesPerson2 === null ||
+            SalesPerson2 === "null"
+              ? "Agent"
+              : t("label_sales_agent")
+          }
           className={`w-full`}
           menuPortalTarget={document.body}
           styles={renderStyles(currentMode, primaryColor)}
@@ -401,7 +443,13 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
             >
               <IoMdClose size={18} />
             </IconButton>
-            <div className={`px-10 py-5 ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-white text-black"}`}>
+            <div
+              className={`px-10 py-5 ${
+                currentMode === "dark"
+                  ? "bg-[#1C1C1C] text-white"
+                  : "bg-white text-black"
+              }`}
+            >
               <div className="flex flex-col justify-center items-center">
                 <BsPersonCheck size={50} className="text-primary text-2xl" />
                 <h1 className="font-semibold pt-3 text-lg text-center">
