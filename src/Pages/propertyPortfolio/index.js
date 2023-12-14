@@ -10,7 +10,6 @@ import {
   CircularProgress,
   InputAdornment,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
@@ -20,15 +19,14 @@ import { FaBed } from "react-icons/fa";
 import { FaMoneyBill } from "react-icons/fa";
 
 import { Md360 } from "react-icons/md";
-import { FaCheck, FaMinus } from "react-icons/fa";
-import { BsPatchQuestionFill, BsSearch } from "react-icons/bs";
+import { BsSearch } from "react-icons/bs";
 import BedInfo from "./BedInfo";
 import { useState } from "react";
 import AddDeveloper from "./AddDeveloper";
 import AddProject from "./AddProject";
 import SinglePropertyModal from "./SinglePropertyModal";
 import usePermission from "../../utils/usePermission";
-import { MdOutlineExpandLess } from "react-icons/md";
+import { MdOutlineExpandMore } from "react-icons/md";
 
 const PropertyPortfolio = () => {
   const {
@@ -247,7 +245,8 @@ const PropertyPortfolio = () => {
                       >
                         <AccordionSummary
                           expandIcon={
-                            <MdOutlineExpandLess
+                            <MdOutlineExpandMore
+                            size={22}
                               className={`${
                                 currentMode === "dark"
                                   ? "text-white"
@@ -260,6 +259,7 @@ const PropertyPortfolio = () => {
                         >
                           <Typography
                             variant="h6"
+                            style={{marginRight: "14px"}}
                             className={`font-semibold text-white text-center w-full bg-primary p-2 uppercase rounded-lg shadow-sm`}
                           >
                             {developer.developerName}
