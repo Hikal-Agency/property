@@ -76,6 +76,7 @@ const OnBoardingForm = ({ isLoading }) => {
     account_type: "",
     no_of_users: "",
     payment_duration: "monthly",
+    terms_and_conditions: true,
   });
   const [allDocs, setAllDocs] = useState([]);
   const [documentModal, setDocumentModal] = useState(false);
@@ -142,6 +143,7 @@ const OnBoardingForm = ({ isLoading }) => {
     Board.append("no_of_users", onBoardData?.no_of_users);
     Board.append("payment_duration", onBoardData?.payment_duration);
     Board.append("logo", onBoardData?.logo);
+    Board.append("terms_and_conditions", onBoardData?.terms_and_conditions);
 
     social_links.forEach((social) => {
       const socialLinkValue = onBoardData[social?.name];
@@ -589,9 +591,17 @@ const OnBoardingForm = ({ isLoading }) => {
 
               <FormControlLabel
                 onChange={(e) =>
-                  setBoardData({ ...onBoardData, email: e.target.value })
+                  setBoardData({
+                    ...onBoardData,
+                    terms_and_conditions: e.target.checked,
+                  })
                 }
-                control={<Checkbox defaultChecked />}
+                control={
+                  <Checkbox
+                    checked={onBoardData?.terms_and_conditions}
+                    defaultChecked
+                  />
+                }
                 label="Terms And Condition"
               />
             </div>
@@ -633,27 +643,31 @@ const OnBoardingForm = ({ isLoading }) => {
           </div>
         </Box>
       </div>
-      <Button
-        type="submit"
-        size="medium"
-        style={{
-          color: "white",
-          fontFamily: fontFam,
-        }}
-        className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-        onClick={handleClick}
-        disabled={loading ? true : false}
-      >
-        {loading ? (
-          <CircularProgress
-            size={23}
-            sx={{ color: "white" }}
-            className="text-white"
-          />
-        ) : (
-          <span>{t("create")}</span>
-        )}
-      </Button>
+      {onBoardData?.terms_and_conditions == true ? (
+        <Button
+          type="submit"
+          size="medium"
+          style={{
+            color: "white",
+            fontFamily: fontFam,
+          }}
+          className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
+          onClick={handleClick}
+          disabled={loading ? true : false}
+        >
+          {loading ? (
+            <CircularProgress
+              size={23}
+              sx={{ color: "white" }}
+              className="text-white"
+            />
+          ) : (
+            <span>{t("create")}</span>
+          )}
+        </Button>
+      ) : (
+        ""
+      )}
 
       {documentModal && (
         <AddDocumentModal
