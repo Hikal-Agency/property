@@ -71,8 +71,8 @@ body {
   }
 }
 
-.country-dropdown-container label {
-  color: #fff !important; 
+.country-dropdown-container option {
+  color: black !important; 
 }
 
 .credits {

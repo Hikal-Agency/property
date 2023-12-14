@@ -36,6 +36,8 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
+import { useRef } from "react";
+import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
 
 const currentDate = dayjs();
 
@@ -61,6 +63,7 @@ const OnBoardingForm = ({ isLoading }) => {
   const [img, setImg] = useState();
 
   const [country, setCountry] = useState("");
+  const imagesInputRef = useRef(null);
 
   const [onBoardData, setBoardData] = useState({
     bussiness_name: "",
@@ -74,6 +77,8 @@ const OnBoardingForm = ({ isLoading }) => {
     no_of_users: "",
     payment_duration: "monthly",
   });
+  const [allDocs, setAllDocs] = useState([]);
+  const [documentModal, setDocumentModal] = useState(false);
 
   const selectCountry = (e) => {
     setBoardData((prev) => ({
@@ -87,7 +92,10 @@ const OnBoardingForm = ({ isLoading }) => {
 
     console.log("Uploaded img: ", file);
 
-    setImg(file);
+    setBoardData({
+      ...onBoardData,
+      logo: file,
+    });
   };
 
   console.log("img state: ", img);
@@ -132,6 +140,20 @@ const OnBoardingForm = ({ isLoading }) => {
     Board.append("email", onBoardData.email);
     Board.append("account_type", onBoardData?.account_type);
     Board.append("no_of_users", onBoardData?.no_of_users);
+    Board.append("payment_duration", onBoardData?.payment_duration);
+    Board.append("logo", onBoardData?.logo);
+
+    social_links.forEach((social) => {
+      const socialLinkValue = onBoardData[social?.name];
+      if (socialLinkValue) {
+        Board.append(social.name, socialLinkValue);
+      }
+    });
+
+    if (allDocs?.length > 0)
+      allDocs?.forEach((doc, index) => {
+        Board.append(`documents[${index}]`, doc);
+      });
 
     try {
       const submitOnBoard = await axios.post(
@@ -169,6 +191,15 @@ const OnBoardingForm = ({ isLoading }) => {
         documents: [],
         logo: "",
         payment_duration: "monthly",
+      });
+
+      social_links.forEach((social) => {
+        const socialLinkValue = onBoardData[social?.name];
+        if (socialLinkValue) {
+          setBoardData({
+            socialLinkValue: "",
+          });
+        }
       });
 
       setloading(false);
@@ -273,7 +304,6 @@ const OnBoardingForm = ({ isLoading }) => {
               border: `1px solid ${currentMode === "dark" ? "#fff" : "#000"}`,
               background: "none",
               marginBottom: "20px",
-              color: "#000 ",
             }}
           />
           {/* <TextField
@@ -350,11 +380,30 @@ const OnBoardingForm = ({ isLoading }) => {
                 }}
                 component="span"
                 disabled={loading ? true : false}
+                onClick={() => {
+                  imagesInputRef.current?.click();
+                }}
                 // startIcon={loading ? null : <MdFileUpload />}
               >
                 <span>{t("form_logo")}</span>
               </Button>
+              {onBoardData?.logo && (
+                <span
+                  className={`text-sm italic  mt-3 ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }`}
+                >
+                  logo selected.
+                </span>
+              )}
             </label>
+            <input
+              type="file"
+              alt=""
+              hidden
+              ref={imagesInputRef}
+              onInput={handleImgUpload}
+            />
 
             <label htmlFor="contained-button-document">
               <Button
@@ -365,10 +414,18 @@ const OnBoardingForm = ({ isLoading }) => {
                   color: "#ffffff",
                 }}
                 component="span"
+                onClick={() => {
+                  setDocumentModal(true);
+                }}
                 disabled={loading ? true : false}
               >
                 <span>{t("form_document")}</span>
               </Button>
+              <p className="text-primary mt-2 italic">
+                {allDocs?.length > 0
+                  ? `${allDocs?.length} documents selected.`
+                  : null}
+              </p>
             </label>
           </div>
         </Box>
@@ -597,6 +654,15 @@ const OnBoardingForm = ({ isLoading }) => {
           <span>{t("create")}</span>
         )}
       </Button>
+
+      {documentModal && (
+        <AddDocumentModal
+          documentModal={documentModal}
+          handleClose={() => setDocumentModal(false)}
+          allDocs={allDocs}
+          setAllDocs={setAllDocs}
+        />
+      )}
     </div>
   );
 };

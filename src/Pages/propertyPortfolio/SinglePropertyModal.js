@@ -469,7 +469,7 @@ const SinglePropertyModal = ({
 
                               <div className="mx-1"></div>
 
-                              {project?.tourlink && (
+                              {/* {project?.tourlink && (
                                 <div className="border border-primary p-2 font-semibold rounded-md shadow-sm cursor-pointer">
                                   <a
                                     href={project?.tourlink}
@@ -479,7 +479,7 @@ const SinglePropertyModal = ({
                                     360 view
                                   </a>
                                 </div>
-                              )}
+                              )} */}
                             </div>
                           )}
                         </div>
