@@ -38,6 +38,7 @@ import {
 import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
 import { useRef } from "react";
 import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
+import { FaWallet } from "react-icons/fa";
 
 const currentDate = dayjs();
 
@@ -60,6 +61,7 @@ const OnBoardingForm = ({ isLoading }) => {
   const [validToDate, setValidToDate] = useState("");
   const [validToDateValue, setValidToDateValue] = useState({});
   const [loading, setloading] = useState(false);
+  const [showTextInput, setShowTextInput] = useState(false);
   const [img, setImg] = useState();
 
   const [country, setCountry] = useState("");
@@ -80,12 +82,20 @@ const OnBoardingForm = ({ isLoading }) => {
   });
   const [allDocs, setAllDocs] = useState([]);
   const [documentModal, setDocumentModal] = useState(false);
+  const [customAccountType, setCustomAccountType] = useState("");
 
   const selectCountry = (e) => {
     setBoardData((prev) => ({
       ...prev,
       country: e,
     }));
+  };
+
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("btnclicked==============>");
+    setShowTextInput(true);
   };
 
   const handleImgUpload = (e) => {
@@ -97,6 +107,43 @@ const OnBoardingForm = ({ isLoading }) => {
       ...onBoardData,
       logo: file,
     });
+  };
+
+  const [accountTypes, setAccountTypes] = useState([
+    {
+      value: "stripe",
+      label: "Stripe",
+      icon: <FaStripe size={30} color="#635bff" className="mr-2" />,
+    },
+    {
+      value: "paypal",
+      label: "PayPal",
+      icon: <FaPaypal size={20} color="#00207d" className="mr-2" />,
+    },
+    {
+      value: "credit",
+      label: "Credit Card",
+      icon: <FaCreditCard size={20} color="#dd2122" className="mr-2" />,
+    },
+    {
+      value: "bank",
+      label: "Bank",
+      icon: <FaUniversity size={20} color="black" className="mr-2" />,
+    },
+  ]);
+  const handleCreateCustomAccountType = () => {
+    if (customAccountType.trim() !== "") {
+      setAccountTypes((prevTypes) => [
+        ...prevTypes,
+        {
+          value: customAccountType.toLowerCase(),
+          label: customAccountType,
+          icon: <FaWallet size={20} color="green" className="mr-2" />,
+        },
+      ]);
+      setCustomAccountType("");
+      setShowTextInput(false);
+    }
   };
 
   console.log("img state: ", img);
@@ -534,42 +581,46 @@ const OnBoardingForm = ({ isLoading }) => {
                 displayEmpty
                 select
               >
-                <MenuItem value={"stripe"}>
-                  <FaStripe
-                    size={30}
-                    color="blue"
-                    style={{ marginRight: "10px" }}
-                  />
-                  {t("form_account_stripe")}
-                </MenuItem>
-                <MenuItem value={"paypal"}>
-                  <FaPaypal
-                    size={20}
-                    color="blue"
-                    style={{ marginRight: "10px" }}
-                  />
-
-                  {t("form_account_paypal")}
-                </MenuItem>
-
-                <MenuItem value={"credit"}>
-                  <FaCreditCard
-                    size={20}
-                    color="blue"
-                    style={{ marginRight: "10px" }}
-                  />
-
-                  {t("form_account_credit")}
-                </MenuItem>
-                <MenuItem value={"bank"}>
-                  <FaUniversity
-                    size={20}
-                    color="blue"
-                    style={{ marginRight: "10px" }}
-                  />
-
-                  {t("form_account_bank")}
-                </MenuItem>
+                {accountTypes.map((type) => (
+                  <MenuItem key={type.value} value={type.value}>
+                    {type.icon}
+                    {type.label}
+                  </MenuItem>
+                ))}
+                {!showTextInput && (
+                  <MenuItem>
+                    <span
+                      className="fw-bold ml-4 cursor-pointer mt-3"
+                      onClick={handleAddCategory}
+                      sx={{ marginLeft: "200px" }}
+                    >
+                      + {t("form_account_custom")}
+                    </span>
+                  </MenuItem>
+                )}
+                {showTextInput ? (
+                  <>
+                    <MenuItem onKeyDown={(e) => e.stopPropagation()}>
+                      <TextField
+                        placeholder={t("form_account_custom_placeholder")}
+                        value={customAccountType}
+                        onChange={(e) => setCustomAccountType(e.target.value)}
+                        fullWidth
+                      />
+                    </MenuItem>
+                    <Button
+                      size="medium"
+                      className="bg-btn-primary text-white rounded-lg py-3 font-semibold mb-3 ml-5"
+                      style={{ color: "#ffffff" }}
+                      sx={{ marginLeft: "20px" }}
+                      onClick={handleCreateCustomAccountType}
+                    >
+                      <span>{t("btn_add")}</span>
+                    </Button>
+                  </>
+                ) : (
+                  ""
+                )}
               </TextField>
               <TextField
                 type="number"
