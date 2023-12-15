@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
 import { AiOutlineHistory } from "react-icons/ai";
 import {
-  Box,
   TextField,
   CircularProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+
   Tooltip,
   Modal,
   Backdrop
@@ -23,38 +15,29 @@ import axios from "../../axoisConfig";
 import Error404 from "../Error";
 import usePermission from "../../utils/usePermission";
 import { useStateContext } from "../../context/ContextProvider";
-import Loader from "../../Components/Loader";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
 import Timeline from "../timeline";
 
-import { 
-  BiBlock, 
-  BiBed 
+import {
+  BiBed
 } from "react-icons/bi";
 import {
-  BsShuffle,
-  BsTrash,
-  BsBuildingGear,
-  BsPersonCircle,
   BsTelephone,
   BsEnvelopeAt,
   BsType,
-  BsBuildings,
-  BsHouse,
-  BsBookmarkFill,
+  BsBuildings, BsBookmarkFill,
   BsChatLeftText,
   BsPersonPlus,
   BsPersonGear,
-  BsHouseGear,
+  BsHouseGear
 } from "react-icons/bs";
 import {
   MdClose
 } from "react-icons/md";
-import { 
+import {
   VscCallOutgoing,
   VscMail
 } from "react-icons/vsc";
-import { TbLanguage, TbPhone, TbBuildingCommunity } from "react-icons/tb";
 
 const style = {
   transform: "translate(0%, 0%)",
