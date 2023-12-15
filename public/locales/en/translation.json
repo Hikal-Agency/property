@@ -832,6 +832,8 @@
     "form_account_paypal" : "Paypal",
     "form_account_credit" : "Credit/Debit Cards",
     "form_account_bank" : "Bank Transfer",
-    "form_account_custom" : "Add Custom Type"
+    "form_account_custom" : "Add Custom Type",
+    "form_account_custom_placeholder" : "New Account Type"
+
 
 }
