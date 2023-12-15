@@ -38,6 +38,7 @@ import {
 import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
 import { useRef } from "react";
 import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
+import { FaWallet } from "react-icons/fa";
 
 const currentDate = dayjs();
 
@@ -60,6 +61,7 @@ const OnBoardingForm = ({ isLoading }) => {
   const [validToDate, setValidToDate] = useState("");
   const [validToDateValue, setValidToDateValue] = useState({});
   const [loading, setloading] = useState(false);
+  const [showTextInput, setShowTextInput] = useState(false);
   const [img, setImg] = useState();
 
   const [country, setCountry] = useState("");
@@ -76,15 +78,24 @@ const OnBoardingForm = ({ isLoading }) => {
     account_type: "",
     no_of_users: "",
     payment_duration: "monthly",
+    terms_and_conditions: true,
   });
   const [allDocs, setAllDocs] = useState([]);
   const [documentModal, setDocumentModal] = useState(false);
+  const [customAccountType, setCustomAccountType] = useState("");
 
   const selectCountry = (e) => {
     setBoardData((prev) => ({
       ...prev,
       country: e,
     }));
+  };
+
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("btnclicked==============>");
+    setShowTextInput(true);
   };
 
   const handleImgUpload = (e) => {
@@ -96,6 +107,43 @@ const OnBoardingForm = ({ isLoading }) => {
       ...onBoardData,
       logo: file,
     });
+  };
+
+  const [accountTypes, setAccountTypes] = useState([
+    {
+      value: "stripe",
+      label: "Stripe",
+      icon: <FaStripe size={30} color="#635bff" className="mr-2" />,
+    },
+    {
+      value: "paypal",
+      label: "PayPal",
+      icon: <FaPaypal size={20} color="#00207d" className="mr-2" />,
+    },
+    {
+      value: "credit",
+      label: "Credit Card",
+      icon: <FaCreditCard size={20} color="#dd2122" className="mr-2" />,
+    },
+    {
+      value: "bank",
+      label: "Bank",
+      icon: <FaUniversity size={20} color="black" className="mr-2" />,
+    },
+  ]);
+  const handleCreateCustomAccountType = () => {
+    if (customAccountType.trim() !== "") {
+      setAccountTypes((prevTypes) => [
+        ...prevTypes,
+        {
+          value: customAccountType.toLowerCase(),
+          label: customAccountType,
+          icon: <FaWallet size={20} color="green" className="mr-2" />,
+        },
+      ]);
+      setCustomAccountType("");
+      setShowTextInput(false);
+    }
   };
 
   console.log("img state: ", img);
@@ -142,6 +190,7 @@ const OnBoardingForm = ({ isLoading }) => {
     Board.append("no_of_users", onBoardData?.no_of_users);
     Board.append("payment_duration", onBoardData?.payment_duration);
     Board.append("logo", onBoardData?.logo);
+    Board.append("terms_and_conditions", onBoardData?.terms_and_conditions);
 
     social_links.forEach((social) => {
       const socialLinkValue = onBoardData[social?.name];
@@ -532,42 +581,46 @@ const OnBoardingForm = ({ isLoading }) => {
                 displayEmpty
                 select
               >
-                <MenuItem value={"stripe"}>
-                  <FaStripe
-                    size={30}
-                    color="blue"
-                    style={{ marginRight: "10px" }}
-                  />
-                  {t("form_account_stripe")}
-                </MenuItem>
-                <MenuItem value={"paypal"}>
-                  <FaPaypal
-                    size={20}
-                    color="blue"
-                    style={{ marginRight: "10px" }}
-                  />
-
-                  {t("form_account_paypal")}
-                </MenuItem>
-
-                <MenuItem value={"credit"}>
-                  <FaCreditCard
-                    size={20}
-                    color="blue"
-                    style={{ marginRight: "10px" }}
-                  />
-
-                  {t("form_account_credit")}
-                </MenuItem>
-                <MenuItem value={"bank"}>
-                  <FaUniversity
-                    size={20}
-                    color="blue"
-                    style={{ marginRight: "10px" }}
-                  />
-
-                  {t("form_account_bank")}
-                </MenuItem>
+                {accountTypes.map((type) => (
+                  <MenuItem key={type.value} value={type.value}>
+                    {type.icon}
+                    {type.label}
+                  </MenuItem>
+                ))}
+                {!showTextInput && (
+                  <MenuItem>
+                    <span
+                      className="fw-bold ml-4 cursor-pointer mt-3"
+                      onClick={handleAddCategory}
+                      sx={{ marginLeft: "200px" }}
+                    >
+                      + {t("form_account_custom")}
+                    </span>
+                  </MenuItem>
+                )}
+                {showTextInput ? (
+                  <>
+                    <MenuItem onKeyDown={(e) => e.stopPropagation()}>
+                      <TextField
+                        placeholder={t("form_account_custom_placeholder")}
+                        value={customAccountType}
+                        onChange={(e) => setCustomAccountType(e.target.value)}
+                        fullWidth
+                      />
+                    </MenuItem>
+                    <Button
+                      size="medium"
+                      className="bg-btn-primary text-white rounded-lg py-3 font-semibold mb-3 ml-5"
+                      style={{ color: "#ffffff" }}
+                      sx={{ marginLeft: "20px" }}
+                      onClick={handleCreateCustomAccountType}
+                    >
+                      <span>{t("btn_add")}</span>
+                    </Button>
+                  </>
+                ) : (
+                  ""
+                )}
               </TextField>
               <TextField
                 type="number"
@@ -589,9 +642,17 @@ const OnBoardingForm = ({ isLoading }) => {
 
               <FormControlLabel
                 onChange={(e) =>
-                  setBoardData({ ...onBoardData, email: e.target.value })
+                  setBoardData({
+                    ...onBoardData,
+                    terms_and_conditions: e.target.checked,
+                  })
                 }
-                control={<Checkbox defaultChecked />}
+                control={
+                  <Checkbox
+                    checked={onBoardData?.terms_and_conditions}
+                    defaultChecked
+                  />
+                }
                 label="Terms And Condition"
               />
             </div>
@@ -633,27 +694,31 @@ const OnBoardingForm = ({ isLoading }) => {
           </div>
         </Box>
       </div>
-      <Button
-        type="submit"
-        size="medium"
-        style={{
-          color: "white",
-          fontFamily: fontFam,
-        }}
-        className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-        onClick={handleClick}
-        disabled={loading ? true : false}
-      >
-        {loading ? (
-          <CircularProgress
-            size={23}
-            sx={{ color: "white" }}
-            className="text-white"
-          />
-        ) : (
-          <span>{t("create")}</span>
-        )}
-      </Button>
+      {onBoardData?.terms_and_conditions == true ? (
+        <Button
+          type="submit"
+          size="medium"
+          style={{
+            color: "white",
+            fontFamily: fontFam,
+          }}
+          className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
+          onClick={handleClick}
+          disabled={loading ? true : false}
+        >
+          {loading ? (
+            <CircularProgress
+              size={23}
+              sx={{ color: "white" }}
+              className="text-white"
+            />
+          ) : (
+            <span>{t("create")}</span>
+          )}
+        </Button>
+      ) : (
+        ""
+      )}
 
       {documentModal && (
         <AddDocumentModal
