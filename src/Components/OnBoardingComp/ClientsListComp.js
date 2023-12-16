@@ -10,11 +10,11 @@ const ClientsListComp = () => {
         variant="outlined"
         sx={{
           background: "none",
-          borderRight: "1px solid ",
-          borderLeft: "1px solid ",
-          borderBottom: "1px solid",
-          borderColor: currentMode === "dark" ? "#f3f3f9" : "#f3f3f3",
-          borderTop: "none",
+          //   borderRight: "1px solid ",
+          //   borderLeft: "1px solid ",
+          //   borderBottom: "1px solid",
+          //   borderColor: currentMode === "dark" ? "#f3f3f9" : "#f3f3f3",
+          //   borderTop: "none",
         }}
         className="border-t-0 border-r-2 border-l-2 border-b-2"
       >
@@ -39,7 +39,16 @@ const ClientsListComp = () => {
           </h3>
         </div>
 
-        <div className="flex justify-between p-5">
+        <div
+          className="flex justify-between p-5"
+          style={{
+            borderRight: "1px solid ",
+            borderLeft: "1px solid ",
+            borderBottom: "1px solid",
+            borderColor: currentMode === "dark" ? "#f3f3f9" : "#f3f3f3",
+            borderTop: "none",
+          }}
+        >
           <div>
             <div className="flex space-between space-x-2">
               <h2
@@ -55,6 +64,70 @@ const ClientsListComp = () => {
                 }`}
               >
                 business.hikalcrm.com
+              </p>
+            </div>
+            <div className="flex space-between space-x-2 mt-3">
+              <h2
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                IP Address:{" "}
+              </h2>
+              <p
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                Designated IP
+              </p>
+            </div>
+            <div className="flex space-between space-x-2 mt-3">
+              <h2
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                Country:{" "}
+              </h2>
+              <p
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                Country Name
+              </p>
+            </div>
+            <div className="flex space-between space-x-2 mt-3">
+              <h2
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                Registered on:{" "}
+              </h2>
+              <p
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                Date
+              </p>
+            </div>
+            <div className="flex space-between space-x-2 mt-3">
+              <h2
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                Expires on:{" "}
+              </h2>
+              <p
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                Date
               </p>
             </div>
           </div>
