@@ -15,6 +15,7 @@ import {
   TextField,
 } from "@mui/material";
 import moment from "moment";
+import BulkColdCallAssign from "./BulkColdCallAssign";
 
 const getLangCode = (language) => {
   if (language) {
@@ -55,6 +56,9 @@ const ColdcallFiles = ({
   const [filesLoading, setFilesLoading] = useState(true);
   const [coldcallFiles, setColdcallFiles] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
+  const [coldCallAssignModal, setColdCallAssignModal] = useState({
+    isOpen: false
+  });
   const [allFiles, setAllFiles] = useState([]);
   const { BACKEND_URL, currentMode, darkModeColors } = useStateContext();
   const [sortByVal, setSortByVal] = useState("");
@@ -153,7 +157,7 @@ const ColdcallFiles = ({
   }, [sortByVal]);
 
   const fetchFileLeads = async (file, index) => {
-    setActiveFile(index);
+    setActiveFile({index, file});
     try {
       setpageState((old) => ({
         ...old,
@@ -264,9 +268,10 @@ const ColdcallFiles = ({
       ) : coldcallFiles?.length > 0 ? (
         <div>
           <div className="flex justify-end items-center">
-          {activeFile ?  
+          {activeFile?.index ?  
             <div className="mr-2">
               <Button
+              onClick={() => setColdCallAssignModal({isOpen: true, file: activeFile?.file})}
                 className={` uppercase rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                 ripple="true"
                 size="lg"
@@ -342,7 +347,7 @@ const ColdcallFiles = ({
               return (
                 <div
                   className={`px-5 shadow-lg mr-2 rounded-lg py-3 inline-block ${
-                    file?.index === activeFile && "border border-primary"
+                    file?.index === activeFile?.index && "border border-primary"
                   }`}
                   onClick={() => fetchFileLeads(file, file?.index)}
                 >
@@ -372,6 +377,8 @@ const ColdcallFiles = ({
           Nothing yet
         </div>
       )}
+
+      {coldCallAssignModal?.isOpen && <BulkColdCallAssign bulkColdCallAssignModal={coldCallAssignModal} handleCloseModal={() => setColdCallAssignModal({isOpen: false})}/>}
     </>
   );
 };

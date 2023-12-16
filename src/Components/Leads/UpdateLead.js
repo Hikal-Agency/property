@@ -50,7 +50,6 @@ const UpdateLead = ({
     setSalesPerson: setAllSalesPersons,
     SalesPerson: AllSalesPersons,
     t,
-    isArabic,
     Managers,
     isLangRTL,
     i18n,
@@ -76,7 +75,6 @@ const UpdateLead = ({
   // eslint-disable-next-line
   const [Feedback, setFeedback] = useState("");
   const [Manager, setManager] = useState("");
-  const [Manager2, setManager2] = useState([]);
   const [SalesPerson, setSalesPerson] = useState([]);
   const [SalesPerson2, setSalesPerson2] = useState("");
   const [LeadName, setLeadName] = useState("");
