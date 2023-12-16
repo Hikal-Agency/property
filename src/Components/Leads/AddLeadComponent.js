@@ -835,7 +835,7 @@ const AddLeadComponent = ({
                         "& .PhoneInputCountryIconImg": {
                           color: "#fff",
                         },
-                        // color: currentMode === "dark" ? "white" : "black",
+                        color: currentMode === "dark" ? "white" : "black",
                         border: `1px solid ${
                           currentMode === "dark" ? "#EEEEEE" : "#666666"
                         }`,
