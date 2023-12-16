@@ -349,7 +349,7 @@ const OnBoardingForm = ({ isLoading }) => {
             style={{
               width: "100%",
               borderRadius: "5px",
-              padding: "6px 4px",
+              padding: "6px 8px",
               border: `1px solid ${currentMode === "dark" ? "#fff" : "#000"}`,
               background: "none",
               marginBottom: "20px",
