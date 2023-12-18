@@ -395,9 +395,6 @@ const AddLeadComponent = ({
                       ...darkModeColors,
                       "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                         {
-                          left: isLangRTL(i18n.language)
-                            ? "inherit"
-                            : "inherit",
                           right: isLangRTL(i18n.language)
                             ? "2.5rem"
                             : "inherit",
@@ -611,9 +608,6 @@ const AddLeadComponent = ({
                       ...darkModeColors,
                       "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                         {
-                          left: isLangRTL(i18n.language)
-                            ? "inherit"
-                            : "inherit",
                           right: isLangRTL(i18n.language)
                             ? "2.5rem"
                             : "inherit",
@@ -773,9 +767,6 @@ const AddLeadComponent = ({
                       ...darkModeColors,
                       "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                         {
-                          left: isLangRTL(i18n.language)
-                            ? "inherit"
-                            : "inherit",
                           right: isLangRTL(i18n.language)
                             ? "2.5rem"
                             : "inherit",

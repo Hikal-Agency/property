@@ -27,6 +27,14 @@ import AddProject from "./AddProject";
 import SinglePropertyModal from "./SinglePropertyModal";
 import usePermission from "../../utils/usePermission";
 import { MdOutlineExpandMore } from "react-icons/md";
+import { enquiry_options } from "../../Components/_elements/SelectOptions";
+
+import {
+  BsBookmarkCheckFill,
+  BsBookmarkXFill,
+  BsFillBookmarkDashFill
+} from "react-icons/bs";
+import View360Modal from "./view360";
 
 const PropertyPortfolio = () => {
   const {
@@ -39,6 +47,10 @@ const PropertyPortfolio = () => {
     blurDarkColor,
     blurLightColor,
     darkModeColors,
+    isLangRTL,
+    i18n,
+    fontFam,
+    primaryColor
   } = useStateContext();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,6 +60,7 @@ const PropertyPortfolio = () => {
   const [loading, setLoading] = useState(false);
   const [openAddProject, setOpenAddProject] = useState(false);
   const [openModal, setOpenModal] = useState({ open: false });
+  const [view360Modal, setView360Modal] = useState({ open: false });
   const token = localStorage.getItem("auth-token");
 
   const handleSearchQueryChange = (event) => {
@@ -55,8 +68,11 @@ const PropertyPortfolio = () => {
   };
 
   const handleOpenModal = (data, developer) => {
-    console.log("open modal clicked:::::::::::::::");
     setOpenModal({ open: true, project: data, developer: developer });
+  };
+
+  const handleView360Modal = (data) => {
+    setView360Modal({ open: true, project: data });
   };
 
   const FetchProperty = async () => {
@@ -132,15 +148,24 @@ const PropertyPortfolio = () => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    if (searchQuery !== "") {
-      SearchListings(token);
-    } else {
-      FetchProperty(token);
-    }
-
+    const fetchData = async () => {
+      const token = localStorage.getItem("auth-token");
+      if (searchQuery !== "") {
+        await SearchListings(token);
+      } else {
+        await FetchProperty(token);
+      }
+    };
+    fetchData();
     // eslint-disable-next-line
   }, [searchQuery]);
+
+  // TRANSLATED BEDS 
+  const getBedLabel = (bedValue, t) => {
+    const options = enquiry_options(t);
+    const option = options.find((option) => option.value === bedValue);
+    return option ? option.label : bedValue;
+  };
 
   return (
     <>
@@ -148,51 +173,68 @@ const PropertyPortfolio = () => {
         <div
           className={`w-full p-4  ${
             !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
+          } ${
+            currentMode === "dark" ? "text-white" : "text-black"
           }`}
         >
-          <div className="w-full flex items-center pb-3">
-            <div className="bg-primary h-10 w-1 rounded-full"></div>
-            <h1
-              className={`text-lg font-semibold mx-2 uppercase ${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-            >
-              {t("menu_property_portfolio")}
-            </h1>
-          </div>
-          <div className="flex justify-end space-x-4">
+          <div className="flex flex-wrap items-center pb-3 justify-between gap-4">
+            <div className="flex items-center">
+              <div className="bg-primary h-10 w-1 rounded-full"></div>
+              <h1
+                className={`text-lg font-semibold mx-2 uppercase ${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              >
+                {t("menu_property_portfolio")}
+              </h1>
+            </div>
             {hasPermission("property_add_dev_project") && (
-              <>
+              <div className="flex gap-3">
                 <Button
                   onClick={() => setOpenAddDev(true)}
-                  className="bg-btn-primary text-white px-4 py-4 rounded-md "
+                  className="bg-btn-primary text-white px-3 py-2 rounded-md"
+                  style={{
+                    fontFamily: fontFam,
+                  }}
                 >
                   <span className="text-white">{t("add_dev_btn")}</span>
                 </Button>
                 <Button
                   onClick={() => setOpenAddProject(true)}
-                  className="bg-btn-primary text-white px-4 py-4 rounded-md "
+                  className="bg-btn-primary text-white px-3 py-2 rounded-md"
+                  style={{
+                    fontFamily: fontFam,
+                  }}
                 >
                   <span className="text-white">{t("add_project_btn")}</span>
                 </Button>
-              </>
+              </div>
             )}
+          </div>
+          
+          {/* SEARCH  */}
+          <div className="flex justify-end pb-3">
             {searchQuery && (
               <Button
                 onClick={clearFilter}
-                className="w-max btn py-2 px-3 bg-btn-primary mr-2"
+                className={`w-max btn py-2 px-3 bg-btn-primary mr-2`}
               >
-                {t("clear")}
+                <span className={currentMode === "dark" ? "text-white" : "text-black"}>
+                  {t("clear")}
+                </span>
               </Button>
             )}
-            <Box sx={darkModeColors}>
+            <Box sx={{
+              ...darkModeColors,
+              minWidth: "120px",
+            }}>
               <TextField
                 className={`${
                   themeBgImg &&
                   (currentMode === "dark"
                     ? "blur-bg-dark rounded-md"
                     : "blur-bg-light rounded-md")
-                } w-[250px]`}
+                } w-fit`}
                 // label="Search"
                 size="small"
                 placeholder={t("search")}
@@ -229,7 +271,7 @@ const PropertyPortfolio = () => {
                   return (
                     <>
                       <Accordion
-                        className={"bg-primary mt-4"}
+                        className="shadow-sm"
                         sx={{
                           backgroundColor: !themeBgImg
                             ? currentMode === "dark"
@@ -240,13 +282,17 @@ const PropertyPortfolio = () => {
                             : blurLightColor,
                           color: currentMode === "dark" ? "#FFFFFF" : "#000000",
                           borderRadius: "10px",
-                          marginBottom: "20px",
+                          "& .css-sh22l5-MuiButtonBase-root-MuiAccordionSummary-root.Mui-expanded": {
+                            background: primaryColor,
+                            color: "#FFFFFF",
+                            borderRadius: "5px 5px 0 0",
+                          }
                         }}
                       >
                         <AccordionSummary
                           expandIcon={
                             <MdOutlineExpandMore
-                            size={22}
+                            size={20}
                               className={`${
                                 currentMode === "dark"
                                   ? "text-white"
@@ -257,130 +303,91 @@ const PropertyPortfolio = () => {
                           aria-controls="panel1a-content"
                           id="panel1a-header"
                         >
-                          <Typography
-                            variant="h6"
-                            style={{marginRight: "14px"}}
-                            className={`font-semibold text-white text-center w-full bg-primary p-2 uppercase rounded-lg shadow-sm`}
-                          >
+                          <div className={`flex gap-3 items-center font-semibold`}>
+                            <div className="bg-primary rounded-md px-2 py-1 text-white border-2">
+                              {developer?.projects?.length}
+                            </div>
                             {developer.developerName}
-                          </Typography>
+                          </div>
                         </AccordionSummary>
                         <AccordionDetails>
                           {developer?.projects?.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
                               {developer?.projects?.map((project) => (
                                 <div
                                   className={`${
                                     !themeBgImg
                                       ? currentMode === "dark"
-                                        ? "bg-[#1C1C1C]"
-                                        : "bg-[#EEEEEE]"
+                                        ? "bg-[#000000]"
+                                        : "bg-[#FFFFFF]"
                                       : currentMode === "dark"
                                       ? "blur-bg-dark"
                                       : "blur-bg-light"
-                                  } card-hover w-full h-full rounded-md space-y-1 border-t-2
-                                                      ${
-                                                        project?.projectStatus ===
-                                                        "Available"
-                                                          ? "border-green-600"
-                                                          : project.projectStatus ===
-                                                            "Sold Out"
-                                                          ? "border-red-600"
-                                                          : "border-yellow-600"
-                                                      }
-                                                  `}
+                                  } card-hover shadow-sm w-full h-full rounded-xl space-y-1 border-t-2
+                                  ${
+                                    project?.projectStatus.toLowerCase() === "available"
+                                      ? "border-green-600"
+                                      : project.projectStatus.toLowerCase() === "sold-out"
+                                      ? "border-red-600"
+                                      : "border-yellow-600"
+                                  }`}
                                 >
                                   <div
-                                    className="p-4 cursor-pointer"
+                                    className="p-4 flex flex-col gap-3 cursor-pointer"
                                     onClick={(e) =>
                                       handleOpenModal(project, developer)
                                     }
                                   >
-                                    <div className="uppercase font-semibold mb-3 flex justify-between items-center">
+                                    <div className="font-semibold flex gap-3 justify-between items-center">
                                       <div>{project?.projectName}</div>
-                                      <div className="flex">
-                                        <div
-                                          className={`
-                                                          top-0 right-5 w-4 h-8 rounded-br-full
-                                                          ${
-                                                            project.projectStatus ===
-                                                            "Available"
-                                                              ? "bg-green-600"
-                                                              : project.projectStatus ===
-                                                                "Sold Out"
-                                                              ? "bg-red-600"
-                                                              : "bg-yellow-600"
-                                                          }  
-                                                        `}
-                                        ></div>
-                                        <div
-                                          className={`
-                                                          -top-1 right-3 w-4 h-8 rounded-bl-full
-                                                          ${
-                                                            project.projectStatus ===
-                                                            "Available"
-                                                              ? "bg-green-600"
-                                                              : project.projectStatus ===
-                                                                "Sold Out"
-                                                              ? "bg-red-600"
-                                                              : "bg-yellow-600"
-                                                          }  
-                                                        `}
-                                        ></div>
-                                      </div>
+                                      {project?.projectStatus.toLowerCase() === "available" ? (
+                                        <BsBookmarkCheckFill size={18} className="text-green-600" />
+                                      ) : project?.projectStatus.toLowerCase() === "sold-out" ? (
+                                        <BsBookmarkXFill size={18} className="text-red-600" />
+                                      ) : (
+                                        <BsFillBookmarkDashFill size={18} className="text-yellow-600" />
+                                      )}
                                     </div>
-                                    <div className="flex items-center">
-                                      <div className="mr-3">
-                                        <FaBed
-                                          size={14}
-                                          className="text-green-600"
-                                        />
-                                      </div>
-                                      {project?.bedrooms &&
+                                    <div className="grid grid-cols-8 gap-3 items-center">
+                                      <FaBed
+                                        size={16}
+                                        className="text-primary"
+                                      />
+                                      <div className="col-span-7 flex flex-wrap gap-2">
+                                        {project?.bedrooms &&
                                         project?.bedrooms !== null &&
                                         project?.bedrooms.length > 0 &&
                                         project?.bedrooms?.map((bed, index) => (
-                                          <h6 key={index}>
-                                            {bed} <span>&nbsp;</span>{" "}
-                                          </h6>
+                                          <div key={index}>
+                                            {getBedLabel(bed, t)}
+                                            {(project?.bedrooms.length - 1) !== index && ","}
+                                          </div>
                                         ))}
-                                      <BedInfo
-                                        value={project.studio}
-                                        label="enquiry_studio"
-                                        t={t}
-                                      />
-                                      <BedInfo
-                                        value={project.bedrooms}
-                                        label="enquiry_1bed"
-                                        t={t}
-                                      />
-                                      <BedInfo
-                                        value={project.retail}
-                                        label="enquiry_retail"
-                                        t={t}
-                                      />
-                                    </div>
-                                    <div className="flex items-center">
-                                      <div className="my-3 mr-3">
-                                        <FaMoneyBill
-                                          size={14}
-                                          className="text-green-600"
-                                        />
                                       </div>
-                                      {project?.price}
                                     </div>
-                                    {project?.tour360 === 1 ? (
-                                      <div className="flex items-center justify-end gap-3 text-white text-sm">
+                                    <div className="grid grid-cols-8 gap-3 items-center">
+                                      <FaMoneyBill
+                                        size={16}
+                                        className="text-primary"
+                                      />
+                                      <div className="col-span-7 flex flex-wrap gap-2">
+                                        {project?.price}
+                                      </div>
+                                    </div>
+                                    {project?.tourlink !== null &&
+                                    project?.tourlink !== "" &&
+                                    project?.tourlink !== "undefined" &&
+                                    project?.tourlink !== "null" ? (
+                                      <div className="flex items-center justify-end gap-3 text-white">
                                         <button
-                                          onClick={() =>
-                                            navigate(
-                                              `/propertyPortfolio/tour360/${project.proId}`
-                                            )
-                                          }
-                                          className="bg-primary text-white rounded-md gap-2 px-3 py-2 flex items-center"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleView360Modal(project)
+                                          }}
+                                          className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
                                         >
-                                          <Md360 size={"25px"} />
-                                          <span className="text-xs uppercase">
+                                          <Md360 size={16} />
+                                          <span className="text-sm uppercase">
                                             {t("360_view")}
                                           </span>
                                         </button>
@@ -390,15 +397,6 @@ const PropertyPortfolio = () => {
                                     )}
                                   </div>
                                 </div>
-                                // <Accordion key={project.projectId}>
-                                //   <AccordionSummary
-                                //     expandIcon={<MdOutlineExpandLess />}
-                                //     aria-controls="panel1a-content"
-                                //     id="panel1a-header"
-                                //   >
-
-                                //   </AccordionSummary>
-                                // </Accordion>
                               ))}
                             </div>
                           ) : (
@@ -418,12 +416,12 @@ const PropertyPortfolio = () => {
                       currentMode === "dark" ? "text-white" : "text-dark"
                     } font-bold text-xl flex w-full justify-center items-center h-[300px]`}
                   >
-                    No property found
+                    {t("no_projects")}
                   </h1>
                 </div>
               )
             ) : DevProData?.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 mt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
                 {DevProData?.map((project) => {
                   return (
                     <div
@@ -435,95 +433,69 @@ const PropertyPortfolio = () => {
                           : currentMode === "dark"
                           ? "blur-bg-dark"
                           : "blur-bg-light"
-                      } card-hover w-full h-full rounded-md space-y-1 border-t-2
-                        ${
-                          project?.projectStatus === "Available"
-                            ? "border-green-600"
-                            : project.projectStatus === "Sold Out"
-                            ? "border-red-600"
-                            : "border-yellow-600"
-                        }
-                        `}
+                      } card-hover w-full h-full rounded-xl shadow-sm space-y-1 border-t-2
+                      ${
+                        project?.projectStatus === "Available"
+                          ? "border-green-600"
+                          : project.projectStatus === "Sold-out"
+                          ? "border-red-600"
+                          : "border-yellow-600"
+                      }`}
                     >
                       <div
-                        className="p-4 cursor-pointer"
+                        className="p-4 flex flex-col gap-3 cursor-pointer"
                         onClick={(e) => handleOpenModal(project)}
                       >
-                        <div className="uppercase font-semibold mb-3 flex justify-between items-center">
+                        <div className="font-semibold flex gap-3 justify-between items-center">
                           <div>{project?.projectName}</div>
-                          <div className="flex">
-                            <div
-                              className={`
-                           top-0 right-5 w-4 h-8 rounded-br-full
-                          ${
-                            project.projectStatus === "Available"
-                              ? "bg-green-600"
-                              : project.projectStatus === "Sold Out"
-                              ? "bg-red-600"
-                              : "bg-yellow-600"
-                          }  
-                        `}
-                            ></div>
-                            <div
-                              className={`
-                           -top-1 right-3 w-4 h-8 rounded-bl-full
-                          ${
-                            project.projectStatus === "Available"
-                              ? "bg-green-600"
-                              : project.projectStatus === "Sold Out"
-                              ? "bg-red-600"
-                              : "bg-yellow-600"
-                          }  
-                        `}
-                            ></div>
-                          </div>
+                          {project?.projectStatus === "Available" ? (
+                            <BsBookmarkCheckFill size={18} className="text-green-600" />
+                          ) : project?.projectStatus === "Sold-out" ? (
+                            <BsBookmarkXFill size={18} className="text-red-600" />
+                          ) : (
+                            <BsFillBookmarkDashFill size={18} className="text-yellow-600" />
+                          )}
                         </div>
-
-                        <div className="flex items-center">
-                          <div className="mr-3">
-                            <FaBed size={14} className="text-green-600" />
-                          </div>
-                          {project?.bedrooms &&
+                        <div className="grid grid-cols-8 gap-3 items-center">
+                          <FaBed
+                            size={16}
+                            className="text-primary"
+                          />
+                          <div className="col-span-7 flex flex-wrap gap-2">
+                            {project?.bedrooms &&
                             project?.bedrooms !== null &&
                             project?.bedrooms.length > 0 &&
-                            project?.bedrooms?.map((bed) => <h6>{bed} </h6>)}
-                          {/* <h6>{project?.bedrooms}</h6> */}
-                          <BedInfo
-                            value={project.studio}
-                            label="enquiry_studio"
-                            t={t}
-                          />
-
-                          <BedInfo
-                            value={project.bedrooms}
-                            label="enquiry_1bed"
-                            t={t}
-                          />
-                          <BedInfo
-                            value={project.retail}
-                            label="enquiry_retail"
-                            t={t}
-                          />
-                        </div>
-                        <div className="flex items-center">
-                          <div className="my-3 mr-3">
-                            <FaMoneyBill size={14} className="text-green-600" />
+                            project?.bedrooms?.map((bed, index) => (
+                              <div key={index}>
+                                {getBedLabel(bed, t)}
+                                {(project?.bedrooms.length - 1) !== index && ","}
+                              </div>
+                            ))}
                           </div>
-                          {project?.price}
                         </div>
-
-                        {project?.tour360 === 1 ? (
-                          <div className="flex items-center justify-end gap-3 text-white text-sm">
+                        <div className="grid grid-cols-8 gap-3 items-center">
+                          <FaMoneyBill
+                            size={16}
+                            className="text-primary"
+                          />
+                          <div className="col-span-7 flex flex-wrap gap-2">
+                            {project?.price}
+                          </div>
+                        </div>
+                        {project?.tourlink !== null &&
+                        project?.tourlink !== "" &&
+                        project?.tourlink !== "undefined" &&
+                        project?.tourlink !== "null" ? (
+                          <div className="flex items-center justify-end gap-3 text-white">
                             <button
-                              onClick={() =>
-                                navigate(
-                                  `/propertyPortfolio/tour360/${project.proId}`
-                                )
-                              }
-                              className="bg-primary text-white rounded-md gap-2 px-3 py-2 flex items-center"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleView360Modal(project)
+                              }}
+                              className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
                             >
-                              <Md360 size={"25px"} />
-                              <span className="text-xs uppercase">
+                              <Md360 size={16} />
+                              <span className="text-sm uppercase">
                                 {t("360_view")}
                               </span>
                             </button>
@@ -565,6 +537,14 @@ const PropertyPortfolio = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           FetchProperty={FetchProperty}
+          loading={loading}
+          setloading={setLoading}
+        />
+      )}
+      {view360Modal?.open && (
+        <View360Modal
+          view360Modal={view360Modal}
+          setView360Modal={setView360Modal}
           loading={loading}
           setloading={setLoading}
         />

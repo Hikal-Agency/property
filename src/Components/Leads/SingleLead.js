@@ -985,7 +985,6 @@ const SingleLead = ({
                     <Box sx={{
                       ...darkModeColors,
                       "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                        left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
                         right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                         transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
                       },

@@ -27,26 +27,19 @@ import {
   BsTrash,
 } from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
-import { MdLocationPin, MdClose } from "react-icons/md";
+import { MdLocationPin, MdClose, Md360 } from "react-icons/md";
 import {
   TbCurrentLocation,
-  TbPhone,
-  TbMail,
-  TbUserCircle,
-} from "react-icons/tb";
-import SelectImagesModal from "../listings/SelectImagesModal";
-import SelectDocumentModal from "../listings/SelectDocumentModal";
-import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
-import SingleImageModal from "../listings/SingleImageModal";
+} from "react-icons/tb";import SingleImageModal from "../listings/SingleImageModal";
 import SingleDocModal from "../listings/SingleDocModal";
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
 import EditPropertyModal from "./EditPropertyModal";
 import PropertyDocModal from "./PropertyDocumentUpload";
 import PropertyImageUpload from "./PropertyImageUpload";
+import View360Modal from "./view360";
 
 const SinglePropertyModal = ({
-  ListingData,
   setOpenModal,
   openModal,
   FetchProperty,
@@ -241,18 +234,16 @@ const SinglePropertyModal = ({
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
+  const [view360Modal, setView360Modal] = useState({ open: false });
+  const handleView360Modal = (data) => {
+    setView360Modal({ open: true, project: data });
+  };
 
   return (
     <>
-      {/* <div
-        className={`flex min-h-screen w-full p-4 ${
-          !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-        } ${currentMode === "dark" ? "text-white" : "text-black"}`}
-      > */}
       <Modal
         keepMounted
         open={openModal?.open}
-        // onClose={handleCloseTimelineModel}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
@@ -272,10 +263,9 @@ const SinglePropertyModal = ({
                 : "modal-close-right"
               : ""
           }
-          w-[100vw] h-[100vh] flex items-start justify-end `}
+          w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
-            // onClick={handleCloseTimelineModel}
             onClick={handleClose}
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
@@ -295,9 +285,12 @@ const SinglePropertyModal = ({
               currentMode === "dark"
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
-            }
-              p-4 h-[100vh] w-[80vw] overflow-y-scroll
-              `}
+            } p-4 h-[100vh] w-[80vw] overflow-y-scroll ${
+              currentMode === "dark" &&
+              (isLangRTL(i18n.language)
+                ? "border-r-2 border-primary"
+                : "border-l-2 border-primary")
+            }`}
           >
             {loading ? (
               <Loader />
@@ -371,8 +364,22 @@ const SinglePropertyModal = ({
                           {hasPermission("property_upload_img_doc") && (
                             <div className="flex items-center gap-1 justify-end">
                               {/* UPLOAD IMAGE AND DOCUMENT  */}
-                              <div className="min-w-fit  flex justify-center items-center mr-3 my-4 space-x-5">
-                                <label htmlFor="contained-button-file">
+                              <div className="min-w-fit flex justify-center items-center my-2 gap-3">
+                                {/* UPLOAD IMAGE  */}
+                                <Tooltip title="Upload Image(s)" arrow>
+                                  <IconButton
+                                    className={`card-hover rounded-full bg-btn-primary`}
+                                    onClick={() =>
+                                      setSelectImagesModal({
+                                        isOpen: true,
+                                      })
+                                    }
+                                  >
+                                    <BsImages size={16} color={"#FFFFFF"} />
+                                  </IconButton>
+                                </Tooltip>
+
+                                {/* <label htmlFor="contained-button-file">
                                   <Button
                                     variant="contained"
                                     size="lg"
@@ -398,9 +405,21 @@ const SinglePropertyModal = ({
                                       ? `${allImages?.length} images selected.`
                                       : null}
                                   </p>
-                                </label>
+                                </label> */}
 
-                                <label htmlFor="contained-button-document">
+                                {/* UPLOAD DOCUMENT  */}
+                                <Tooltip title="Upload Document(s)" arrow>
+                                  <IconButton
+                                    className={`card-hover rounded-full bg-btn-primary`}
+                                    onClick={() => {
+                                      setDocumentModal(true);
+                                    }}
+                                  >
+                                    <BsFiles size={16} color={"#FFFFFF"} />
+                                  </IconButton>
+                                </Tooltip>
+
+                                {/* <label htmlFor="contained-button-document">
                                   <Button
                                     variant="contained"
                                     size="lg"
@@ -422,64 +441,38 @@ const SinglePropertyModal = ({
                                       ? `${allDocs?.length} documents selected.`
                                       : null}
                                   </p>
-                                </label>
+                                </label> */}
+
+                                {/* EDIT DETAILS  */}
+                                {hasPermission("property_update_dev_project") && (
+                                  <Tooltip title="Edit Listing Details" arrow>
+                                    <IconButton
+                                      className={`rounded-full bg-btn-primary`}
+                                      onClick={handleEdit}
+                                    >
+                                      <BsPen size={16} color={"#FFFFFF"} />
+                                    </IconButton>
+                                  </Tooltip>
+                                )}
+
+                                {project?.tourlink !== null &&
+                                project?.tourlink !== "" &&
+                                project?.tourlink !== "undefined" &&
+                                project?.tourlink !== "null" && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleView360Modal(project)
+                                    }}
+                                    className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
+                                  >
+                                    <Md360 size={16} />
+                                    <span className="text-sm uppercase">
+                                      {t("360_view")}
+                                    </span>
+                                  </button>
+                                )}
                               </div>
-
-                              {/* EDIT DETAILS  */}
-                              {hasPermission("property_update_dev_project") && (
-                                <Tooltip title="Edit Listing Details" arrow>
-                                  <IconButton
-                                    className={`rounded-full bg-btn-primary`}
-                                    onClick={handleEdit}
-                                  >
-                                    <BsPen size={16} color={"#FFFFFF"} />
-                                  </IconButton>
-                                </Tooltip>
-                              )}
-
-                              {/* UPLOAD PICTURES  */}
-                              {/* <Tooltip title="Upload Pictures" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectImagesModal({
-                                    isOpen: true,
-                                    listingId: project?.id,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsImages size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip> */}
-
-                              {/* UPLOAD DOCUMENTS  */}
-                              {/* <Tooltip title="Upload Documents" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectDocumentModal({
-                                    isOpen: true,
-                                    listingId: lid,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsFiles size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip> */}
-
-                              <div className="mx-1"></div>
-
-                              {/* {project?.tourlink && (
-                                <div className="border border-primary p-2 font-semibold rounded-md shadow-sm cursor-pointer">
-                                  <a
-                                    href={project?.tourlink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    360 view
-                                  </a>
-                                </div>
-                              )} */}
                             </div>
                           )}
                         </div>
@@ -778,6 +771,15 @@ const SinglePropertyModal = ({
                         open: false,
                       })
                     }
+                  />
+                )}
+                
+                {view360Modal?.open && (
+                  <View360Modal
+                    view360Modal={view360Modal}
+                    setView360Modal={setView360Modal}
+                    loading={loading}
+                    setloading={setloading}
                   />
                 )}
               </>
