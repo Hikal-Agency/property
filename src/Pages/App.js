@@ -78,6 +78,7 @@ import MeetInvite from "./MeetInvite";
 import Snapchat from "./SocialMedia/snapchat";
 import TransferRequest from "./transfferedleads/TransferRequest";
 import OnBoarding from "./OnBoarding";
+import ClientsList from "./OnBoarding/ClientsList";
 
 const libraries = ["places"];
 
@@ -197,6 +198,11 @@ const routes = [
     path: "/onboarding",
     pageName: "OnBoarding",
     element: <OnBoarding />,
+  },
+  {
+    path: "/onboarding/clientsList",
+    pageName: "CRM Clients",
+    element: <ClientsList />,
   },
   // {
   //   path: "/timeline/:id",

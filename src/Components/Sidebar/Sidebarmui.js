@@ -15,6 +15,7 @@ import moment from "moment";
 import { FaCheck } from "react-icons/fa";
 import { IoPeopleCircleSharp } from "react-icons/io5";
 import { IoPersonAddOutline } from "react-icons/io5";
+import { TbUsers } from "react-icons/tb";
 
 import axios from "../../axoisConfig";
 import ringtone from "../../assets/new-message-ringtone.mp3";
@@ -1416,6 +1417,12 @@ const Sidebarmui = () => {
           // pro: true,
           link: "/onboarding",
         },
+        // {
+        //   name: t("menu_clientsList"),
+        //   icon: <TbUsers size={16} />,
+        //   // pro: true,
+        //   link: "/onboarding/clientsList",
+        // },
       ],
     },
     // MESSAGING

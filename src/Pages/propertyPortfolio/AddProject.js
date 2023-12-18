@@ -25,24 +25,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
 
-import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
-import { IoIosAlert } from "react-icons/io";
 import { MdClose } from "react-icons/md";
-import { BiBlock, BiBed } from "react-icons/bi";
-import {
-  BsShuffle,
-  BsTelephone,
-  BsEnvelopeAt,
-  BsType,
-  BsHouseGear,
-  BsBuildings,
-  BsTrash,
-  BsBuildingGear,
-  BsPersonPlus,
-  BsBookmarkFill,
-  BsPersonGear,
-  BsChatLeftText,
-} from "react-icons/bs";
 import PortfolioLocation from "./PortfolioLocation";
 import PropertyImageUpload from "./PropertyImageUpload";
 import PropertyDocModal from "./PropertyDocumentUpload";
@@ -636,7 +619,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                               {t("project_availability")}
                             </h4>
                             <TextField
-                              id="Manager"
+                              id="Availability"
                               select
                               sx={{
                                 "&": {
@@ -652,8 +635,8 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                               displayEmpty
                               required
                             >
-                              <MenuItem value="available">Available</MenuItem>
-                              <MenuItem value="sold-out">Sold-Out</MenuItem>
+                              <MenuItem value="Available">Available</MenuItem>
+                              <MenuItem value="Sold-out">Sold-out</MenuItem>
                             </TextField>
 
                             <div>

@@ -308,7 +308,6 @@ const OnBoardingForm = ({ isLoading }) => {
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
               {
-                left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
                 right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                 transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -349,7 +348,7 @@ const OnBoardingForm = ({ isLoading }) => {
             style={{
               width: "100%",
               borderRadius: "5px",
-              padding: "6px 4px",
+              padding: "6px 8px",
               border: `1px solid ${currentMode === "dark" ? "#fff" : "#000"}`,
               background: "none",
               marginBottom: "20px",
@@ -490,7 +489,6 @@ const OnBoardingForm = ({ isLoading }) => {
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                 {
-                  left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
                   right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                   transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
                 },
@@ -547,7 +545,6 @@ const OnBoardingForm = ({ isLoading }) => {
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
               {
-                left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
                 right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                 transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
               },
