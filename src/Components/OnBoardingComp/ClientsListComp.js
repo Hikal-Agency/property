@@ -12,9 +12,38 @@ import {
 } from "react-icons/fa";
 import { IoIosMail, IoLogoYoutube } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
+import moment from "moment";
 
-const ClientsListComp = () => {
+const ClientsListComp = ({ client }) => {
+  console.log("clients in child comp: ", client);
   const { currentMode } = useStateContext();
+
+  const social_links = [
+    {
+      name: "linkedin",
+      icon: <FaLinkedin color="#0A66C2" size={14} />,
+    },
+    {
+      name: "facebook",
+      icon: <FaFacebookF color="#0866FF" size={14} />,
+    },
+    {
+      name: "instagram",
+      icon: <FaInstagram color="#C40FEC" size={14} />,
+    },
+    {
+      name: "tiktok",
+      icon: <FaTiktok color="#2CF5F0" size={14} />,
+    },
+    {
+      name: "snapchat",
+      icon: <FaSnapchat color="#FFFC09" size={14} />,
+    },
+    {
+      name: "youtube",
+      icon: <IoLogoYoutube color="#FE0808" size={14} />,
+    },
+  ];
   return (
     <>
       <Card
@@ -22,7 +51,7 @@ const ClientsListComp = () => {
         sx={{
           background: "none",
         }}
-        className="border-t-0 border-r-2 border-l-2 border-b-2"
+        className="border-t-0 border-r-2 border-l-2 border-b-2 mb-3"
       >
         <div
           className="flex justify-between space-x-2 items-center"
@@ -38,7 +67,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" && "text-white"
                 } text-bold`}
               >
-                Account Type
+                {client?.account_type}
               </h3>
             </span>
             <h3
@@ -46,57 +75,27 @@ const ClientsListComp = () => {
                 currentMode === "dark" ? "text-white" : "text-dark"
               }`}
             >
-              Business Name
+              {client?.bussiness_name || "-"}
             </h3>
           </div>
           <div className="flex items-center space-x-3 pr-3 ">
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaFacebookF color="blue" />
-            </span>
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaInstagram color="#C40FEC" />
-            </span>
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaTiktok color="#2CF5F0" />
-            </span>
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaSnapchat color="#FFFC09" />
-            </span>
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <IoLogoYoutube color="#FE0808" />
-            </span>
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaLinkedin color="#0A66C2" />
-            </span>
+            {social_links?.map(
+              (social) =>
+                client[social?.name] && (
+                  <span
+                    className={`p-3 border rounded rounded-full ${
+                      currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
+                    } cursor-pointer`}
+                  >
+                    {social?.icon}
+                  </span>
+                )
+            )}
           </div>
         </div>
 
         <div
-          className="flex justify-between p-5 items-center"
+          className="flex justify-between p-5 "
           style={{
             borderRight: "1px solid ",
             borderLeft: "1px solid ",
@@ -106,7 +105,7 @@ const ClientsListComp = () => {
           }}
         >
           <div>
-            <div className="flex space-between space-x-2">
+            {/* <div className="flex space-between space-x-2">
               <h2
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-dark"
@@ -121,21 +120,21 @@ const ClientsListComp = () => {
               >
                 business.hikalcrm.com
               </p>
-            </div>
+            </div> */}
             <div className="flex space-between space-x-2 mt-3">
               <h2
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                IP Address:{" "}
+                Number Of Users:{" "}
               </h2>
               <p
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Designated IP
+                {client?.no_of_users}
               </p>
             </div>
             <div className="flex space-between space-x-2 mt-3">
@@ -151,7 +150,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Country Name
+                {client?.country}
               </p>
             </div>
             <div className="flex space-between space-x-2 mt-3">
@@ -167,10 +166,10 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Date
+                {moment(client?.created_at).format("YYYY-MM-DD")}
               </p>
             </div>
-            <div className="flex space-between space-x-2 mt-3">
+            {/* <div className="flex space-between space-x-2 mt-3">
               <h2
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-dark"
@@ -185,7 +184,7 @@ const ClientsListComp = () => {
               >
                 Date
               </p>
-            </div>
+            </div> */}
           </div>
           <div>
             <div className="flex space-between space-x-3  items-center">
@@ -199,7 +198,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Name of person to contact
+                {client?.name_of_person || "-"}
               </p>
             </div>
             <div className="flex space-between space-x-3 mt-3 items-center">
@@ -213,7 +212,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                +9232312323132
+                {client?.contact || "-"}
               </p>
             </div>
             <div className="flex space-between space-x-3 mt-3 items-center">
@@ -227,10 +226,10 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                test@gmail.com
+                {client?.email || "-"}
               </p>
             </div>
-            <div className="flex space-between space-x-3 mt-3 items-center">
+            {/* <div className="flex space-between space-x-3 mt-3 items-center">
               <ImUsers
                 size={16}
                 color={currentMode === "dark" ? "#fff" : "#000"}
@@ -241,9 +240,9 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Number of users
+                {client?.no_of_users || "-"}
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </Card>
