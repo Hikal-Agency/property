@@ -34,6 +34,7 @@ import {
   BsBookmarkXFill,
   BsFillBookmarkDashFill
 } from "react-icons/bs";
+import View360Modal from "./view360";
 
 const PropertyPortfolio = () => {
   const {
@@ -59,6 +60,7 @@ const PropertyPortfolio = () => {
   const [loading, setLoading] = useState(false);
   const [openAddProject, setOpenAddProject] = useState(false);
   const [openModal, setOpenModal] = useState({ open: false });
+  const [view360Modal, setView360Modal] = useState({ open: false });
   const token = localStorage.getItem("auth-token");
 
   const handleSearchQueryChange = (event) => {
@@ -66,8 +68,11 @@ const PropertyPortfolio = () => {
   };
 
   const handleOpenModal = (data, developer) => {
-    console.log("open modal clicked:::::::::::::::");
     setOpenModal({ open: true, project: data, developer: developer });
+  };
+
+  const handleView360Modal = (data) => {
+    setView360Modal({ open: true, project: data });
   };
 
   const FetchProperty = async () => {
@@ -375,7 +380,10 @@ const PropertyPortfolio = () => {
                                     project?.tourlink !== "null" ? (
                                       <div className="flex items-center justify-end gap-3 text-white">
                                         <button
-                                          // onClick={}
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleView360Modal(project)
+                                          }}
                                           className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
                                         >
                                           <Md360 size={16} />
@@ -480,7 +488,10 @@ const PropertyPortfolio = () => {
                         project?.tourlink !== "null" ? (
                           <div className="flex items-center justify-end gap-3 text-white">
                             <button
-                              // onClick={}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleView360Modal(project)
+                              }}
                               className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
                             >
                               <Md360 size={16} />
@@ -493,93 +504,6 @@ const PropertyPortfolio = () => {
                           <></>
                         )}
                       </div>
-
-                      {/* <div
-                        className="p-4 cursor-pointer"
-                        onClick={(e) => handleOpenModal(project)}
-                      >
-                        <div className="uppercase font-semibold mb-3 flex justify-between items-center">
-                          <div>{project?.projectName}</div>
-                          <div className="flex">
-                            <div
-                              className={`
-                          top-0 right-5 w-4 h-8 rounded-br-full
-                          ${
-                            project.projectStatus === "Available"
-                              ? "bg-green-600"
-                              : project.projectStatus === "Sold Out"
-                              ? "bg-red-600"
-                              : "bg-yellow-600"
-                          }  
-                        `}
-                            ></div>
-                            <div
-                              className={`
-                          -top-1 right-3 w-4 h-8 rounded-bl-full
-                          ${
-                            project.projectStatus === "Available"
-                              ? "bg-green-600"
-                              : project.projectStatus === "Sold Out"
-                              ? "bg-red-600"
-                              : "bg-yellow-600"
-                          }  
-                        `}
-                            ></div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center">
-                          <div className="mr-3">
-                            <FaBed size={14} className="text-green-600" />
-                          </div>
-                          {project?.bedrooms &&
-                            project?.bedrooms !== null &&
-                            project?.bedrooms.length > 0 &&
-                            project?.bedrooms?.map((bed) => <h6>{bed} </h6>)}
-                          <BedInfo
-                            value={project.studio}
-                            label="enquiry_studio"
-                            t={t}
-                          />
-
-                          <BedInfo
-                            value={project.bedrooms}
-                            label="enquiry_1bed"
-                            t={t}
-                          />
-                          <BedInfo
-                            value={project.retail}
-                            label="enquiry_retail"
-                            t={t}
-                          />
-                        </div>
-                        <div className="flex items-center">
-                          <div className="my-3 mr-3">
-                            <FaMoneyBill size={14} className="text-green-600" />
-                          </div>
-                          {project?.price}
-                        </div>
-
-                        {project?.tour360 === 1 ? (
-                          <div className="flex items-center justify-end gap-3 text-white text-sm">
-                            <button
-                              onClick={() =>
-                                navigate(
-                                  `/propertyPortfolio/tour360/${project.proId}`
-                                )
-                              }
-                              className="bg-primary text-white rounded-md gap-2 px-3 py-2 flex items-center"
-                            >
-                              <Md360 size={"25px"} />
-                              <span className="text-xs uppercase">
-                                {t("360_view")}
-                              </span>
-                            </button>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-                      </div> */}
                     </div>
                   );
                 })}
@@ -613,6 +537,14 @@ const PropertyPortfolio = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           FetchProperty={FetchProperty}
+          loading={loading}
+          setloading={setLoading}
+        />
+      )}
+      {view360Modal?.open && (
+        <View360Modal
+          view360Modal={view360Modal}
+          setView360Modal={setView360Modal}
           loading={loading}
           setloading={setLoading}
         />

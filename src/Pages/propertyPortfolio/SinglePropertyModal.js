@@ -46,7 +46,6 @@ import PropertyDocModal from "./PropertyDocumentUpload";
 import PropertyImageUpload from "./PropertyImageUpload";
 
 const SinglePropertyModal = ({
-  ListingData,
   setOpenModal,
   openModal,
   FetchProperty,
@@ -244,15 +243,9 @@ const SinglePropertyModal = ({
 
   return (
     <>
-      {/* <div
-        className={`flex min-h-screen w-full p-4 ${
-          !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-        } ${currentMode === "dark" ? "text-white" : "text-black"}`}
-      > */}
       <Modal
         keepMounted
         open={openModal?.open}
-        // onClose={handleCloseTimelineModel}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
@@ -272,10 +265,9 @@ const SinglePropertyModal = ({
                 : "modal-close-right"
               : ""
           }
-          w-[100vw] h-[100vh] flex items-start justify-end `}
+          w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
-            // onClick={handleCloseTimelineModel}
             onClick={handleClose}
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
@@ -295,9 +287,12 @@ const SinglePropertyModal = ({
               currentMode === "dark"
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
-            }
-              p-4 h-[100vh] w-[80vw] overflow-y-scroll
-              `}
+            } p-4 h-[100vh] w-[80vw] overflow-y-scroll ${
+              currentMode === "dark" &&
+              (isLangRTL(i18n.language)
+                ? "border-r-2 border-primary"
+                : "border-l-2 border-primary")
+            }`}
           >
             {loading ? (
               <Loader />
@@ -372,7 +367,21 @@ const SinglePropertyModal = ({
                             <div className="flex items-center gap-1 justify-end">
                               {/* UPLOAD IMAGE AND DOCUMENT  */}
                               <div className="min-w-fit  flex justify-center items-center mr-3 my-4 space-x-5">
-                                <label htmlFor="contained-button-file">
+                                {/* UPLOAD IMAGE  */}
+                                <Tooltip title="Upload Image(s)" arrow>
+                                  <IconButton
+                                    className={`card-hover rounded-full bg-btn-primary`}
+                                    onClick={() =>
+                                      setSelectImagesModal({
+                                        isOpen: true,
+                                      })
+                                    }
+                                  >
+                                    <BsImages size={16} color={"#FFFFFF"} />
+                                  </IconButton>
+                                </Tooltip>
+
+                                {/* <label htmlFor="contained-button-file">
                                   <Button
                                     variant="contained"
                                     size="lg"
@@ -398,9 +407,21 @@ const SinglePropertyModal = ({
                                       ? `${allImages?.length} images selected.`
                                       : null}
                                   </p>
-                                </label>
+                                </label> */}
 
-                                <label htmlFor="contained-button-document">
+                                {/* UPLOAD DOCUMENT  */}
+                                <Tooltip title="Upload Document(s)" arrow>
+                                  <IconButton
+                                    className={`card-hover rounded-full bg-btn-primary`}
+                                    onClick={() => {
+                                      setDocumentModal(true);
+                                    }}
+                                  >
+                                    <BsFiles size={16} color={"#FFFFFF"} />
+                                  </IconButton>
+                                </Tooltip>
+
+                                {/* <label htmlFor="contained-button-document">
                                   <Button
                                     variant="contained"
                                     size="lg"
@@ -422,7 +443,7 @@ const SinglePropertyModal = ({
                                       ? `${allDocs?.length} documents selected.`
                                       : null}
                                   </p>
-                                </label>
+                                </label> */}
                               </div>
 
                               {/* EDIT DETAILS  */}
@@ -436,36 +457,6 @@ const SinglePropertyModal = ({
                                   </IconButton>
                                 </Tooltip>
                               )}
-
-                              {/* UPLOAD PICTURES  */}
-                              {/* <Tooltip title="Upload Pictures" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectImagesModal({
-                                    isOpen: true,
-                                    listingId: project?.id,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsImages size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip> */}
-
-                              {/* UPLOAD DOCUMENTS  */}
-                              {/* <Tooltip title="Upload Documents" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectDocumentModal({
-                                    isOpen: true,
-                                    listingId: lid,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsFiles size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip> */}
 
                               <div className="mx-1"></div>
 
