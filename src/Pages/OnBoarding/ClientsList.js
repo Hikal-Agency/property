@@ -41,7 +41,6 @@ const ClientsList = () => {
       setClientsList(getClients?.data?.data?.data);
       setMaxPage(getClients?.data?.data?.last_page);
       setCurrentPage(getClients?.data?.data?.current_page);
-      // setPage(getClients?.data?.data?.per_page);
       console.log("clients list::: ", getClients);
       setLoading(false);
     } catch (error) {
