@@ -86,49 +86,13 @@ const ClientsListComp = ({ client }) => {
                 } cursor-pointer`}
               >
                 {social?.icon}
-                {/* <FaFacebookF color="blue" /> */}
               </span>
             ))}
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaInstagram color="#C40FEC" />
-            </span>
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaTiktok color="#2CF5F0" />
-            </span>
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaSnapchat color="#FFFC09" />
-            </span>
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <IoLogoYoutube color="#FE0808" />
-            </span>
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaLinkedin color="#0A66C2" />
-            </span>
           </div>
         </div>
 
         <div
-          className="flex justify-between p-5 items-center"
+          className="flex justify-between p-5 "
           style={{
             borderRight: "1px solid ",
             borderLeft: "1px solid ",
@@ -138,7 +102,7 @@ const ClientsListComp = ({ client }) => {
           }}
         >
           <div>
-            <div className="flex space-between space-x-2">
+            {/* <div className="flex space-between space-x-2">
               <h2
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-dark"
@@ -153,21 +117,21 @@ const ClientsListComp = ({ client }) => {
               >
                 business.hikalcrm.com
               </p>
-            </div>
+            </div> */}
             <div className="flex space-between space-x-2 mt-3">
               <h2
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                IP Address:{" "}
+                Number Of Users:{" "}
               </h2>
               <p
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Designated IP
+                {client?.no_of_users}
               </p>
             </div>
             <div className="flex space-between space-x-2 mt-3">
@@ -202,7 +166,7 @@ const ClientsListComp = ({ client }) => {
                 {moment(client?.created_at).format("YYYY-MM-DD")}
               </p>
             </div>
-            <div className="flex space-between space-x-2 mt-3">
+            {/* <div className="flex space-between space-x-2 mt-3">
               <h2
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-dark"
@@ -217,7 +181,7 @@ const ClientsListComp = ({ client }) => {
               >
                 Date
               </p>
-            </div>
+            </div> */}
           </div>
           <div>
             <div className="flex space-between space-x-3  items-center">
@@ -262,7 +226,7 @@ const ClientsListComp = ({ client }) => {
                 {client?.email || "-"}
               </p>
             </div>
-            <div className="flex space-between space-x-3 mt-3 items-center">
+            {/* <div className="flex space-between space-x-3 mt-3 items-center">
               <ImUsers
                 size={16}
                 color={currentMode === "dark" ? "#fff" : "#000"}
@@ -275,7 +239,7 @@ const ClientsListComp = ({ client }) => {
               >
                 {client?.no_of_users || "-"}
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </Card>
