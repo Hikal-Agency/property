@@ -12,9 +12,38 @@ import {
 } from "react-icons/fa";
 import { IoIosMail, IoLogoYoutube } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
+import moment from "moment";
 
-const ClientsListComp = () => {
+const ClientsListComp = ({ client }) => {
+  console.log("clients in child comp: ", client);
   const { currentMode } = useStateContext();
+
+  const social_links = [
+    {
+      name: "linkedin",
+      icon: <FaLinkedin color="#0A66C2" size={14} />,
+    },
+    {
+      name: "facebook",
+      icon: <FaFacebookF color="#0866FF" size={14} />,
+    },
+    {
+      name: "instagram",
+      icon: <FaInstagram color="#C40FEC" size={14} />,
+    },
+    {
+      name: "tiktok",
+      icon: <FaTiktok color="#2CF5F0" size={14} />,
+    },
+    {
+      name: "snapchat",
+      icon: <FaSnapchat color="#FFFC09" size={14} />,
+    },
+    {
+      name: "youtube",
+      icon: <IoLogoYoutube color="#FE0808" size={14} />,
+    },
+  ];
   return (
     <>
       <Card
@@ -22,7 +51,7 @@ const ClientsListComp = () => {
         sx={{
           background: "none",
         }}
-        className="border-t-0 border-r-2 border-l-2 border-b-2"
+        className="border-t-0 border-r-2 border-l-2 border-b-2 mb-3"
       >
         <div
           className="flex justify-between space-x-2 items-center"
@@ -38,7 +67,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" && "text-white"
                 } text-bold`}
               >
-                Account Type
+                {client?.account_type}
               </h3>
             </span>
             <h3
@@ -46,17 +75,20 @@ const ClientsListComp = () => {
                 currentMode === "dark" ? "text-white" : "text-dark"
               }`}
             >
-              Business Name
+              {client?.bussiness_name || "-"}
             </h3>
           </div>
           <div className="flex items-center space-x-3 pr-3 ">
-            <span
-              className={`p-3 border rounded rounded-full ${
-                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-              } cursor-pointer`}
-            >
-              <FaFacebookF color="blue" />
-            </span>
+            {social_links?.map((social) => (
+              <span
+                className={`p-3 border rounded rounded-full ${
+                  currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
+                } cursor-pointer`}
+              >
+                {social?.icon}
+                {/* <FaFacebookF color="blue" /> */}
+              </span>
+            ))}
             <span
               className={`p-3 border rounded rounded-full ${
                 currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
@@ -151,7 +183,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Country Name
+                {client?.country}
               </p>
             </div>
             <div className="flex space-between space-x-2 mt-3">
@@ -167,7 +199,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Date
+                {moment(client?.created_at).format("YYYY-MM-DD")}
               </p>
             </div>
             <div className="flex space-between space-x-2 mt-3">
@@ -199,7 +231,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Name of person to contact
+                {client?.name_of_person || "-"}
               </p>
             </div>
             <div className="flex space-between space-x-3 mt-3 items-center">
@@ -213,7 +245,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                +9232312323132
+                {client?.contact || "-"}
               </p>
             </div>
             <div className="flex space-between space-x-3 mt-3 items-center">
@@ -227,7 +259,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                test@gmail.com
+                {client?.email || "-"}
               </p>
             </div>
             <div className="flex space-between space-x-3 mt-3 items-center">
@@ -241,7 +273,7 @@ const ClientsListComp = () => {
                   currentMode === "dark" ? "text-white" : "text-dark"
                 }`}
               >
-                Number of users
+                {client?.no_of_users || "-"}
               </p>
             </div>
           </div>

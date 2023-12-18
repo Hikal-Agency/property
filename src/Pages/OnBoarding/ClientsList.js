@@ -3,6 +3,8 @@ import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 import OnBoardingForm from "../../Components/OnBoardingComp/OnBoardingForm";
 import ClientsListComp from "../../Components/OnBoardingComp/ClientsListComp";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
 
 const ClientsList = () => {
   const {
@@ -15,10 +17,42 @@ const ClientsList = () => {
   } = useStateContext();
 
   const [loading, setLoading] = useState(false);
+  const [clientsList, setClientsList] = useState([]);
+  const token = localStorage.getItem("auth-token");
+
+  console.log("clients list state::: ", clientsList);
+  const fetchCrmClients = async () => {
+    setLoading(true);
+    try {
+      const getClients = await axios.get(`${BACKEND_URL}/onboarding`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      setClientsList(getClients?.data?.data?.data);
+      console.log("clients list::: ", getClients);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+
+      console.log("onboarding clients error::::: ", error);
+      toast.error("Unable to fetch clients.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   useEffect(() => {
     setopenBackDrop(false);
-    // eslint-disable-next-line
+    fetchCrmClients();
   }, []);
 
   return (
@@ -45,7 +79,19 @@ const ClientsList = () => {
             </div>
 
             <div className="mt-3 pb-3">
-              <ClientsListComp isLoading={loading} />
+              {clientsList?.length > 0 ? (
+                clientsList?.map((client) => (
+                  <ClientsListComp isLoading={loading} client={client} />
+                ))
+              ) : (
+                <p
+                  className={`${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }`}
+                >
+                  No data available
+                </p>
+              )}
             </div>
           </div>
         )}
