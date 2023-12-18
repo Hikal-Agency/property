@@ -1911,7 +1911,7 @@ const AllLeads = ({
   return (
     <>
       <div className="pb-10 mb-10">
-        {(lead_origin === "coldleads" ||
+        {hasPermission("coldcallfiles") && (lead_origin === "coldleads" ||
           (lead_origin === "unassigned" && lead_type === "coldleads")) && (
           <ColdcallFiles
             pageState={pageState}
