@@ -593,6 +593,19 @@ label[for="bulkImport"] .MuiButtonBase-root {
   font-family: var(--font-family);
 }
 
+.phone-input-light .PhoneInputCountrySelect {
+  background-color: #fff !important;
+  color: "#000 !important";
+  font-family: var(--font-family);
+}
+
+.phone-input-dark .PhoneInputCountrySelect {
+  background-color: #000 !important;
+  color: "white !important";
+  font-family: var(--font-family);
+}
+
+
 .MuiDataGrid-cell badge:not(badge.available) {
   background: #000000c7 !important;
   width: 100%;
