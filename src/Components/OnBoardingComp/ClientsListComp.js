@@ -1,8 +1,16 @@
 import { Card } from "@mui/material";
 import React from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { FaUser, FaPhone, FaFacebookF } from "react-icons/fa";
-import { IoIosMail } from "react-icons/io";
+import {
+  FaUser,
+  FaPhone,
+  FaFacebookF,
+  FaInstagram,
+  FaTiktok,
+  FaSnapchat,
+  FaLinkedin,
+} from "react-icons/fa";
+import { IoIosMail, IoLogoYoutube } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
 
 const ClientsListComp = () => {
@@ -54,7 +62,35 @@ const ClientsListComp = () => {
                 currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
               } cursor-pointer`}
             >
-              <FaFacebookF color="blue" />
+              <FaInstagram color="#C40FEC" />
+            </span>
+            <span
+              className={`p-3 border rounded rounded-full ${
+                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
+              } cursor-pointer`}
+            >
+              <FaTiktok color="#2CF5F0" />
+            </span>
+            <span
+              className={`p-3 border rounded rounded-full ${
+                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
+              } cursor-pointer`}
+            >
+              <FaSnapchat color="#FFFC09" />
+            </span>
+            <span
+              className={`p-3 border rounded rounded-full ${
+                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
+              } cursor-pointer`}
+            >
+              <IoLogoYoutube color="#FE0808" />
+            </span>
+            <span
+              className={`p-3 border rounded rounded-full ${
+                currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
+              } cursor-pointer`}
+            >
+              <FaLinkedin color="#0A66C2" />
             </span>
           </div>
         </div>
