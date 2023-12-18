@@ -813,6 +813,7 @@
     "sold": "Sold",
     "menu_cms" : "CMS",
     "menu_onboarding" : "Onboarding",
+    "menu_clientsList" : "CRM Clients",
     "onboarding_title" : "Client Onboarding Form",
     "boarding_business_details" : "Business Details",
     "boarding_social_profiles" : "Social Profiles",
