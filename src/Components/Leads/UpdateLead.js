@@ -787,23 +787,14 @@ const UpdateLead = ({
                           className={`
                           ${classNames({
                             "dark-mode": currentMode === "dark",
+                            "phone-input-light": currentMode !== "dark",
+                            "phone-input-dark": currentMode === "dark",
                           })}
                            mb-5`}
                           size="small"
                           style={{
                             marginBottom: "20px",
-                            // background: `${
-                            //   currentMode === "dark" ? "#1C1C1C" : "#fff"
-                            // }`,
-                            "& .PhoneInputCountryIconImg": {
-                              color: "#fff",
-                            },
-                            "& .PhoneInputInput": {
-                              background: "none !important",
-                            },
                             color: currentMode === "dark" ? "white" : "black",
-                            // padding: "10px",
-                            // color: "#808080",
                             border: `1px solid ${
                               currentMode === "dark" ? "#fff" : "#ccc"
                             }`,
