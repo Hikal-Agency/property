@@ -27,23 +27,17 @@ import {
   BsTrash,
 } from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
-import { MdLocationPin, MdClose } from "react-icons/md";
+import { MdLocationPin, MdClose, Md360 } from "react-icons/md";
 import {
   TbCurrentLocation,
-  TbPhone,
-  TbMail,
-  TbUserCircle,
-} from "react-icons/tb";
-import SelectImagesModal from "../listings/SelectImagesModal";
-import SelectDocumentModal from "../listings/SelectDocumentModal";
-import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
-import SingleImageModal from "../listings/SingleImageModal";
+} from "react-icons/tb";import SingleImageModal from "../listings/SingleImageModal";
 import SingleDocModal from "../listings/SingleDocModal";
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
 import EditPropertyModal from "./EditPropertyModal";
 import PropertyDocModal from "./PropertyDocumentUpload";
 import PropertyImageUpload from "./PropertyImageUpload";
+import View360Modal from "./view360";
 
 const SinglePropertyModal = ({
   setOpenModal,
@@ -240,6 +234,10 @@ const SinglePropertyModal = ({
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
+  const [view360Modal, setView360Modal] = useState({ open: false });
+  const handleView360Modal = (data) => {
+    setView360Modal({ open: true, project: data });
+  };
 
   return (
     <>
@@ -366,7 +364,7 @@ const SinglePropertyModal = ({
                           {hasPermission("property_upload_img_doc") && (
                             <div className="flex items-center gap-1 justify-end">
                               {/* UPLOAD IMAGE AND DOCUMENT  */}
-                              <div className="min-w-fit  flex justify-center items-center mr-3 my-4 space-x-5">
+                              <div className="min-w-fit flex justify-center items-center my-2 gap-3">
                                 {/* UPLOAD IMAGE  */}
                                 <Tooltip title="Upload Image(s)" arrow>
                                   <IconButton
@@ -444,33 +442,37 @@ const SinglePropertyModal = ({
                                       : null}
                                   </p>
                                 </label> */}
+
+                                {/* EDIT DETAILS  */}
+                                {hasPermission("property_update_dev_project") && (
+                                  <Tooltip title="Edit Listing Details" arrow>
+                                    <IconButton
+                                      className={`rounded-full bg-btn-primary`}
+                                      onClick={handleEdit}
+                                    >
+                                      <BsPen size={16} color={"#FFFFFF"} />
+                                    </IconButton>
+                                  </Tooltip>
+                                )}
+
+                                {project?.tourlink !== null &&
+                                project?.tourlink !== "" &&
+                                project?.tourlink !== "undefined" &&
+                                project?.tourlink !== "null" && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleView360Modal(project)
+                                    }}
+                                    className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
+                                  >
+                                    <Md360 size={16} />
+                                    <span className="text-sm uppercase">
+                                      {t("360_view")}
+                                    </span>
+                                  </button>
+                                )}
                               </div>
-
-                              {/* EDIT DETAILS  */}
-                              {hasPermission("property_update_dev_project") && (
-                                <Tooltip title="Edit Listing Details" arrow>
-                                  <IconButton
-                                    className={`rounded-full bg-btn-primary`}
-                                    onClick={handleEdit}
-                                  >
-                                    <BsPen size={16} color={"#FFFFFF"} />
-                                  </IconButton>
-                                </Tooltip>
-                              )}
-
-                              <div className="mx-1"></div>
-
-                              {/* {project?.tourlink && (
-                                <div className="border border-primary p-2 font-semibold rounded-md shadow-sm cursor-pointer">
-                                  <a
-                                    href={project?.tourlink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    360 view
-                                  </a>
-                                </div>
-                              )} */}
                             </div>
                           )}
                         </div>
@@ -769,6 +771,15 @@ const SinglePropertyModal = ({
                         open: false,
                       })
                     }
+                  />
+                )}
+                
+                {view360Modal?.open && (
+                  <View360Modal
+                    view360Modal={view360Modal}
+                    setView360Modal={setView360Modal}
+                    loading={loading}
+                    setloading={setloading}
                   />
                 )}
               </>

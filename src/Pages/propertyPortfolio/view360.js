@@ -117,7 +117,7 @@ const View360Modal = ({
                             frameborder="0"
                             allow="xr-spatial-tracking; gyroscope; accelerometer"
                             allowfullscreen
-                            scrolling="no"
+                            scrolling="yes"
                             src={project?.tourlink}
                         ></iframe>
                     </div>
