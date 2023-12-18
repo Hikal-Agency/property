@@ -79,15 +79,18 @@ const ClientsListComp = ({ client }) => {
             </h3>
           </div>
           <div className="flex items-center space-x-3 pr-3 ">
-            {social_links?.map((social) => (
-              <span
-                className={`p-3 border rounded rounded-full ${
-                  currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-                } cursor-pointer`}
-              >
-                {social?.icon}
-              </span>
-            ))}
+            {social_links?.map(
+              (social) =>
+                client[social?.name] && (
+                  <span
+                    className={`p-3 border rounded rounded-full ${
+                      currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
+                    } cursor-pointer`}
+                  >
+                    {social?.icon}
+                  </span>
+                )
+            )}
           </div>
         </div>
 
