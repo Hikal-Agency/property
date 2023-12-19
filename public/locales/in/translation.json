@@ -709,9 +709,6 @@
     "select_sender_id": "प्रेषक आईडी चुनें",
     "clear": "साफ़ करें",
     "clear_all": "सभी साफ़ करें",
-    
-    "new_from_here": "",
-
     "type_liveleads": "लाइव कॉल",
     "liveleads": "लाइव कॉल",
     "update_lead_details": "लीड विवरण अपडेट करें",
@@ -772,7 +769,6 @@
     "generate_report_btn": "रिपोर्ट बनाएं",
     "report_month": "महीना चुनें",
     "mark_attendance": "उपस्थिति चिह्नित करें",
-
     "add_dev_btn": "डेवेलपर जोड़ें",
     "add_project_btn": "परियोजना जोड़ें",
     "add_developer_modal": "डेवेलपर जोड़ें",
@@ -808,7 +804,6 @@
     "source_wechat": "वीचैट",
     "source_twitter": "ट्विटर",
     "update_booked_deal": "बुक की गई सौदा का अपडेट",
-    
     "documents": "दस्तावेज़",
     "origin_liveleads": "लाइव कॉल लीड्स",
     "sold": "बिक गया",
@@ -828,10 +823,13 @@
     "form_account_type" : "खाता प्रकार",
     "form_account_usersList" : "उपयोगकर्ता की संख्या",
     "menu_reshuffled_request": "रीशफल अनुरोध",
-
     "form_account_stripe" : "स्ट्राइप",
     "form_account_paypal" : "पेपैल",
     "form_account_credit" : "क्रेडिट/डेबिट कार्ड",
     "form_account_bank" : "बैंक ट्रांसफर",
-    "form_account_custom" : "कस्टम प्रकार जोड़ें"
+    "form_account_custom" : "कस्टम प्रकार जोड़ें",
+    "form_account_custom_placeholder" : "नया खाता प्रकार",
+    "menu_clientsList": "क्लाइंट्स",
+    "project_added_on": "परियोजना में जोड़ा गया",
+    "bedrooms": "बेडरूम"
 }

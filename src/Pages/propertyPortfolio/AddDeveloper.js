@@ -49,6 +49,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
     isLangRTL,
     i18n,
     themeBgImg,
+    fontFam
   } = useStateContext();
 
   const { hasPermission } = usePermission();
@@ -279,7 +280,7 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
               </div>
             ) : (
               <>
-                <div className="mx-auto">
+                <div className="w-full">
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -299,254 +300,264 @@ const AddDeveloper = ({ openAddDev, setOpenAddDev }) => {
                     </div>
 
                     <div
-                      className={`${
-                        themeBgImg &&
-                        (currentMode === "dark"
-                          ? "blur-bg-dark shadow-sm"
-                          : "blur-bg-light shadow-sm")
-                      } p-5 rounded-lg `}
+                      className={`p-4`}
                     >
-                      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 mt-5">
-                        <div className="px-4">
-                          <Box sx={darkModeColors}>
-                            <h4
-                              className={`${
+                      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-4">
+                        <Box 
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}>
+                          <h4
+                            className={`text-primary text-center font-semibold pb-5`}
+                          >
+                            {t("developer_detail")}
+                          </h4>{" "}
+                          <TextField
+                            id="LeadEmailAddress"
+                            name="developerName"
+                            value={devData?.developerName}
+                            type={"text"}
+                            label={t("form_developer_name")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            required
+                            onChange={handleChange}
+                          />
+                          <TextField
+                            id="notes"
+                            type={"text"}
+                            label={t("form_developer_founder")}
+                            name="founder"
+                            value={devData?.founder}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            onChange={handleChange}
+                          />
+                          <TextField
+                            id="Manager"
+                            type="text"
+                            value={devData?.ceo}
+                            name="ceo"
+                            label={t("form_developer_ceo")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px",
+                              color:
                                 currentMode === "dark"
-                                  ? `text-white`
-                                  : "text-black"
-                              } text-center font-semibold pb-5`}
+                                  ? "#ffffff"
+                                  : "#000000",
+                              // pointerEvents: "none",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            onChange={handleChange}
+                          />
+                        </Box>
+
+                        <Box 
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}>
+                          <h4
+                            className={`text-primary text-center font-semibold pb-5`}
+                          >
+                            {t("contact_detail")}
+                          </h4>
+                          <TextField
+                            id="Project"
+                            type={"text"}
+                            value={devData?.developerContact}
+                            name="developerContact"
+                            label={t("form_developer_contact")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            //   value={LeadProject}
+                            onChange={handleChange}
+                          />
+                          <TextField
+                            id="Project"
+                            type={"text"}
+                            value={devData?.developerEmail}
+                            name="developerEmail"
+                            label={t("form_developer_email")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            //   value={LeadProject}
+                            onChange={handleEmail}
+                          />
+                          {emailError?.developerEmail && (
+                            <Typography
+                              variant="body2"
+                              color="error"
+                              className="mb-3"
                             >
-                              {t("developer_detail")}
-                            </h4>{" "}
-                            <TextField
-                              id="LeadEmailAddress"
-                              name="developerName"
-                              value={devData?.developerName}
-                              type={"text"}
-                              label={t("form_developer_name")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              required
-                              onChange={handleChange}
-                            />
-                            <TextField
-                              id="notes"
-                              type={"text"}
-                              label={t("form_developer_founder")}
-                              name="founder"
-                              value={devData?.founder}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              onChange={handleChange}
-                            />
-                            <TextField
-                              id="Manager"
-                              type="text"
-                              value={devData?.ceo}
-                              name="ceo"
-                              label={t("form_developer_ceo")}
-                              className="w-full"
-                              sx={{
-                                marginBottom: "1.25rem !important",
-                                color:
-                                  currentMode === "dark"
-                                    ? "#ffffff"
-                                    : "#000000",
-                                // pointerEvents: "none",
-                              }}
-                              variant="outlined"
-                              size="small"
-                              onChange={handleChange}
-                            />
-                          </Box>
-                        </div>
-
-                        <div className="px-4">
-                          <Box sx={darkModeColors}>
-                            <h4
-                              className={`${
-                                currentMode === "dark"
-                                  ? `text-white`
-                                  : "text-black"
-                              } text-center font-semibold pb-5`}
-                            >
-                              {t("contact_detail")}
-                            </h4>
-                            <TextField
-                              id="Project"
-                              type={"text"}
-                              value={devData?.developerContact}
-                              name="developerContact"
-                              label={t("form_developer_contact")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              //   value={LeadProject}
-                              onChange={handleChange}
-                            />
-                            <TextField
-                              id="Project"
-                              type={"text"}
-                              value={devData?.developerEmail}
-                              name="developerEmail"
-                              label={t("form_developer_email")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              //   value={LeadProject}
-                              onChange={handleEmail}
-                            />
-                            {emailError?.developerEmail && (
-                              <Typography
-                                variant="body2"
-                                color="error"
-                                className="mb-3"
-                              >
-                                {emailError?.developerEmail}
-                              </Typography>
-                            )}
-
-                            <TextField
-                              id="LeadEmailAddress"
-                              type={"text"}
-                              value={devData?.address}
-                              name="address"
-                              label={t("form_developer_address")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              onChange={handleChange}
-                            />
-                          </Box>
-                        </div>
-
-                        <div className="px-4">
-                          <Box sx={darkModeColors}>
-                            <h4
-                              className={`${
-                                currentMode === "dark"
-                                  ? `text-white`
-                                  : "text-black"
-                              } text-center font-semibold pb-5`}
-                            >
-                              {t("r_manager_detail")}
-                            </h4>
-                            <TextField
-                              id="LeadName"
-                              type={"text"}
-                              value={devData?.rm_name}
-                              name="rm_name"
-                              label={t("form_developer_fullName")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              onChange={handleChange}
-                              // required
-                            />
-
-                            <TextField
-                              id="LeadEmailAddress"
-                              type={"email"}
-                              label={t("form_developer_emailAddress")}
-                              name="rm_email"
-                              value={devData?.rm_email}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              onChange={handleEmail}
-                            />
-
-                            {emailError?.rm_email && (
-                              <Typography
-                                variant="body2"
-                                color="error"
-                                className="mb-3"
-                              >
-                                {emailError?.rm_email}
-                              </Typography>
-                            )}
-
-                            <TextField
-                              id="LeadEmailAddress"
-                              type={"text"}
-                              label={t("form_developer_contactNumber")}
-                              name="rm_contact"
-                              value={devData?.rm_contact}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              onChange={handleChange}
-                            />
-                          </Box>
-                        </div>
-                      </div>
-
-                      <div className="">
-                        <Button
-                          className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
-                          ripple={true}
-                          style={{
-                            background: `${primaryColor}`,
-                          }}
-                          size="lg"
-                          type="submit"
-                          disabled={loading ? true : false}
-                        >
-                          {devLoading ? (
-                            <CircularProgress
-                              size={20}
-                              sx={{ color: "white" }}
-                              className="text-white"
-                            />
-                          ) : (
-                            <span className="text-white">
-                              {t("submit_developer_btn")}
-                            </span>
+                              {emailError?.developerEmail}
+                            </Typography>
                           )}
-                        </Button>
+
+                          <TextField
+                            id="LeadEmailAddress"
+                            type={"text"}
+                            value={devData?.address}
+                            name="address"
+                            label={t("form_developer_address")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            onChange={handleChange}
+                          />
+                        </Box>
+                        
+                        <Box 
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}>
+                          <h4
+                            className={`text-primary text-center font-semibold pb-5`}
+                          >
+                            {t("r_manager_detail")}
+                          </h4>
+                          <TextField
+                            id="LeadName"
+                            type={"text"}
+                            value={devData?.rm_name}
+                            name="rm_name"
+                            label={t("form_developer_fullName")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            onChange={handleChange}
+                            // required
+                          />
+
+                          <TextField
+                            id="LeadEmailAddress"
+                            type={"email"}
+                            label={t("form_developer_emailAddress")}
+                            name="rm_email"
+                            value={devData?.rm_email}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            onChange={handleEmail}
+                          />
+
+                          {emailError?.rm_email && (
+                            <Typography
+                              variant="body2"
+                              color="error"
+                              className="mb-3"
+                            >
+                              {emailError?.rm_email}
+                            </Typography>
+                          )}
+
+                          <TextField
+                            id="LeadEmailAddress"
+                            type={"text"}
+                            label={t("form_developer_contactNumber")}
+                            name="rm_contact"
+                            value={devData?.rm_contact}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            onChange={handleChange}
+                          />
+                        </Box>
                       </div>
+
+                      <Button
+                        className={`w-full card-hover text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
+                        ripple={true}
+                        style={{
+                          background: `${primaryColor}`,
+                        }}
+                        size="lg"
+                        type="submit"
+                        disabled={loading ? true : false}
+                      >
+                        {devLoading ? (
+                          <CircularProgress
+                            size={20}
+                            sx={{ color: "white" }}
+                            className="text-white"
+                          />
+                        ) : (
+                          <span className="text-white">
+                            {t("submit_developer_btn")}
+                          </span>
+                        )}
+                      </Button>
                     </div>
                   </form>
                 </div>

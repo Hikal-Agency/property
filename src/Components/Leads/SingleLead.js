@@ -514,7 +514,6 @@ const SingleLead = ({
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
-          // onClick={handleLeadModelClose}
           onClick={handleClose}
           className={`${
             isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"

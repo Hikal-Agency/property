@@ -708,9 +708,6 @@
     "select_sender_id": "Select Sender ID",
     "clear": "Clear",
     "clear_all": "Clear All",
-
-    "new_from_here": "",
-
     "type_liveleads": "Live Call", 
     "liveleads": "Live Call", 
     "update_lead_details": "Update Lead details", 
@@ -771,7 +768,6 @@
     "generate_report_btn" : "Generate  Report",
     "report_month" : "Select Month",
     "mark_attendance" : "Mark Attendance",
-
     "add_dev_btn":"Add Developer",
     "add_project_btn":"Add Project",
     "add_developer_modal":"Add Developer",
@@ -807,13 +803,11 @@
     "source_wechat": "WeChat",
     "source_twitter": "Twitter",
     "update_booked_deal": "Update Booked Deal",
-
     "documents": "Documents",
     "origin_liveleads": "Live Call Leads",
     "sold": "Sold",
     "menu_cms" : "CMS",
     "menu_onboarding" : "Onboarding",
-    "menu_clientsList" : "CRM Clients",
     "onboarding_title" : "Client Onboarding Form",
     "boarding_business_details" : "Business Details",
     "boarding_social_profiles" : "Social Profiles",
@@ -828,13 +822,13 @@
     "form_account_type" : "Account Type",
     "form_account_usersList" : "Number Of Users",
     "menu_reshuffled_request": "Reshuffle Requests",
-    
     "form_account_stripe" : "Stripe",
     "form_account_paypal" : "Paypal",
     "form_account_credit" : "Credit/Debit Cards",
     "form_account_bank" : "Bank Transfer",
     "form_account_custom" : "Add Custom Type",
-    "form_account_custom_placeholder" : "New Account Type"
-
-
+    "form_account_custom_placeholder" : "New Account Type",
+    "menu_clientsList" : "Clients",
+    "project_added_on": "Project added on",
+    "bedrooms": "Bedrooms"
 }
