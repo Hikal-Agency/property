@@ -1417,12 +1417,12 @@ const Sidebarmui = () => {
           // pro: true,
           link: "/onboarding",
         },
-        // {
-        //   name: t("menu_clientsList"),
-        //   icon: <TbUsers size={16} />,
-        //   // pro: true,
-        //   link: "/onboarding/clientsList",
-        // },
+        {
+          name: t("menu_clientsList"),
+          icon: <TbUsers size={16} />,
+          // pro: true,
+          link: "/onboarding/clientsList",
+        },
       ],
     },
     // MESSAGING

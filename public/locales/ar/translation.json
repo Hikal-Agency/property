@@ -469,7 +469,7 @@
     "remaining": "المتبقى ",
     "total": "الكلى ",
     "all_time_total_calls": "مكالمات كل الاوقات ",
-    "target_note": "",
+    "target_note": "الإيراد الإجمالي المحقق بالنسبة للهدف المحدد للشهر.",
     "closed_meeting_note": "ملاحظات الزيارة الفائتة ",
     "social_chart": "",
     "create_new_role": "انشاء دور جديد",
@@ -659,7 +659,7 @@
     "ticket_id": "ID التذكرة ",
     "ticket_status": "حالة التذكرة ",
     "24x7_note": "وقت الدعم ",
-    "24x7_subnote": "دعم من الفريق ",
+    "24x7_subnote": "هل تحتاج إلى مساعدة مع نظامنا؟ اتصل بفريق الدعم الخاص بنا أو أنشئ تذكرة للحصول على مساعدة فورية.",
     "support_via_email": "دعم عبر البريد الالكترونى",
     "support_via_call": "دعم عن طريق الفيديو كول ",
     "support_via_whatsapp": "دعم عن طريق الواتس اب ",
@@ -708,9 +708,6 @@
     "select_sender_id": "اختيار هوية المرسل ",
     "clear": "مسح",
     "clear_all": "مسح الكل",
-
-    "new_from_here": "",
-
     "type_liveleads": "مكالمة مباشرة",
     "liveleads": "مكالمة مباشرة",
     "update_lead_details": "تحديث تفاصيل العميل المحتمل",
@@ -771,7 +768,6 @@
     "generate_report_btn": "إنشاء تقرير",
     "report_month": "اختر الشهر",
     "mark_attendance": "ضع علامة للحضور",
-
     "add_dev_btn": "إضافة مطوّر",
     "add_project_btn": "إضافة مشروع",
     "add_developer_modal": "إضافة مطوّر",
@@ -807,7 +803,6 @@
     "source_wechat": "ويتشات",
     "source_twitter": "تويتر",
     "update_booked_deal": "تحديث الصفقة المحجوزة",
-
     "documents": "المستندات",
     "origin_liveleads": "عروض المكالمات الحية",
     "sold": "تم البيع",
@@ -827,10 +822,13 @@
     "form_account_type": "نوع الحساب",
     "form_account_usersList": "عدد المستخدمين",
     "menu_reshuffled_request": "طلبات إعادة الترتيب",
-
     "form_account_stripe" : "شريط",
     "form_account_paypal" : "باي بال",
     "form_account_credit" : "بطاقات الائتمان / الخصم",
     "form_account_bank" : "تحويل بنكي",
-    "form_account_custom" : "إضافة نوع مخصص"
+    "form_account_custom" : "إضافة نوع مخصص",
+    "form_account_custom_placeholder" : "نوع الحساب الجديد",
+    "menu_clientsList" : "العملاء",
+    "project_added_on": "تمت إضافة المشروع في",
+    "bedrooms": "غرف نوم"
 }

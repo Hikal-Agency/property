@@ -395,6 +395,18 @@ export const listing_options = (t) => [
   }
 ];
 
+// PROJECT STATUS 
+export const project_status_options = (t) => [
+  {
+    value: "Available",
+    label: t("project_available"),
+  },
+  {
+    value: "Sold Out",
+    label: t("project_soldout"),
+  }
+];
+
 // PRIORITY
 export const priority_options = (t) => [
   {

@@ -327,7 +327,7 @@ const PropertyPortfolio = () => {
                                   ${
                                     project?.projectStatus.toLowerCase() === "available"
                                       ? "border-green-600"
-                                      : project.projectStatus.toLowerCase() === "sold-out"
+                                      : project.projectStatus.toLowerCase() === "sold out"
                                       ? "border-red-600"
                                       : "border-yellow-600"
                                   }`}
@@ -342,7 +342,7 @@ const PropertyPortfolio = () => {
                                       <div>{project?.projectName}</div>
                                       {project?.projectStatus.toLowerCase() === "available" ? (
                                         <BsBookmarkCheckFill size={18} className="text-green-600" />
-                                      ) : project?.projectStatus.toLowerCase() === "sold-out" ? (
+                                      ) : project?.projectStatus.toLowerCase() === "sold out" ? (
                                         <BsBookmarkXFill size={18} className="text-red-600" />
                                       ) : (
                                         <BsFillBookmarkDashFill size={18} className="text-yellow-600" />
