@@ -151,9 +151,9 @@ const OnBoardingForm = ({ isLoading }) => {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    const { bussiness_name, country } = onBoardData;
+    const { bussiness_name, country,account_type } = onBoardData;
 
-    if (!bussiness_name || !country) {
+    if (!bussiness_name || !country || !account_type) {
       toast.error("Please fill all the required fields", {
         position: "top-right",
         autoClose: 3000,
