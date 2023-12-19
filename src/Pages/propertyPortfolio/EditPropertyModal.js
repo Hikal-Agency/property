@@ -846,7 +846,7 @@ const EditPropertyModal = ({
                     className="bg-btn-primary"
                     disabled={loading ? true : false}
                     style={{
-                      // background: "#da1f26",
+                      fontFamily: fontFam,
                       color: "#ffffff",
                       marginTop: "10px",
                       width: "100%",
