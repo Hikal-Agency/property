@@ -151,9 +151,9 @@ const OnBoardingForm = ({ isLoading }) => {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    const { bussiness_name, country,account_type } = onBoardData;
+    const { bussiness_name, country,account_type ,contact,name_of_person,no_of_users,email} = onBoardData;
 
-    if (!bussiness_name || !country || !account_type) {
+    if (!bussiness_name || !country || !account_type || !contact || !name_of_person || !no_of_users || !email) {
       toast.error("Please fill all the required fields", {
         position: "top-right",
         autoClose: 3000,
@@ -383,6 +383,7 @@ const OnBoardingForm = ({ isLoading }) => {
             onChange={(e) =>
               setBoardData({ ...onBoardData, name_of_person: e.target.value })
             }
+            required
           />
           <div className="grid grid-cols-2 gap-3 mb-1">
             <TextField
@@ -398,6 +399,7 @@ const OnBoardingForm = ({ isLoading }) => {
               onChange={(e) =>
                 setBoardData({ ...onBoardData, contact: e.target.value })
               }
+              required
             />
             <TextField
               type="email"
@@ -412,6 +414,7 @@ const OnBoardingForm = ({ isLoading }) => {
               onChange={(e) =>
                 setBoardData({ ...onBoardData, email: e.target.value })
               }
+              required
             />
           </div>
 
@@ -577,6 +580,7 @@ const OnBoardingForm = ({ isLoading }) => {
                 }
                 displayEmpty
                 select
+                required
               >
                 {accountTypes.map((type) => (
                   <MenuItem key={type.value} value={type.value}>
