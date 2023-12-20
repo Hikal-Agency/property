@@ -13,10 +13,10 @@ import {
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
 import axios from "../../axoisConfig";
-import Error404 from "../Error";
+import Error404 from "../../Pages/Error";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
-import { load } from "../App";
+import { load } from "../../Pages/App";
 
 import { BiBed, BiBath } from "react-icons/bi";
 import {
@@ -34,16 +34,9 @@ import {
   TbMail,
   TbUserCircle,
 } from "react-icons/tb";
-import SelectImagesModal from "../listings/SelectImagesModal";
-import SelectDocumentModal from "../listings/SelectDocumentModal";
-import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
-import SingleImageModal from "../listings/SingleImageModal";
-import SingleDocModal from "../listings/SingleDocModal";
+
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
-import EditPropertyModal from "./EditPropertyModal";
-import PropertyDocModal from "./PropertyDocumentUpload";
-import PropertyImageUpload from "./PropertyImageUpload";
 
 const SingleClient = ({
   ListingData,
@@ -52,9 +45,10 @@ const SingleClient = ({
   FetchProperty,
   loading,
   setloading,
+  client,
 }) => {
   console.log("single property data::: ", openModal);
-  let project = openModal?.project;
+  let project = client;
   // const [loading, setloading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [listData, setListingData] = useState({});
@@ -101,9 +95,7 @@ const SingleClient = ({
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
-      setOpenModal({
-        open: false,
-      });
+      setOpenModal(false);
     }, 1000);
   };
 
@@ -251,7 +243,7 @@ const SingleClient = ({
       > */}
       <Modal
         keepMounted
-        open={openModal?.open}
+        open={openModal}
         // onClose={handleCloseTimelineModel}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
@@ -307,43 +299,27 @@ const SingleClient = ({
                   <Error404 />
                 ) : (
                   <div className="w-full">
-                    {/* IMAGES  */}
                     <div className="w-full flex items-center pb-3">
-                      <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                       <h1
                         className={`text-lg font-semibold ${
                           currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                        } bg-primary py-2 px-5`}
                       >
-                        {project?.projectName}
+                        {client?.account_type || "-"}
                       </h1>
-                    </div>
-                    <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
-                      {project?.images?.map((pic) =>
-                        pic?.img_url ? (
-                          <img
-                            onClick={() =>
-                              setSingleImageModal({
-                                isOpen: true,
-                                url: pic?.img_url,
-                                id: pic?.id,
-                                listingId: project?.id,
-                              })
-                            }
-                            src={pic?.img_url}
-                            alt={pic?.img_alt}
-                            className="w-auto h-[200px] object-cover m-1 rounded-md"
-                          />
-                        ) : (
-                          <></>
-                        )
-                      )}
+                      <h1
+                        className={`text-lg font-semibold ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        } ml-2`}
+                      >
+                        {client?.bussiness_name || "-"}
+                      </h1>
                     </div>
 
                     <div
                       className={`${
                         currentMode === "dark" ? "bg-[#000000]" : "bg-[#EEEEEE]"
-                      } rounded-xl w-full p-4`}
+                      } rounded-xl w-full p-4 mb-3`}
                     >
                       <div className="grid sm:grid-cols-1 md:grid-cols-2">
                         <div className="w-full p-1">
@@ -371,59 +347,6 @@ const SingleClient = ({
                           {hasPermission("property_upload_img_doc") && (
                             <div className="flex items-center gap-1 justify-end">
                               {/* UPLOAD IMAGE AND DOCUMENT  */}
-                              <div className="min-w-fit  flex justify-center items-center mr-3 my-4 space-x-5">
-                                <label htmlFor="contained-button-file">
-                                  <Button
-                                    variant="contained"
-                                    size="lg"
-                                    className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-                                    onClick={() =>
-                                      setSelectImagesModal({
-                                        isOpen: true,
-                                      })
-                                    }
-                                    style={{
-                                      // backgroundColor: "#111827",
-                                      color: "#ffffff",
-                                      // border: "1px solid #DA1F26",
-                                    }}
-                                    component="span"
-                                    disabled={loading ? true : false}
-                                    // startIcon={loading ? null : <MdFileUpload />}
-                                  >
-                                    <span>{t("button_upload_image")}</span>
-                                  </Button>
-                                  <p className="text-primary mt-2 italic">
-                                    {allImages?.length > 0
-                                      ? `${allImages?.length} images selected.`
-                                      : null}
-                                  </p>
-                                </label>
-
-                                <label htmlFor="contained-button-document">
-                                  <Button
-                                    variant="contained"
-                                    size="lg"
-                                    className="min-w-fit bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
-                                    style={{
-                                      color: "#ffffff",
-                                    }}
-                                    onClick={() => {
-                                      setDocumentModal(true);
-                                    }}
-                                    component="span"
-                                    disabled={loading ? true : false}
-                                    // startIcon={loading ? null : <MdFileUpload />}
-                                  >
-                                    <span>{t("button_upload_document")}</span>
-                                  </Button>
-                                  <p className="text-primary mt-2 italic">
-                                    {allDocs?.length > 0
-                                      ? `${allDocs?.length} documents selected.`
-                                      : null}
-                                  </p>
-                                </label>
-                              </div>
 
                               {/* EDIT DETAILS  */}
                               {hasPermission("property_update_dev_project") && (
@@ -436,36 +359,6 @@ const SingleClient = ({
                                   </IconButton>
                                 </Tooltip>
                               )}
-
-                              {/* UPLOAD PICTURES  */}
-                              {/* <Tooltip title="Upload Pictures" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectImagesModal({
-                                    isOpen: true,
-                                    listingId: project?.id,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsImages size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip> */}
-
-                              {/* UPLOAD DOCUMENTS  */}
-                              {/* <Tooltip title="Upload Documents" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectDocumentModal({
-                                    isOpen: true,
-                                    listingId: lid,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsFiles size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip> */}
 
                               <div className="mx-1"></div>
 
@@ -553,44 +446,6 @@ const SingleClient = ({
                         </div>
                       </div>
                     </div>
-
-                    {/* IN MAP  */}
-
-                    {project?.latLong === null || project?.latLong === "" ? (
-                      <></>
-                    ) : (
-                      <div className="w-full my-5 h-[50vh] border border-primary">
-                        {!load?.isLoaded ? (
-                          <div>Your map is loading...</div>
-                        ) : (
-                          <GoogleMap
-                            zoom={12}
-                            center={{
-                              lat: parseFloat(lat),
-                              lng: parseFloat(long),
-                            }}
-                            mapContainerStyle={mapContainerStyle}
-                            options={options}
-                          >
-                            <Marker
-                              key={listData?.id}
-                              position={{
-                                lat: Number(parseFloat(lat)),
-                                lng: Number(parseFloat(long)),
-                              }}
-                              icon={{
-                                url: (
-                                  <MdLocationPin size={30} color={"#DA1F26"} />
-                                ),
-                                scaledSize: window.google.maps
-                                  ? new window.google.maps.Size(50, 50)
-                                  : null,
-                              }}
-                            />
-                          </GoogleMap>
-                        )}
-                      </div>
-                    )}
 
                     {/* <div className="bg-primary h-0.5 w-full my-5"></div> */}
 
@@ -721,65 +576,6 @@ const SingleClient = ({
                   </div>
                 )}
                 {/* <Footer /> */}
-
-                {singleImageModal?.isOpen && (
-                  <SingleImageModal
-                    singleImageModal={singleImageModal}
-                    handleClose={() => setSingleImageModal({ isOpen: false })}
-                    FetchProperty={FetchProperty}
-                    module="property"
-                    closeSingleModal={() =>
-                      setOpenModal({
-                        open: false,
-                      })
-                    }
-                  />
-                )}
-
-                {singleDocModal?.isOpen && (
-                  <SingleDocModal
-                    singleImageModal={singleDocModal}
-                    handleClose={() => setSingleDocModal({ isOpen: false })}
-                    fetchSingleListing={fetchSingleListing}
-                  />
-                )}
-
-                {selectImagesModal?.isOpen && (
-                  <PropertyImageUpload
-                    selectImagesModal={selectImagesModal}
-                    handleClose={() => setSelectImagesModal({ isOpen: false })}
-                    allImages={allImages}
-                    setAllImages={setAllImages}
-                    update="update"
-                    project={project}
-                    FetchProperty={FetchProperty}
-                  />
-                )}
-                {documentModal && (
-                  <PropertyDocModal
-                    documentModal={documentModal}
-                    handleClose={() => setDocumentModal(false)}
-                    allDocs={allDocs}
-                    setAllDocs={setAllDocs}
-                    project={project}
-                    update="update"
-                    FetchProperty={FetchProperty}
-                  />
-                )}
-                {openEdit && (
-                  <EditPropertyModal
-                    setOpenEdit={setOpenEdit}
-                    openEdit={project}
-                    setOpenModal={setOpenModal}
-                    handleClose={() => setOpenEdit(false)}
-                    FetchProperty={FetchProperty}
-                    closeSingleModal={() =>
-                      setOpenModal({
-                        open: false,
-                      })
-                    }
-                  />
-                )}
               </>
             )}
           </div>
