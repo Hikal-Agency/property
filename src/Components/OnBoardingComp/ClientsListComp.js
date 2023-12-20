@@ -13,10 +13,12 @@ import {
 import { IoIosMail, IoLogoYoutube } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
 import moment from "moment";
+import SingleClient from "./SingleClient";
 
 const ClientsListComp = ({ client }) => {
   console.log("clients in child comp: ", client);
   const { currentMode } = useStateContext();
+  const [openModal, setOpenModal] = useState(false);
 
   const social_links = [
     {
@@ -51,7 +53,7 @@ const ClientsListComp = ({ client }) => {
         sx={{
           background: "none",
         }}
-        className="border-t-0 border-r-2 border-l-2 border-b-2 mb-3"
+        className="border-t-0 border-r-2 border-l-2 border-b-2 mb-3 cursor-pointer"
       >
         <div
           className="flex justify-between space-x-2 items-center"
@@ -246,6 +248,7 @@ const ClientsListComp = ({ client }) => {
           </div>
         </div>
       </Card>
+      {openModal && <SingleClient client={client} />}
     </>
   );
 };
