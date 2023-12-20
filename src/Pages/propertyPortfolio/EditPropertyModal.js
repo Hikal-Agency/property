@@ -31,7 +31,10 @@ import { toast } from "react-toastify";
 import PropertyImageUpload from "./PropertyImageUpload";
 import PropertyDocModal from "./PropertyDocumentUpload";
 import { selectStyles } from "../../Components/_elements/SelectStyles";
-import { enquiry_options, project_status_options } from "../../Components/_elements/SelectOptions";
+import {
+  enquiry_options,
+  project_status_options,
+} from "../../Components/_elements/SelectOptions";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -49,10 +52,16 @@ const EditPropertyModal = ({
   const token = localStorage.getItem("auth-token");
   const splitLocation = LeadData?.latLong?.split(",");
 
-  const { currentMode, darkModeColors, User, BACKEND_URL, isLangRTL,
-    primaryColor, 
-    i18n, t,
-    fontFam
+  const {
+    currentMode,
+    darkModeColors,
+    User,
+    BACKEND_URL,
+    isLangRTL,
+    primaryColor,
+    i18n,
+    t,
+    fontFam,
   } = useStateContext();
   const [developer, setDeveloper] = useState([]);
 
@@ -93,7 +102,7 @@ const EditPropertyModal = ({
     price: LeadData?.price,
     projectLocation: LeadData?.projectLocation,
     area: LeadData?.area,
-    tourlink: LeadData?.tourlink,
+    tourLink: LeadData?.tourlink,
     projectStatus: LeadData?.projectStatus,
     bedrooms: LeadData?.bedrooms || [],
     city: LeadData?.city,
@@ -419,24 +428,23 @@ const EditPropertyModal = ({
               >
                 <div className="grid grid-cols-1 my-5 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5">
                   {/* PROJECT DETAILS  */}
-                  <Box 
-                  sx={{
-                    ...darkModeColors,
-                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                      {
-                        right: isLangRTL(i18n.language)
-                          ? "2.5rem"
-                          : "inherit",
-                        transformOrigin: isLangRTL(i18n.language)
-                          ? "right"
-                          : "left",
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      "& legend": {
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
                       },
-                    "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
-                  }}>
+                    }}
+                  >
                     <h4
                       className={`${
                         currentMode === "dark" ? "text-primary" : "text-black"
@@ -462,19 +470,30 @@ const EditPropertyModal = ({
                       onChange={handleChange}
                       required
                     />
-                    
+
                     <Select
                       id="Developer"
                       value={{
                         value: projectData?.developer_id,
-                        label: developer.find((dev) => dev.id === projectData?.developer_id)?.developerName || '',
+                        label:
+                          developer.find(
+                            (dev) => dev.id === projectData?.developer_id
+                          )?.developerName || "",
                       }}
                       onChange={(selectedOption) => {
-                        handleChange({ target: { name: 'developer_id', value: selectedOption.value } });
+                        handleChange({
+                          target: {
+                            name: "developer_id",
+                            value: selectedOption.value,
+                          },
+                        });
                       }}
-                      options={developer.map((dev) => ({ value: dev.id, label: dev.developerName }))}
+                      options={developer.map((dev) => ({
+                        value: dev.id,
+                        label: dev.developerName,
+                      }))}
                       className="w-full"
-                      placeholder={t('form_developer_name')}
+                      placeholder={t("form_developer_name")}
                       menuPortalTarget={document.body}
                       styles={selectStyles(currentMode, primaryColor)}
                     />
@@ -496,39 +515,45 @@ const EditPropertyModal = ({
                       value={removeNull(projectData?.price)}
                       onChange={handleChange}
                     />
-                    
+
                     <Select
                       id="Availability"
-                      value={project_status_options(t).find(option => option.value === projectData?.projectStatus)}
+                      value={project_status_options(t).find(
+                        (option) => option.value === projectData?.projectStatus
+                      )}
                       onChange={(selectedOption) => {
-                        handleChange({ target: { name: 'projectStatus', value: selectedOption.value } });
+                        handleChange({
+                          target: {
+                            name: "projectStatus",
+                            value: selectedOption.value,
+                          },
+                        });
                       }}
                       options={project_status_options(t)}
                       className="w-full"
-                      placeholder={t('form_project_status')}
+                      placeholder={t("form_project_status")}
                       menuPortalTarget={document.body}
                       styles={selectStyles(currentMode, primaryColor)}
                     />
                   </Box>
                   {/* LOCATION DETAILS  */}
-                  <Box 
-                  sx={{
-                    ...darkModeColors,
-                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                      {
-                        right: isLangRTL(i18n.language)
-                          ? "2.5rem"
-                          : "inherit",
-                        transformOrigin: isLangRTL(i18n.language)
-                          ? "right"
-                          : "left",
+                  <Box
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      "& legend": {
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
                       },
-                    "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
-                  }}>
+                    }}
+                  >
                     <h4
                       className={`${
                         currentMode === "dark" ? "text-primary" : "text-black"
@@ -593,23 +618,22 @@ const EditPropertyModal = ({
                   </Box>
                   {/* BEDROOMS  */}
                   <Box
-                  sx={{
-                    ...darkModeColors,
-                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                      {
-                        right: isLangRTL(i18n.language)
-                          ? "2.5rem"
-                          : "inherit",
-                        transformOrigin: isLangRTL(i18n.language)
-                          ? "right"
-                          : "left",
+                    sx={{
+                      ...darkModeColors,
+                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      "& legend": {
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
                       },
-                    "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
-                  }}>
+                    }}
+                  >
                     <h4
                       className={`${
                         currentMode === "dark" ? "text-primary" : "text-black"
@@ -649,7 +673,9 @@ const EditPropertyModal = ({
                                 control={<Checkbox />}
                                 label={option.label}
                                 onChange={() => handleBeds(option.value)}
-                                checked={projectData.bedrooms.includes(option.value)}
+                                checked={projectData.bedrooms.includes(
+                                  option.value
+                                )}
                               />
                             ))}
                           </div>
@@ -767,7 +793,7 @@ const EditPropertyModal = ({
                     </div> */}
                   </Box>
                 </div>
-                  
+
                 {/* UPLOAD IMAGE AND DOCUMENT  */}
                 <div className="w-full flex justify-center items-center my-1 gap-4">
                   <label htmlFor="contained-button-file">
@@ -821,7 +847,7 @@ const EditPropertyModal = ({
                     </p>
                   </label>
                 </div>
-                
+
                 {/* LOCATION MAP  */}
                 <div className="w-full grid grid-cols-1 gap-5 pt-4">
                   <Box sx={darkModeColors}>

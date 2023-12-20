@@ -46,7 +46,7 @@ const PropertyImageUpload = ({
         price: project?.price,
         projectLocation: project?.projectLocation,
         area: project?.area,
-        tourLink: project?.tourLink,
+        tourLink: project?.tourlink,
         projectStatus: project?.projectStatus,
         bedrooms: project?.bedrooms || [],
         city: project?.city,
