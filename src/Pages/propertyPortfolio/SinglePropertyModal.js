@@ -27,26 +27,21 @@ import {
   BsTrash,
 } from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
-import { MdLocationPin, MdClose } from "react-icons/md";
+import { MdLocationPin, MdClose, Md360 } from "react-icons/md";
 import {
   TbCurrentLocation,
-  TbPhone,
-  TbMail,
-  TbUserCircle,
-} from "react-icons/tb";
-import SelectImagesModal from "../listings/SelectImagesModal";
-import SelectDocumentModal from "../listings/SelectDocumentModal";
-import EditListingModal from "../../Components/Leads/listings/EditListingComponent";
-import SingleImageModal from "../listings/SingleImageModal";
+} from "react-icons/tb";import SingleImageModal from "../listings/SingleImageModal";
 import SingleDocModal from "../listings/SingleDocModal";
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
 import EditPropertyModal from "./EditPropertyModal";
 import PropertyDocModal from "./PropertyDocumentUpload";
 import PropertyImageUpload from "./PropertyImageUpload";
+import View360Modal from "./view360";
+import { datetimeLong } from "../../Components/_elements/formatDateTime";
+import { enquiry_options } from "../../Components/_elements/SelectOptions";
 
 const SinglePropertyModal = ({
-  ListingData,
   setOpenModal,
   openModal,
   FetchProperty,
@@ -241,18 +236,23 @@ const SinglePropertyModal = ({
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
+  const [view360Modal, setView360Modal] = useState({ open: false });
+  const handleView360Modal = (data) => {
+    setView360Modal({ open: true, project: data });
+  };
+
+  // TRANSLATED BEDS 
+  const getBedLabel = (bedValue, t) => {
+    const options = enquiry_options(t);
+    const option = options.find((option) => option.value === bedValue);
+    return option ? option.label : bedValue;
+  };
 
   return (
     <>
-      {/* <div
-        className={`flex min-h-screen w-full p-4 ${
-          !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-        } ${currentMode === "dark" ? "text-white" : "text-black"}`}
-      > */}
       <Modal
         keepMounted
         open={openModal?.open}
-        // onClose={handleCloseTimelineModel}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
@@ -272,10 +272,9 @@ const SinglePropertyModal = ({
                 : "modal-close-right"
               : ""
           }
-          w-[100vw] h-[100vh] flex items-start justify-end `}
+          w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
-            // onClick={handleCloseTimelineModel}
             onClick={handleClose}
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
@@ -295,9 +294,12 @@ const SinglePropertyModal = ({
               currentMode === "dark"
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
-            }
-              p-4 h-[100vh] w-[80vw] overflow-y-scroll
-              `}
+            } p-4 h-[100vh] w-[80vw] overflow-y-scroll ${
+              currentMode === "dark" &&
+              (isLangRTL(i18n.language)
+                ? "border-r-2 border-primary"
+                : "border-l-2 border-primary")
+            }`}
           >
             {loading ? (
               <Loader />
@@ -307,7 +309,6 @@ const SinglePropertyModal = ({
                   <Error404 />
                 ) : (
                   <div className="w-full">
-                    {/* IMAGES  */}
                     <div className="w-full flex items-center pb-3">
                       <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                       <h1
@@ -318,6 +319,7 @@ const SinglePropertyModal = ({
                         {project?.projectName}
                       </h1>
                     </div>
+                    {/* IMAGES  */}
                     <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
                       {project?.images?.map((pic) =>
                         pic?.img_url ? (
@@ -340,90 +342,102 @@ const SinglePropertyModal = ({
                       )}
                     </div>
 
-                    <div
-                      className={`${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#EEEEEE]"
-                      } rounded-xl w-full p-4`}
-                    >
-                      <div className="grid sm:grid-cols-1 md:grid-cols-2">
-                        <div className="w-full p-1">
-                          <div className="flex items-center">
-                            <div className="bg-primary rounded-lg text-white p-2 mr-2 font-semibold">
-                              {/* {project?.price} */}
-                            </div>
-                            <h1
-                              className={`text-lg font-bold mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-black"
-                              }`}
-                              style={{
-                                fontFamily: isArabic(project?.projectName)
-                                  ? "Noto Kufi Arabic"
-                                  : "inherit",
-                              }}
-                            >
-                              {project?.projectStatus}
-                            </h1>
+                    <div className="grid sm:grid-cols-1 md:grid-cols-2 w-full">
+                      <div className="w-full">
+                        <div className="flex items-center">
+                          <div className="border-2 border-primary rounded-md p-2 mr-2 font-semibold">
+                            {project?.projectStatus}
                           </div>
+                          <h1
+                            className={`text-base`}
+                          >
+                            {project?.price === "null" ? "-" : project?.price}
+                          </h1>
                         </div>
-                        <div className="w-full p-1">
-                          {hasPermission("property_upload_img_doc") && (
-                            <div className="flex items-center gap-1 justify-end">
-                              {/* UPLOAD IMAGE AND DOCUMENT  */}
-                              <div className="min-w-fit  flex justify-center items-center mr-3 my-4 space-x-5">
-                                <label htmlFor="contained-button-file">
-                                  <Button
-                                    variant="contained"
-                                    size="lg"
-                                    className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-                                    onClick={() =>
-                                      setSelectImagesModal({
-                                        isOpen: true,
-                                      })
-                                    }
-                                    style={{
-                                      // backgroundColor: "#111827",
-                                      color: "#ffffff",
-                                      // border: "1px solid #DA1F26",
-                                    }}
-                                    component="span"
-                                    disabled={loading ? true : false}
-                                    // startIcon={loading ? null : <MdFileUpload />}
-                                  >
-                                    <span>{t("button_upload_image")}</span>
-                                  </Button>
-                                  <p className="text-primary mt-2 italic">
-                                    {allImages?.length > 0
-                                      ? `${allImages?.length} images selected.`
-                                      : null}
-                                  </p>
-                                </label>
+                      </div>
 
-                                <label htmlFor="contained-button-document">
-                                  <Button
-                                    variant="contained"
-                                    size="lg"
-                                    className="min-w-fit bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
-                                    style={{
-                                      color: "#ffffff",
-                                    }}
-                                    onClick={() => {
-                                      setDocumentModal(true);
-                                    }}
-                                    component="span"
-                                    disabled={loading ? true : false}
-                                    // startIcon={loading ? null : <MdFileUpload />}
-                                  >
-                                    <span>{t("button_upload_document")}</span>
-                                  </Button>
-                                  <p className="text-primary mt-2 italic">
-                                    {allDocs?.length > 0
-                                      ? `${allDocs?.length} documents selected.`
-                                      : null}
-                                  </p>
-                                </label>
-                              </div>
+                      <div className="w-full">
+                        {hasPermission("property_upload_img_doc") && (
+                          <div className="flex items-center gap-1 justify-end">
+                            {/* UPLOAD IMAGE AND DOCUMENT  */}
+                            <div className="min-w-fit flex justify-center items-center my-2 gap-3">
+                              {/* UPLOAD IMAGE  */}
+                              <Tooltip title="Upload Image(s)" arrow>
+                                <IconButton
+                                  className={`card-hover rounded-full bg-btn-primary`}
+                                  onClick={() =>
+                                    setSelectImagesModal({
+                                      isOpen: true,
+                                    })
+                                  }
+                                >
+                                  <BsImages size={16} color={"#FFFFFF"} />
+                                </IconButton>
+                              </Tooltip>
+
+                              {/* <label htmlFor="contained-button-file">
+                                <Button
+                                  variant="contained"
+                                  size="lg"
+                                  className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                                  onClick={() =>
+                                    setSelectImagesModal({
+                                      isOpen: true,
+                                    })
+                                  }
+                                  style={{
+                                    // backgroundColor: "#111827",
+                                    color: "#ffffff",
+                                    // border: "1px solid #DA1F26",
+                                  }}
+                                  component="span"
+                                  disabled={loading ? true : false}
+                                  // startIcon={loading ? null : <MdFileUpload />}
+                                >
+                                  <span>{t("button_upload_image")}</span>
+                                </Button>
+                                <p className="text-primary mt-2 italic">
+                                  {allImages?.length > 0
+                                    ? `${allImages?.length} images selected.`
+                                    : null}
+                                </p>
+                              </label> */}
+
+                              {/* UPLOAD DOCUMENT  */}
+                              <Tooltip title="Upload Document(s)" arrow>
+                                <IconButton
+                                  className={`card-hover rounded-full bg-btn-primary`}
+                                  onClick={() => {
+                                    setDocumentModal(true);
+                                  }}
+                                >
+                                  <BsFiles size={16} color={"#FFFFFF"} />
+                                </IconButton>
+                              </Tooltip>
+
+                              {/* <label htmlFor="contained-button-document">
+                                <Button
+                                  variant="contained"
+                                  size="lg"
+                                  className="min-w-fit bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
+                                  style={{
+                                    color: "#ffffff",
+                                  }}
+                                  onClick={() => {
+                                    setDocumentModal(true);
+                                  }}
+                                  component="span"
+                                  disabled={loading ? true : false}
+                                  // startIcon={loading ? null : <MdFileUpload />}
+                                >
+                                  <span>{t("button_upload_document")}</span>
+                                </Button>
+                                <p className="text-primary mt-2 italic">
+                                  {allDocs?.length > 0
+                                    ? `${allDocs?.length} documents selected.`
+                                    : null}
+                                </p>
+                              </label> */}
 
                               {/* EDIT DETAILS  */}
                               {hasPermission("property_update_dev_project") && (
@@ -437,125 +451,95 @@ const SinglePropertyModal = ({
                                 </Tooltip>
                               )}
 
-                              {/* UPLOAD PICTURES  */}
-                              {/* <Tooltip title="Upload Pictures" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectImagesModal({
-                                    isOpen: true,
-                                    listingId: project?.id,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsImages size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip> */}
-
-                              {/* UPLOAD DOCUMENTS  */}
-                              {/* <Tooltip title="Upload Documents" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectDocumentModal({
-                                    isOpen: true,
-                                    listingId: lid,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsFiles size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip> */}
-
-                              <div className="mx-1"></div>
-
-                              {project?.tourlink && (
-                                <div className="border border-primary p-2 font-semibold rounded-md shadow-sm cursor-pointer">
-                                  <a
-                                    href={project?.tourlink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    360 view
-                                  </a>
-                                </div>
+                              {project?.tourlink !== null &&
+                              project?.tourlink !== "" &&
+                              project?.tourlink !== "undefined" &&
+                              project?.tourlink !== "null" && (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleView360Modal(project)
+                                  }}
+                                  className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
+                                >
+                                  <Md360 size={16} />
+                                  <span className="text-sm uppercase">
+                                    {t("360_view")}
+                                  </span>
+                                </button>
                               )}
                             </div>
-                          )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* DETAILS  */}
+                    <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
+                      <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
+                        {/* ADDRESS  */}
+                        <div className="flex gap-4">
+                          <TbCurrentLocation
+                            size={18}
+                            className={`${
+                              currentMode === "dark"
+                                ? "text-[#EEEEEE]"
+                                : "text-[#333333]"
+                            }`}
+                          />
+                          <h6 className="flex flex-wrap">
+                            {project?.projectLocation} 
+                          </h6>
+                        </div>
+                        {/* Bedrooms  */}
+                        <div className="flex gap-4">
+                          <BiBed
+                            size={18}
+                            className={`${
+                              currentMode === "dark"
+                                ? "text-[#EEEEEE]"
+                                : "text-[#333333]"
+                            }`}
+                          />
+                          <div className="flex flex-wrap gap-2">
+                            {project?.bedrooms &&
+                            project?.bedrooms !== null &&
+                            project?.bedrooms.length > 0 &&
+                            project?.bedrooms?.map((bed, index) => (
+                              <div key={index}>
+                                {getBedLabel(bed, t)}
+                                {(project?.bedrooms.length - 1) !== index && ","}
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                      <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
-                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
-                          {/* ADDRESS  */}
-                          <div className="flex space-x-3">
-                            <TbCurrentLocation
-                              size={18}
-                              className={`mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-[#EEEEEE]"
-                                  : "text-[#333333]"
-                              }`}
-                            />
-                            <h6>{project?.projectLocation} </h6>
-                          </div>
-                          {/* Bedrooms  */}
-                          <div className="flex space-x-3">
-                            <BiBed
-                              size={18}
-                              className={`mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-[#EEEEEE]"
-                                  : "text-[#333333]"
-                              }`}
-                            />
-                            {project?.bedrooms &&
-                              project?.bedrooms?.map((bed) => <h6>{bed} </h6>)}
-                          </div>
-                          {/* baths  */}
-                          <div className="flex space-x-3">
-                            <FaMoneyBillWave
-                              size={18}
-                              className={`mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-[#EEEEEE]"
-                                  : "text-[#333333]"
-                              }`}
-                            />
-                            <h6>
-                              {project?.price === "null" ? "-" : project?.price}
-                            </h6>
-                          </div>
-                        </div>
 
-                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
-                          <div className="flex items-end justify-end h-full w-full">
-                            <div className="text-right">
-                              <p className="text-sm my-2">
-                                Project added on{" "}
-                                {moment(project?.created_at).format(
-                                  "YYYY-MM-DD HH:MM"
-                                )}
-                              </p>
-                              <p className="text-sm my-2 flex items-center">
-                                <FaUserPlus
-                                  size={16}
-                                  color={`${
-                                    currentMode === "dark"
-                                      ? "#EEEEEE"
-                                      : "#333333"
-                                  }`}
-                                  className="mr-2"
-                                />
-                                {openModal?.developer?.developerName}
-                              </p>
-                            </div>
+                      <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
+                        <div className="flex items-end justify-end h-full w-full">
+                          <div className="text-right">
+                            <p className="text-sm my-2">
+                              {t("project_added_on")}{" "}
+                              {datetimeLong(project?.created_at)}
+                            </p>
+                            <p className="text-sm my-2 flex items-center">
+                              <FaUserPlus
+                                size={16}
+                                color={`${
+                                  currentMode === "dark"
+                                    ? "#EEEEEE"
+                                    : "#333333"
+                                }`}
+                                className="mr-2"
+                              />
+                              {openModal?.developer?.developerName}
+                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
 
                     {/* IN MAP  */}
-
                     {project?.latLong === null || project?.latLong === "" ? (
                       <></>
                     ) : (
@@ -592,135 +576,116 @@ const SinglePropertyModal = ({
                       </div>
                     )}
 
-                    {/* <div className="bg-primary h-0.5 w-full my-5"></div> */}
-
-                    {(project?.addedBy === User?.id ||
-                      hasPermission("seller_details") ||
-                      User.role === 1) && (
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#000000]"
-                            : "bg-[#EEEEEE]"
-                        } rounded-xl w-full p-4`}
-                      >
-                        <div className="w-full">
-                          {/* <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5"> */}
-                          <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
-                            <div
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-[#1C1C1C]"
-                                  : "bg-[#FFFFFF]"
-                              } rounded-xl shadow-sm p-4`}
-                            >
-                              <div className="w-full flex items-center pb-3">
-                                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                                <h1
-                                  className={`text-lg font-semibold ${
-                                    currentMode === "dark"
-                                      ? "text-white"
-                                      : "text-black"
-                                  }`}
-                                >
-                                  Essential Document
-                                </h1>
-                              </div>
-
-                              <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                                {project?.documents?.map((l) => {
-                                  return l?.doc_url ? (
-                                    // <div
-                                    //   onClick={() =>
-                                    //     setSingleDocModal({
-                                    //       isOpen: true,
-                                    //       url: l?.doc_url,
-                                    //       id: l?.id,
-                                    //     })
-                                    //   }
-                                    //   className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                    //   // hover:rounded-full hover:shadow-lg
-                                    // >
-                                    //   <div className="w-full text-center ">
-                                    //     <div className="w-full flex justify-center">
-                                    //       <BsFileEarmarkText
-                                    //         size={70}
-                                    //         color={"#AAAAAA"}
-                                    //         className="hover:-mt-1 hover:mb-1"
-                                    //       />
-                                    //     </div>
-                                    //     <div className="my-3">
-                                    //       {l?.doc_name}
-                                    //     </div>
-                                    //   </div>
-                                    // </div>
-                                    <div className="relative w-min">
-                                      <div
-                                        onClick={() => {
-                                          window.open(l?.doc_url, "_blank");
-                                        }}
-                                        className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                      >
-                                        <a
-                                          href={l?.doc_url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                        >
-                                          <div className="w-full text-center">
-                                            <div className="w-full flex justify-center">
-                                              <BsFileEarmarkText
-                                                size={70}
-                                                color={"#AAAAAA"}
-                                                className="hover:-mt-1 hover:mb-1"
-                                              />
-                                            </div>
-                                            <div className="my-3">
-                                              {l?.doc_name}
-                                            </div>
-                                          </div>
-                                        </a>
-                                      </div>
-                                      {hasPermission("property_delete_doc") && (
-                                        <div className="absolute top-0 -right-4 p-1 cursor-pointer">
-                                          <IconButton
-                                            className="bg-btn-primary"
-                                            onClick={() =>
-                                              handleDeleteDocument(l?.id)
-                                            }
-                                          >
-                                            {btnLoading ? (
-                                              <CircularProgress />
-                                            ) : (
-                                              <BsTrash
-                                                size={20}
-                                                color={
-                                                  currentMode === "dark"
-                                                    ? "#ffffff"
-                                                    : "#000000"
-                                                }
-                                              />
-                                            )}
-                                          </IconButton>
-                                        </div>
-                                      )}
-                                    </div>
-                                  ) : (
-                                    <div className="py-2 text-xs italic text-primary">
-                                      No documents to show
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                              {/* )} */}
-                            </div>
-                          </div>
-                          {/* </div> */}
-                        </div>
+                    {/* ESSENTIAL DOCUMENTS  */}
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-[#000000]"
+                          : "bg-[#EEEEEE]"
+                      } rounded-xl shadow-sm p-4`}
+                    >
+                      <div className="w-full flex items-center pb-3">
+                        <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
+                        <h1
+                          className={`text-lg font-semibold ${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-black"
+                          }`}
+                        >
+                          {t("documents")}
+                        </h1>
                       </div>
-                    )}
+
+                      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 flex justify-center">
+                        {project?.documents?.map((l) => {
+                          return l?.doc_url ? (
+                            // <div
+                            //   onClick={() =>
+                            //     setSingleDocModal({
+                            //       isOpen: true,
+                            //       url: l?.doc_url,
+                            //       id: l?.id,
+                            //     })
+                            //   }
+                            //   className="p-2 flex items-center justify-center hover:cursor-pointer"
+                            //   // hover:rounded-full hover:shadow-lg
+                            // >
+                            //   <div className="w-full text-center ">
+                            //     <div className="w-full flex justify-center">
+                            //       <BsFileEarmarkText
+                            //         size={70}
+                            //         color={"#AAAAAA"}
+                            //         className="hover:-mt-1 hover:mb-1"
+                            //       />
+                            //     </div>
+                            //     <div className="my-3">
+                            //       {l?.doc_name}
+                            //     </div>
+                            //   </div>
+                            // </div>
+                            <div className="flex w-full justify-center">
+                              <div className="relative w-min">
+                                <div
+                                  onClick={() => {
+                                    window.open(l?.doc_url, "_blank");
+                                  }}
+                                  className="p-2 flex items-center justify-center hover:cursor-pointer"
+                                >
+                                  <a
+                                    href={l?.doc_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <div className="w-full text-center">
+                                      <div className="w-full flex justify-center">
+                                        <BsFileEarmarkText
+                                          size={70}
+                                          color={"#AAAAAA"}
+                                          className="hover:-mt-1 hover:mb-1"
+                                        />
+                                      </div>
+                                      <div className="my-3">
+                                        {l?.doc_name}
+                                      </div>
+                                    </div>
+                                  </a>
+                                </div>
+                                {hasPermission("property_delete_doc") && (
+                                  <div className="absolute top-0 -right-4 p-1 cursor-pointer">
+                                    <IconButton
+                                      className="bg-btn-primary"
+                                      onClick={() =>
+                                        handleDeleteDocument(l?.id)
+                                      }
+                                    >
+                                      {btnLoading ? (
+                                        <CircularProgress />
+                                      ) : (
+                                        <BsTrash
+                                          size={20}
+                                          color={
+                                            currentMode === "dark"
+                                              ? "#ffffff"
+                                              : "#000000"
+                                          }
+                                        />
+                                      )}
+                                    </IconButton>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="py-2 text-xs italic text-primary">
+                              {t("nothing_to_show")}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
                 )}
-                {/* <Footer /> */}
 
                 {singleImageModal?.isOpen && (
                   <SingleImageModal
@@ -778,6 +743,15 @@ const SinglePropertyModal = ({
                         open: false,
                       })
                     }
+                  />
+                )}
+                
+                {view360Modal?.open && (
+                  <View360Modal
+                    view360Modal={view360Modal}
+                    setView360Modal={setView360Modal}
+                    loading={loading}
+                    setloading={setloading}
                   />
                 )}
               </>

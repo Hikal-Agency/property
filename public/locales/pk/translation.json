@@ -708,9 +708,6 @@
     "select_sender_id": "ارسال کنندہ کا شناخت کریں",
     "clear": "صاف کریں",
     "clear_all": "سب کچھ صاف کریں",
-
-    "new_from_here": "",
-
     "type_liveleads": "زندہ کال", 
     "liveleads": "زندہ کال", 
     "update_lead_details": "لیڈ کی تفصیلات کو اپ ڈیٹ کریں", 
@@ -771,7 +768,6 @@
     "generate_report_btn": "رپورٹ بنائیں",
     "report_month": "مہینہ منتخب کریں",
     "mark_attendance": "حاضری کا نشان لگائیں",
-
     "add_dev_btn": "ڈویلپر شامل کریں",
     "add_project_btn": "پروجیکٹ شامل کریں",
     "add_developer_modal": "ڈویلپر شامل کریں",
@@ -807,7 +803,6 @@
     "source_wechat": "وی چیٹ",
     "source_twitter": "ٹویٹر",
     "update_booked_deal": "بک کردہ ڈیل کا اپ ڈیٹ",
-
     "documents": "دستاویزات",
     "origin_liveleads": "لائیو کال لیڈز",
     "sold": "فروخت ہوگئی",
@@ -827,10 +822,13 @@
     "form_account_type" : "اکاؤنٹ کی قسم",
     "form_account_usersList" : "صارفین کی تعداد",
     "menu_reshuffled_request": "ری شفل درخواستیں",
-
     "form_account_stripe" : "اسٹرائپ",
     "form_account_paypal" : "پے پال",
     "form_account_credit" : "کریڈٹ/ڈیبٹ کارڈز",
     "form_account_bank" : "بینک ٹرانسفر",
-    "form_account_custom" : "کسٹم ٹائپ شامل کریں"
+    "form_account_custom" : "کسٹم ٹائپ شامل کریں",
+    "form_account_custom_placeholder" : "نیا اکاؤنٹ ٹائپ",
+    "menu_clientsList": "کلائنٹس",
+    "project_added_on": "پروجیکٹ شامل ہوئی",
+    "bedrooms": "کمرے"
 }

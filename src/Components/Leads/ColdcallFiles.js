@@ -12,8 +12,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  TextField,
 } from "@mui/material";
 import moment from "moment";
+import BulkColdCallAssign from "./BulkColdCallAssign";
 
 const getLangCode = (language) => {
   if (language) {
@@ -54,8 +56,11 @@ const ColdcallFiles = ({
   const [filesLoading, setFilesLoading] = useState(true);
   const [coldcallFiles, setColdcallFiles] = useState([]);
   const [activeFile, setActiveFile] = useState(null);
+  const [coldCallAssignModal, setColdCallAssignModal] = useState({
+    isOpen: false
+  });
   const [allFiles, setAllFiles] = useState([]);
-  const { BACKEND_URL, currentMode, primaryColor } = useStateContext();
+  const { BACKEND_URL, currentMode, darkModeColors } = useStateContext();
   const [sortByVal, setSortByVal] = useState("");
 
   const fetchColdLeadsData = async (type) => {
@@ -152,7 +157,7 @@ const ColdcallFiles = ({
   }, [sortByVal]);
 
   const fetchFileLeads = async (file, index) => {
-    setActiveFile(index);
+    setActiveFile({index, file});
     try {
       setpageState((old) => ({
         ...old,
@@ -258,11 +263,28 @@ const ColdcallFiles = ({
     <>
       {filesLoading ? (
         <div className="flex w-full justify-center items-center py-8 mt-4">
-          <h1 className="text-xl">Loading...</h1>
+          <h1 className={`text-xl ${currentMode === "light" ? "text-black" : "text-white"}`}>Loading...</h1>
         </div>
       ) : coldcallFiles?.length > 0 ? (
         <div>
           <div className="flex justify-end items-center">
+          {activeFile?.index ?  
+            <div className="mr-2">
+              <Button
+              onClick={() => setColdCallAssignModal({isOpen: true, file: activeFile?.file})}
+                className={` uppercase rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                ripple="true"
+                size="lg"
+                style={{
+                  color: "white"
+                }}
+                type="submit"
+              >
+               BULK ASSIGN
+              </Button>
+            </div>
+            : <></>
+          }
             <Button
               onClick={() => bulkImportRef.current.click()}
               className={` text-white uppercase rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
@@ -282,8 +304,9 @@ const ColdcallFiles = ({
               }}
             >
               <FormControl fullWidth>
-                <InputLabel>Sort By</InputLabel>
-                <Select
+                {/* <InputLabel className={`${currentMode === "light" ? 'text-black' : 'text-white'}`}>Sort By</InputLabel> */}
+                <TextField
+                  select
                   label={"Sorty By"}
                   id="sort-by"
                   value={sortByVal}
@@ -295,6 +318,7 @@ const ColdcallFiles = ({
                   size="small"
                   required
                   sx={{
+                    ...darkModeColors,
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderColor: currentMode === "dark" ? "white" : "black",
                     },
@@ -311,7 +335,7 @@ const ColdcallFiles = ({
                   <MenuItem value="filename">Filename</MenuItem>
                   <MenuItem value="date-asc">Date (Ascending Order)</MenuItem>
                   <MenuItem value="date-desc">Date (Descending Order)</MenuItem>
-                </Select>
+                </TextField>
               </FormControl>
             </Box>
           </div>
@@ -323,7 +347,7 @@ const ColdcallFiles = ({
               return (
                 <div
                   className={`px-5 shadow-lg mr-2 rounded-lg py-3 inline-block ${
-                    file?.index === activeFile && "border border-primary"
+                    file?.index === activeFile?.index && "border border-primary"
                   }`}
                   onClick={() => fetchFileLeads(file, file?.index)}
                 >
@@ -337,7 +361,7 @@ const ColdcallFiles = ({
                       },
                     }}
                   > */}
-                    <div className="flex flex-col items-center">
+                    <div className={`${currentMode === "light" ? "text-black" : "text-white"} flex flex-col items-center`}>
                       <FaRegFileAlt size={34} className="mb-2" />
                       <p>{file?.notes}</p>
                       <p>{file["DATE(creationDate)"]}</p>
@@ -349,10 +373,12 @@ const ColdcallFiles = ({
           </div>
         </div>
       ) : (
-        <div className="flex justify-center items-center py-5 mt-4">
+        <div className={`${currentMode === "light" ? "text-black": "text-white"} flex justify-center items-center py-5 mt-4`}>
           Nothing yet
         </div>
       )}
+
+      {coldCallAssignModal?.isOpen && <BulkColdCallAssign bulkColdCallAssignModal={coldCallAssignModal} handleCloseModal={() => setColdCallAssignModal({isOpen: false})}/>}
     </>
   );
 };

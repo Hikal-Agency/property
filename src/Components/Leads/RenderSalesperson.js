@@ -2,20 +2,15 @@ import { Button } from "@material-tailwind/react";
 import {
   Box,
   CircularProgress,
-  Dialog,
-  FormControl,
-  IconButton,
-  MenuItem,
-  // Select,
+  Dialog, IconButton
 } from "@mui/material";
 // import Select from "@mui/material/Select";
 import Select from "react-select";
-import moment from "moment";
 import { socket } from "../../Pages/App";
 
 import axios from "../../axoisConfig";
 import React, { useState, useEffect } from "react";
-import { IoIosAlert, IoMdClose } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { renderStyles } from "../_elements/SelectStyles";
@@ -185,7 +180,6 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
           ],
           leadName: cellValues?.row?.leadName,
         });
-
         toast.success("Agent Updated Successfully", {
           position: "top-right",
           autoClose: 3000,
@@ -344,11 +338,12 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
               label: "---", //"---" + t("label_manager") + "---",
               value: null,
             },
-            ...(SalesPersonsList?.map((salesperson) => ({
+            ...(SalesPersonsList?.filter((person) => person?.role === 7)?.map((salesperson) => ({
               label: salesperson.userName,
               value: salesperson.id,
             })) ?? []),
           ]}
+
           placeholder={
             !SalesPerson2 ||
             SalesPerson2 === "0" ||

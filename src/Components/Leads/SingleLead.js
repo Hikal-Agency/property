@@ -514,7 +514,6 @@ const SingleLead = ({
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
-          // onClick={handleLeadModelClose}
           onClick={handleClose}
           className={`${
             isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
@@ -985,7 +984,6 @@ const SingleLead = ({
                     <Box sx={{
                       ...darkModeColors,
                       "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                        left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
                         right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                         transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
                       },

@@ -181,7 +181,7 @@ const BookedDeals = ({
     const [unitNo, setUnitNo] = useState("");
 
     const ChangeFeedback = (e) => {
-      setnewFeedback(e.target.value);
+      setnewFeedback(e.value);
       setDialogue(true);
     };
 
@@ -283,7 +283,8 @@ const BookedDeals = ({
               ? { label: Feedback, value: Feedback }
               : null
           }
-          onChange={(selectedOption) => ChangeFeedback(selectedOption?.value || null)}
+          onChange={(selectedOption) => ChangeFeedback(selectedOption)}
+          // onChange={(selectedOption) => ChangeFeedback(selectedOption?.value || null)}
           options={[
             { label: t("feedback_booked"), value: "Booked" },
             { label: t("feedback_closed"), value: "Closed Deal" },

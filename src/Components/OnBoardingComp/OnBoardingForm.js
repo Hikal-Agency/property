@@ -151,9 +151,25 @@ const OnBoardingForm = ({ isLoading }) => {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    const { bussiness_name, country } = onBoardData;
+    const {
+      bussiness_name,
+      country,
+      account_type,
+      contact,
+      name_of_person,
+      no_of_users,
+      email,
+    } = onBoardData;
 
-    if (!bussiness_name || !country) {
+    if (
+      !bussiness_name ||
+      !country ||
+      !account_type ||
+      !contact ||
+      !name_of_person ||
+      !no_of_users ||
+      !email
+    ) {
       toast.error("Please fill all the required fields", {
         position: "top-right",
         autoClose: 3000,
@@ -308,7 +324,6 @@ const OnBoardingForm = ({ isLoading }) => {
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
               {
-                left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
                 right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                 transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -349,7 +364,7 @@ const OnBoardingForm = ({ isLoading }) => {
             style={{
               width: "100%",
               borderRadius: "5px",
-              padding: "6px 4px",
+              padding: "6px 8px",
               border: `1px solid ${currentMode === "dark" ? "#fff" : "#000"}`,
               background: "none",
               marginBottom: "20px",
@@ -490,7 +505,6 @@ const OnBoardingForm = ({ isLoading }) => {
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                 {
-                  left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
                   right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                   transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
                 },
@@ -547,7 +561,6 @@ const OnBoardingForm = ({ isLoading }) => {
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
               {
-                left: isLangRTL(i18n.language) ? "inherit" : "1.75rem",
                 right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
                 transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -580,6 +593,7 @@ const OnBoardingForm = ({ isLoading }) => {
                 }
                 displayEmpty
                 select
+                required
               >
                 {accountTypes.map((type) => (
                   <MenuItem key={type.value} value={type.value}>

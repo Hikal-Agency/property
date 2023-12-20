@@ -14,38 +14,12 @@ import {
 } from "@mui/x-data-grid";
 
 import { useStateContext } from "../context/ContextProvider";
-import { pageStyles, selectStyles } from "./_elements/SelectStyles";
+import { pageStyles } from "./_elements/SelectStyles";
 import axios from "../axoisConfig";
 import UpdateClosedLead from "./Leads/UpdateClosedLead";
 import Timeline from "../Pages/timeline";
 
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
-import { MdCampaign } from "react-icons/md";
-import {
-  FaSnapchatGhost,
-  FaFacebookF,
-  FaRegUser,
-  FaWhatsapp,
-  FaTwitter,
-  FaYoutube,
-  FaTiktok,
-  FaRegComments,
-} from "react-icons/fa";
-import {
-  BiImport,
-  BiMessageRoundedDots,
-  BiArchive
-} from "react-icons/bi";
-import {
-  BsPersonCircle,
-  BsSnow2,
-  BsShieldX,
-  BsShieldCheck,
-  BsShieldMinus
-} from "react-icons/bs";
-import { FcGoogle } from "react-icons/fc";
-import { GiMagnifyingGlass } from "react-icons/gi";
-import { TbWorldWww } from "react-icons/tb";
 import { renderSourceIcons } from "./_elements/SourceIconsDataGrid";
 import { renderOTPIcons } from "./_elements/OTPIconsDataGrid";
 

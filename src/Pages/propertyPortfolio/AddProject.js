@@ -21,31 +21,17 @@ import {
   Checkbox,
   FormGroup,
 } from "@mui/material";
+import Select from "react-select";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
 
-import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
-import { IoIosAlert } from "react-icons/io";
 import { MdClose } from "react-icons/md";
-import { BiBlock, BiBed } from "react-icons/bi";
-import {
-  BsShuffle,
-  BsTelephone,
-  BsEnvelopeAt,
-  BsType,
-  BsHouseGear,
-  BsBuildings,
-  BsTrash,
-  BsBuildingGear,
-  BsPersonPlus,
-  BsBookmarkFill,
-  BsPersonGear,
-  BsChatLeftText,
-} from "react-icons/bs";
 import PortfolioLocation from "./PortfolioLocation";
 import PropertyImageUpload from "./PropertyImageUpload";
 import PropertyDocModal from "./PropertyDocumentUpload";
+import { selectStyles } from "../../Components/_elements/SelectStyles";
+import { enquiry_options, project_status_options } from "../../Components/_elements/SelectOptions";
 
 const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
   const {
@@ -58,7 +44,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
     t,
     isLangRTL,
     i18n,
-    themeBgImg,
+    fontFam,
   } = useStateContext();
 
   const [allImages, setAllImages] = useState([]);
@@ -399,6 +385,8 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
     getDevelopers();
   }, []);
 
+  const options = enquiry_options(t);
+
   return (
     <>
       <Modal
@@ -459,7 +447,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
               </div>
             ) : (
               <>
-                <div className="mx-auto">
+                <div className="w-full">
                   <form
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -470,7 +458,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                     <div className="w-full flex items-center pb-3">
                       <div className="bg-primary h-10 w-1 rounded-full"></div>
                       <h1
-                        className={`text-lg font-semibold mx-2 uppercase ${
+                        className={`text-lg font-semibold mx-2 ${
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
                       >
@@ -479,317 +467,361 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                     </div>
 
                     <div
-                      className={`${
-                        themeBgImg &&
-                        (currentMode === "dark"
-                          ? "blur-bg-dark shadow-sm"
-                          : "blur-bg-light shadow-sm")
-                      } p-5 rounded-lg `}
+                      className={`w-full p-4`}
                     >
-                      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 mt-5">
-                        <div className="px-4">
-                          <Box sx={darkModeColors}>
-                            <h4
-                              className={`${
-                                currentMode === "dark"
-                                  ? `text-white`
-                                  : "text-black"
-                              } text-center font-semibold pb-5`}
-                            >
-                              {t("project_details_form")}
-                            </h4>{" "}
-                            <TextField
-                              id="LeadEmailAddress"
-                              type={"text"}
-                              label={t("project_form_name")}
-                              value={projectData?.projectName}
-                              name="projectName"
-                              onChange={handleChange}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              required
-                            />
-                            <TextField
-                              id="Manager"
-                              select
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              label={t("form_developer_name")}
-                              size="small"
-                              className="w-full"
-                              displayEmpty
-                              value={projectData?.developer_id}
-                              onChange={handleChange}
-                              name="developer_id"
-                              required
-                            >
-                              {developer?.map((developer, index) => (
-                                <MenuItem key={index} value={developer?.id}>
-                                  {developer?.developerName}
-                                </MenuItem>
-                              ))}
-                            </TextField>
-                            <TextField
-                              id="Manager"
-                              type="text"
-                              label={t("form_project_priceRange")}
-                              className="w-full"
-                              value={projectData?.price}
-                              name="price"
-                              onChange={handleChange}
-                              sx={{
-                                marginBottom: "1.25rem !important",
-                                color:
-                                  currentMode === "dark"
-                                    ? "#ffffff"
-                                    : "#000000",
-                              }}
-                              variant="outlined"
-                              size="small"
-                            />
-                          </Box>
-                        </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-4">
+                        {/*PROJECT DETAILS */}
+                        <Box 
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}>
+                          <h4
+                            className={`text-primary text-center font-semibold pb-5`}
+                          >
+                            {t("project_details_form")}
+                          </h4>{" "}
+                          <TextField
+                            id="ProjectName"
+                            type={"text"}
+                            label={t("project_form_name")}
+                            value={projectData?.projectName}
+                            name="projectName"
+                            onChange={handleChange}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px !important",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            required
+                          />
+                          <Select
+                            id="Developer"
+                            value={{
+                              value: projectData?.developer_id,
+                              label: projectData?.developer_id
+                              ? developer.find((dev) => dev.id === projectData?.developer_id)?.developerName || ''
+                              : t('form_developer_name'),
+                            }}
+                            onChange={(selectedOption) => {
+                              handleChange({ target: { name: 'developer_id', value: selectedOption.value } });
+                            }}
+                            options={developer.map((dev) => ({ value: dev.id, label: dev.developerName }))}
+                            className="w-full"
+                            placeholder={t('form_developer_name')}
+                            menuPortalTarget={document.body}
+                            styles={selectStyles(currentMode, primaryColor)}
+                          />
+                          {/* <TextField
+                            id="Manager"
+                            select
+                            sx={{
+                              marginBottom: "20px !important",
+                            }}
+                            label={t("form_developer_name")}
+                            size="small"
+                            className="w-full"
+                            displayEmpty
+                            value={projectData?.developer_id}
+                            onChange={handleChange}
+                            name="developer_id"
+                            required
+                          >
+                            {developer?.map((developer, index) => (
+                              <MenuItem key={index} value={developer?.id}>
+                                {developer?.developerName}
+                              </MenuItem>
+                            ))}
+                          </TextField> */}
+                          <TextField
+                            id="PriceRange"
+                            type="text"
+                            label={t("form_project_priceRange")}
+                            className="w-full"
+                            value={projectData?.price}
+                            name="price"
+                            onChange={handleChange}
+                            sx={{
+                              marginBottom: "20px !important",
+                            }}
+                            variant="outlined"
+                            size="small"
+                          />
+                          <Select
+                            id="Availability"
+                            value={project_status_options(t).find(option => option.value === projectData?.projectStatus)}
+                            onChange={(selectedOption) => {
+                              handleChange({ target: { name: 'projectStatus', value: selectedOption.value } });
+                            }}
+                            options={project_status_options(t)}
+                            className="w-full"
+                            placeholder={t('form_project_status')}
+                            menuPortalTarget={document.body}
+                            styles={selectStyles(currentMode, primaryColor)}
+                          />
+                        </Box>
+                        
+                        {/* LOCATION DETAILS  */}
+                        <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}>
+                          <h4
+                            className={`text-primary text-center font-semibold pb-5`}
+                          >
+                            {t("location_details")}
+                          </h4>
+                          <TextField
+                            id="Project"
+                            type={"text"}
+                            label={t("form_project_location")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px !important",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={projectData?.projectLocation}
+                            name="projectLocation"
+                            onChange={handleChange}
+                            required
+                          />
+                          <TextField
+                            id="Project"
+                            type={"text"}
+                            label={t("form_project_area")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px !important",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={projectData?.area}
+                            name="area"
+                            onChange={handleChange}
+                            required
+                          />
 
-                        <div className="px-4">
-                          <Box sx={darkModeColors}>
-                            <h4
-                              className={`${
-                                currentMode === "dark"
-                                  ? `text-white`
-                                  : "text-black"
-                              } text-center font-semibold pb-5`}
-                            >
-                              {t("location_details")}
-                            </h4>
-                            <TextField
-                              id="Project"
-                              type={"text"}
-                              label={t("form_project_location")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              value={projectData?.projectLocation}
-                              name="projectLocation"
-                              onChange={handleChange}
-                              required
-                            />
-                            <TextField
-                              id="Project"
-                              type={"text"}
-                              label={t("form_project_area")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              value={projectData?.area}
-                              name="area"
-                              onChange={handleChange}
-                              required
-                            />
+                          <TextField
+                            id="LeadEmailAddress"
+                            type={"text"}
+                            label={t("form_project_360View")}
+                            className="w-full"
+                            sx={{
+                              marginBottom: "20px !important",
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={projectData?.tourLink}
+                            name="tourLink"
+                            onChange={handleChange}
+                          />
+                        </Box>
+                        
+                        {/* BEDROOMS  */}
+                        <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}>
+                          <h4
+                            className={`text-primary text-center font-semibold pb-5`}
+                          >
+                            {t("bedrooms")}
+                          </h4>
 
-                            <TextField
-                              id="LeadEmailAddress"
-                              type={"text"}
-                              label={t("form_project_360View")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              value={projectData?.tourLink}
-                              name="tourLink"
-                              onChange={handleChange}
-                            />
-                          </Box>
-                        </div>
+                          <div className="flex justify-center w-full">
+                            <FormControl>
+                              <FormGroup>
+                                <div className="grid grid-cols-2 2xl:grid-cols-3 gap-4 px-4">
+                                  {options.map((option) => (
+                                    <FormControlLabel
+                                      key={option.value}
+                                      control={<Checkbox />}
+                                      label={option.label}
+                                      onChange={() => handleBeds(option.value)}
+                                      checked={projectData.bedrooms.includes(option.value)}
+                                    />
+                                  ))}
+                                </div>
+                              </FormGroup>
+                            </FormControl>
+                          </div>
 
-                        <div className="px-4">
-                          <Box sx={darkModeColors}>
-                            <h4
-                              className={`${
-                                currentMode === "dark"
-                                  ? `text-white`
-                                  : "text-black"
-                              } text-center font-semibold pb-5`}
-                            >
-                              {t("project_availability")}
-                            </h4>
-                            <TextField
-                              id="Manager"
-                              select
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                },
-                              }}
-                              label={t("form_project_status")}
-                              size="small"
-                              className="w-full"
-                              value={projectData?.projectStatus}
-                              name="projectStatus"
-                              onChange={handleChange}
-                              displayEmpty
-                              required
-                            >
-                              <MenuItem value="available">Available</MenuItem>
-                              <MenuItem value="sold-out">Sold-Out</MenuItem>
-                            </TextField>
-
-                            <div>
-                              <FormControl>
-                                <FormLabel id="demo-checkbox-group-label">
-                                  Bedrooms
-                                </FormLabel>
-                                <FormGroup>
-                                  <div className="flex">
-                                    <div>
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="Studio"
-                                        onChange={() => handleBeds("Studio")}
-                                        checked={projectData.bedrooms.includes(
-                                          "Studio"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="1 Bedroom"
-                                        onChange={() => handleBeds("1 Bedroom")}
-                                        checked={projectData.bedrooms.includes(
-                                          "1 Bedroom"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="2 Bedrooms"
-                                        onChange={() =>
-                                          handleBeds("2 Bedrooms")
-                                        }
-                                        checked={projectData.bedrooms.includes(
-                                          "2 Bedrooms"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="3 Bedrooms"
-                                        onChange={() =>
-                                          handleBeds("3 Bedrooms")
-                                        }
-                                        checked={projectData.bedrooms.includes(
-                                          "3 Bedrooms"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="4 Bedrooms"
-                                        onChange={() =>
-                                          handleBeds("4 Bedrooms")
-                                        }
-                                        checked={projectData.bedrooms.includes(
-                                          "4 Bedrooms"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="5 Bedrooms"
-                                        onChange={() =>
-                                          handleBeds("5 Bedrooms")
-                                        }
-                                        checked={projectData.bedrooms.includes(
-                                          "5 Bedrooms"
-                                        )}
-                                      />
-                                    </div>
-                                    <div>
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="6 Bedrooms"
-                                        onChange={() =>
-                                          handleBeds("6 Bedrooms")
-                                        }
-                                        checked={projectData.bedrooms.includes(
-                                          "6 Bedrooms"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="7 Bedrooms"
-                                        onChange={() =>
-                                          handleBeds("7 Bedrooms")
-                                        }
-                                        checked={projectData.bedrooms.includes(
-                                          "7 Bedrooms"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="8 Bedrooms"
-                                        onChange={() =>
-                                          handleBeds("8 Bedrooms")
-                                        }
-                                        checked={projectData.bedrooms.includes(
-                                          "8 Bedrooms"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="9 Bedrooms"
-                                        onChange={() =>
-                                          handleBeds("9 Bedrooms")
-                                        }
-                                        checked={projectData.bedrooms.includes(
-                                          "9 Bedrooms"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="10 Bedrooms"
-                                        onChange={() =>
-                                          handleBeds("10 Bedrooms")
-                                        }
-                                        checked={projectData.bedrooms.includes(
-                                          "10 Bedrooms"
-                                        )}
-                                      />
-                                      <FormControlLabel
-                                        control={<Checkbox />}
-                                        label="Retail"
-                                        onChange={() => handleBeds("Retail")}
-                                        checked={projectData.bedrooms.includes(
-                                          "Retail"
-                                        )}
-                                      />
-                                    </div>
+                          {/* <div>
+                            <FormControl>
+                              <FormLabel id="demo-checkbox-group-label">
+                                Bedrooms
+                              </FormLabel>
+                              <FormGroup>
+                                <div className="flex">
+                                  <div>
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="Studio"
+                                      onChange={() => handleBeds("Studio")}
+                                      checked={projectData.bedrooms.includes(
+                                        "Studio"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="1 Bedroom"
+                                      onChange={() => handleBeds("1 Bedroom")}
+                                      checked={projectData.bedrooms.includes(
+                                        "1 Bedroom"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="2 Bedrooms"
+                                      onChange={() =>
+                                        handleBeds("2 Bedrooms")
+                                      }
+                                      checked={projectData.bedrooms.includes(
+                                        "2 Bedrooms"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="3 Bedrooms"
+                                      onChange={() =>
+                                        handleBeds("3 Bedrooms")
+                                      }
+                                      checked={projectData.bedrooms.includes(
+                                        "3 Bedrooms"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="4 Bedrooms"
+                                      onChange={() =>
+                                        handleBeds("4 Bedrooms")
+                                      }
+                                      checked={projectData.bedrooms.includes(
+                                        "4 Bedrooms"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="5 Bedrooms"
+                                      onChange={() =>
+                                        handleBeds("5 Bedrooms")
+                                      }
+                                      checked={projectData.bedrooms.includes(
+                                        "5 Bedrooms"
+                                      )}
+                                    />
                                   </div>
-                                </FormGroup>
-                              </FormControl>
-                            </div>
-                          </Box>
-                        </div>
+                                  <div>
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="6 Bedrooms"
+                                      onChange={() =>
+                                        handleBeds("6 Bedrooms")
+                                      }
+                                      checked={projectData.bedrooms.includes(
+                                        "6 Bedrooms"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="7 Bedrooms"
+                                      onChange={() =>
+                                        handleBeds("7 Bedrooms")
+                                      }
+                                      checked={projectData.bedrooms.includes(
+                                        "7 Bedrooms"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="8 Bedrooms"
+                                      onChange={() =>
+                                        handleBeds("8 Bedrooms")
+                                      }
+                                      checked={projectData.bedrooms.includes(
+                                        "8 Bedrooms"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="9 Bedrooms"
+                                      onChange={() =>
+                                        handleBeds("9 Bedrooms")
+                                      }
+                                      checked={projectData.bedrooms.includes(
+                                        "9 Bedrooms"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="10 Bedrooms"
+                                      onChange={() =>
+                                        handleBeds("10 Bedrooms")
+                                      }
+                                      checked={projectData.bedrooms.includes(
+                                        "10 Bedrooms"
+                                      )}
+                                    />
+                                    <FormControlLabel
+                                      control={<Checkbox />}
+                                      label="Retail"
+                                      onChange={() => handleBeds("Retail")}
+                                      checked={projectData.bedrooms.includes(
+                                        "Retail"
+                                      )}
+                                    />
+                                  </div>
+                                </div>
+                              </FormGroup>
+                            </FormControl>
+                          </div> */}
+                        </Box>
                       </div>
 
-                      <div className="min-w-fit w-full flex justify-center mr-4 items-center my-4 space-x-5">
+                      <div className="w-full flex justify-center items-center my-1 gap-4">
                         <label htmlFor="contained-button-file">
                           <Button
                             variant="contained"
@@ -801,9 +833,8 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                               })
                             }
                             style={{
-                              // backgroundColor: "#111827",
+                              fontFamily: fontFam,
                               color: "#ffffff",
-                              // border: "1px solid #DA1F26",
                             }}
                             component="span"
                             disabled={loading ? true : false}
@@ -824,6 +855,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                             size="lg"
                             className="min-w-fit bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
                             style={{
+                              fontFamily: fontFam,
                               color: "#ffffff",
                             }}
                             onClick={() => {
@@ -845,12 +877,14 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
 
                       {/* location */}
                       <div>
-                        <PortfolioLocation
-                          listingLocation={listingLocation}
-                          currLocByDefault={true}
-                          setListingLocation={setListingLocation}
-                          required
-                        />
+                        <Box sx={darkModeColors}>
+                          <PortfolioLocation
+                            listingLocation={listingLocation}
+                            currLocByDefault={true}
+                            setListingLocation={setListingLocation}
+                            required
+                          />
+                        </Box>
                       </div>
 
                       <div className="mt-4">
@@ -858,6 +892,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                           className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
                           ripple={true}
                           style={{
+                            fontFamily: fontFam,
                             background: `${primaryColor}`,
                           }}
                           size="lg"

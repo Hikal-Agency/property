@@ -50,7 +50,6 @@ const UpdateLead = ({
     setSalesPerson: setAllSalesPersons,
     SalesPerson: AllSalesPersons,
     t,
-    isArabic,
     Managers,
     isLangRTL,
     i18n,
@@ -76,7 +75,6 @@ const UpdateLead = ({
   // eslint-disable-next-line
   const [Feedback, setFeedback] = useState("");
   const [Manager, setManager] = useState("");
-  const [Manager2, setManager2] = useState([]);
   const [SalesPerson, setSalesPerson] = useState([]);
   const [SalesPerson2, setSalesPerson2] = useState("");
   const [LeadName, setLeadName] = useState("");
@@ -436,17 +434,25 @@ const UpdateLead = ({
                 >
                   <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 p-4">
                     <div>
-                      <Box sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                          left: isLangRTL(i18n.language) ? "inherit" : "inherit",
-                          right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                          transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                        },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                        }
-                      }}>
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
                         <h4
                           className={`${
                             currentMode === "dark"
@@ -528,17 +534,25 @@ const UpdateLead = ({
                     </div>
 
                     <div>
-                      <Box sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                          left: isLangRTL(i18n.language) ? "inherit" : "inherit",
-                          right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                          transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                        },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                        }
-                        }}>
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
                         <h4
                           className={`${
                             currentMode === "dark"
@@ -710,17 +724,25 @@ const UpdateLead = ({
                     </div>
 
                     <div>
-                      <Box sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                          left: isLangRTL(i18n.language) ? "inherit" : "inherit",
-                          right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                          transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                        },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                        }
-                      }}>
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
                         <h4
                           className={`${
                             currentMode === "dark"
@@ -756,22 +778,14 @@ const UpdateLead = ({
                           className={`
                           ${classNames({
                             "dark-mode": currentMode === "dark",
+                            "phone-input-light": currentMode !== "dark",
+                            "phone-input-dark": currentMode === "dark",
                           })}
                            mb-5`}
                           size="small"
                           style={{
                             marginBottom: "20px",
-                            // background: `${
-                            //   currentMode === "dark" ? "#1C1C1C" : "#fff"
-                            // }`,
-                            "& .PhoneInputCountryIconImg": {
-                              color: "#fff",
-                            },
-                            "& .PhoneInputInput": {
-                              background: "none !important",
-                            },
-                            // padding: "10px",
-                            // color: "#808080",
+                            color: currentMode === "dark" ? "white" : "black",
                             border: `1px solid ${
                               currentMode === "dark" ? "#fff" : "#ccc"
                             }`,
