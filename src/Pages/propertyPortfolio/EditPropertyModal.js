@@ -45,7 +45,6 @@ const EditPropertyModal = ({
   const LeadData = openEdit;
   const token = localStorage.getItem("auth-token");
   const splitLocation = LeadData?.latLong?.split(",");
-  
 
   const { currentMode, darkModeColors, User, BACKEND_URL, isLangRTL, i18n, t } =
     useStateContext();
@@ -88,7 +87,7 @@ const EditPropertyModal = ({
     price: LeadData?.price,
     projectLocation: LeadData?.projectLocation,
     area: LeadData?.area,
-    tourLink: LeadData?.tourLink,
+    tourlink: LeadData?.tourlink,
     projectStatus: LeadData?.projectStatus,
     bedrooms: LeadData?.bedrooms || [],
     city: LeadData?.city,
@@ -96,6 +95,7 @@ const EditPropertyModal = ({
     location: LeadData?.location,
     addedBy: User?.id,
     images: LeadData?.images || [],
+    documents: LeadData?.documents || [],
   });
 
   const handleBeds = (value) => {
