@@ -34,6 +34,19 @@ import {
   TbMail,
   TbUserCircle,
 } from "react-icons/tb";
+import { IoLocation } from "react-icons/io5";
+import { FaUserAlt } from "react-icons/fa";
+
+import {
+  FaUser,
+  FaPhone,
+  FaFacebookF,
+  FaInstagram,
+  FaTiktok,
+  FaSnapchat,
+  FaLinkedin,
+} from "react-icons/fa";
+import { IoIosMail, IoLogoYoutube } from "react-icons/io";
 
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
@@ -48,7 +61,35 @@ const SingleClient = ({
   client,
 }) => {
   console.log("single property data::: ", openModal);
+  console.log("single property data (client)::: ", client);
   let project = client;
+
+  const social_links = [
+    {
+      name: "linkedin",
+      icon: <FaLinkedin color="#0A66C2" size={14} />,
+    },
+    {
+      name: "facebook",
+      icon: <FaFacebookF color="#0866FF" size={14} />,
+    },
+    {
+      name: "instagram",
+      icon: <FaInstagram color="#C40FEC" size={14} />,
+    },
+    {
+      name: "tiktok",
+      icon: <FaTiktok color="#2CF5F0" size={14} />,
+    },
+    {
+      name: "snapchat",
+      icon: <FaSnapchat color="#FFFC09" size={14} />,
+    },
+    {
+      name: "youtube",
+      icon: <IoLogoYoutube color="#FE0808" size={14} />,
+    },
+  ];
   // const [loading, setloading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [listData, setListingData] = useState({});
@@ -316,17 +357,20 @@ const SingleClient = ({
                       </h1>
                     </div>
 
+                    {/* business details */}
+
                     <div
-                      className={`${
-                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#EEEEEE]"
-                      } rounded-xl w-full p-4 mb-3`}
+                      className={`rounded-xl w-full  my-3 border border-[#eeeeee] `}
                     >
-                      <div className="grid sm:grid-cols-1 md:grid-cols-2">
+                      <div
+                        className={`grid sm:grid-cols-1 md:grid-cols-2 bg-primary ${
+                          currentMode === "dark"
+                            ? "bg-[#000000]"
+                            : "bg-[#eeeeee]"
+                        } p-3  `}
+                      >
                         <div className="w-full p-1">
                           <div className="flex items-center">
-                            <div className="bg-primary rounded-lg text-white p-2 mr-2 font-semibold">
-                              {/* {project?.price} */}
-                            </div>
                             <h1
                               className={`text-lg font-bold mr-2 ${
                                 currentMode === "dark"
@@ -339,49 +383,36 @@ const SingleClient = ({
                                   : "inherit",
                               }}
                             >
-                              {project?.projectStatus}
+                              {t("business_details")}
                             </h1>
                           </div>
                         </div>
                         <div className="w-full p-1">
-                          {hasPermission("property_upload_img_doc") && (
-                            <div className="flex items-center gap-1 justify-end">
-                              {/* UPLOAD IMAGE AND DOCUMENT  */}
-
-                              {/* EDIT DETAILS  */}
-                              {hasPermission("property_update_dev_project") && (
-                                <Tooltip title="Edit Listing Details" arrow>
-                                  <IconButton
-                                    className={`rounded-full bg-btn-primary`}
-                                    onClick={handleEdit}
+                          <div className="flex items-center gap-1 justify-end space-x-2">
+                            {social_links?.map(
+                              (social) =>
+                                client[social?.name] && (
+                                  <span
+                                    className={`p-3 border rounded rounded-full ${
+                                      currentMode === "dark"
+                                        ? "border-[#fff]"
+                                        : "border-[#000]"
+                                    } cursor-pointer `}
                                   >
-                                    <BsPen size={16} color={"#FFFFFF"} />
-                                  </IconButton>
-                                </Tooltip>
-                              )}
+                                    {social?.icon}
+                                  </span>
+                                )
+                            )}
 
-                              <div className="mx-1"></div>
-
-                              {project?.tourlink && (
-                                <div className="border border-primary p-2 font-semibold rounded-md shadow-sm cursor-pointer">
-                                  <a
-                                    href={project?.tourlink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    360 view
-                                  </a>
-                                </div>
-                              )}
-                            </div>
-                          )}
+                            <div className="mx-1"></div>
+                          </div>
                         </div>
                       </div>
                       <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
                         <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
                           {/* ADDRESS  */}
                           <div className="flex space-x-3">
-                            <TbCurrentLocation
+                            <IoLocation
                               size={18}
                               className={`mr-2 ${
                                 currentMode === "dark"
@@ -389,11 +420,11 @@ const SingleClient = ({
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{project?.projectLocation} </h6>
+                            <h6>{project?.country} </h6>
                           </div>
-                          {/* Bedrooms  */}
+                          {/* no of users  */}
                           <div className="flex space-x-3">
-                            <BiBed
+                            <FaUserAlt
                               size={18}
                               className={`mr-2 ${
                                 currentMode === "dark"
@@ -401,12 +432,11 @@ const SingleClient = ({
                                   : "text-[#333333]"
                               }`}
                             />
-                            {project?.bedrooms &&
-                              project?.bedrooms?.map((bed) => <h6>{bed} </h6>)}
+                            <h6>{client?.name_of_person} </h6>
                           </div>
-                          {/* baths  */}
+                          {/* contact  */}
                           <div className="flex space-x-3">
-                            <FaMoneyBillWave
+                            <FaPhone
                               size={18}
                               className={`mr-2 ${
                                 currentMode === "dark"
@@ -414,165 +444,148 @@ const SingleClient = ({
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>
-                              {project?.price === "null" ? "-" : project?.price}
-                            </h6>
+                            <h6>{client?.contact}</h6>
+                          </div>
+                          {/* email  */}
+                          <div className="flex space-x-3">
+                            <IoIosMail
+                              size={18}
+                              className={`mr-2 ${
+                                currentMode === "dark"
+                                  ? "text-[#EEEEEE]"
+                                  : "text-[#333333]"
+                              }`}
+                            />
+                            <h6>{client?.email}</h6>
                           </div>
                         </div>
 
                         <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
                           <div className="flex items-end justify-end h-full w-full">
-                            <div className="text-right">
-                              <p className="text-sm my-2">
-                                Project added on{" "}
-                                {moment(project?.created_at).format(
+                            {client?.logo && <img srch={client?.logo} />}
+                          </div>
+                        </div>
+                        <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap--x-5 flex justify-center">
+                          {client?.documents?.length > 0 &&
+                            client?.documents?.map((l) => {
+                              return (
+                                <div key={l?.id} className="relative w-min">
+                                  <div
+                                    onClick={() => {
+                                      window.open(l?.doc_url, "_blank");
+                                    }}
+                                    className="p-2 flex items-center justify-center hover:cursor-pointer space-x-2 "
+                                  >
+                                    <a
+                                      href={l?.doc_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      <div className="w-full text-center ">
+                                        <div className="w-full flex justify-center">
+                                          <BsFileEarmarkText
+                                            size={70}
+                                            color={"#AAAAAA"}
+                                            className="hover:-mt-1 hover:mb-1"
+                                          />
+                                        </div>
+                                        <div className="my-3">
+                                          {l?.doc_name}
+                                        </div>
+                                      </div>
+                                    </a>
+                                  </div>
+                                  {hasPermission("property_delete_doc") && (
+                                    <div className="absolute top-0 -right-4 p-1 cursor-pointer">
+                                      <IconButton
+                                        className="bg-btn-primary"
+                                        onClick={() =>
+                                          handleDeleteDocument(l?.id)
+                                        }
+                                      >
+                                        {btnLoading ? (
+                                          <CircularProgress />
+                                        ) : (
+                                          <BsTrash
+                                            size={20}
+                                            color={
+                                              currentMode === "dark"
+                                                ? "#ffffff"
+                                                : "#000000"
+                                            }
+                                          />
+                                        )}
+                                      </IconButton>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* subscription details */}
+                    <div
+                      className={`rounded-xl w-full  my-3 border border-[#eeeeee] `}
+                    >
+                      <div
+                        className={`grid sm:grid-cols-1 md:grid-cols-2 bg-primary ${
+                          currentMode === "dark"
+                            ? "bg-[#000000]"
+                            : "bg-[#eeeeee]"
+                        } p-3  `}
+                      >
+                        <div className="w-full p-1">
+                          <div className="flex items-center">
+                            <h1
+                              className={`text-lg font-bold mr-2 ${
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
+                              }`}
+                              style={{
+                                fontFamily: isArabic(project?.projectName)
+                                  ? "Noto Kufi Arabic"
+                                  : "inherit",
+                              }}
+                            >
+                              {t("subscription_details")}
+                            </h1>
+                          </div>
+                        </div>
+                        <div className="w-full p-1"></div>
+                      </div>
+                      <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
+                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
+                          {/* number of users  */}
+                          <div className="flex space-x-3">
+                            <h6 className="">
+                              {t("form_account_usersList")}:{" "}
+                            </h6>
+                            <h6 className="">{project?.no_of_users} </h6>
+                          </div>
+                          {/* payment type  */}
+                          <div className="flex space-x-3">
+                            <h6>{t("payment_duration")}: </h6>
+                            <h6>{client?.payment_duration} </h6>
+                          </div>
+                        </div>
+
+                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
+                          <div className="flex items-end justify-end h-full w-full">
+                            <div className="flex space-x-3">
+                              <h6>{t("registered_on")}: </h6>
+                              <h6>
+                                {moment(client?.created_at).format(
                                   "YYYY-MM-DD HH:MM"
-                                )}
-                              </p>
-                              <p className="text-sm my-2 flex items-center">
-                                <FaUserPlus
-                                  size={16}
-                                  color={`${
-                                    currentMode === "dark"
-                                      ? "#EEEEEE"
-                                      : "#333333"
-                                  }`}
-                                  className="mr-2"
-                                />
-                                {openModal?.developer?.developerName}
-                              </p>
+                                )}{" "}
+                              </h6>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-
-                    {/* <div className="bg-primary h-0.5 w-full my-5"></div> */}
-
-                    {(project?.addedBy === User?.id ||
-                      hasPermission("seller_details") ||
-                      User.role === 1) && (
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#000000]"
-                            : "bg-[#EEEEEE]"
-                        } rounded-xl w-full p-4`}
-                      >
-                        <div className="w-full">
-                          {/* <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5"> */}
-                          <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
-                            <div
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-[#1C1C1C]"
-                                  : "bg-[#FFFFFF]"
-                              } rounded-xl shadow-sm p-4`}
-                            >
-                              <div className="w-full flex items-center pb-3">
-                                <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                                <h1
-                                  className={`text-lg font-semibold ${
-                                    currentMode === "dark"
-                                      ? "text-white"
-                                      : "text-black"
-                                  }`}
-                                >
-                                  Essential Document
-                                </h1>
-                              </div>
-
-                              <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                                {project?.documents?.map((l) => {
-                                  return l?.doc_url ? (
-                                    // <div
-                                    //   onClick={() =>
-                                    //     setSingleDocModal({
-                                    //       isOpen: true,
-                                    //       url: l?.doc_url,
-                                    //       id: l?.id,
-                                    //     })
-                                    //   }
-                                    //   className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                    //   // hover:rounded-full hover:shadow-lg
-                                    // >
-                                    //   <div className="w-full text-center ">
-                                    //     <div className="w-full flex justify-center">
-                                    //       <BsFileEarmarkText
-                                    //         size={70}
-                                    //         color={"#AAAAAA"}
-                                    //         className="hover:-mt-1 hover:mb-1"
-                                    //       />
-                                    //     </div>
-                                    //     <div className="my-3">
-                                    //       {l?.doc_name}
-                                    //     </div>
-                                    //   </div>
-                                    // </div>
-                                    <div className="relative w-min">
-                                      <div
-                                        onClick={() => {
-                                          window.open(l?.doc_url, "_blank");
-                                        }}
-                                        className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                      >
-                                        <a
-                                          href={l?.doc_url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                        >
-                                          <div className="w-full text-center">
-                                            <div className="w-full flex justify-center">
-                                              <BsFileEarmarkText
-                                                size={70}
-                                                color={"#AAAAAA"}
-                                                className="hover:-mt-1 hover:mb-1"
-                                              />
-                                            </div>
-                                            <div className="my-3">
-                                              {l?.doc_name}
-                                            </div>
-                                          </div>
-                                        </a>
-                                      </div>
-                                      {hasPermission("property_delete_doc") && (
-                                        <div className="absolute top-0 -right-4 p-1 cursor-pointer">
-                                          <IconButton
-                                            className="bg-btn-primary"
-                                            onClick={() =>
-                                              handleDeleteDocument(l?.id)
-                                            }
-                                          >
-                                            {btnLoading ? (
-                                              <CircularProgress />
-                                            ) : (
-                                              <BsTrash
-                                                size={20}
-                                                color={
-                                                  currentMode === "dark"
-                                                    ? "#ffffff"
-                                                    : "#000000"
-                                                }
-                                              />
-                                            )}
-                                          </IconButton>
-                                        </div>
-                                      )}
-                                    </div>
-                                  ) : (
-                                    <div className="py-2 text-xs italic text-primary">
-                                      No documents to show
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                              {/* )} */}
-                            </div>
-                          </div>
-                          {/* </div> */}
-                        </div>
-                      </div>
-                    )}
                   </div>
                 )}
                 {/* <Footer /> */}

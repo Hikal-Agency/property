@@ -830,5 +830,10 @@
     "form_account_custom_placeholder" : "New Account Type",
     "menu_clientsList" : "Clients",
     "project_added_on": "Project added on",
-    "bedrooms": "Bedrooms"
+    "bedrooms": "Bedrooms",
+    "business_details":"Business Details",
+    "subscription_details":"Subscription Details",
+    "payment_duration":"Payment Duration",
+    "registered_on":"Registered On"
+    
 }
