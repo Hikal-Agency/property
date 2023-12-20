@@ -708,9 +708,6 @@
     "select_sender_id": "选择发送者ID",
     "clear": "清除",
     "clear_all": "全部清除",
-
-    "new_from_here": "",
-    
     "type_liveleads": "实时通话",
     "liveleads": "实时通话",
     "update_lead_details": "更新潜在客户详情",
@@ -771,7 +768,6 @@
     "generate_report_btn": "生成报告",
     "report_month": "选择月份",
     "mark_attendance": "标记出席",
-
     "add_dev_btn": "添加开发者",
     "add_project_btn": "添加项目",
     "add_developer_modal": "添加开发者",
@@ -807,7 +803,6 @@
     "source_wechat": "WeChat",
     "source_twitter": "Twitter",
     "update_booked_deal": "更新已预订交易",
-
     "documents": "文件",
     "origin_liveleads": "现场通话线索",
     "sold": "已售",
@@ -827,10 +822,13 @@
     "form_account_type": "账户类型",
     "form_account_usersList": "用户数量",
     "menu_reshuffled_request": "重新洗牌请求",
-
     "form_account_stripe" : "Stripe（条纹）",
     "form_account_paypal" : "Paypal（贝宝）",
     "form_account_credit" : "信用卡/借记卡",
     "form_account_bank" : "银行转账",
-    "form_account_custom" : "添加自定义类型"
+    "form_account_custom" : "添加自定义类型",
+    "form_account_custom_placeholder" : "新账户类型",
+    "menu_clientsList" : "客户",
+    "project_added_on": "项目添加于",
+    "bedrooms": "卧室"
 }

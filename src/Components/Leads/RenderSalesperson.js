@@ -180,7 +180,6 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
           ],
           leadName: cellValues?.row?.leadName,
         });
-
         toast.success("Agent Updated Successfully", {
           position: "top-right",
           autoClose: 3000,
@@ -339,11 +338,12 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
               label: "---", //"---" + t("label_manager") + "---",
               value: null,
             },
-            ...(SalesPersonsList?.map((salesperson) => ({
+            ...(SalesPersonsList?.filter((person) => person?.role === 7)?.map((salesperson) => ({
               label: salesperson.userName,
               value: salesperson.id,
             })) ?? []),
           ]}
+
           placeholder={
             !SalesPerson2 ||
             SalesPerson2 === "0" ||

@@ -708,9 +708,6 @@
     "select_sender_id": "בחר זיהוי שולח",
     "clear": "נקה",
     "clear_all": "נקה הכול",
-    
-    "new_from_here": "",
-
     "type_liveleads": "שיחה חיה",
     "liveleads": "שיחה חיה",
     "update_lead_details": "עדכון פרטי ליד",
@@ -771,7 +768,6 @@
     "generate_report_btn": "יצירת דוח",
     "report_month": "בחר חודש",
     "mark_attendance": "סמן נוכחות",
-
     "add_dev_btn": "הוסף מפתח פיתוח",
     "add_project_btn": "הוסף פרויקט",
     "add_developer_modal": "הוסף מפתח פיתוח",
@@ -807,7 +803,6 @@
     "source_wechat": "WeChat",
     "source_twitter": "טוויטר",
     "update_booked_deal": "עדכון עסקה שהוזמנה",
-
     "documents": "מסמכים",
     "origin_liveleads": "לידים משיחה חיה",
     "sold": "נמכר",
@@ -827,10 +822,13 @@
     "form_account_type" : "סוג החשבון",
     "form_account_usersList" : "מספר המשתמשים",
     "menu_reshuffled_request": "בקשות לשינוי סידור",
-
     "form_account_stripe" : "Stripe",
     "form_account_paypal" : "Paypal",
     "form_account_credit" : "כרטיסי אשראי/חיוב יומיומי",
     "form_account_bank" : "העברה בנקאית",
-    "form_account_custom" : "הוסף סוג מותאם אישית"
+    "form_account_custom" : "הוסף סוג מותאם אישית",
+    "form_account_custom_placeholder" : "סוג חשבון חדש",
+    "menu_clientsList" : "לקוחות",
+    "project_added_on": "הפרויקט נוסף בתאריך",
+    "bedrooms": "חדרי שינה"
 }
