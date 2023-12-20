@@ -13,10 +13,10 @@ import {
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
 import axios from "../../axoisConfig";
-import Error404 from "../Error";
+import Error404 from "../../Pages/Error";
 import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
-import { load } from "../App";
+import { load } from "../../Pages/App";
 
 import { BiBed, BiBath } from "react-icons/bi";
 import {
@@ -28,9 +28,8 @@ import {
 } from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
 import { MdLocationPin, MdClose, Md360 } from "react-icons/md";
-import {
-  TbCurrentLocation,
-} from "react-icons/tb";import SingleImageModal from "../listings/SingleImageModal";
+import { TbCurrentLocation } from "react-icons/tb";
+import SingleImageModal from "../listings/SingleImageModal";
 import SingleDocModal from "../listings/SingleDocModal";
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
@@ -241,7 +240,7 @@ const SinglePropertyModal = ({
     setView360Modal({ open: true, project: data });
   };
 
-  // TRANSLATED BEDS 
+  // TRANSLATED BEDS
   const getBedLabel = (bedValue, t) => {
     const options = enquiry_options(t);
     const option = options.find((option) => option.value === bedValue);
@@ -348,9 +347,7 @@ const SinglePropertyModal = ({
                           <div className="border-2 border-primary rounded-md p-2 mr-2 font-semibold">
                             {project?.projectStatus}
                           </div>
-                          <h1
-                            className={`text-base`}
-                          >
+                          <h1 className={`text-base`}>
                             {project?.price === "null" ? "-" : project?.price}
                           </h1>
                         </div>
@@ -452,22 +449,22 @@ const SinglePropertyModal = ({
                               )}
 
                               {project?.tourlink !== null &&
-                              project?.tourlink !== "" &&
-                              project?.tourlink !== "undefined" &&
-                              project?.tourlink !== "null" && (
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleView360Modal(project)
-                                  }}
-                                  className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
-                                >
-                                  <Md360 size={16} />
-                                  <span className="text-sm uppercase">
-                                    {t("360_view")}
-                                  </span>
-                                </button>
-                              )}
+                                project?.tourlink !== "" &&
+                                project?.tourlink !== "undefined" &&
+                                project?.tourlink !== "null" && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleView360Modal(project);
+                                    }}
+                                    className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
+                                  >
+                                    <Md360 size={16} />
+                                    <span className="text-sm uppercase">
+                                      {t("360_view")}
+                                    </span>
+                                  </button>
+                                )}
                             </div>
                           </div>
                         )}
@@ -488,7 +485,7 @@ const SinglePropertyModal = ({
                             }`}
                           />
                           <h6 className="flex flex-wrap">
-                            {project?.projectLocation} 
+                            {project?.projectLocation}
                           </h6>
                         </div>
                         {/* Bedrooms  */}
@@ -503,14 +500,15 @@ const SinglePropertyModal = ({
                           />
                           <div className="flex flex-wrap gap-2">
                             {project?.bedrooms &&
-                            project?.bedrooms !== null &&
-                            project?.bedrooms.length > 0 &&
-                            project?.bedrooms?.map((bed, index) => (
-                              <div key={index}>
-                                {getBedLabel(bed, t)}
-                                {(project?.bedrooms.length - 1) !== index && ","}
-                              </div>
-                            ))}
+                              project?.bedrooms !== null &&
+                              project?.bedrooms.length > 0 &&
+                              project?.bedrooms?.map((bed, index) => (
+                                <div key={index}>
+                                  {getBedLabel(bed, t)}
+                                  {project?.bedrooms.length - 1 !== index &&
+                                    ","}
+                                </div>
+                              ))}
                           </div>
                         </div>
                       </div>
@@ -526,9 +524,7 @@ const SinglePropertyModal = ({
                               <FaUserPlus
                                 size={16}
                                 color={`${
-                                  currentMode === "dark"
-                                    ? "#EEEEEE"
-                                    : "#333333"
+                                  currentMode === "dark" ? "#EEEEEE" : "#333333"
                                 }`}
                                 className="mr-2"
                               />
@@ -579,18 +575,14 @@ const SinglePropertyModal = ({
                     {/* ESSENTIAL DOCUMENTS  */}
                     <div
                       className={`${
-                        currentMode === "dark"
-                          ? "bg-[#000000]"
-                          : "bg-[#EEEEEE]"
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#EEEEEE]"
                       } rounded-xl shadow-sm p-4`}
                     >
                       <div className="w-full flex items-center pb-3">
                         <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
                         <h1
                           className={`text-lg font-semibold ${
-                            currentMode === "dark"
-                              ? "text-white"
-                              : "text-black"
+                            currentMode === "dark" ? "text-white" : "text-black"
                           }`}
                         >
                           {t("documents")}
@@ -645,9 +637,7 @@ const SinglePropertyModal = ({
                                           className="hover:-mt-1 hover:mb-1"
                                         />
                                       </div>
-                                      <div className="my-3">
-                                        {l?.doc_name}
-                                      </div>
+                                      <div className="my-3">{l?.doc_name}</div>
                                     </div>
                                   </a>
                                 </div>
@@ -745,7 +735,7 @@ const SinglePropertyModal = ({
                     }
                   />
                 )}
-                
+
                 {view360Modal?.open && (
                   <View360Modal
                     view360Modal={view360Modal}
