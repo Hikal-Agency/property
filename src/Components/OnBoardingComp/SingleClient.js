@@ -394,13 +394,17 @@ const SingleClient = ({
                               (social) =>
                                 client[social?.name] && (
                                   <span
+                                    key={social?.name}
                                     className={`p-3 border rounded rounded-full ${
                                       currentMode === "dark"
                                         ? "border-[#fff]"
                                         : "border-[#000]"
                                     } cursor-pointer `}
                                     onClick={() =>
-                                      navigate(`${client[social?.name]}`)
+                                      window.open(
+                                        client[social?.name],
+                                        "_blank"
+                                      )
                                     }
                                   >
                                     {social?.icon}
