@@ -473,16 +473,19 @@ const SingleClient = ({
                             {client?.logo && <img srch={client?.logo} />}
                           </div>
                         </div>
-                        <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap--x-5 flex justify-center">
+                        <div className="flex">
                           {client?.documents?.length > 0 &&
                             client?.documents?.map((l) => {
                               return (
-                                <div key={l?.id} className="relative w-min">
+                                <div
+                                  key={l?.id}
+                                  className="relative w-min mr-4 "
+                                >
                                   <div
                                     onClick={() => {
                                       window.open(l?.doc_url, "_blank");
                                     }}
-                                    className="p-2 flex items-center justify-center hover:cursor-pointer space-x-2 "
+                                    className="p-2  flex items-center justify-center hover:cursor-pointer space-x-5 "
                                   >
                                     <a
                                       href={l?.doc_url}
@@ -497,7 +500,7 @@ const SingleClient = ({
                                             className="hover:-mt-1 hover:mb-1"
                                           />
                                         </div>
-                                        <div className="my-3">
+                                        <div className="my-3 ">
                                           {l?.doc_name}
                                         </div>
                                       </div>
