@@ -26,7 +26,7 @@ import {
   BsFileEarmarkText,
   BsTrash,
 } from "react-icons/bs";
-import { FaUserPlus } from "react-icons/fa";
+import { FaUserPlus, FaPen } from "react-icons/fa";
 import { MdLocationPin, MdClose } from "react-icons/md";
 import {
   TbCurrentLocation,
@@ -50,6 +50,7 @@ import { IoIosMail, IoLogoYoutube } from "react-icons/io";
 
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
+import EditClient from "./EditClient";
 
 const SingleClient = ({
   ListingData,
@@ -63,7 +64,6 @@ const SingleClient = ({
   console.log("single property data::: ", openModal);
   console.log("single property data (client)::: ", client);
   let project = client;
-  const navigate = useNavigate();
 
   const social_links = [
     {
@@ -341,21 +341,34 @@ const SingleClient = ({
                   <Error404 />
                 ) : (
                   <div className="w-full">
-                    <div className="w-full flex items-center pb-3">
-                      <h1
-                        className={`text-lg font-semibold ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        } bg-primary py-2 px-5`}
-                      >
-                        {client?.account_type || "-"}
-                      </h1>
-                      <h1
-                        className={`text-lg font-semibold ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        } ml-2`}
-                      >
-                        {client?.bussiness_name || "-"}
-                      </h1>
+                    <div className="w-full flex justify-between items-center pb-3">
+                      <div className="flex items-center">
+                        <h1
+                          className={`text-lg font-semibold ${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          } bg-primary py-2 px-5`}
+                        >
+                          {client?.account_type || "-"}
+                        </h1>
+                        <h1
+                          className={`text-lg font-semibold ${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          } ml-2`}
+                        >
+                          {client?.bussiness_name || "-"}
+                        </h1>
+                      </div>
+                      <div className="bg-primary rounded-full p-1">
+                        <IconButton onClick={() => setOpenEdit(true)}>
+                          <FaPen
+                            className={`${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-dark"
+                            }`}
+                          />
+                        </IconButton>
+                      </div>
                     </div>
 
                     {/* business details */}
@@ -603,6 +616,13 @@ const SingleClient = ({
               </>
             )}
           </div>
+          {openEdit && (
+            <EditClient
+              openEdit={openEdit}
+              setOpenEdit={setOpenEdit}
+              client={client}
+            />
+          )}
         </div>
       </Modal>
       {/* </div> */}
