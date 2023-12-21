@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Tooltip,
   IconButton,
@@ -63,6 +63,7 @@ const SingleClient = ({
   console.log("single property data::: ", openModal);
   console.log("single property data (client)::: ", client);
   let project = client;
+  const navigate = useNavigate();
 
   const social_links = [
     {
@@ -393,11 +394,18 @@ const SingleClient = ({
                               (social) =>
                                 client[social?.name] && (
                                   <span
+                                    key={social?.name}
                                     className={`p-3 border rounded rounded-full ${
                                       currentMode === "dark"
                                         ? "border-[#fff]"
                                         : "border-[#000]"
                                     } cursor-pointer `}
+                                    onClick={() =>
+                                      window.open(
+                                        client[social?.name],
+                                        "_blank"
+                                      )
+                                    }
                                   >
                                     {social?.icon}
                                   </span>
