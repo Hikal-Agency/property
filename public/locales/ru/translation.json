@@ -834,5 +834,10 @@
     "feedback_switched_off": "Выключено",
     "feedback_callback": "Обратный вызов",
     "feedback_follow_up_long_term": "Долгосрочное последующее обслуживание",
-    "feedback_follow_up_short_term": "Краткосрочное последующее обслуживание"
+    "feedback_follow_up_short_term": "Краткосрочное последующее обслуживание",
+    "business_details": "Детали бизнеса",
+    "subscription_details": "Детали подписки",
+    "payment_duration": "Длительность оплаты",
+    "registered_on": "Зарегистрирован",
+    "update_client": "Обновить клиента"
 }

@@ -835,5 +835,10 @@
     "feedback_switched_off": "बंद",
     "feedback_callback": "कॉलबैक",
     "feedback_follow_up_long_term": "लॉन्ग टर्म फॉलो अप",
-    "feedback_follow_up_short_term": "शॉर्ट टर्म फॉलो अप"
+    "feedback_follow_up_short_term": "शॉर्ट टर्म फॉलो अप",
+    "business_details": "व्यापार विवरण",
+    "subscription_details": "सदस्यता विवरण",
+    "payment_duration": "भुगतान अवधि",
+    "registered_on": "पर नोंदणी किया गया",
+    "update_client": "अद्यतन ग्राहक"
 }

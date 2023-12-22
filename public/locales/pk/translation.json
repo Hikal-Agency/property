@@ -834,5 +834,10 @@
     "feedback_switched_off": "بند ہے",
     "feedback_callback": "کیل بیک",
     "feedback_follow_up_long_term": "طویل مدت پر مدد",
-    "feedback_follow_up_short_term": "شارٹ ٹرم پر مدد"
+    "feedback_follow_up_short_term": "شارٹ ٹرم پر مدد",
+    "business_details": "کاروبار کی تفصیلات",
+    "subscription_details": "سبسکرپشن کی تفصیلات",
+    "payment_duration": "ادائیگی کی مدت",
+    "registered_on": "پر رجسٹر ہوا",
+    "update_client": "کلائنٹ کو اپ ڈیٹ کریں"
 }

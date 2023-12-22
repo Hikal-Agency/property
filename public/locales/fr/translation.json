@@ -834,5 +834,10 @@
     "feedback_switched_off": "Éteint",
     "feedback_callback": "Rappel",
     "feedback_follow_up_long_term": "Suivi (à long terme)",
-    "feedback_follow_up_short_term": "Suivi (à court terme)"    
+    "feedback_follow_up_short_term": "Suivi (à court terme)",
+    "business_details": "Détails de l'entreprise",
+    "subscription_details": "Détails de l'abonnement",
+    "payment_duration": "Durée de paiement",
+    "registered_on": "Enregistré le",
+    "update_client": "Mettre à jour le client"
 }

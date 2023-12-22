@@ -834,5 +834,10 @@
     "feedback_switched_off": "已关闭",
     "feedback_callback": "回拨",
     "feedback_follow_up_long_term": "后续跟进（长期）",
-    "feedback_follow_up_short_term": "后续跟进（短期）"
+    "feedback_follow_up_short_term": "后续跟进（短期）",
+    "business_details": "业务详情",
+    "subscription_details": "订阅详情",
+    "payment_duration": "支付时长",
+    "registered_on": "注册时间",
+    "update_client": "更新客户"
 }

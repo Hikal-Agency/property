@@ -834,5 +834,10 @@
     "feedback_switched_off": "متوقف",
     "feedback_callback": "استدعاء مرة أخرى",
     "feedback_follow_up_long_term": "متابعة (طويلة الأمد)",
-    "feedback_follow_up_short_term": "متابعة (قصيرة الأمد)"
+    "feedback_follow_up_short_term": "متابعة (قصيرة الأمد)",
+    "business_details": "تفاصيل العمل",
+    "subscription_details": "تفاصيل الاشتراك",
+    "payment_duration": "مدة الدفع",
+    "registered_on": "مسجل في",
+    "update_client": "تحديث العميل"
 }
