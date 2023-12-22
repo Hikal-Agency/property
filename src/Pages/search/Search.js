@@ -95,8 +95,16 @@ const leadTypes = (t) => [
     label: t("feedback_new"),
   },
   { 
-    id: "follow up",
-    label: t("feedback_follow_up") 
+    id: "callback",
+    label: t("feedback_callback"),
+  },
+  { 
+    id: "follow up (short term)", 
+    label: t("feedback_follow_up_short_term") 
+  },
+  { 
+    id: "follow up (long term)", 
+    label: t("feedback_follow_up_long_term") 
   },
   { 
     id: "meeting",
@@ -119,17 +127,21 @@ const leadTypes = (t) => [
     label: t("feedback_no_answer") 
   },
   { 
+    value: "switched off", 
+    label: t("feedback_switched_off") 
+  },
+  { 
     id: "unreachable", 
     label: t("feedback_unreachable") 
   },
-  // { 
-  //   id: "wrong number", 
-  //   label: t("feedback_wrong_number")
-  // },
-  // { 
-  //   id: "duplicate", 
-  //   label: t("feedback_duplicate") 
-  // },
+  { 
+    id: "wrong number", 
+    label: t("feedback_wrong_number")
+  },
+  { 
+    id: "duplicate", 
+    label: t("feedback_duplicate") 
+  },
   { 
     id: "dead",
     label: t("feedback_dead") 
@@ -808,11 +820,29 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Meeting`;
-      } else if (leadTypeSelected?.id === "follow up") {
+      } 
+      else if (leadTypeSelected?.id === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up`;
-      } else if (leadTypeSelected?.id === "low budget") {
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Callback`;
+      } 
+      // FOLLOW UP 
+      else if (leadTypeSelected?.id === "follow up (short term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up (Short Term)`;
+      } 
+      else if (leadTypeSelected?.id === "follow up (long term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up (Long Term)`;
+      } 
+      // else if (leadTypeSelected?.id === "follow up") {
+      //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+      //     pageState.page
+      //   }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up`;
+      // } 
+      else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Low Budget`;
@@ -850,11 +880,29 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Meeting`;
-      } else if (leadTypeSelected?.id === "follow up") {
+      } 
+      else if (leadTypeSelected?.id === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Follow Up`;
-      } else if (leadTypeSelected?.id === "low budget") {
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Callback`;
+      } 
+      // FOLLOW UP 
+      else if (leadTypeSelected?.id === "follow up (short term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Follow Up (Short Term)`;
+      }
+      else if (leadTypeSelected?.id === "follow up (long term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Follow Up (Long Term)`;
+      }
+      // else if (leadTypeSelected?.id === "follow up") {
+      //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+      //     pageState.page
+      //   }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Follow Up`;
+      // } 
+      else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Low Budget`;
@@ -904,11 +952,29 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Meeting`;
-      } else if (leadTypeSelected?.id === "follow up") {
+      } 
+      else if (leadTypeSelected?.id === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Follow Up`;
-      } else if (leadTypeSelected?.id === "low budget") {
+        }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Callback`;
+      } 
+      // FOLLOW UP 
+      else if (leadTypeSelected?.id === "follow up (short term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Follow Up (Short Term)`;
+      }
+      else if (leadTypeSelected?.id === "follow up (long term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Follow Up (Long Term)`;
+      }
+      // else if (leadTypeSelected?.id === "follow up") {
+      //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+      //     pageState.page
+      //   }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Follow Up`;
+      // } 
+      else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Low Budget`;
@@ -946,11 +1012,29 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Meeting`;
-      } else if (leadTypeSelected?.id === "follow up") {
+      } 
+      else if (leadTypeSelected?.id === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Follow Up`;
-      } else if (leadTypeSelected?.id === "low budget") {
+        }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Callback`;
+      } 
+      // FOLLOW UP 
+      else if (leadTypeSelected?.id === "follow up (short term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Follow Up (Short Term)`;
+      }
+      else if (leadTypeSelected?.id === "follow up (long term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Follow Up (Long Term)`;
+      }
+      // else if (leadTypeSelected?.id === "follow up") {
+      //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+      //     pageState.page
+      //   }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Follow Up`;
+      // }
+      else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Low Budget`;
@@ -988,11 +1072,29 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Meeting`;
-      } else if (leadTypeSelected?.id === "follow up") {
+      } 
+      else if (leadTypeSelected?.id === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Follow Up`;
-      } else if (leadTypeSelected?.id === "low budget") {
+        }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Callback`;
+      } 
+      // FOLLOW UP
+      else if (leadTypeSelected?.id === "follow up (short term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Follow Up (Short Term)`;
+      } 
+      else if (leadTypeSelected?.id === "follow up (long term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Follow Up (Long Term)`;
+      }  
+      // else if (leadTypeSelected?.id === "follow up") {
+      //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+      //     pageState.page
+      //   }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Follow Up`;
+      // } 
+      else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Low Budget`;
@@ -1030,11 +1132,29 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Meeting`;
-      } else if (leadTypeSelected?.id === "follow up") {
+      } 
+      else if (leadTypeSelected?.id === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Follow Up`;
-      } else if (leadTypeSelected?.id === "low budget") {
+        }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Callback`;
+      } 
+      // FOLLOW UP 
+      else if (leadTypeSelected?.id === "follow up (short term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Follow Up (Short Term)`;
+      } 
+      else if (leadTypeSelected?.id === "follow up (long term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Follow Up (Long Term)`;
+      }
+      // else if (leadTypeSelected?.id === "follow up") {
+      //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+      //     pageState.page
+      //   }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Follow Up`;
+      // } 
+      else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Low Budget`;
@@ -1082,13 +1202,37 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Meeting`;
-      } else if (leadTypeSelected?.id === "follow up") {
+      } 
+      else if (leadTypeSelected?.id === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${
           pageState.perpage || 14
-        }&unassigned=1&coldCall=0&feedback=Follow Up`;
-      } else if (leadTypeSelected?.id === "low budget") {
+        }&unassigned=1&coldCall=0&feedback=Callback`;
+      } 
+      // FOLLOW UP
+      else if (leadTypeSelected?.id === "follow up (short term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${
+          pageState.perpage || 14
+        }&unassigned=1&coldCall=0&feedback=Follow Up (Short Term)`;
+      } 
+      else if (leadTypeSelected?.id === "follow up (long term)") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${
+          pageState.perpage || 14
+        }&unassigned=1&coldCall=0&feedback=Follow Up (Long Term)`;
+      }
+      // else if (leadTypeSelected?.id === "follow up") {
+      //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+      //     pageState.page
+      //   }&perpage=${
+      //     pageState.perpage || 14
+      //   }&unassigned=1&coldCall=0&feedback=Follow Up`;
+      // } 
+      else if (leadTypeSelected?.id === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${
@@ -1737,7 +1881,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
 
           {/* FEEDBACK  */}
           <Box className="m-1" sx={{ minWidth: "100px" }}>
-            <Select
+            {/* <Select
               id="leadType"
               options={leadTypes(t).map((type) => ({
                 value: type.id,
@@ -1749,6 +1893,26 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 label: leadTypeSelected?.label || "All",
               }}
               onChange={({value: selectedOption}) => {
+                searchRef.current.querySelector("input").value = "";
+                setLeadTypeSelected(
+                  leadTypes(t).find((type) => type.id === selectedOption)
+                );
+              }}
+              className="w-full"
+              menuPortalTarget={document.body}
+              styles={selectBgStyles(currentMode, primaryColor, blurDarkColor, blurLightColor)}
+            /> */}
+            <Select
+              id="leadType"
+              options={leadTypes(t).map((type) => ({
+                value: type.id,
+                label: type.label,
+              }))}
+              value={{
+                value: leadTypeSelected?.id || "all",
+                label: leadTypeSelected?.label || t("feedback_all"),
+              }}
+              onChange={({ value: selectedOption }) => {
                 searchRef.current.querySelector("input").value = "";
                 setLeadTypeSelected(
                   leadTypes(t).find((type) => type.id === selectedOption)
