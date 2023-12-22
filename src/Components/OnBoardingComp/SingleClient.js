@@ -57,13 +57,13 @@ const SingleClient = ({
   setOpenModal,
   openModal,
   FetchProperty,
-  loading,
-  setloading,
   client,
 }) => {
   console.log("single property data::: ", openModal);
   console.log("single property data (client)::: ", client);
-  let project = client;
+  const [singleClient, setSingleClient] = useState(client);
+
+  const [loading, setloading] = useState(false);
 
   const social_links = [
     {
@@ -151,9 +151,6 @@ const SingleClient = ({
     //   });
     // }, 1000);
   };
-  // const { lid } = useParams();
-  const lid = project?.id;
-  console.log("lid ===================", lid);
 
   const openDoc = (open, url) => {
     window.open(url, "__blank");
@@ -162,53 +159,53 @@ const SingleClient = ({
   let lat = "";
   let long = "";
 
-  const handleDeleteDocument = async (id) => {
-    setBtnLoading(true);
-    try {
-      const token = localStorage.getItem("auth-token");
-      const deleteDoc = await axios.delete(
-        `${BACKEND_URL}/destroy/documents/${project?.id}`,
-        {
-          params: {
-            document_id: id,
-          },
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+  //   const handleDeleteDocument = async (id) => {
+  //     setBtnLoading(true);
+  //     try {
+  //       const token = localStorage.getItem("auth-token");
+  //       const deleteDoc = await axios.delete(
+  //         `${BACKEND_URL}/destroy/documents/${project?.id}`,
+  //         {
+  //           params: {
+  //             document_id: id,
+  //           },
+  //           headers: {
+  //             Authorization: "Bearer " + token,
+  //           },
+  //         }
+  //       );
 
-      toast.success("Document deleted successfully.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+  //       toast.success("Document deleted successfully.", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
 
-      setBtnLoading(false);
-      handleClose();
-      FetchProperty();
-    } catch (error) {
-      setBtnLoading(false);
-      console.log("Error", error);
+  //       setBtnLoading(false);
+  //       handleClose();
+  //       FetchProperty();
+  //     } catch (error) {
+  //       setBtnLoading(false);
+  //       console.log("Error", error);
 
-      toast.error("Something went wrong!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-  const fetchSingleListing = async () => {
+  //       toast.error("Something went wrong!", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     }
+  //   };
+  const fetchSingleClient = async () => {
     try {
       setloading(true);
       const token = localStorage.getItem("auth-token");
@@ -250,26 +247,6 @@ const SingleClient = ({
     }
     // fetchSingleListing(lid);
   }, []);
-
-  const mapContainerStyle = {
-    width: "100%",
-    height: "100%",
-  };
-
-  const options = {
-    disableDefaultUI: true,
-    zoomControl: true,
-    mapTypeControl: true,
-  };
-
-  const latLongString = project?.latLong;
-  if (latLongString) {
-    const [latValue, longValue] = latLongString.split(",");
-    lat = latValue;
-    long = longValue;
-  }
-
-  console.log("maps: ", load);
 
   const style = {
     transform: "translate(0%, 0%)",
@@ -348,14 +325,14 @@ const SingleClient = ({
                             currentMode === "dark" ? "text-white" : "text-black"
                           } bg-primary py-2 px-5`}
                         >
-                          {client?.account_type || "-"}
+                          {singleClient?.account_type || "-"}
                         </h1>
                         <h1
                           className={`text-lg font-semibold ${
                             currentMode === "dark" ? "text-white" : "text-black"
                           } ml-2`}
                         >
-                          {client?.bussiness_name || "-"}
+                          {singleClient?.bussiness_name || "-"}
                         </h1>
                       </div>
                       <div className="bg-primary rounded-full p-1">
@@ -392,7 +369,9 @@ const SingleClient = ({
                                   : "text-black"
                               }`}
                               style={{
-                                fontFamily: isArabic(project?.projectName)
+                                fontFamily: isArabic(
+                                  singleClient?.bussiness_name
+                                )
                                   ? "Noto Kufi Arabic"
                                   : "inherit",
                               }}
@@ -405,7 +384,7 @@ const SingleClient = ({
                           <div className="flex items-center gap-1 justify-end space-x-2">
                             {social_links?.map(
                               (social) =>
-                                client[social?.name] && (
+                                singleClient[social?.name] && (
                                   <span
                                     key={social?.name}
                                     className={`p-3 border rounded rounded-full ${
@@ -415,7 +394,7 @@ const SingleClient = ({
                                     } cursor-pointer `}
                                     onClick={() =>
                                       window.open(
-                                        client[social?.name],
+                                        singleClient[social?.name],
                                         "_blank"
                                       )
                                     }
@@ -441,7 +420,7 @@ const SingleClient = ({
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{project?.country} </h6>
+                            <h6>{singleClient?.country} </h6>
                           </div>
                           {/* no of users  */}
                           <div className="flex space-x-3">
@@ -453,7 +432,7 @@ const SingleClient = ({
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{client?.name_of_person} </h6>
+                            <h6>{singleClient?.name_of_person} </h6>
                           </div>
                           {/* contact  */}
                           <div className="flex space-x-3">
@@ -465,7 +444,7 @@ const SingleClient = ({
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{client?.contact}</h6>
+                            <h6>{singleClient?.contact}</h6>
                           </div>
                           {/* email  */}
                           <div className="flex space-x-3">
@@ -477,18 +456,20 @@ const SingleClient = ({
                                   : "text-[#333333]"
                               }`}
                             />
-                            <h6>{client?.email}</h6>
+                            <h6>{singleClient?.email}</h6>
                           </div>
                         </div>
 
                         <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
                           <div className="flex items-end justify-end h-full w-full">
-                            {client?.logo && <img srch={client?.logo} />}
+                            {singleClient?.logo && (
+                              <img src={singleClient?.logo} />
+                            )}
                           </div>
                         </div>
                         <div className="flex">
-                          {client?.documents?.length > 0 &&
-                            client?.documents?.map((l) => {
+                          {singleClient?.documents?.length > 0 &&
+                            singleClient?.documents?.map((l) => {
                               return (
                                 <div
                                   key={l?.id}
@@ -569,7 +550,9 @@ const SingleClient = ({
                                   : "text-black"
                               }`}
                               style={{
-                                fontFamily: isArabic(project?.projectName)
+                                fontFamily: isArabic(
+                                  singleClient?.bussiness_name
+                                )
                                   ? "Noto Kufi Arabic"
                                   : "inherit",
                               }}
@@ -587,12 +570,12 @@ const SingleClient = ({
                             <h6 className="">
                               {t("form_account_usersList")}:{" "}
                             </h6>
-                            <h6 className="">{project?.no_of_users} </h6>
+                            <h6 className="">{singleClient?.no_of_users} </h6>
                           </div>
                           {/* payment type  */}
                           <div className="flex space-x-3">
                             <h6>{t("payment_duration")}: </h6>
-                            <h6>{client?.payment_duration} </h6>
+                            <h6>{singleClient?.payment_duration} </h6>
                           </div>
                         </div>
 
@@ -601,7 +584,7 @@ const SingleClient = ({
                             <div className="flex space-x-3">
                               <h6>{t("registered_on")}: </h6>
                               <h6>
-                                {moment(client?.created_at).format(
+                                {moment(singleClient?.created_at).format(
                                   "YYYY-MM-DD HH:MM"
                                 )}{" "}
                               </h6>
@@ -621,6 +604,10 @@ const SingleClient = ({
               openEdit={openEdit}
               setOpenEdit={setOpenEdit}
               client={client}
+              loading={loading}
+              setloading={setloading}
+              singleClient={singleClient}
+              setSingleClient={setSingleClient}
             />
           )}
         </div>

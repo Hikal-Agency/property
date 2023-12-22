@@ -21,7 +21,13 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
+import {
+  FaStripe,
+  FaPaypal,
+  FaUniversity,
+  FaCreditCard,
+  FaWallet,
+} from "react-icons/fa";
 
 import axios from "../../axoisConfig";
 import Error404 from "../../Pages/Error";
@@ -62,15 +68,17 @@ import { IoIosMail, IoLogoYoutube } from "react-icons/io";
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { CountryDropdown } from "react-country-region-selector";
+import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
 
 const EditClient = ({
-  ListingData,
   setOpenEdit,
   openEdit,
   FetchProperty,
   loading,
   setloading,
   client,
+  singleClient,
+  setSingleClient,
 }) => {
   console.log("single property data::: ", openEdit);
   console.log("single property data (client)::: ", client);
@@ -328,35 +336,6 @@ const EditClient = ({
     }
   };
 
-  useEffect(() => {
-    setopenBackDrop(false);
-    if (allDocs?.length > 0 || allImages?.length > 0) {
-      handleClose();
-      FetchProperty();
-    }
-    // fetchSingleListing(lid);
-  }, []);
-
-  const mapContainerStyle = {
-    width: "100%",
-    height: "100%",
-  };
-
-  const options = {
-    disableDefaultUI: true,
-    zoomControl: true,
-    mapTypeControl: true,
-  };
-
-  const latLongString = project?.latLong;
-  if (latLongString) {
-    const [latValue, longValue] = latLongString.split(",");
-    lat = latValue;
-    long = longValue;
-  }
-
-  console.log("maps: ", load);
-
   const style = {
     transform: "translate(0%, 0%)",
     boxShadow: 24,
@@ -442,7 +421,7 @@ const EditClient = ({
 
     try {
       const submitOnBoard = await axios.post(
-        `${BACKEND_URL}/onboarding/store`,
+        `${BACKEND_URL}/onboarding/${client?.id}`,
         Board,
         {
           headers: {
@@ -452,9 +431,10 @@ const EditClient = ({
         }
       );
 
-      console.log("Client request submitted: ", submitOnBoard);
+      console.log("Client Updated : ", submitOnBoard);
+      setSingleClient(submitOnBoard?.data?.data);
 
-      toast.success("Registeration Successfull.", {
+      toast.success("Client Updated.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -924,22 +904,6 @@ const EditClient = ({
                                   })
                                 }
                               />
-
-                              <FormControlLabel
-                                onChange={(e) =>
-                                  setBoardData({
-                                    ...onBoardData,
-                                    terms_and_conditions: e.target.checked,
-                                  })
-                                }
-                                control={
-                                  <Checkbox
-                                    checked={onBoardData?.terms_and_conditions}
-                                    defaultChecked
-                                  />
-                                }
-                                label="Terms And Condition"
-                              />
                             </div>
                             <div className="px-4">
                               <FormControl>
@@ -1000,7 +964,7 @@ const EditClient = ({
                               className="text-white"
                             />
                           ) : (
-                            <span>{t("create")}</span>
+                            <span>{t("update_client")}</span>
                           )}
                         </Button>
                       ) : (

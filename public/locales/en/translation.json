@@ -834,6 +834,7 @@
     "business_details":"Business Details",
     "subscription_details":"Subscription Details",
     "payment_duration":"Payment Duration",
-    "registered_on":"Registered On"
+    "registered_on":"Registered On",
+    "update_client":"Update Client"
     
 }
