@@ -830,5 +830,9 @@
     "form_account_custom_placeholder" : "نیا اکاؤنٹ ٹائپ",
     "menu_clientsList": "کلائنٹس",
     "project_added_on": "پروجیکٹ شامل ہوئی",
-    "bedrooms": "کمرے"
+    "bedrooms": "کمرے",
+    "feedback_switched_off": "بند ہے",
+    "feedback_callback": "کیل بیک",
+    "feedback_follow_up_long_term": "طویل مدت پر مدد",
+    "feedback_follow_up_short_term": "شارٹ ٹرم پر مدد"
 }

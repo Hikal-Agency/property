@@ -830,5 +830,9 @@
     "form_account_custom_placeholder" : "Nouveau type de compte",
     "menu_clientsList" : "Clients CRM",
     "project_added_on": "Projet ajouté le",
-    "bedrooms": "Chambres"  
+    "bedrooms": "Chambres",
+    "feedback_switched_off": "Éteint",
+    "feedback_callback": "Rappel",
+    "feedback_follow_up_long_term": "Suivi (à long terme)",
+    "feedback_follow_up_short_term": "Suivi (à court terme)"    
 }

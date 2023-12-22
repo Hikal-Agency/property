@@ -830,5 +830,9 @@
     "form_account_custom_placeholder" : "סוג חשבון חדש",
     "menu_clientsList" : "לקוחות",
     "project_added_on": "הפרויקט נוסף בתאריך",
-    "bedrooms": "חדרי שינה"
+    "bedrooms": "חדרי שינה",
+    "feedback_switched_off": "כבוי",
+    "feedback_callback": "קול בחזרה",
+    "feedback_follow_up_long_term": "מעקב (טווח ארוך)",
+    "feedback_follow_up_short_term": "מעקב (טווח קצר)"
 }

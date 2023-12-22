@@ -831,5 +831,9 @@
     "form_account_custom_placeholder" : "नया खाता प्रकार",
     "menu_clientsList": "क्लाइंट्स",
     "project_added_on": "परियोजना में जोड़ा गया",
-    "bedrooms": "बेडरूम"
+    "bedrooms": "बेडरूम",
+    "feedback_switched_off": "बंद",
+    "feedback_callback": "कॉलबैक",
+    "feedback_follow_up_long_term": "लॉन्ग टर्म फॉलो अप",
+    "feedback_follow_up_short_term": "शॉर्ट टर्म फॉलो अप"
 }

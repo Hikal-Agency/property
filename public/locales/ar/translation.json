@@ -830,5 +830,9 @@
     "form_account_custom_placeholder" : "نوع الحساب الجديد",
     "menu_clientsList" : "العملاء",
     "project_added_on": "تمت إضافة المشروع في",
-    "bedrooms": "غرف نوم"
+    "bedrooms": "غرف نوم",
+    "feedback_switched_off": "متوقف",
+    "feedback_callback": "استدعاء مرة أخرى",
+    "feedback_follow_up_long_term": "متابعة (طويلة الأمد)",
+    "feedback_follow_up_short_term": "متابعة (قصيرة الأمد)"
 }

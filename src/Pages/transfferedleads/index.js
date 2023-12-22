@@ -6,6 +6,7 @@ import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
 import TransferTabs from "./TransferTabs";
 import { Box } from "@mui/material";
+import { lead_category } from "../../Components/_elements/SelectOptions";
 
 const TransferredLeads = (props) => {
   const navigate = useNavigate();
@@ -21,40 +22,40 @@ const TransferredLeads = (props) => {
     darkModeColors,
   } = useStateContext();
 
-  const leadTypes = [
-    {
-      name: "Fresh Leads",
-      value: "freshleads",
-    },
-    {
-      name: "Third Party",
-      value: "thirdpartyleads",
-    },
-    {
-      name: "Archived",
-      value: "archive",
-    },
-    {
-      name: "Personal",
-      value: "personalleads",
-    },
-    {
-      name: "Cold",
-      value: "coldleads",
-    },
-    {
-      name: "Secondary",
-      value: "buyers",
-    },
-    {
-      name: "Live",
-      value: "liveleads",
-    },
-  ];
+  // const leadTypes = [
+  //   {
+  //     name: "Fresh Leads",
+  //     value: "freshleads",
+  //   },
+  //   {
+  //     name: "Third Party",
+  //     value: "thirdpartyleads",
+  //   },
+  //   {
+  //     name: "Archived",
+  //     value: "archive",
+  //   },
+  //   {
+  //     name: "Personal",
+  //     value: "personalleads",
+  //   },
+  //   {
+  //     name: "Cold",
+  //     value: "coldleads",
+  //   },
+  //   {
+  //     name: "Secondary",
+  //     value: "buyers",
+  //   },
+  //   {
+  //     name: "Live",
+  //     value: "liveleads",
+  //   },
+  // ];
 
-  const [value, setValue] = useState(leadTypes[0]?.value);
+  const [value, setValue] = useState(lead_category(t)[0]?.value);
   const handleChange = (event, newValue) => {
-    console.log("NEw tab value:: ", newValue);
+    console.log("New tab value:: ", newValue);
     setValue(newValue);
   };
 
@@ -115,7 +116,7 @@ const TransferredLeads = (props) => {
                   }`}
                 >
                   <TransferTabs
-                    leadTypes={leadTypes}
+                    leadTypes={lead_category(t)}
                     value={value}
                     setValue={setValue}
                     handleChange={handleChange}

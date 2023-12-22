@@ -830,5 +830,9 @@
     "form_account_custom_placeholder" : "新账户类型",
     "menu_clientsList" : "客户",
     "project_added_on": "项目添加于",
-    "bedrooms": "卧室"
+    "bedrooms": "卧室",
+    "feedback_switched_off": "已关闭",
+    "feedback_callback": "回拨",
+    "feedback_follow_up_long_term": "后续跟进（长期）",
+    "feedback_follow_up_short_term": "后续跟进（短期）"
 }

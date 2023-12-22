@@ -831,10 +831,13 @@
     "menu_clientsList" : "Clients",
     "project_added_on": "Project added on",
     "bedrooms": "Bedrooms",
+    "feedback_switched_off": "Switched Off",
+    "feedback_callback": "Callback",
+    "feedback_follow_up_long_term": "Follow Up (Long Term)",
+    "feedback_follow_up_short_term": "Follow Up (Short Term)",
     "business_details":"Business Details",
     "subscription_details":"Subscription Details",
     "payment_duration":"Payment Duration",
     "registered_on":"Registered On",
     "update_client":"Update Client"
-    
 }

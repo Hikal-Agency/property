@@ -775,11 +775,30 @@ const Sidebarmui = () => {
               link: "/freshleads/new",
             },
             {
-              name: t("feedback_follow_up"),
+              name: t("feedback_callback"),
               pro: false,
-              count: sidebarData?.HotLeadsCount?.follow_up,
-              link: "/freshleads/follow up",
+              count: sidebarData?.HotLeadsCount?.callback,
+              link: "/freshleads/callback",
             },
+            // FOLLOW UP 
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.follow_up_short,
+              link: "/freshleads/follow up short term",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.follow_up_long,
+              link: "/freshleads/follow up long term",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.HotLeadsCount?.follow_up,
+            //   link: "/freshleads/follow up",
+            // },
             {
               name: t("feedback_meeting"),
               pro: false,
@@ -805,11 +824,17 @@ const Sidebarmui = () => {
               link: "/freshleads/not interested",
             },
             {
-              name: t("feedback_unreachable"),
+              name: t("feedback_switched_off"),
               pro: false,
-              count: sidebarData?.HotLeadsCount?.unreachable,
-              link: "/freshleads/unreachable",
+              count: sidebarData?.HotLeadsCount?.switched_off,
+              link: "/freshleads/switched off",
             },
+            // {
+            //   name: t("feedback_unreachable"),
+            //   pro: false,
+            //   count: sidebarData?.HotLeadsCount?.unreachable,
+            //   link: "/freshleads/unreachable",
+            // },
           ],
         },
         // THIRD PARTY
@@ -831,11 +856,30 @@ const Sidebarmui = () => {
               link: "/thirdpartyleads/new",
             },
             {
-              name: t("feedback_follow_up"),
+              name: t("feedback_callback"),
               pro: false,
-              count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
-              link: "/thirdpartyleads/follow up",
+              count: sidebarData?.ThirdPartyLeadsCount?.callback,
+              link: "/thirdpartyleads/callback",
             },
+            // FOLLOW UP
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.follow_up_short,
+              link: "/thirdpartyleads/follow up short term",
+            },
+            {
+              name: t("feedback_follow_up_long"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.follow_up_long,
+              link: "/thirdpartyleads/follow up long term",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
+            //   link: "/thirdpartyleads/follow up",
+            // },
             {
               name: t("feedback_meeting"),
               pro: false,
@@ -859,6 +903,12 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
               link: "/thirdpartyleads/not interested",
+            },
+            {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.switched_off,
+              link: "/thirdpartyleads/switched off",
             },
             {
               name: t("feedback_unreachable"),
@@ -917,11 +967,30 @@ const Sidebarmui = () => {
               link: "/coldleads/new",
             },
             {
-              name: t("feedback_follow_up"),
+              name: t("feedback_callback"),
               pro: false,
-              count: sidebarData?.ColdLeadsCount?.follow_up,
-              link: "/coldleads/follow up",
+              count: sidebarData?.ColdLeadsCount?.callback,
+              link: "/coldleads/callback",
             },
+            // FOLLOW UP 
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.follow_up_short,
+              link: "/coldleads/follow up short term",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.follow_up_long,
+              link: "/coldleads/follow up long term",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.ColdLeadsCount?.follow_up,
+            //   link: "/coldleads/follow up",
+            // },
             {
               name: t("feedback_meeting"),
               pro: false,
@@ -947,69 +1016,18 @@ const Sidebarmui = () => {
               link: "/coldleads/not interested",
             },
             {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.switched_off,
+              link: "/coldleads/switched off",
+            },
+            {
               name: t("feedback_unreachable"),
               pro: false,
               count: sidebarData?.ColdLeadsCount?.unreachable,
               link: "/coldleads/unreachable",
             },
           ],
-        },
-        // RESHUFFLED
-        {
-          name: t("menu_reshuffled"),
-          icon: <BsShuffle size={16} />,
-          pro: false,
-          link: "/reshuffleleads",
-          // submenu: [
-          //   {
-          //     name: t("feedback_all"),
-          //     pro: false,
-          //     count: sidebarData?.ReshuffleLeadsCount?.all,
-          //     link: "/reshuffleleads/all",
-          //   },
-          //   {
-          //     name: t("feedback_new"),
-          //     pro: false,
-          //     count: sidebarData?.ReshuffleLeadsCount?.new,
-          //     link: "/reshuffleleads/new",
-          //   },
-          //   {
-          //     name: t("feedback_follow_up"),
-          //     pro: false,
-          //     count: sidebarData?.ReshuffleLeadsCount?.follow_up,
-          //     link: "/reshuffleleads/follow up",
-          //   },
-          //   {
-          //     name: t("feedback_meeting"),
-          //     pro: false,
-          //     count: sidebarData?.ReshuffleLeadsCount?.Meeting,
-          //     link: "/reshuffleleads/meeting",
-          //   },
-          //   {
-          //     name: t("feedback_low_budget"),
-          //     pro: false,
-          //     count: sidebarData?.ReshuffleLeadsCount?.low_budget,
-          //     link: "/reshuffleleads/low budget",
-          //   },
-          //   {
-          //     name: t("feedback_no_answer"),
-          //     pro: false,
-          //     count: sidebarData?.ReshuffleLeadsCount?.no_answer,
-          //     link: "/reshuffleleads/no answer",
-          //   },
-          //   {
-          //     name: t("feedback_not_interested"),
-          //     pro: false,
-          //     count: sidebarData?.ReshuffleLeadsCount?.not_interested,
-          //     link: "/reshuffleleads/not interested",
-          //   },
-          //   {
-          //     name: t("feedback_unreachable"),
-          //     pro: false,
-          //     count: sidebarData?.ReshuffleLeadsCount?.unreachable,
-          //     link: "/reshuffleleads/unreachable",
-          //   },
-          // ],
         },
         // ARCHIVED
         {
@@ -1030,11 +1048,30 @@ const Sidebarmui = () => {
               link: "/archive/new",
             },
             {
-              name: t("feedback_follow_up"),
+              name: t("feedback_callback"),
               pro: false,
-              count: sidebarData?.WarmLeadCount?.follow_up,
-              link: "/archive/follow up",
+              count: sidebarData?.WarmLeadCount?.callback,
+              link: "/archive/callback",
             },
+            // FOLLOW UP 
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.follow_up_short,
+              link: "/archive/follow up short term",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.follow_up_long,
+              link: "/archive/follow up long term",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.WarmLeadCount?.follow_up,
+            //   link: "/archive/follow up",
+            // },
             {
               name: t("feedback_meeting"),
               pro: false,
@@ -1058,6 +1095,12 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.WarmLeadCount?.not_interested,
               link: "/archive/not interested",
+            },
+            {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.switched_off,
+              link: "/archive/switched off",
             },
             {
               name: t("feedback_unreachable"),
@@ -1086,11 +1129,30 @@ const Sidebarmui = () => {
               link: "/personalleads/new",
             },
             {
-              name: t("feedback_follow_up"),
+              name: t("feedback_callback"),
               pro: false,
-              count: sidebarData?.PersonalLeadsCount?.follow_up,
-              link: "/personalleads/follow up",
+              count: sidebarData?.PersonalLeadsCount?.callback,
+              link: "/personalleads/callback",
             },
+            // FOLLOW UP 
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.follow_up_short,
+              link: "/personalleads/follow up short term",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.follow_up_long,
+              link: "/personalleads/follow up long term",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.PersonalLeadsCount?.follow_up,
+            //   link: "/personalleads/follow up",
+            // },
             {
               name: t("feedback_meeting"),
               pro: false,
@@ -1114,6 +1176,12 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.PersonalLeadsCount?.not_interested,
               link: "/personalleads/not interested",
+            },
+            {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.switched_off,
+              link: "/personalleads/switched off",
             },
             {
               name: t("feedback_unreachable"),
@@ -1142,11 +1210,30 @@ const Sidebarmui = () => {
               link: "/liveleads/new",
             },
             {
-              name: t("feedback_follow_up"),
+              name: t("feedback_callback"),
               pro: false,
-              count: sidebarData?.LiveCallCount?.follow_up,
-              link: "/liveleads/follow up",
+              count: sidebarData?.LiveCallCount?.callback,
+              link: "/liveleads/callback",
             },
+            // FOLLOW UP 
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.follow_up_short,
+              link: "/liveleads/follow up short term",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.follow_up_long,
+              link: "/liveleads/follow up long term",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.LiveCallCount?.follow_up,
+            //   link: "/liveleads/follow up",
+            // },
             {
               name: t("feedback_meeting"),
               pro: false,
@@ -1172,12 +1259,25 @@ const Sidebarmui = () => {
               link: "/freshleads/not interested",
             },
             {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.switched_off,
+              link: "/freshleads/switched off",
+            },
+            {
               name: t("feedback_unreachable"),
               pro: false,
               count: sidebarData?.LiveCallCount?.unreachable,
               link: "/freshleads/unreachable",
             },
           ],
+        },
+        // RESHUFFLED
+        {
+          name: t("menu_reshuffled"),
+          icon: <BsShuffle size={16} />,
+          pro: false,
+          link: "/reshuffleleads",
         },
         // NOTES
         {

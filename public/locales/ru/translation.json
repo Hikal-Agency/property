@@ -830,5 +830,9 @@
     "form_account_custom_placeholder" : "Новый тип учетной записи",
     "menu_clientsList": "Клиенты",
     "project_added_on": "Проект добавлен",
-    "bedrooms": "Спальни"
+    "bedrooms": "Спальни",
+    "feedback_switched_off": "Выключено",
+    "feedback_callback": "Обратный вызов",
+    "feedback_follow_up_long_term": "Долгосрочное последующее обслуживание",
+    "feedback_follow_up_short_term": "Краткосрочное последующее обслуживание"
 }
