@@ -1,5 +1,5 @@
 import { Card } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import {
   FaUser,
@@ -13,10 +13,16 @@ import {
 import { IoIosMail, IoLogoYoutube } from "react-icons/io";
 import { ImUsers } from "react-icons/im";
 import moment from "moment";
+import SingleClient from "./SingleClient";
 
-const ClientsListComp = ({ client }) => {
+const ClientsListComp = ({ client, fetchCrmClients }) => {
   console.log("clients in child comp: ", client);
   const { currentMode } = useStateContext();
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(client);
+  };
 
   const social_links = [
     {
@@ -51,7 +57,8 @@ const ClientsListComp = ({ client }) => {
         sx={{
           background: "none",
         }}
-        className="border-t-0 border-r-2 border-l-2 border-b-2 mb-3"
+        className="border-t-0 border-r-2 border-l-2 border-b-2 mb-3 cursor-pointer"
+        onClick={handleOpenModal}
       >
         <div
           className="flex justify-between space-x-2 items-center"
@@ -246,6 +253,14 @@ const ClientsListComp = ({ client }) => {
           </div>
         </div>
       </Card>
+      {openModal && (
+        <SingleClient
+          client={client}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          fetchCrmClients={fetchCrmClients}
+        />
+      )}
     </>
   );
 };

@@ -97,7 +97,11 @@ const ClientsList = () => {
               {clientsList?.length > 0 ? (
                 <>
                   {clientsList?.map((client) => (
-                    <ClientsListComp isLoading={loading} client={client} />
+                    <ClientsListComp
+                      isLoading={loading}
+                      client={client}
+                      fetchCrmClients={fetchCrmClients}
+                    />
                   ))}
                   <Stack spacing={2} marginTop={2}>
                     <Pagination

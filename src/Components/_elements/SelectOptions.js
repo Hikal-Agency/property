@@ -2,6 +2,38 @@ import React from "react";
 
 import { TbFlag3Filled } from "react-icons/tb";
 
+// LEAD CATEGORY 
+export const lead_category = (t) => [
+  {
+    name: t("menu_fresh"),
+    value: "freshleads",
+  },
+  {
+    name: t("menu_thirdparty"),
+    value: "thirdpartyleads",
+  },
+  {
+    name: t("menu_live_call"),
+    value: "liveleads",
+  },
+  {
+    name: t("cold"),
+    value: "coldleads",
+  },
+  {
+    name: t("menu_archived"),
+    value: "archive",
+  },
+  {
+    name: t("menu_personal"),
+    value: "personalleads",
+  },
+  {
+    name: t("menu_secondary"),
+    value: "buyers",
+  },
+];
+
 // FEEDBACK 
 export const feedback_options = (t) => [
   {
@@ -9,8 +41,16 @@ export const feedback_options = (t) => [
     label: t("feedback_new"),
   },
   { 
-    value: "Follow Up", 
-    label: t("feedback_follow_up") 
+    value: "Callback", 
+    label: t("feedback_callback") 
+  },
+  { 
+    value: "Follow Up (Short Term)", 
+    label: t("feedback_follow_up_short_term") 
+  },
+  { 
+    value: "Follow Up (Long Term)", 
+    label: t("feedback_follow_up_long_term") 
   },
   { 
     value: "Meeting", 
@@ -33,6 +73,10 @@ export const feedback_options = (t) => [
     label: t("feedback_no_answer") 
   },
   { 
+    value: "Switched Off", 
+    label: t("feedback_switched_off") 
+  },
+  { 
     value: "Unreachable", 
     label: t("feedback_unreachable") 
   },
@@ -44,10 +88,10 @@ export const feedback_options = (t) => [
     value: "Duplicate", 
     label: t("feedback_duplicate") 
   },
-  { 
-    value: "Dead", 
-    label: t("feedback_dead") 
-  },
+  // { 
+  //   value: "Dead", 
+  //   label: t("feedback_dead") 
+  // },
 ];
 
 // LEAD CATEGORY 

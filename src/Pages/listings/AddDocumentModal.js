@@ -154,8 +154,18 @@ const AddDocumentModal = ({
           {allDocs?.map((preview) => {
             return (
               <div className="flex items-center mb-1">
-                <HiOutlineDocument />
-                <p className="ml-1">{preview?.name}</p>
+                <HiOutlineDocument
+                  className={`ml-1 ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }`}
+                />
+                <p
+                  className={`ml-1 ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }`}
+                >
+                  {preview?.name}
+                </p>
               </div>
             );
           })}
