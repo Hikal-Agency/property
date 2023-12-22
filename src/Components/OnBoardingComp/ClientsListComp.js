@@ -15,7 +15,7 @@ import { ImUsers } from "react-icons/im";
 import moment from "moment";
 import SingleClient from "./SingleClient";
 
-const ClientsListComp = ({ client }) => {
+const ClientsListComp = ({ client, fetchCrmClients }) => {
   console.log("clients in child comp: ", client);
   const { currentMode } = useStateContext();
   const [openModal, setOpenModal] = useState(false);
@@ -258,6 +258,7 @@ const ClientsListComp = ({ client }) => {
           client={client}
           openModal={openModal}
           setOpenModal={setOpenModal}
+          fetchCrmClients={fetchCrmClients}
         />
       )}
     </>

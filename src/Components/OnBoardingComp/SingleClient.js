@@ -56,7 +56,7 @@ const SingleClient = ({
   ListingData,
   setOpenModal,
   openModal,
-  FetchProperty,
+  fetchCrmClients,
   client,
 }) => {
   console.log("single property data::: ", openModal);
@@ -574,6 +574,7 @@ const SingleClient = ({
               setloading={setloading}
               singleClient={singleClient}
               setSingleClient={setSingleClient}
+              fetchCrmClients={fetchCrmClients}
             />
           )}
         </div>

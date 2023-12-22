@@ -79,9 +79,9 @@ const EditClient = ({
   client,
   singleClient,
   setSingleClient,
+  fetchCrmClients,
 }) => {
-  console.log("single property data::: ", openEdit);
-  console.log("single property data (client)::: ", client);
+  console.log("edit property data (client)::: ", client);
   let project = client;
   const navigate = useNavigate();
   const [onBoardData, setBoardData] = useState({
@@ -92,11 +92,12 @@ const EditClient = ({
     email: client?.email,
     logo: client?.logo,
     documents: client?.documents || [],
-    account_type: client?.account_type,
+    account_type: client?.account_type || null,
     no_of_users: client?.no_of_users,
     payment_duration: client?.payment_duration || "monthly",
     terms_and_conditions: true,
   });
+
   const imagesInputRef = useRef(null);
   const [showTextInput, setShowTextInput] = useState(false);
   const [customAccountType, setCustomAccountType] = useState("");
@@ -433,6 +434,7 @@ const EditClient = ({
 
       console.log("Client Updated : ", submitOnBoard);
       setSingleClient(submitOnBoard?.data?.data);
+      fetchCrmClients();
 
       toast.success("Client Updated.", {
         position: "top-right",
@@ -763,12 +765,22 @@ const EditClient = ({
                                 variant="outlined"
                                 name={social?.name}
                                 size="small"
-                                value={onBoardData[social?.name]}
+                                value={
+                                  //   client[social?.name] ||
+                                  //   onBoardData[social?.name]
+                                  onBoardData[client[social?.name]]
+                                }
+                                // onChange={(e) =>
+                                //   setBoardData({
+                                //     ...onBoardData,
+                                //     [social?.name]: e.target.value,
+                                //   })
+                                // }
                                 onChange={(e) =>
-                                  setBoardData({
-                                    ...onBoardData,
+                                  setBoardData((prevData) => ({
+                                    ...prevData,
                                     [social?.name]: e.target.value,
-                                  })
+                                  }))
                                 }
                                 InputProps={{
                                   startAdornment: (
@@ -829,23 +841,34 @@ const EditClient = ({
                                     marginBottom: "1.25rem !important",
                                   },
                                 }}
-                                value={onBoardData?.account_type}
-                                onChange={(e) =>
+                                value={onBoardData?.account_type || ""}
+                                onChange={(e) => {
+                                  console.log(
+                                    "print on changes:: ",
+                                    e.target.value
+                                  );
                                   setBoardData({
                                     ...onBoardData,
                                     account_type: e.target.value,
-                                  })
-                                }
+                                  });
+                                }}
                                 displayEmpty
                                 select
                                 required
                               >
-                                {accountTypes.map((type) => (
-                                  <MenuItem key={type.value} value={type.value}>
-                                    {type.icon}
-                                    {type.label}
+                                {accountTypes?.map((type) => (
+                                  <MenuItem
+                                    key={type?.value}
+                                    value={type?.value}
+                                  >
+                                    {type?.icon}
+                                    {type?.label}
                                   </MenuItem>
                                 ))}
+
+                                <MenuItem value={onBoardData?.account_type}>
+                                  {onBoardData?.account_type}
+                                </MenuItem>
                                 {!showTextInput && (
                                   <MenuItem>
                                     <span
