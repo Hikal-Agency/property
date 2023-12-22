@@ -159,83 +159,50 @@ const SingleClient = ({
   let lat = "";
   let long = "";
 
-  //   const handleDeleteDocument = async (id) => {
-  //     setBtnLoading(true);
-  //     try {
-  //       const token = localStorage.getItem("auth-token");
-  //       const deleteDoc = await axios.delete(
-  //         `${BACKEND_URL}/destroy/documents/${project?.id}`,
-  //         {
-  //           params: {
-  //             document_id: id,
-  //           },
-  //           headers: {
-  //             Authorization: "Bearer " + token,
-  //           },
-  //         }
-  //       );
-
-  //       toast.success("Document deleted successfully.", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-
-  //       setBtnLoading(false);
-  //       handleClose();
-  //       FetchProperty();
-  //     } catch (error) {
-  //       setBtnLoading(false);
-  //       console.log("Error", error);
-
-  //       toast.error("Something went wrong!", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     }
-  //   };
-  const fetchSingleClient = async () => {
+  const handleDeleteDocument = async (id) => {
+    setBtnLoading(true);
     try {
-      setloading(true);
       const token = localStorage.getItem("auth-token");
-      const listing = await axios.get(`${BACKEND_URL}/projects/${lid}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
+      const data = new FormData();
+      data.append("onboarding_id[0]", id);
+      const deleteDoc = await axios.delete(
+        `${BACKEND_URL}/onboarding/documents/${singleClient?.id}`,
+        {
+          params: data,
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success("Document deleted successfully.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
 
-      console.log("SINGLE Listings: ", listing);
-      setListingData(listing?.data?.data?.data[0]);
-      setloading(false);
+      setBtnLoading(false);
+      handleClose();
+      FetchProperty();
     } catch (error) {
-      setloading(false);
+      setBtnLoading(false);
       console.log("Error", error);
-      if (error?.response?.status === 404) {
-        setLeadNotFound(true);
-      } else {
-        toast.error("Something went wrong!", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -500,29 +467,28 @@ const SingleClient = ({
                                       </div>
                                     </a>
                                   </div>
-                                  {hasPermission("property_delete_doc") && (
-                                    <div className="absolute top-0 -right-4 p-1 cursor-pointer">
-                                      <IconButton
-                                        className="bg-btn-primary"
-                                        onClick={() =>
-                                          handleDeleteDocument(l?.id)
-                                        }
-                                      >
-                                        {btnLoading ? (
-                                          <CircularProgress />
-                                        ) : (
-                                          <BsTrash
-                                            size={20}
-                                            color={
-                                              currentMode === "dark"
-                                                ? "#ffffff"
-                                                : "#000000"
-                                            }
-                                          />
-                                        )}
-                                      </IconButton>
-                                    </div>
-                                  )}
+                                  <div className="absolute top-0 -right-4 p-1 cursor-pointer">
+                                    <IconButton
+                                      className="bg-btn-primary"
+                                      onClick={() =>
+                                        handleDeleteDocument(l?.id)
+                                      }
+                                      disabled={loading}
+                                    >
+                                      {btnLoading ? (
+                                        <CircularProgress />
+                                      ) : (
+                                        <BsTrash
+                                          size={20}
+                                          color={
+                                            currentMode === "dark"
+                                              ? "#ffffff"
+                                              : "#000000"
+                                          }
+                                        />
+                                      )}
+                                    </IconButton>
+                                  </div>
                                 </div>
                               );
                             })}
