@@ -1618,11 +1618,6 @@ const AllLeads = ({
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    FetchLeads(token);
-  }, [unassignedFeedback]);
-
-  useEffect(() => {
     setopenBackDrop(false);
     // eslint-disable-next-line
   }, [lead_type]);
@@ -1704,7 +1699,7 @@ const AllLeads = ({
       selectedProject === "All" ? null : selectedProject,
       selectedSource === "All" ? null : selectedSource
     );
-  }, [selectedProject, selectedSource]);
+  }, [selectedProject, selectedSource, unassignedFeedback]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
