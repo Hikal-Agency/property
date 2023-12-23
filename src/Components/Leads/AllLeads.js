@@ -1654,7 +1654,8 @@ const AllLeads = ({
       const leadProjects = data[0].data?.data?.query_result
         ?.filter((proj) => proj?.project)
         ?.map((proj) => ({ label: proj?.project, value: proj?.project }));
-      const leadSources = data[1].data?.data?.query_result;
+      const leadSources = data[1].data?.data?.query_result?.filter((source) => source?.leadSource)
+        ?.map((source) => ({ label: source?.leadSource, value: source?.leadSource }));
 
       if (
         typeof leadSources === "object" &&
