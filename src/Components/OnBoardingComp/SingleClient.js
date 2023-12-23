@@ -430,9 +430,13 @@ const SingleClient = ({
                         </div>
 
                         <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
-                          <div className="flex items-end justify-end h-full w-full">
-                            {singleClient?.logo && (
-                              <img src={singleClient?.logo} />
+                          <div className="flex items-end justify-end h-min w-full rounded-md">
+                            {singleClient?.logo_url && (
+                              <img
+                                src={singleClient?.logo_url}
+                                width="150px"
+                                className="rounded-md"
+                              />
                             )}
                           </div>
                         </div>

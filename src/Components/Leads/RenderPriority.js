@@ -58,6 +58,7 @@ const RenderPriority = ({ cellValues }) => {
   };
 
   console.log("Priority: ", Priority);
+  console.log("CellValues priority:::::: ", cellValues?.row?.priority);
 
   const ChangePriority = (e) => {
     setnewPriority(e.value);
