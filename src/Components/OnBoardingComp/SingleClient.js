@@ -359,13 +359,7 @@ const SingleClient = ({
                                         ? "border-[#fff]"
                                         : "border-[#000]"
                                     } cursor-pointer `}
-                                    onClick={() =>
-                                      window.open(
-                                        singleClient[social?.name],
-                                        "_blank"
-                                      )
-                                    }
-                                  >
+                                                                      >
                                     {social?.icon}
                                   </span>
                                 )
