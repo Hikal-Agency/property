@@ -190,7 +190,6 @@ const SingleClient = ({
 
       setBtnLoading(false);
       handleClose();
-      //   FetchProperty();
     } catch (error) {
       setBtnLoading(false);
       console.log("Error", error);
@@ -212,7 +211,6 @@ const SingleClient = ({
     setopenBackDrop(false);
     if (allDocs?.length > 0 || allImages?.length > 0) {
       handleClose();
-      //   FetchProperty();
     }
     // fetchSingleListing(lid);
   }, []);
