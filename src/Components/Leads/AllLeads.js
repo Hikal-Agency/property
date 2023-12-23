@@ -32,11 +32,7 @@ import { langs } from "../../langCodes";
 import AddReminder from "../reminder/AddReminder";
 import AddMeetLink from "../liveleads/AddMeetLink";
 import Timeline from "../../Pages/timeline";
-import {
-  pageStyles,
-  selectBgStyles,
-  selectStyles,
-} from "../_elements/SelectStyles";
+import { pageStyles, selectBgStyles } from "../_elements/SelectStyles";
 import { feedback_options } from "../_elements/SelectOptions";
 
 import {
@@ -48,12 +44,7 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 
-import { FaSnapchatGhost, FaUser } from "react-icons/fa";
-import {
-  BsShuffle,
-  BsTrash,
-  BsAlarm,
-} from "react-icons/bs";
+import { BsShuffle, BsTrash, BsAlarm } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
 import { RiMailSendLine } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
@@ -88,6 +79,8 @@ const AllLeads = ({
   const [error, setError] = useState(false);
   const { hasPermission } = usePermission();
   console.log("LeadType::", lead_type);
+  const [projectOptions, setProjectOptions] = useState([]);
+  const [sourceOptions, setSourceOptions] = useState([]);
 
   const [selectedRows, setSelectedRows] = useState([]);
   const [bulkUpdateModelOpen, setBulkUpdateModelOpen] = useState(false);
@@ -95,6 +88,7 @@ const AllLeads = ({
   const [unassignedFeedback, setUnassignedFeedback] = useState("All");
   const [bulkDeleteClicked, setBulkDeleteClicked] = useState(false);
   const [bulkImportModelOpen, setBulkImportModelOpen] = useState(false);
+
   // const [searchTerm, setSearchTerm] = useState("");
   const searchRef = useRef();
   const selectionModelRef = useRef([]);
@@ -137,20 +131,20 @@ const AllLeads = ({
   // eslint-disable-next-line
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
-  const [sortByVal, setSortByVal] = useState("");
 
   //View LEAD MODAL VARIABLES
   const [LeadModelOpen, setLeadModelOpen] = useState(false);
   const handleLeadModelOpen = () => setLeadModelOpen(true);
   const handleLeadModelClose = () => setLeadModelOpen(false);
 
+  const [selectedSource, setSelectedSource] = useState("All");
+  const [selectedProject, setSelectedProject] = useState("All");
+
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
   const [AddReminderModelOpen, setAddReminderModelOpen] = useState(false);
   const [AddMeetLinkModelOpen, setAddMeetLinkModelOpen] = useState(false);
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
-
-  const [singleLeadSliderOpen, setSingleLeadSliderOpen] = useState(false);
 
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
   const handleUpdateLeadModelClose = () => {
@@ -1640,12 +1634,68 @@ const AllLeads = ({
     }
   }, [pageState.page, pageState.perpage, lead_type, reloadDataGrid]);
 
-  const excludedColumns = [
-    "assignedToManager",
-    "assignedToSales",
-    "feedback",
-    "priority",
-  ];
+  const fetchUnassFreshFilters = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      const data = await Promise.all([
+        axios.get(`${BACKEND_URL}/lead-projects?unassigned=1&coldCall=0`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        axios.get(`${BACKEND_URL}/totalSource?unassigned=1&coldCall=0`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      ]);
+      const leadProjects = data[0].data?.data?.query_result
+        ?.filter((proj) => proj?.project)
+        ?.map((proj) => ({ label: proj?.project, value: proj?.project }));
+      const leadSources = data[1].data?.data?.query_result;
+
+      if (
+        typeof leadSources === "object" &&
+        !Array.isArray(leadSources) &&
+        leadSources !== null &&
+        Object.values(leadSources)?.length === 0
+      ) {
+        setSourceOptions([]);
+      } else {
+        setSourceOptions(leadSources);
+      }
+
+      setProjectOptions(leadProjects || []);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (lead_origin === "unassigned" && lead_type === "fresh") {
+      fetchUnassFreshFilters();
+    }
+  }, []);
+
+  useEffect(() => {
+    FetchLeads(
+      localStorage.getItem("auth-token"),
+      selectedProject === "All" ? null : selectedProject,
+      selectedSource === "All" ? null : selectedSource
+    );
+  }, [selectedProject, selectedSource]);
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
@@ -2119,16 +2169,17 @@ const AllLeads = ({
   return (
     <>
       <div className="pb-10 mb-10">
-        {hasPermission("coldcallfiles") && (lead_origin === "coldleads" ||
-          (lead_origin === "unassigned" && lead_type === "coldleads")) && (
-          <ColdcallFiles
-            pageState={pageState}
-            setpageState={setpageState}
-            leadCategory={leadCategory}
-            bulkImportRef={bulkImportRef}
-            lead_type={lead_type}
-          />
-        )}
+        {hasPermission("coldcallfiles") &&
+          (lead_origin === "coldleads" ||
+            (lead_origin === "unassigned" && lead_type === "coldleads")) && (
+            <ColdcallFiles
+              pageState={pageState}
+              setpageState={setpageState}
+              leadCategory={leadCategory}
+              bulkImportRef={bulkImportRef}
+              lead_type={lead_type}
+            />
+          )}
         {lead_origin === "unassigned" && lead_type === "fresh" && (
           <Box
             sx={{
@@ -2144,9 +2195,81 @@ const AllLeads = ({
                 width: "max-content",
               },
             }}
-            className={"items-center"}
+            className={"flex items-center"}
           >
+            <div></div>
             <div className="flex items-end justify-end mb-2">
+              <div className="w-fit mr-2">
+                <Box
+                  sx={{
+                    width: "150px",
+                    minWidth: "100px",
+                    maxWidth: "200px",
+                  }}
+                >
+                  <Select
+                    id="project"
+                    options={[
+                      {
+                        value: "All",
+                        label: `${t("all")} ${" "} ${t("project")}`,
+                      },
+                      ...projectOptions,
+                    ]}
+                    value={projectOptions?.find(
+                      (option) => option?.label === selectedProject
+                    )}
+                    onChange={(event) => {
+                      setSelectedProject(event.value);
+                    }}
+                    placeholder={t("project")}
+                    className={`w-full mr-2`}
+                    menuPortalTarget={document.body}
+                    styles={selectBgStyles(
+                      currentMode,
+                      primaryColor,
+                      blurDarkColor,
+                      blurLightColor
+                    )}
+                  />
+                </Box>
+              </div>
+              <div className="w-fit mr-2">
+                <Box
+                  sx={{
+                    width: "150px",
+                    minWidth: "100px",
+                    maxWidth: "200px",
+                  }}
+                >
+                  <Select
+                    id="source"
+                    options={[
+                      {
+                        value: "All",
+                        label: `${t("all")} ${" "} ${t("label_source")}`,
+                      },
+                      ...sourceOptions,
+                    ]}
+                    value={sourceOptions?.find(
+                      (option) => option.value === selectedSource
+                    )}
+                    // value={unassignedFeedback}
+                    onChange={(event) => {
+                      setSelectedSource(event.value);
+                    }}
+                    placeholder={t("label_source")}
+                    className={`w-full mr-2`}
+                    menuPortalTarget={document.body}
+                    styles={selectBgStyles(
+                      currentMode,
+                      primaryColor,
+                      blurDarkColor,
+                      blurLightColor
+                    )}
+                  />
+                </Box>
+              </div>
               <div className="w-fit flex justify-end">
                 <Box
                   sx={{
