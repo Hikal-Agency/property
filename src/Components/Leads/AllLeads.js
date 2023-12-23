@@ -409,7 +409,11 @@ const AllLeads = ({
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
-        <RenderFeedback className="renderDD" cellValues={cellValues} />
+        <RenderFeedback 
+        className="renderDD" 
+        cellValues={cellValues}
+        lead_origin={lead_origin} 
+        />
       ),
       // onFeedbackClick={handleFeedbackClick}
     },
@@ -421,7 +425,11 @@ const AllLeads = ({
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
-        <RenderPriority className="renderDD" cellValues={cellValues} />
+        <RenderPriority 
+        className="renderDD" 
+        cellValues={cellValues} 
+        lead_origin={lead_origin} 
+        />
       ),
     },
     {
