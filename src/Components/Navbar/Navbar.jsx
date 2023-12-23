@@ -667,12 +667,11 @@ const Navbar = () => {
                   </div>
 
                   {/* LOGIN HISTORY  */}
-                  <div
+                  {/* <div
                     className={`cursor-pointer card-hover ${
                       currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
                     } mb-3 p-3 rounded-xl shadow-sm w-full`}
                   >
-                    {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
                     <div className="flex items-center justify-start">
                       <div
                         className={`${
@@ -705,8 +704,7 @@ const Navbar = () => {
                         </div>
                       </div>
                     </div>
-                    {/* </Link> */}
-                  </div>
+                  </div> */}
 
                   {/* CHANGE PASSWORD  */}
                   <div
