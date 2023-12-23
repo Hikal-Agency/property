@@ -40,7 +40,7 @@ const RenderPriority = ({ cellValues }) => {
     primaryColor,
   } = useStateContext();
 
-  const [selectedPriority, setSelectedPriority] = useState(Priority);
+  const [selectedPriority, setSelectedPriority] = useState(cellValues?.row?.priority);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -58,6 +58,7 @@ const RenderPriority = ({ cellValues }) => {
   };
 
   console.log("Priority: ", Priority);
+  console.log("CellValues priority:::::: ", cellValues?.row?.priority);
 
   const ChangePriority = (e) => {
     setnewPriority(e.value);
@@ -162,7 +163,8 @@ const RenderPriority = ({ cellValues }) => {
   };
 
   const getFlagIcon = () => {
-    if (!Priority) {
+    console.log("PRIORITY ============================ ", cellValues?.row?.priority);
+    if (!cellValues?.row?.priority) {
       return <TbFlag3 size={20} className="text-[#AAAAAA]" />;
     } else {
       return (
@@ -208,9 +210,9 @@ const RenderPriority = ({ cellValues }) => {
         placeholder={getFlagIcon()}
         className={`w-full h-full`}
         isSearchable={false}
-        components={{
-          Option: customOptions,
-        }}
+        // components={{
+        //   Option: customOptions,
+        // }}
         menuPortalTarget={document.body}
         styles={{
           ...renderStyles(currentMode, primaryColor),

@@ -163,12 +163,14 @@ const SingleClient = ({
     setBtnLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
-      const data = new FormData();
-      data.append("onboarding_id[0]", id);
-      const deleteDoc = await axios.delete(
+      const data = {
+        documnet_id: id,
+      };
+
+      const deleteDoc = await axios.post(
         `${BACKEND_URL}/onboarding/documents/${singleClient?.id}`,
+        data,
         {
-          params: data,
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -188,7 +190,6 @@ const SingleClient = ({
 
       setBtnLoading(false);
       handleClose();
-      FetchProperty();
     } catch (error) {
       setBtnLoading(false);
       console.log("Error", error);
@@ -210,7 +211,6 @@ const SingleClient = ({
     setopenBackDrop(false);
     if (allDocs?.length > 0 || allImages?.length > 0) {
       handleClose();
-      FetchProperty();
     }
     // fetchSingleListing(lid);
   }, []);
@@ -428,9 +428,13 @@ const SingleClient = ({
                         </div>
 
                         <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
-                          <div className="flex items-end justify-end h-full w-full">
-                            {singleClient?.logo && (
-                              <img src={singleClient?.logo} />
+                          <div className="flex items-end justify-end h-min w-full rounded-md">
+                            {singleClient?.logo_url && (
+                              <img
+                                src={singleClient?.logo_url}
+                                width="150px"
+                                className="rounded-md"
+                              />
                             )}
                           </div>
                         </div>
