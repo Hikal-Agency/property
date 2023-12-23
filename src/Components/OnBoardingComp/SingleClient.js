@@ -163,12 +163,14 @@ const SingleClient = ({
     setBtnLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
-      const data = new FormData();
-      data.append("onboarding_id[0]", id);
-      const deleteDoc = await axios.delete(
+      const data = {
+        documnet_id: id,
+      };
+
+      const deleteDoc = await axios.post(
         `${BACKEND_URL}/onboarding/documents/${singleClient?.id}`,
+        data,
         {
-          params: data,
           headers: {
             Authorization: "Bearer " + token,
           },
