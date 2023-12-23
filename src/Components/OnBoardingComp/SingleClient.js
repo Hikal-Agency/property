@@ -358,8 +358,8 @@ const SingleClient = ({
                                       currentMode === "dark"
                                         ? "border-[#fff]"
                                         : "border-[#000]"
-                                    } cursor-pointer `}
-                                                                      >
+                                    } cursor-pointer bg-[#EDEFF1] `}
+                                  >
                                     {social?.icon}
                                   </span>
                                 )
