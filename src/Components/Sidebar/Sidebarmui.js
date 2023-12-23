@@ -829,12 +829,12 @@ const Sidebarmui = () => {
               count: sidebarData?.HotLeadsCount?.switched_off,
               link: "/freshleads/switched off",
             },
-            // {
-            //   name: t("feedback_unreachable"),
-            //   pro: false,
-            //   count: sidebarData?.HotLeadsCount?.unreachable,
-            //   link: "/freshleads/unreachable",
-            // },
+            {
+              name: t("feedback_unreachable"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.unreachable,
+              link: "/freshleads/unreachable",
+            },
           ],
         },
         // THIRD PARTY
