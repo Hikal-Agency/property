@@ -43,6 +43,8 @@ const UpdateBookedDeal = ({
     i18n,
     primaryColor,
   } = useStateContext();
+
+  console.log("enquiry options ===> ", enquiry_options);
   const [isClosing, setIsClosing] = useState(false);
 
   const [loading, setloading] = useState(true);
@@ -449,7 +451,7 @@ const UpdateBookedDeal = ({
                                   ),
                                   label: property_options(t).find(
                                     (option) => option.value === PropertyType
-                                  ).label,
+                                  )?.label,
                                 }
                               : null
                           }
@@ -498,7 +500,7 @@ const UpdateBookedDeal = ({
                                   ),
                                   label: purpose_options(t).find(
                                     (option) => option.value === ForType
-                                  ).label,
+                                  )?.label,
                                 }
                               : null
                           }
