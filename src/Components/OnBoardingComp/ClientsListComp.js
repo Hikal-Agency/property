@@ -2,21 +2,18 @@ import { Card } from "@mui/material";
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import {
-  FaUser,
-  FaPhone,
   FaFacebookF,
   FaInstagram,
   FaTiktok,
   FaSnapchatGhost,
   FaLinkedin,
+  FaYoutube
 } from "react-icons/fa";
 import {
   BsPerson,
   BsTelephone,
   BsEnvelopeAt
 } from "react-icons/bs";
-import { IoIosMail, IoLogoYoutube } from "react-icons/io";
-import { ImUsers } from "react-icons/im";
 import moment from "moment";
 import SingleClient from "./SingleClient";
 
@@ -56,7 +53,7 @@ const ClientsListComp = ({ client, fetchCrmClients }) => {
     },
     {
       name: "youtube",
-      icon: <IoLogoYoutube color="#FE0808" size={14} />,
+      icon: <FaYoutube color="#FE0808" size={14} />,
     },
   ];
   return (

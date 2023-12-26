@@ -18,35 +18,26 @@ import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 import { load } from "../../Pages/App";
 
-import { BiBed, BiBath } from "react-icons/bi";
-import {
-  BsImages,
-  BsFiles,
-  BsPen,
+import { MdClose } from "react-icons/md";
+import { 
   BsFileEarmarkText,
   BsTrash,
+  BsPencil,
+  BsPinMap,
+  BsPerson,
+  BsTelephone,
+  BsEnvelopeAt
 } from "react-icons/bs";
-import { FaUserPlus, FaPen } from "react-icons/fa";
-import { MdLocationPin, MdClose } from "react-icons/md";
-import {
-  TbCurrentLocation,
-  TbPhone,
-  TbMail,
-  TbUserCircle,
-} from "react-icons/tb";
-import { IoLocation } from "react-icons/io5";
-import { FaUserAlt } from "react-icons/fa";
 
 import {
-  FaUser,
-  FaPhone,
+  FaYoutube,
   FaFacebookF,
   FaInstagram,
   FaTiktok,
-  FaSnapchat,
+  FaSnapchatGhost,
   FaLinkedin,
 } from "react-icons/fa";
-import { IoIosMail, IoLogoYoutube } from "react-icons/io";
+import { IoLogoYoutube } from "react-icons/io";
 
 import usePermission from "../../utils/usePermission";
 import { FaMoneyBillWave } from "react-icons/fa";
@@ -58,6 +49,18 @@ const SingleClient = ({
   fetchCrmClients,
   client,
 }) => {
+  
+  const {
+    currentMode,
+    setopenBackDrop,
+    BACKEND_URL,
+    isArabic,
+    isLangRTL,
+    i18n,
+    User,
+    t,
+  } = useStateContext();
+
   console.log("single property data::: ", openModal);
   console.log("single property data (client)::: ", client);
   const [singleClient, setSingleClient] = useState(client);
@@ -79,15 +82,15 @@ const SingleClient = ({
     },
     {
       name: "tiktok",
-      icon: <FaTiktok color="#2CF5F0" size={14} />,
+      icon: <FaTiktok color={currentMode === "dark" ? "#FFF" : "#000"} size={14} />,
     },
     {
       name: "snapchat",
-      icon: <FaSnapchat color="#FFFC09" size={14} />,
+      icon: <FaSnapchatGhost color="#f7d100" size={14} />,
     },
     {
       name: "youtube",
-      icon: <IoLogoYoutube color="#FE0808" size={14} />,
+      icon: <FaYoutube color="#FE0808" size={14} />,
     },
   ];
   // const [loading, setloading] = useState(false);
@@ -119,16 +122,6 @@ const SingleClient = ({
     listingId: null,
   });
   const [allDocs, setAllDocs] = useState([]);
-  const {
-    currentMode,
-    setopenBackDrop,
-    BACKEND_URL,
-    isArabic,
-    isLangRTL,
-    i18n,
-    User,
-    t,
-  } = useStateContext();
   const [allImages, setAllImages] = useState([]);
 
   const [isClosing, setIsClosing] = useState(false);
@@ -272,9 +265,11 @@ const SingleClient = ({
               currentMode === "dark"
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
-            }
-              p-4 h-[100vh] w-[80vw] overflow-y-scroll
-              `}
+            } ${
+              isLangRTL(i18n.language)
+                ? currentMode === "dark" && " border-primary border-r-2"
+                : currentMode === "dark" && " border-primary border-l-2"
+            } p-4 h-[100vh] w-[80vw] overflow-y-scroll `}
           >
             {loading ? (
               <Loader />
@@ -285,136 +280,88 @@ const SingleClient = ({
                 ) : (
                   <div className="w-full">
                     <div className="w-full flex justify-between items-center pb-3">
-                      <div className="flex items-center">
+                      <div className="flex items-center gap-3">
                         <h1
-                          className={`text-lg font-semibold ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          } bg-primary py-2 px-5`}
+                          className={`font-semibold text-white bg-primary py-2 px-3 rounded-md`}
                         >
                           {singleClient?.account_type || "-"}
                         </h1>
                         <h1
-                          className={`text-lg font-semibold ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          } ml-2`}
+                          className={`text-lg font-semibold capitalize`}
                         >
                           {singleClient?.bussiness_name || "-"}
                         </h1>
                       </div>
-                      <div className="bg-primary rounded-full p-1">
-                        <IconButton onClick={() => setOpenEdit(true)}>
-                          <FaPen
-                            className={`${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-dark"
-                            }`}
-                          />
-                        </IconButton>
-                      </div>
+                      <button 
+                        onClick={() => setOpenEdit(true)}
+                        className="bg-primary rounded-full p-2"
+                      >
+                        <BsPencil
+                          size={16}
+                          color={"#FFF"}
+                        />
+                      </button>
                     </div>
 
                     {/* business details */}
 
                     <div
-                      className={`rounded-xl w-full  my-3 border border-[#eeeeee] `}
+                      className={`rounded-xl w-full my-3 shadow-sm ${
+                        currentMode === "dark" ? "bg-black" : "bg-[#EEEEEE]"
+                      }`}
                     >
                       <div
-                        className={`grid sm:grid-cols-1 md:grid-cols-2 bg-primary ${
-                          currentMode === "dark"
-                            ? "bg-[#000000]"
-                            : "bg-[#eeeeee]"
-                        } p-3  `}
+                        className={`rounded-t-xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 bg-primary p-2 px-4`}
                       >
-                        <div className="w-full p-1">
-                          <div className="flex items-center">
-                            <h1
-                              className={`text-lg font-bold mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-black"
-                              }`}
-                              style={{
-                                fontFamily: isArabic(
-                                  singleClient?.bussiness_name
-                                )
-                                  ? "Noto Kufi Arabic"
-                                  : "inherit",
-                              }}
-                            >
-                              {t("business_details")}
-                            </h1>
-                          </div>
+                        <div className="flex items-center font-semibold">
+                          {t("business_details")}
                         </div>
-                        <div className="w-full p-1">
-                          <div className="flex items-center gap-1 justify-end space-x-2">
-                            {social_links?.map(
-                              (social) =>
-                                singleClient[social?.name] && (
-                                  <span
-                                    key={social?.name}
-                                    className={`p-3 border rounded rounded-full ${
-                                      currentMode === "dark"
-                                        ? "border-[#fff]"
-                                        : "border-[#000]"
-                                    } cursor-pointer bg-[#EDEFF1] `}
-                                  >
-                                    {social?.icon}
-                                  </span>
-                                )
-                            )}
-
-                            <div className="mx-1"></div>
-                          </div>
+                        
+                        <div className="flex items-center gap-2 justify-end">
+                          {social_links?.map(
+                            (social) =>
+                              singleClient[social?.name] && (
+                                <span
+                                  key={social?.name}
+                                  className={`p-2 border border-[#AAA] rounded rounded-full ${
+                                    currentMode === "dark"
+                                      ? "bg-[#000]"
+                                      : "bg-[#FFF]"
+                                  } cursor-pointer`}
+                                >
+                                  {social?.icon}
+                                </span>
+                              )
+                          )}
                         </div>
                       </div>
-                      <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
-                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
+                      <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 space-x-5 p-4">
+                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 flex flex-col gap-3">
                           {/* ADDRESS  */}
-                          <div className="flex space-x-3">
-                            <IoLocation
-                              size={18}
-                              className={`mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-[#EEEEEE]"
-                                  : "text-[#333333]"
-                              }`}
+                          <div className="flex gap-3">
+                            <BsPinMap
+                              size={16}
                             />
                             <h6>{singleClient?.country} </h6>
                           </div>
                           {/* no of users  */}
-                          <div className="flex space-x-3">
-                            <FaUserAlt
-                              size={18}
-                              className={`mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-[#EEEEEE]"
-                                  : "text-[#333333]"
-                              }`}
+                          <div className="flex gap-3">
+                            <BsPerson
+                              size={16}
                             />
                             <h6>{singleClient?.name_of_person} </h6>
                           </div>
                           {/* contact  */}
-                          <div className="flex space-x-3">
-                            <FaPhone
-                              size={18}
-                              className={`mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-[#EEEEEE]"
-                                  : "text-[#333333]"
-                              }`}
+                          <div className="flex gap-3">
+                            <BsTelephone
+                              size={16}
                             />
                             <h6>{singleClient?.contact}</h6>
                           </div>
                           {/* email  */}
-                          <div className="flex space-x-3">
-                            <IoIosMail
-                              size={18}
-                              className={`mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-[#EEEEEE]"
-                                  : "text-[#333333]"
-                              }`}
+                          <div className="flex gap-3">
+                            <BsEnvelopeAt
+                              size={16}
                             />
                             <h6>{singleClient?.email}</h6>
                           </div>
@@ -431,19 +378,20 @@ const SingleClient = ({
                             )}
                           </div>
                         </div>
-                        <div className="flex">
+
+                        <div className="flex pt-5 w-full">
                           {singleClient?.documents?.length > 0 &&
                             singleClient?.documents?.map((l) => {
                               return (
                                 <div
                                   key={l?.id}
-                                  className="relative w-min mr-4 "
+                                  className="relative w-min mx-3"
                                 >
                                   <div
                                     onClick={() => {
                                       window.open(l?.doc_url, "_blank");
                                     }}
-                                    className="p-2  flex items-center justify-center hover:cursor-pointer space-x-5 "
+                                    className="p-2 flex items-center justify-center hover:cursor-pointer space-x-5 "
                                   >
                                     <a
                                       href={l?.doc_url}
@@ -495,39 +443,19 @@ const SingleClient = ({
 
                     {/* subscription details */}
                     <div
-                      className={`rounded-xl w-full  my-3 border border-[#eeeeee] `}
+                      className={`rounded-xl w-full my-3 ${
+                        currentMode === "dark" ? "bg-black text-white" : "bg-[#EEEEEE] text-black"
+                      }`}
                     >
                       <div
-                        className={`grid sm:grid-cols-1 md:grid-cols-2 bg-primary ${
-                          currentMode === "dark"
-                            ? "bg-[#000000]"
-                            : "bg-[#eeeeee]"
-                        } p-3  `}
+                        className={`w-full flex rounded-t-xl bg-primary text-white p-2 px-4`}
                       >
-                        <div className="w-full p-1">
-                          <div className="flex items-center">
-                            <h1
-                              className={`text-lg font-bold mr-2 ${
-                                currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-black"
-                              }`}
-                              style={{
-                                fontFamily: isArabic(
-                                  singleClient?.bussiness_name
-                                )
-                                  ? "Noto Kufi Arabic"
-                                  : "inherit",
-                              }}
-                            >
-                              {t("subscription_details")}
-                            </h1>
-                          </div>
+                        <div className="flex items-center font-semibold">
+                          {t("subscription_details")}
                         </div>
-                        <div className="w-full p-1"></div>
                       </div>
                       <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
-                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
+                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3 capitalize">
                           {/* number of users  */}
                           <div className="flex space-x-3">
                             <h6 className="">
