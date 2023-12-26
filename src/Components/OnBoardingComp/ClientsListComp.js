@@ -2,22 +2,28 @@ import { Card } from "@mui/material";
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import {
-  FaUser,
-  FaPhone,
   FaFacebookF,
   FaInstagram,
   FaTiktok,
-  FaSnapchat,
+  FaSnapchatGhost,
   FaLinkedin,
+  FaYoutube
 } from "react-icons/fa";
-import { IoIosMail, IoLogoYoutube } from "react-icons/io";
-import { ImUsers } from "react-icons/im";
+import {
+  BsPerson,
+  BsTelephone,
+  BsEnvelopeAt
+} from "react-icons/bs";
 import moment from "moment";
 import SingleClient from "./SingleClient";
 
 const ClientsListComp = ({ client, fetchCrmClients }) => {
   console.log("clients in child comp: ", client);
-  const { currentMode } = useStateContext();
+  const { 
+    currentMode,
+    themeBgImg,
+    t
+  } = useStateContext();
   const [openModal, setOpenModal] = useState(false);
 
   const handleOpenModal = () => {
@@ -39,79 +45,60 @@ const ClientsListComp = ({ client, fetchCrmClients }) => {
     },
     {
       name: "tiktok",
-      icon: <FaTiktok color="#2CF5F0" size={14} />,
+      icon: <FaTiktok color={currentMode === "dark" ? "#FFF" : "#000"} size={14} />,
     },
     {
       name: "snapchat",
-      icon: <FaSnapchat color="#FFFC09" size={14} />,
+      icon: <FaSnapchatGhost color="#f7d100" size={14} />,
     },
     {
       name: "youtube",
-      icon: <IoLogoYoutube color="#FE0808" size={14} />,
+      icon: <FaYoutube color="#FE0808" size={14} />,
     },
   ];
   return (
     <>
-      <Card
-        variant="outlined"
-        sx={{
-          background: "none",
-        }}
-        className="border-t-0 border-r-2 border-l-2 border-b-2 mb-3 cursor-pointer"
+      <div
+        className={`border-2 rounded-xl shadow-sm mb-3 cursor-pointer ${
+          currentMode === "dark" ? "border-[#1C1C1C] text-white" : "border-[#EEEEEE] text-black"
+        } ${
+          themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+        }`}
         onClick={handleOpenModal}
       >
+        {/* HEADING  */}
         <div
-          className="flex justify-between space-x-2 items-center"
-          style={{
-            padding: 0,
-            background: currentMode === "dark" ? "#080808" : "#f3f3f3",
-          }}
+          className={`flex justify-between gap-3 p-2 items-center ${
+            themeBgImg ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light") : (currentMode === "dark" ? "#1C1C1C" : "#EEEEEE")
+          }`}
         >
-          <div className="flex items-center space-x-2">
-            <span className="bg-primary p-3">
-              <h3
-                className={`${
-                  currentMode === "dark" && "text-white"
-                } text-bold`}
-              >
-                {client?.account_type}
-              </h3>
-            </span>
-            <h3
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-dark"
-              }`}
-            >
+          <div className="flex items-center justify-start gap-2">
+            <div className="bg-primary rounded-md text-white font-semibold p-2">
+              {client?.account_type}
+            </div>
+            <div className="font-semibold py-2 capitalize">
               {client?.bussiness_name || "-"}
-            </h3>
+            </div>
           </div>
-          <div className="flex items-center space-x-3 pr-3 ">
+          {/* SOCIAL LINKS */}
+          <div className="flex items-center gap-2 p-1">
             {social_links?.map(
-              (social) =>
-                client[social?.name] && (
-                  <span
-                    className={`p-3 border rounded rounded-full ${
-                      currentMode === "dark" ? "border-[#fff]" : "border-[#000]"
-                    } cursor-pointer`}
-                  >
-                    {social?.icon}
-                  </span>
-                )
+              (social) => client[social?.name] && (
+                <span
+                  className={`p-2 border border-[#AAA] rounded rounded-full ${
+                    currentMode === "dark" ? "bg-[#000]" : "bg-[#FFF]"
+                  } cursor-pointer`}
+                >
+                  {social?.icon}
+                </span>
+              )
             )}
           </div>
         </div>
 
-        <div
-          className="flex justify-between p-5 "
-          style={{
-            borderRight: "1px solid ",
-            borderLeft: "1px solid ",
-            borderBottom: "1px solid",
-            borderColor: currentMode === "dark" ? "#f3f3f9" : "#f3f3f3",
-            borderTop: "none",
-          }}
-        >
-          <div>
+        {/* CONTENT  */}
+        <div className={`flex justify-between p-4`}>
+          <div className="flex flex-col gap-3">
             {/* <div className="flex space-between space-x-2">
               <h2
                 className={`${
@@ -128,51 +115,27 @@ const ClientsListComp = ({ client, fetchCrmClients }) => {
                 business.hikalcrm.com
               </p>
             </div> */}
-            <div className="flex space-between space-x-2 mt-3">
-              <h2
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
-                Number Of Users:{" "}
+            <div className="flex space-between gap-3">
+              <h2>
+                {t("form_account_usersList")}:{" "}
               </h2>
-              <p
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
+              <p>
                 {client?.no_of_users}
               </p>
             </div>
-            <div className="flex space-between space-x-2 mt-3">
-              <h2
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
-                Country:{" "}
+            <div className="flex space-between gap-3">
+              <h2>
+                {t("label_country")}:{" "}
               </h2>
-              <p
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
+              <p>
                 {client?.country}
               </p>
             </div>
-            <div className="flex space-between space-x-2 mt-3">
-              <h2
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
-                Registered on:{" "}
+            <div className="flex space-between gap-3">
+              <h2>
+                {t("registered_on")}:{" "}
               </h2>
-              <p
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
+              <p>
                 {moment(client?.created_at).format("YYYY-MM-DD")}
               </p>
             </div>
@@ -193,46 +156,28 @@ const ClientsListComp = ({ client, fetchCrmClients }) => {
               </p>
             </div> */}
           </div>
-          <div>
-            <div className="flex space-between space-x-3  items-center">
-              <FaUser
+          <div className="flex flex-col gap-3">
+            <div className="flex space-between gap-3 items-center">
+              <BsPerson
                 size={16}
-                color={currentMode === "dark" ? "#fff" : "#000"}
               />
-
-              <p
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
+              <p>
                 {client?.name_of_person || "-"}
               </p>
             </div>
-            <div className="flex space-between space-x-3 mt-3 items-center">
-              <FaPhone
+            <div className="flex space-between gap-3 items-center">
+              <BsTelephone
                 size={16}
-                color={currentMode === "dark" ? "#fff" : "#000"}
               />
-
-              <p
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
+              <p>
                 {client?.contact || "-"}
               </p>
             </div>
-            <div className="flex space-between space-x-3 mt-3 items-center">
-              <IoIosMail
+            <div className="flex space-between gap-3 items-center">
+              <BsEnvelopeAt
                 size={16}
-                color={currentMode === "dark" ? "#fff" : "#000"}
               />
-
-              <p
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-dark"
-                }`}
-              >
+              <p>
                 {client?.email || "-"}
               </p>
             </div>
@@ -252,7 +197,7 @@ const ClientsListComp = ({ client, fetchCrmClients }) => {
             </div> */}
           </div>
         </div>
-      </Card>
+      </div>
       {openModal && (
         <SingleClient
           client={client}
