@@ -391,7 +391,7 @@ const UpdateBookedDeal = ({
                         <Select
                           id="enquiry"
                           value={
-                            EnquiryType
+                            EnquiryType && EnquiryType !== "null"
                               ? {
                                   value: enquiry_options(t).find(
                                     (option) => option?.value === EnquiryType
@@ -444,7 +444,7 @@ const UpdateBookedDeal = ({
                         <Select
                           id="property-type"
                           value={
-                            PropertyType
+                            PropertyType && PropertyType !== "null"
                               ? {
                                   value: property_options(t).find(
                                     (option) => option.value === PropertyType
@@ -493,7 +493,7 @@ const UpdateBookedDeal = ({
                         <Select
                           id="for"
                           value={
-                            ForType
+                            ForType && ForType !== "null"
                               ? {
                                   value: purpose_options(t).find(
                                     (option) => option.value === ForType
