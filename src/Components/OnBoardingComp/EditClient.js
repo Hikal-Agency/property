@@ -517,9 +517,11 @@ const EditClient = ({
               currentMode === "dark"
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
-            }
-              p-4 h-[100vh] w-[80vw] overflow-y-scroll
-              `}
+            } ${
+              isLangRTL(i18n.language)
+                ? currentMode === "dark" && " border-primary border-r-2"
+                : currentMode === "dark" && " border-primary border-l-2"
+            } p-4 h-[100vh] w-[80vw] overflow-y-scroll `}
           >
             {loading ? (
               <Loader />

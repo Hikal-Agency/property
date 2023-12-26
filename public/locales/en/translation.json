@@ -839,7 +839,5 @@
     "subscription_details": "Subscription Details",
     "payment_duration": "Payment Duration",
     "registered_on": "Registered On",
-    "update_client": "Update Client",
-
-    "no_of_users": "Number of users"
+    "update_client": "Update Client"
 }

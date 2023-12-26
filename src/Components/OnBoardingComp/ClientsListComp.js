@@ -117,7 +117,7 @@ const ClientsListComp = ({ client, fetchCrmClients }) => {
             </div> */}
             <div className="flex space-between gap-3">
               <h2>
-                {t("no_of_users")}:{" "}
+                {t("form_account_usersList")}:{" "}
               </h2>
               <p>
                 {client?.no_of_users}
