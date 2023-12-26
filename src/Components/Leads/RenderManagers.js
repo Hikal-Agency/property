@@ -1,8 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import {
-  CircularProgress,
-  Dialog, IconButton
-} from "@mui/material";
+import { CircularProgress, Dialog, IconButton } from "@mui/material";
 // import Select from "@mui/material/Select";
 import Select from "react-select";
 import { Box } from "@mui/system";
@@ -15,9 +12,7 @@ import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { renderStyles } from "../_elements/SelectStyles";
 
-import {
-  BsPersonCheck
-} from "react-icons/bs";
+import { BsPersonCheck } from "react-icons/bs";
 
 const RenderManagers = ({ cellValues }) => {
   const [manager2, setmanager2] = useState(cellValues?.row?.assignedToManager);
@@ -37,11 +32,10 @@ const RenderManagers = ({ cellValues }) => {
     fetchSidebarData,
     User,
     t,
-    primaryColor
+    primaryColor,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
 
- 
   useEffect(
     () => {
       setmanager2(cellValues?.row?.assignedToManager);
@@ -157,14 +151,15 @@ const RenderManagers = ({ cellValues }) => {
           leadName: cellValues?.row?.leadName,
         });
 
-          socket.emit("notification_lead_assign", {
-        newAssignee: [{
-          id: newManager?.id, 
-          userName: newManager?.userName
-        }],
+        socket.emit("notification_lead_assign", {
+          newAssignee: [
+            {
+              id: newManager?.id,
+              userName: newManager?.userName,
+            },
+          ],
           leadName: cellValues?.row?.leadName,
         });
-
 
         fetchSidebarData();
 
@@ -204,15 +199,16 @@ const RenderManagers = ({ cellValues }) => {
       className={`renderDD w-full h-full flex items-center justify-center`}
       // sx={SelectStyles}
     >
-      <Select 
+      <Select
         id="manager"
         value={
           String(manager2) === "1" || !manager2 || manager2 === "0"
-          ? null
-          : {
-            label: Managers.find(manager => manager.id === manager2)?.userName, 
-            value: manager2
-          }
+            ? null
+            : {
+                label: Managers.find((manager) => manager.id === manager2)
+                  ?.userName,
+                value: manager2,
+              }
         }
         onChange={ChangeManager}
         options={[
@@ -221,8 +217,8 @@ const RenderManagers = ({ cellValues }) => {
             value: null,
           },
           ...(Managers?.map((manager) => ({
-            label: manager.userName,
-            value: manager.id,
+            label: manager?.userName,
+            value: manager?.id,
           })) ?? []),
         ]}
         placeholder={t("label_manager")}
@@ -266,7 +262,7 @@ const RenderManagers = ({ cellValues }) => {
         </Select>
       </FormControl>*/}
 
-      {Dialogue && ( 
+      {Dialogue && (
         <>
           <Dialog
             sx={{
@@ -294,14 +290,17 @@ const RenderManagers = ({ cellValues }) => {
             >
               <IoMdClose size={18} />
             </IconButton>
-            <div className={`px-10 py-5 ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-white text-black"}`}>
+            <div
+              className={`px-10 py-5 ${
+                currentMode === "dark"
+                  ? "bg-[#1C1C1C] text-white"
+                  : "bg-white text-black"
+              }`}
+            >
               <div className="flex flex-col justify-center items-center">
-                <BsPersonCheck
-                  size={50}
-                  className="text-primary text-2xl"
-                />
+                <BsPersonCheck size={50} className="text-primary text-2xl" />
                 <h1 className="font-semibold pt-3 text-lg text-center">
-                  {t("want_to_change_manager")}{" "}{t("from")}{" "}
+                  {t("want_to_change_manager")} {t("from")}{" "}
                   <span className="text-sm bg-gray-500 px-2 py-1 rounded-md font-bold">
                     {Managers.find((item) => item.id === Number(manager2))
                       ?.userName ?? "No manager"}

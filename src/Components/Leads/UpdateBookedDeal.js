@@ -18,7 +18,11 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdClose } from "react-icons/md";
-import { enquiry_options, property_options, purpose_options } from "../_elements/SelectOptions";
+import {
+  enquiry_options,
+  property_options,
+  purpose_options,
+} from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
 
 const UpdateBookedDeal = ({
@@ -30,8 +34,15 @@ const UpdateBookedDeal = ({
   BACKEND_URL,
   FetchLeads,
 }) => {
-  const { darkModeColors, currentMode, User, t, isLangRTL, i18n, primaryColor } =
-    useStateContext();
+  const {
+    darkModeColors,
+    currentMode,
+    User,
+    t,
+    isLangRTL,
+    i18n,
+    primaryColor,
+  } = useStateContext();
   const [isClosing, setIsClosing] = useState(false);
 
   const [loading, setloading] = useState(true);
@@ -303,7 +314,12 @@ const UpdateBookedDeal = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${currentMode === "dark" && (isLangRTL(i18n.language) ? "border-r-2 border-primary" : "border-l-2 border-primary")}
+            } ${
+              currentMode === "dark" &&
+              (isLangRTL(i18n.language)
+                ? "border-r-2 border-primary"
+                : "border-l-2 border-primary")
+            }
              p-4 h-[100vh] w-[80vw] overflow-y-scroll 
             `}
           >
@@ -372,12 +388,17 @@ const UpdateBookedDeal = ({
                         {/* ENQUIRY TYPE  */}
                         <Select
                           id="enquiry"
-                          value={EnquiryType
-                            ? {
-                              value: enquiry_options(t).find((option) => option.value === EnquiryType),
-                              label: enquiry_options(t).find((option) => option.value === EnquiryType).label
-                            }
-                            : null
+                          value={
+                            EnquiryType
+                              ? {
+                                  value: enquiry_options(t).find(
+                                    (option) => option?.value === EnquiryType
+                                  ),
+                                  label: enquiry_options(t).find(
+                                    (option) => option.value === EnquiryType
+                                  )?.label,
+                                }
+                              : null
                           }
                           onChange={ChangeEnquiryType}
                           options={enquiry_options(t)}
@@ -420,12 +441,17 @@ const UpdateBookedDeal = ({
                         {/* PROPERTY TYPE  */}
                         <Select
                           id="property-type"
-                          value={PropertyType
-                            ? {
-                              value: property_options(t).find((option) => option.value === PropertyType),
-                              label: property_options(t).find((option) => option.value === PropertyType).label
-                            }
-                            : null
+                          value={
+                            PropertyType
+                              ? {
+                                  value: property_options(t).find(
+                                    (option) => option.value === PropertyType
+                                  ),
+                                  label: property_options(t).find(
+                                    (option) => option.value === PropertyType
+                                  ).label,
+                                }
+                              : null
                           }
                           onChange={ChangePropertyType}
                           options={property_options(t)}
@@ -464,12 +490,17 @@ const UpdateBookedDeal = ({
                         {/* PURPOSE  */}
                         <Select
                           id="for"
-                          value={ForType
-                            ? {
-                              value: purpose_options(t).find((option) => option.value === ForType),
-                              label: purpose_options(t).find((option) => option.value === ForType).label
-                            }
-                            : null
+                          value={
+                            ForType
+                              ? {
+                                  value: purpose_options(t).find(
+                                    (option) => option.value === ForType
+                                  ),
+                                  label: purpose_options(t).find(
+                                    (option) => option.value === ForType
+                                  ).label,
+                                }
+                              : null
                           }
                           onChange={ChangeForType}
                           options={purpose_options(t)}
