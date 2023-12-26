@@ -781,7 +781,7 @@ const Sidebarmui = () => {
               count: sidebarData?.HotLeadsCount?.callback,
               link: "/freshleads/callback",
             },
-            // FOLLOW UP 
+            // FOLLOW UP
             {
               name: t("feedback_follow_up_short_term"),
               pro: false,
@@ -830,12 +830,12 @@ const Sidebarmui = () => {
               count: sidebarData?.HotLeadsCount?.switched_off,
               link: "/freshleads/switched off",
             },
-            // {
-            //   name: t("feedback_unreachable"),
-            //   pro: false,
-            //   count: sidebarData?.HotLeadsCount?.unreachable,
-            //   link: "/freshleads/unreachable",
-            // },
+            {
+              name: t("feedback_unreachable"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.unreachable,
+              link: "/freshleads/unreachable",
+            },
           ],
         },
         // THIRD PARTY
@@ -973,7 +973,7 @@ const Sidebarmui = () => {
               count: sidebarData?.ColdLeadsCount?.callback,
               link: "/coldleads/callback",
             },
-            // FOLLOW UP 
+            // FOLLOW UP
             {
               name: t("feedback_follow_up_short_term"),
               pro: false,
@@ -1054,7 +1054,7 @@ const Sidebarmui = () => {
               count: sidebarData?.WarmLeadCount?.callback,
               link: "/archive/callback",
             },
-            // FOLLOW UP 
+            // FOLLOW UP
             {
               name: t("feedback_follow_up_short_term"),
               pro: false,
@@ -1135,7 +1135,7 @@ const Sidebarmui = () => {
               count: sidebarData?.PersonalLeadsCount?.callback,
               link: "/personalleads/callback",
             },
-            // FOLLOW UP 
+            // FOLLOW UP
             {
               name: t("feedback_follow_up_short_term"),
               pro: false,
@@ -1216,7 +1216,7 @@ const Sidebarmui = () => {
               count: sidebarData?.LiveCallCount?.callback,
               link: "/liveleads/callback",
             },
-            // FOLLOW UP 
+            // FOLLOW UP
             {
               name: t("feedback_follow_up_short_term"),
               pro: false,
@@ -1434,26 +1434,26 @@ const Sidebarmui = () => {
       ],
     },
     // SOCIAL MEDIA
-    {
-      title: t("menu_social_media"),
-      icon: <BsShare size={18} />,
-      pro: true,
-      links: [
-        {
-          name: t("menu_facebook"),
-          // icon: <FaChartLine />,
-          icon: <BsFacebook size={16} />,
-          pro: true,
-          link: "/facebook",
-        },
-        // {
-        //   name: "campaigns",
-        //   icon: <FaFacebookSquare size={16} />,
-        //   link: "/campaigns",
-        // },
-        // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
-      ],
-    },
+    // {
+    //   title: t("menu_social_media"),
+    //   icon: <BsShare size={18} />,
+    //   pro: true,
+    //   links: [
+    //     {
+    //       name: t("menu_facebook"),
+    //       // icon: <FaChartLine />,
+    //       icon: <BsFacebook size={16} />,
+    //       pro: true,
+    //       link: "/facebook",
+    //     },
+    //     // {
+    //     //   name: "campaigns",
+    //     //   icon: <FaFacebookSquare size={16} />,
+    //     //   link: "/campaigns",
+    //     // },
+    //     // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+    //   ],
+    // },
     // LOCATION
     {
       title: t("menu_location"),
@@ -1540,19 +1540,19 @@ const Sidebarmui = () => {
     //   ],
     // },
     // BILLINGS
-    {
-      title: t("menu_billings"),
-      icon: <BsCashCoin size={18} />,
-      pro: false,
-      links: [
-        {
-          name: t("menu_payments"),
-          icon: <BsCashStack size={16} />,
-          pro: false,
-          link: "/marketing/payments",
-        },
-      ],
-    },
+    // {
+    //   title: t("menu_billings"),
+    //   icon: <BsCashCoin size={18} />,
+    //   pro: false,
+    //   links: [
+    //     {
+    //       name: t("menu_payments"),
+    //       icon: <BsCashStack size={16} />,
+    //       pro: false,
+    //       link: "/marketing/payments",
+    //     },
+    //   ],
+    // },
     // SUPPORT
     {
       title: t("menu_support"),
@@ -1597,11 +1597,11 @@ const Sidebarmui = () => {
             //   name: "Integration",
             //   link: "/integrations",
             // },
-            {
-              name: t("menu_notification_settings"),
-              pro: false,
-              link: "/notifications",
-            },
+            // {
+            //   name: t("menu_notification_settings"),
+            //   pro: false,
+            //   link: "/notifications",
+            // },
             {
               name: t("menu_notification_history"),
               pro: false,
