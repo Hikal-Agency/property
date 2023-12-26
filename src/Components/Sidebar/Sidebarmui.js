@@ -322,7 +322,7 @@ const Sidebarmui = () => {
       setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
       getAllLeadsMembers(JSON.parse(storedUser));
       FetchProfileData();
-      socket.emit("add_user", { ...JSON.parse(storedUser) });
+      socket.emit("add_user", { ...JSON.parse(storedUser), platform: "web" });
     } else {
       axios
         .get(`${BACKEND_URL}/profile`, {
@@ -387,6 +387,7 @@ const Sidebarmui = () => {
 
           socket.emit("add_user", {
             ...user,
+            platform: "web"
           });
 
           localStorage.setItem("user", JSON.stringify(user));
