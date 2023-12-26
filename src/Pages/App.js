@@ -79,6 +79,8 @@ import Snapchat from "./SocialMedia/snapchat";
 import TransferRequest from "./transfferedleads/TransferRequest";
 import OnBoarding from "./OnBoarding";
 import ClientsList from "./OnBoarding/ClientsList";
+import Orders from "./officeBoy/orders";
+import Menu from "./officeBoy";
 
 const libraries = ["places"];
 
@@ -203,6 +205,16 @@ const routes = [
     path: "/onboarding/clientsList",
     pageName: "CRM Clients",
     element: <ClientsList />,
+  },
+  {
+    path: "/taste_hub/menu",
+    pageName: "Menu",
+    element: <Orders />,
+  },
+  {
+    path: "/taste_hub/order_history",
+    pageName: "Order History",
+    element: <Menu />,
   },
   // {
   //   path: "/timeline/:id",

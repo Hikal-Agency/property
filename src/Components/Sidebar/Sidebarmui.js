@@ -8,6 +8,8 @@ import {
   SubMenu,
   sidebarClasses,
 } from "react-pro-sidebar";
+import { GiForkKnifeSpoon, GiHamburger } from "react-icons/gi";
+
 import { toast } from "react-toastify";
 import ReactConfetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
@@ -76,7 +78,7 @@ import {
   BsLayers,
   BsPersonGear,
 } from "react-icons/bs";
-import { FaFacebookSquare, FaInbox } from "react-icons/fa";
+import { FaFacebookSquare, FaInbox, FaHistory } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { RiRadioButtonLine } from "react-icons/ri";
 import { GiQueenCrown } from "react-icons/gi";
@@ -1519,9 +1521,29 @@ const Sidebarmui = () => {
         },
         {
           name: t("menu_clientsList"),
-          icon: <TbUsers size={16} />,
+          icon: <FaHistory size={16} />,
           // pro: true,
           link: "/onboarding/clientsList",
+        },
+      ],
+    },
+    // OFFICE BOY
+    {
+      title: t("menu_taste_hub"),
+      icon: <GiForkKnifeSpoon size={18} />,
+      pro: true,
+      links: [
+        {
+          name: t("menu_menu"),
+          icon: <GiHamburger size={16} />,
+          // pro: true,
+          link: "/taste_hub/menu",
+        },
+        {
+          name: t("menu_order_history"),
+          icon: <TbUsers size={16} />,
+          // pro: true,
+          link: "/taste_hub/order_history",
         },
       ],
     },
