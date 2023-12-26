@@ -53,7 +53,6 @@ import { FaMoneyBillWave } from "react-icons/fa";
 import EditClient from "./EditClient";
 
 const SingleClient = ({
-  ListingData,
   setOpenModal,
   openModal,
   fetchCrmClients,
