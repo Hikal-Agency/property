@@ -39,54 +39,80 @@ export const feedback_options = (t) => [
   {
     value: "New",
     label: t("feedback_new"),
+    bgColor: "#dec9e4", //GRAY
+    color: "#000000",
   },
   { 
     value: "Callback", 
-    label: t("feedback_callback") 
+    label: t("feedback_callback"),
+    bgColor: "#faeb96", //YELLOW - LIGHT
+    color: "#000000",
   },
   { 
     value: "Follow Up (Short Term)", 
-    label: t("feedback_follow_up_short_term") 
+    label: t("feedback_follow_up_short_term"),
+    bgColor: "#fbe59e", //YELLOW - SOOTHING
+    color: "#000000",
   },
   { 
     value: "Follow Up (Long Term)", 
-    label: t("feedback_follow_up_long_term") 
+    label: t("feedback_follow_up_long_term"),
+    bgColor: "#feda96", //ORANGE - LIGHT
+    color: "#000000",
   },
   { 
     value: "Meeting", 
-    label: t("feedback_meeting") 
+    label: t("feedback_meeting"),
+    bgColor: "#e1ee96", //GREEN - LIGHT
+    color: "#000000",
   },
   { 
     value: "Booked", 
-    label: t("feedback_booked") 
+    label: t("feedback_booked"),
+    bgColor: "#b4e196", //GREEN - SOOTHING
+    color: "#000000",
   },
   { 
     value: "Low Budget", 
-    label: t("feedback_low_budget") 
+    label: t("feedback_low_budget"),
+    bgColor: "#ff9a66", //ORANGE - LIGHT
+    color: "#000000",
   },
   { 
     value: "Not Interested", 
-    label: t("feedback_not_interested") 
+    label: t("feedback_not_interested"),
+    bgColor: "#ff8787", //RED
+    color: "#000000",
   },
   { 
     value: "No Answer", 
-    label: t("feedback_no_answer") 
+    label: t("feedback_no_answer"),
+    bgColor: "#ff8787", //RED
+    color: "#000000",
   },
   { 
     value: "Switched Off", 
-    label: t("feedback_switched_off") 
+    label: t("feedback_switched_off"),
+    bgColor: "#ff8787", //RED
+    color: "#000000",
   },
   { 
     value: "Unreachable", 
-    label: t("feedback_unreachable") 
+    label: t("feedback_unreachable"),
+    bgColor: "#A9A9A9",
+    color: "#000000",
   },
   { 
     value: "Wrong Number", 
-    label: t("feedback_wrong_number")
+    label: t("feedback_wrong_number"),
+    bgColor: "#949494", //GRAY(400)
+    color: "#000000",
   },
   { 
     value: "Duplicate", 
-    label: t("feedback_duplicate") 
+    label: t("feedback_duplicate"),
+    bgColor: "#7F7F7F", //GRAY(500)
+    color: "#000000",
   },
   // { 
   //   value: "Dead", 

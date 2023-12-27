@@ -294,8 +294,8 @@ export const renderStyles = (currentMode, primaryColor) => ({
     }),
     option: (provided, state) => ({
         ...provided,
-        background: state.isSelected ? primaryColor : (currentMode === "dark" ? "#000000" : "#FFFFFF"),
-        color: state.isSelected ? "#FFFFFF" : (currentMode === "dark" ? "#EEEEEE" : "#333333"),
+        background: state?.data?.bgColor ? (state?.data?.bgColor) : (state.isSelected ? primaryColor : (currentMode === "dark" ? "#000000" : "#FFFFFF")),
+        color: state?.data?.color ? (state?.data?.color) : (state.isSelected ? "#FFFFFF" : (currentMode === "dark" ? "#EEEEEE" : "#333333")),
         padding: "5px 10px",
         borderRadius: "5px",
         marginTop: "5px",
@@ -303,7 +303,7 @@ export const renderStyles = (currentMode, primaryColor) => ({
         wordWrap: "break-word",
         fontSize: "11px",
         "&:hover": {
-            background: primaryColor,
+            background: !state?.data?.bgColor && primaryColor,
             color: "#FFFFFF",
         },
     }),
