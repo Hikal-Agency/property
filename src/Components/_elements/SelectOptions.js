@@ -39,80 +39,80 @@ export const feedback_options = (t) => [
   {
     value: "New",
     label: t("feedback_new"),
-    bgColor: "#dec9e4", //GRAY
+    bgColor: "#BEEDF1", 
     color: "#000000",
   },
   { 
     value: "Callback", 
     label: t("feedback_callback"),
-    bgColor: "#faeb96", //YELLOW - LIGHT
+    bgColor: "#FFED9A", 
     color: "#000000",
   },
   { 
     value: "Follow Up (Short Term)", 
     label: t("feedback_follow_up_short_term"),
-    bgColor: "#fbe59e", //YELLOW - SOOTHING
+    bgColor: "#FFF799", 
     color: "#000000",
   },
   { 
     value: "Follow Up (Long Term)", 
     label: t("feedback_follow_up_long_term"),
-    bgColor: "#feda96", //ORANGE - LIGHT
-    color: "#000000",
-  },
-  { 
-    value: "Meeting", 
-    label: t("feedback_meeting"),
-    bgColor: "#e1ee96", //GREEN - LIGHT
-    color: "#000000",
-  },
-  { 
-    value: "Booked", 
-    label: t("feedback_booked"),
-    bgColor: "#b4e196", //GREEN - SOOTHING
+    bgColor: "#FFDD99", 
     color: "#000000",
   },
   { 
     value: "Low Budget", 
     label: t("feedback_low_budget"),
-    bgColor: "#ff9a66", //ORANGE - LIGHT
+    bgColor: "#FDC68C", 
     color: "#000000",
   },
   { 
-    value: "Not Interested", 
-    label: t("feedback_not_interested"),
-    bgColor: "#ff8787", //RED
+    value: "Meeting", 
+    label: t("feedback_meeting"),
+    bgColor: "#C6DF9C", 
+    color: "#000000",
+  },
+  { 
+    value: "Booked", 
+    label: t("feedback_booked"),
+    bgColor: "#81CA9D", 
     color: "#000000",
   },
   { 
     value: "No Answer", 
     label: t("feedback_no_answer"),
-    bgColor: "#ff8787", //RED
+    bgColor: "#FFBEBD", 
     color: "#000000",
   },
   { 
     value: "Switched Off", 
     label: t("feedback_switched_off"),
-    bgColor: "#ff8787", //RED
+    bgColor: "#F7977A", 
     color: "#000000",
+  },
+  { 
+    value: "Not Interested", 
+    label: t("feedback_not_interested"),
+    bgColor: "#F16C4D", 
+    color: "#FFFFFF",
   },
   { 
     value: "Unreachable", 
     label: t("feedback_unreachable"),
-    bgColor: "#A9A9A9",
-    color: "#000000",
+    bgColor: "#898989",
+    color: "#FFFFFF",
   },
   { 
     value: "Wrong Number", 
     label: t("feedback_wrong_number"),
-    bgColor: "#949494", //GRAY(400)
-    color: "#000000",
+    bgColor: "#7D7D7D", 
+    color: "#FFFFFF",
   },
   { 
     value: "Duplicate", 
     label: t("feedback_duplicate"),
-    bgColor: "#7F7F7F", //GRAY(500)
-    color: "#000000",
+    bgColor: "#707070", 
+    color: "#FFFFFF",
   },
   // { 
   //   value: "Dead", 

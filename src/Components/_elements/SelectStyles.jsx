@@ -25,20 +25,26 @@ export const selectStyles = (currentMode, primaryColor) => ({
         ...base,
         zIndex: 9999,
     }),
-    menu: provided => ({
-        ...provided,
-        filter:
-            currentMode === "dark"
-            ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
-            : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
-        background:
-            currentMode === "dark"
-                ? "rgb(28 28 28 / 0.9)"
-                : "rgb(238 238 238 / 0.9)",
-        color: currentMode === "dark" ? "#EEEEEE" : "#333333",
-        borderRadius: "10px",
-        padding: "5px 10px",
-    }),
+    menu: (provided, state) => {
+        const hasBgcolor = state.selectProps.options.some(
+            option => option.bgColor
+        );
+        return {
+            ...provided,
+            filter:
+                currentMode === "dark"
+                ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
+                : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+            background: hasBgcolor 
+                ? (currentMode === "dark" ? "#000000" : "#FFFFFF") 
+                : (currentMode === "dark"
+                    ? "rgb(28 28 28 / 0.9)"
+                    : "rgb(238 238 238 / 0.9)"),
+            color: currentMode === "dark" ? "#EEEEEE" : "#333333",
+            borderRadius: "10px",
+            padding: "5px 10px",
+        };
+    },
     menuList: provided => ({
         ...provided,
         "&::-webkit-scrollbar": {
@@ -48,8 +54,8 @@ export const selectStyles = (currentMode, primaryColor) => ({
     }),
     option: (provided, state) => ({
         ...provided,
-        background: state.isSelected ? primaryColor : (currentMode === "dark" ? "#000000" : "#FFFFFF"),
-        color: state.isSelected ? "#FFFFFF" : (currentMode === "dark" ? "#EEEEEE" : "#333333"),
+        background: state?.data?.bgColor ? (state?.data?.bgColor) : (state.isSelected ? primaryColor : (currentMode === "dark" ? "#000000" : "#FFFFFF")),
+        color: state?.data?.color ? (state?.data?.color) : (state.isSelected ? "#FFFFFF" : (currentMode === "dark" ? "#EEEEEE" : "#333333")),
         padding: "5px 10px",
         borderRadius: "5px",
         marginTop: "5px",
@@ -57,8 +63,8 @@ export const selectStyles = (currentMode, primaryColor) => ({
         wordWrap: "break-word",
         fontSize: "11px",
         "&:hover": {
-            background: primaryColor,
-            color: "#FFFFFF",
+            background: !state?.data?.bgColor && primaryColor,
+            color: !state?.data?.bgColor && "#FFFFFF",
         }
     }),
     indicatorsContainer: (provided) => ({
@@ -104,20 +110,26 @@ export const selectBgStyles = (currentMode, primaryColor, blurDarkColor, blurLig
         ...base,
         zIndex: 9999,
     }),
-    menu: provided => ({
-        ...provided,
-        filter:
-            currentMode === "dark"
-            ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
-            : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
-        background:
-            currentMode === "dark"
-                ? "rgb(28 28 28 / 0.9)"
-                : "rgb(238 238 238 / 0.9)",
-        color: currentMode === "dark" ? "#EEEEEE" : "#333333",
-        borderRadius: "10px",
-        padding: "5px 10px",
-    }),
+    menu: (provided, state) => {
+        const hasBgcolor = state.selectProps.options.some(
+            option => option.bgColor
+        );
+        return {
+            ...provided,
+            filter:
+                currentMode === "dark"
+                ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
+                : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+            background: hasBgcolor 
+                ? (currentMode === "dark" ? "#000000" : "#FFFFFF") 
+                : (currentMode === "dark"
+                    ? "rgb(28 28 28 / 0.9)"
+                    : "rgb(238 238 238 / 0.9)"),
+            color: currentMode === "dark" ? "#EEEEEE" : "#333333",
+            borderRadius: "10px",
+            padding: "5px 10px",
+        };
+    },
     menuList: provided => ({
         ...provided,
         "&::-webkit-scrollbar": {
@@ -127,8 +139,8 @@ export const selectBgStyles = (currentMode, primaryColor, blurDarkColor, blurLig
     }),
     option: (provided, state) => ({
         ...provided,
-        background: state.isSelected ? primaryColor : (currentMode === "dark" ? "#000000" : "#FFFFFF"),
-        color: state.isSelected ? "#FFFFFF" : (currentMode === "dark" ? "#EEEEEE" : "#333333"),
+        background: state?.data?.bgColor ? (state?.data?.bgColor) : (state.isSelected ? primaryColor : (currentMode === "dark" ? "#000000" : "#FFFFFF")),
+        color: state?.data?.color ? (state?.data?.color) : (state.isSelected ? "#FFFFFF" : (currentMode === "dark" ? "#EEEEEE" : "#333333")),
         padding: "5px 10px",
         borderRadius: "5px",
         marginTop: "5px",
@@ -136,9 +148,9 @@ export const selectBgStyles = (currentMode, primaryColor, blurDarkColor, blurLig
         wordWrap: "break-word",
         fontSize: "11px",
         "&:hover": {
-            background: primaryColor,
-            color: "#FFFFFF",
-        }
+            background: !state?.data?.bgColor && primaryColor,
+            color: !state?.data?.bgColor && "#FFFFFF",
+        },
     }),
     indicatorsContainer: (provided) => ({
         ...provided,
@@ -270,21 +282,27 @@ export const renderStyles = (currentMode, primaryColor) => ({
         ...base,
         zIndex: 9999,
     }),
-    menu: provided => ({
-        ...provided,
-        filter:
-            currentMode === "dark"
-            ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
-            : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
-        background:
-            currentMode === "dark"
-                ? "rgb(28 28 28 / 0.9)"
-                : "rgb(238 238 238 / 0.9)",
-        color: currentMode === "dark" ? "#EEEEEE" : "#333333",
-        borderRadius: "10px",
-        padding: "1px 6px",
-        zIndex: 100,
-    }),
+    menu: (provided, state) => {
+        const hasBgcolor = state.selectProps.options.some(
+            option => option.bgColor
+        );
+        return {
+            ...provided,
+            filter:
+                currentMode === "dark"
+                ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
+                : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+            background: hasBgcolor 
+                ? (currentMode === "dark" ? "#000000" : "#FFFFFF") 
+                : (currentMode === "dark"
+                    ? "rgb(28 28 28 / 0.9)"
+                    : "rgb(238 238 238 / 0.9)"),
+            color: currentMode === "dark" ? "#EEEEEE" : "#333333",
+            borderRadius: "10px",
+            padding: "1px 6px",
+            zIndex: 100,
+        };
+    },
     menuList: provided => ({
         ...provided,
         "&::-webkit-scrollbar": {
@@ -302,9 +320,10 @@ export const renderStyles = (currentMode, primaryColor) => ({
         marginBottom: "5px",
         wordWrap: "break-word",
         fontSize: "11px",
+        // border: state?.data?.bgColor && "1px solid #AAAAAA",
         "&:hover": {
             background: !state?.data?.bgColor && primaryColor,
-            color: "#FFFFFF",
+            color: !state?.data?.bgColor && "#FFFFFF",
         },
     }),
     indicatorsContainer: (provided) => ({
