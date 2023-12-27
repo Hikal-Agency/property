@@ -209,12 +209,12 @@ const routes = [
   {
     path: "/taste_hub/menu",
     pageName: "Menu",
-    element: <Orders />,
+    element: <Menu />,
   },
   {
     path: "/taste_hub/order_history",
     pageName: "Order History",
-    element: <Menu />,
+    element: <Orders />,
   },
   // {
   //   path: "/timeline/:id",
