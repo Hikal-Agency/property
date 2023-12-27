@@ -55,6 +55,7 @@ export const selectStyles = (currentMode, primaryColor) => ({
         marginTop: "5px",
         marginBottom: "5px",
         wordWrap: "break-word",
+        fontSize: "11px",
         "&:hover": {
             background: primaryColor,
             color: "#FFFFFF",
@@ -133,6 +134,7 @@ export const selectBgStyles = (currentMode, primaryColor, blurDarkColor, blurLig
         marginTop: "5px",
         marginBottom: "5px",
         wordWrap: "break-word",
+        fontSize: "11px",
         "&:hover": {
             background: primaryColor,
             color: "#FFFFFF",
@@ -212,6 +214,7 @@ export const pageStyles = (currentMode, primaryColor) => ({
         marginTop: "5px",
         marginBottom: "5px",
         wordWrap: "break-word",
+        fontSize: "11px",
         "&:hover": {
             background: primaryColor,
             color: "#FFFFFF",
@@ -298,10 +301,11 @@ export const renderStyles = (currentMode, primaryColor) => ({
         marginTop: "5px",
         marginBottom: "5px",
         wordWrap: "break-word",
+        fontSize: "11px",
         "&:hover": {
             background: primaryColor,
             color: "#FFFFFF",
-        }
+        },
     }),
     indicatorsContainer: (provided) => ({
         ...provided,

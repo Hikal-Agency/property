@@ -375,7 +375,7 @@ const AllLeads = ({
       headerAlign: "center",
       field: "assignedToManager",
       headerName: t("label_manager"),
-      minWidth: 100,
+      minWidth: 120,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
@@ -390,7 +390,7 @@ const AllLeads = ({
       headerAlign: "center",
       field: "assignedToSales",
       headerName: t("label_agent"),
-      minWidth: 100,
+      minWidth: 120,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
@@ -405,7 +405,7 @@ const AllLeads = ({
       field: "feedback",
       headerAlign: "center",
       headerName: t("label_feedback"),
-      minWidth: 100,
+      minWidth: 120,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
