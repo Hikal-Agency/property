@@ -29,6 +29,7 @@ const style = {
 };
 
 const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM", "AD-MARAHEB"];
+const smsService = ["ETHISALAT", "TWILLIO"];
 const charLimitForEnglish = 160;
 const charLimitForArabic = 70;
 
@@ -54,13 +55,14 @@ const SendMessageModal = ({
   const [selectedTemplate, setSelectedTemplate] = useState(false);
   const [templates, setTemplates] = useState([]);
   const [selectedImg, setSelectedImg] = useState({
-    file: null, 
-    binary: ""
+    file: null,
+    binary: "",
   });
   const [smsTextValue, setsmsTextValue] = useState("");
   const [messagesSent, setMessagesSent] = useState(false);
   const [defaultMessageValue, setDefaultMessageValue] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
+  const [smsAccount, setSMSAccount] = useState("");
 
   var turndownService = new TurndownService();
 
@@ -109,7 +111,7 @@ const SendMessageModal = ({
     reader.readAsDataURL(files[0]);
 
     reader.onload = (e) => {
-      setSelectedImg({file: files[0], binary: e.target.result});
+      setSelectedImg({ file: files[0], binary: e.target.result });
     };
   };
 
@@ -184,43 +186,46 @@ const SendMessageModal = ({
           id: waDevice,
         });
         socket.on("whatsapp_check_device_send_msg_modal", async (result) => {
-           if (result) {
-          turndownService.addRule("strikethrough", {
-            filter: ["del", "s", "strike"],
-            replacement: function (content) {
-              return "~" + content + "~";
-            },
-          });
-          const messageText = turndownService.turndown(messageValue);
-          const waDevice = localStorage.getItem("authenticated-wa-device");
+          if (result) {
+            turndownService.addRule("strikethrough", {
+              filter: ["del", "s", "strike"],
+              replacement: function (content) {
+                return "~" + content + "~";
+              },
+            });
+            const messageText = turndownService.turndown(messageValue);
+            const waDevice = localStorage.getItem("authenticated-wa-device");
 
-          const data = new FormData();
-          
-          data.append("contacts", JSON.stringify(selectedContacts));
-          data.append("img", selectedImg?.file);
-          data.append("id", waDevice);
-          data.append("caption", messageText);
+            const data = new FormData();
 
-          await axios.post(process.env.REACT_APP_SOCKET_URL + "/whatsapp/sendBulkMessage" , data, {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          });
+            data.append("contacts", JSON.stringify(selectedContacts));
+            data.append("img", selectedImg?.file);
+            data.append("id", waDevice);
+            data.append("caption", messageText);
 
-          setbtnloading(false);
-          setMessagesSent(true);
-          toast.success("Messages are being sent. ", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
+            await axios.post(
+              process.env.REACT_APP_SOCKET_URL + "/whatsapp/sendBulkMessage",
+              data,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+
+            setbtnloading(false);
+            setMessagesSent(true);
+            toast.success("Messages are being sent. ", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
         });
-
       } else {
         toast.error("Connect your device first! ", {
           position: "top-right",
@@ -345,7 +350,6 @@ const SendMessageModal = ({
     fetchTemplates();
   }, []);
 
-
   return (
     <>
       <Modal
@@ -395,29 +399,56 @@ const SendMessageModal = ({
           ) : (
             <>
               {!sendMessageModal.isWhatsapp && (
-                <TextField
-                  select
-                  id="senderAdd"
-                  type={"text"}
-                  label={t("sender_address")}
-                  variant="outlined"
-                  size="small"
-                  sx={{ marginTop: "20px" }}
-                  className="w-[150px]"
-                  required
-                  value={senderAddress}
-                  onChange={(e) => {
-                    setSenderAddress(e.target.value);
-                  }}
-                >
-                  <MenuItem value="" disabled>
-                    {t("select_sender_address")}
-                  </MenuItem>
+                <>
+                  <TextField
+                    select
+                    id="senderAdd"
+                    type={"text"}
+                    label={t("sms_service")}
+                    variant="outlined"
+                    size="small"
+                    sx={{ marginTop: "20px", marginRight: "10px" }}
+                    className="w-[150px] mr-4"
+                    required
+                    value={smsAccount}
+                    onChange={(e) => {
+                      setSMSAccount(e.target.value);
+                    }}
+                  >
+                    <MenuItem value="" disabled>
+                      {t("select_sms_service")}
+                    </MenuItem>
 
-                  {senderAddresses?.map((address) => {
-                    return <MenuItem value={address}>{address}</MenuItem>;
-                  })}
-                </TextField>
+                    {smsService?.map((service) => {
+                      return <MenuItem value={service}>{service}</MenuItem>;
+                    })}
+                  </TextField>
+                  {smsAccount !== "" && (
+                    <TextField
+                      select
+                      id="senderAdd"
+                      type={"text"}
+                      label={t("sender_address")}
+                      variant="outlined"
+                      size="small"
+                      sx={{ marginTop: "20px" }}
+                      className="w-[150px]"
+                      required
+                      value={senderAddress}
+                      onChange={(e) => {
+                        setSenderAddress(e.target.value);
+                      }}
+                    >
+                      <MenuItem value="" disabled>
+                        {t("select_sender_address")}
+                      </MenuItem>
+
+                      {senderAddresses?.map((address) => {
+                        return <MenuItem value={address}>{address}</MenuItem>;
+                      })}
+                    </TextField>
+                  )}
+                </>
               )}
 
               <Tabs
