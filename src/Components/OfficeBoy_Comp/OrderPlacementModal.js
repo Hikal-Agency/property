@@ -5,6 +5,7 @@ import {
   CircularProgress,
   IconButton,
   Modal,
+  TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
@@ -16,7 +17,7 @@ const style = {
 };
 
 const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
-  const { currentMode, t } = useStateContext();
+  const { currentMode, t, darkModeColors } = useStateContext();
   const [orderBtnLoading, setOrderBtnLoading] = useState(false);
   return (
     <Modal
@@ -69,25 +70,46 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center">
-          <Box>
-            {/* <TextField
-              id="Manager"
-              // sx={{
-              //   "&": {
-              //     marginBottom: "1.25rem !important",
-              //   },
-              // }}
-              placeholder="Recipients"
-              multiline
-              minRows={2}
-              label={t("label_recipients")}
-              value={contactsList?.join(",")}
-              onChange={handleContacts}
-              size="small"
-              className="w-full p-2"
-              displayEmpty
-            /> */}
+        <div className="px-5">
+          <Box sx={darkModeColors}>
+            <div>
+              <TextField
+                type={"number"}
+                id="Manager"
+                // sx={{
+                //   "&": {
+                //     marginBottom: "1.25rem !important",
+                //   },
+                // }}
+                placeholder="Recipients"
+                multiline
+                minRows={2}
+                label={t("label_recipients")}
+                //   value={contactsList?.join(",")}
+                //   onChange={handleContacts}
+                size="small"
+                className="w-full p-2"
+                displayEmpty
+              />
+              <TextField
+                type={"text"}
+                id="Manager"
+                // sx={{
+                //   "&": {
+                //     marginBottom: "1.25rem !important",
+                //   },
+                // }}
+                placeholder="Recipients"
+                multiline
+                minRows={2}
+                label={t("label_recipients")}
+                //   value={contactsList?.join(",")}
+                //   onChange={handleContacts}
+                size="small"
+                className="w-full p-2"
+                displayEmpty
+              />
+            </div>
           </Box>
         </div>
 
