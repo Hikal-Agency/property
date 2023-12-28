@@ -20,7 +20,7 @@ const Twillio = () => {
     twilio_token: null,
   });
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("auth-token");
 
   const integrateTwillio = async () => {
     try {
