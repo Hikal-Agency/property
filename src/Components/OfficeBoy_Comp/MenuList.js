@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 
 import { useEffect } from "react";
+import OrderPlacementModal from "./OrderPlacementModal";
 
 const MenuList = ({
   user,
@@ -15,6 +16,7 @@ const MenuList = ({
 }) => {
   const { currentMode, isArabic, primaryColor, t, themeBgImg } =
     useStateContext();
+  const [openOrderModal, setOpenOrderModal] = useState(false);
 
   const imagePaths = ["../assets/offers_static_img.png"];
 
@@ -108,7 +110,7 @@ const MenuList = ({
           {offersArr?.map((offer, index) => {
             return (
               <div
-                className={`card-hover relative overflow-hidden rounded-lg shadow-sm offers-page-${
+                className={`card-hover cursor-pointer relative overflow-hidden rounded-lg shadow-sm offers-page-${
                   offer?.page
                 } ${
                   !themeBgImg
@@ -119,6 +121,7 @@ const MenuList = ({
                     ? "blur-bg-dark text-white"
                     : "blur-bg-light text-black"
                 } `}
+                onClick={() => setOpenOrderModal(true)}
               >
                 {offer?.status?.toLowerCase() === "expired" && (
                   <Box sx={{ ...ribbonStyles }}>
@@ -188,6 +191,10 @@ const MenuList = ({
           </div>
         )}
       </Box>
+      <OrderPlacementModal
+        openOrderModal={openOrderModal}
+        setOpenOrderModal={setOpenOrderModal}
+      />
     </div>
   );
 };

@@ -842,5 +842,10 @@
     "subscription_details": "Subscription Details",
     "payment_duration": "Payment Duration",
     "registered_on": "Registered On",
-    "update_client": "Update Client"
+    "update_client": "Update Client",
+    "order":"Order",
+    "label_order_qty":"Order Quantity",
+    "label_order_amount":"Amount",
+    "label_order_note":"Note"
+
 }

@@ -13,7 +13,6 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import "react-phone-number-input/style.css";
 
-
 import Loader from "../Loader";
 import { useFilterContext } from "../../context/FilterContextProvider";
 
@@ -64,7 +63,8 @@ const BulkSMSModal = ({
 
     isArabic,
     isEnglish,
-    formatNum, t
+    formatNum,
+    t,
   } = useStateContext();
 
   const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM", "AD-MARAHEB"];
@@ -152,8 +152,8 @@ const BulkSMSModal = ({
 
       console.log("range: ", range);
 
-      const newContacts = range?.data?.result?.map(
-        (contact) => contact?.leadContact?.replaceAll(" ", "")
+      const newContacts = range?.data?.result?.map((contact) =>
+        contact?.leadContact?.replaceAll(" ", "")
       );
 
       // Filter out existing contacts from contactsList based on whether they exist in newContacts
@@ -291,8 +291,6 @@ const BulkSMSModal = ({
 
   const [Manager, setManager] = useState("");
 
-
-
   // eslint-disable-next-line
   const ChangeManager = (event) => {
     setManager(event.target.value);
@@ -312,10 +310,7 @@ const BulkSMSModal = ({
         <Loader />
       ) : (
         <div className="mx-auto">
-          <form
-
-            disabled={loading ? true : false}
-          >
+          <form disabled={loading ? true : false}>
             <div className="w-full flex items-center py-1 mb-2">
               <div className="bg-primary h-10 w-1 rounded-full"></div>
               <h1
@@ -364,7 +359,6 @@ const BulkSMSModal = ({
                       className="pr-2"
                       style={{ width: "100%", position: "relative" }}
                     >
-  
                       <Box sx={darkModeColors}>
                         <TextField
                           label="From"
@@ -514,76 +508,78 @@ const BulkSMSModal = ({
                         : "text-[#1C1C1C]"
                     } text-center font-semibold pb-4`}
                   >
-                   {t("sms_message")}
+                    {t("sms_message")}
                   </h4>
 
                   <div className="w-full h-full mb-4 border border-gray-200 rounded-lg bg-gray-50 ">
-                  <div className="flex items-center justify-between px-3 py-2 border-b">
+                    <div className="flex items-center justify-between px-3 py-2 border-b">
+                      {lang && (
+                        <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
+                          <div>{lang}</div>
+                          {lang && (
+                            <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
+                          )}
+                          <div
+                            className={`flex flex-wrap items-center ${
+                              smsTextValue?.trim()?.length >
+                              (lang === "English"
+                                ? charLimitForEnglish
+                                : charLimitForArabic)
+                                ? "text-primary"
+                                : ""
+                            }`}
+                          >
+                            {formatNum(smsTextValue?.trim()?.length)}
                             {lang && (
-                              <div className="flex flex-wrap items-center divide-gray-200 sm:divide-x ">
-                                <div>{lang}</div>
-                                {lang && (
-                                  <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
-                                )}
-                                <div
-                                  className={`flex flex-wrap items-center ${
-                                    smsTextValue?.trim()?.length >
-                                    (lang === "English"
-                                      ? charLimitForEnglish
-                                      : charLimitForArabic)
-                                      ? "text-primary"
-                                      : ""
-                                  }`}
-                                >
-                                  {formatNum(smsTextValue?.trim()?.length)}
-                                     {lang && (
-                                  <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
-                                )}
-                                  <p className="ml-2">
-                                    {parseInt((smsTextValue?.trim()?.length - 1) / ((lang === "English"
-                                      ? charLimitForEnglish
-                                      : charLimitForArabic)) + 1
-                                    )}
-                                    {" "}message(s)
-                                  </p>
-                                </div>
-                              </div>
+                              <div className="w-[2px] h-[12px] mx-3 bg-gray-400"></div>
                             )}
-                            <button
-                              type="button"
-                              className="p-2 text-gray-500 rounded cursor-pointer sm:ml-auto hover:text-gray-900 hover:bg-gray-100"
-                            >
-                              <svg
-                                className="w-4 h-4"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 19 19"
-                              >
-                                <path
-                                  stroke="currentColor"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
-                                />
-                              </svg>
-                              <span className="sr-only">{t("full_screen")}</span>
-                            </button>
-                          </div>
-                          <div className="px-4 h-full py-2 bg-white rounded-b-lg">
-                            <textarea
-                              value={smsTextValue}
-                              onInput={(e) =>
-                                setSmsTextValue(e.target.value?.toString())
-                              }
-                              
-                              className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
-                              placeholder="Type the message ..."
-                              required
-                            ></textarea>
+                            <p className="ml-2">
+                              {parseInt(
+                                (smsTextValue?.trim()?.length - 1) /
+                                  (lang === "English"
+                                    ? charLimitForEnglish
+                                    : charLimitForArabic) +
+                                  1
+                              )}{" "}
+                              message(s)
+                            </p>
                           </div>
                         </div>
+                      )}
+                      <button
+                        type="button"
+                        className="p-2 text-gray-500 rounded cursor-pointer sm:ml-auto hover:text-gray-900 hover:bg-gray-100"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 19 19"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 1h5m0 0v5m0-5-5 5M1.979 6V1H7m0 16.042H1.979V12M18 12v5.042h-5M13 12l5 5M2 1l5 5m0 6-5 5"
+                          />
+                        </svg>
+                        <span className="sr-only">{t("full_screen")}</span>
+                      </button>
+                    </div>
+                    <div className="px-4 h-full py-2 bg-white rounded-b-lg">
+                      <textarea
+                        value={smsTextValue}
+                        onInput={(e) =>
+                          setSmsTextValue(e.target.value?.toString())
+                        }
+                        className="block focus:border-0 focus:outline-none w-full h-full px-0 text-gray-800 bg-white border-0 focus:ring-0 "
+                        placeholder="Type the message ..."
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
 
                   {/* <label
                     className={`flex my-3 mt-4  ${
@@ -640,9 +636,7 @@ const BulkSMSModal = ({
                   ripple={true}
                   size="lg"
                   type="submit"
-                  disabled={
-                    smsTextValue?.trim()?.length === 0 ? true : false
-                    }
+                  disabled={smsTextValue?.trim()?.length === 0 ? true : false}
                   onClick={(e) => sendMsg(e)}
                 >
                   {msgLoading ? (
