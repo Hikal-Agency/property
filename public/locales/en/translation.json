@@ -847,6 +847,8 @@
     "label_order_qty":"Order Quantity",
     "label_order_amount":"Amount",
     "label_order_note":"Note",
-    "product_inventory":"Inventory"
+    "product_inventory":"Inventory",
+    "inventory_status_avail":"Available",
+    "inventory_status_stock":"Out Of Stock"
 
 }
