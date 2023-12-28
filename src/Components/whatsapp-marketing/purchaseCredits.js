@@ -33,51 +33,44 @@ const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
   const [btnloading, setbtnloading] = useState(false);
 
   const subscribe = async (data) => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      setbtnloading(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/createToken`,
-        JSON.stringify(data),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const stripeToken = response.data;
-      const resp = await axios.post(
-        `${BACKEND_URL}/purchase-credits`,
-        JSON.stringify({
-          credits: formValues?.credits,
-          stripe_token: stripeToken,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      setbtnloading(false);
-      toast.success("Credits purchased!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+    const token = localStorage.getItem("auth-token");
+    if (User?.role == 1) {
+      // const userCredit = User?.credits;
+      // const addCredit = formValues?.credits;
+
+      const response = await axios.get(`${BACKEND_URL}/users/${User?.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
       });
-      setUserCredits(resp.data?.credits);
-      handleClose();
-    } catch (error) {
-      console.log(error);
-      toast.error(
-        error?.response?.data?.message || "Purchase credits failed!",
-        {
+
+      console.log("USER CREDIT === ", response?.data?.data?.credits);
+      console.log("ADD CREDIT === ", formValues?.credits);
+
+      const userCredit = parseInt(response?.data?.data?.credits, 10) || 0;
+      const addCredit = parseInt(formValues?.credits, 10) || 0;
+
+      const newCredit = userCredit + addCredit;
+      console.log("NEW CREDIT === ", userCredit + addCredit);
+
+      const updated_data = new FormData();
+      updated_data.append("credits", newCredit);
+
+      try {
+        setbtnloading(true);
+        const UpdateUser = await axios.post(
+          `${BACKEND_URL}/updateuser/${User?.id}`,
+          updated_data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        setbtnloading(false);
+        toast.success("Credit added successfully.", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -86,9 +79,83 @@ const PurchaseCreditsModal = ({ purchaseCreditsModal, handleClose }) => {
           draggable: true,
           progress: undefined,
           theme: "light",
-        }
-      );
-      setbtnloading(false);
+        });
+  
+        console.log("Response: ", UpdateUser);
+  
+      } catch (error) {
+        setbtnloading(false);
+        console.log("Error: ", error);
+        toast.error("Unable to add credit.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    }
+    else {
+      try {
+        const token = localStorage.getItem("auth-token");
+        setbtnloading(true);
+        const response = await axios.post(
+          `${BACKEND_URL}/createToken`,
+          JSON.stringify(data),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const stripeToken = response.data;
+        const resp = await axios.post(
+          `${BACKEND_URL}/purchase-credits`,
+          JSON.stringify({
+            credits: formValues?.credits,
+            stripe_token: stripeToken,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        setbtnloading(false);
+        toast.success("Credits purchased!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setUserCredits(resp.data?.credits);
+        handleClose();
+      } catch (error) {
+        console.log(error);
+        toast.error(
+          error?.response?.data?.message || "Purchase credits failed!",
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+        setbtnloading(false);
+      }
     }
   };
 
