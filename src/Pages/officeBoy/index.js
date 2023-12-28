@@ -5,6 +5,7 @@ import Loader from "../../Components/Loader";
 import MenuList from "../../Components/OfficeBoy_Comp/MenuList";
 import usePermission from "../../utils/usePermission";
 import { Button } from "@mui/material";
+import Inventory from "../../Components/OfficeBoy_Comp/Inventory";
 
 const Menu = () => {
   const {
@@ -26,6 +27,7 @@ const Menu = () => {
   const [offers, setOffers] = useState([]);
   const [btnloading, setbtnloading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [openInventory, setOpenInventory] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -113,8 +115,9 @@ const Menu = () => {
                   background: `${primaryColor}`,
                   color: "#fff",
                 }}
+                onClick={() => setOpenInventory(true)}
               >
-                Inventory
+                {t("product_inventory")}
               </Button>
             </div>
 
@@ -129,6 +132,12 @@ const Menu = () => {
               offers={offers}
               setCurrentPage={setCurrentPage}
             />
+            {openInventory && (
+              <Inventory
+                openInventory={openInventory}
+                setOpenInventory={setOpenInventory}
+              />
+            )}
           </div>
         )}
       </div>

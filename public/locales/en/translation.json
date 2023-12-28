@@ -846,6 +846,7 @@
     "order":"Order",
     "label_order_qty":"Order Quantity",
     "label_order_amount":"Amount",
-    "label_order_note":"Note"
+    "label_order_note":"Note",
+    "product_inventory":"Inventory"
 
 }
