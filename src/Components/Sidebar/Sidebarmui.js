@@ -8,6 +8,8 @@ import {
   SubMenu,
   sidebarClasses,
 } from "react-pro-sidebar";
+import { GrConnect } from "react-icons/gr";
+
 import { toast } from "react-toastify";
 import ReactConfetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
@@ -387,7 +389,7 @@ const Sidebarmui = () => {
 
           socket.emit("add_user", {
             ...user,
-            platform: "web"
+            platform: "web",
           });
 
           localStorage.setItem("user", JSON.stringify(user));
@@ -1588,6 +1590,12 @@ const Sidebarmui = () => {
       icon: <BsGear size={18} />,
       pro: false,
       links: [
+        {
+          name: t("menu_twillio_integration"),
+          icon: <GrConnect size={16} />,
+          pro: false,
+          link: "/twillioSetting",
+        },
         {
           name: t("notifications"),
           icon: <BsBell size={16} />,

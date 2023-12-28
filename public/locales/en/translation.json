@@ -66,6 +66,7 @@
     "menu_cold": "Cold",
     "menu_archived": "Archived",
     "menu_personal": "Personal",
+    "menu_twillio_integration": "Twillio Integration",
     "lead": "Lead",
     "add_lead": "Add Lead",
     "unassigned": "Unassigned",
@@ -839,5 +840,10 @@
     "subscription_details": "Subscription Details",
     "payment_duration": "Payment Duration",
     "registered_on": "Registered On",
-    "update_client": "Update Client"
+    "update_client": "Update Client",
+    "integrate_twillio": "Integrate Twillio",
+    "twillio_id": "Twillio Id",
+    "twillio_token": "Token",
+    "twillio_add": "Integrate"
+
 }

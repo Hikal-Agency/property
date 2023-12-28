@@ -79,6 +79,7 @@ import Snapchat from "./SocialMedia/snapchat";
 import TransferRequest from "./transfferedleads/TransferRequest";
 import OnBoarding from "./OnBoarding";
 import ClientsList from "./OnBoarding/ClientsList";
+import Twillio from "./twillio";
 
 const libraries = ["places"];
 
@@ -472,6 +473,11 @@ const routes = [
     path: "/buyers/:lead_type",
     element: <Buyers />,
     pageName: "Buyers",
+  },
+  {
+    path: "/twillioSetting",
+    element: <Twillio />,
+    pageName: "Twillio",
   },
   {
     path: "*",
