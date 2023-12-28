@@ -44,6 +44,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
               position: "absolute",
               right: 5,
               top: 2,
+              cursor: "pointer",
               color: (theme) => theme.palette.grey[500],
             }}
             onClick={() => setOpenOrderModal(false)}
@@ -65,14 +66,14 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              {t("btn_send_bulk_sms")}
+              Order Product Name
             </h1>
           </div>
         </div>
 
         <div className="px-5">
           <Box sx={darkModeColors}>
-            <div>
+            <div className="flex justify-between space-x-4">
               <TextField
                 type={"number"}
                 id="Manager"
@@ -82,9 +83,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 //   },
                 // }}
                 placeholder="Recipients"
-                multiline
-                minRows={2}
-                label={t("label_recipients")}
+                label={t("label_order_qty")}
                 //   value={contactsList?.join(",")}
                 //   onChange={handleContacts}
                 size="small"
@@ -92,7 +91,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 displayEmpty
               />
               <TextField
-                type={"text"}
+                type={"number"}
                 id="Manager"
                 // sx={{
                 //   "&": {
@@ -100,9 +99,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 //   },
                 // }}
                 placeholder="Recipients"
-                multiline
-                minRows={2}
-                label={t("label_recipients")}
+                label={t("label_order_amount")}
                 //   value={contactsList?.join(",")}
                 //   onChange={handleContacts}
                 size="small"
@@ -111,11 +108,29 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
               />
             </div>
           </Box>
+          <Box sx={darkModeColors}>
+            <TextField
+              type={"text"}
+              id="Note"
+              sx={{
+                "&": {
+                  marginTop: "1.25rem !important",
+                },
+              }}
+              placeholder="Recipients"
+              label={t("label_order_note")}
+              //   value={contactsList?.join(",")}
+              //   onChange={handleContacts}
+              size="small"
+              className="w-full p-2"
+              displayEmpty
+            />
+          </Box>
         </div>
 
-        <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+        <div className="action buttons mt-5 flex items-center justify-center w-full">
           <Button
-            className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+            className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none w-full`}
             ripple="true"
             size="lg"
             style={{
