@@ -25,7 +25,7 @@ const Twillio = () => {
   const integrateTwillio = async () => {
     try {
       const twillioIntegration = await axios.post(
-        `${BACKEND_URL}/send-tw-message`,
+        `${BACKEND_URL}/store-tw-credentials`,
         twillioData,
         {
           headers: {
