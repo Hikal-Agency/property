@@ -509,18 +509,5 @@ export const inventory_status = (t) => [
   {
     value: "out_of_stock",
     label: t("inventory_status_stock"),
-    icon: (
-      <TbFlag3Filled
-        size={16}
-        className={`text-${priorityColors.Medium}-500`}
-      />
-    ),
-  },
-  {
-    value: "Low",
-    label: t("priority_low"),
-    icon: (
-      <TbFlag3Filled size={16} className={`text-${priorityColors.Low}-500`} />
-    ),
   },
 ];

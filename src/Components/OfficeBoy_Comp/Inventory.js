@@ -1,9 +1,12 @@
-import { Backdrop, Box, Modal, Select } from "@mui/material";
+import { Backdrop, Box, Button, IconButton, Modal } from "@mui/material";
+import Select from "react-select";
 import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import Error404 from "../../Pages/Error";
 import { DataGrid } from "@mui/x-data-grid";
+import { inventory_status } from "../_elements/SelectOptions";
+import { renderStyles } from "../_elements/SelectStyles";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -13,9 +16,20 @@ const style = {
 const Inventory = ({ openInventory, setOpenInventory }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
 
-  const { t, currentMode, isLangRTL, i18n, User, DataGridStyles } =
-    useStateContext();
+  const {
+    t,
+    currentMode,
+    isLangRTL,
+    i18n,
+    User,
+    DataGridStyles,
+    primaryColor,
+  } = useStateContext();
   const [isClosing, setIsClosing] = useState(false);
+  console.log("inventory status array ::::: ", inventory_status(t));
+  const inventoryStatus = "available";
+
+  const changeStatus = () => {};
   const rows = [
     {
       id: 1,
@@ -79,31 +93,29 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
         return (
           <Select
             id="manager"
-            value={
-              String(manager2) === "1" || !manager2 || manager2 === "0"
-                ? null
-                : {
-                    label: Managers.find((manager) => manager.id === manager2)
-                      ?.userName,
-                    value: manager2,
-                  }
-            }
-            onChange={ChangeManager}
-            options={[
-              {
-                label: "---", //"---" + t("label_manager") + "---",
-                value: null,
-              },
-              ...(Managers?.map((manager) => ({
-                label: manager?.userName,
-                value: manager?.id,
-              })) ?? []),
-            ]}
+            // value={inventory_status(t)?.find(
+            //   (option) => option?.value === inventoryStatus
+            // )}
+            onChange={changeStatus}
+            options={inventory_status(t)}
             placeholder={t("label_manager")}
             className={`w-full`}
             menuPortalTarget={document.body}
             styles={renderStyles(currentMode, primaryColor)}
           />
+        );
+      },
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 120,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div>
+            <IconButton></IconButton>
+          </div>
         );
       },
     },
@@ -186,7 +198,14 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
                   </div>
 
                   <div className="w-full flex justify-end items-center">
-                    Button
+                    <Button
+                      style={{
+                        background: `${primaryColor}`,
+                        color: "#fff",
+                      }}
+                    >
+                      {t("add_item")}
+                    </Button>
                   </div>
                 </div>
 
