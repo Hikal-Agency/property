@@ -197,7 +197,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
               <Error404 />
             ) : (
               <div>
-                <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5">
+                <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5 mb-3">
                   <div className="w-full flex items-center pb-3 ">
                     <div
                       className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"}
