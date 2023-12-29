@@ -7,6 +7,9 @@ import Error404 from "../../Pages/Error";
 import { DataGrid } from "@mui/x-data-grid";
 import { inventory_status } from "../_elements/SelectOptions";
 import { renderStyles } from "../_elements/SelectStyles";
+import { FaPencilAlt } from "react-icons/fa";
+
+import { BiTrash } from "react-icons/bi";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -92,13 +95,13 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       renderCell: (cellValues) => {
         return (
           <Select
-            id="manager"
+            id="status"
             // value={inventory_status(t)?.find(
             //   (option) => option?.value === inventoryStatus
             // )}
             onChange={changeStatus}
             options={inventory_status(t)}
-            placeholder={t("label_manager")}
+            placeholder={t("select_status")}
             className={`w-full`}
             menuPortalTarget={document.body}
             styles={renderStyles(currentMode, primaryColor)}
@@ -113,8 +116,15 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       headerAlign: "center",
       renderCell: (cellValues) => {
         return (
-          <div>
-            <IconButton></IconButton>
+          <div className="">
+            <IconButton
+              sx={{ background: `${primaryColor}`, marginRight: "10px" }}
+            >
+              <FaPencilAlt color="#ffffff" size={12} />
+            </IconButton>
+            <IconButton sx={{ background: `${primaryColor}` }}>
+              <BiTrash color="#ffffff" size={12} />
+            </IconButton>
           </div>
         );
       },
