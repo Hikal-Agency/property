@@ -10,6 +10,7 @@ import { renderStyles } from "../_elements/SelectStyles";
 import { FaPencilAlt } from "react-icons/fa";
 
 import { BiTrash } from "react-icons/bi";
+import AddItem from "./AddItem";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -18,6 +19,7 @@ const style = {
 
 const Inventory = ({ openInventory, setOpenInventory }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
+  const [openAddItem, setOpenAddItem] = useState(false);
 
   const {
     t,
@@ -213,6 +215,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
                         background: `${primaryColor}`,
                         color: "#fff",
                       }}
+                      onClick={() => setOpenAddItem(true)}
                     >
                       {t("add_item")}
                     </Button>
@@ -288,6 +291,12 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
               </div>
             )}
           </div>
+          {openAddItem && (
+            <AddItem
+              openAddItem={openAddItem}
+              setOpenAddItem={setOpenAddItem}
+            />
+          )}
         </div>
       </Modal>
     </>
