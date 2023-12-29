@@ -144,7 +144,11 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
                           <br></br>
                         </Box> */}
 
-                        {/* <div className="grid grid-cols-2 gap-3 mt-3"> */}
+                        <div className="  mb-5 flex items-center justify-center ">
+                          <div className=" rounded-lg border">
+                            <img src="./dddd" width="100px" height="100px" />
+                          </div>
+                        </div>
                         <input
                           accept="image/*"
                           style={{ display: "none" }}
@@ -173,7 +177,6 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
                             <span>{t("button_upload_image")}</span>
                           </Button>
                         </label>
-                        {/* </div> */}
                       </Box>
                       <Box
                         sx={{
