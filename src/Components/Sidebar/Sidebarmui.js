@@ -1605,11 +1605,11 @@ const Sidebarmui = () => {
             //   name: "Integration",
             //   link: "/integrations",
             // },
-            // {
-            //   name: t("menu_notification_settings"),
-            //   pro: false,
-            //   link: "/notifications",
-            // },
+            {
+              name: t("menu_notification_settings"),
+              pro: false,
+              link: "/notifications",
+            },
             {
               name: t("menu_notification_history"),
               pro: false,
