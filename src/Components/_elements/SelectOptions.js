@@ -511,3 +511,23 @@ export const inventory_status = (t) => [
     label: t("inventory_status_stock"),
   },
 ];
+
+// ORDER STATUS
+export const order_status = (t) => [
+  {
+    value: "preparing",
+    label: t("order_status_preparing"),
+  },
+  {
+    value: "delivered",
+    label: t("order_status_delivered"),
+  },
+  {
+    value: "out_of_stock",
+    label: t("order_status_out_of_stock"),
+  },
+  {
+    value: "out_of_stock",
+    label: t("order_status_out_of_stock"),
+  },
+];

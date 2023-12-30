@@ -844,6 +844,7 @@
     "registered_on": "Registered On",
     "update_client": "Update Client",
     "order":"Order",
+    "order_history":"Order History",
     "label_order_qty":"Order Quantity",
     "label_order_amount":"Amount",
     "label_order_note":"Note",
