@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { Box, Button, CircularProgress, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
+import PhoneInput, {
+  formatPhoneNumberIntl,
+  isValidPhoneNumber,
+  isPossiblePhoneNumber,
+} from "react-phone-number-input";
+import classNames from "classnames";
 
 const Twillio = () => {
   const {
@@ -19,12 +31,42 @@ const Twillio = () => {
   const [twillioData, setTwillioData] = useState({
     twilio_id: null,
     twilio_token: null,
+    twilio_number: null,
   });
+  const [value, setValue] = useState();
+  const [error, setError] = useState(false);
+
+  const handleContact = () => {
+    setError(false);
+    const inputValue = value;
+    console.log("Phone: ", inputValue);
+    if (inputValue && isPossiblePhoneNumber(inputValue)) {
+      console.log("Possible: ", inputValue);
+      if (isValidPhoneNumber(inputValue)) {
+        setTwillioData({
+          ...twillioData,
+          twilio_number: formatPhoneNumberIntl(inputValue),
+        });
+        // setLeadContact(formatPhoneNumberIntl(inputValue));
+        console.log("Valid lead contact: ", twillioData?.twilio_number);
+        console.log("Valid input: ", inputValue);
+        setError(false);
+      } else {
+        setError("Not a valid number.");
+      }
+    } else {
+      setError("Not a valid number.");
+    }
+  };
 
   const token = localStorage.getItem("auth-token");
 
   const integrateTwillio = async () => {
-    if (!twillioData?.twilio_id || !twillioData?.twilio_token) {
+    if (
+      !twillioData?.twilio_id ||
+      !twillioData?.twilio_token ||
+      !twillioData?.twilio_number
+    ) {
       toast.error("All fields are required.", {
         position: "top-right",
         autoClose: 3000,
@@ -103,7 +145,7 @@ const Twillio = () => {
                   // : "blur-bg-light shadow-sm")
                   "bg-blue-500 shadow-sm"
                 : "blur-bg-light shadow-sm")
-            } p-5 rounded-lg w-4/5 h-52  `}
+            } p-5 rounded-lg w-4/6 h-56  `}
             style={{
               background: currentMode === "dark" ? "#1c1c1c" : "#EEEEEE",
             }}
@@ -170,6 +212,49 @@ const Twillio = () => {
                       }
                       required
                     />
+                  </div>
+                  <div>
+                    <PhoneInput
+                      placeholder={t("label_contact_number")}
+                      value={value}
+                      onChange={(value) => setValue(value)}
+                      onKeyUp={handleContact}
+                      error={error}
+                      className={` ${classNames({
+                        "dark-mode": currentMode === "dark",
+                        "phone-input-light": currentMode !== "dark",
+                        "phone-input-dark": currentMode === "dark",
+                      })} mb-5`}
+                      size="small"
+                      style={{
+                        background: `${
+                          !themeBgImg
+                            ? currentMode === "dark"
+                              ? "#000000"
+                              : "#FFFFFF"
+                            : "transparent"
+                          // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
+                        }`,
+                        "& .PhoneInputCountryIconImg": {
+                          color: "#fff",
+                        },
+                        color: currentMode === "dark" ? "white" : "black",
+                        border: `1px solid ${
+                          currentMode === "dark" ? "#EEEEEE" : "#666666"
+                        }`,
+                        borderRadius: "5px",
+                        outline: "none",
+                      }}
+                      inputStyle={{
+                        outline: "none !important",
+                      }}
+                      required
+                    />
+                    {error && (
+                      <Typography variant="body2" color="error">
+                        {error}
+                      </Typography>
+                    )}
                   </div>
                 </Box>
               </div>
