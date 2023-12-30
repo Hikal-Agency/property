@@ -45,18 +45,25 @@ export const feedback_options = (t) => [
   {
     value: "Callback",
     label: t("feedback_callback"),
+<<<<<<< HEAD
     bgColor: "#FFED9A",
     color: "#000000",
+=======
+>>>>>>> office_boy
   },
   {
     value: "Follow Up (Short Term)",
     label: t("feedback_follow_up_short_term"),
+<<<<<<< HEAD
     bgColor: "#FFF799",
     color: "#000000",
+=======
+>>>>>>> office_boy
   },
   {
     value: "Follow Up (Long Term)",
     label: t("feedback_follow_up_long_term"),
+<<<<<<< HEAD
     bgColor: "#FFDD99",
     color: "#000000",
   },
@@ -95,24 +102,59 @@ export const feedback_options = (t) => [
     label: t("feedback_not_interested"),
     bgColor: "#F16C4D",
     color: "#FFFFFF",
+=======
+  },
+  {
+    value: "Meeting",
+    label: t("feedback_meeting"),
+  },
+  {
+    value: "Booked",
+    label: t("feedback_booked"),
+  },
+  {
+    value: "Low Budget",
+    label: t("feedback_low_budget"),
+  },
+  {
+    value: "Not Interested",
+    label: t("feedback_not_interested"),
+  },
+  {
+    value: "No Answer",
+    label: t("feedback_no_answer"),
+  },
+  {
+    value: "Switched Off",
+    label: t("feedback_switched_off"),
+>>>>>>> office_boy
   },
   {
     value: "Unreachable",
     label: t("feedback_unreachable"),
+<<<<<<< HEAD
     bgColor: "#898989",
     color: "#FFFFFF",
+=======
+>>>>>>> office_boy
   },
   {
     value: "Wrong Number",
     label: t("feedback_wrong_number"),
+<<<<<<< HEAD
     bgColor: "#7D7D7D",
     color: "#FFFFFF",
+=======
+>>>>>>> office_boy
   },
   {
     value: "Duplicate",
     label: t("feedback_duplicate"),
+<<<<<<< HEAD
     bgColor: "#707070",
     color: "#FFFFFF",
+=======
+>>>>>>> office_boy
   },
   // {
   //   value: "Dead",
@@ -525,3 +567,38 @@ const priorityColors = {
   Low: "gray",
 };
 // PRIORITY ENDS
+<<<<<<< HEAD
+=======
+
+// INVENTORY STATUS
+export const inventory_status = (t) => [
+  {
+    value: "available",
+    label: t("inventory_status_avail"),
+  },
+  {
+    value: "out_of_stock",
+    label: t("inventory_status_stock"),
+  },
+];
+
+// ORDER STATUS
+export const order_status = (t) => [
+  {
+    value: "preparing",
+    label: t("order_status_preparing"),
+  },
+  {
+    value: "delivered",
+    label: t("order_status_delivered"),
+  },
+  {
+    value: "out_of_stock",
+    label: t("order_status_out_of_stock"),
+  },
+  {
+    value: "out_of_stock",
+    label: t("order_status_out_of_stock"),
+  },
+];
+>>>>>>> office_boy
