@@ -1,5 +1,5 @@
 import { Switch } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
@@ -56,12 +56,17 @@ const SwitchButtonComponent = ({
         : [...permitted, value],
     };
 
-    console.log("alert:: ", alerts);
+    console.log("alert:: ", alerts, permitted);
+
+    console.log(
+      "JSON alert: ",
+      JSON.stringify({ is_alert: JSON.stringify(alerts) })
+    );
 
     try {
       const response = await axios.post(
         `${BACKEND_URL}/updateuser/${User?.id}`,
-        JSON.stringify({ is_alert: alerts }),
+        JSON.stringify({ is_alert: JSON.stringify(alerts) }),
         {
           headers: {
             "Content-Type": "application/json",
@@ -102,6 +107,9 @@ const SwitchButtonComponent = ({
       setLoading(false);
     }
   };
+
+  useEffect(() => {}, [permitObj]);
+
   return (
     <>
       {" "}
