@@ -66,13 +66,10 @@
     "menu_cold": "Cold",
     "menu_archived": "Archived",
     "menu_personal": "Personal",
-<<<<<<< HEAD
     "menu_twillio_integration": "Twillio Integration",
-=======
     "menu_taste_hub": "Taste Hub",
     "menu_menu": "Menu",
     "menu_order_history": "Order History",
->>>>>>> office_boy
     "lead": "Lead",
     "add_lead": "Add Lead",
     "unassigned": "Unassigned",
@@ -849,12 +846,10 @@
     "payment_duration": "Payment Duration",
     "registered_on": "Registered On",
     "update_client": "Update Client",
-<<<<<<< HEAD
     "integrate_twillio": "Integrate Twillio",
     "twillio_id": "Twillio Id",
     "twillio_token": "Token",
-    "twillio_add": "Integrate"
-=======
+    "twillio_add": "Integrate",
     "order":"Order",
     "order_history":"Order History",
     "label_order_qty":"Order Quantity",
@@ -866,6 +861,5 @@
     "add_item":"Add Item",
     "label_item_name":"Item Name",
     "label_item_price":"Item Price"
->>>>>>> office_boy
 
 }
