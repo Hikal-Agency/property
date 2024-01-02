@@ -268,7 +268,7 @@ const ColdcallFiles = ({
       ) : coldcallFiles?.length > 0 ? (
         <div>
           <div className="flex justify-end items-center">
-          {(activeFile?.index && (leadCategory === "hot" && lead_type === "coldleads")) ?  
+          {((activeFile?.index || activeFile?.index === 0) && (leadCategory === "hot" && lead_type === "coldleads")) ?  
             <div className="mr-2">
               <Button
               onClick={() => setColdCallAssignModal({isOpen: true, file: activeFile?.file})}
