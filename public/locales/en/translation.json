@@ -860,6 +860,10 @@
     "inventory_status_stock":"Out Of Stock",
     "add_item":"Add Item",
     "label_item_name":"Item Name",
-    "label_item_price":"Item Price"
+    "label_item_price":"Item Price",
+    "order_status_preparing":"Preparing",
+    "order_status_delivered":"Delivered",
+    "order_status_out_of_stock":"Out Of Stock",
+    "order_cancel":"Cancelled"
 
 }

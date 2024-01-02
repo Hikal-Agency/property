@@ -553,7 +553,7 @@ export const order_status = (t) => [
     label: t("order_status_out_of_stock"),
   },
   {
-    value: "out_of_stock",
-    label: t("order_status_out_of_stock"),
+    value: "cancel",
+    label: t("order_cancel"),
   },
 ];

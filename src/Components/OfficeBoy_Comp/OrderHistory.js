@@ -36,9 +36,11 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
   const rows = [
     {
       id: 1,
+      date: "2023-20-12",
       itemName: "Product A",
-      itemPrice: 20.0,
-      note: "Lorem ipsum",
+      quantity: "2",
+      amount: "20",
+      User: "ubaid",
       status: "Active",
     },
     {
@@ -72,7 +74,7 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
   ];
 
   const columns = [
-    { field: "id", headerName: "ID", width: 100, headerAlign: "center" },
+    { field: "date", headerName: "date", width: 80, headerAlign: "center" },
     {
       field: "itemName",
       headerName: "Item Name",
@@ -80,34 +82,55 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
       headerAlign: "center",
     },
     {
-      field: "itemPrice",
-      headerName: "Item Price",
+      field: "quantity",
+      headerName: "Quantity",
+      flex: 1,
+      headerAlign: "center",
+      width: 70,
+    },
+
+    {
+      field: "amount",
+      headerName: "Amount",
+      type: "number",
+      width: 150,
+      headerAlign: "center",
+      width: 70,
+    },
+    {
+      field: "note",
+      headerName: "Note",
       type: "number",
       width: 150,
       headerAlign: "center",
     },
-    { field: "note", headerName: "Note", flex: 1, headerAlign: "center" },
+    {
+      field: "user",
+      headerName: "User",
+      type: "number",
+      width: 150,
+      headerAlign: "center",
+    },
     {
       field: "status",
-      headerName: "Status",
-      width: 120,
+      headerName: "Order Status",
+      type: "number",
+      width: 150,
       headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <Select
-            id="status"
-            // value={inventory_status(t)?.find(
-            //   (option) => option?.value === inventoryStatus
-            // )}
-            onChange={changeStatus}
-            options={order_status(t)}
-            placeholder={t("status")}
-            className={`w-full`}
-            menuPortalTarget={document.body}
-            styles={renderStyles(currentMode, primaryColor)}
-          />
-        );
-      },
+      renderCell: (cellValues) => (
+        <Select
+          id="status"
+          // value={inventory_status(t)?.find(
+          //   (option) => option?.value === inventoryStatus
+          // )}
+          onChange={changeStatus}
+          options={order_status(t)}
+          placeholder={t("select_status")}
+          className={`w-full`}
+          menuPortalTarget={document.body}
+          styles={renderStyles(currentMode, primaryColor)}
+        />
+      ),
     },
   ];
 
