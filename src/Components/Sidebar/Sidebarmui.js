@@ -457,14 +457,27 @@ const Sidebarmui = () => {
       });
   };
 
+  // useEffect(() => {
+  //   console.log("User role 6===> ", User);
+
+  //   if (User?.role === 6) {
+  //     return;
+  //   }
+  //   fetchSidebarData();
+  // }, [User]);
+
   useEffect(() => {
     console.log("User role 6===> ", User);
-
     if (User?.role === 6) {
       return;
     }
-    fetchSidebarData();
-  }, [User]);
+    const fetchDataInterval = setInterval(() => {
+      fetchSidebarData();
+    }, 60000); // 60000 milliseconds = 1 minute
+    return () => clearInterval(fetchDataInterval);
+  
+  }, [User, fetchSidebarData]);
+  
 
   useEffect(() => {
     // Fetch all timezones

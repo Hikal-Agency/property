@@ -227,6 +227,10 @@ const AddLeadComponent = ({
     if (LeadStatus) LeadData.append("leadStatus", LeadStatus);
     if (LeadSource) LeadData.append("leadSource", LeadSource);
 
+    if (coldCall = 1) {
+      LeadData.append("is_whatsapp", 1);
+    }
+
     if (!LeadSource && noSourceDropdown) {
       LeadData.append("leadSource", "Secondary");
     }
