@@ -1591,10 +1591,10 @@ const Sidebarmui = () => {
       pro: false,
       links: [
         {
-          name: t("menu_twillio_integration"),
+          name: t("menu_integration"),
           icon: <GrConnect size={16} />,
           pro: false,
-          link: "/twillioSetting",
+          link: "/integrations",
         },
         {
           name: t("notifications"),

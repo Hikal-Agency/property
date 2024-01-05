@@ -67,6 +67,7 @@
     "menu_archived": "Archived",
     "menu_personal": "Personal",
     "menu_twillio_integration": "Twillio Integration",
+    "menu_integration": "Integration",
     "lead": "Lead",
     "add_lead": "Add Lead",
     "unassigned": "Unassigned",
@@ -846,6 +847,8 @@
     "integrate_twillio": "Integrate Twillio",
     "twillio_id": "Twillio Id",
     "twillio_token": "Token",
-    "twillio_add": "Integrate"
+    "twillio_add": "Integrate",
+    "integrate_etisalat": "Integrate Etisalat",
+    "etisalat_add": "Integrate"
 
 }
