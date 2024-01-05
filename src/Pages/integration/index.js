@@ -32,10 +32,10 @@ const Integration = () => {
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 ml-3 mt-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 ml-3 mt-3">
         {integrations &&
           integrations?.map((integrate) => (
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-1 gap-x-3 gap-y-3 pb-4 text-center mr-3">
+            <div className=" pb-4 text-center mr-3">
               <div
                 className={`${
                   currentMode === "dark"
@@ -44,12 +44,12 @@ const Integration = () => {
                 } p-5 rounded-md h-fit`}
               >
                 <h1
-                  className="bg-primary text-white font-semibold rounded-md p-2 mb-3"
+                  className="bg-primary text-white font-semibold rounded-md p-2 mb-6"
                   style={{ textTransform: "capitalize" }}
                 >
                   {integrate?.heading}
                 </h1>
-                <h6 className="mb-3 p-2">
+                <h6 className="mb-6 p-2">
                   <label htmlFor="pick-image">
                     <div
                       className={`relative flex items-center justify-center mx-auto w-28 h-28  rounded-full bg-[#fff]`}
