@@ -1623,12 +1623,12 @@ const Sidebarmui = () => {
       icon: <BsGear size={18} />,
       pro: false,
       links: [
-        // {
-        //   name: t("menu_integration"),
-        //   icon: <GrConnect size={16} />,
-        //   pro: false,
-        //   link: "/integrations",
-        // },
+        {
+          name: t("menu_integration"),
+          icon: <GrConnect size={16} />,
+          pro: false,
+          link: "/integrations",
+        },
         {
           name: t("notifications"),
           icon: <BsBell size={16} />,
