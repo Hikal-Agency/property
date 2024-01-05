@@ -1,11 +1,18 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
+import Twillio from "../twillio";
 
 const SingleIntegration = () => {
-  const service = useParams();
-  console.log("services::: ", service);
+  const param = useParams();
+  console.log("services::: ", param);
+  const service = param?.service;
   const { t, currentMode } = useStateContext();
+
+  const heading = {
+    twillio: t("integrate_twillio"),
+    etisalat: t("integrate_etisalat"),
+  };
 
   return (
     <div>
@@ -16,9 +23,11 @@ const SingleIntegration = () => {
             currentMode === "dark" ? "text-white" : "text-black"
           }`}
         >
-          {t("menu_integration")}
+          {heading[service] || t("menu_integration")}
         </h1>
       </div>
+
+      {service === "twillio" && <Twillio />}
     </div>
   );
 };

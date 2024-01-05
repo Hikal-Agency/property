@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,6 +16,8 @@ import PhoneInput, {
   isPossiblePhoneNumber,
 } from "react-phone-number-input";
 import classNames from "classnames";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Twillio = () => {
   const {
@@ -28,6 +31,7 @@ const Twillio = () => {
     BACKEND_URL,
   } = useStateContext();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [twillioData, setTwillioData] = useState({
     twilio_id: null,
     twilio_token: null,
@@ -125,15 +129,14 @@ const Twillio = () => {
         }}
         disabled={loading ? true : false}
       >
-        <div className="w-full flex items-center pb-3 mt-3">
-          <div className="bg-primary h-10 w-1 rounded-full"></div>
-          <h1
-            className={`text-lg font-semibold mx-2 uppercase ${
-              currentMode === "dark" ? "text-white" : "text-black"
-            }`}
+        <div className=" flex items-center pb-3 mt-3 ml-3 rounded rounded-full ">
+          <IconButton
+            className="rounded-full bg-primary"
+            sx={{ borderRadius: "100%", backgroundColor: primaryColor }}
+            onClick={() => navigate("/integrations")}
           >
-            {t("integrate_twillio")}
-          </h1>
+            <FaArrowLeft className={`text-white`} />
+          </IconButton>
         </div>
 
         <div className="grid place-items-center h-auto">
