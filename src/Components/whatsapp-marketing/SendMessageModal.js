@@ -29,7 +29,7 @@ const style = {
 };
 
 const senderAddresses = ["AD-HIKAL", "AD-HIKALCRM", "AD-MARAHEB"];
-const smsService = ["ETHISALAT", "TWILLIO"];
+const smsService = ["ETISALAT", "TWILLIO"];
 const charLimitForEnglish = 160;
 const charLimitForArabic = 70;
 

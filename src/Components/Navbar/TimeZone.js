@@ -30,7 +30,7 @@ const TimeZone = () => {
     pinnedZone,
     setPinnedZone,
     isLangRTL,
-    i18n
+    i18n,
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
@@ -47,12 +47,12 @@ const TimeZone = () => {
     timezone.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const pinnedTimezones = filteredTimezones?.filter((timezone) =>
-    pinnedZone.includes(timezone)
-  );
+  const pinnedTimezones =
+    pinnedZone &&
+    filteredTimezones?.filter((timezone) => pinnedZone?.includes(timezone));
 
   const unpinnedTimezones = filteredTimezones?.filter(
-    (timezone) => !pinnedZone.includes(timezone)
+    (timezone) => !pinnedZone?.includes(timezone)
   );
 
   const handlePinTimeZone = async (e, timezone, type) => {
@@ -287,27 +287,28 @@ const TimeZone = () => {
                   </MenuItem>
                 </>
               ))} */}
-              {pinnedTimezones?.map((timezone) => (
-                <MenuItem
-                  key={timezone}
-                  value={timezone}
-                  onClick={handleTimezoneChange}
-                >
-                  <span
-                    style={{ 
-                      marginRight: !isLangRTL(i18n.language) && "8px", 
-                      marginLeft: isLangRTL(i18n.language) && "8px",
-                      cursor: "pointer", 
-                      fontSize: "20px" 
-                    }}
-                    onClick={(e) => handlePinTimeZone(e, timezone, 0)}
-                    value={pinnedZone}
+              {pinnedZone &&
+                pinnedTimezones?.map((timezone) => (
+                  <MenuItem
+                    key={timezone}
+                    value={timezone}
+                    onClick={handleTimezoneChange}
                   >
-                    {"\u2691"}
-                  </span>
-                  {timezone}
-                </MenuItem>
-              ))}
+                    <span
+                      style={{
+                        marginRight: !isLangRTL(i18n.language) && "8px",
+                        marginLeft: isLangRTL(i18n.language) && "8px",
+                        cursor: "pointer",
+                        fontSize: "20px",
+                      }}
+                      onClick={(e) => handlePinTimeZone(e, timezone, 0)}
+                      value={pinnedZone}
+                    >
+                      {"\u2691"}
+                    </span>
+                    {timezone}
+                  </MenuItem>
+                ))}
 
               {unpinnedTimezones?.map((timezone) => (
                 <MenuItem
@@ -316,11 +317,11 @@ const TimeZone = () => {
                   onClick={handleTimezoneChange}
                 >
                   <span
-                    style={{ 
-                      marginRight: !isLangRTL(i18n.language) && "8px", 
+                    style={{
+                      marginRight: !isLangRTL(i18n.language) && "8px",
                       marginLeft: isLangRTL(i18n.language) && "8px",
-                      cursor: "pointer", 
-                      fontSize: "18px" 
+                      cursor: "pointer",
+                      fontSize: "18px",
                     }}
                     onClick={(e) => handlePinTimeZone(e, timezone)}
                     value={pinnedZone}

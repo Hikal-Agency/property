@@ -286,9 +286,24 @@ const BookedDeals = ({
           onChange={(selectedOption) => ChangeFeedback(selectedOption)}
           // onChange={(selectedOption) => ChangeFeedback(selectedOption?.value || null)}
           options={[
-            { label: t("feedback_booked"), value: "Booked" },
-            { label: t("feedback_closed"), value: "Closed Deal" },
-            { label: t("feedback_cancelled"), value: "Dead" },
+            { 
+              label: t("feedback_booked"), 
+              value: "Booked",
+              bgColor: "#81CA9D", 
+              color: "#000000",
+            },
+            { 
+              label: t("feedback_closed"), 
+              value: "Closed Deal",
+              bgColor: "#00A650", 
+              color: "#FFFFFF",
+            },
+            { 
+              label: t("feedback_cancelled"), 
+              value: "Dead",
+              bgColor: "#F16C4D", 
+              color: "#FFFFFF",
+            },
           ]}
           placeholder={`---${t("label_select")?.toUpperCase()}---`}
           className="w-full"
@@ -623,7 +638,7 @@ const BookedDeals = ({
       headerAlign: "center",
       field: "assignedToManager",
       headerName: t("label_manager"),
-      minWidth: 100,
+      minWidth: 120,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
@@ -632,7 +647,7 @@ const BookedDeals = ({
       headerAlign: "center",
       field: "assignedToSales",
       headerName: t("label_agent"),
-      minWidth: 100,
+      minWidth: 120,
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
@@ -641,7 +656,7 @@ const BookedDeals = ({
       field: "feedback",
       headerAlign: "center",
       headerName: t("label_feedback"),
-      minWidth: 100,
+      minWidth: 120,
       flex: 1,
 
       hideable: false,

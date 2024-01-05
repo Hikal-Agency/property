@@ -82,6 +82,8 @@ import ClientsList from "./OnBoarding/ClientsList";
 import Twillio from "./twillio";
 import Integration from "./integration";
 import SingleIntegration from "./integration/SingleIntegration";
+import Orders from "./officeBoy/orders";
+import Menu from "./officeBoy";
 
 const libraries = ["places"];
 
@@ -206,6 +208,16 @@ const routes = [
     path: "/onboarding/clientsList",
     pageName: "CRM Clients",
     element: <ClientsList />,
+  },
+  {
+    path: "/taste_hub/menu",
+    pageName: "Menu",
+    element: <Menu />,
+  },
+  {
+    path: "/taste_hub/order_history",
+    pageName: "Order History",
+    element: <Orders />,
   },
   // {
   //   path: "/timeline/:id",

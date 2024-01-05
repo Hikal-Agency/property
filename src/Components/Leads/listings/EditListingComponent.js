@@ -23,7 +23,12 @@ import { useEffect, useState } from "react";
 import ListingLocation from "./ListingLocation";
 import axios from "../../../axoisConfig";
 import { toast } from "react-toastify";
-import { bathroom_options, enquiry_options, listing_options, property_options } from "../../_elements/SelectOptions";
+import {
+  bathroom_options,
+  enquiry_options,
+  listing_options,
+  property_options,
+} from "../../_elements/SelectOptions";
 import { selectStyles } from "../../_elements/SelectStyles";
 
 const style = {
@@ -36,17 +41,18 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
   const token = localStorage.getItem("auth-token");
   const splitLocation = LeadData?.latlong.split(",");
 
-  const { 
-    currentMode, 
-    darkModeColors, 
-    User, 
-    BACKEND_URL, 
-    isLangRTL, 
-    i18n ,
+  console.log("edit listing data:::: ", LeadData);
+
+  const {
+    currentMode,
+    darkModeColors,
+    User,
+    BACKEND_URL,
+    isLangRTL,
+    i18n,
     t,
-    primaryColor
-  } =
-    useStateContext();
+    primaryColor,
+  } = useStateContext();
   const [loading, setloading] = useState(false);
   const [displayMap, setDisplayMap] = useState(false);
   const [listingLocation, setListingLocation] = useState({
@@ -357,16 +363,16 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
   const status_options = (t) => [
     {
       value: "New",
-      label: t("feedback_new")
+      label: t("feedback_new"),
     },
     {
       value: "Available",
-      label: t("available")
-    }, 
+      label: t("available"),
+    },
     {
       value: "Sold",
-      label: t("sold")
-    }
+      label: t("sold"),
+    },
   ];
 
   return (
@@ -415,13 +421,18 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
             } ${
-              currentMode === "dark" && (isLangRTL(i18n.language) ? "border-primary border-r-2" : "border-primary border-l-2")
+              currentMode === "dark" &&
+              (isLangRTL(i18n.language)
+                ? "border-primary border-r-2"
+                : "border-primary border-l-2")
             }
               p-4 h-[100vh] w-[80vw] md:w-[70%] overflow-y-scroll
               `}
           >
             <div className="w-full flex items-center py-1 mb-2">
-              <div className={`text-lg bg-primary font-semibold rounded-xl w-1 h-10`}></div>
+              <div
+                className={`text-lg bg-primary font-semibold rounded-xl w-1 h-10`}
+              ></div>
               <h1
                 className={`text-lg font-semibold mx-3 ${
                   currentMode === "dark" ? "text-white" : "text-black"
@@ -493,7 +504,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                           }`,
                           borderRadius: "5px",
                           outline: "none",
-                          marginBottom: "20px"
+                          marginBottom: "20px",
                         }}
                         inputStyle={{
                           outline: "none !important",
@@ -572,12 +583,21 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                       {/* PROPERTY TYPE  */}
                       <Select
                         id="property-type"
-                        value={projectDetails?.property_type
-                          ? {
-                            value: property_options(t).find(option => option.value === projectDetails?.property_type),
-                            label: property_options(t).find(option => option.value === projectDetails?.property_type).label,
-                          }
-                          : null
+                        value={
+                          projectDetails?.property_type
+                            ? {
+                                value: property_options(t)?.find(
+                                  (option) =>
+                                    option?.value ===
+                                    projectDetails?.property_type
+                                ),
+                                label: property_options(t)?.find(
+                                  (option) =>
+                                    option?.value ===
+                                    projectDetails?.property_type
+                                )?.label,
+                              }
+                            : null
                         }
                         options={property_options(t)}
                         onChange={(selectedOption) => {
@@ -620,12 +640,19 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                       {/* BEDRROMS  */}
                       <Select
                         id="enquiry"
-                        value={projectDetails?.bedrooms
-                          ? {
-                            value: enquiry_options(t).find(option => option.value === projectDetails?.bedrooms),
-                            label: enquiry_options(t).find(option => option.value === projectDetails?.bedrooms).label,
-                          }
-                          : null
+                        value={
+                          projectDetails?.bedrooms
+                            ? {
+                                value: enquiry_options(t).find(
+                                  (option) =>
+                                    option.value === projectDetails?.bedrooms
+                                ),
+                                label: enquiry_options(t).find(
+                                  (option) =>
+                                    option.value === projectDetails?.bedrooms
+                                ).label,
+                              }
+                            : null
                         }
                         options={enquiry_options(t)}
                         onChange={(selectedOption) => {
@@ -678,12 +705,19 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                       {/* BATHROOMS  */}
                       <Select
                         id="for"
-                        value={projectDetails?.bathrooms
-                          ? {
-                            value: bathroom_options(t).find(option => option.value === projectDetails?.bathrooms),
-                            label: bathroom_options(t).find(option => option.value === projectDetails?.bathrooms).label,
-                          }
-                          : null
+                        value={
+                          projectDetails?.bathrooms
+                            ? {
+                                value: bathroom_options(t).find(
+                                  (option) =>
+                                    option.value === projectDetails?.bathrooms
+                                ),
+                                label: bathroom_options(t).find(
+                                  (option) =>
+                                    option.value === projectDetails?.bathrooms
+                                ).label,
+                              }
+                            : null
                         }
                         options={bathroom_options(t)}
                         onChange={(selectedOption) => {
@@ -736,12 +770,19 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                       {/* LISTING TYPE  */}
                       <Select
                         id="type"
-                        value={otherDetails?.listingType
-                          ? {
-                            value: listing_options(t).find(option => option.value === otherDetails?.listingType),
-                            label: listing_options(t).find(option => option.value === otherDetails?.listingType).label,
-                          }
-                          : null
+                        value={
+                          otherDetails?.listingType
+                            ? {
+                                value: listing_options(t).find(
+                                  (option) =>
+                                    option.value === otherDetails?.listingType
+                                ),
+                                label: listing_options(t).find(
+                                  (option) =>
+                                    option.value === otherDetails?.listingType
+                                ).label,
+                              }
+                            : null
                         }
                         options={listing_options(t)}
                         onChange={(selectedOption) => {
@@ -775,7 +816,6 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         <MenuItem value={"Secondary"}>{t("menu_secondary")}</MenuItem>
                         <MenuItem value={"Off-plan"}>{t("category_off_plan")}</MenuItem>
                       </TextField> */}
-
                     </Box>
                   </div>
 
@@ -858,12 +898,17 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                       {/* STATUS  */}
                       <Select
                         id="listing-status"
-                        value={otherDetails?.listing_status
-                          ? {
-                            value: otherDetails?.listing_status,
-                            label: status_options(t).find(option => option.value === otherDetails?.listing_status).label,
-                          }
-                          : null
+                        value={
+                          otherDetails?.listing_status
+                            ? {
+                                value: otherDetails?.listing_status,
+                                label: status_options(t).find(
+                                  (option) =>
+                                    option.value ===
+                                    otherDetails?.listing_status
+                                ).label,
+                              }
+                            : null
                         }
                         options={status_options(t)}
                         onChange={(selectedOption) => {
@@ -877,7 +922,7 @@ const EditListingModal = ({ handleClose, openEdit, fetchSingleListing }) => {
                         menuPortalTarget={document.body}
                         styles={selectStyles(currentMode, primaryColor)}
                       />
-                      
+
                       {/* <TextField
                         id="listing-status"
                         value={otherDetails?.listing_status}
