@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
 import Twillio from "../twillio";
+import Etisalat from "../etisalat";
 
 const SingleIntegration = () => {
   const param = useParams();
@@ -28,6 +29,7 @@ const SingleIntegration = () => {
       </div>
 
       {service === "twillio" && <Twillio />}
+      {service === "etisalat" && <Etisalat />}
     </div>
   );
 };

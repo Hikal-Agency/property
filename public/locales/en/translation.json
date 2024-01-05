@@ -849,6 +849,8 @@
     "twillio_token": "Token",
     "twillio_add": "Integrate",
     "integrate_etisalat": "Integrate Etisalat",
+    "label_etisalat_user": "Etisalat User",
+    "label_etisalat_password": "Etisalat Password",
     "etisalat_add": "Integrate"
 
 }
