@@ -10,11 +10,13 @@ const Integration = () => {
       heading: t("integrate_twillio"),
       logo: "../assets/sms-services-logo/twillio.png",
       button_text: t("twillio_add"),
+      link: "/integrations/twillio",
     },
     {
       heading: t("integrate_etisalat"),
       logo: "../assets/sms-services-logo/etisalat.png",
       button_text: t("etisalat_add"),
+      link: "/integrations/etisalat",
     },
   ];
   return (
@@ -58,7 +60,7 @@ const Integration = () => {
                 </h6>
                 <hr className="mb-3"></hr>
 
-                <Link to="#">
+                <Link to={integrate?.link}>
                   <div
                     className={`bg-primary text-white px-4 text-center sm:px-6 mb-3 py-2`}
                   >

@@ -81,6 +81,7 @@ import OnBoarding from "./OnBoarding";
 import ClientsList from "./OnBoarding/ClientsList";
 import Twillio from "./twillio";
 import Integration from "./integration";
+import SingleIntegration from "./integration/SingleIntegration";
 
 const libraries = ["places"];
 
@@ -480,6 +481,11 @@ const routes = [
     // element: <Twillio />,
     element: <Integration />,
     pageName: "Twillio",
+  },
+  {
+    path: "/integrations/:service",
+    element: <SingleIntegration />,
+    pageName: "Single Integration",
   },
   {
     path: "*",
