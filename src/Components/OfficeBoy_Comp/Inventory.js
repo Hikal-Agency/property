@@ -74,11 +74,14 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
     }
   };
 
-  const changeStatus = async (value) => {
+  const changeStatus = async (e, value) => {
+    const newValue = e.value;
+    console.log("new value status:: ", newValue);
     setLoading(true);
     try {
       const updateStatus = await axios.post(
         `${BACKEND_URL}/items/${value?.id}`,
+        JSON.stringify({ itemStatus: newValue, itemName: value?.itemName }),
         {
           headers: {
             "Content-Type": "application/json",
@@ -86,6 +89,17 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
           },
         }
       );
+
+      toast.success(`Item Status Update Successfully.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
 
       console.log("list item::::: ", updateStatus);
       setRow(updateStatus?.data?.data);
@@ -95,7 +109,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
     } catch (error) {
       setLoading(false);
       console.log("error:::: ", error);
-      toast.error(`Unable to fetch inventory. Kindly try again`, {
+      toast.error(`Unable to update Status. Kindly try again`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -135,7 +149,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
           <Select
             id="status"
             value={cellValues?.row?.itemStatus}
-            onChange={() => changeStatus(cellValues?.row)}
+            onChange={(e) => changeStatus(e, cellValues?.row)}
             options={inventory_status(t)}
             placeholder={t("select_status")}
             className={`w-full`}
