@@ -402,6 +402,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
             <AddItem
               openAddItem={openAddItem}
               setOpenAddItem={setOpenAddItem}
+              listITems={listITems}
             />
           )}
 

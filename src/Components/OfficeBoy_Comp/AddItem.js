@@ -26,13 +26,13 @@ const style = {
   boxShadow: 24,
 };
 
-const AddItem = ({ openAddItem, setOpenAddItem }) => {
+const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [itemData, setITemData] = useState({
     itemName: null,
     itemPrice: null,
-    itemStatus: null,
+    itemStatus: "available",
     notes: null,
     image: null,
   });
@@ -80,6 +80,21 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
 
   const addITem = async () => {
     setLoading(true);
+    if (!itemData?.itemName) {
+      setLoading(false);
+      toast.error(`Item name is required.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
     try {
       const addITem = await axios.post(`${BACKEND_URL}/items/store`, itemData, {
         headers: {
@@ -89,6 +104,8 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
       });
       console.log("add item::::: ", addITem);
       setLoading(false);
+      listITems();
+      setOpenAddItem(false);
 
       toast.success(`New Item Added.`, {
         position: "top-right",
