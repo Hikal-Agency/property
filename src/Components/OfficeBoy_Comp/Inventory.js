@@ -114,10 +114,9 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       });
 
       console.log("list item::::: ", updateStatus);
-      setRow(updateStatus?.data?.data);
-      setTotal(updateStatus?.data?.data?.meta?.total);
-      setPageSize(updateStatus?.data?.data?.meta?.per_page);
       setLoading(false);
+
+      listITems();
     } catch (error) {
       setLoading(false);
       console.log("error:::: ", error);
@@ -206,7 +205,9 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
         return (
           <Select
             id="status"
-            value={cellValues?.row?.itemStatus}
+            value={inventory_status(t)?.find(
+              (option) => option?.value === cellValues?.row?.itemStatus
+            )}
             onChange={(e) => changeStatus(e, cellValues?.row)}
             options={inventory_status(t)}
             placeholder={t("select_status")}
