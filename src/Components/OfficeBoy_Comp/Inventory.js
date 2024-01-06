@@ -23,6 +23,7 @@ import { BiTrash } from "react-icons/bi";
 import AddItem from "./AddItem";
 import { toast } from "react-toastify";
 import { MdErrorOutline } from "react-icons/md";
+import EditItem from "./EditItem";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -40,6 +41,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
   const [pageSize, setPageSize] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
   const [btnloading, setBtnLoading] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const {
     t,
@@ -228,6 +230,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
           <div className="">
             <IconButton
               sx={{ background: `${primaryColor}`, marginRight: "10px" }}
+              onClick={() => setEditModal(cellValues?.row)}
             >
               <FaPencilAlt color="#ffffff" size={12} />
             </IconButton>
@@ -403,6 +406,14 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
             <AddItem
               openAddItem={openAddItem}
               setOpenAddItem={setOpenAddItem}
+              listITems={listITems}
+            />
+          )}
+
+          {editModal && (
+            <EditItem
+              setEditModal={setEditModal}
+              editModal={editModal}
               listITems={listITems}
             />
           )}
