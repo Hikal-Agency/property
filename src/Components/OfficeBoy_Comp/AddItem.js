@@ -3,8 +3,12 @@ import {
   Box,
   Button,
   CircularProgress,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
   Modal,
+  Select,
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -12,8 +16,10 @@ import { MdClose } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import Error404 from "../../Pages/Error";
 import { MdFileUpload } from "react-icons/md";
+import axios from "../../axoisConfig";
 
 import { BiTrash } from "react-icons/bi";
+import { toast } from "react-toastify";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -22,6 +28,15 @@ const style = {
 
 const AddItem = ({ openAddItem, setOpenAddItem }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
+  const [itemData, setITemData] = useState({
+    itemName: null,
+    itemPrice: null,
+    itemStatus: null,
+    notes: null,
+    image: null,
+  });
+
+  console.log("ITem Data:::: ", itemData);
 
   const {
     t,
@@ -32,9 +47,61 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
     primaryColor,
     darkModeColors,
     fontFam,
+    BACKEND_URL,
   } = useStateContext();
   const [isClosing, setIsClosing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("auth-token");
+
+  const handleChange = (e) => {
+    console.log("handlechange ::: ", e.target.value);
+    setITemData({
+      ...itemData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addITem = async () => {
+    setLoading(true);
+    try {
+      const addITem = await axios.post(
+        `${BACKEND_URL}/items/store`,
+        JSON.stringify(),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      console.log("add item::::: ", addITem);
+      setLoading(false);
+
+      toast.success(`New Item Added.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      setLoading(false);
+      console.log("error:::: ", error);
+      toast.error(`Unable to add new item. Kindly try again`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const handleClose = () => {
     setIsClosing(true);
@@ -206,12 +273,10 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
                             marginBottom: "20px",
                           }}
                           variant="outlined"
-                          name="offerTitle"
                           size="small"
-                          // value={offerData.offerTitle}
-                          // onChange={(e) =>
-                          //   setOfferData({ ...offerData, offerTitle: e.target.value })
-                          // }
+                          name="itemName"
+                          value={itemData?.itemName}
+                          onChange={handleChange}
                           required
                         />
                         <TextField
@@ -222,12 +287,10 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
                             marginBottom: "20px",
                           }}
                           variant="outlined"
-                          name="offerTitle"
+                          name="itemPrice"
                           size="small"
-                          // value={offerData.offerTitle}
-                          // onChange={(e) =>
-                          //   setOfferData({ ...offerData, offerTitle: e.target.value })
-                          // }
+                          value={itemData?.itemPrice}
+                          onChange={handleChange}
                         />
                         <TextField
                           type={"text"}
@@ -237,13 +300,35 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
                             marginBottom: "20px",
                           }}
                           variant="outlined"
-                          name="offerTitle"
+                          name="notes"
                           size="small"
-                          // value={offerData.offerTitle}
-                          // onChange={(e) =>
-                          //   setOfferData({ ...offerData, offerTitle: e.target.value })
-                          // }
+                          value={itemData?.notes}
+                          onChange={handleChange}
                         />
+
+                        <FormControl fullWidth>
+                          <InputLabel>{t("inventory_status")}</InputLabel>
+
+                          <Select
+                            label={t("ticket_category")}
+                            size="medium"
+                            onChange={handleChange}
+                            value={itemData?.itemStatus}
+                            name="itemStatus"
+                            className="w-full mb-5"
+                            required
+                          >
+                            <MenuItem disabled selected value="">
+                              {t("inventory_status")}
+                            </MenuItem>
+                            <MenuItem value="Available">
+                              {t("inventory_status_avail")}
+                            </MenuItem>
+                            <MenuItem value="Out Of Stock">
+                              {t("inventory_status_stock")}
+                            </MenuItem>
+                          </Select>
+                        </FormControl>
                       </Box>
                     </div>
 
@@ -255,7 +340,7 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
                         fontFamily: fontFam,
                       }}
                       className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-                      //   onClick={handleClick}
+                      onClick={addITem}
                       disabled={loading ? true : false}
                     >
                       {loading ? (
