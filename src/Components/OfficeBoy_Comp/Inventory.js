@@ -90,7 +90,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
         }
       );
 
-      toast.success(`Item Status Update Successfully.`, {
+      toast.success(`${value?.itemName} Item Status Update Successfully.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
