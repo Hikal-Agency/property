@@ -28,13 +28,15 @@ const style = {
 
 const EditItem = ({ editModal, setEditModal, listITems }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(
+    editModal?.image_path || null
+  );
   const [itemData, setITemData] = useState({
-    itemName: null,
-    itemPrice: null,
-    itemStatus: "available",
-    notes: null,
-    image: null,
+    itemName: editModal?.itemName || null,
+    itemPrice: editModal?.itemPrice || null,
+    itemStatus: editModal?.itemStatus,
+    notes: editModal?.notes || null,
+    image: editModal?.image || null,
   });
 
   console.log("ITem Data:::: ", itemData);
@@ -78,7 +80,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
     reader.readAsDataURL(file);
   };
 
-  const addITem = async () => {
+  const editItem = async () => {
     setLoading(true);
     if (!itemData?.itemName) {
       setLoading(false);
@@ -96,18 +98,19 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
       return;
     }
     try {
-      const addITem = await axios.post(`${BACKEND_URL}/items/store`, itemData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      });
-      console.log("add item::::: ", addITem);
-      setLoading(false);
-      listITems();
-      setEditModal(false);
+      const editItem = await axios.post(
+        `${BACKEND_URL}/items/${editModal?.id}`,
+        itemData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      console.log("edit item::::: ", editItem);
 
-      toast.success(`New Item Added.`, {
+      toast.success(`Item Updated.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -117,6 +120,10 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
         progress: undefined,
         theme: "light",
       });
+
+      setLoading(false);
+      listITems();
+      setEditModal(false);
 
       setITemData({
         itemName: null,
@@ -128,7 +135,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
     } catch (error) {
       setLoading(false);
       console.log("error:::: ", error);
-      toast.error(`Unable to add new item. Kindly try again`, {
+      toast.error(`Unable to edit item. Kindly try again`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -224,7 +231,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                     >
-                      {t("add_item")}
+                      {t("edit_item")}
                     </h1>
                   </div>
                 </div>
@@ -363,7 +370,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                             <MenuItem disabled selected value="">
                               {t("inventory_status")}
                             </MenuItem>
-                            <MenuItem value="Available">
+                            <MenuItem value="available">
                               {t("inventory_status_avail")}
                             </MenuItem>
                             <MenuItem value="Out Of Stock">
@@ -382,7 +389,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                         fontFamily: fontFam,
                       }}
                       className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-                      onClick={addITem}
+                      onClick={editItem}
                       disabled={loading ? true : false}
                     >
                       {loading ? (
@@ -392,7 +399,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                           className="text-white"
                         />
                       ) : (
-                        <span>{t("add_item")}</span>
+                        <span>{t("edit_item")}</span>
                       )}
                     </Button>
                   </form>

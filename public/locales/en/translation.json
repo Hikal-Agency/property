@@ -872,6 +872,8 @@
     "order_status_preparing":"Preparing",
     "order_status_delivered":"Delivered",
     "order_status_out_of_stock":"Out Of Stock",
-    "order_cancel":"Cancelled"
+    "order_cancel":"Cancelled",
+    "edit_item":"Edit Item"
+
 
 }
