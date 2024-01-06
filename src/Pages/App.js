@@ -80,6 +80,8 @@ import TransferRequest from "./transfferedleads/TransferRequest";
 import OnBoarding from "./OnBoarding";
 import ClientsList from "./OnBoarding/ClientsList";
 import Twillio from "./twillio";
+import Integration from "./integration";
+import SingleIntegration from "./integration/SingleIntegration";
 import Orders from "./officeBoy/orders";
 import Menu from "./officeBoy";
 
@@ -487,9 +489,15 @@ const routes = [
     pageName: "Buyers",
   },
   {
-    path: "/twillioSetting",
-    element: <Twillio />,
+    path: "/integrations",
+    // element: <Twillio />,
+    element: <Integration />,
     pageName: "Twillio",
+  },
+  {
+    path: "/integrations/:service",
+    element: <SingleIntegration />,
+    pageName: "Single Integration",
   },
   {
     path: "*",

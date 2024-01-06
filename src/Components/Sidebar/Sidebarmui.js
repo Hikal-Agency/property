@@ -475,9 +475,7 @@ const Sidebarmui = () => {
       fetchSidebarData();
     }, 60000); // 60000 milliseconds = 1 minute
     return () => clearInterval(fetchDataInterval);
-  
   }, [User, fetchSidebarData]);
-  
 
   useEffect(() => {
     // Fetch all timezones
@@ -1625,12 +1623,12 @@ const Sidebarmui = () => {
       icon: <BsGear size={18} />,
       pro: false,
       links: [
-        // {
-        //   name: t("menu_twillio_integration"),
-        //   icon: <GrConnect size={16} />,
-        //   pro: false,
-        //   link: "/twillioSetting",
-        // },
+        {
+          name: t("menu_integration"),
+          icon: <GrConnect size={16} />,
+          pro: false,
+          link: "/integrations",
+        },
         {
           name: t("notifications"),
           icon: <BsBell size={16} />,

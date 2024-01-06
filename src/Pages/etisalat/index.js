@@ -19,7 +19,7 @@ import classNames from "classnames";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const Twillio = () => {
+const Etisalat = () => {
   const {
     t,
     primaryColor,
@@ -32,45 +32,15 @@ const Twillio = () => {
   } = useStateContext();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [twillioData, setTwillioData] = useState({
-    twilio_id: null,
-    twilio_token: null,
-    twilio_number: null,
+  const [etisalatData, setEtisalatData] = useState({
+    etisalat_user: null,
+    etisalat_password: null,
   });
-  const [value, setValue] = useState();
-  const [error, setError] = useState(false);
-
-  const handleContact = () => {
-    setError(false);
-    const inputValue = value;
-    console.log("Phone: ", inputValue);
-    if (inputValue && isPossiblePhoneNumber(inputValue)) {
-      console.log("Possible: ", inputValue);
-      if (isValidPhoneNumber(inputValue)) {
-        setTwillioData({
-          ...twillioData,
-          twilio_number: formatPhoneNumberIntl(inputValue),
-        });
-        // setLeadContact(formatPhoneNumberIntl(inputValue));
-        console.log("Valid lead contact: ", twillioData?.twilio_number);
-        console.log("Valid input: ", inputValue);
-        setError(false);
-      } else {
-        setError("Not a valid number.");
-      }
-    } else {
-      setError("Not a valid number.");
-    }
-  };
 
   const token = localStorage.getItem("auth-token");
 
   const integrateTwillio = async () => {
-    if (
-      !twillioData?.twilio_id ||
-      !twillioData?.twilio_token ||
-      !twillioData?.twilio_number
-    ) {
+    if (!etisalatData?.etisalat_user || !etisalatData?.etisalat_password) {
       toast.error("All fields are required.", {
         position: "top-right",
         autoClose: 3000,
@@ -84,9 +54,9 @@ const Twillio = () => {
       return;
     }
     try {
-      const twillioIntegration = await axios.post(
-        `${BACKEND_URL}/store-twilio-credentials`,
-        twillioData,
+      const etisalatIntegration = await axios.post(
+        `${BACKEND_URL}/store-etisalat-credentials`,
+        etisalatData,
         {
           headers: {
             "Content-Type": "application/json",
@@ -95,8 +65,8 @@ const Twillio = () => {
         }
       );
 
-      console.log("twillio integration response::: ", twillioIntegration);
-      toast.success("Your twillio account successfully integrated.", {
+      console.log("etisalat integration response::: ", etisalatIntegration);
+      toast.success("Your Etisalat account successfully integrated.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -148,7 +118,7 @@ const Twillio = () => {
                   // : "blur-bg-light shadow-sm")
                   "bg-blue-500 shadow-sm"
                 : "blur-bg-light shadow-sm")
-            } p-5 rounded-lg w-4/6 h-56  `}
+            } p-5 rounded-lg w-4/6 h-50 `}
             style={{
               background: currentMode === "dark" ? "#1c1c1c" : "#EEEEEE",
             }}
@@ -174,7 +144,7 @@ const Twillio = () => {
                     <TextField
                       id="id"
                       type={"text"}
-                      label={t("twillio_id")}
+                      label={t("label_etisalat_user")}
                       className="w-full"
                       sx={{
                         "&": {
@@ -184,11 +154,11 @@ const Twillio = () => {
                       }}
                       variant="outlined"
                       size="small"
-                      value={twillioData?.twilio_id}
+                      value={etisalatData?.etisalat_user}
                       onChange={(e) =>
-                        setTwillioData({
-                          ...twillioData,
-                          twilio_id: e.target.value,
+                        setEtisalatData({
+                          ...etisalatData,
+                          etisalat_user: e.target.value,
                         })
                       }
                       required
@@ -196,7 +166,7 @@ const Twillio = () => {
                     <TextField
                       id="notes"
                       type={"text"}
-                      label={t("twillio_token")}
+                      label={t("label_etisalat_password")}
                       className="w-full"
                       sx={{
                         "&": {
@@ -206,58 +176,15 @@ const Twillio = () => {
                       }}
                       variant="outlined"
                       size="small"
-                      value={twillioData?.twilio_token}
+                      value={etisalatData?.etisalat_password}
                       onChange={(e) =>
-                        setTwillioData({
-                          ...twillioData,
-                          twilio_token: e.target.value,
+                        setEtisalatData({
+                          ...etisalatData,
+                          etisalat_password: e.target.value,
                         })
                       }
                       required
                     />
-                  </div>
-                  <div>
-                    <PhoneInput
-                      placeholder={t("label_contact_number")}
-                      value={value}
-                      onChange={(value) => setValue(value)}
-                      onKeyUp={handleContact}
-                      error={error}
-                      className={` ${classNames({
-                        "dark-mode": currentMode === "dark",
-                        "phone-input-light": currentMode !== "dark",
-                        "phone-input-dark": currentMode === "dark",
-                      })} mb-5`}
-                      size="small"
-                      style={{
-                        background: `${
-                          !themeBgImg
-                            ? currentMode === "dark"
-                              ? "#000000"
-                              : "#FFFFFF"
-                            : "transparent"
-                          // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
-                        }`,
-                        "& .PhoneInputCountryIconImg": {
-                          color: "#fff",
-                        },
-                        color: currentMode === "dark" ? "white" : "black",
-                        border: `1px solid ${
-                          currentMode === "dark" ? "#EEEEEE" : "#666666"
-                        }`,
-                        borderRadius: "5px",
-                        outline: "none",
-                      }}
-                      inputStyle={{
-                        outline: "none !important",
-                      }}
-                      required
-                    />
-                    {error && (
-                      <Typography variant="body2" color="error">
-                        {error}
-                      </Typography>
-                    )}
                   </div>
                 </Box>
               </div>
@@ -292,4 +219,4 @@ const Twillio = () => {
   );
 };
 
-export default Twillio;
+export default Etisalat;

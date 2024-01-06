@@ -402,7 +402,7 @@ const SendMessageModal = ({
                 <>
                   <TextField
                     select
-                    id="senderAdd"
+                    id="smsService"
                     type={"text"}
                     label={t("sms_service")}
                     variant="outlined"
