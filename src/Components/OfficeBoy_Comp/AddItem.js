@@ -100,6 +100,14 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
         progress: undefined,
         theme: "light",
       });
+
+      setITemData({
+        itemName: null,
+        itemPrice: null,
+        itemStatus: null,
+        notes: null,
+        image: null,
+      });
     } catch (error) {
       setLoading(false);
       console.log("error:::: ", error);
