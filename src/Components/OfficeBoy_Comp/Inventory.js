@@ -74,44 +74,39 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
     }
   };
 
-  const changeStatus = () => {};
-  // const rows = [
-  //   {
-  //     id: 1,
-  //     itemName: "Product A",
-  //     itemPrice: 20.0,
-  //     note: "Lorem ipsum",
-  //     status: "Active",
-  //   },
-  //   {
-  //     id: 2,
-  //     itemName: "Product B",
-  //     itemPrice: 30.0,
-  //     note: "Dolor sit amet",
-  //     status: "Inactive",
-  //   },
-  //   {
-  //     id: 3,
-  //     itemName: "Product C",
-  //     itemPrice: 25.0,
-  //     note: "Consectetur adipiscing",
-  //     status: "Active",
-  //   },
-  //   {
-  //     id: 4,
-  //     itemName: "Product D",
-  //     itemPrice: 18.0,
-  //     note: "Elit sed do eiusmod",
-  //     status: "Inactive",
-  //   },
-  //   {
-  //     id: 5,
-  //     itemName: "Product E",
-  //     itemPrice: 40.0,
-  //     note: "Tempor incididunt ut labore",
-  //     status: "Active",
-  //   },
-  // ];
+  const changeStatus = async (value) => {
+    setLoading(true);
+    try {
+      const updateStatus = await axios.post(
+        `${BACKEND_URL}/items/${value?.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("list item::::: ", updateStatus);
+      setRow(updateStatus?.data?.data);
+      setTotal(updateStatus?.data?.data?.meta?.total);
+      setPageSize(updateStatus?.data?.data?.meta?.per_page);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log("error:::: ", error);
+      toast.error(`Unable to fetch inventory. Kindly try again`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const columns = [
     { field: "id", headerName: "ID", width: 100, headerAlign: "center" },
@@ -140,7 +135,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
           <Select
             id="status"
             value={cellValues?.row?.itemStatus}
-            onChange={changeStatus}
+            onChange={() => changeStatus(cellValues?.row)}
             options={inventory_status(t)}
             placeholder={t("select_status")}
             className={`w-full`}
@@ -182,7 +177,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
 
   useEffect(() => {
     listITems();
-  }, []);
+  }, [page, pageSize]);
 
   return (
     <>
