@@ -507,7 +507,7 @@ export const inventory_status = (t) => [
     label: t("inventory_status_avail"),
   },
   {
-    value: "out_of_stock",
+    value: "Out Of Stock",
     label: t("inventory_status_stock"),
   },
 ];

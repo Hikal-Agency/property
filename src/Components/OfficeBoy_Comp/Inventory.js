@@ -1,6 +1,6 @@
 import { Backdrop, Box, Button, IconButton, Modal } from "@mui/material";
 import Select from "react-select";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import Error404 from "../../Pages/Error";
@@ -8,9 +8,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import { inventory_status } from "../_elements/SelectOptions";
 import { renderStyles } from "../_elements/SelectStyles";
 import { FaPencilAlt } from "react-icons/fa";
+import axios from "../../axoisConfig";
 
 import { BiTrash } from "react-icons/bi";
 import AddItem from "./AddItem";
+import { toast } from "react-toastify";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -20,6 +22,9 @@ const style = {
 const Inventory = ({ openInventory, setOpenInventory }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [openAddItem, setOpenAddItem] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("auth-token");
+  const [row, setRow] = useState([]);
 
   const {
     t,
@@ -29,49 +34,79 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
     User,
     DataGridStyles,
     primaryColor,
+    BACKEND_URL,
   } = useStateContext();
   const [isClosing, setIsClosing] = useState(false);
   console.log("inventory status array ::::: ", inventory_status(t));
   const inventoryStatus = "available";
 
+  const listITems = async () => {
+    setLoading(true);
+    try {
+      const listItem = await axios.get(`${BACKEND_URL}/items`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      setRow(listItem?.data?.data);
+      console.log("list item::::: ", listItem);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log("error:::: ", error);
+      toast.error(`Unable to fetch inventory. Kindly try again`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   const changeStatus = () => {};
-  const rows = [
-    {
-      id: 1,
-      itemName: "Product A",
-      itemPrice: 20.0,
-      note: "Lorem ipsum",
-      status: "Active",
-    },
-    {
-      id: 2,
-      itemName: "Product B",
-      itemPrice: 30.0,
-      note: "Dolor sit amet",
-      status: "Inactive",
-    },
-    {
-      id: 3,
-      itemName: "Product C",
-      itemPrice: 25.0,
-      note: "Consectetur adipiscing",
-      status: "Active",
-    },
-    {
-      id: 4,
-      itemName: "Product D",
-      itemPrice: 18.0,
-      note: "Elit sed do eiusmod",
-      status: "Inactive",
-    },
-    {
-      id: 5,
-      itemName: "Product E",
-      itemPrice: 40.0,
-      note: "Tempor incididunt ut labore",
-      status: "Active",
-    },
-  ];
+  // const rows = [
+  //   {
+  //     id: 1,
+  //     itemName: "Product A",
+  //     itemPrice: 20.0,
+  //     note: "Lorem ipsum",
+  //     status: "Active",
+  //   },
+  //   {
+  //     id: 2,
+  //     itemName: "Product B",
+  //     itemPrice: 30.0,
+  //     note: "Dolor sit amet",
+  //     status: "Inactive",
+  //   },
+  //   {
+  //     id: 3,
+  //     itemName: "Product C",
+  //     itemPrice: 25.0,
+  //     note: "Consectetur adipiscing",
+  //     status: "Active",
+  //   },
+  //   {
+  //     id: 4,
+  //     itemName: "Product D",
+  //     itemPrice: 18.0,
+  //     note: "Elit sed do eiusmod",
+  //     status: "Inactive",
+  //   },
+  //   {
+  //     id: 5,
+  //     itemName: "Product E",
+  //     itemPrice: 40.0,
+  //     note: "Tempor incididunt ut labore",
+  //     status: "Active",
+  //   },
+  // ];
 
   const columns = [
     { field: "id", headerName: "ID", width: 100, headerAlign: "center" },
@@ -88,19 +123,18 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       width: 150,
       headerAlign: "center",
     },
-    { field: "note", headerName: "Note", flex: 1, headerAlign: "center" },
+    { field: "notes", headerName: "Note", flex: 1, headerAlign: "center" },
     {
-      field: "status",
+      field: "itemStatus",
       headerName: "Status",
       width: 120,
       headerAlign: "center",
       renderCell: (cellValues) => {
+        console.log("cellvalues::: ", cellValues);
         return (
           <Select
             id="status"
-            // value={inventory_status(t)?.find(
-            //   (option) => option?.value === inventoryStatus
-            // )}
+            value={cellValues?.row?.itemStatus}
             onChange={changeStatus}
             options={inventory_status(t)}
             placeholder={t("select_status")}
@@ -140,6 +174,11 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       setOpenInventory(false);
     }, 1000);
   };
+
+  useEffect(() => {
+    listITems();
+  }, []);
+
   return (
     <>
       <Modal
@@ -232,11 +271,10 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
                       disableDensitySelector
                       autoHeight
                       disableSelectionOnClick
-                      rows={rows}
-                      // columns={columns}
+                      rows={row}
                       columns={columns}
                       //   rowCount={pageState.total}
-                      //   loading={pageState.isLoading}
+                      loading={loading}
                       //   rowsPerPageOptions={[30, 50, 75, 100]}
                       pagination
                       // width="auto"
