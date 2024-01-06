@@ -25,6 +25,9 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("auth-token");
   const [row, setRow] = useState([]);
+  const [total, setTotal] = useState(null);
+  const [page, setPage] = useState(null);
+  const [pageSize, setPageSize] = useState(null);
 
   const {
     t,
@@ -50,8 +53,10 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
         },
       });
 
-      setRow(listItem?.data?.data);
       console.log("list item::::: ", listItem);
+      setRow(listItem?.data?.data);
+      setTotal(listItem?.data?.data?.meta?.total);
+      setPageSize(listItem?.data?.data?.meta?.per_page);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -282,7 +287,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
                       rowHeight={25}
                       paginationMode="server"
                       //   page={pageState.page - 1}
-                      //   pageSize={pageState.pageSize}
+                      pageSize={pageSize}
                       componentsProps={{
                         toolbar: {
                           printOptions: {
@@ -294,18 +299,12 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
                           showQuickFilter: true,
                         },
                       }}
-                      //   onPageChange={(newPage) => {
-                      //     setpageState((old) => ({
-                      //       ...old,
-                      //       page: newPage + 1,
-                      //     }));
-                      //   }}
-                      //   onPageSizeChange={(newPageSize) =>
-                      //     setpageState((old) => ({
-                      //       ...old,
-                      //       pageSize: newPageSize,
-                      //     }))
-                      //   }
+                      onPageChange={(newPage) => {
+                        setPage(newPage + 1);
+                      }}
+                      onPageSizeChange={(newPageSize) =>
+                        setPageSize(newPageSize)
+                      }
                       sx={{
                         boxShadow: 2,
                         "& .MuiDataGrid-cell:hover": {
