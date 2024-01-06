@@ -1,4 +1,12 @@
-import { Backdrop, Box, Button, IconButton, Modal } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  Modal,
+} from "@mui/material";
 import Select from "react-select";
 import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
@@ -9,10 +17,12 @@ import { inventory_status } from "../_elements/SelectOptions";
 import { renderStyles } from "../_elements/SelectStyles";
 import { FaPencilAlt } from "react-icons/fa";
 import axios from "../../axoisConfig";
+import { IoMdClose } from "react-icons/io";
 
 import { BiTrash } from "react-icons/bi";
 import AddItem from "./AddItem";
 import { toast } from "react-toastify";
+import { MdErrorOutline } from "react-icons/md";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -28,6 +38,8 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
   const [total, setTotal] = useState(null);
   const [page, setPage] = useState(null);
   const [pageSize, setPageSize] = useState(null);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [btnloading, setBtnLoading] = useState(false);
 
   const {
     t,
@@ -122,6 +134,52 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
     }
   };
 
+  const deleteItem = async (value) => {
+    setBtnLoading(true);
+    try {
+      const deleteItem = await axios.delete(
+        `${BACKEND_URL}/items/${value?.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      listITems();
+
+      toast.success(`${value?.itemName} Item Deleted Successfully.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log("list item::::: ", deleteItem);
+
+      setBtnLoading(false);
+      setDeleteModal(false);
+    } catch (error) {
+      setBtnLoading(false);
+      console.log("error:::: ", error);
+      toast.error(`Unable to delete item. Kindly try again`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   const columns = [
     { field: "id", headerName: "ID", width: 100, headerAlign: "center" },
     {
@@ -172,7 +230,10 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
             >
               <FaPencilAlt color="#ffffff" size={12} />
             </IconButton>
-            <IconButton sx={{ background: `${primaryColor}` }}>
+            <IconButton
+              sx={{ background: `${primaryColor}` }}
+              onClick={() => setDeleteModal(cellValues?.row)}
+            >
               <BiTrash color="#ffffff" size={12} />
             </IconButton>
           </div>
@@ -342,6 +403,85 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
               openAddItem={openAddItem}
               setOpenAddItem={setOpenAddItem}
             />
+          )}
+
+          {deleteModal && (
+            <>
+              <Dialog
+                sx={{
+                  "& .MuiPaper-root": {
+                    boxShadow: "none !important",
+                  },
+                  "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                    {
+                      // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                    },
+                }}
+                open={deleteModal}
+                onClose={(e) => setDeleteModal(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                className="relative"
+              >
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    right: 12,
+                    top: 10,
+                    color: (theme) => theme.palette.grey[500],
+                  }}
+                  onClick={() => setDeleteModal(false)}
+                >
+                  <IoMdClose size={18} />
+                </IconButton>
+                <div
+                  className={`px-10 py-5 ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-white text-black"
+                  }`}
+                >
+                  {/* FEEDBACK  */}
+                  <div className="flex flex-col justify-center items-center">
+                    <MdErrorOutline
+                      size={50}
+                      className="text-primary text-2xl"
+                    />
+                    <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
+                      {t("want_to_delete", { DataName: deleteModal?.itemName })}{" "}
+                    </h1>
+                  </div>
+
+                  <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                    <Button
+                      className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                      ripple={true}
+                      size="lg"
+                      onClick={() => deleteItem(deleteModal)}
+                    >
+                      {btnloading ? (
+                        <CircularProgress size={16} sx={{ color: "white" }} />
+                      ) : (
+                        <span className="text-white"> Confirm</span>
+                      )}
+                    </Button>
+
+                    <Button
+                      onClick={() => setDeleteModal(false)}
+                      ripple={true}
+                      variant="outlined"
+                      className={`shadow-none p-3 rounded-md text-sm  ${
+                        currentMode === "dark"
+                          ? "text-white border-white"
+                          : "text-primary border-primary"
+                      }`}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </Dialog>
+            </>
           )}
         </div>
       </Modal>
