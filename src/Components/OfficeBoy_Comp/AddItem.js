@@ -28,6 +28,7 @@ const style = {
 
 const AddItem = ({ openAddItem, setOpenAddItem }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
   const [itemData, setITemData] = useState({
     itemName: null,
     itemPrice: null,
@@ -61,19 +62,31 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
     });
   };
 
+  const handleImgUpload = (e) => {
+    const file = e.target.files[0];
+    console.log("file:: ", file);
+
+    setITemData({
+      ...itemData,
+      image: file,
+    });
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const addITem = async () => {
     setLoading(true);
     try {
-      const addITem = await axios.post(
-        `${BACKEND_URL}/items/store`,
-        JSON.stringify(),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const addITem = await axios.post(`${BACKEND_URL}/items/store`, itemData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      });
       console.log("add item::::: ", addITem);
       setLoading(false);
 
@@ -213,7 +226,11 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
 
                         <div className="  mb-5 flex items-center justify-center ">
                           <div className=" rounded-lg border">
-                            <img src="./dddd" width="100px" height="100px" />
+                            <img
+                              src={imagePreview}
+                              width="100px"
+                              height="100px"
+                            />
                           </div>
                         </div>
                         <input
@@ -221,7 +238,7 @@ const AddItem = ({ openAddItem, setOpenAddItem }) => {
                           style={{ display: "none" }}
                           id="contained-button-file"
                           type="file"
-                          //   onChange={handleImgUpload}
+                          onChange={handleImgUpload}
                         />
                         <label htmlFor="contained-button-file">
                           <Button
