@@ -110,15 +110,17 @@ const Menu = () => {
                   {t("menu_menu")}
                 </h1>
               </div>
-              <Button
-                style={{
-                  background: `${primaryColor}`,
-                  color: "#fff",
-                }}
-                onClick={() => setOpenInventory(true)}
-              >
-                {t("product_inventory")}
-              </Button>
+              {hasPermission("displayInventory") && (
+                <Button
+                  style={{
+                    background: `${primaryColor}`,
+                    color: "#fff",
+                  }}
+                  onClick={() => setOpenInventory(true)}
+                >
+                  {t("product_inventory")}
+                </Button>
+              )}
             </div>
 
             <MenuList

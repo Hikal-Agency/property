@@ -26,7 +26,7 @@ const style = {
   boxShadow: 24,
 };
 
-const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
+const EditItem = ({ editModal, setEditModal, listITems }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [itemData, setITemData] = useState({
@@ -105,7 +105,7 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
       console.log("add item::::: ", addITem);
       setLoading(false);
       listITems();
-      setOpenAddItem(false);
+      setEditModal(false);
 
       toast.success(`New Item Added.`, {
         position: "top-right",
@@ -145,15 +145,15 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
-      setOpenAddItem(false);
+      setEditModal(false);
     }, 1000);
   };
   return (
     <>
       <Modal
         keepMounted
-        open={openAddItem}
-        onClose={() => setOpenAddItem(false)}
+        open={editModal}
+        onClose={() => setEditModal(false)}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
         closeAfterTransition
@@ -172,7 +172,7 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
                 : "modal-close-right"
               : ""
           }
-            w-[100vw] h-[100vh] flex items-start justify-end `}
+              w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseTimelineModel}
@@ -180,7 +180,7 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
             }
-                bg-primary w-fit h-fit p-3 my-4 z-10`}
+                  bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
               size={18}
@@ -200,8 +200,8 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
             } 
-                 p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
-                `}
+                   p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+                  `}
           >
             {leadNotFound ? (
               <Error404 />
@@ -234,20 +234,20 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
                     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
                       <Box sx={darkModeColors} className="p-2">
                         {/* <Box
-                          sx={{
-                            ...darkModeColors,
-                            "& .MuiTypography-root": {
-                              fontFamily: fontFam,
-                            },
-                          }}
-                        >
-                          <label className="font-semibold mb-1">
-                            <span className="text-primary">{`${t("offer")} ${t(
-                              "label_validity"
-                            )}`}</span>
-                          </label>
-                          <br></br>
-                        </Box> */}
+                            sx={{
+                              ...darkModeColors,
+                              "& .MuiTypography-root": {
+                                fontFamily: fontFam,
+                              },
+                            }}
+                          >
+                            <label className="font-semibold mb-1">
+                              <span className="text-primary">{`${t("offer")} ${t(
+                                "label_validity"
+                              )}`}</span>
+                            </label>
+                            <br></br>
+                          </Box> */}
 
                         <div className="  mb-5 flex items-center justify-center ">
                           <div className=" rounded-lg border">
@@ -406,4 +406,4 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
   );
 };
 
-export default AddItem;
+export default EditItem;

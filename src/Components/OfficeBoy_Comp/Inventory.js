@@ -1,6 +1,14 @@
-import { Backdrop, Box, Button, IconButton, Modal } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  Modal,
+} from "@mui/material";
 import Select from "react-select";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
 import Error404 from "../../Pages/Error";
@@ -8,9 +16,14 @@ import { DataGrid } from "@mui/x-data-grid";
 import { inventory_status } from "../_elements/SelectOptions";
 import { renderStyles } from "../_elements/SelectStyles";
 import { FaPencilAlt } from "react-icons/fa";
+import axios from "../../axoisConfig";
+import { IoMdClose } from "react-icons/io";
 
 import { BiTrash } from "react-icons/bi";
 import AddItem from "./AddItem";
+import { toast } from "react-toastify";
+import { MdErrorOutline } from "react-icons/md";
+import EditItem from "./EditItem";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -20,6 +33,15 @@ const style = {
 const Inventory = ({ openInventory, setOpenInventory }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [openAddItem, setOpenAddItem] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("auth-token");
+  const [row, setRow] = useState([]);
+  const [total, setTotal] = useState(null);
+  const [page, setPage] = useState(null);
+  const [pageSize, setPageSize] = useState(null);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [btnloading, setBtnLoading] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const {
     t,
@@ -29,49 +51,135 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
     User,
     DataGridStyles,
     primaryColor,
+    BACKEND_URL,
   } = useStateContext();
   const [isClosing, setIsClosing] = useState(false);
   console.log("inventory status array ::::: ", inventory_status(t));
   const inventoryStatus = "available";
 
-  const changeStatus = () => {};
-  const rows = [
-    {
-      id: 1,
-      itemName: "Product A",
-      itemPrice: 20.0,
-      note: "Lorem ipsum",
-      status: "Active",
-    },
-    {
-      id: 2,
-      itemName: "Product B",
-      itemPrice: 30.0,
-      note: "Dolor sit amet",
-      status: "Inactive",
-    },
-    {
-      id: 3,
-      itemName: "Product C",
-      itemPrice: 25.0,
-      note: "Consectetur adipiscing",
-      status: "Active",
-    },
-    {
-      id: 4,
-      itemName: "Product D",
-      itemPrice: 18.0,
-      note: "Elit sed do eiusmod",
-      status: "Inactive",
-    },
-    {
-      id: 5,
-      itemName: "Product E",
-      itemPrice: 40.0,
-      note: "Tempor incididunt ut labore",
-      status: "Active",
-    },
-  ];
+  const listITems = async () => {
+    setLoading(true);
+    try {
+      const listItem = await axios.get(`${BACKEND_URL}/items`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("list item::::: ", listItem);
+      setRow(listItem?.data?.data);
+      setTotal(listItem?.data?.data?.meta?.total);
+      setPageSize(listItem?.data?.data?.meta?.per_page);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log("error:::: ", error);
+      toast.error(`Unable to fetch inventory. Kindly try again`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const changeStatus = async (e, value) => {
+    const newValue = e.value;
+    console.log("new value status:: ", newValue);
+    setLoading(true);
+    try {
+      const updateStatus = await axios.post(
+        `${BACKEND_URL}/items/${value?.id}`,
+        JSON.stringify({ itemStatus: newValue, itemName: value?.itemName }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      toast.success(`${value?.itemName} Item Status Update Successfully.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log("list item::::: ", updateStatus);
+      setLoading(false);
+
+      listITems();
+    } catch (error) {
+      setLoading(false);
+      console.log("error:::: ", error);
+      toast.error(`Unable to update Status. Kindly try again`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const deleteItem = async (value) => {
+    setBtnLoading(true);
+    try {
+      const deleteItem = await axios.delete(
+        `${BACKEND_URL}/items/${value?.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      listITems();
+
+      toast.success(`${value?.itemName} Item Deleted Successfully.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      console.log("list item::::: ", deleteItem);
+
+      setBtnLoading(false);
+      setDeleteModal(false);
+    } catch (error) {
+      setBtnLoading(false);
+      console.log("error:::: ", error);
+      toast.error(`Unable to delete item. Kindly try again`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const columns = [
     { field: "id", headerName: "ID", width: 100, headerAlign: "center" },
@@ -88,20 +196,21 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       width: 150,
       headerAlign: "center",
     },
-    { field: "note", headerName: "Note", flex: 1, headerAlign: "center" },
+    { field: "notes", headerName: "Note", flex: 1, headerAlign: "center" },
     {
-      field: "status",
+      field: "itemStatus",
       headerName: "Status",
       width: 120,
       headerAlign: "center",
       renderCell: (cellValues) => {
+        console.log("cellvalues::: ", cellValues);
         return (
           <Select
             id="status"
-            // value={inventory_status(t)?.find(
-            //   (option) => option?.value === inventoryStatus
-            // )}
-            onChange={changeStatus}
+            value={inventory_status(t)?.find(
+              (option) => option?.value === cellValues?.row?.itemStatus
+            )}
+            onChange={(e) => changeStatus(e, cellValues?.row)}
             options={inventory_status(t)}
             placeholder={t("select_status")}
             className={`w-full`}
@@ -121,10 +230,14 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
           <div className="">
             <IconButton
               sx={{ background: `${primaryColor}`, marginRight: "10px" }}
+              onClick={() => setEditModal(cellValues?.row)}
             >
               <FaPencilAlt color="#ffffff" size={12} />
             </IconButton>
-            <IconButton sx={{ background: `${primaryColor}` }}>
+            <IconButton
+              sx={{ background: `${primaryColor}` }}
+              onClick={() => setDeleteModal(cellValues?.row)}
+            >
               <BiTrash color="#ffffff" size={12} />
             </IconButton>
           </div>
@@ -140,6 +253,11 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       setOpenInventory(false);
     }, 1000);
   };
+
+  useEffect(() => {
+    listITems();
+  }, [page, pageSize]);
+
   return (
     <>
       <Modal
@@ -232,11 +350,10 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
                       disableDensitySelector
                       autoHeight
                       disableSelectionOnClick
-                      rows={rows}
-                      // columns={columns}
+                      rows={row}
                       columns={columns}
                       //   rowCount={pageState.total}
-                      //   loading={pageState.isLoading}
+                      loading={loading}
                       //   rowsPerPageOptions={[30, 50, 75, 100]}
                       pagination
                       // width="auto"
@@ -244,7 +361,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
                       rowHeight={25}
                       paginationMode="server"
                       //   page={pageState.page - 1}
-                      //   pageSize={pageState.pageSize}
+                      pageSize={pageSize}
                       componentsProps={{
                         toolbar: {
                           printOptions: {
@@ -256,18 +373,12 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
                           showQuickFilter: true,
                         },
                       }}
-                      //   onPageChange={(newPage) => {
-                      //     setpageState((old) => ({
-                      //       ...old,
-                      //       page: newPage + 1,
-                      //     }));
-                      //   }}
-                      //   onPageSizeChange={(newPageSize) =>
-                      //     setpageState((old) => ({
-                      //       ...old,
-                      //       pageSize: newPageSize,
-                      //     }))
-                      //   }
+                      onPageChange={(newPage) => {
+                        setPage(newPage + 1);
+                      }}
+                      onPageSizeChange={(newPageSize) =>
+                        setPageSize(newPageSize)
+                      }
                       sx={{
                         boxShadow: 2,
                         "& .MuiDataGrid-cell:hover": {
@@ -295,7 +406,95 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
             <AddItem
               openAddItem={openAddItem}
               setOpenAddItem={setOpenAddItem}
+              listITems={listITems}
             />
+          )}
+
+          {editModal && (
+            <EditItem
+              setEditModal={setEditModal}
+              editModal={editModal}
+              listITems={listITems}
+            />
+          )}
+
+          {deleteModal && (
+            <>
+              <Dialog
+                sx={{
+                  "& .MuiPaper-root": {
+                    boxShadow: "none !important",
+                  },
+                  "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                    {
+                      // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                    },
+                }}
+                open={deleteModal}
+                onClose={(e) => setDeleteModal(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                className="relative"
+              >
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    right: 12,
+                    top: 10,
+                    color: (theme) => theme.palette.grey[500],
+                  }}
+                  onClick={() => setDeleteModal(false)}
+                >
+                  <IoMdClose size={18} />
+                </IconButton>
+                <div
+                  className={`px-10 py-5 ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-white text-black"
+                  }`}
+                >
+                  {/* FEEDBACK  */}
+                  <div className="flex flex-col justify-center items-center">
+                    <MdErrorOutline
+                      size={50}
+                      className="text-primary text-2xl"
+                    />
+                    <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
+                      {t("want_to_delete", { DataName: deleteModal?.itemName })}{" "}
+                    </h1>
+                  </div>
+
+                  <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                    <Button
+                      className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                      ripple={true}
+                      size="lg"
+                      onClick={() => deleteItem(deleteModal)}
+                    >
+                      {btnloading ? (
+                        <CircularProgress size={16} sx={{ color: "white" }} />
+                      ) : (
+                        <span className="text-white"> Confirm</span>
+                      )}
+                    </Button>
+
+                    <Button
+                      onClick={() => setDeleteModal(false)}
+                      ripple={true}
+                      variant="outlined"
+                      className={`shadow-none p-3 rounded-md text-sm  ${
+                        currentMode === "dark"
+                          ? "text-white border-white"
+                          : "text-primary border-primary"
+                      }`}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </Dialog>
+            </>
           )}
         </div>
       </Modal>

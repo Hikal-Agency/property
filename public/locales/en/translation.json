@@ -851,6 +851,7 @@
     "twillio_id": "Twillio Id",
     "twillio_token": "Token",
     "twillio_add": "Connect",
+    "inventory_status":"Item Status",
     "integrate_etisalat": " Etisalat",
     "label_etisalat_user": "Etisalat User",
     "label_etisalat_password": "Etisalat Password",
