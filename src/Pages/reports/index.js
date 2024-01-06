@@ -488,7 +488,7 @@ const Reports = () => {
                     {counters && counters?.length > 0
                       ? counters?.map((counter) => {
                         const matchingSource = sourceCounters.find(
-                          sourceCounter => counter?.leadSource.toLowerCase().includes(Object.keys(sourceCounter)[0].toLowerCase())
+                          sourceCounter => counter?.leadSource?.toLowerCase()?.includes(Object.keys(sourceCounter)[0]?.toLowerCase())
                         );
 
                         if (!matchingSource) return null;
