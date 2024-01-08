@@ -11,15 +11,23 @@ import { FaPencilAlt } from "react-icons/fa";
 
 import { BiTrash } from "react-icons/bi";
 import AddItem from "./AddItem";
+import moment from "moment";
 
 const style = {
   transform: "translate(0%, 0%)",
   boxShadow: 24,
 };
 
-const OrderHistory = ({ openInventory, setOpenInventory }) => {
+const OrderHistory = ({
+  row,
+  setRow,
+  loading,
+  setPage,
+  pageSize,
+  setPageSize,
+  changeStatus,
+}) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
-  const [openAddItem, setOpenAddItem] = useState(false);
 
   const {
     t,
@@ -32,49 +40,15 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
   } = useStateContext();
   const [isClosing, setIsClosing] = useState(false);
 
-  const changeStatus = () => {};
-  const rows = [
-    {
-      id: 1,
-      date: "2023-20-12",
-      itemName: "Product A",
-      quantity: "2",
-      amount: "20",
-      User: "ubaid",
-      status: "Active",
-    },
-    {
-      id: 2,
-      itemName: "Product B",
-      itemPrice: 30.0,
-      note: "Dolor sit amet",
-      status: "Inactive",
-    },
-    {
-      id: 3,
-      itemName: "Product C",
-      itemPrice: 25.0,
-      note: "Consectetur adipiscing",
-      status: "Active",
-    },
-    {
-      id: 4,
-      itemName: "Product D",
-      itemPrice: 18.0,
-      note: "Elit sed do eiusmod",
-      status: "Inactive",
-    },
-    {
-      id: 5,
-      itemName: "Product E",
-      itemPrice: 40.0,
-      note: "Tempor incididunt ut labore",
-      status: "Active",
-    },
-  ];
-
   const columns = [
-    { field: "date", headerName: "date", width: 80, headerAlign: "center" },
+    {
+      field: "created_at",
+      headerName: "date",
+      width: 120,
+      headerAlign: "center",
+      renderCell: (cellValues) =>
+        moment(cellValues?.row?.created_at).format("HH:MM YYYY-MM-DD"),
+    },
     {
       field: "itemName",
       headerName: "Item Name",
@@ -98,7 +72,7 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
       width: 70,
     },
     {
-      field: "note",
+      field: "notes",
       headerName: "Note",
       type: "number",
       width: 150,
@@ -112,7 +86,7 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
       headerAlign: "center",
     },
     {
-      field: "status",
+      field: "orderStatus",
       headerName: "Order Status",
       type: "number",
       width: 150,
@@ -120,10 +94,10 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
       renderCell: (cellValues) => (
         <Select
           id="status"
-          // value={inventory_status(t)?.find(
-          //   (option) => option?.value === inventoryStatus
-          // )}
-          onChange={changeStatus}
+          value={order_status(t)?.find(
+            (option) => option?.value === cellValues?.row?.itemStatus
+          )}
+          onChange={(e) => changeStatus(e, cellValues?.row)}
           options={order_status(t)}
           placeholder={t("select_status")}
           className={`w-full`}
@@ -147,11 +121,10 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
               disableDensitySelector
               autoHeight
               disableSelectionOnClick
-              rows={rows}
-              // columns={columns}
+              rows={row}
               columns={columns}
               //   rowCount={pageState.total}
-              //   loading={pageState.isLoading}
+              loading={loading}
               //   rowsPerPageOptions={[30, 50, 75, 100]}
               pagination
               // width="auto"
@@ -159,7 +132,7 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
               rowHeight={25}
               paginationMode="server"
               //   page={pageState.page - 1}
-              //   pageSize={pageState.pageSize}
+              pageSize={pageSize}
               componentsProps={{
                 toolbar: {
                   printOptions: {
@@ -171,18 +144,10 @@ const OrderHistory = ({ openInventory, setOpenInventory }) => {
                   showQuickFilter: true,
                 },
               }}
-              //   onPageChange={(newPage) => {
-              //     setpageState((old) => ({
-              //       ...old,
-              //       page: newPage + 1,
-              //     }));
-              //   }}
-              //   onPageSizeChange={(newPageSize) =>
-              //     setpageState((old) => ({
-              //       ...old,
-              //       pageSize: newPageSize,
-              //     }))
-              //   }
+              onPageChange={(newPage) => {
+                setPage(newPage + 1);
+              }}
+              onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
               sx={{
                 boxShadow: 2,
                 "& .MuiDataGrid-cell:hover": {
