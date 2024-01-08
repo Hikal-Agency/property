@@ -33,15 +33,15 @@ const Stripe = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [stripeData, setStripeData] = useState({
-    etisalat_user: null,
-    etisalat_password: null,
+    stripe_api_key: null,
   });
 
   const token = localStorage.getItem("auth-token");
 
   const integrationStripe = async () => {
-    if (!stripeData?.etisalat_user || !stripeData?.etisalat_password) {
-      toast.error("All fields are required.", {
+    setLoading(true);
+    if (!stripeData?.stripe_api_key) {
+      toast.error("Kindly enter the stripe key.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -51,6 +51,7 @@ const Stripe = () => {
         progress: undefined,
         theme: "light",
       });
+      setLoading(false);
       return;
     }
     try {
@@ -66,6 +67,7 @@ const Stripe = () => {
       );
 
       console.log("Stripe integration response::: ", stripeIntegration);
+      setLoading(false);
       toast.success("Your Stripe account successfully integrated.", {
         position: "top-right",
         autoClose: 3000,
@@ -77,6 +79,7 @@ const Stripe = () => {
         theme: "light",
       });
     } catch (error) {
+      setLoading(false);
       console.log("Error=====> ", error);
       toast.error("Unable to connect your account.", {
         position: "top-right",
@@ -140,11 +143,11 @@ const Stripe = () => {
                     },
                   }}
                 >
-                  <div className="flex justify-between space-x-4">
+                  <div className="">
                     <TextField
                       id="id"
                       type={"text"}
-                      label={t("label_etisalat_user")}
+                      label={t("label_stripe_key")}
                       className="w-full"
                       sx={{
                         "&": {
@@ -154,33 +157,11 @@ const Stripe = () => {
                       }}
                       variant="outlined"
                       size="small"
-                      value={stripeData?.etisalat_user}
+                      value={stripeData?.stripe_api_key}
                       onChange={(e) =>
                         setStripeData({
                           ...stripeData,
-                          etisalat_user: e.target.value,
-                        })
-                      }
-                      required
-                    />
-                    <TextField
-                      id="notes"
-                      type={"text"}
-                      label={t("label_etisalat_password")}
-                      className="w-full"
-                      sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                          zIndex: 1,
-                        },
-                      }}
-                      variant="outlined"
-                      size="small"
-                      value={stripeData?.etisalat_password}
-                      onChange={(e) =>
-                        setStripeData({
-                          ...stripeData,
-                          etisalat_password: e.target.value,
+                          stripe_api_key: e.target.value,
                         })
                       }
                       required
@@ -208,7 +189,7 @@ const Stripe = () => {
                     className="text-white"
                   />
                 ) : (
-                  <span className="text-white">{t("twillio_add")}</span>
+                  <span className="text-white">{t("stipe_add")}</span>
                 )}
               </Button>
             </div>

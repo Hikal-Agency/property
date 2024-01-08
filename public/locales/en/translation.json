@@ -858,6 +858,7 @@
     "etisalat_add": "Connect",
     "integrate_stripe": "Stripe",
     "stipe_add": "Connect",
+    "label_stripe_key": "Stripe API Key",
 
 
 
