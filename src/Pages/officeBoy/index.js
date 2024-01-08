@@ -24,7 +24,7 @@ const Menu = () => {
   const [pageBeingScrolled, setPageBeingScrolled] = useState(1);
   const [lastPage, setLastPage] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [offers, setOffers] = useState([]);
+  const [menu, setMenu] = useState([]);
   const [btnloading, setbtnloading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [openInventory, setOpenInventory] = useState(false);
@@ -41,50 +41,52 @@ const Menu = () => {
     // eslint-disable-next-line
   }, []);
 
-  const FetchOffers = async (token, page = 1) => {
+  const FetchMenu = async (token, page = 1) => {
     if (page > 1) {
       setbtnloading(true);
     }
     try {
-      const all_offers = await axios.get(`${BACKEND_URL}/offers?page=${page}`, {
+      const all_menu = await axios.get(`${BACKEND_URL}/items?page=${page}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       });
 
+      console.log("menu items::: ", all_menu);
+
       if (page > 1) {
-        setOffers((prevOffers) => {
+        setMenu((prevMenu) => {
           return [
-            ...prevOffers,
-            ...all_offers?.data?.offers?.data?.map((offer) => ({
-              ...offer,
+            ...prevMenu,
+            ...all_menu?.data?.data?.map((menu) => ({
+              ...menu,
               page: page,
             })),
           ];
         });
       } else {
-        setOffers(() => {
+        setMenu(() => {
           return [
-            ...all_offers?.data?.offers?.data?.map((offer) => ({
-              ...offer,
+            ...all_menu?.data?.data?.map((menu) => ({
+              ...menu,
               page: page,
             })),
           ];
         });
       }
       setLoading(false);
-      setLastPage(all_offers?.data?.offers?.last_page);
+      setLastPage(all_menu?.data?.data?.meta?.last_page);
       setbtnloading(false);
-      //   console.log("All Offers: ",all_offers)
+      //   console.log("All menu: ",all_menu)
     } catch (error) {
-      console.log("Offers not fetched. ", error);
+      console.log("menu not fetched. ", error);
     }
   };
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
-    FetchOffers(token, currentPage);
+    FetchMenu(token, currentPage);
   }, [currentPage, value]);
 
   return (
@@ -131,7 +133,7 @@ const Menu = () => {
               setPageBeingScrolled={setPageBeingScrolled}
               btnloading={btnloading}
               currentPage={currentPage}
-              offers={offers}
+              menu={menu}
               setCurrentPage={setCurrentPage}
             />
             {openInventory && (

@@ -8,7 +8,7 @@ import OrderPlacementModal from "./OrderPlacementModal";
 const MenuList = ({
   user,
   lastPage,
-  offers,
+  menu,
   currentPage,
   btnloading,
   setCurrentPage,
@@ -30,12 +30,10 @@ const MenuList = ({
   useEffect(() => {
     const handleScroll = () => {
       let updatedPage = 1;
-      for (let i = 0; i < offers?.length; i++) {
-        const element = document.querySelector(
-          `.offers-page-${offers[i].page}`
-        );
+      for (let i = 0; i < menu?.length; i++) {
+        const element = document.querySelector(`.menu-page-${menu[i].page}`);
         if (element && isElementVisible(element)) {
-          updatedPage = offers[i]?.page;
+          updatedPage = menu[i]?.page;
           break;
         }
       }
@@ -51,11 +49,6 @@ const MenuList = ({
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  const offersArr =
-    user === "manager"
-      ? offers?.filter((off) => off?.validToManager === 1)
-      : offers?.filter((off) => off?.validToSales === 1);
 
   const ribbonStyles = {
     width: "100px",
@@ -107,11 +100,11 @@ const MenuList = ({
     <div className="relative">
       <Box className="mt-1 p-5">
         <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-4 text-center">
-          {offersArr?.map((offer, index) => {
+          {menu?.map((menu, index) => {
             return (
               <div
                 className={`card-hover cursor-pointer relative overflow-hidden rounded-lg shadow-sm offers-page-${
-                  offer?.page
+                  menu?.page
                 } ${
                   !themeBgImg
                     ? currentMode === "dark"
@@ -123,33 +116,25 @@ const MenuList = ({
                 } `}
                 onClick={() => setOpenOrderModal(true)}
               >
-                {offer?.status?.toLowerCase() === "expired" && (
+                {menu?.itemPrice && (
                   <Box sx={{ ...ribbonStyles }}>
                     <div className="wrap">
-                      <span>AED 3</span>
+                      <span>{menu?.itemPrice}</span>
                     </div>
                   </Box>
                 )}
-                <div
-                  style={{
-                    filter:
-                      offer?.status?.toLowerCase() === "expired"
-                        ? "grayscale(1)"
-                        : "",
-                  }}
-                  className="p-5 h-full flex flex-col"
-                >
+                <div className="p-5 h-full flex flex-col">
                   <div className="my-1">
-                    {offer?.offer_image ? (
+                    {menu?.image_path ? (
                       <img
-                        src={offer?.offer_image}
-                        alt="offer"
+                        src={menu?.image_path}
+                        alt="menu"
                         className="w-full object-cover h-[200px]"
                       />
                     ) : (
                       <img
                         src={imagePaths[0]}
-                        alt="offer"
+                        alt="menu"
                         className="w-full h-[200px] object-cover"
                       />
                     )}
@@ -160,12 +145,12 @@ const MenuList = ({
                       currentMode === "dark" ? "text-white" : "text-black"
                     } text-center font-bold rounded-md my-3`}
                     style={{
-                      fontFamily: isArabic(offer?.offerTitle)
+                      fontFamily: isArabic(menu?.itemName)
                         ? "Noto Kufi Arabic"
                         : "inherit",
                     }}
                   >
-                    {offer?.offerTitle}
+                    {menu?.itemName}
                   </p>
                 </div>
               </div>
