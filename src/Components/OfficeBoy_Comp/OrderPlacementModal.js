@@ -10,6 +10,8 @@ import {
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -17,8 +19,79 @@ const style = {
 };
 
 const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
-  const { currentMode, t, darkModeColors } = useStateContext();
+  const { currentMode, t, darkModeColors, BACKEND_URL } = useStateContext();
   const [orderBtnLoading, setOrderBtnLoading] = useState(false);
+  const token = localStorage.getItem("auth-token");
+
+  const [orderDetails, setOrderDetails] = useState({
+    itemId: String(openOrderModal?.id),
+    quantity: null,
+    amount: openOrderModal?.itemPrice || null,
+    notes: null,
+    orderStatus: "pending",
+  });
+
+  console.log("orderdetails:::: ", orderDetails);
+
+  const placeOrder = async () => {
+    setOrderBtnLoading(true);
+
+    if (!orderDetails?.quantity) {
+      toast.error(`Order quantity is required.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setOrderBtnLoading(false);
+      return;
+    }
+    try {
+      const placeOrder = await axios.post(
+        `${BACKEND_URL}/orders/store`,
+        JSON.stringify(orderDetails),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      setOrderBtnLoading(false);
+      setOpenOrderModal(false);
+
+      console.log("order place:::: ", placeOrder);
+
+      toast.success(`Order for ${openOrderModal?.itemName} is placed.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log("error::::: ", error);
+      setOrderBtnLoading(false);
+
+      toast.error(`An error occured.Kindly try again.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
   return (
     <Modal
       keepMounted
@@ -66,7 +139,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              Order Product Name
+              {openOrderModal?.itemName}
             </h1>
           </div>
         </div>
@@ -77,15 +150,16 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
               <TextField
                 type={"number"}
                 id="Manager"
-                // sx={{
-                //   "&": {
-                //     marginBottom: "1.25rem !important",
-                //   },
-                // }}
-                placeholder="Recipients"
+                name="quantity"
+                placeholder={t("label_order_qty")}
                 label={t("label_order_qty")}
-                //   value={contactsList?.join(",")}
-                //   onChange={handleContacts}
+                value={orderDetails?.quantity}
+                onChange={(e) =>
+                  setOrderDetails({
+                    ...orderDetails,
+                    [e.target.name]: e.target.value,
+                  })
+                }
                 size="small"
                 className="w-full p-2"
                 displayEmpty
@@ -93,15 +167,16 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
               <TextField
                 type={"number"}
                 id="Manager"
-                // sx={{
-                //   "&": {
-                //     marginBottom: "1.25rem !important",
-                //   },
-                // }}
-                placeholder="Recipients"
+                name="amount"
+                placeholder={t("label_order_amount")}
                 label={t("label_order_amount")}
-                //   value={contactsList?.join(",")}
-                //   onChange={handleContacts}
+                value={orderDetails?.amount}
+                onChange={(e) =>
+                  setOrderDetails({
+                    ...orderDetails,
+                    [e.target.name]: e.target.value,
+                  })
+                }
                 size="small"
                 className="w-full p-2"
                 displayEmpty
@@ -117,10 +192,16 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                   marginTop: "1.25rem !important",
                 },
               }}
-              placeholder="Recipients"
+              placeholder={t("label_order_note")}
+              name="notes"
               label={t("label_order_note")}
-              //   value={contactsList?.join(",")}
-              //   onChange={handleContacts}
+              value={orderDetails?.notes}
+              onChange={(e) =>
+                setOrderDetails({
+                  ...orderDetails,
+                  [e.target.name]: e.target.value,
+                })
+              }
               size="small"
               className="w-full p-2"
               displayEmpty
@@ -136,6 +217,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
             style={{
               color: "white",
             }}
+            onClick={placeOrder}
           >
             {orderBtnLoading ? (
               <CircularProgress size={18} sx={{ color: "blue" }} />

@@ -114,7 +114,7 @@ const MenuList = ({
                     ? "blur-bg-dark text-white"
                     : "blur-bg-light text-black"
                 } `}
-                onClick={() => setOpenOrderModal(true)}
+                onClick={() => setOpenOrderModal(menu)}
               >
                 {menu?.itemPrice && (
                   <Box sx={{ ...ribbonStyles }}>
