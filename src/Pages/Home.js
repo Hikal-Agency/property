@@ -7,13 +7,14 @@ import "../styles/app.css";
 import { Link, useLocation } from "react-router-dom";
 import {
   Backdrop,
+  Box,
   CircularProgress,
   IconButton,
   InputAdornment,
   TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaGoogle } from "react-icons/fa";
 
 const Home = () => {
   let canvas = useRef();
@@ -29,6 +30,36 @@ const Home = () => {
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
+
+  const googleLogin = async () => {
+    try {
+      const googleLogin = await axios.get(`${BACKEND_URL}/auth/google`);
+
+      console.log("Google response ::: ", googleLogin);
+      toast.success("Login Successfull. Redirecting.....s", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log("ERror::::::   ", error);
+      toast.error("Unbale to login using google. Kindly try again", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const LoginUser = async () => {
     setloading(true);
@@ -310,6 +341,25 @@ const Home = () => {
                         <span>Sign in</span>
                       )}
                     </button>
+
+                    <hr />
+                    <p className="text-center mt-3">Or Login With Google</p>
+
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      sx={{
+                        marginTop: "5px",
+                      }}
+                    >
+                      <IconButton
+                        onClick={googleLogin}
+                        sx={{ borderRadius: "100%", border: "1px solid " }}
+                      >
+                        <FaGoogle />
+                      </IconButton>
+                    </Box>
+
                     <div className="absolute bottom-0 pl-5 py-5 left-0 right-0 flex items-center justify-between bg-main-red-color">
                       <strong className="text-white cursor-pointer">
                         DOWNLOAD THE APP NOW
