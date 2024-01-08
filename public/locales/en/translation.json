@@ -856,6 +856,9 @@
     "label_etisalat_user": "Etisalat User",
     "label_etisalat_password": "Etisalat Password",
     "etisalat_add": "Connect",
+    "integrate_stripe": "Stripe",
+    "stipe_add": "Connect",
+
 
 
     "order":"Order",

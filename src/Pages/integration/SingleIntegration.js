@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useStateContext } from "../../context/ContextProvider";
 import Twillio from "../twillio";
 import Etisalat from "../etisalat";
+import Stripe from "../stripe";
 
 const SingleIntegration = () => {
   const param = useParams();
@@ -13,6 +14,7 @@ const SingleIntegration = () => {
   const heading = {
     twillio: t("integrate_twillio"),
     etisalat: t("integrate_etisalat"),
+    stripe: t("integrate_stripe"),
   };
 
   return (
@@ -30,6 +32,7 @@ const SingleIntegration = () => {
 
       {service === "twillio" && <Twillio />}
       {service === "etisalat" && <Etisalat />}
+      {service === "stripe" && <Stripe />}
     </div>
   );
 };

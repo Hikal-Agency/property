@@ -18,6 +18,12 @@ const Integration = () => {
       button_text: t("etisalat_add"),
       link: "/integrations/etisalat",
     },
+    {
+      heading: t("integrate_stripe"),
+      logo: "../assets/sms-services-logo/stripe.png",
+      button_text: t("stipe_add"),
+      link: "/integrations/stripe",
+    },
   ];
   return (
     <>
