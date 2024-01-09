@@ -28,16 +28,21 @@ const style = {
 
 const EditItem = ({ editModal, setEditModal, listITems }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
+  const editITem = editModal;
+
+  const [imagePreview, setImagePreview] = useState(
+    editITem?.image_path || null
+  );
   const [itemData, setITemData] = useState({
-    itemName: null,
-    itemPrice: null,
-    itemStatus: "available",
-    notes: null,
-    image: null,
+    itemName: editITem?.itemName || null,
+    itemPrice: editITem?.itemPrice || null,
+    itemStatus: editITem?.itemStatus?.toLowerCase() || "available",
+    notes: editITem?.notes || null,
+    image: editITem?.image || null,
   });
 
   console.log("ITem Data:::: ", itemData);
+  console.log("edit item::: ", editModal);
 
   const {
     t,
@@ -363,10 +368,10 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                             <MenuItem disabled selected value="">
                               {t("inventory_status")}
                             </MenuItem>
-                            <MenuItem value="Available">
+                            <MenuItem value="available">
                               {t("inventory_status_avail")}
                             </MenuItem>
-                            <MenuItem value="Out Of Stock">
+                            <MenuItem value="out of stock">
                               {t("inventory_status_stock")}
                             </MenuItem>
                           </Select>
@@ -392,7 +397,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                           className="text-white"
                         />
                       ) : (
-                        <span>{t("add_item")}</span>
+                        <span>{t("edit_item")}</span>
                       )}
                     </Button>
                   </form>
