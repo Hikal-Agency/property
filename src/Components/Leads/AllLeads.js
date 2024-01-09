@@ -55,6 +55,7 @@ import SourceAnimation from "../_elements/SourceAnimation";
 import ColdcallFiles from "./ColdcallFiles";
 import { renderSourceIcons } from "../_elements/SourceIconsDataGrid";
 import { renderOTPIcons } from "../_elements/OTPIconsDataGrid";
+import SourceByProject from "../_elements/SourceByProject";
 
 const bulkUpdateBtnStyles = {
   position: "absolute",
@@ -1469,6 +1470,33 @@ const AllLeads = ({
       });
   };
 
+  const FetchSourceForProject = async (
+    token,
+    projectName,
+  ) => {
+
+    let ProjectSource = "";
+    ProjectSource = `${BACKEND_URL}/totalSource?coldCall=0&unassigned=1&project=${projectName}`;
+
+    axios
+      .get(ProjectSource, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then(async (result) => {
+        // console.log("PROJECT SOURCE ============ ", result.data?.data?.query_result);
+        setSourceByProject(result.data?.data?.query_result);
+        setSourceFetched(true);
+        // console.log("SOURCE BY PROJECT ========= ", sourceByProject);
+      })
+      .catch((err) => {
+        console.log("error occured");
+        console.log(err);
+      });
+  };
+
   const FetchSearchedLeads = async (token, term) => {
     setpageState((old) => ({
       ...old,
@@ -1693,12 +1721,22 @@ const AllLeads = ({
     }
   }, []);
 
+  const [sourceFetched, setSourceFetched] = useState(false);
+  const [sourceByProject, setSourceByProject] = useState([]);
+
   useEffect(() => {
     FetchLeads(
       localStorage.getItem("auth-token"),
       selectedProject === "All" ? null : selectedProject,
       selectedSource === "All" ? null : selectedSource
     );
+    setSourceFetched(false);
+    if (selectedProject !== "All") {
+      FetchSourceForProject(
+        localStorage.getItem("auth-token"),
+        selectedProject,
+      );
+    }
   }, [selectedProject, selectedSource, unassignedFeedback]);
 
   // ROW CLICK FUNCTION
@@ -2190,7 +2228,7 @@ const AllLeads = ({
               ...darkModeColors,
               display: "flex",
               flexWrap: "wrap",
-              justifyContent: "end",
+              // justifyContent: "between",
               "& .MuiSelect-select": {
                 padding: "1px",
                 paddingX: "5px !important",
@@ -2199,9 +2237,15 @@ const AllLeads = ({
                 width: "max-content",
               },
             }}
-            className={"flex items-center"}
+            className={"flex items-center justify-between"}
           >
-            <div></div>
+            <div className="px-2 pt-4">
+              {sourceFetched && (
+                <div className="flex flex-wrap gap-2 h-full items-center">
+                  <SourceByProject list={sourceByProject} />
+                </div>
+              )}
+            </div>
             <div className="flex items-end justify-end mb-2">
               <div className="w-fit mr-2">
                 <Box
@@ -2238,42 +2282,44 @@ const AllLeads = ({
                   />
                 </Box>
               </div>
-              <div className="w-fit mr-2">
-                <Box
-                  sx={{
-                    width: "150px",
-                    minWidth: "100px",
-                    maxWidth: "200px",
-                  }}
-                >
-                  <Select
-                    id="source"
-                    options={[
-                      {
-                        value: "All",
-                        label: `${t("all")} ${" "} ${t("label_source")}`,
-                      },
-                      ...sourceOptions,
-                    ]}
-                    value={sourceOptions?.find(
-                      (option) => option.value === selectedSource
-                    )}
-                    // value={unassignedFeedback}
-                    onChange={(event) => {
-                      setSelectedSource(event.value);
+              {(hasPermission("leadSource_counts") || User.role === 1) && (
+                <div className="w-fit mr-2">
+                  <Box
+                    sx={{
+                      width: "150px",
+                      minWidth: "100px",
+                      maxWidth: "200px",
                     }}
-                    placeholder={t("label_source")}
-                    className={`w-full mr-2`}
-                    menuPortalTarget={document.body}
-                    styles={selectBgStyles(
-                      currentMode,
-                      primaryColor,
-                      blurDarkColor,
-                      blurLightColor
-                    )}
-                  />
-                </Box>
-              </div>
+                  >
+                    <Select
+                      id="source"
+                      options={[
+                        {
+                          value: "All",
+                          label: `${t("all")} ${" "} ${t("label_source")}`,
+                        },
+                        ...sourceOptions,
+                      ]}
+                      value={sourceOptions?.find(
+                        (option) => option.value === selectedSource
+                      )}
+                      // value={unassignedFeedback}
+                      onChange={(event) => {
+                        setSelectedSource(event.value);
+                      }}
+                      placeholder={t("label_source")}
+                      className={`w-full mr-2`}
+                      menuPortalTarget={document.body}
+                      styles={selectBgStyles(
+                        currentMode,
+                        primaryColor,
+                        blurDarkColor,
+                        blurLightColor
+                      )}
+                    />
+                  </Box>
+                </div>
+              )}
               <div className="w-fit flex justify-end">
                 <Box
                   sx={{
