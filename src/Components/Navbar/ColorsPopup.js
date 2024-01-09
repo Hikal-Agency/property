@@ -1,3 +1,4 @@
+import { useEffect} from "react";
 import { Box, Container, IconButton } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { BsCheck } from "react-icons/bs";
@@ -189,8 +190,21 @@ const images = [
 ];
 
 const ColorsPopup = ({ handleClose }) => {
-  const { setPrimaryColor, primaryColor, currentMode, BACKEND_URL, User, setThemeBgImg, setCurrentMode } =
+  const { setPrimaryColor, primaryColor, feedbackTheme, setFeedbackTheme, currentMode, BACKEND_URL, User, setThemeBgImg, setCurrentMode, t } =
     useStateContext();
+
+  const feedback_theme = [
+    {
+      name: "rounded",
+      bg: false,
+      style: "renderStyles",
+    },
+    {
+      name: "background",
+      bg: true,
+      style: "renderStyles2",
+    }
+  ];
 
   const handleSelectTheme = async (color) => {
     setPrimaryColor(color);
@@ -223,6 +237,42 @@ const ColorsPopup = ({ handleClose }) => {
     }
   };
 
+  useEffect(() => {
+    console.log("FEEDBACK THEME CHANGED ========= ", feedbackTheme);
+
+  }, [feedbackTheme]);
+
+  const handleSelectFeedbackTheme = async (style) => {
+    setFeedbackTheme(style);
+    console.log("FEEDBACK THEME STYLE ========= ", style);
+    const token = localStorage.getItem("auth-token");
+    try {
+      await axios.post(
+        `${BACKEND_URL}/updateuser/${User.id}`,
+        JSON.stringify({
+          feedback_theme: style
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const handleSelectBgImg = async (bgImg, theme, primary) => {
     setThemeBgImg(bgImg);
@@ -270,34 +320,42 @@ const ColorsPopup = ({ handleClose }) => {
       onMouseLeave={handleClose}
       sx={{ width: "100%", position: "relative" }}
     >
-      <Box className="mx-auto py-4 place-items-center grid grid-cols-5 gap-y-5">
-        {colors.map((color) => (
-          <div
-            style={{
-              background: color,
-            }}
-            onClick={() => handleSelectTheme(color)}
-            className={`w-[35px] relative rounded-full h-[35px] cursor-pointer border-4 border-white shadow`}
-          >
-            {primaryColor === color && (
-              <Box
-                sx={{
-                  "& svg": {
-                    color: currentMode === "dark" ? "black" : "white",
-                  },
-                }}
-                className={`absolute rounded-full -top-[4px] -right-[4px] ${
-                  currentMode === "dark" ? "bg-white" : "bg-black"
-                }`}
-              >
-                <BsCheck size={18} />
-              </Box>
-            )}
-          </div>
-        ))}
+      {/* PRIMARY COLOR  */}
+      <div className="mb-4 text-sm text-center uppercase">
+        <div className="">{t("color")}</div>
+        <Box className="mx-auto place-items-center grid grid-cols-5 gap-y-1">
+          {colors.map((color) => (
+            <div
+              style={{
+                background: color,
+              }}
+              onClick={() => handleSelectTheme(color)}
+              className={`w-[35px] relative rounded-full h-[35px] cursor-pointer border-4 border-white shadow`}
+            >
+              {primaryColor === color && (
+                <Box
+                  sx={{
+                    "& svg": {
+                      color: currentMode === "dark" ? "black" : "white",
+                    },
+                  }}
+                  className={`absolute rounded-full -top-[4px] -right-[4px] ${
+                    currentMode === "dark" ? "bg-white" : "bg-black"
+                  }`}
+                >
+                  <BsCheck size={18} />
+                </Box>
+              )}
+            </div>
+          ))}
 
-      </Box>
-        <div className="my-4 mx-auto place-items-center grid grid-cols-5 gap-y-5">
+        </Box>
+      </div>
+
+      {/* BACKGROUND  */}
+      <div className="my-4 text-sm text-center uppercase">
+        <div className="pb-2">{t("background")}</div>
+        <div className="pb-2 mx-auto place-items-center grid grid-cols-5 gap-y-2">
           <div>
             <IconButton onClick={() => handleSelectBgImg("", "light", "rgb(218,31,38)")}>
               <BiBlock size={18} color={currentMode === "dark" ? "#EEEEEE" : "#1C1C1C"} />
@@ -322,7 +380,7 @@ const ColorsPopup = ({ handleClose }) => {
               <div 
                 key={index}
                 onClick={() => handleSelectBgImg(imageLink, imageTheme, imagePrimary)} 
-                className="cursor-pointer rounded-md w-[40px] h-[40px]" 
+                className="cursor-pointer rounded-md w-[35px] h-[35px]" 
                 style={{
                   backgroundImage: `url(${imageLink})`, 
                   backgroundRepeat: "no-repeat", 
@@ -334,14 +392,7 @@ const ColorsPopup = ({ handleClose }) => {
           })}
         </div>
 
-        {/* <div className="my-4 mx-auto place-items-center grid grid-cols-5 gap-y-5">
-            {solidColors?.map((color) => <div onClick={() => handleSelectBgImg(color)} className="cursor-pointer rounded-md w-[35px] h-[35px]" style={{
-              backgroundColor: color, 
-            }}>
-            </div>)}
-        </div> */}
-
-        <div className="my-4 mx-auto place-items-center grid grid-cols-5 gap-y-5">
+        <div className="mx-auto place-items-center grid grid-cols-5 gap-y-2">
           {solidColors?.map((colorObject, index) => {
             const colorHex = Object.keys(colorObject)[0];
             const colorTheme = colorObject[colorHex].theme;
@@ -360,6 +411,64 @@ const ColorsPopup = ({ handleClose }) => {
             );
           })}
         </div>
+      </div>
+
+      {/* FEEDBACK OPTIONS  */}
+      <div className="my-4 text-sm text-center uppercase">
+        <div className="pb-2">{t("label_feedback")}</div>
+        <Box className="mx-auto place-items-center grid grid-cols-2 gap-2">
+          {/* <div className={`w-full h-full flex items-center justify-start p-2 rounded-xl border border-2 ${
+            currentMode === "dark" ? "border-[#333333]" : "border-[#CCCCCC]"
+          }`}>
+            <div className="h-[10px] w-[10px] rounded-full bg-[#81CA9D]"></div>
+            <div className="mx-2">{t("feedback_booked")}</div>
+          </div>
+          <div className={`w-full h-full flex items-center justify-start p-2 rounded-xl bg-[#81CA9D] border border-2 ${
+            currentMode === "dark" ? "border-[#333333]" : "border-[#CCCCCC]"
+          }`}>
+            <div className="mx-2 text-black">{t("feedback_booked")}</div>
+            
+          </div> */}
+          
+          {feedback_theme.map((fb) => (
+            <div
+              key={fb.style}
+              style={{
+                background: fb?.bg && "#81CA9D",
+                color: fb?.bg && "#000000",
+              }}
+              onClick={() => handleSelectFeedbackTheme(fb?.style)}
+              className={`relative w-full h-full flex items-center justify-start p-2 rounded-xl border border-2 ${
+                currentMode === "dark" ? "border-[#333333]" : "border-[#CCCCCC]"
+              }`}
+            >
+              {fb.bg ? (
+                <div className="mx-2 text-black">{t("feedback_booked")}</div>
+              ) : (
+                <>
+                  <div className="h-[10px] w-[10px] rounded-full bg-[#81CA9D]"></div>
+                  <div className="mx-2">{t("feedback_booked")}</div>
+                </>
+              )}
+              {feedbackTheme === fb.style && (
+                <Box
+                  sx={{
+                    "& svg": {
+                      color: currentMode === "dark" ? "black" : "white",
+                    },
+                  }}
+                  className={`absolute rounded-full -top-[4px] -right-[4px] ${
+                    currentMode === "dark" ? "bg-white" : "bg-black"
+                  }`}
+                >
+                  <BsCheck size={18} />
+                </Box>
+              )}
+            </div>
+          ))}
+
+        </Box>
+      </div>
 
     </Container>
   );

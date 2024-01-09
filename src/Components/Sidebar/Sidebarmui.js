@@ -789,6 +789,8 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.HotLeadsCount?.new,
               link: "/freshleads/new",
+              // bgColor: "",
+              // color: "#"
             },
             {
               name: t("feedback_callback"),

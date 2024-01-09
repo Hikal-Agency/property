@@ -26,7 +26,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LocationPicker from "../meetings/LocationPicker";
 import dayjs from "dayjs";
 import moment from "moment";
-import { renderStyles } from "../_elements/SelectStyles.jsx";
+import { renderStyles, renderStyles2 } from "../_elements/SelectStyles.jsx";
 import { feedback_options } from "../_elements/SelectOptions.js";
 
 import { BsBookmarkCheck } from "react-icons/bs";
@@ -42,7 +42,14 @@ const RenderFeedback = ({ cellValues }) => {
     t,
     primaryColor,
     darkModeColors,
+    feedbackTheme
   } = useStateContext();
+
+  console.log("DT FEEDBACK THEME =========== ", feedbackTheme);
+
+  // const dynamicStyleFn = new Function('currentMode', 'primaryColor', `return ${feedbackTheme};`);
+
+  // const dynamicStyle = dynamicStyleFn(currentMode, primaryColor);
 
   const [btnloading, setbtnloading] = useState(false);
   const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
@@ -246,6 +253,7 @@ const RenderFeedback = ({ cellValues }) => {
       className={`renderDD w-full h-full flex items-center justify-center `}
       sx={SelectStyles}
     >
+      {feedbackTheme === "renderStyles" ? (
       <Select
         id="feedback"
         options={feedback_options(t)}
@@ -256,6 +264,18 @@ const RenderFeedback = ({ cellValues }) => {
         menuPortalTarget={document.body}
         styles={renderStyles(currentMode, primaryColor)}
       />
+      ) : (
+        <Select
+          id="feedback"
+          options={feedback_options(t)}
+          value={feedback_options(t).find((option) => option.value === Feedback)}
+          onChange={ChangeFeedback}
+          placeholder={t("label_feedback")}
+          className={`w-full`}
+          menuPortalTarget={document.body}
+          styles={renderStyles2(currentMode, primaryColor)}
+        />
+      )}
 
       {/* <FormControl
         className={`${currentMode === "dark" ? "text-white" : "text-black"}`}

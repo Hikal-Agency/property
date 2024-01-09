@@ -61,6 +61,7 @@ export const ContextProvider = ({ children }) => {
   const [fbToken, setFBToken] = useState();
   const [permits, setPermits] = useState("");
   const [primaryColor, setPrimaryColor] = useState("default");
+  const [feedbackTheme, setFeedbackTheme] = useState("renderStyles");
   const [fontFam, setFontFam] = useState("'Noto Sans', sans-serif");
   const [themeBgImg, setThemeBgImg] = useState(null);
   const [blurDarkColor, setBlurDarkColor] = useState("rgba(28,28,28,0.5)");
@@ -704,6 +705,8 @@ export const ContextProvider = ({ children }) => {
         setUserCredits,
         primaryColor,
         setPrimaryColor,
+        feedbackTheme,
+        setFeedbackTheme,
         fontFam,
         setFontFam,
         themeBgImg,
