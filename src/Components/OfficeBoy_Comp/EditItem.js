@@ -28,18 +28,21 @@ const style = {
 
 const EditItem = ({ editModal, setEditModal, listITems }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
+  const editITem = editModal;
+
   const [imagePreview, setImagePreview] = useState(
-    editModal?.image_path || null
+    editITem?.image_path || editModal?.image_path || null
   );
   const [itemData, setITemData] = useState({
-    itemName: editModal?.itemName || null,
-    itemPrice: editModal?.itemPrice || null,
-    itemStatus: editModal?.itemStatus,
-    notes: editModal?.notes || null,
-    image: editModal?.image || null,
+    itemName: editITem?.itemName || editModal?.itemName || null,
+    itemPrice: editITem?.itemPrice || editModal?.itemPrice || null,
+    itemStatus: editITem?.itemStatus?.toLowerCase() || editModal?.itemStatus,
+    notes: editITem?.notes || editModal?.notes || null,
+    image: editITem?.image || editModal?.image || null,
   });
 
   console.log("ITem Data:::: ", itemData);
+  console.log("edit item::: ", editModal);
 
   const {
     t,
@@ -373,7 +376,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                             <MenuItem value="available">
                               {t("inventory_status_avail")}
                             </MenuItem>
-                            <MenuItem value="Out Of Stock">
+                            <MenuItem value="out of stock">
                               {t("inventory_status_stock")}
                             </MenuItem>
                           </Select>

@@ -871,6 +871,7 @@
     "inventory_status_avail":"Available",
     "inventory_status_stock":"Out Of Stock",
     "add_item":"Add Item",
+    "edit_item":"Edit Item",
     "label_item_name":"Item Name",
     "label_item_price":"Item Price",
     "order_status_preparing":"Preparing",
