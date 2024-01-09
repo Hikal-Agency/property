@@ -31,24 +31,45 @@ const Home = () => {
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
-  const googleLogin = async () => {
-    try {
-      const googleLogin = await axios.get(`${BACKEND_URL}/auth/google`);
+  // const googleLogin = async () => {
+  //   try {
+  //     const googleLogin = await axios.get(`${BACKEND_URL}/auth/google`);
 
-      console.log("Google response ::: ", googleLogin);
-      toast.success("Login Successfull. Redirecting.....s", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+  //     console.log("Google response ::: ", googleLogin);
+  //     toast.success("Login Successfull. Redirecting.....s", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   } catch (error) {
+  //     console.log("ERror::::::   ", error);
+  //     toast.error("Unbale to login using google. Kindly try again", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
+
+  const googleLogin = () => {
+    try {
+      const googleLoginURL = `${BACKEND_URL}/auth/google`;
+
+      // Redirect to the Google login URL
+      window.location.href = googleLoginURL;
     } catch (error) {
-      console.log("ERror::::::   ", error);
-      toast.error("Unbale to login using google. Kindly try again", {
+      console.log("Error: ", error);
+      toast.error("Unable to login using Google. Kindly try again", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
