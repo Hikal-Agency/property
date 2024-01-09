@@ -23,6 +23,8 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
   const [orderBtnLoading, setOrderBtnLoading] = useState(false);
   const token = localStorage.getItem("auth-token");
 
+  console.log("order placment :::: ", openOrderModal?.id);
+
   const [orderDetails, setOrderDetails] = useState({
     itemId: String(openOrderModal?.id),
     quantity: null,
