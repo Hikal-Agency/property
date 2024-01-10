@@ -37,7 +37,7 @@ import {
   BsStopCircle,
   BsCheck2Circle,
   BsCalendarWeek,
-  BsCashStack,
+  BsBookmarkFill,
   BsFileEarmarkBarGraph,
   BsColumnsGap,
   BsPeople,
@@ -122,6 +122,7 @@ const Sidebarmui = () => {
     setTimezones,
     pinnedZone,
     setPinnedZone,
+    setFeedbackTheme
   } = useStateContext();
   // console.log("timezone in sidebar: ", timeZone);
 
@@ -310,6 +311,11 @@ const Sidebarmui = () => {
           const bgTheme = result.data?.user[0]?.backgroundImg;
           if (bgTheme && bgTheme !== "default") {
             setThemeBgImg(bgTheme);
+          }
+
+          const fbTheme = result.data?.user[0]?.feedback_theme;
+          if (fbTheme) {
+            setFeedbackTheme(fbTheme);
           }
         });
     } catch (error) {
@@ -789,12 +795,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.HotLeadsCount?.new,
               link: "/freshleads/new",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />
+              ),
+              countColor: "#BEEDF1",
             },
             {
               name: t("feedback_callback"),
               pro: false,
               count: sidebarData?.HotLeadsCount?.callback,
               link: "/freshleads/callback",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />
+              ),
+              countColor: "#FFED9A",
             },
             // FOLLOW UP
             {
@@ -802,54 +816,80 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.HotLeadsCount?.follow_up_short,
               link: "/freshleads/follow up short term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />
+              ),
+              countColor: "#FFF799",
             },
             {
               name: t("feedback_follow_up_long_term"),
               pro: false,
               count: sidebarData?.HotLeadsCount?.follow_up_long,
               link: "/freshleads/follow up long term",
-            },
-            // {
-            //   name: t("feedback_follow_up"),
-            //   pro: false,
-            //   count: sidebarData?.HotLeadsCount?.follow_up,
-            //   link: "/freshleads/follow up",
-            // },
-            {
-              name: t("feedback_meeting"),
-              pro: false,
-              count: sidebarData?.HotLeadsCount?.Meeting,
-              link: "/freshleads/meeting",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />
+              ),
+              countColor: "#FFDD99",
             },
             {
               name: t("feedback_low_budget"),
               pro: false,
               count: sidebarData?.HotLeadsCount?.low_budget,
               link: "/freshleads/low budget",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />
+              ),
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.Meeting,
+              link: "/freshleads/meeting",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />
+              ),
+              countColor: "#C6DF9C",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
               count: sidebarData?.HotLeadsCount?.no_answer,
               link: "/freshleads/no answer",
-            },
-            {
-              name: t("feedback_not_interested"),
-              pro: false,
-              count: sidebarData?.HotLeadsCount?.not_interested,
-              link: "/freshleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />
+              ),
+              countColor: "#FFBEBD",
             },
             {
               name: t("feedback_switched_off"),
               pro: false,
               count: sidebarData?.HotLeadsCount?.switched_off,
               link: "/freshleads/switched off",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />
+              ),
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.not_interested,
+              link: "/freshleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />
+              ),
+              countColor: "#F16C4D",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
               count: sidebarData?.HotLeadsCount?.unreachable,
               link: "/freshleads/unreachable",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#898989" }} />
+              ),
+              countColor: "#898989",
             },
           ],
         },
@@ -870,12 +910,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.new,
               link: "/thirdpartyleads/new",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />
+              ),
+              countColor: "#BEEDF1",
             },
             {
               name: t("feedback_callback"),
               pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.callback,
               link: "/thirdpartyleads/callback",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />
+              ),
+              countColor: "#FFED9A",
             },
             // FOLLOW UP
             {
@@ -883,12 +931,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.follow_up_short,
               link: "/thirdpartyleads/follow up short term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />
+              ),
+              countColor: "#FFF799",
             },
             {
               name: t("feedback_follow_up_long"),
               pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.follow_up_long,
               link: "/thirdpartyleads/follow up long term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />
+              ),
+              countColor: "#FFDD99",
             },
             // {
             //   name: t("feedback_follow_up"),
@@ -897,40 +953,64 @@ const Sidebarmui = () => {
             //   link: "/thirdpartyleads/follow up",
             // },
             {
-              name: t("feedback_meeting"),
-              pro: false,
-              count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
-              link: "/thirdpartyleads/meeting",
-            },
-            {
               name: t("feedback_low_budget"),
               pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
               link: "/thirdpartyleads/low budget",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />
+              ),
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
+              link: "/thirdpartyleads/meeting",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />
+              ),
+              countColor: "#C6DF9C",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.no_answer,
               link: "/thirdpartyleads/no answer",
-            },
-            {
-              name: t("feedback_not_interested"),
-              pro: false,
-              count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
-              link: "/thirdpartyleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />
+              ),
+              countColor: "#FFBEBD",
             },
             {
               name: t("feedback_switched_off"),
               pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.switched_off,
               link: "/thirdpartyleads/switched off",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />
+              ),
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
+              link: "/thirdpartyleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />
+              ),
+              countColor: "#F16C4D",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
               count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
               link: "/thirdpartyleads/unreachable",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#898989" }} />
+              ),
+              countColor: "#898989",
             },
           ],
         },
@@ -981,12 +1061,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.ColdLeadsCount?.new,
               link: "/coldleads/new",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />
+              ),
+              countColor: "#BEEDF1",
             },
             {
               name: t("feedback_callback"),
               pro: false,
               count: sidebarData?.ColdLeadsCount?.callback,
               link: "/coldleads/callback",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />
+              ),
+              countColor: "#FFED9A",
             },
             // FOLLOW UP
             {
@@ -994,12 +1082,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.ColdLeadsCount?.follow_up_short,
               link: "/coldleads/follow up short term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />
+              ),
+              countColor: "#FFF799",
             },
             {
               name: t("feedback_follow_up_long_term"),
               pro: false,
               count: sidebarData?.ColdLeadsCount?.follow_up_long,
               link: "/coldleads/follow up long term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />
+              ),
+              countColor: "#FFDD99",
             },
             // {
             //   name: t("feedback_follow_up"),
@@ -1008,40 +1104,64 @@ const Sidebarmui = () => {
             //   link: "/coldleads/follow up",
             // },
             {
-              name: t("feedback_meeting"),
-              pro: false,
-              count: sidebarData?.ColdLeadsCount?.Meeting,
-              link: "/coldleads/meeting",
-            },
-            {
               name: t("feedback_low_budget"),
               pro: false,
               count: sidebarData?.ColdLeadsCount?.low_budget,
               link: "/coldleads/low budget",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />
+              ),
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.Meeting,
+              link: "/coldleads/meeting",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />
+              ),
+              countColor: "#C6DF9C",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
               count: sidebarData?.ColdLeadsCount?.no_answer,
               link: "/coldleads/no answer",
-            },
-            {
-              name: t("feedback_not_interested"),
-              pro: false,
-              count: sidebarData?.ColdLeadsCount?.not_interested,
-              link: "/coldleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />
+              ),
+              countColor: "#FFBEBD",
             },
             {
               name: t("feedback_switched_off"),
               pro: false,
               count: sidebarData?.ColdLeadsCount?.switched_off,
               link: "/coldleads/switched off",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />
+              ),
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.not_interested,
+              link: "/coldleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />
+              ),
+              countColor: "#F16C4D",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
               count: sidebarData?.ColdLeadsCount?.unreachable,
               link: "/coldleads/unreachable",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#898989" }} />
+              ),
+              countColor: "#898989",
             },
           ],
         },
@@ -1068,6 +1188,10 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.WarmLeadCount?.callback,
               link: "/archive/callback",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />
+              ),
+              countColor: "#FFED9A",
             },
             // FOLLOW UP
             {
@@ -1075,12 +1199,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.WarmLeadCount?.follow_up_short,
               link: "/archive/follow up short term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />
+              ),
+              countColor: "#FFF799",
             },
             {
               name: t("feedback_follow_up_long_term"),
               pro: false,
               count: sidebarData?.WarmLeadCount?.follow_up_long,
               link: "/archive/follow up long term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />
+              ),
+              countColor: "#FFDD99",
             },
             // {
             //   name: t("feedback_follow_up"),
@@ -1089,40 +1221,64 @@ const Sidebarmui = () => {
             //   link: "/archive/follow up",
             // },
             {
-              name: t("feedback_meeting"),
-              pro: false,
-              count: sidebarData?.WarmLeadCount?.Meeting,
-              link: "/archive/meeting",
-            },
-            {
               name: t("feedback_low_budget"),
               pro: false,
               count: sidebarData?.WarmLeadCount?.low_budget,
               link: "/archive/low budget",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />
+              ),
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.Meeting,
+              link: "/archive/meeting",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />
+              ),
+              countColor: "#C6DF9C",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
               count: sidebarData?.WarmLeadCount?.no_answer,
               link: "/archive/no answer",
-            },
-            {
-              name: t("feedback_not_interested"),
-              pro: false,
-              count: sidebarData?.WarmLeadCount?.not_interested,
-              link: "/archive/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />
+              ),
+              countColor: "#FFBEBD",
             },
             {
               name: t("feedback_switched_off"),
               pro: false,
               count: sidebarData?.WarmLeadCount?.switched_off,
               link: "/archive/switched off",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />
+              ),
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.not_interested,
+              link: "/archive/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />
+              ),
+              countColor: "#F16C4D",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
               count: sidebarData?.WarmLeadCount?.unreachable,
               link: "/archive/unreachable",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#898989" }} />
+              ),
+              countColor: "#898989",
             },
           ],
         },
@@ -1143,12 +1299,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.PersonalLeadsCount?.new,
               link: "/personalleads/new",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />
+              ),
+              countColor: "#BEEDF1",
             },
             {
               name: t("feedback_callback"),
               pro: false,
               count: sidebarData?.PersonalLeadsCount?.callback,
               link: "/personalleads/callback",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />
+              ),
+              countColor: "#FFED9A",
             },
             // FOLLOW UP
             {
@@ -1156,12 +1320,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.PersonalLeadsCount?.follow_up_short,
               link: "/personalleads/follow up short term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />
+              ),
+              countColor: "#FFF799",
             },
             {
               name: t("feedback_follow_up_long_term"),
               pro: false,
               count: sidebarData?.PersonalLeadsCount?.follow_up_long,
               link: "/personalleads/follow up long term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />
+              ),
+              countColor: "#FFDD99",
             },
             // {
             //   name: t("feedback_follow_up"),
@@ -1170,40 +1342,64 @@ const Sidebarmui = () => {
             //   link: "/personalleads/follow up",
             // },
             {
-              name: t("feedback_meeting"),
-              pro: false,
-              count: sidebarData?.PersonalLeadsCount?.Meeting,
-              link: "/personalleads/meeting",
-            },
-            {
               name: t("feedback_low_budget"),
               pro: false,
               count: sidebarData?.PersonalLeadsCount?.low_budget,
               link: "/personalleads/low budget",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />
+              ),
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.Meeting,
+              link: "/personalleads/meeting",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />
+              ),
+              countColor: "#C6DF9C",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
               count: sidebarData?.PersonalLeadsCount?.no_answer,
               link: "/personalleads/no answer",
-            },
-            {
-              name: t("feedback_not_interested"),
-              pro: false,
-              count: sidebarData?.PersonalLeadsCount?.not_interested,
-              link: "/personalleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />
+              ),
+              countColor: "#FFBEBD",
             },
             {
               name: t("feedback_switched_off"),
               pro: false,
               count: sidebarData?.PersonalLeadsCount?.switched_off,
               link: "/personalleads/switched off",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />
+              ),
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.not_interested,
+              link: "/personalleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />
+              ),
+              countColor: "#F16C4D",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
               count: sidebarData?.PersonalLeadsCount?.unreachable,
               link: "/personalleads/unreachable",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#898989" }} />
+              ),
+              countColor: "#898989",
             },
           ],
         },
@@ -1224,12 +1420,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.LiveCallCount?.new,
               link: "/liveleads/new",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />
+              ),
+              countColor: "#BEEDF1",
             },
             {
               name: t("feedback_callback"),
               pro: false,
               count: sidebarData?.LiveCallCount?.callback,
               link: "/liveleads/callback",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />
+              ),
+              countColor: "#FFED9A",
             },
             // FOLLOW UP
             {
@@ -1237,12 +1441,20 @@ const Sidebarmui = () => {
               pro: false,
               count: sidebarData?.LiveCallCount?.follow_up_short,
               link: "/liveleads/follow up short term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />
+              ),
+              countColor: "#FFF799",
             },
             {
               name: t("feedback_follow_up_long_term"),
               pro: false,
               count: sidebarData?.LiveCallCount?.follow_up_long,
               link: "/liveleads/follow up long term",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />
+              ),
+              countColor: "#FFDD99",
             },
             // {
             //   name: t("feedback_follow_up"),
@@ -1251,40 +1463,64 @@ const Sidebarmui = () => {
             //   link: "/liveleads/follow up",
             // },
             {
-              name: t("feedback_meeting"),
-              pro: false,
-              count: sidebarData?.LiveCallCount?.Meeting,
-              link: "/liveleads/meeting",
-            },
-            {
               name: t("feedback_low_budget"),
               pro: false,
               count: sidebarData?.LiveCallCount?.low_budget,
               link: "/liveleads/low budget",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />
+              ),
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.Meeting,
+              link: "/liveleads/meeting",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />
+              ),
+              countColor: "#C6DF9C",
             },
             {
               name: t("feedback_no_answer"),
               pro: false,
               count: sidebarData?.LiveCallCount?.no_answer,
               link: "/freshleads/no answer",
-            },
-            {
-              name: t("feedback_not_interested"),
-              pro: false,
-              count: sidebarData?.LiveCallCount?.not_interested,
-              link: "/freshleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />
+              ),
+              countColor: "#FFBEBD",
             },
             {
               name: t("feedback_switched_off"),
               pro: false,
               count: sidebarData?.LiveCallCount?.switched_off,
               link: "/freshleads/switched off",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />
+              ),
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.not_interested,
+              link: "/freshleads/not interested",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />
+              ),
+              countColor: "#F16C4D",
             },
             {
               name: t("feedback_unreachable"),
               pro: false,
               count: sidebarData?.LiveCallCount?.unreachable,
               link: "/freshleads/unreachable",
+              icon: (
+                <BsBookmarkFill size={14} style={{ color: "#898989" }} />
+              ),
+              countColor: "#898989",
             },
           ],
         },

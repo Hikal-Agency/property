@@ -76,7 +76,7 @@ import {
 import { TbWorldWww } from "react-icons/tb";
 import moment from "moment";
 import DeleteLeadModel from "./DeleteLead";
-import { pageStyles, renderStyles } from "../_elements/SelectStyles";
+import { pageStyles, renderStyles, renderStyles2 } from "../_elements/SelectStyles";
 import { renderOTPIcons } from "../_elements/OTPIconsDataGrid";
 import { renderSourceIcons } from "../_elements/SourceIconsDataGrid";
 
@@ -133,7 +133,8 @@ const BookedDeals = ({
     User,
     Managers,
     primaryColor,
-    t
+    t,
+    feedbackTheme
   } = useStateContext();
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
@@ -276,40 +277,77 @@ const BookedDeals = ({
       <Box
         className={`renderDD w-full h-full flex items-center justify-center`}
       >
-        <Select
-          id="feedback"
-          value={
-            Feedback
-              ? { label: Feedback, value: Feedback }
-              : null
-          }
-          onChange={(selectedOption) => ChangeFeedback(selectedOption)}
-          // onChange={(selectedOption) => ChangeFeedback(selectedOption?.value || null)}
-          options={[
-            { 
-              label: t("feedback_booked"), 
-              value: "Booked",
-              bgColor: "#81CA9D", 
-              color: "#000000",
-            },
-            { 
-              label: t("feedback_closed"), 
-              value: "Closed Deal",
-              bgColor: "#00A650", 
-              color: "#FFFFFF",
-            },
-            { 
-              label: t("feedback_cancelled"), 
-              value: "Dead",
-              bgColor: "#F16C4D", 
-              color: "#FFFFFF",
-            },
-          ]}
-          placeholder={`---${t("label_select")?.toUpperCase()}---`}
-          className="w-full"
-          menuPortalTarget={document.body}
-          styles={renderStyles(currentMode, primaryColor)}
-        />
+        {feedbackTheme === "renderStyles" ? (
+          <Select
+            id="feedback"
+            value={
+              Feedback
+                ? { label: Feedback, value: Feedback }
+                : null
+            }
+            onChange={(selectedOption) => ChangeFeedback(selectedOption)}
+            // onChange={(selectedOption) => ChangeFeedback(selectedOption?.value || null)}
+            options={[
+              { 
+                label: t("feedback_booked"), 
+                value: "Booked",
+                bgColor: "#81CA9D", 
+                color: "#000000",
+              },
+              { 
+                label: t("feedback_closed"), 
+                value: "Closed Deal",
+                bgColor: "#00A650", 
+                color: "#FFFFFF",
+              },
+              { 
+                label: t("feedback_cancelled"), 
+                value: "Dead",
+                bgColor: "#F16C4D", 
+                color: "#FFFFFF",
+              },
+            ]}
+            placeholder={`---${t("label_select")?.toUpperCase()}---`}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={renderStyles(currentMode, primaryColor)}
+          />
+        ) : (
+          <Select
+            id="feedback"
+            value={
+              Feedback
+                ? { label: Feedback, value: Feedback }
+                : null
+            }
+            onChange={(selectedOption) => ChangeFeedback(selectedOption)}
+            // onChange={(selectedOption) => ChangeFeedback(selectedOption?.value || null)}
+            options={[
+              { 
+                label: t("feedback_booked"), 
+                value: "Booked",
+                bgColor: "#81CA9D", 
+                color: "#000000",
+              },
+              { 
+                label: t("feedback_closed"), 
+                value: "Closed Deal",
+                bgColor: "#00A650", 
+                color: "#FFFFFF",
+              },
+              { 
+                label: t("feedback_cancelled"), 
+                value: "Dead",
+                bgColor: "#F16C4D", 
+                color: "#FFFFFF",
+              },
+            ]}
+            placeholder={`---${t("label_select")?.toUpperCase()}---`}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={renderStyles2(currentMode, primaryColor)}
+          />
+        )}
         {/* <FormControl sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}>
           <Select
             id="feedback"

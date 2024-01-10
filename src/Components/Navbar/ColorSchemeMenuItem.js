@@ -5,15 +5,16 @@ import {VscSymbolColor} from "react-icons/vsc";
 import ColorsPopup from "./ColorsPopup";
 
 const ColorSchemeMenuItem = () => {
-    const {currentMode, primaryColor} = useStateContext();
-    const [toggleThemeColors, setToggleThemeColors] = useState(false);
+  const {currentMode, primaryColor} = useStateContext();
+  const [toggleThemeColors, setToggleThemeColors] = useState(false);
 
-    const handleShowColors = (e) => {
-        e.stopPropagation();
-        setToggleThemeColors(!toggleThemeColors);
-    }
+  const handleShowColors = (e) => {
+    e.stopPropagation();
+    setToggleThemeColors(!toggleThemeColors);
+  }
     
-    return <div
+  return (
+    <div
       className={`cursor-pointer card-hover ${
         currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
       } mb-3 p-3 rounded-xl shadow-sm w-full`}
@@ -48,6 +49,7 @@ const ColorSchemeMenuItem = () => {
       </div>
     }
     </div>
+  )
 }
 
 export default ColorSchemeMenuItem;
