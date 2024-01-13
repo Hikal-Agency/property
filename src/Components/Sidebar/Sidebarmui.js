@@ -484,7 +484,7 @@ const Sidebarmui = () => {
 
     const fetchDataInterval = setInterval(() => {
       fetchSidebarData();
-    }, 300000); // 60000 milliseconds = 1 minute
+    }, 3600000); // 60000 milliseconds = 1 minute
     return () => clearInterval(fetchDataInterval);
   }, [User, fetchSidebarData]);
 
