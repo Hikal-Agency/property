@@ -477,9 +477,14 @@ const Sidebarmui = () => {
     if (User?.role === 6) {
       return;
     }
+
+    if (User?.role !== 6) {
+      fetchSidebarData();
+    }
+
     const fetchDataInterval = setInterval(() => {
       fetchSidebarData();
-    }, 60000); // 60000 milliseconds = 1 minute
+    }, 300000); // 60000 milliseconds = 1 minute
     return () => clearInterval(fetchDataInterval);
   }, [User, fetchSidebarData]);
 
