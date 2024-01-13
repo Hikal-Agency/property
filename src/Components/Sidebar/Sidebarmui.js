@@ -463,30 +463,28 @@ const Sidebarmui = () => {
       });
   };
 
-  // useEffect(() => {
-  //   console.log("User role 6===> ", User);
-
-  //   if (User?.role === 6) {
-  //     return;
-  //   }
-  //   fetchSidebarData();
-  // }, [User]);
-
   useEffect(() => {
     console.log("User role 6===> ", User);
+
     if (User?.role === 6) {
       return;
     }
+    fetchSidebarData();
+  }, [User]);
 
-    if (User?.role !== 6) {
-      fetchSidebarData();
-    }
+  // useEffect(() => {
+  //   console.log("User role 6===> ", User);
+  //   if (User?.role === 6) {
+  //     return;
+  //   } else {
+  //     fetchSidebarData();
+  //   }
 
-    // const fetchDataInterval = setInterval(() => {
-    //   fetchSidebarData();
-    // }, 3600000); // 60000 milliseconds = 1 minute
-    // return () => clearInterval(fetchDataInterval);
-  }, [User, fetchSidebarData]);
+  //   // const fetchDataInterval = setInterval(() => {
+  //   //   fetchSidebarData();
+  //   // }, 3600000); // 60000 milliseconds = 1 minute
+  //   // return () => clearInterval(fetchDataInterval);
+  // }, [User, fetchSidebarData]);
 
   useEffect(() => {
     // Fetch all timezones
