@@ -117,6 +117,8 @@ const AddLeadComponent = ({
   const [value, setValue] = useState();
   const [error, setError] = useState(false);
 
+  console.log("lead category:::: ", LeadCategory);
+
   const handleEmail = (e) => {
     setEmailError(false);
     const value = e.target.value;
@@ -168,6 +170,7 @@ const AddLeadComponent = ({
   // };
 
   const AddLead = async () => {
+    console.log("lead category in add lead :::: ", LeadCategory);
     setloading(true);
     if (LeadEmail && emailError !== false) {
       setloading(false);
@@ -227,7 +230,10 @@ const AddLeadComponent = ({
     if (LeadStatus) LeadData.append("leadStatus", LeadStatus);
     if (LeadSource) LeadData.append("leadSource", LeadSource);
 
-    if (coldCall = 1) {
+    // if ((coldCall = 1)) {
+    //   LeadData.append("is_whatsapp", 1);
+    // }
+    if (coldCall == 1) {
       LeadData.append("is_whatsapp", 1);
     }
 
@@ -238,7 +244,10 @@ const AddLeadComponent = ({
     LeadData.append("agency_id", User?.agency); //Always appended
 
     if (coldCall) LeadData.append("coldCall", coldCall);
+    console.log("coldcall in appending", coldCall);
     if (LeadNotes) LeadData.append("notes", LeadNotes);
+
+    console.log("coldcalllll::::::::: ", coldCall);
 
     if (User?.role === 1) {
       if (Manager) {
@@ -286,7 +295,7 @@ const AddLeadComponent = ({
         if (FetchLeads) {
           FetchLeads();
         }
-        toast.success("Lead Added Successfully", {
+        toast.success("Lead Added Successfully ", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
