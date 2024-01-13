@@ -463,22 +463,20 @@ const Sidebarmui = () => {
       });
   };
 
+  useEffect(() => {
+    console.log("User role 6===> ", User);
+
+    if (User?.role === 6) {
+      return;
+    }
+    fetchSidebarData();
+  }, [User]);
+
   // useEffect(() => {
   //   console.log("User role 6===> ", User);
-
   //   if (User?.role === 6) {
   //     return;
-  //   }
-  //   fetchSidebarData();
-  // }, [User]);
-
-  // useEffect(() => {
-  //   console.log("User role 6===> ", User);
-  //   if (User?.role === 6) {
-  //     return;
-  //   }
-
-  //   if (User?.role !== 6) {
+  //   } else {
   //     fetchSidebarData();
   //   }
 
