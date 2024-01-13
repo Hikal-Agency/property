@@ -472,21 +472,21 @@ const Sidebarmui = () => {
   //   fetchSidebarData();
   // }, [User]);
 
-  useEffect(() => {
-    console.log("User role 6===> ", User);
-    if (User?.role === 6) {
-      return;
-    }
+  // useEffect(() => {
+  //   console.log("User role 6===> ", User);
+  //   if (User?.role === 6) {
+  //     return;
+  //   }
 
-    if (User?.role !== 6) {
-      fetchSidebarData();
-    }
+  //   if (User?.role !== 6) {
+  //     fetchSidebarData();
+  //   }
 
-    // const fetchDataInterval = setInterval(() => {
-    //   fetchSidebarData();
-    // }, 3600000); // 60000 milliseconds = 1 minute
-    // return () => clearInterval(fetchDataInterval);
-  }, [User, fetchSidebarData]);
+  //   // const fetchDataInterval = setInterval(() => {
+  //   //   fetchSidebarData();
+  //   // }, 3600000); // 60000 milliseconds = 1 minute
+  //   // return () => clearInterval(fetchDataInterval);
+  // }, [User, fetchSidebarData]);
 
   useEffect(() => {
     // Fetch all timezones
