@@ -62,9 +62,6 @@ const Home = () => {
 
       const { access_token, expires_in } = gapi.client.getToken();
 
-      localStorage.setItem("access_token", access_token);
-      localStorage.setItem("expires_in", expires_in);
-
       try {
         const getUserDetail = await axios.get(
           `${BACKEND_URL}/auth/google/callback`,
@@ -90,6 +87,29 @@ const Home = () => {
         }
 
         console.log("user details::: ", getUserDetail);
+
+        if (getUserDetail?.data?.token) {
+          const token = getUserDetail?.data?.token;
+          localStorage.setItem("auth-token", token);
+
+          document.location.href =
+            getUserDetail?.data?.userData?.role === 5
+              ? "/attendance/officeSettings"
+              : getUserDetail?.data?.userData?.role === 6
+              ? "/attendance_self"
+              : location?.state?.continueURL || "/dashboard";
+
+          toast.success("Login Successfull", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       } catch (error) {
         console.log("error::: ", error);
         toast.error("This email is not registered.", {
