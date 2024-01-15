@@ -218,6 +218,7 @@ const AddLeadComponent = ({
     else {
       coldCall = LeadCategory;
     }
+    
     if (LeadName) LeadData.append("leadName", LeadName);
     if (LeadContact)
       LeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
