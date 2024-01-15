@@ -14,9 +14,11 @@ export const useGoogleSignIn = () => useContext(GoogleAuthContext);
 
 const GoogleAuthProvider = ({ children }) => {
   const { User } = useStateContext();
-  const clientId = import.meta.env.VITE_REACT_APP_GC_CLIENT_ID;
-  const clientSecret = import.meta.env.VITE_REACT_APP_GC_CLIENT_SECRET;
-  const apiKey = import.meta.env.VITE_REACT_APP_GC_API_KEY;
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
+  const apiKey = process.env.REACT_APP_GOOGLE_API;
+
+  console.log("clientID:::: ", clientId);
 
   const gapi = window.gapi;
   const google = window.google;

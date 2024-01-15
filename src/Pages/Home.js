@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaGoogle } from "react-icons/fa";
+import { useGoogleSignIn } from "../context/GoogleAuthProvider";
 
 const Home = () => {
   let canvas = useRef();
@@ -27,9 +28,56 @@ const Home = () => {
   const [errorMsg, setErrorMsg] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
+  const {
+    gapiInited,
+    gisInited,
+    gisLoaded,
+    initializeGapiClient,
+    gapiLoaded,
+    tokenClient,
+  } = useGoogleSignIn();
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
+
+  const handleGoogleLogin = () => {
+    console.log("auth clicked::: ");
+
+    tokenClient.current.callback = async (resp) => {
+      if (resp.error) {
+        console.log("error: ", resp.error);
+        toast.error("Failed to sign in with Google", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        throw resp;
+      }
+
+      console.log("google login::: ", resp);
+
+      const { access_token, expires_in } = gapi.client.getToken();
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("expires_in", expires_in);
+      const user = {
+        accessToken: access_token,
+        expiresIn: expires_in,
+      };
+    };
+
+    if (!(User.accessToken && User.expiresIn)) {
+      // Prompt the user to select a Google Account and ask for consent to share their data
+      // when establishing a new User.
+      tokenClient.current.requestAccessToken({ prompt: "consent" });
+    } else {
+      // Skip the display of the account chooser and consent dialog for an existing User.
+      tokenClient.current.requestAccessToken({ prompt: "" });
+    }
+  };
 
   // const googleLogin = async () => {
   //   try {
@@ -61,26 +109,26 @@ const Home = () => {
   //   }
   // };
 
-  const googleLogin = () => {
-    try {
-      const googleLoginURL = `${BACKEND_URL}/auth/google`;
+  // const googleLogin = () => {
+  //   try {
+  //     const googleLoginURL = `${BACKEND_URL}/auth/google`;
 
-      // Redirect to the Google login URL
-      window.location.href = googleLoginURL;
-    } catch (error) {
-      console.log("Error: ", error);
-      toast.error("Unable to login using Google. Kindly try again", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
+  //     // Redirect to the Google login URL
+  //     window.location.href = googleLoginURL;
+  //   } catch (error) {
+  //     console.log("Error: ", error);
+  //     toast.error("Unable to login using Google. Kindly try again", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   }
+  // };
 
   const LoginUser = async () => {
     setloading(true);
@@ -374,7 +422,7 @@ const Home = () => {
                       }}
                     >
                       <IconButton
-                        onClick={googleLogin}
+                        onClick={handleGoogleLogin}
                         sx={{ borderRadius: "100%", border: "1px solid " }}
                       >
                         <FaGoogle />
