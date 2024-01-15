@@ -40,7 +40,7 @@ const Home = () => {
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
     console.log("auth clicked::: ");
 
     tokenClient.current.callback = async (resp) => {
@@ -61,8 +61,47 @@ const Home = () => {
       console.log("google login::: ", resp);
 
       const { access_token, expires_in } = gapi.client.getToken();
+
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("expires_in", expires_in);
+
+      try {
+        const getUserDetail = await axios.get(
+          `${BACKEND_URL}/auth/google/callback`,
+          {
+            params: {
+              code: access_token,
+            },
+          }
+        );
+
+        if (getUserDetail?.data?.error) {
+          console.log("error: ", resp.error);
+          toast.error(`${getUserDetail?.data?.error}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          return;
+        }
+
+        console.log("user details::: ", getUserDetail);
+      } catch (error) {
+        console.log("error::: ", error);
+        toast.error("This email is not registered.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
       const user = {
         accessToken: access_token,
         expiresIn: expires_in,
