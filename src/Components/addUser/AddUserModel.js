@@ -141,7 +141,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
         ...formdata,
         addedBy: User?.id,
         userContact: LeadContact,
-        agency: 1,
+        agency: User?.agency,
       };
       // let isParent;
       // if (UserRole !== 1 || UserRole !== 7 || UserRole !== 3) {
