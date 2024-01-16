@@ -43,6 +43,7 @@
     "file-saver": "^2.0.5",
     "firebase": "^9.22.2",
     "framer-motion": "^10.16.5",
+    "gapi-script": "^1.2.0",
     "google-libphonenumber": "^3.2.33",
     "googleapis": "^118.0.0",
     "html-to-image": "^1.11.11",

@@ -25,7 +25,7 @@ const GoogleAuthProvider = ({ children }) => {
   const DISCOVERY_DOC =
     "https://www.googleapis.com/discovery/v1/apis/people/v1/rest";
   const SCOPES =
-    "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/youtube.upload";
+    "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email";
 
   const [gapiInited, setGapiInited] = useState(false);
   const [gisInited, setGisInited] = useState(false);
