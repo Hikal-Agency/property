@@ -18,7 +18,6 @@ import { FaEye, FaGoogle } from "react-icons/fa";
 import { useGoogleSignIn } from "../context/GoogleAuthProvider";
 import { gapi } from "gapi-script";
 
-
 const Home = () => {
   let canvas = useRef();
   const navigate = useNavigate();
@@ -38,8 +37,6 @@ const Home = () => {
     gapiLoaded,
     tokenClient,
   } = useGoogleSignIn();
-
-  // nothing
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
