@@ -1,9 +1,9 @@
 import {
   CircularProgress,
   Modal,
-  Backdrop, 
+  Backdrop,
   Box,
-  Typography
+  Typography,
 } from "@mui/material";
 import PhoneInput, {
   formatPhoneNumberIntl,
@@ -31,15 +31,16 @@ const style = {
 };
 
 const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
-  const { 
-    BACKEND_URL, 
+  const {
+    BACKEND_URL,
     currentMode,
     isLangRTL,
-    i18n, t,
+    i18n,
+    t,
     darkModeColors,
     primaryColor,
-    Managers, 
-    User 
+    Managers,
+    User,
   } = useStateContext();
   const [formdata, setformdata] = useState({});
   const [loading, setloading] = useState(false);
@@ -98,10 +99,10 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     if (selectedRole === 3) {
       fetchUserRole();
     }
-    setformdata({ 
-      ...formdata, 
+    setformdata({
+      ...formdata,
       role: selectedRole,
-      isParent: defaultParent 
+      isParent: defaultParent,
     });
   };
 
@@ -112,14 +113,8 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
   }
 
   const RegisterUser = async () => {
-    const { 
-      userName, 
-      userEmail,
-      password, 
-      c_password, 
-      loginId,
-    } = formdata;
-    
+    const { userName, userEmail, password, c_password, loginId } = formdata;
+
     if (
       !isSafeInput(userName) ||
       !isSafeInput(userEmail) ||
@@ -142,10 +137,11 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
     if (formdata.password === formdata.c_password) {
       setloading(true);
-      const form = { 
+      const form = {
         ...formdata,
         addedBy: User?.id,
-        userContact: LeadContact, 
+        userContact: LeadContact,
+        agency: 1,
       };
       // let isParent;
       // if (UserRole !== 1 || UserRole !== 7 || UserRole !== 3) {
@@ -224,7 +220,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
   // console.log("User Model: ", formdata);
 
-  // MODAL CLOSE 
+  // MODAL CLOSE
   const [isClosing, setIsClosing] = useState(false);
   const handleClose = () => {
     setIsClosing(true);
@@ -234,26 +230,26 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     }, 1000);
   };
 
-  // USER ROLE SELECTION 
+  // USER ROLE SELECTION
   const role_options = allRoles.map((role) => ({
-    value: role.id, 
-    label: role.role, 
+    value: role.id,
+    label: role.role,
   }));
   const selectedOption = role_options.find((role) => role.value === UserRole);
 
-  // MANAGER SELECTION 
+  // MANAGER SELECTION
   const manager_options = Managers.map((manager) => ({
     value: manager.id,
     label: manager.userName,
   }));
 
-  // SUPERVISOR SELECTION 
+  // SUPERVISOR SELECTION
   const sup_options = filterUser.map((parent) => ({
     value: parent.id,
     label: parent.userName,
-  }))
+  }));
 
-  // USER CONTACT 
+  // USER CONTACT
   const [LeadContact, setLeadContact] = useState("");
   const [value, setValue] = useState("");
   const [error, setError] = useState(false);
@@ -276,23 +272,23 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
     }
   };
 
-  // CHANGE PARENT 
+  // CHANGE PARENT
   const ChangeParent = (event) => {
     const selectedParent = event.value;
     setformdata({ ...formdata, isParent: selectedParent });
   };
 
-  // SUPERVISORS 
+  // SUPERVISORS
   const fetchUserRole = async () => {
     const token = localStorage.getItem("auth-token");
-    // FETCH ROLE 1 
+    // FETCH ROLE 1
     // const r1Result = await axios.get(`${BACKEND_URL}/users?role=1`, {
     //   headers: {
     //     "Content-Type": "application/json",
     //     Authorization: "Bearer " + token,
     //   },
     // });
-    // FETCH ROLE 2 
+    // FETCH ROLE 2
     const r2Result = await axios.get(`${BACKEND_URL}/users?role=2`, {
       headers: {
         "Content-Type": "application/json",
@@ -305,10 +301,10 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
 
     const combinedData = [
       // ...dataR1,
-      ...dataR2
+      ...dataR2,
     ];
     setFilterUser(combinedData);
-  }
+  };
 
   return (
     <Modal
@@ -390,11 +386,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                     RegisterUser();
                   }}
                 >
-                  <input
-                    type="hidden"
-                    name="remember"
-                    defaultValue="true"
-                  />
+                  <input type="hidden" name="remember" defaultValue="true" />
                   <Box sx={darkModeColors}>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                       {/* USER DETAILS  */}
@@ -486,7 +478,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                           menuPortalTarget={document.body}
                           className="w-full"
                           styles={{
-                            ...selectStyles(currentMode, primaryColor)
+                            ...selectStyles(currentMode, primaryColor),
                           }}
                         />
 
@@ -494,7 +486,9 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                         {UserRole === 7 && (
                           <Select
                             id="parentId"
-                            value={manager_options.find((option) => option.value === formdata?.isParent)}
+                            value={manager_options.find(
+                              (option) => option.value === formdata?.isParent
+                            )}
                             onChange={ChangeParent}
                             options={manager_options}
                             placeholder={t("label_select_manager")}
@@ -507,7 +501,9 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                         {UserRole === 3 && (
                           <Select
                             id="parentId"
-                            value={sup_options.find((option) => option.value === formdata?.isParent)}
+                            value={sup_options.find(
+                              (option) => option.value === formdata?.isParent
+                            )}
                             onChange={ChangeParent}
                             options={sup_options}
                             placeholder={t("label_select_manager")}
@@ -529,7 +525,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                           label={t("login_id")}
                           className="w-full"
                           style={{
-                            marginBottom: "20px"
+                            marginBottom: "20px",
                           }}
                           variant="outlined"
                           size="small"
@@ -549,7 +545,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                           label={t("label_new_password")}
                           className="w-full"
                           style={{
-                            marginBottom: "20px"
+                            marginBottom: "20px",
                           }}
                           variant="outlined"
                           size="small"
@@ -565,7 +561,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                           label={t("label_confirm_password")}
                           className="w-full"
                           style={{
-                            marginBottom: "20px"
+                            marginBottom: "20px",
                           }}
                           variant="outlined"
                           size="small"
@@ -580,9 +576,7 @@ const AddUserModel = ({ handleOpenModel, addUserModelClose }) => {
                           }}
                         />
                         {passwordError && (
-                          <p className="italic text-primary">
-                            {passwordError}
-                          </p>
+                          <p className="italic text-primary">{passwordError}</p>
                         )}
                       </div>
                     </div>
