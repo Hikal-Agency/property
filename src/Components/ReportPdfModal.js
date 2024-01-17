@@ -36,23 +36,33 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
   const [open, setOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const [reportMonth, setReportMonth] = useState({
-    month: null,
-    year: null,
+  const [reportMonth, setReportMonth] = useState(() => {
+    const currentDate = moment();
+    const defaultMonth = currentDate.month() + 1; // Months are zero-indexed
+    const defaultYear = currentDate.year();
+
+    return {
+      month: defaultMonth,
+      year: defaultYear,
+    };
   });
   const [reportMonthValue, setReportMonthValue] = useState("");
   const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState([]);
-  const [selectedUser, setSelectedUSer] = useState(null);
+  const [selectedUser, setSelectedUser] = useState({
+    id: null,
+    role: null,
+    username: null,
+  });
+
   const searchRef = useRef("");
-  const [fetch, setFetch] = useState(true);
 
   const token = localStorage.getItem("auth-token");
 
   const fetchUsers = async (keyword = "", pageNo = 1) => {
     console.log("keyword: ", keyword);
     if (!keyword) {
-      setUserLoading(true);
+      setLoading(true);
     }
     try {
       let url = "";
@@ -70,10 +80,9 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
       console.log("Users: ", response);
 
       setUser(response?.data?.managers?.data);
-      setUserLoading(false);
-      setFetch(false);
+      setLoading(false);
     } catch (error) {
-      setUserLoading(false);
+      setLoading(false);
       console.log(error);
       toast.error("Unable to fetch users.", {
         position: "top-right",
@@ -106,18 +115,13 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
     });
 
     const columns = [
-      { field: "user_name", headerName: "Name" },
-      { field: "salary", headerName: "Salary" },
-      { field: "present_days", headerName: "Attended" },
-      { field: "leave_days", headerName: "Leave" },
-      { field: "late_days", headerName: "Late" },
-      { field: "deducted_salary", headerName: "Deducted" },
-      { field: "net_salary", headerName: "Total" },
+      { field: "project", headerName: "Project" },
+      { field: "close", headerName: "Closed Deal" },
     ];
 
-    const headers = columns.map((column) => column.headerName);
+    const headers = columns?.map((column) => column.headerName);
 
-    const tableData = data?.map((row) =>
+    const tableData = data[0]?.data?.data?.map((row) =>
       columns.map((column) =>
         column.renderCell ? column.renderCell({ row }) : row[column.field]
       )
@@ -140,11 +144,16 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
       const reportMonthName = moment()
         .month(reportMonth?.month - 1)
         .format("MMMM");
-      const reportText = `Salary Evaluation Report for ${reportMonthName}`;
+      const reportText = `${selectedUser?.username}`;
 
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.text(reportText, 20, 15);
+
+      const month_year = `${reportMonth?.month}  ${reportMonth?.year}`;
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text(month_year, 10, 15);
 
       doc.setTextColor("#DA1F26");
       doc.setFont("helvetica", "bold");
@@ -226,7 +235,118 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
     }
   };
 
-  const fetchReportDetails = async () => {};
+  const fetchReportDetails = async () => {
+    setLoading(true);
+
+    if (!selectedUser?.id) {
+      toast.error("Kindly select a user.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setLoading(false);
+
+      return;
+    }
+
+    const url = "https://reports.hikalcrm.com/api";
+
+    try {
+      // Create an array of promises for the four API calls
+      const promises = [
+        axios.post(
+          `${url}/deals_project_report_user`,
+          {
+            id: selectedUser?.id,
+            month: reportMonth.month,
+            year: reportMonth.year,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ),
+        axios.post(
+          `${url}/feedback_report_user`,
+          {
+            id: selectedUser?.id,
+            role: selectedUser?.role,
+            month: reportMonth.month,
+            year: reportMonth.year,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ),
+        axios.post(
+          `${url}/source_report_user`,
+          {
+            id: selectedUser?.id,
+            role: selectedUser?.role,
+            month: reportMonth.month,
+            year: reportMonth.year,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ),
+        axios.get(`${url}/monthly_deals/${selectedUser?.id}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }),
+      ];
+
+      // Wait for all promises to resolve
+      const responses = await Promise.all(promises);
+
+      console.log("reponses::::: ", responses);
+      console.log("deals project::::: ", responses[0]);
+      console.log("feedback report::::: ", responses[1]);
+      console.log("sourcce report::::: ", responses[2]);
+      console.log("monthly deals::::: ", responses[3]);
+
+      //   generateReportPDF(responses);
+
+      toast.success("Generating preview of report.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log("ERROR::: ", error);
+      toast.error("Unable to download report.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   const style = {
     transform: "translate(0%, 0%)",
     boxShadow: 24,
@@ -234,7 +354,7 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
 
   useEffect(() => {
     fetchUsers();
-  }, [fetch]);
+  }, []);
 
   useEffect(() => {
     // Open the modal after a short delay to allow the animation to work
@@ -337,12 +457,22 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
                       >
                         <Select
                           id="feedback"
-                          value={selectedUser || "selected"}
+                          value={selectedUser?.id || "selected"}
                           label={t("filter_by_user")}
-                          // onChange={(e) => handleFilter(e, 2)}
                           onChange={(e) => {
-                            setSelectedUSer(e.target.value);
-                            setFetch(true);
+                            const selectedUserId = e.target.value;
+                            const selectedUserRole = user?.find(
+                              (u) => u.id === selectedUserId
+                            )?.role;
+                            const selectedUserName = user?.find(
+                              (u) => u.id === selectedUserId
+                            )?.username;
+
+                            setSelectedUser({
+                              id: selectedUserId,
+                              role: selectedUserRole || null,
+                              username: selectedUserName,
+                            });
                           }}
                           size="medium"
                           className="w-full border border-gray-300 rounded "
