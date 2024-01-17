@@ -55,7 +55,6 @@ const NotificationsList = () => {
     t,
     themeBgImg,
   } = useStateContext();
-  console.log("unread count ::: ", unreadNotifsCount);
   const token = localStorage.getItem("auth-token");
   const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState([]);

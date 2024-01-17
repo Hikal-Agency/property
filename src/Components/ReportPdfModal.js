@@ -25,27 +25,16 @@ import dayjs from "dayjs";
 import jsPDF from "jspdf";
 import { BsSearch } from "react-icons/bs";
 
-const ReportPdfModal = ({
-  reportModal,
-  setReportModal,
-
-  LeadData,
-  setLeadData,
-}) => {
+const ReportPdfModal = ({ reportModal, setReportModal }) => {
   const { darkModeColors, currentMode, User, BACKEND_URL, t, isLangRTL, i18n } =
     useStateContext();
 
   const [pdfUrl, setPdfUrl] = useState(null);
 
   const { hasPermission } = usePermission();
-  const [AddNoteTxt, setAddNoteTxt] = useState("");
-  const [reportDetails, setReportDetails] = useState([]);
+
   const [open, setOpen] = useState(false);
 
-  const [addNoteloading, setaddNoteloading] = useState(false);
-  const [lastNote, setLastNote] = useState("");
-  const [lastNoteDate, setLastNoteDate] = useState("");
-  const [lastNoteAddedBy, setLastNoteAddedBy] = useState("");
   const [loading, setLoading] = useState(false);
   const [reportMonth, setReportMonth] = useState({
     month: null,
@@ -237,87 +226,7 @@ const ReportPdfModal = ({
     }
   };
 
-  const fetchSalaryCalc = async () => {
-    setLoading(true);
-
-    if (!reportMonth?.month || !reportMonth?.year) {
-      setLoading(false);
-      toast.error("Kindly select month and year first.", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        `https://reports.hikalcrm.com/api/calculate_salary`,
-        { month: reportMonth.month, year: reportMonth.year, agency: 1 },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      toast.success("Generating preview of report.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      console.log("salary Calc: ", response);
-
-      let rowsDataArray = response?.data?.data;
-
-      let rowsdata = rowsDataArray?.map((row, index) => ({
-        id: index,
-        deducted_salary: row?.deducted_salary || "-",
-        late_day_salary: row?.late_day_salary || "-",
-        late_days: row?.late_days || "-",
-        leave_day_salary: row?.leave_day_salary || "-",
-        leave_days: row?.leave_days || "-",
-        net_salary: row?.net_salary || "-",
-        present_days: row?.present_days || "-",
-        salary: row?.salary || "-",
-        salary_per_day: row?.salary_per_day || "-",
-        user_id: row?.user_id || "-",
-        user_name: row?.user_name || "-",
-        weekends: row?.weekends || "-",
-      }));
-
-      setReportDetails(rowsdata);
-      generateReportPDF(rowsDataArray);
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log("ERROR::: ", error);
-      toast.error("Unable to download report.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
+  const fetchReportDetails = async () => {};
   const style = {
     transform: "translate(0%, 0%)",
     boxShadow: 24,
@@ -326,51 +235,6 @@ const ReportPdfModal = ({
   useEffect(() => {
     fetchUsers();
   }, [fetch]);
-
-  // Replace last 4 digits with "*"
-  const stearics =
-    LeadData?.leadContact
-      ?.replaceAll(" ", "")
-      ?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) +
-    "****";
-  let contact;
-
-  if (hasPermission("number_masking")) {
-    if (User?.role === 1) {
-      contact = LeadData?.leadContact?.replaceAll(" ", "");
-    } else {
-      contact = `${stearics}`;
-    }
-  } else {
-    contact = LeadData?.leadContact?.replaceAll(" ", "");
-  }
-
-  const EmailButton = ({ email }) => {
-    // console.log("email:::::::::::::::::::: ", email);
-    const handleEmailClick = (event) => {
-      event.stopPropagation();
-      window.location.href = `mailto:${email}`;
-    };
-
-    return (
-      <button className="email-button" onClick={handleEmailClick}>
-        <VscMail size={16} />
-      </button>
-    );
-  };
-
-  const CallButton = ({ phone }) => {
-    const handlePhoneClick = (event) => {
-      event.stopPropagation();
-      window.location.href = `tel:${phone}`;
-    };
-
-    return (
-      <button className="call-button" onClick={handlePhoneClick}>
-        <VscCallOutgoing size={16} />
-      </button>
-    );
-  };
 
   useEffect(() => {
     // Open the modal after a short delay to allow the animation to work
@@ -615,7 +479,7 @@ const ReportPdfModal = ({
 
                     <button
                       className="bg-primary text-white rounded-md card-hover p-2 shadow-sm"
-                      onClick={fetchSalaryCalc}
+                      onClick={fetchReportDetails}
                     >
                       {t("generate_report_btn")?.toUpperCase()}
                     </button>
