@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import moment from "moment";
 import {
@@ -7,6 +7,11 @@ import {
   Modal,
   TextField,
   Box,
+  Select,
+  MenuItem,
+  FormControl,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { useStateContext } from "../context/ContextProvider";
 import usePermission from "../utils/usePermission";
@@ -18,6 +23,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import jsPDF from "jspdf";
+import { BsSearch } from "react-icons/bs";
 
 const ReportPdfModal = ({
   reportModal,
@@ -46,10 +52,52 @@ const ReportPdfModal = ({
     year: null,
   });
   const [reportMonthValue, setReportMonthValue] = useState("");
+  const [userLoading, setUserLoading] = useState(false);
+  const [user, setUser] = useState([]);
+  const [selectedUser, setSelectedUSer] = useState(null);
+  const searchRef = useRef("");
+  const [fetch, setFetch] = useState(true);
 
-  console.log("salary report:: ", reportDetails);
+  const token = localStorage.getItem("auth-token");
 
-  console.log("report month:: ", reportMonth);
+  const fetchUsers = async (keyword = "", pageNo = 1) => {
+    console.log("keyword: ", keyword);
+    if (!keyword) {
+      setUserLoading(true);
+    }
+    try {
+      let url = "";
+      if (keyword) {
+        url = `${BACKEND_URL}/users?title=${keyword}`;
+      } else {
+        url = `${BACKEND_URL}/users?page=${pageNo}`;
+      }
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Users: ", response);
+
+      setUser(response?.data?.managers?.data);
+      setUserLoading(false);
+      setFetch(false);
+    } catch (error) {
+      setUserLoading(false);
+      console.log(error);
+      toast.error("Unable to fetch users.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const [isClosing, setIsClosing] = useState(false);
 
@@ -275,114 +323,9 @@ const ReportPdfModal = ({
     boxShadow: 24,
   };
 
-  const FetchLead = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("auth-token");
-      const result = await axios.get(`${BACKEND_URL}/leads/${LeadData}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      console.log("leads: ", result);
-
-      setLeadData(result?.data?.data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
-
-  const AddNote = (note = "") => {
-    setaddNoteloading(true);
-    const token = localStorage.getItem("auth-token");
-
-    const data = {
-      leadId: LeadData.leadId || LeadData.id,
-      leadNote: note || AddNoteTxt,
-      addedBy: User?.id,
-      addedByName: User?.userName,
-    };
-    axios
-      .post(`${BACKEND_URL}/leadNotes`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Result: ");
-        console.log("Result: ", result);
-        setaddNoteloading(false);
-        setAddNoteTxt("");
-        if (!note) {
-          toast.success("Note added Successfully", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      })
-      .catch((err) => {
-        setaddNoteloading(false);
-        console.log(err);
-        toast.error("Soemthing Went Wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-  };
-
-  const fetchLastNote = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const result = await axios.get(
-        `${BACKEND_URL}/lastnote/${LeadData?.leadId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const lastNoteText = result.data?.notes?.data[0]?.leadNote;
-      const lastNoteDate = result.data?.notes?.data[0]?.creationDate;
-      const lastNoteAddedBy = result.data?.notes?.data[0]?.addedByName;
-      setLastNote(lastNoteText);
-      setLastNoteDate(lastNoteDate);
-      setLastNoteAddedBy(lastNoteAddedBy);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    if (LeadData?.leadId) {
-      fetchLastNote();
-    }
-
-    console.log("leaddata: ", LeadData);
-
-    if (typeof LeadData === "number") {
-      FetchLead(LeadData);
-    }
-
-    console.log("LeadData::", LeadData);
-  }, [LeadData]);
+    fetchUsers();
+  }, [fetch]);
 
   // Replace last 4 digits with "*"
   const stearics =
@@ -494,7 +437,7 @@ const ReportPdfModal = ({
              p-4 h-[100vh] w-[80vw] overflow-y-scroll 
             `}
           >
-            {loading ? (
+            {userLoading ? (
               <div className="flex justify-center">
                 <CircularProgress />
               </div>
@@ -516,22 +459,103 @@ const ReportPdfModal = ({
                     </h1>
                   </div>
 
-                  <div className="w-full flex justify-end items-center">
+                  <div className="w-full flex justify-end items-center ">
                     <Box sx={{ ...darkModeColors, marginRight: "12px" }}>
-                      {/* <Select
-                        id="monthSelect"
-                        size="small"
-                        className="w-[100px]"
-                        displayEmpty
-                        //   value={selectedDay || "Today"}
-                        //   onChange={handleDayFilter}
+                      <FormControl
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                        sx={{
+                          minWidth: "100%",
+                          // border: 1,
+                          borderRadius: 1,
+                        }}
                       >
-                       
-                        <MenuItem selected value="today">
-                          {t("today")}
-                        </MenuItem>
-                        <MenuItem value="yesterday">{t("yesterday")}</MenuItem>
-                      </Select> */}
+                        <Select
+                          id="feedback"
+                          value={selectedUser || "selected"}
+                          label={t("filter_by_user")}
+                          // onChange={(e) => handleFilter(e, 2)}
+                          onChange={(e) => {
+                            setSelectedUSer(e.target.value);
+                            setFetch(true);
+                          }}
+                          size="medium"
+                          className="w-full border border-gray-300 rounded "
+                          displayEmpty
+                          required
+                          sx={{
+                            border: "1px solid #000000",
+                            height: "40px",
+
+                            "& .MuiSelect-select": {
+                              fontSize: 11,
+                            },
+                          }}
+                        >
+                          <MenuItem selected value="selected">
+                            ---{t("select_user")}----
+                          </MenuItem>
+                          <MenuItem
+                            onKeyDown={(e) => {
+                              e.stopPropagation();
+                              // e.preventDefault();
+                            }}
+                          >
+                            {/* <Box sx={darkModeColors}> */}
+                            <TextField
+                              placeholder={t("search_users")}
+                              ref={searchRef}
+                              sx={{
+                                "& input": {
+                                  border: "0",
+                                },
+                              }}
+                              variant="standard"
+                              InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <IconButton
+                                      sx={{ padding: 1 }}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        const inputValue =
+                                          searchRef.current.querySelector(
+                                            "input"
+                                          ).value;
+                                        if (inputValue) {
+                                          fetchUsers(inputValue);
+                                        }
+                                      }}
+                                    >
+                                      <BsSearch
+                                        className={`text-[#AAAAAA]`}
+                                        size={18}
+                                      />
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                              }}
+                            />
+                            {/* </Box> */}
+                          </MenuItem>
+
+                          {user?.length > 0 ? (
+                            user?.map((user) => (
+                              <MenuItem value={user?.id}>
+                                {user?.userName}
+                              </MenuItem>
+                            ))
+                          ) : (
+                            <h2 className="text-center">{t("no_users")}</h2>
+                          )}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                    <Box sx={{ ...darkModeColors, marginRight: "12px" }}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           value={reportMonthValue || new Date()?.toString()}
