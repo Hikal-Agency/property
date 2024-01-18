@@ -287,9 +287,9 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
         title: "Closed Projects",
         columns: [
           { field: "project", headerName: "Project" },
-          { field: "close", headerName: "Closed Deal" },
+          { field: "count", headerName: "Closed Deal" },
         ],
-        data: data[0]?.data?.data,
+        data: data[0]?.data?.data[0]?.entries,
       },
       {
         title: "Leads Feedback",
@@ -314,8 +314,8 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
         columns: [
           { field: "year", headerName: "Year" },
           { field: "month", headerName: "Month" },
-          { field: "deals", headerName: "Deals" },
-          { field: "sales", headerName: "Sales" },
+          { field: "dealsCount", headerName: "Deals" },
+          { field: "amount", headerName: "Sales" },
         ],
         data: data[3]?.data?.data,
       },
@@ -814,7 +814,11 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
                       className="bg-primary text-white rounded-md card-hover p-2 shadow-sm"
                       onClick={fetchReportDetails}
                     >
-                      {t("generate_report_btn")?.toUpperCase()}
+                      {loading ? (
+                        <CircularProgress />
+                      ) : (
+                        <span>{t("generate_report_btn")?.toUpperCase()}</span>
+                      )}
                     </button>
                   </div>
                 </div>
