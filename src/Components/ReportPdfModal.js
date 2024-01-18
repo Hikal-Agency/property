@@ -314,7 +314,7 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
         columns: [
           { field: "year", headerName: "Year" },
           { field: "month", headerName: "Month" },
-          { field: "dealsCount", headerName: "Deals" },
+          { field: "dealscount", headerName: "Deals" },
           { field: "amount", headerName: "Sales" },
         ],
         data: data[3]?.data?.data,
