@@ -55,6 +55,15 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
     username: null,
   });
 
+  const coldCallsList = {
+    0: "Fresh",
+    1: "Cold",
+    2: "Personal",
+    3: "Third party",
+    4: "Archived",
+    5: "Live Call",
+  };
+
   const searchRef = useRef("");
 
   const token = localStorage.getItem("auth-token");
@@ -139,7 +148,7 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
           entry?.data?.map((item) => ({
             feedback: item.feedback,
             count: item.count,
-            coldcall: entry.coldcall,
+            coldcall: coldCallsList[entry.coldcall],
           }))
         ),
       },
@@ -154,7 +163,7 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
           entry?.data?.map((item) => ({
             source: item.source,
             count: item.count,
-            coldcall: entry.coldcall,
+            coldcall: coldCallsList[entry.coldcall],
           }))
         ),
       },
