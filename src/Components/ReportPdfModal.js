@@ -307,7 +307,7 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
           { field: "source", headerName: "Source" },
           { field: "count", headerName: "Count" },
         ],
-        data: data[2]?.data?.data,
+        data: data[2]?.data?.data[0]?.entries[0]?.data,
       },
       {
         title: "Latest Deals",
@@ -824,7 +824,7 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
                 </div>
 
                 <div className="p-5">
-                  {pdfUrl && (
+                  {pdfUrl && !loading && (
                     <iframe
                       src={pdfUrl}
                       width="100%"
