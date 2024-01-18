@@ -108,6 +108,174 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
   };
 
   // generate report
+  //   const generateReportPDF = (data) => {
+  //     const doc = new jsPDF({
+  //       format: [300, 300],
+  //       unit: "mm",
+  //     });
+
+  //     const tables = [
+  //       {
+  //         title: "Closed Projects",
+  //         columns: [
+  //           { field: "project", headerName: "Project" },
+  //           { field: "close", headerName: "Closed Deal" },
+  //         ],
+  //         data: data[0]?.data?.data,
+  //       },
+  //       {
+  //         title: "Leads Feedback",
+  //         columns: [
+  //           { field: "category", headerName: "Category" },
+  //           { field: "feedback", headerName: "Feedback" },
+  //           { field: "count", headerName: "Count" },
+  //         ],
+  //         data: data[1]?.data?.data,
+  //       },
+  //       {
+  //         title: "Leads Source",
+  //         columns: [
+  //           { field: "category", headerName: "Category" },
+  //           { field: "source", headerName: "Source" },
+  //           { field: "count", headerName: "Count" },
+  //         ],
+  //         data: data[2]?.data?.data,
+  //       },
+  //       {
+  //         title: "Latest Deals",
+  //         columns: [
+  //           { field: "year", headerName: "Year" },
+  //           { field: "month", headerName: "Month" },
+  //           { field: "deals", headerName: "Deals" },
+  //           { field: "sales", headerName: "Sales" },
+  //         ],
+  //         data: data[3]?.data?.data,
+  //       },
+  //     ];
+
+  //     tables.forEach((table, index) => {
+  //       const columns = table.columns.map((column) => column.headerName);
+
+  //       const tableData = table.data?.map((row) =>
+  //         table.columns.map((column) =>
+  //           column.renderCell ? column.renderCell({ row }) : row[column.field]
+  //         )
+  //       );
+
+  //       //   if (tableData.length > 0) {
+  //       const totalWidth = columns.length * 30;
+  //       const fontSize = 7;
+
+  //       // Add the red line above the logo and text
+  //       doc.setDrawColor(218, 31, 38);
+  //       doc.setLineWidth(1);
+  //       doc.line(10, 25, doc.internal.pageSize.getWidth() - 10, 25);
+
+  //       const currentDate = new Date();
+  //       const monthName = new Intl.DateTimeFormat("en-US", {
+  //         month: "long",
+  //       }).format(currentDate);
+  //       const year = currentDate.getFullYear();
+  //       const reportMonthName = moment()
+  //         .month(reportMonth?.month - 1)
+  //         .format("MMMM");
+  //       const reportText = `${selectedUser?.username}`;
+
+  //       doc.setFontSize(12);
+  //       doc.setFont("helvetica", "bold");
+  //       doc.text(reportText, 20, 15);
+
+  //       const month_name = moment()
+  //         .month(reportMonth?.month - 1)
+  //         .format("MMMM");
+  //       const month_year = `${month_name}  ${reportMonth?.year}`;
+  //       doc.setTextColor("#000");
+  //       doc.setFontSize(9);
+  //       doc.setFont("helvetica", "normal");
+  //       doc.text(month_year, doc.internal.pageSize.getWidth() - 275, 33);
+
+  //       //   divide
+
+  //       doc.setTextColor("#DA1F26");
+  //       doc.setFont("helvetica", "bold");
+
+  //       const DateinNum = moment().format("YYYY-MM-DD");
+  //       const date = `Date: ${DateinNum}`;
+  //       doc.setTextColor("#000");
+  //       doc.setFontSize(9);
+  //       doc.setFont("helvetica", "normal");
+  //       doc.text(date, doc.internal.pageSize.getWidth() - 45, 33);
+
+  //       const numColumns = 2;
+  //       const columnWidth = (doc.internal.pageSize.getWidth() - 30) / numColumns;
+
+  //       // Load the logo image
+  //       const logoImg = new Image();
+  //       logoImg.src = "/assets/hikal_watermark.png";
+  //       logoImg.onload = () => {
+  //         const originalWidth = logoImg.width; // Get the original width of the logo
+  //         const originalHeight = logoImg.height; // Get the original height of the logo
+
+  //         const desiredWidth = 20; // Set the desired width of the logo
+  //         const scaleFactor = desiredWidth / originalWidth; // Calculate the scale factor
+
+  //         // Calculate the height to maintain the original aspect ratio
+  //         const desiredHeight = originalHeight * scaleFactor;
+
+  //         // Calculate the position to place the logo in the top right corner
+  //         const logoX = doc.internal.pageSize.getWidth() - desiredWidth - 15;
+  //         const logoY = 8;
+
+  //         // Add the logo to the PDF with the adjusted dimensions
+  //         doc.addImage(
+  //           logoImg.src,
+  //           "PNG",
+  //           logoX,
+  //           logoY,
+  //           desiredWidth,
+  //           desiredHeight // Use the adjusted height here
+  //         );
+  //         // Add the table to the PDF
+
+  //         doc.autoTable({
+  //           head: [columns],
+  //           body: tableData,
+  //           tableWidth: totalWidth,
+  //           startY: 40,
+  //           headStyles: {
+  //             fillColor: "#DA1F26",
+  //           },
+  //           styles: {
+  //             fontSize: fontSize,
+  //             cellPadding: 2,
+  //             head: { fillColor: "#DA1F26" },
+  //           },
+  //           autoSize: true,
+  //           minCellWidth: 40,
+  //           margin: { top: 50, right: 15, bottom: 20, left: 15 },
+  //         });
+
+  //         // Save the PDF as Blob
+  //         const pdfBlob = doc.output("blob");
+
+  //         // Create a Blob URL
+  //         const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+
+  //         // Set the PDF URL in the component state
+  //         setPdfUrl(pdfBlobUrl);
+
+  //         // doc.save(`Salary-Report.pdf`);
+  //       };
+
+  //       // Handle image load error
+  //       logoImg.onerror = () => {
+  //         console.error("Error loading the logo image.");
+  //       };
+  //       //   } else {
+  //       //     alert("No valid data to export!");
+  //       //   }
+  //     });
+  //   };
   const generateReportPDF = (data) => {
     const doc = new jsPDF({
       format: [300, 300],
@@ -153,252 +321,122 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
       },
     ];
 
-    tables.forEach((table, index) => {
-      const columns = table.columns.map((column) => column.headerName);
+    tables?.forEach((table, index) => {
+      const columns = table?.columns?.map((column) => column.headerName);
 
-      const tableData = table.data?.map((row) =>
-        table.columns.map((column) =>
-          column.renderCell ? column.renderCell({ row }) : row[column.field]
+      const tableData = table?.data?.map((row) =>
+        table?.columns?.map((column) =>
+          column.renderCell ? column.renderCell({ row }) : row[column?.field]
         )
       );
 
-      if (tableData.length > 0) {
-        const totalWidth = columns.length * 30;
-        const fontSize = 7;
+      //   if (tableData.length > 0) {
+      const totalWidth = columns.length * 30;
+      const fontSize = 7;
 
-        // Add the red line above the logo and text
-        doc.setDrawColor(218, 31, 38);
-        doc.setLineWidth(1);
-        doc.line(10, 25, doc.internal.pageSize.getWidth() - 10, 25);
+      // Add the red line above the logo and text
+      doc.setDrawColor(218, 31, 38);
+      doc.setLineWidth(1);
+      doc.line(10, 25, doc.internal.pageSize.getWidth() - 10, 25);
 
-        const currentDate = new Date();
-        const monthName = new Intl.DateTimeFormat("en-US", {
-          month: "long",
-        }).format(currentDate);
-        const year = currentDate.getFullYear();
-        const reportMonthName = moment()
-          .month(reportMonth?.month - 1)
-          .format("MMMM");
-        const reportText = `${selectedUser?.username} - ${table.title}`;
+      const currentDate = new Date();
+      const monthName = new Intl.DateTimeFormat("en-US", {
+        month: "long",
+      }).format(currentDate);
+      const year = currentDate.getFullYear();
+      const reportMonthName = moment()
+        .month(reportMonth?.month - 1)
+        .format("MMMM");
+      const reportText = `${selectedUser?.username}`;
 
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "bold");
-        doc.text(reportText, 20, 15);
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text(reportText, 20, 15);
 
-        const month_year = `${reportMonth?.month}  ${reportMonth?.year}`;
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "bold");
-        doc.text(month_year, 10, 15);
+      const month_name = moment()
+        .month(reportMonth?.month - 1)
+        .format("MMMM");
+      const month_year = `${month_name}  ${reportMonth?.year}`;
+      doc.setTextColor("#000");
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      doc.text(month_year, doc.internal.pageSize.getWidth() - 275, 33);
 
-        //   divide
+      doc.setTextColor("#DA1F26");
+      doc.setFont("helvetica", "bold");
 
-        doc.setTextColor("#DA1F26");
-        doc.setFont("helvetica", "bold");
+      const DateinNum = moment().format("YYYY-MM-DD");
+      const date = `Date: ${DateinNum}`;
+      doc.setTextColor("#000");
+      doc.setFontSize(9);
+      doc.setFont("helvetica", "normal");
+      doc.text(date, doc.internal.pageSize.getWidth() - 45, 33);
 
-        const DateinNum = moment().format("YYYY-MM-DD");
-        const date = `Date: ${DateinNum}`;
-        doc.setTextColor("#000");
-        doc.setFontSize(9);
-        doc.setFont("helvetica", "normal");
-        doc.text(date, doc.internal.pageSize.getWidth() - 45, 33);
+      const numColumns = 2;
+      const columnWidth = (doc.internal.pageSize.getWidth() - 30) / numColumns;
 
-        const numColumns = 2;
-        const columnWidth =
-          (doc.internal.pageSize.getWidth() - 30) / numColumns;
+      // Load the logo image
+      const logoImg = new Image();
+      logoImg.src = "/assets/hikal_watermark.png";
+      logoImg.onload = () => {
+        const originalWidth = logoImg.width;
+        const originalHeight = logoImg.height;
 
-        // Load the logo image
-        const logoImg = new Image();
-        logoImg.src = "/assets/hikal_watermark.png";
-        logoImg.onload = () => {
-          const originalWidth = logoImg.width; // Get the original width of the logo
-          const originalHeight = logoImg.height; // Get the original height of the logo
+        const desiredWidth = 20;
+        const scaleFactor = desiredWidth / originalWidth;
 
-          const desiredWidth = 20; // Set the desired width of the logo
-          const scaleFactor = desiredWidth / originalWidth; // Calculate the scale factor
+        const desiredHeight = originalHeight * scaleFactor;
 
-          // Calculate the height to maintain the original aspect ratio
-          const desiredHeight = originalHeight * scaleFactor;
+        const logoX = doc.internal.pageSize.getWidth() - desiredWidth - 15;
+        const logoY = 8;
 
-          // Calculate the position to place the logo in the top right corner
-          const logoX = doc.internal.pageSize.getWidth() - desiredWidth - 15;
-          const logoY = 8;
+        doc.addImage(
+          logoImg.src,
+          "PNG",
+          logoX,
+          logoY,
+          desiredWidth,
+          desiredHeight
+        );
 
-          // Add the logo to the PDF with the adjusted dimensions
-          doc.addImage(
-            logoImg.src,
-            "PNG",
-            logoX,
-            logoY,
-            desiredWidth,
-            desiredHeight // Use the adjusted height here
-          );
-          // Add the table to the PDF
+        // Add the table to the PDF
+        doc.autoTable({
+          head: [columns],
+          body: tableData,
+          tableWidth: totalWidth,
+          startY: index === 0 ? 40 : doc.autoTable.previous.finalY + 10,
+          headStyles: {
+            fillColor: "#DA1F26",
+          },
+          styles: {
+            fontSize: fontSize,
+            cellPadding: 2,
+            head: { fillColor: "#DA1F26" },
+          },
+          autoSize: true,
+          minCellWidth: 40,
+          margin: { top: 50, right: 15, bottom: 20, left: 15 },
+        });
 
-          doc.autoTable({
-            head: [columns],
-            body: tableData,
-            tableWidth: totalWidth,
-            startY: 40,
-            headStyles: {
-              fillColor: "#DA1F26",
-            },
-            styles: {
-              fontSize: fontSize,
-              cellPadding: 2,
-              head: { fillColor: "#DA1F26" },
-            },
-            autoSize: true,
-            minCellWidth: 40,
-            margin: { top: 50, right: 15, bottom: 20, left: 15 },
-          });
+        // Save the PDF as Blob
+        const pdfBlob = doc.output("blob");
 
-          // Save the PDF as Blob
-          const pdfBlob = doc.output("blob");
+        // Create a Blob URL
+        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
 
-          // Create a Blob URL
-          const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+        // Set the PDF URL in the component state
+        setPdfUrl(pdfBlobUrl);
+      };
 
-          // Set the PDF URL in the component state
-          setPdfUrl(pdfBlobUrl);
-
-          // doc.save(`Salary-Report.pdf`);
-        };
-
-        // Handle image load error
-        logoImg.onerror = () => {
-          console.error("Error loading the logo image.");
-        };
-      } else {
-        alert("No valid data to export!");
-      }
+      // Handle image load error
+      logoImg.onerror = () => {
+        console.error("Error loading the logo image.");
+      };
+      //   } else {
+      //     alert("No valid data to export!");
+      //   }
     });
   };
-  //   const generateReportPDF = (data) => {
-  //     const doc = new jsPDF({
-  //       format: [300, 300],
-  //       unit: "mm",
-  //     });
-
-  //     const columns = [
-  //       { field: "project", headerName: "Project" },
-  //       { field: "close", headerName: "Closed Deal" },
-  //     ];
-
-  //     const headers = columns?.map((column) => column.headerName);
-
-  //     const tableData = data[0]?.data?.data?.map((row) =>
-  //       columns.map((column) =>
-  //         column.renderCell ? column.renderCell({ row }) : row[column.field]
-  //       )
-  //     );
-
-  //     if (tableData.length > 0) {
-  //       const totalWidth = headers.length * 30;
-  //       const fontSize = 7;
-
-  //       // Add the red line above the logo and text
-  //       doc.setDrawColor(218, 31, 38);
-  //       doc.setLineWidth(1);
-  //       doc.line(10, 25, doc.internal.pageSize.getWidth() - 10, 25);
-
-  //       const currentDate = new Date();
-  //       const monthName = new Intl.DateTimeFormat("en-US", {
-  //         month: "long",
-  //       }).format(currentDate);
-  //       const year = currentDate.getFullYear();
-  //       const reportMonthName = moment()
-  //         .month(reportMonth?.month - 1)
-  //         .format("MMMM");
-  //       const reportText = `${selectedUser?.username}`;
-
-  //       doc.setFontSize(12);
-  //       doc.setFont("helvetica", "bold");
-  //       doc.text(reportText, 20, 15);
-
-  //       const month_year = `${reportMonth?.month}  ${reportMonth?.year}`;
-  //       doc.setFontSize(12);
-  //       doc.setFont("helvetica", "bold");
-  //       doc.text(month_year, 10, 15);
-
-  //       doc.setTextColor("#DA1F26");
-  //       doc.setFont("helvetica", "bold");
-
-  //       const DateinNum = moment().format("YYYY-MM-DD");
-  //       const date = `Date: ${DateinNum}`;
-  //       doc.setTextColor("#000");
-  //       doc.setFontSize(9);
-  //       doc.setFont("helvetica", "normal");
-  //       doc.text(date, doc.internal.pageSize.getWidth() - 45, 33);
-
-  //       const numColumns = 2;
-  //       const columnWidth = (doc.internal.pageSize.getWidth() - 30) / numColumns;
-
-  //       // Load the logo image
-  //       const logoImg = new Image();
-  //       logoImg.src = "/assets/hikal_watermark.png";
-  //       logoImg.onload = () => {
-  //         const originalWidth = logoImg.width; // Get the original width of the logo
-  //         const originalHeight = logoImg.height; // Get the original height of the logo
-
-  //         const desiredWidth = 20; // Set the desired width of the logo
-  //         const scaleFactor = desiredWidth / originalWidth; // Calculate the scale factor
-
-  //         // Calculate the height to maintain the original aspect ratio
-  //         const desiredHeight = originalHeight * scaleFactor;
-
-  //         // Calculate the position to place the logo in the top right corner
-  //         const logoX = doc.internal.pageSize.getWidth() - desiredWidth - 15;
-  //         const logoY = 8;
-
-  //         // Add the logo to the PDF with the adjusted dimensions
-  //         doc.addImage(
-  //           logoImg.src,
-  //           "PNG",
-  //           logoX,
-  //           logoY,
-  //           desiredWidth,
-  //           desiredHeight // Use the adjusted height here
-  //         );
-  //         // Add the table to the PDF
-
-  //         doc.autoTable({
-  //           head: [headers],
-  //           body: tableData,
-  //           tableWidth: totalWidth,
-  //           startY: 40,
-  //           headStyles: {
-  //             fillColor: "#DA1F26",
-  //           },
-  //           styles: {
-  //             fontSize: fontSize,
-  //             cellPadding: 2,
-  //             head: { fillColor: "#DA1F26" },
-  //           },
-  //           autoSize: true,
-  //           minCellWidth: 40,
-  //           margin: { top: 50, right: 15, bottom: 20, left: 15 },
-  //         });
-
-  //         // Save the PDF as Blob
-  //         const pdfBlob = doc.output("blob");
-
-  //         // Create a Blob URL
-  //         const pdfBlobUrl = URL.createObjectURL(pdfBlob);
-
-  //         // Set the PDF URL in the component state
-  //         setPdfUrl(pdfBlobUrl);
-
-  //         // doc.save(`Salary-Report.pdf`);
-  //       };
-
-  //       // Handle image load error
-  //       logoImg.onerror = () => {
-  //         console.error("Error loading the logo image.");
-  //       };
-  //     } else {
-  //       alert("No valid data to export!");
-  //     }
-  //   };
 
   const fetchReportDetails = async () => {
     setLoading(true);
@@ -631,7 +669,7 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
                             )?.role;
                             const selectedUserName = user?.find(
                               (u) => u.id === selectedUserId
-                            )?.username;
+                            )?.userName;
 
                             setSelectedUser({
                               id: selectedUserId,
