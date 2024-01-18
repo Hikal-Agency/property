@@ -282,6 +282,12 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
       unit: "mm",
     });
 
+    console.log("flat map data:::: ", data[0]?.data?.data[0]?.entries);
+    console.log(
+      "flat map data 2 :::: ",
+      data[0]?.data?.data[0]?.entries?.flat()
+    );
+
     const tables = [
       {
         title: "Closed Projects",
@@ -289,25 +295,37 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
           { field: "project", headerName: "Project" },
           { field: "count", headerName: "Closed Deal" },
         ],
-        data: data[0]?.data?.data[0]?.entries,
+        data: data[0]?.data?.data[0]?.entries?.flat(),
       },
       {
         title: "Leads Feedback",
         columns: [
-          { field: "category", headerName: "Category" },
+          { field: "coldcall", headerName: "Category" },
           { field: "feedback", headerName: "Feedback" },
           { field: "count", headerName: "Count" },
         ],
-        data: data[1]?.data?.data,
+        data: data[1]?.data?.data[0]?.entries?.flatMap((entry) =>
+          entry?.data?.map((item) => ({
+            feedback: item.feedback,
+            count: item.count,
+            coldcall: entry.coldcall,
+          }))
+        ),
       },
       {
         title: "Leads Source",
         columns: [
-          { field: "category", headerName: "Category" },
+          { field: "coldcall", headerName: "Category" },
           { field: "source", headerName: "Source" },
           { field: "count", headerName: "Count" },
         ],
-        data: data[2]?.data?.data[0]?.entries[0]?.data,
+        data: data[2]?.data?.data[0]?.entries?.flatMap((entry) =>
+          entry?.data?.map((item) => ({
+            source: item.source,
+            count: item.count,
+            coldcall: entry.coldcall,
+          }))
+        ),
       },
       {
         title: "Latest Deals",
