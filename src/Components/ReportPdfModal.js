@@ -188,115 +188,117 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
         )
       );
 
-      //   if (tableData.length > 0) {
-      const totalWidth = columns.length * 30;
-      const fontSize = 7;
+      console.log("table data::: ", tableData);
 
-      // Add the red line above the logo and text
-      doc.setDrawColor(218, 31, 38);
-      doc.setLineWidth(1);
-      doc.line(10, 25, doc.internal.pageSize.getWidth() - 10, 25);
+      //   start creating tables
+      if (tableData.length > 0) {
+        const totalWidth = columns.length * 30;
+        const fontSize = 7;
 
-      const currentDate = new Date();
-      const monthName = new Intl.DateTimeFormat("en-US", {
-        month: "long",
-      }).format(currentDate);
-      const year = currentDate.getFullYear();
-      const reportMonthName = moment()
-        .month(reportMonth?.month - 1)
-        .format("MMMM");
-      const reportText = `${selectedUser?.username}`;
+        // Add the red line above the logo and text
+        doc.setDrawColor(218, 31, 38);
+        doc.setLineWidth(1);
+        doc.line(10, 25, doc.internal.pageSize.getWidth() - 10, 25);
 
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.text(reportText, 20, 15);
+        const currentDate = new Date();
+        const monthName = new Intl.DateTimeFormat("en-US", {
+          month: "long",
+        }).format(currentDate);
+        const year = currentDate.getFullYear();
+        const reportMonthName = moment()
+          .month(reportMonth?.month - 1)
+          .format("MMMM");
+        const reportText = `${selectedUser?.username}`;
 
-      const month_name = moment()
-        .month(reportMonth?.month - 1)
-        .format("MMMM");
-      const month_year = `${month_name}  ${reportMonth?.year}`;
-      doc.setTextColor("#000");
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      doc.text(month_year, doc.internal.pageSize.getWidth() - 275, 33);
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        doc.text(reportText, 20, 15);
 
-      doc.setTextColor("#DA1F26");
-      doc.setFont("helvetica", "bold");
+        const month_name = moment()
+          .month(reportMonth?.month - 1)
+          .format("MMMM");
+        const month_year = `${month_name}  ${reportMonth?.year}`;
+        doc.setTextColor("#000");
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "normal");
+        doc.text(month_year, doc.internal.pageSize.getWidth() - 285, 33);
 
-      const DateinNum = moment().format("YYYY-MM-DD");
-      const date = `Date: ${DateinNum}`;
-      doc.setTextColor("#000");
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      doc.text(date, doc.internal.pageSize.getWidth() - 45, 33);
+        doc.setTextColor("#DA1F26");
+        doc.setFont("helvetica", "bold");
 
-      const numColumns = 2;
-      const columnWidth = (doc.internal.pageSize.getWidth() - 30) / numColumns;
+        const DateinNum = moment().format("YYYY-MM-DD");
+        const date = `Date: ${DateinNum}`;
+        doc.setTextColor("#000");
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "normal");
+        doc.text(date, doc.internal.pageSize.getWidth() - 45, 33);
 
-      // Load the logo image
-      const logoImg = new Image();
-      logoImg.src = "/assets/hikal_watermark.png";
-      logoImg.onload = () => {
-        const originalWidth = logoImg.width;
-        const originalHeight = logoImg.height;
+        const numColumns = 2;
+        const columnWidth =
+          (doc.internal.pageSize.getWidth() - 30) / numColumns;
 
-        const desiredWidth = 20;
-        const scaleFactor = desiredWidth / originalWidth;
+        // Load the logo image
+        const logoImg = new Image();
+        logoImg.src = "/assets/hikal_watermark.png";
+        logoImg.onload = () => {
+          const originalWidth = logoImg.width;
+          const originalHeight = logoImg.height;
 
-        const desiredHeight = originalHeight * scaleFactor;
+          const desiredWidth = 20;
+          const scaleFactor = desiredWidth / originalWidth;
 
-        const logoX = doc.internal.pageSize.getWidth() - desiredWidth - 15;
-        const logoY = 8;
+          const desiredHeight = originalHeight * scaleFactor;
 
-        doc.addImage(
-          logoImg.src,
-          "PNG",
-          logoX,
-          logoY,
-          desiredWidth,
-          desiredHeight
-        );
+          const logoX = doc.internal.pageSize.getWidth() - desiredWidth - 15;
+          const logoY = 8;
 
-        // Add the table to the PDF
-        doc.autoTable({
-          head: [columns],
-          body: tableData,
-          tableWidth: totalWidth,
-          startY: index === 0 ? 40 : doc.autoTable.previous.finalY + 10,
-          headStyles: {
-            fillColor: "#DA1F26",
-          },
-          bodyStyles: {
-            lineWidth: 0.5, // Body border width
-          },
-          styles: {
-            fontSize: fontSize,
-            cellPadding: 2,
-            head: { fillColor: "#DA1F26" },
-          },
+          doc.addImage(
+            logoImg.src,
+            "PNG",
+            logoX,
+            logoY,
+            desiredWidth,
+            desiredHeight
+          );
 
-          autoSize: true,
-          minCellWidth: 40,
-          margin: { top: 50, right: 15, bottom: 20, left: 15 },
-        });
+          // Add the table to the PDF
+          doc.autoTable({
+            head: [columns],
+            body: tableData,
+            tableWidth: totalWidth,
+            startY: index === 0 ? 40 : doc.autoTable.previous.finalY + 10,
+            headStyles: {
+              fillColor: "#DA1F26",
+            },
+            bodyStyles: {
+              lineWidth: 0.5, // Body border width
+            },
+            styles: {
+              fontSize: fontSize,
+              cellPadding: 2,
+              head: { fillColor: "#DA1F26" },
+            },
 
-        // Save the PDF as Blob
-        const pdfBlob = doc.output("blob");
+            autoSize: true,
+            minCellWidth: 40,
+            margin: { top: 50, right: 15, bottom: 20, left: 15 },
+          });
 
-        // Create a Blob URL
-        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+          // Save the PDF as Blob
+          const pdfBlob = doc.output("blob");
 
-        // Set the PDF URL in the component state
-        setPdfUrl(pdfBlobUrl);
-      };
+          // Create a Blob URL
+          const pdfBlobUrl = URL.createObjectURL(pdfBlob);
 
-      // Handle image load error
-      logoImg.onerror = () => {
-        console.error("Error loading the logo image.");
-      };
-      //   } else {
-      //     alert("No valid data to export!");
-      //   }
+          // Set the PDF URL in the component state
+          setPdfUrl(pdfBlobUrl);
+        };
+
+        // Handle image load error
+        logoImg.onerror = () => {
+          console.error("Error loading the logo image.");
+        };
+      }
     });
   };
 
