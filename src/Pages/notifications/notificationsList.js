@@ -55,7 +55,6 @@ const NotificationsList = () => {
     t,
     themeBgImg,
   } = useStateContext();
-  console.log("unread count ::: ", unreadNotifsCount);
   const token = localStorage.getItem("auth-token");
   const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState([]);
@@ -148,8 +147,8 @@ const NotificationsList = () => {
     const updated_data = new FormData();
 
     // if (User?.role !== 1) {
-      updated_data.append("user_id", User?.id);
-    // } 
+    updated_data.append("user_id", User?.id);
+    // }
     updated_data.append("isRead", 1);
 
     try {

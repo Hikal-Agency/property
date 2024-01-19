@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress, TextField, Tooltip } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { toast } from "react-toastify";
@@ -15,11 +21,7 @@ import axios from "../../axoisConfig";
 import SocialChart from "../../Components/charts/SocialChart";
 import SaleBubbleChart from "../../Components/charts/SaleBubbleChart";
 
-import {
-  BiImport,
-  BiArchive,
-  BiMessageRoundedDots
-} from "react-icons/bi";
+import { BiImport, BiArchive, BiMessageRoundedDots } from "react-icons/bi";
 import {
   BsSnow2,
   BsPersonCircle,
@@ -37,29 +39,22 @@ import {
   BsLink45Deg,
   BsDownload,
   BsArchive,
-  BsPersonRolodex
+  BsPersonRolodex,
 } from "react-icons/bs";
-import { 
+import {
   FaFacebookF,
   FaSnapchatGhost,
   FaTiktok,
   FaYoutube,
   FaTwitter,
   FaWhatsapp,
-  FaRegComments
+  FaRegComments,
 } from "react-icons/fa";
-import {
-  FcGoogle
-} from "react-icons/fc";
-import {
-  GiMagnifyingGlass
-} from "react-icons/gi";
-import { 
-  MdCampaign 
-} from "react-icons/md";
-import {
-  TbWorldWww
-} from "react-icons/tb";
+import { FcGoogle } from "react-icons/fc";
+import { GiMagnifyingGlass } from "react-icons/gi";
+import { MdCampaign } from "react-icons/md";
+import { TbWorldWww } from "react-icons/tb";
+import ReportPdfModal from "../../Components/ReportPdfModal";
 
 const Reports = () => {
   const {
@@ -71,7 +66,7 @@ const Reports = () => {
     t,
     themeBgImg,
     primaryColor,
-    darkModeColors
+    darkModeColors,
   } = useStateContext();
 
   const [saleschart_loading, setsaleschart_loading] = useState(true);
@@ -84,6 +79,7 @@ const Reports = () => {
   const [counters, setCounter] = useState([]);
   const { hasPermission } = usePermission();
   const [countFilter, setCountFilter] = useState();
+  const [openPdfModal, setOpenPdfModal] = useState(false);
 
   const FetchProfile = (token) => {
     let params = {
@@ -256,106 +252,106 @@ const Reports = () => {
 
   const sourceCounters = [
     {
-        "Facebook": {
-            icon: <BsFacebook size={20} color={"white"} />,
-            bg: "#0E82E1",
-        }
+      Facebook: {
+        icon: <BsFacebook size={20} color={"white"} />,
+        bg: "#0E82E1",
+      },
     },
     {
-        "Instagram": {
-            icon: <BsInstagram size={20} color={"white"} />,
-            bg: "#BE238D",
-        }
+      Instagram: {
+        icon: <BsInstagram size={20} color={"white"} />,
+        bg: "#BE238D",
+      },
     },
     {
-        "Snapchat": {
-            icon: <BsSnapchat size={18} color={"white"} />,
-            bg: "#EDBD34", //"#F6D80A",
-        }
+      Snapchat: {
+        icon: <BsSnapchat size={18} color={"white"} />,
+        bg: "#EDBD34", //"#F6D80A",
+      },
     },
     {
-        "TikTok": {
-            icon: <BsTiktok size={18} color={"white"} />,
-            bg: "#000000",
-        }
+      TikTok: {
+        icon: <BsTiktok size={18} color={"white"} />,
+        bg: "#000000",
+      },
     },
     {
-        "YouTube": {
-            icon: <BsYoutube size={20} color={"white"} />,
-            bg: "#C4302B",
-        }
+      YouTube: {
+        icon: <BsYoutube size={20} color={"white"} />,
+        bg: "#C4302B",
+      },
     },
     {
-        "GoogleAds": {
-            icon: <FcGoogle size={20} />,
-            bg: currentMode === "dark" ? "#000000" : "#FFFFFF",
-        }
+      GoogleAds: {
+        icon: <FcGoogle size={20} />,
+        bg: currentMode === "dark" ? "#000000" : "#FFFFFF",
+      },
     },
     {
-        "Twitter": {
-            icon: <BsTwitter size={20} color={"white"} />,
-            bg: "#00ACEE",
-        }
+      Twitter: {
+        icon: <BsTwitter size={20} color={"white"} />,
+        bg: "#00ACEE",
+      },
     },
     {
-        "Campaign": {
-            icon: <BsMegaphone size={20} color={"white"} />,
-            bg: "#696969",
-        }
+      Campaign: {
+        icon: <BsMegaphone size={20} color={"white"} />,
+        bg: "#696969",
+      },
     },
     {
-        "WhatsApp": {
-            icon: <BsWhatsapp size={20} color={"white"} />,
-            bg: "#53CC60",
-        }
+      WhatsApp: {
+        icon: <BsWhatsapp size={20} color={"white"} />,
+        bg: "#53CC60",
+      },
     },
     {
-        "Message": {
-            icon: <BsChatDots size={20} color={"white"} />,
-            bg: "#6A5ACD",
-        }
+      Message: {
+        icon: <BsChatDots size={20} color={"white"} />,
+        bg: "#6A5ACD",
+      },
     },
     {
-        "Comment": {
-            icon: <BsChatLeftText size={20} color={"white"} />,
-            bg: "#A9B3C6",
-        }
+      Comment: {
+        icon: <BsChatLeftText size={20} color={"white"} />,
+        bg: "#A9B3C6",
+      },
     },
     {
-        "Website": {
-            icon: <BsGlobe2 size={20} color={"white"} />,
-            bg: "#AED6F1",
-        }
+      Website: {
+        icon: <BsGlobe2 size={20} color={"white"} />,
+        bg: "#AED6F1",
+      },
     },
     {
-        "Property Finder": {
-            icon: <BsLink45Deg size={22} color={"white"} />,
-            bg: "#EF5E4E",
-        }
+      "Property Finder": {
+        icon: <BsLink45Deg size={22} color={"white"} />,
+        bg: "#EF5E4E",
+      },
     },
     {
-        "Bulk Import": {
-            icon: <BsDownload size={20} color={"white"} />,
-            bg: primaryColor,
-        }
+      "Bulk Import": {
+        icon: <BsDownload size={20} color={"white"} />,
+        bg: primaryColor,
+      },
     },
     {
-        "Warm": {
-            icon: <BsArchive size={20} color={"white"} />,
-            bg: "#AEC6CF",
-        }
+      Warm: {
+        icon: <BsArchive size={20} color={"white"} />,
+        bg: "#AEC6CF",
+      },
     },
     {
-        "Cold": {
-            icon: <BsSnow2 size={20} color={"white"} />,
-            bg: "#0EC7FF",
-        }
+      Cold: {
+        icon: <BsSnow2 size={20} color={"white"} />,
+        bg: "#0EC7FF",
+      },
     },
     {
-        "Personal": {
-            icon: <BsPersonRolodex size={20} color={"white"} />,
-            bg: "#6C7A89",
-        }
+      Personal: {
+        icon: <BsPersonRolodex size={20} color={"white"} />,
+        bg: "#6C7A89",
+      },
     },
   ];
 
@@ -435,13 +431,26 @@ const Reports = () => {
         <div className="flex min-h-screen">
           <div
             className={`w-full ${
-              !themeBgImg && (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-            } ${
-              currentMode === "dark" ? "text-white" : "text-black"
-            }`}
+              !themeBgImg &&
+              (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
+            } ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
+            <div className="w-full flex justify-end mt-4 mr-5">
+              <IconButton
+                className="bg-btn-primary"
+                onClick={() => setOpenPdfModal(true)}
+              >
+                <BsDownload size={16} color={"#FFFFFF"} />
+              </IconButton>
+            </div>
+
             {hasPermission("leadSource_counts") && (
-              <div className={`${themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")} ${currentMode === "dark" ? "text-white" : "text-black"} p-4`}>
+              <div
+                className={`${
+                  themeBgImg &&
+                  (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                } ${currentMode === "dark" ? "text-white" : "text-black"} p-4`}
+              >
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-3 flex justify-between">
                   <div className="w-full flex items-center gap-3">
                     <h1 className={`capitalize font-semibold`}>
@@ -460,25 +469,34 @@ const Reports = () => {
                         }}
                         renderInput={(params) => (
                           <Box sx={darkModeColors}>
-                          <TextField
-                            size="small"
-                            sx={{
-                              "& input": {
-                                color: currentMode === "dark" ? "1px solid #EEEEEE" : "1px solid #333333",
-                              },
-                              "&": {
-                                borderRadius: "4px",
-                                border: currentMode === "dark" ? "1px solid #EEEEEE" : "1px solid #333333",
-                              },
-                              "& .MuiSvgIcon-root": {
-                                color: currentMode === "dark" ? "1px solid #EEEEEE" : "1px solid #333333",
-                              },
-                            }}
-                            label="Date"
-                            {...params}
-                            onKeyDown={(e) => e.preventDefault()}
-                            readOnly={true}
-                          />
+                            <TextField
+                              size="small"
+                              sx={{
+                                "& input": {
+                                  color:
+                                    currentMode === "dark"
+                                      ? "1px solid #EEEEEE"
+                                      : "1px solid #333333",
+                                },
+                                "&": {
+                                  borderRadius: "4px",
+                                  border:
+                                    currentMode === "dark"
+                                      ? "1px solid #EEEEEE"
+                                      : "1px solid #333333",
+                                },
+                                "& .MuiSvgIcon-root": {
+                                  color:
+                                    currentMode === "dark"
+                                      ? "1px solid #EEEEEE"
+                                      : "1px solid #333333",
+                                },
+                              }}
+                              label="Date"
+                              {...params}
+                              onKeyDown={(e) => e.preventDefault()}
+                              readOnly={true}
+                            />
                           </Box>
                         )}
                       />
@@ -487,47 +505,58 @@ const Reports = () => {
                   <div className="lg:col-span-2 gap-3 flex flex-wrap justify-end">
                     {counters && counters?.length > 0
                       ? counters?.map((counter) => {
-                        const matchingSource = sourceCounters.find(
-                          sourceCounter => counter?.leadSource?.toLowerCase()?.includes(Object.keys(sourceCounter)[0]?.toLowerCase())
-                        );
+                          const matchingSource = sourceCounters.find(
+                            (sourceCounter) =>
+                              counter?.leadSource
+                                ?.toLowerCase()
+                                ?.includes(
+                                  Object.keys(sourceCounter)[0]?.toLowerCase()
+                                )
+                          );
 
-                        if (!matchingSource) return null;
+                          if (!matchingSource) return null;
 
-                        const leadSource = Object.keys(matchingSource)[0];
-                        const { icon, bg } = matchingSource[leadSource];
+                          const leadSource = Object.keys(matchingSource)[0];
+                          const { icon, bg } = matchingSource[leadSource];
 
-                        return (
-                          <Tooltip title={counter?.leadSource} key={counter?.leadSource} arrow>
-                            <div className="px-1">
+                          return (
+                            <Tooltip
+                              title={counter?.leadSource}
+                              key={counter?.leadSource}
+                              arrow
+                            >
+                              <div className="px-1">
                                 <div
-                                className="shadow-sm card-hover flex items-center justify-between"
-                                style={{
+                                  className="shadow-sm card-hover flex items-center justify-between"
+                                  style={{
                                     border: `1px solid #AAAAAA`,
-                                }}
+                                  }}
                                 >
-                                    <div
-                                        className="p-2 h-full flex items-center justify-center"
-                                        style={{
-                                        backgroundColor: bg,
-                                        }}
-                                    >
-                                        {icon}
-                                    </div>
-                                    <div className="p-2 px-3 font-bold">{counter?.count}</div>
+                                  <div
+                                    className="p-2 h-full flex items-center justify-center"
+                                    style={{
+                                      backgroundColor: bg,
+                                    }}
+                                  >
+                                    {icon}
+                                  </div>
+                                  <div className="p-2 px-3 font-bold">
+                                    {counter?.count}
+                                  </div>
                                 </div>
-                            </div>
-                          </Tooltip>
-                        )
-                      }) : ""
-                    }
+                              </div>
+                            </Tooltip>
+                          );
+                        })
+                      : ""}
                   </div>
                 </div>
               </div>
             )}
 
             {/* <div className="p-4 flex flex-col gap-5"> */}
-              {/* TURNOVER  */}
-              {/* <div className={`p-4 rounded-xl shadow-sm ${
+            {/* TURNOVER  */}
+            {/* <div className={`p-4 rounded-xl shadow-sm ${
                 themeBgImg 
                 ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light") 
                 : (currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]")}`}
@@ -543,8 +572,8 @@ const Reports = () => {
                 </div>
               </div> */}
 
-              {/* PERFORMANCE  */}
-              {/* <div className={`p-4 rounded-xl shadow-sm ${
+            {/* PERFORMANCE  */}
+            {/* <div className={`p-4 rounded-xl shadow-sm ${
                 themeBgImg 
                 ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light") 
                 : (currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]")}`}
@@ -565,8 +594,8 @@ const Reports = () => {
                 </div>
               </div> */}
 
-              {/* PROJECTS  */}
-              {/* <div className={`p-4 rounded-xl shadow-sm ${
+            {/* PROJECTS  */}
+            {/* <div className={`p-4 rounded-xl shadow-sm ${
                 themeBgImg 
                 ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light") 
                 : (currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]")}`}
@@ -587,8 +616,8 @@ const Reports = () => {
                 </div>
               </div> */}
 
-              {/* LEADS QUALITY  */}
-              {/* <div className={`p-4 rounded-xl shadow-sm ${
+            {/* LEADS QUALITY  */}
+            {/* <div className={`p-4 rounded-xl shadow-sm ${
                 themeBgImg 
                 ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light") 
                 : (currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]")}`}
@@ -620,25 +649,24 @@ const Reports = () => {
                 <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
                   <div
                     className={`${
-                      !themeBgImg ? (currentMode === "dark"
-                        ? "bg-[#1c1c1c] text-white"
-                        : "bg-[#EEEEEE] text-black")
-                        : (currentMode === "dark"
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1c1c1c] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                        : currentMode === "dark"
                         ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black")
+                        : "blur-bg-light text-black"
                     } rounded-lg p-2 h-auto`}
                   >
                     <h6 className="mb-2 p-2">
-                      <span className="font-semibold">
-                        {t("sales")}
-                      </span>
+                      <span className="font-semibold">{t("sales")}</span>
                       <span className="float-right">
                         <Box sx={darkModeColors}>
                           <select
                             className={`${
                               currentMode === "dark"
-                              ? "bg-[#1c1c1c] text-white"
-                              : "bg-[#EEEEEE] text-black"
+                                ? "bg-[#1c1c1c] text-white"
+                                : "bg-[#EEEEEE] text-black"
                             } text-xs rounded-lg p-1`}
                             value={selectedMonthSales}
                             onChange={(e) => {
@@ -697,7 +725,7 @@ const Reports = () => {
                     >
                       <h6 className="mb-2 p-2">
                         <span className="font-semibold">
-                        {t("closed_over_meeting")?.toUpperCase()}
+                          {t("closed_over_meeting")?.toUpperCase()}
                         </span>
                       </h6>
                       <div className="justify-between items-center mb-3">
@@ -722,23 +750,26 @@ const Reports = () => {
                 <div className="grid grid-cols-1 gap-3">
                   <div
                     className={`${
-                        !themeBgImg ? (currentMode === "dark"
-                        ? "bg-[#1c1c1c] text-white"
-                        : "bg-[#EEEEEE] text-black")
-                        : (currentMode === "dark"
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1c1c1c] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                        : currentMode === "dark"
                         ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black")
+                        : "blur-bg-light text-black"
                     } rounded-lg p-2`}
                   >
                     <h6 className="mb-2 p-2">
-                      <span className="font-semibold">{t("performance")?.toUpperCase()}</span>
+                      <span className="font-semibold">
+                        {t("performance")?.toUpperCase()}
+                      </span>
                       <span className="float-right">
                         <Box sx={darkModeColors}>
                           <select
                             className={`${
                               currentMode === "dark"
-                              ? "bg-[#1c1c1c] text-white"
-                              : "bg-[#EEEEEE] text-black"
+                                ? "bg-[#1c1c1c] text-white"
+                                : "bg-[#EEEEEE] text-black"
                             } text-xs rounded-lg p-1`}
                             value={selectedMonth}
                             onChange={(e) => {
@@ -758,16 +789,19 @@ const Reports = () => {
                   </div>
                   <div
                     className={`${
-                      !themeBgImg ? (currentMode === "dark"
-                        ? "bg-[#1c1c1c] text-white"
-                        : "bg-[#EEEEEE] text-black")
-                        : (currentMode === "dark"
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1c1c1c] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                        : currentMode === "dark"
                         ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black")
+                        : "blur-bg-light text-black"
                     } rounded-lg  p-2`}
                   >
                     <h6 className="mb-2 p-2">
-                      <span className="font-semibold">{t("lead_source")?.toUpperCase()}</span>
+                      <span className="font-semibold">
+                        {t("lead_source")?.toUpperCase()}
+                      </span>
                       <span className="float-right">
                         <select
                           className={`${
@@ -811,23 +845,26 @@ const Reports = () => {
                 </div>
                 <div
                   className={`${
-                    !themeBgImg ? (currentMode === "dark"
+                    !themeBgImg
+                      ? currentMode === "dark"
                         ? "bg-[#1c1c1c] text-white"
-                        : "bg-[#EEEEEE] text-black")
-                        : (currentMode === "dark"
-                        ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black")
+                        : "bg-[#EEEEEE] text-black"
+                      : currentMode === "dark"
+                      ? "blur-bg-dark text-white"
+                      : "blur-bg-light text-black"
                   } rounded-lg p-3`}
                 >
                   <h6 className="mb-2 p-2">
-                    <span className="font-semibold">{t("project")?.toUpperCase()}</span>
+                    <span className="font-semibold">
+                      {t("project")?.toUpperCase()}
+                    </span>
                     <span className="float-right">
                       <Box sx={darkModeColors}>
                         <select
                           className={`${
                             currentMode === "dark"
-                            ? "bg-[#1c1c1c] text-white"
-                            : "bg-[#EEEEEE] text-black"
+                              ? "bg-[#1c1c1c] text-white"
+                              : "bg-[#EEEEEE] text-black"
                           } text-xs rounded-lg p-1`}
                           value={selectedMonthProject}
                           onChange={(e) => {
@@ -851,6 +888,12 @@ const Reports = () => {
               </div>
             </div>
           </div>
+          {openPdfModal && (
+            <ReportPdfModal
+              reportModal={openPdfModal}
+              setReportModal={setOpenPdfModal}
+            />
+          )}
         </div>
       </>
     );
