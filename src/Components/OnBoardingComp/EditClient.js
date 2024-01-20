@@ -95,6 +95,12 @@ const EditClient = ({
     account_type: client?.account_type || null,
     no_of_users: client?.no_of_users,
     payment_duration: client?.payment_duration || "monthly",
+    linkedin: client?.linkedin,
+    facebook: client?.facebook,
+    instagram: client?.instagram,
+    tiktok: client?.tiktok,
+    snapchat: client?.snapchat,
+    youtube: client?.youtube,
     terms_and_conditions: true,
   });
 
@@ -767,17 +773,7 @@ const EditClient = ({
                                 variant="outlined"
                                 name={social?.name}
                                 size="small"
-                                value={
-                                  //   client[social?.name] ||
-                                  //   onBoardData[social?.name]
-                                  onBoardData[client[social?.name]]
-                                }
-                                // onChange={(e) =>
-                                //   setBoardData({
-                                //     ...onBoardData,
-                                //     [social?.name]: e.target.value,
-                                //   })
-                                // }
+                                value={onBoardData[social?.name]}
                                 onChange={(e) =>
                                   setBoardData((prevData) => ({
                                     ...prevData,
