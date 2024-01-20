@@ -261,12 +261,21 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
             desiredHeight
           );
 
+          // Add the title above the table
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(10);
+          doc.setTextColor("#DA1F26");
+          const titleY = index === 0 ? 40 : doc.autoTable.previous.finalY + 10;
+          doc.text(table.title, 20, titleY);
+
           // Add the table to the PDF
           doc.autoTable({
             head: [columns],
             body: tableData,
             tableWidth: totalWidth,
-            startY: index === 0 ? 40 : doc.autoTable.previous.finalY + 10,
+            // startY: index === 0 ? 40 : doc.autoTable.previous.finalY + 10,
+            startY: titleY + 2, // Adjust startY value
+
             headStyles: {
               fillColor: "#DA1F26",
             },
