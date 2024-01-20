@@ -17,7 +17,6 @@ import { useStateContext } from "../context/ContextProvider";
 import usePermission from "../utils/usePermission";
 import axios from "../axoisConfig";
 
-import { VscCallOutgoing, VscMail } from "react-icons/vsc";
 import { MdClose } from "react-icons/md";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -266,7 +265,7 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
           doc.setFontSize(10);
           doc.setTextColor("#DA1F26");
           const titleY = index === 0 ? 40 : doc.autoTable.previous.finalY + 10;
-          doc.text(table.title, 20, titleY);
+          doc.text(table.title, 15, titleY);
 
           // Add the table to the PDF
           doc.autoTable({
