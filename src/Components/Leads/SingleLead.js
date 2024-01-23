@@ -38,7 +38,7 @@ import {
   BsPersonGear,
   BsChatLeftText,
   BsClockHistory,
-  BsPhone
+  BsPhone,
 } from "react-icons/bs";
 
 const SingleLead = ({
@@ -87,6 +87,19 @@ const SingleLead = ({
   const handleCloseRequestModel = () => {
     setOpen(false);
   };
+
+  const notes = LeadData?.notes;
+
+  let displayText;
+
+  // Check if notes is in the "HH:mm" time format
+  if (/^\d{2}:\d{2}$/.test(notes)) {
+    // If yes, convert to 12-hour format
+    displayText = moment(notes, "HH:mm").format("h:mm A");
+  } else {
+    // If not, display the original notes
+    displayText = notes;
+  }
 
   const [isClosing, setIsClosing] = useState(false);
 
@@ -448,44 +461,42 @@ const SingleLead = ({
     return () => clearTimeout(timeout);
   }, []);
 
-  // COUNTRY AND TIMEZONE 
+  // COUNTRY AND TIMEZONE
   const [countryInfo, setCountryInfo] = useState({
     countryCode: null,
     countryName: null,
-    timezone: null
+    timezone: null,
   });
   const [currentTime, setCurrentTime] = useState("");
 
   useEffect(() => {
     const numberToCheck = LeadData?.leadContact?.replaceAll(" ", "");
-    const {
-      countryCode,
-      countryName,
-      timezone
-    } = getCountryFromNumber(numberToCheck);
+    const { countryCode, countryName, timezone } =
+      getCountryFromNumber(numberToCheck);
     setCountryInfo({
       countryCode,
       countryName,
-      timezone
+      timezone,
     });
   }, [LeadData, LeadModelOpen]);
 
   useEffect(() => {
     if (countryInfo.timezone) {
       const updateCurrentTime = () => {
-        const currentTime = moment.tz(countryInfo.timezone).format("YYYY-MM-DD, h:mm:ss A [GMT]Z");
+        const currentTime = moment
+          .tz(countryInfo.timezone)
+          .format("YYYY-MM-DD, h:mm:ss A [GMT]Z");
         setCurrentTime(currentTime);
       };
 
       updateCurrentTime();
       const intervalId = setInterval(updateCurrentTime, 1000);
       return () => clearInterval(intervalId);
-    }
-    else {
+    } else {
       setCurrentTime("");
     }
   }, [countryInfo.timezone]);
-  
+
   return (
     <Modal
       keepMounted
@@ -783,7 +794,9 @@ const SingleLead = ({
                     <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                       <BsType size={16} className="text-primary" />
                       <div className="col-span-7">
-                        {LeadData?.language === "null" ? "" : LeadData?.language}
+                        {LeadData?.language === "null"
+                          ? ""
+                          : LeadData?.language}
                       </div>
                     </div>
                   </div>
@@ -806,9 +819,7 @@ const SingleLead = ({
                     <div class="grid grid-cols-8 gap-3 my-4 lg:px-5">
                       <BsBuildings size={16} className="text-primary" />
                       <div className="col-span-7">
-                        {LeadData?.project === "null"
-                          ? "-"
-                          : LeadData?.project}{" "}
+                        {LeadData?.project === "null" ? "-" : LeadData?.project}{" "}
                         {LeadData?.leadType === "null"
                           ? "-"
                           : LeadData?.leadType}
@@ -875,7 +886,9 @@ const SingleLead = ({
                               : "inherit",
                           }}
                         >
-                          {LeadData?.notes}
+                          {displayText}
+
+                          {/* {moment(LeadData?.notes, "HH:mm").format("h:mm A")} */}
                         </div>
                       </div>
                     )}
@@ -890,7 +903,9 @@ const SingleLead = ({
                       <BsPersonGear size={16} className="text-primary mx-2" />
                       <div className="">
                         {t("last_updated_on")}{" "}
-                        {LeadData?.lastEdited === "" || LeadData?.lastEdited === null || LeadData?.lastEdited === "-"
+                        {LeadData?.lastEdited === "" ||
+                        LeadData?.lastEdited === null ||
+                        LeadData?.lastEdited === "-"
                           ? "-"
                           : datetimeLong(LeadData?.lastEdited)}
                       </div>
@@ -899,11 +914,16 @@ const SingleLead = ({
                     {/* TIMEZONE  */}
                     {countryInfo.countryName && (
                       <div class="flex items-center gap-5 my-4 md:px-5">
-                        <BsClockHistory size={16} className="text-primary mx-2" />
+                        <BsClockHistory
+                          size={16}
+                          className="text-primary mx-2"
+                        />
                         <div className="flex items-center gap-2" dir="ltr">
                           <div>{countryInfo?.countryName}</div>
                           {countryInfo.timezone && (
-                            <div className="bg-primary text-white px-2 py-1 rounded-md font-semibold">{currentTime}</div>
+                            <div className="bg-primary text-white px-2 py-1 rounded-md font-semibold">
+                              {currentTime}
+                            </div>
                           )}
                         </div>
                       </div>
@@ -916,10 +936,7 @@ const SingleLead = ({
                       <></>
                     ) : (
                       <div class="flex items-center gap-5 my-4 md:px-5">
-                        <BsPhone
-                          size={16}
-                          className="text-primary mx-2"
-                        />
+                        <BsPhone size={16} className="text-primary mx-2" />
                         <div
                           className="text-start flex items-center gap-2"
                           style={{ fontFamily: "Noto Sans" }}
@@ -931,7 +948,6 @@ const SingleLead = ({
                         </div>
                       </div>
                     )}
-                    
                   </div>
                 </div>
               </div>
@@ -981,16 +997,25 @@ const SingleLead = ({
                     )}
                   </div>
                   <div className="my-4 w-full">
-                    <Box sx={{
-                      ...darkModeColors,
-                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                        transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                      },
-                      "& legend": {
-                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                      }
-                    }}>
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      }}
+                    >
                       <form
                         onSubmit={(e) => {
                           e.preventDefault();
@@ -1002,7 +1027,7 @@ const SingleLead = ({
                             ...darkModeColors,
                             "& input": {
                               fontFamily: fontFam,
-                            }
+                            },
                           }}
                           id="note"
                           type={"text"}
@@ -1073,7 +1098,10 @@ const SingleLead = ({
                     } absolute top-1/2 left-1/2 p-5 pt-16 rounded-xl shadow-sm`}
                   >
                     <div className="flex flex-col justify-center items-center">
-                      <IoIosAlert size={50} className="text-main-red-color text-2xl" />
+                      <IoIosAlert
+                        size={50}
+                        className="text-main-red-color text-2xl"
+                      />
                       <h1
                         className={`font-semibold pt-3 text-lg ${
                           currentMode === "dark" ? "text-white" : "text-dark"
