@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import momentTimeZone from "moment-timezone";
 import {
   Backdrop,
   CircularProgress,
@@ -89,15 +90,20 @@ const SingleLead = ({
   };
 
   const notes = LeadData?.notes;
-
   let displayText;
+
+  // Assuming your notes are in a specific timezone, let's say UTC
+  const originalTimezone = "UTC";
+  const uaeTimezone = "Asia/Dubai";
 
   // Check if notes is in the "HH:mm" time format
   if (/^\d{2}:\d{2}$/.test(notes)) {
-    // If yes, convert to 12-hour format
-    displayText = moment(notes, "HH:mm").format("h:mm A");
+    // If yes, convert to 12-hour format and then to UAE timezone
+    const originalTime = momentTimeZone.tz(notes, "HH:mm", originalTimezone);
+    const uaeTime = originalTime.clone().tz(uaeTimezone);
+    displayText = uaeTime.format("h:mm A");
   } else {
-    // If not, display the original notes
+    // If not in the specified format, display the original notes
     displayText = notes;
   }
 
