@@ -98,10 +98,8 @@ const SingleLead = ({
 
   // Check if notes is in the "HH:mm" time format
   if (/^\d{2}:\d{2}$/.test(notes)) {
-    // If yes, convert to 12-hour format and then to UAE timezone
-    const originalTime = momentTimeZone.tz(notes, "HH:mm", originalTimezone);
-    const uaeTime = originalTime.clone().tz(uaeTimezone);
-    displayText = uaeTime.format("h:mm A");
+    const convert = moment(notes, "HH:mm").tz("Asia/Dubai").format("HH:mm");
+    displayText = moment(convert, "HH:mm").format("h:mm A");
   } else {
     // If not in the specified format, display the original notes
     displayText = notes;
