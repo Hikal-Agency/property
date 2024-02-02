@@ -46,6 +46,8 @@
     "gapi-script": "^1.2.0",
     "google-libphonenumber": "^3.2.33",
     "googleapis": "^118.0.0",
+    "grapesjs": "^0.21.8",
+    "grapesjs-preset-webpage": "^1.0.3",
     "html-to-image": "^1.11.11",
     "i18n-iso-countries": "^7.7.0",
     "i18next": "^23.5.1",

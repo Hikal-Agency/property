@@ -84,6 +84,7 @@ import Integration from "./integration";
 import SingleIntegration from "./integration/SingleIntegration";
 import Orders from "./officeBoy/orders";
 import Menu from "./officeBoy";
+import Editor from "./editor";
 
 const libraries = ["places"];
 
@@ -498,6 +499,11 @@ const routes = [
     path: "/integrations/:service",
     element: <SingleIntegration />,
     pageName: "Single Integration",
+  },
+  {
+    path: "/editor",
+    element: <Editor />,
+    pageName: "Editor",
   },
   {
     path: "*",

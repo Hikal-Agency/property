@@ -876,5 +876,10 @@
     "menu_order_history": "Order History",
     "menu_integration": "Integration",
     "sms_service": "SMS Service",
-    "select_sms_service": "Select SMS Service"
+    "select_sms_service": "Select SMS Service",
+
+
+    "menu_editor":"Editor",
+    "menu_page_builder":"Page Builder",
+    "page_builder":"Page Builder"
 }
