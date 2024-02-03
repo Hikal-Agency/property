@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import grapesjs from "grapesjs";
 import "grapesjs/dist/css/grapes.min.css";
 import "grapesjs-preset-webpage";
+// import "grapesjs-preset-webpage/dist/grapesjs-preset-webpage.min.css";
 
 const GrapesJSEditor = () => {
   const editorRef = useRef(null);
@@ -11,7 +12,7 @@ const GrapesJSEditor = () => {
       container: "#gjs",
       // Add your GrapesJS options here
       fromElement: true, // Initializes the editor from the content inside the container
-      height: "autopx",
+      height: "100vh",
       width: "auto",
       storageManager: false, // Disable storage manager for demo purposes
       plugins: ["gjs-preset-webpage"],
