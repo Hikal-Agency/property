@@ -20,6 +20,8 @@ import WhatsappMarketing from "./whatsapp-marketing/WhatsappMarketing";
 import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
 import { useJsApiLoader } from "@react-google-maps/api";
+// import TemplatesList from "./editor/TemplatesList";
+import TemplatesList from "./editor/TemplatesList";
 import Users from "./users";
 import Offers from "./offers";
 import Reports from "./reports";
@@ -503,6 +505,11 @@ const routes = [
   {
     path: "/editor",
     element: <Editor />,
+    pageName: "Editor",
+  },
+  {
+    path: "/templates",
+    element: <TemplatesList />,
     pageName: "Editor",
   },
   {

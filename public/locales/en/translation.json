@@ -881,5 +881,10 @@
 
     "menu_editor":"Editor",
     "menu_page_builder":"Page Builder",
-    "page_builder":"Page Builder"
+    "page_builder":"Page Builder",
+    "templates_list":"All Templates",
+    "menu_template_list":"Templates"
+
+
+
 }

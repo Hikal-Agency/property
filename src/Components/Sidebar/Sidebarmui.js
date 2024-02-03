@@ -1721,6 +1721,12 @@ const Sidebarmui = () => {
           pro: false,
           link: "/editor",
         },
+        {
+          name: t("menu_template_list"),
+          icon: <BsColumnsGap size={16} />,
+          pro: false,
+          link: "/templates",
+        },
       ],
     },
     // SUPPORT

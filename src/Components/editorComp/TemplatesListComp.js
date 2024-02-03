@@ -1,0 +1,246 @@
+import React, { useState } from "react";
+import { useStateContext } from "../../context/ContextProvider";
+import { Box, Button, CircularProgress, Tooltip } from "@mui/material";
+import { MdClose } from "react-icons/md";
+
+const TemplatesListComp = () => {
+  const { themeBgImg, currentMode, isLangRTL, i18n, t } = useStateContext();
+  const [loading, setloadng] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [activeImage, setActiveImage] = useState(null);
+  const [btnloading, setBtnLoading] = useState(false);
+  const static_img = "assets/no-image.png";
+  const hikalre = "fullLogoRE.png";
+  const hikalrewhite = "fullLogoREWhite.png";
+
+  const listing = [
+    {
+      img: static_img,
+    },
+    {
+      img: static_img,
+    },
+    {
+      img: static_img,
+    },
+  ];
+
+  const handleCloseOverlay = () => {
+    setShowOverlay(false);
+  };
+
+  const handleImageClick = (imageUrl) => {
+    setActiveImage(imageUrl);
+    setShowOverlay(true);
+  };
+  return (
+    <div className="relative">
+      <Box className="p-0">
+        {loading ? (
+          <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
+            <CircularProgress />
+          </div>
+        ) : listing?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+            {listing?.map((listing, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`card-hover relative overflow-hidden offers-page-${
+                    listing?.page
+                  } ${
+                    !themeBgImg
+                      ? currentMode === "dark"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black"
+                      : currentMode === "dark"
+                      ? "blur-bg-dark text-white"
+                      : "blur-bg-light text-black"
+                  } rounded-lg`}
+                >
+                  <div className="rounded-md flex flex-col justify-between">
+                    <div className="">
+                      {listing?.img ? (
+                        <img
+                          src={listing?.img}
+                          alt="secondary"
+                          className="w-full h-[500px] object-cover"
+                          onClick={() => handleImageClick(listing?.img)}
+                        />
+                      ) : (
+                        <img
+                          src={static_img}
+                          alt="secondary"
+                          className="w-full h-[200px] object-cover"
+                        />
+                      )}
+
+                      <div
+                        className={`absolute top-0 ${
+                          isLangRTL(i18n.language) ? "left-0" : "right-0"
+                        } p-2`}
+                      >
+                        {/* <div className="flex flex-col gap-2">
+                          <Tooltip title="View Property" arrow>
+                            <button
+                              onClick={() => HandleSingleListing(listing?.id)}
+                              className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
+                            >
+                              <BsListStars size={16} color={"#FFFFFF"} />
+                            </button>
+                          </Tooltip>
+                          {hasPermission("delete_listing") && (
+                            <Tooltip title="Delete Listing" arrow>
+                              <button
+                                className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
+                                onClick={(e) =>
+                                  handleOpenDialogue(
+                                    e,
+                                    listing?.id,
+                                    listing?.project
+                                  )
+                                }
+                              >
+                                <BsTrash size={16} color="#ffffff" />
+                              </button>
+                            </Tooltip>
+                          )}
+                        </div> */}
+                      </div>
+                      <div
+                        className={`absolute top-[450px] ${
+                          isLangRTL(i18n.language) ? "left-0" : "right-0"
+                        } p-2 rounded-b-full`}
+                      >
+                        <img
+                          src={currentMode === "dark" ? hikalrewhite : hikalre}
+                          alt="secondary"
+                          className="h-[30px]"
+                        />
+                      </div>
+                    </div>
+
+                    {/* </Link> */}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex justify-center items-center col-span-3 h-[500px] w-full">
+            <h2 className="text-primary font-bold text-2xl">
+              {t("no_listings_available")}
+            </h2>
+          </div>
+        )}
+
+        {/* {currentPage < lastPage && (
+          <div className="flex justify-center mt-5">
+            <Button
+              disabled={btnloading}
+              // onClick={() => setCurrentPage((page) => page + 1)}
+              variant="contained"
+              color="error"
+            >
+              {btnloading ? (
+                <div className="flex items-center justify-center space-x-1">
+                  <CircularProgress size={18} sx={{ color: "blue" }} />
+                </div>
+              ) : (
+                <span>{t("show_more")}</span>
+              )}
+            </Button>
+          </div>
+        )} */}
+
+        {/* DELETE CONFIRMATION */}
+        {/* {openDialogue[0] && (
+          <Modal
+            keepMounted
+            open={openDialogue[0]}
+            onClose={handleCloseModal}
+            aria-labelledby="keep-mounted-modal-title"
+            aria-describedby="keep-mounted-modal-description"
+            closeAfterTransition
+            // BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <div
+              style={style}
+              className={`w-[calc(100%-20px)] md:w-[40%]  ${
+                currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+              } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+            >
+              <div className="flex flex-col justify-center items-center">
+                <IoIosAlert
+                  size={50}
+                  className="text-main-red-color text-2xl"
+                />
+                <h1
+                  className={`font-semibold pt-3 text-lg ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }`}
+                >
+                  {`Do you really want to delete this List ${openDialogue[1]}?`}
+                </h1>
+              </div>
+
+              <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                <Button
+                  className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                  ripple="true"
+                  size="lg"
+                  onClick={(e) => handleDelete(e, openDialogue[0])}
+                >
+                  {btnLoading ? (
+                    <CircularProgress size={18} sx={{ color: "blue" }} />
+                  ) : (
+                    <span>{t("confirm")}</span>
+                  )}
+                </Button>
+
+                <Button
+                  onClick={handleCloseModal}
+                  ripple="true"
+                  variant="outlined"
+                  className={`shadow-none  rounded-md text-sm  ${
+                    currentMode === "dark"
+                      ? "text-white border-white"
+                      : "text-main-red-color border-main-red-color"
+                  }`}
+                >
+                  {t("cancel")}
+                </Button>
+              </div>
+            </div>
+          </Modal>
+        )} */}
+
+        {/* PICTURE OVERLAY  */}
+        {showOverlay && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black opacity-75"></div>
+            <div className="relative z-10 bg-white">
+              <img src={activeImage} alt="overlay" className="h-[90vh]" />
+              <button
+                onClick={handleCloseOverlay}
+                className="absolute top-4 right-4 text-2xl text-white bg-primary p-2 rounded-full m-0"
+              >
+                <MdClose />
+              </button>
+              <img
+                src={hikalrewhite}
+                alt="hikal real estate"
+                className="absolute right-4 bottom-4 w-[100px] p-2 bg-[#000000] bg-opacity-70"
+              />
+            </div>
+          </div>
+        )}
+      </Box>
+    </div>
+  );
+};
+
+export default TemplatesListComp;
