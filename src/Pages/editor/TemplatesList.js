@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
 import TemplatesListComp from "../../Components/editorComp/TemplatesListComp";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
+import { AiOutlinePlus } from "react-icons/ai";
 
 import React, { useState } from "react";
 
@@ -39,6 +41,15 @@ const TemplatesList = () => {
                   {t("templates_list")}{" "}
                 </h1>
               </div>
+              <Link
+                to="/editor"
+                className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
+              >
+                <span className="flex justify-between items-center ">
+                  <AiOutlinePlus style={{ marginRight: "0.5em" }} />
+                  {t("btn_add_template")}
+                </span>
+              </Link>
             </div>
             <TemplatesListComp />
           </div>

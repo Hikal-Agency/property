@@ -1715,12 +1715,12 @@ const Sidebarmui = () => {
       icon: <BsHeadset size={20} />,
       pro: false,
       links: [
-        {
-          name: t("menu_page_builder"),
-          icon: <BsColumnsGap size={16} />,
-          pro: false,
-          link: "/editor",
-        },
+        // {
+        //   name: t("menu_page_builder"),
+        //   icon: <BsColumnsGap size={16} />,
+        //   pro: false,
+        //   link: "/editor",
+        // },
         {
           name: t("menu_template_list"),
           icon: <BsColumnsGap size={16} />,
