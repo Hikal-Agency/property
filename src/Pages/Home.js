@@ -355,10 +355,10 @@ const Home = () => {
           <canvas ref={(elem) => (canvas = elem)} className="-z-[1]"></canvas>
         </div>
         <div
-          className={`LoginWrapper md:h-screen w-screen flex items-center justify-center `}
+          className={`LoginWrapper md:h-min w-screen flex items-center justify-center `}
         >
-          <div className="flex min-h-screen items-center justify-center mt-5 pl-3">
-            <div className="w-[calc(100vw-50px)] pb-40 md:max-w-[500px] space-y-4 md:space-y-6 bg-white pt-8 relative px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+          <div className="flex min-h-screen mb-5 items-center justify-center mt-5 pl-3">
+            <div className="w-[calc(100vw-50px)]  pb-40 md:max-w-[500px] space-y-4 md:space-y-6 bg-white pt-8 relative px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
               {errorMsg && (
                 <div className="flex flex-col items-center text-center p-5 bg-[#d4edda] font-bold text-lg">
                   {errorMsg}
@@ -505,7 +505,7 @@ const Home = () => {
                       <a
                         href="/assets/app-release.apk"
                         download
-                        className="text-white font-bold cursor-pointer"
+                        className="text-white text-sm font-bold cursor-pointer mr-4"
                       >
                         DOWNLOAD THE APP NOW
                       </a>
