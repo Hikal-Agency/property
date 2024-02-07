@@ -11,6 +11,7 @@ import {
 import { GiForkKnifeSpoon, GiHamburger } from "react-icons/gi";
 
 import { GrConnect } from "react-icons/gr";
+import { FaFileAlt, FaWrench } from "react-icons/fa";
 
 import { toast } from "react-toastify";
 import ReactConfetti from "react-confetti";
@@ -1712,14 +1713,20 @@ const Sidebarmui = () => {
     // Editor
     {
       title: t("menu_editor"),
-      icon: <BsHeadset size={20} />,
+      icon: <FaWrench size={20} />,
       pro: false,
       links: [
+        // {
+        //   name: t("menu_page_builder"),
+        //   icon: <BsColumnsGap size={16} />,
+        //   pro: false,
+        //   link: "/editor",
+        // },
         {
-          name: t("menu_page_builder"),
-          icon: <BsColumnsGap size={16} />,
+          name: t("menu_template_list"),
+          icon: <FaFileAlt size={16} />,
           pro: false,
-          link: "/editor",
+          link: "/templates",
         },
       ],
     },
