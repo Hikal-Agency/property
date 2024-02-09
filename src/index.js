@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ContextProvider } from "./context/ContextProvider";
 import { ProSidebarProvider } from "react-pro-sidebar";
 import { BrowserRouter } from "react-router-dom";
+import "grapesjs/dist/css/grapes.min.css";
+
 import "./i18n";
 import GoogleAuthProvider from "./context/GoogleAuthProvider";
 
