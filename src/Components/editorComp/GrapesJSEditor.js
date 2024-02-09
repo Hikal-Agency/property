@@ -107,10 +107,10 @@ const GrapesJSEditor = () => {
     editor.BlockManager.add("2-col-block", {
       label: "2 Columns",
       content: `
-      <div class="row" style="display: flex;">
-        <div class="col" style="flex: 1; min-height: 75px; border: 1px solid #ddd; margin-right: 10px;">Column 1</div>
-        <div class="col" style="flex: 1; min-height: 75px; border: 1px solid #ddd;">Column 2</div>
-      </div>`,
+    <div style="display: flex;">
+      <div style="flex: 1; min-height: 75px; border: 1px solid #ddd; margin-right: 10px;" data-gjs-droppable="true"></div>
+      <div style="flex: 1; min-height: 75px; border: 1px solid #ddd;" data-gjs-droppable="true"></div>
+    </div>`,
       category: "Columns",
     });
 
@@ -118,11 +118,11 @@ const GrapesJSEditor = () => {
     editor.BlockManager.add("3-col-block", {
       label: "3 Columns",
       content: `
-      <div class="row" style="display: flex;">
-        <div class="col" style="flex: 1; min-height: 75px; border: 1px solid #ddd; margin-right: 10px;">Column 1</div>
-        <div class="col" style="flex: 1; min-height: 75px; border: 1px solid #ddd; margin-right: 10px;">Column 2</div>
-        <div class="col" style="flex: 1; min-height: 75px; border: 1px solid #ddd;">Column 3</div>
-      </div>`,
+        <div style="display: flex;">
+          <div style="flex: 1; min-height: 75px; border: 1px solid #ddd; margin-right: 10px;" data-gjs-droppable="true"></div>
+          <div style="flex: 1; min-height: 75px; border: 1px solid #ddd; margin-right: 10px;" data-gjs-droppable="true">Column 2</div>
+          <div style="flex: 1; min-height: 75px; border: 1px solid #ddd;" data-gjs-droppable="true">Column 3</div>
+        </div>`,
       category: "Columns",
     });
   };
