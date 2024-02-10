@@ -125,6 +125,113 @@ const GrapesJSEditor = () => {
         </div>`,
       category: "Columns",
     });
+
+    // form
+    editor.BlockManager.add("form-block", {
+      label: "Form",
+      content: {
+        tagName: "form",
+        draggable: true, // Allow the form to be draggable in the editor
+        attributes: { method: "POST", action: "#" }, // Example attributes
+        style: {
+          display: "flex", // Use flexbox
+          "flex-direction": "column", // Stack children vertically
+          gap: "10px", // Add some space between elements
+          padding: "20px", // Padding around the form
+        },
+        components: [
+          // Initial components inside the form
+          {
+            tagName: "label",
+            content: "Name:",
+            attributes: { for: "name" },
+          },
+          {
+            tagName: "input",
+            type: "text",
+            attributes: { name: "name", placeholder: "Enter your name" },
+            style: {
+              padding: "5px",
+              margin: "5px 0",
+              width: "calc(100% - 10px)",
+            }, // Ensure inputs take full width
+          },
+          {
+            tagName: "label",
+            content: "Email:",
+            attributes: { for: "email" },
+          },
+          {
+            tagName: "input",
+            type: "email",
+            attributes: { name: "email", placeholder: "Enter your email" },
+            style: {
+              padding: "5px",
+              margin: "5px 0",
+              width: "calc(100% - 10px)",
+            }, // Ensure inputs take full width
+          },
+          {
+            tagName: "button",
+            content: "Submit",
+            attributes: { type: "submit" },
+            style: { padding: "10px", cursor: "pointer" },
+          },
+        ],
+      },
+      category: "Forms", // Categorize under 'Forms' in the block manager
+    });
+
+    // Input Field
+    editor.BlockManager.add("input-block", {
+      label: "Input",
+      content: {
+        tagName: "input",
+        type: "text",
+        attributes: { type: "text", placeholder: "Enter text here" },
+        style: { padding: "10px", margin: "5px 0", width: "calc(100% - 20px)" },
+      },
+      category: "Forms",
+    });
+
+    // Textarea
+    editor.BlockManager.add("textarea-block", {
+      label: "Textarea",
+      content: {
+        tagName: "textarea",
+        content: "",
+        attributes: { placeholder: "Enter your message" },
+        style: {
+          padding: "10px",
+          margin: "5px 0",
+          width: "calc(100% - 20px)",
+          height: "100px",
+        },
+      },
+      category: "Forms",
+    });
+
+    // Checkbox
+    editor.BlockManager.add("checkbox-block", {
+      label: "Checkbox",
+      content: {
+        tagName: "label",
+        content: `<input type="checkbox" name="checkbox" value="1"> Checkbox`,
+        style: { margin: "5px 0", display: "inline-block" },
+      },
+      category: "Forms",
+    });
+
+    // Radio Button
+    editor.BlockManager.add("radio-block", {
+      label: "Radio Button",
+      content: {
+        tagName: "label",
+        content: `<input type="radio" name="radio" value="1"> Radio`,
+        style: { margin: "5px 0", display: "inline-block" },
+      },
+      category: "Forms",
+    });
   };
 
   return <div id="gjs" ref={editorRef}></div>;
