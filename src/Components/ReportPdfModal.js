@@ -87,7 +87,14 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
       });
       console.log("Users: ", response);
 
-      setUser(response?.data?.managers?.data);
+      const data = response?.data?.managers?.data;
+
+      // filters active users having role 3 and 7
+      const filterUser = data?.filter((user) => {
+        return (user.role === 3 || user.role === 7) && user.status === 1;
+      });
+      // setUser(response?.data?.managers?.data);
+      setUser(filterUser);
       setLoading(false);
     } catch (error) {
       setLoading(false);
