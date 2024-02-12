@@ -886,7 +886,15 @@
     "menu_template_list":"Templates",
     "btn_add_template":"Design Landing Page",
     "edit_landing_page":"Edit Landing Page",
-    "landing_page_settings":"Settings"
+    "landing_page_settings":"Settings",
+    "funnel_settings":"Funnel Settings",
+    "funnel_form_name":"Name",
+    "funnel_form_path":"Path Head",
+    "funnel_form_tracking_code":"Tracking Code",
+    "funnel_form_domain":"Domain",
+    "funnel_form_favicon_url":"Favicon Url",
+    "funnel_form_body_tracking_code":"body_tracking_code",
+    "funnel_form_save":"Save"
 
 
 

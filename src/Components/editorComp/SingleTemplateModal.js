@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdClose } from "react-icons/md";
 import GrapesJSEditor from "./GrapesJSEditor";
+import FunnelSettings from "./FunnelSettings";
 
 const SingleTemplateModal = ({
   setOpenSingleTemplate,
@@ -140,7 +141,7 @@ const SingleTemplateModal = ({
                 <GrapesJSEditor />
               </TabPanel>
               <TabPanel value={value} index={1}>
-                <GrapesJSEditor />
+                <FunnelSettings />
               </TabPanel>
             </div>
           </div>
