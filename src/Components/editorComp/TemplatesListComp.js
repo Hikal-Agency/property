@@ -1,7 +1,18 @@
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { Box, Button, CircularProgress, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from "@mui/material";
+import { MdMoreVert } from "react-icons/md";
+
 import { MdClose } from "react-icons/md";
+import SingleTemplateModal from "./SingleTemplateModal";
 
 const TemplatesListComp = () => {
   const { themeBgImg, currentMode, isLangRTL, i18n, t } = useStateContext();
@@ -9,9 +20,23 @@ const TemplatesListComp = () => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
   const [btnloading, setBtnLoading] = useState(false);
+  const [openSingleTemplate, setOpenSingleTemplate] = useState({
+    open: false,
+    image: null,
+  });
   const static_img = "assets/no-image.png";
   const hikalre = "fullLogoRE.png";
   const hikalrewhite = "fullLogoREWhite.png";
+  const ITEM_HEIGHT = 48;
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const listing = [
     {
@@ -59,13 +84,53 @@ const TemplatesListComp = () => {
                   } rounded-lg`}
                 >
                   <div className="rounded-md flex flex-col justify-between">
+                    <div>
+                      <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={open ? "long-menu" : undefined}
+                        aria-expanded={open ? "true" : undefined}
+                        aria-haspopup="true"
+                        onClick={handleClick}
+                      >
+                        <MdMoreVert
+                          color={currentMode === "dark" ? "#fff" : "#000"}
+                        />
+                      </IconButton>
+                      <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                          "aria-labelledby": "long-button",
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        PaperProps={{
+                          style: {
+                            maxHeight: ITEM_HEIGHT * 4.5,
+                            width: "20ch",
+                          },
+                        }}
+                      >
+                        <MenuItem onClick={handleClose}>{t("edit")}</MenuItem>
+                        <MenuItem onClick={handleClose}>
+                          {t("btn_delete")}
+                        </MenuItem>
+                      </Menu>
+                    </div>
+
                     <div className="">
                       {listing?.img ? (
                         <img
                           src={listing?.img}
                           alt="secondary"
                           className="w-full h-[500px] object-cover"
-                          onClick={() => handleImageClick(listing?.img)}
+                          onClick={() =>
+                            setOpenSingleTemplate({
+                              open: true,
+                              image: listing?.img,
+                            })
+                          }
                         />
                       ) : (
                         <img
@@ -218,8 +283,17 @@ const TemplatesListComp = () => {
           </Modal>
         )} */}
 
+        {openSingleTemplate?.open && (
+          <SingleTemplateModal
+            openSingleTemplate={openSingleTemplate}
+            setOpenSingleTemplate={setOpenSingleTemplate}
+            hikalre={hikalre}
+            hikalrewhite={hikalrewhite}
+          />
+        )}
+
         {/* PICTURE OVERLAY  */}
-        {showOverlay && (
+        {/* {showOverlay && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="fixed inset-0 bg-black opacity-75"></div>
             <div className="relative z-10 bg-white">
@@ -237,7 +311,7 @@ const TemplatesListComp = () => {
               />
             </div>
           </div>
-        )}
+        )} */}
       </Box>
     </div>
   );
