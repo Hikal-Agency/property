@@ -12,6 +12,7 @@ import {
 import { MdMoreVert } from "react-icons/md";
 
 import { MdClose } from "react-icons/md";
+import SingleTemplateModal from "./SingleTemplateModal";
 
 const TemplatesListComp = () => {
   const { themeBgImg, currentMode, isLangRTL, i18n, t } = useStateContext();
@@ -19,6 +20,10 @@ const TemplatesListComp = () => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
   const [btnloading, setBtnLoading] = useState(false);
+  const [openSingleTemplate, setOpenSingleTemplate] = useState({
+    open: false,
+    image: null,
+  });
   const static_img = "assets/no-image.png";
   const hikalre = "fullLogoRE.png";
   const hikalrewhite = "fullLogoREWhite.png";
@@ -120,7 +125,12 @@ const TemplatesListComp = () => {
                           src={listing?.img}
                           alt="secondary"
                           className="w-full h-[500px] object-cover"
-                          onClick={() => handleImageClick(listing?.img)}
+                          onClick={() =>
+                            setOpenSingleTemplate({
+                              open: true,
+                              image: listing?.img,
+                            })
+                          }
                         />
                       ) : (
                         <img
@@ -273,8 +283,17 @@ const TemplatesListComp = () => {
           </Modal>
         )} */}
 
+        {openSingleTemplate?.open && (
+          <SingleTemplateModal
+            openSingleTemplate={openSingleTemplate}
+            setOpenSingleTemplate={setOpenSingleTemplate}
+            hikalre={hikalre}
+            hikalrewhite={hikalrewhite}
+          />
+        )}
+
         {/* PICTURE OVERLAY  */}
-        {showOverlay && (
+        {/* {showOverlay && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="fixed inset-0 bg-black opacity-75"></div>
             <div className="relative z-10 bg-white">
@@ -292,7 +311,7 @@ const TemplatesListComp = () => {
               />
             </div>
           </div>
-        )}
+        )} */}
       </Box>
     </div>
   );

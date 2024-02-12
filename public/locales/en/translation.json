@@ -884,7 +884,10 @@
     "page_builder":"Page Builder",
     "templates_list":"All Templates",
     "menu_template_list":"Templates",
-    "btn_add_template":"Design Landing Page"
+    "btn_add_template":"Design Landing Page",
+    "edit_landing_page":"Edit Landing Page",
+    "landing_page_settings":"Settings"
+
 
 
 
