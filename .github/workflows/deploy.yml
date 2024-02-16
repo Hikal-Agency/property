@@ -16,31 +16,7 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ MIIEpQIBAAKCAQEAsoh1t+/fVJB+T5kUx7C4dxBGEI0EiMP75Mn6QyDDzDVbhwMU
-boCM5bLUsZqqmxMK9aEd3djn6+y+etOjC7qOZTbnMEvdYDs2D0Wnb+fOEVl0qCUt
-kcwNHCOsMdM5vwsWpgQzpwS5IcGZNImIfzxG3IYzujSHzmnKVNJaJIiv55IezkqX
-zqEIJcHB4WmP5qu3lbePWIQVeV8osJ/KczLDJ+6EthlJa+ObrY0tbCxBJBrUczXJ
-21gWq8VtM2T6v07AgxfeBPvEwmvvX/AKM1W2Dg/F2BBo0QpW+ZY6mG2MWQkhRWvW
-MbVrxPoPa44B7ppxD/E0D4ioxcIHFkZamNVz5wIDAQABAoIBAQCvrDThXEgOJuwT
-GNdoswygI8Q9rvUCOo6XDuORwCDJxMseK7qkDRwXPYOqiz1KwE8taW9BB5kV/etk
-YvFxrg1FrOOKE2xur3S/TFO4eoi7a6Gtfn+7keRohvV+RZDx2lBb5ZCJzMz6WUyO
-dLJ6OG6luewWUnA7fL9Z/W4zusgT/H2ntVo3ap1ubHkT+e3jBgq9r5QNCby/zxaT
-C0hpMa9k8WziZkccRJGEgJLD6x4mPNy0L7Kr6+GbkvV458epPRIF9QfIrn0+bXDD
-x3s09ZFQ5d5qniBlXGb8ZmwvOIAnL6sdCT2Zz8lMAGcEdwC8kVRFf45bZlWQCfTE
-HAzFd6FJAoGBAO9X9oRDQiDIyPQRLmYOmap+fvjj7Zt5lk5HnPFzAHMCTrBV3maV
-I56Jw/G8Q/B/1hNsWYPDkhgKS9ov7NcilIPPqgl0pbKhh1zLr8iP2B+GTXfU20Tz
-+gd8wBF/87nVQfCyRuaUrrrKr80idRasEAlHl8iYBPJxkZwcDonvie/dAoGBAL71
-H6G4L7YjOUR19T990lAmRvagCr+nqe1NSma/jVN/uzzbiPxawjyQnBBUwe5J5W14
-bTo0cOl2Rv+6EyQxFWsRZdQIcvqoztJB9tPD00+ETfb6FDDVunRVAo5uENsF9Msk
-z3jGAjydsR/FzuvXWh4Tf4bCZNnonBNQ8mJGdBiTAoGBAOETOVG75i3qY3+RwK5c
-wIkil8j6nvF8b6qBkcdFPIDrBJCyz4hsa6ilKUzknIdH0EtHsw5EFdjhpd8y/mh5
-rmweF2r49PF9EUxkh5P2IWnT5HnyA5leThxIZl6OkuaI84+kNySTYZVrEdO4uZ9u
-g04Ws1gCDXTo8+N4RvvT9UVJAoGAJFBbLpbnQ9zY9CL2e5eC2kkdL6Npx96rmvwa
-zQVaa+mbgsxA9bSQwZHCi/yCUL1uyu2e3/W/Dza188XABB7tcsoBMlxU+UQG6Mcw
-mD7iPXnsla4jDtJmPd84uDtIK06rqcIbTl1haYOXfnJQklsGwTd2BfuL0EDDBY1c
-OsIpK88CgYEAvMkusTZRBtmpZwR4u6O7xhBX5XIAq5s37jYRVv3mxFjKMKmzxZNm
-A6QTpYnqt0APRrMjDyNCI59z4YUhPSqKWnEMpDKuNuVc9ZANneSS1PMC1IfwXkTo
-MadI4DMmfyYqfq5H3NV98TGqQDYI1D33Nr+KSftbM+Dal+vHqcE5F38= }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy Code to Server
         run: |
