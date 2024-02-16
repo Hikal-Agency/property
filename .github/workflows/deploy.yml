@@ -16,7 +16,7 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.AAAAB3NzaC1yc2EAAAADAQABAAABAQCyiHW3799UkH5PmRTHsLh3EEYQjQSIw/vkyfpDIMPMNVuHAxRugIzlstSxmqqbEwr1oR3d2Ofr7L5606MLuo5lNucwS91gOzYPRadv584RWXSoJS2RzA0cI6wx0zm/CxamBDOnBLkhwZk0iYh/PEbchjO6NIfOacpU0lokiK/nkh7OSpfOoQglwcHhaY/mq7eVt49YhBV5Xyiwn8pzMsMn7oS2GUlr45utjS1sLEEkGtRzNcnbWBarxW0zZPq/TsCDF94E+8TCa+9f8AozVbYOD8XYEGjRClb5ljqYbYxZCSFFa9YxtWvE+g9rjgHumnEP8TQPiKjFwgcWRlqY1XPn }}
 
       - name: Deploy Code to Server
         run: |
