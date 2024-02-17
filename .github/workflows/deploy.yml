@@ -12,7 +12,7 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.PROPERTY_RIMSHA_PROJ }}
+          ssh-private-key: ${{ secrets.ACTION_RIMSHA }}
 
       - name: Deploy Code to Server
         run: |
