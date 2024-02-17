@@ -20,8 +20,8 @@ ssh-private-key: ${{ secret_key.PROPERTY_RIMSHA_PROJ}}
       
        - name: Deploy Code to Server
          run: |
-          #ssh -o StrictHostKeyChecking=no ubuntu@34.234.40.81 'cd /home/ubuntu/property && git pull && npm install && npm run build'
-          cd /home/ubuntu/property && git pull && npm install && npm run build
+          ssh -o StrictHostKeyChecking=no ubuntu@34.234.40.81 'cd /home/ubuntu/property && git pull && npm install && npm run build'
+          #cd /home/ubuntu/property && git pull && npm install && npm run build
           sudo cp -r /home/ubuntu/property/build /var/www/html/
           sudo mv /var/www/html/build /var/www/html/oldfiles
           
