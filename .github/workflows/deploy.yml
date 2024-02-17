@@ -16,9 +16,9 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4 //
         with:
-ssh-private-key: ${{ secret_key.PROPERTY_RIMSHA_PROJ}}
+          ssh-private-key: ${{ secret_key.PROPERTY_RIMSHA_PROJ}}
       
-       - name: Deploy Code to Server
+      - name: Checkout Code
          run: |
           ssh -o StrictHostKeyChecking=no ubuntu@34.234.40.81 'cd /home/ubuntu/property && git pull && npm install && npm run build'
           #cd /home/ubuntu/property && git pull && npm install && npm run build
