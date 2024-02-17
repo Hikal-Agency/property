@@ -26,7 +26,7 @@ jobs:
         run: |
           # Load SSH key with passphrase
           eval $(ssh-agent -s)
-          ssh-add <(echo "$SSH_PRIVATE_KEY_WITH_PASSPHRASE")
+          echo "$SSH_PRIVATE_KEY_WITH_PASSPHRASE" | ssh-add -
           ssh -o StrictHostKeyChecking=no -J ubuntu@54.198.240.226 ubuntu@34.234.40.81 'cd /home/ubuntu/property && git pull && npm install && npm run build'
           sudo cp -r /home/ubuntu/property/build /var/www/html/
           sudo mv /var/www/html/build /var/www/html/oldfiles
