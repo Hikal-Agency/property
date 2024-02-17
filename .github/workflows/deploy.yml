@@ -20,7 +20,7 @@ jobs:
             ${{ secrets.BASTION_KEY_UBUNTU }}
           ssh-known-hosts: |
             |1|54.198.240.226 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTUd827cbZEz1z+70MSpByn27JdWsJUm9JkFRFvjGC2Fdc85gnToEiSxeEp9TynBhaSvuYXzMgK0cmnIrKC1nmcRBk3Oq7kdwbl8S8MPoT2GN+d40WapEB+yOCImBkgIob+k+L0IubjZbMs5cljYentK10skC9wA13VBLVDxsnzH1cIE5QOAlB8yTyaS4lIozjqTFteBFv9hIFWsTfKJgVpudSu3IfY0wByevYrsaNH7FpzIibgk81uTnEPqmjKic24zgsM0s+uGQF6ewgnIoMC1NoT/SskYRAic8s6a56hZ+N0RDC6bkKAjVbGflReguj498WnS4ANyvSxwWSVo6t ec2-user@ip-10-0-1-183.ec2.internal
-            |1|34.234.40.81 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIyh6JX0vfbocslmdFOcr06ayg3iTiG1E9pPMe220ZCJsoIsraPNWuv1EdaqLWwyjJenlLC+DCjoDxOyxR6eQYrUViEwdCQaYjnAkaz9maZm9q2XP81U/RhUiNHeJm2zaMt06+wc3W+SNQBCCoeoM1ZKYVfWHCKjERiXShebgSvPsHw+C0fJ5VwjStyDItILW5MeTbaAG0URJOIKerX+Dpi8yZxVu+qV0zQHZXc/JkHHYKPMbJf02luJdDsAOmK0StBGD+ptOUNsM8a7c7npO0C/XlQpnH95HrSHgfqHM+9mq3mS+DyArFaJ7QFpCfOvpNwadASmyUMbOKWNZ60aw3 ubuntu@ip-172-31-69-193
+            |1|34.234.40.81 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJQ9iTqJiwhvrHtqFkRL4ANYD3zl42cWYewzpNKDNnhLfKamEgKh2HpzbevXng0GgMHkTKMyNhANZbtCi+RUaPzBVjQjQJNI1Pc1nSViaovNddDoD+i0OXHjS3WBHg1II7KXxYtzMfkkjK/C88XY9m6jKPNj8LHpp5a36stUldI1Y/v9tqFgD/BTew+gbrPssRIExBNTSyaxhxnhMqgJ5/GZE7m6GNWDu+DnohUHUml5g9AX/nT9L/QdlvckcMeQgqUsRbFx8I7/OcfDS997F9LvFH2N6Drc7Aa6uBcylYazUsXqe5SDgTQFHoz+fqU9MkGJqQxr23e1aAQhuTvu5X ubuntu@ip-172-31-69-193
 
       - name: Deploy Code to Server
         run: |
