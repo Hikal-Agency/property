@@ -3,7 +3,7 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - null
+      -main
 
 jobs:
   deploy:
@@ -15,10 +15,12 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.BASTION_KEY }}
+          ssh-private-key: |
+            ${{ secrets.BASTION_KEY }}
+            ${{ secrets.ACTION_RIMSHA }}
           ssh-known-hosts: |
-            |1|<54.198.240.226> <bastion-public-key>
-            |1|<34.234.40.81> <target-public-key>
+            |1|54.198.240.226 <ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBz31lVcnjHkOwnt1nKc9tXBAKX5jXXVWndRPYQ6slJCVJh86CASTzJFKkN8p63j6duW5nolC6309OfvfXZXGp/u7Ur4UrXndXtxnhePbwCDrICaMiua+dUfBEzbGXhnItHT6j1empxe2VoDvh/wFy8fRm/ox0HrxnXj2dC4khRkLFbmLLqz2MbFsqXRnCvjpjDmhWeyFk3nQzRokfUfMC0E6pH9GoKtZyabdHgtu3gkI8K67JZkXrHRfbEoGYmojGATU6gY3hxmifCt9XnXxLvWv2bRMDg7IKP1g9gcFIzy+EA9Lt/+n+5CHkkE6LTJEg4E9/zqXtv5Eb+IAeLCXP hikal@ip-10-0-1-183.ec2.internal>
+            |1|34.234.40.81 <ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCb/nX6U+f5fBEFCnhyDrlguan3l40xaA3ubSO1uEXpl5W2dID3+CIWMJsSRLMsbgCosOUQ1Qi5QWztorx8DIbYuc1qRA7A1cazKdzYPr6QLJPDwemBCAs8oJMj/TIYHeRFEL3A1kxF9+nXXuPnmlhMq3u9BEjRcAPUj5e/9en73Ff50uWB/kwIgFwQFDPB7eXNRqgZd6RZyZhb4hdpcQt28vct7wI4g/HiczQN7BzKrZeh+58ZAFnHkVgEZEF2WWnEU8T8+ukRFVRd4A5dqv7fSN8gXawPpE0Hmnz5Xx0uZXTc35fFsmhsod75+VVKPftIPd3Trq0au31A1tPhzUAB ubuntu@ip-172-31-69-193>
 
       - name: Deploy Code to Server
         run: |
