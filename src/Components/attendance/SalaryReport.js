@@ -5,7 +5,8 @@ import {
   Backdrop,
   CircularProgress,
   Modal,
-  TextField, Box
+  TextField,
+  Box,
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
@@ -32,15 +33,8 @@ const SalaryReport = ({
   setLeadToDelete,
   isBookedDeal,
 }) => {
-  const {
-    darkModeColors,
-    currentMode,
-    User,
-    BACKEND_URL,
-    t,
-    isLangRTL,
-    i18n,
-  } = useStateContext();
+  const { darkModeColors, currentMode, User, BACKEND_URL, t, isLangRTL, i18n } =
+    useStateContext();
 
   const [pdfUrl, setPdfUrl] = useState(null);
 
@@ -54,12 +48,17 @@ const SalaryReport = ({
   const [lastNoteDate, setLastNoteDate] = useState("");
   const [lastNoteAddedBy, setLastNoteAddedBy] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1;
+  const currentYear = currentDate.getFullYear();
   const [reportMonth, setReportMonth] = useState({
-    month: null,
-    year: null,
+    month: currentMonth,
+    year: currentYear,
   });
   const [reportMonthValue, setReportMonthValue] = useState("");
 
+  console.log("report month value:: ", reportMonthValue);
   console.log("salary report:: ", reportDetails);
 
   console.log("report month:: ", reportMonth);
@@ -573,7 +572,7 @@ const SalaryReport = ({
                                 year: parseInt(year, 10),
                               });
                             }
-                            console.log("val:",newValue)
+                            console.log("val:", newValue);
 
                             setReportMonthValue(newValue?.$d);
                           }}
