@@ -62,7 +62,6 @@ const TodayCallLogs = () => {
   ];
   const d = new Date();
 
-
   useEffect(() => {
     if (User && socket) {
       socket.emit("get-call-logs");
@@ -70,7 +69,7 @@ const TodayCallLogs = () => {
 
       socket.on("call-logs", (data) => {
         if (data) {
-          console.log(data);
+          console.log("call logs data:: ", data);
           if (data.length > 0) {
             setNoData(false);
             setLoading(false);
@@ -98,7 +97,6 @@ const TodayCallLogs = () => {
     }
   }, [User, socket]);
 
-  
   function requestFullScreen(element) {
     var requestMethod =
       element.requestFullScreen ||
@@ -183,54 +181,54 @@ const TodayCallLogs = () => {
         /> */}
         {/* {slides.map((item, idx) => {
           return ( */}
-            <div
-              // key={idx}
-              // className={`${
-              //   slide === idx ? "slide" : "slide slide-hidden"
-              // } w-full h-full`}
-              className="w-full h-full"
-              style={{
-                minHeight: "90vh",
-              }}
-            >
-              <>
-                <div className="w-full flex items-center py-2">
-                  <div className="bg-[#DA1F26] h-10 w-2 rounded-full mr-2 my-1"></div>
-                  <h1
-                    className={`text-xl font-semibold ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    {/* {item.heading} */}
-                    CALL LOGS
-                  </h1>
-                </div>
+        <div
+          // key={idx}
+          // className={`${
+          //   slide === idx ? "slide" : "slide slide-hidden"
+          // } w-full h-full`}
+          className="w-full h-full"
+          style={{
+            minHeight: "90vh",
+          }}
+        >
+          <>
+            <div className="w-full flex items-center py-2">
+              <div className="bg-[#DA1F26] h-10 w-2 rounded-full mr-2 my-1"></div>
+              <h1
+                className={`text-xl font-semibold ${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              >
+                {/* {item.heading} */}
+                CALL LOGS
+              </h1>
+            </div>
 
-                {/* CALL LOGS  */}
-                {/* {item.heading === "CALL LOGS" ? ( */}
-                  <>
-                    {loading ? (
-                      <Loader />
-                    ) : (
-                      <>
-                        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3 ">
-                          {noData === false &&
-                            callLogs?.length > 0 &&
-                            callLogs?.map((call, index) => {
-                              return (
-                                <div
-                                  className={`${
-                                    currentMode === "dark"
-                                      ? "bg-[#000000]"
-                                      : "bg-[#FFFFFF]"
-                                  } p-3 rounded-lg shadow-md space-y-2`}
-                                >
-                                  <div className="px-1 mb-2 font-bold text-xl text-center text-main-red-color">
-                                    {call?.userName}
-                                  </div>
+            {/* CALL LOGS  */}
+            {/* {item.heading === "CALL LOGS" ? ( */}
+            <>
+              {loading ? (
+                <Loader />
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-3 ">
+                    {noData === false &&
+                      callLogs?.length > 0 &&
+                      callLogs?.map((call, index) => {
+                        return (
+                          <div
+                            className={`${
+                              currentMode === "dark"
+                                ? "bg-[#000000]"
+                                : "bg-[#FFFFFF]"
+                            } p-3 rounded-lg shadow-md space-y-2`}
+                          >
+                            <div className="px-1 mb-2 font-bold text-xl text-center text-main-red-color">
+                              {call?.userName}
+                            </div>
 
-                                  <div
-                                    className={`
+                            <div
+                              className={`
                                     ${
                                       currentMode === "dark"
                                         ? "bg-[#1C1C1C]"
@@ -238,13 +236,13 @@ const TodayCallLogs = () => {
                                     } 
                                     border-[#AAAAAA] border
                                     rounded-md shadow-sm p-2`}
-                                  >
-                                    <h6 className="mb-1 text-center text-lg font-semibold">
-                                      Outgoing
-                                    </h6>
-                                    <hr></hr>
-                                    <div className="block gap-3 mt-2">
-                                      {/* <div>
+                            >
+                              <h6 className="mb-1 text-center text-lg font-semibold">
+                                Outgoing
+                              </h6>
+                              <hr></hr>
+                              <div className="block gap-3 mt-2">
+                                {/* <div>
                                         <h1 className="text-lg">
                                           DIALED&nbsp;
                                           <span
@@ -255,29 +253,29 @@ const TodayCallLogs = () => {
                                           </span>
                                         </h1>
                                       </div> */}
-                                      <div>
-                                        <h1 className="text-lg">
-                                          ANSWERED&nbsp;
-                                          <span
-                                            className="font-bold float-right"
-                                            style={{ color: "#00A67D" }}
-                                          >
-                                            {call?.answered || 0}
-                                          </span>
-                                        </h1>
-                                      </div>
-                                      <div>
-                                        <h1 className="text-lg">
-                                          NOT ANSWERED&nbsp;
-                                          <span
-                                            className="font-bold float-right"
-                                            style={{ color: "#df2938" }}
-                                          >
-                                            {call?.notanswered || 0}
-                                          </span>
-                                        </h1>
-                                      </div>
-                                      {/* <div>
+                                <div>
+                                  <h1 className="text-lg">
+                                    ANSWERED&nbsp;
+                                    <span
+                                      className="font-bold float-right"
+                                      style={{ color: "#00A67D" }}
+                                    >
+                                      {call?.answered || 0}
+                                    </span>
+                                  </h1>
+                                </div>
+                                <div>
+                                  <h1 className="text-lg">
+                                    NOT ANSWERED&nbsp;
+                                    <span
+                                      className="font-bold float-right"
+                                      style={{ color: "#df2938" }}
+                                    >
+                                      {call?.notanswered || 0}
+                                    </span>
+                                  </h1>
+                                </div>
+                                {/* <div>
                                         <h1 className="text-lg">
                                           REJECTED&nbsp;
                                           <span
@@ -288,10 +286,10 @@ const TodayCallLogs = () => {
                                           </span>
                                         </h1>
                                       </div> */}
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`
+                              </div>
+                            </div>
+                            <div
+                              className={`
                                     ${
                                       currentMode === "dark"
                                         ? "bg-[#1C1C1C]"
@@ -299,71 +297,70 @@ const TodayCallLogs = () => {
                                     } 
                                     border-[#AAAAAA] border
                                     rounded-md shadow-sm p-2`}
-                                  >
-                                    <h6 className="mb-1 text-center text-lg font-semibold">
-                                      Incoming
-                                    </h6>
-                                    <hr></hr>
-                                    <div className="block gap-3 mt-2">
-                                      <div>
-                                        <h1 className="text-lg">
-                                          RECEIVED&nbsp;
-                                          <span
-                                            className="font-bold float-right"
-                                            style={{ color: "#00A67D" }}
-                                          >
-                                            {call.received || 0}
-                                          </span>
-                                        </h1>
-                                      </div>
-                                      <div>
-                                        <h1 className="text-lg">
-                                          MISSED&nbsp;
-                                          <span
-                                            className="font-bold float-right"
-                                            style={{ color: "#DF2938" }}
-                                          >
-                                            {call.missed || 0}
-                                          </span>
-                                        </h1>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`bg-[#DA1F26] text-white font-bold
+                            >
+                              <h6 className="mb-1 text-center text-lg font-semibold">
+                                Incoming
+                              </h6>
+                              <hr></hr>
+                              <div className="block gap-3 mt-2">
+                                <div>
+                                  <h1 className="text-lg">
+                                    RECEIVED&nbsp;
+                                    <span
+                                      className="font-bold float-right"
+                                      style={{ color: "#00A67D" }}
+                                    >
+                                      {call.received || 0}
+                                    </span>
+                                  </h1>
+                                </div>
+                                <div>
+                                  <h1 className="text-lg">
+                                    MISSED&nbsp;
+                                    <span
+                                      className="font-bold float-right"
+                                      style={{ color: "#DF2938" }}
+                                    >
+                                      {call.missed || 0}
+                                    </span>
+                                  </h1>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              className={`bg-[#DA1F26] text-white font-bold
                                     border-[#AAAAAA] border
                                     rounded-md shadow-sm p-2`}
+                            >
+                              <div>
+                                <h1 className="text-lg">
+                                  Total Leads&nbsp;
+                                  <span
+                                    className="font-bold float-right"
+                                    style={{ color: "#FFFFFF" }}
                                   >
-                                    <div>
-                                      <h1 className="text-lg">
-                                        Total Leads&nbsp;
-                                        <span
-                                          className="font-bold float-right"
-                                          style={{ color: "#FFFFFF" }}
-                                        >
-                                          {call.unique_lead_contacts || 0}
-                                        </span>
-                                      </h1>
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })
-                          }
-                        </div>
-                        {noData === true && (
-                          <div className="flex flex-col items-center justify-center h-[80vh] ">
-                            <img
-                              src="./no_data.png"
-                              alt="No data Illustration"
-                              className="w-[500px] h-[500px] object-cover"
-                            />
+                                    {call.unique_lead_contacts || 0}
+                                  </span>
+                                </h1>
+                              </div>
+                            </div>
                           </div>
-                        )}
-                      </>
-                    )}
-                  </>
-                {/* // ) : item.heading === "MONTHLY TARGET" ? (
+                        );
+                      })}
+                  </div>
+                  {noData === true && (
+                    <div className="flex flex-col items-center justify-center h-[80vh] ">
+                      <img
+                        src="./no_data.png"
+                        alt="No data Illustration"
+                        className="w-[500px] h-[500px] object-cover"
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+            </>
+            {/* // ) : item.heading === "MONTHLY TARGET" ? (
                 //   <>
                 //     {loading ? (
                 //       <Loader />
@@ -500,12 +497,12 @@ const TodayCallLogs = () => {
                 //     )}
                 //   </> */}
 
-                {/* ) : (
+            {/* ) : (
                   <></>
                 )} */}
-              </>
-            </div>
-          {/* );
+          </>
+        </div>
+        {/* );
         })} */}
         {/* <BsArrowRightCircleFill
           className="arrow arrow-right"
