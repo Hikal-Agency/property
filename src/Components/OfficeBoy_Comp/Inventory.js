@@ -203,11 +203,11 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       headerAlign: "center",
       renderCell: (cellValues) => {
         return (
-          <div className=" rounded-lg border">
+          <div className=" rounded-lg border my-3">
             <img
               src={`${cellValues?.row?.image_path}`}
-              width="50px"
-              height="50px"
+              width="80px"
+              height="80px"
             />
           </div>
         );
