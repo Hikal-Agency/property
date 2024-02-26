@@ -1664,25 +1664,25 @@ const Sidebarmui = () => {
       ],
     },
     // OFFICE BOY
-    // {
-    //   title: t("menu_taste_hub"),
-    //   icon: <GiForkKnifeSpoon size={18} />,
-    //   pro: true,
-    //   links: [
-    //     {
-    //       name: t("menu_menu"),
-    //       icon: <GiHamburger size={16} />,
-    //       // pro: true,
-    //       link: "/taste_hub/menu",
-    //     },
-    //     {
-    //       name: t("menu_order_history"),
-    //       icon: <TbUsers size={16} />,
-    //       // pro: true,
-    //       link: "/taste_hub/order_history",
-    //     },
-    //   ],
-    // },
+    {
+      title: t("menu_taste_hub"),
+      icon: <GiForkKnifeSpoon size={18} />,
+      pro: true,
+      links: [
+        {
+          name: t("menu_menu"),
+          icon: <GiHamburger size={16} />,
+          // pro: true,
+          link: "/taste_hub/menu",
+        },
+        // {
+        //   name: t("menu_order_history"),
+        //   icon: <TbUsers size={16} />,
+        //   // pro: true,
+        //   link: "/taste_hub/order_history",
+        // },
+      ],
+    },
     // MESSAGING
     // {
     //   title: t("menu_messaging"),
