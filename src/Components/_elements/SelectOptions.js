@@ -529,7 +529,7 @@ const priorityColors = {
 // INVENTORY STATUS
 export const inventory_status = (t) => [
   {
-    value: "available",
+    value: "Available",
     label: t("inventory_status_avail"),
   },
   {

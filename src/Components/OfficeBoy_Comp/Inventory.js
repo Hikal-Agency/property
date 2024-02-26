@@ -196,6 +196,23 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       width: 150,
       headerAlign: "center",
     },
+    {
+      field: "image_path",
+      headerName: "Item Price",
+      width: 150,
+      headerAlign: "center",
+      renderCell: (cellValues) => {
+        return (
+          <div className=" rounded-lg border">
+            <img
+              src={`${cellValues?.row?.image_path}`}
+              width="50px"
+              height="50px"
+            />
+          </div>
+        );
+      },
+    },
     { field: "notes", headerName: "Note", flex: 1, headerAlign: "center" },
     {
       field: "itemStatus",
@@ -208,7 +225,9 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
           <Select
             id="status"
             value={inventory_status(t)?.find(
-              (option) => option?.value === cellValues?.row?.itemStatus
+              (option) =>
+                option?.value?.toLowerCase() ===
+                cellValues?.row?.itemStatus?.toLowerCase()
             )}
             onChange={(e) => changeStatus(e, cellValues?.row)}
             options={inventory_status(t)}
@@ -357,8 +376,8 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
                       //   rowsPerPageOptions={[30, 50, 75, 100]}
                       pagination
                       // width="auto"
-                      //   getRowHeight={() => "auto"}
-                      rowHeight={25}
+                      getRowHeight={() => "auto"}
+                      // rowHeight={25}
                       paginationMode="server"
                       //   page={pageState.page - 1}
                       pageSize={pageSize}
