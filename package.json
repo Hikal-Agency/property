@@ -49,7 +49,6 @@
     "i18n-iso-countries": "^7.7.0",
     "i18next": "^23.5.1",
     "i18next-http-backend": "^2.2.2",
-    "image-to-base64": "^2.2.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.31",
     "libphonenumber-js": "^1.10.51",

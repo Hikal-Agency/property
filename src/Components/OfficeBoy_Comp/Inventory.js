@@ -208,7 +208,9 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
           <Select
             id="status"
             value={inventory_status(t)?.find(
-              (option) => option?.value === cellValues?.row?.itemStatus
+              (option) =>
+                option?.value?.toLowerCase() ===
+                cellValues?.row?.itemStatus?.toLowerCase()
             )}
             onChange={(e) => changeStatus(e, cellValues?.row)}
             options={inventory_status(t)}
