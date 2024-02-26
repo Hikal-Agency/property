@@ -62,19 +62,57 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
     });
   };
 
+  // const handleImgUpload = (e) => {
+  //   const file = e.target.files[0];
+
+  //   // Check if the file size is less than or equal to 1 MB (1024 * 1024 bytes)
+  //   if (file && file.size <= 1024 * 1024) {
+  //     setITemData({
+  //       ...itemData,
+  //       image: file,
+  //     });
+
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setImagePreview(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   } else {
+  //     alert("Please choose an image with a size less than or equal to 1 MB.");
+  //     // clear the input
+  //     e.target.value = null;
+  //     toast.error(`Item size should be less than 1mb.`, {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+
+  //     return;
+  //   }
+  // };
+
   const handleImgUpload = (e) => {
     const file = e.target.files[0];
 
-    // Check if the file size is less than or equal to 1 MB (1024 * 1024 bytes)
-    if (file && file.size <= 1024 * 1024) {
-      setITemData({
-        ...itemData,
-        image: file,
-      });
+    console.log("files:: ", file);
 
+    // Check if the file size is less than or equal to 1 MB (1024 * 1024 bytes)
+
+    if (file && file.size <= 1024 * 1024) {
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result);
+
+        const base64Image = reader.result;
+        setITemData({
+          ...itemData,
+          image: base64Image,
+        });
       };
       reader.readAsDataURL(file);
     } else {
