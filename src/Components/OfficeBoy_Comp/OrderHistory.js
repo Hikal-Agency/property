@@ -95,7 +95,9 @@ const OrderHistory = ({
         <Select
           id="status"
           value={order_status(t)?.find(
-            (option) => option?.value === cellValues?.row?.itemStatus
+            (option) =>
+              option?.value?.toLowerCase() ===
+              cellValues?.row?.orderStatus?.toLowerCase()
           )}
           onChange={(e) => changeStatus(e, cellValues?.row)}
           options={order_status(t)}

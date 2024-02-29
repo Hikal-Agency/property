@@ -57,6 +57,7 @@ const Orders = () => {
           itemId: String(value?.itemId),
           orderStatus: newValue,
           quantity: value?.quantity,
+          amount: value?.amount,
         }),
         {
           headers: {

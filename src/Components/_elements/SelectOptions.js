@@ -523,11 +523,15 @@ export const order_status = (t) => [
     label: t("order_status_delivered"),
   },
   {
-    value: "out_of_stock",
+    value: "out of stock",
     label: t("order_status_out_of_stock"),
   },
   {
     value: "cancel",
     label: t("order_cancel"),
+  },
+  {
+    value: "pending",
+    label: t("order_pending"),
   },
 ];
