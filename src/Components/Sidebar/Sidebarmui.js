@@ -1675,12 +1675,12 @@ const Sidebarmui = () => {
           // pro: true,
           link: "/taste_hub/menu",
         },
-        // {
-        //   name: t("menu_order_history"),
-        //   icon: <TbUsers size={16} />,
-        //   // pro: true,
-        //   link: "/taste_hub/order_history",
-        // },
+        {
+          name: t("menu_order_history"),
+          icon: <TbUsers size={16} />,
+          // pro: true,
+          link: "/order_history",
+        },
       ],
     },
     // MESSAGING

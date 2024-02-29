@@ -868,6 +868,7 @@
     "order_status_delivered": "Delivered",
     "order_status_out_of_stock": "Out Of Stock",
     "order_cancel": "Cancelled",
+    "order_pending":"Pending",
     "color": "Color",
     "background": "Background",
     "menu_twillio_integration": "Twillio Integration",

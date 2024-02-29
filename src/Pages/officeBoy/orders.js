@@ -49,6 +49,7 @@ const Orders = () => {
   const changeStatus = async (e, value) => {
     const newValue = e.value;
     console.log("new value status:: ", newValue);
+    console.log("status value:: ", value);
     setLoading(true);
     try {
       const updateStatus = await axios.post(
@@ -57,6 +58,7 @@ const Orders = () => {
           itemId: String(value?.itemId),
           orderStatus: newValue,
           quantity: value?.quantity,
+          amount: value?.amount,
         }),
         {
           headers: {
@@ -66,7 +68,7 @@ const Orders = () => {
         }
       );
 
-      toast.success(`Order Status Updated to ${value?.newValue}.`, {
+      toast.success(`Order Status Updated to ${newValue}.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
