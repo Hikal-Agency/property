@@ -1543,7 +1543,7 @@ const Sidebarmui = () => {
           name: t("menu_order_history"),
           icon: <TbUsers size={16} />,
           // pro: true,
-          link: "/taste_hub/order_history",
+          link: "/order_history",
         },
       ],
     },

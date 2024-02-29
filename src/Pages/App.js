@@ -212,7 +212,7 @@ const routes = [
     element: <Menu />,
   },
   {
-    path: "/taste_hub/order_history",
+    path: "/order_history",
     pageName: "Order History",
     element: <Orders />,
   },

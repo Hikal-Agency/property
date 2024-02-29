@@ -111,6 +111,7 @@ const OrderHistory = ({
             menuPortalTarget={document.body}
             styles={renderStyles(currentMode, primaryColor)}
             isDisabled={disableUpdate}
+            isSearchable={false}
           />
         );
       },
