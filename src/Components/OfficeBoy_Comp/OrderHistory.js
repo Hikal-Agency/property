@@ -91,22 +91,29 @@ const OrderHistory = ({
       type: "number",
       width: 150,
       headerAlign: "center",
-      renderCell: (cellValues) => (
-        <Select
-          id="status"
-          value={order_status(t)?.find(
-            (option) =>
-              option?.value?.toLowerCase() ===
-              cellValues?.row?.orderStatus?.toLowerCase()
-          )}
-          onChange={(e) => changeStatus(e, cellValues?.row)}
-          options={order_status(t)}
-          placeholder={t("select_status")}
-          className={`w-full`}
-          menuPortalTarget={document.body}
-          styles={renderStyles(currentMode, primaryColor)}
-        />
-      ),
+      renderCell: (cellValues) => {
+        const status = cellValues?.row?.orderStatus?.toLowerCase();
+        let disableUpdate = false;
+
+        if (["delivered", "cancelled", "out of stock"].includes(status)) {
+          disableUpdate = true;
+        }
+        return (
+          <Select
+            id="status"
+            value={order_status(t)?.find(
+              (option) => option?.value?.toLowerCase() === status
+            )}
+            onChange={(e) => changeStatus(e, cellValues?.row)}
+            options={order_status(t)}
+            placeholder={t("select_status")}
+            className={`w-full`}
+            menuPortalTarget={document.body}
+            styles={renderStyles(currentMode, primaryColor)}
+            isDisabled={disableUpdate}
+          />
+        );
+      },
     },
   ];
 
