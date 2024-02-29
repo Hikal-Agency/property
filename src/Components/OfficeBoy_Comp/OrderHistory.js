@@ -79,7 +79,7 @@ const OrderHistory = ({
       headerAlign: "center",
     },
     {
-      field: "user",
+      field: "userName",
       headerName: "User",
       type: "number",
       width: 150,
