@@ -12,6 +12,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import { BiTrash } from "react-icons/bi";
 import AddItem from "./AddItem";
 import moment from "moment";
+import usePermission from "../../utils/usePermission";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -27,8 +28,6 @@ const OrderHistory = ({
   setPageSize,
   changeStatus,
 }) => {
-  const [leadNotFound, setLeadNotFound] = useState(false);
-
   const {
     t,
     currentMode,
@@ -39,6 +38,7 @@ const OrderHistory = ({
     primaryColor,
   } = useStateContext();
   const [isClosing, setIsClosing] = useState(false);
+  const { hasPermission } = usePermission();
 
   const columns = [
     {
@@ -98,6 +98,31 @@ const OrderHistory = ({
         if (["delivered", "cancelled", "out of stock"].includes(status)) {
           disableUpdate = true;
         }
+
+        // apply permission restrictions
+        let orderStatus = order_status(t);
+
+        if (!hasPermission("order_status_out_of_stock")) {
+          // If user does not have permission for out of stock status, filter it out
+          orderStatus = orderStatus.filter(
+            (status) => status.label !== t("order_status_out_of_stock")
+          );
+        }
+
+        if (!hasPermission("order_status_preparing")) {
+          // If user does not have permission for preparing status, filter it out
+          orderStatus = orderStatus.filter(
+            (status) => status.label !== t("order_status_preparing")
+          );
+        }
+
+        if (!hasPermission("order_cancel")) {
+          // If user does not have permission for cancelling orders, filter it out
+          orderStatus = orderStatus.filter(
+            (status) => status.label !== t("order_cancel")
+          );
+        }
+
         return (
           <Select
             id="status"
@@ -105,7 +130,8 @@ const OrderHistory = ({
               (option) => option?.value?.toLowerCase() === status
             )}
             onChange={(e) => changeStatus(e, cellValues?.row)}
-            options={order_status(t)}
+            // options={order_status(t)}
+            options={orderStatus}
             placeholder={t("select_status")}
             className={`w-full`}
             menuPortalTarget={document.body}
