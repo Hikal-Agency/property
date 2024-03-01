@@ -133,7 +133,7 @@ const leadTypes = (t) => [
     label: t("feedback_no_answer"),
   },
   {
-    value: "switched off",
+    id: "switched off",
     label: t("feedback_switched_off"),
   },
   {
@@ -804,7 +804,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
     console.log("lead type is");
     console.log(lead_type);
     console.log("lead origin is");
-    console.log(lead_origin);
+    console.log(leadOriginSelected);
     let FetchLeads_url = "";
     setpageState((old) => ({
       ...old,
@@ -846,6 +846,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&coldCall=0&feedback=Follow Up (Long Term)`;
+      } else if (leadTypeSelected?.id === "switched off") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Switched Off`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -908,6 +912,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&coldCall=6&feedback=Follow Up (Long Term)`;
+      } else if (leadTypeSelected?.id === "switched off") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Switched Off`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -982,6 +990,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&coldCall=1&feedback=Follow Up (Long Term)`;
+      } else if (leadTypeSelected?.id === "switched off") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Switched Off`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1044,6 +1056,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&coldCall=3&feedback=Follow Up (Long Term)`;
+      } else if (leadTypeSelected?.id === "switched off") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Switched Off`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1106,6 +1122,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&coldCall=2&feedback=Follow Up (Long Term)`;
+      } else if (leadTypeSelected?.id === "switched off") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Switched Off`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1168,6 +1188,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&coldCall=4&feedback=Follow Up (Long Term)`;
+      } else if (leadTypeSelected?.id === "switched off") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Switched Off`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1242,6 +1266,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Follow Up (Long Term)`;
+      } else if (leadTypeSelected?.id === "switched off") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${
+          pageState.perpage || 14
+        }&unassigned=1&coldCall=0&feedback=Switched Off`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
