@@ -850,6 +850,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Switched Off`;
+      } else if (leadTypeSelected?.id === "booked") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Booked`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -916,6 +920,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Switched Off`;
+      } else if (leadTypeSelected?.id === "booked") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Booked`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -994,6 +1002,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Switched Off`;
+      } else if (leadTypeSelected?.id === "booked") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Booked`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1060,6 +1072,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Switched Off`;
+      } else if (leadTypeSelected?.id === "booked") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Booked`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1126,6 +1142,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Switched Off`;
+      } else if (leadTypeSelected?.id === "booked") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Booked`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1192,6 +1212,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Switched Off`;
+      } else if (leadTypeSelected?.id === "booked") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Booked`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1272,6 +1296,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Switched Off`;
+      } else if (leadTypeSelected?.id === "booked") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${
+          pageState.perpage || 14
+        }&unassigned=1&coldCall=0&feedback=Booked`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
