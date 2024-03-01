@@ -862,6 +862,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Wrong Number`;
+      } else if (leadTypeSelected?.id === "duplicate") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Duplicate`;
       }
 
       // else if (leadTypeSelected?.id === "follow up") {
@@ -937,6 +941,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Wrong Number`;
+      } else if (leadTypeSelected?.id === "duplicate") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Duplicate`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1023,6 +1031,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Wrong Number`;
+      } else if (leadTypeSelected?.id === "duplicate") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Duplicate`;
       }
 
       // else if (leadTypeSelected?.id === "follow up") {
@@ -1098,6 +1110,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Wrong Number`;
+      } else if (leadTypeSelected?.id === "duplicate") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Duplicate`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1172,6 +1188,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Wrong Number`;
+      } else if (leadTypeSelected?.id === "duplicate") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Duplicate`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1246,6 +1266,10 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Wrong Number`;
+      } else if (leadTypeSelected?.id === "duplicate") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Duplicate`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1338,6 +1362,12 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
         }&perpage=${
           pageState.perpage || 14
         }&unassigned&coldCall=0&feedback=Wrong Number`;
+      } else if (leadTypeSelected?.id === "duplicate") {
+        FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
+          pageState.page
+        }&perpage=${
+          pageState.perpage || 14
+        }&unassigned&coldCall=0&feedback=Duplicate`;
       }
       // else if (leadTypeSelected?.id === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
