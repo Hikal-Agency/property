@@ -118,7 +118,6 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
 
   useEffect(() => {
     if (data) {
-      console.log("useeffect called");
       setOrderDetails({
         itemId: String(data?.id),
         quantity: 1,
@@ -151,8 +150,8 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
           currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
         } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
       >
-        <div className="flex items">
-          <IconButton
+        <div className="flex items-center justify-center">
+          {/* <IconButton
             sx={{
               position: "absolute",
               right: 5,
@@ -160,15 +159,35 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
               cursor: "pointer",
               color: (theme) => theme.palette.grey[500],
             }}
-            onClick={() =>
+            onClick={() => {
+              console.log("clicked:: ");
               setOpenOrderModal({
                 open: false,
-                data: null,
-              })
-            }
+              });
+            }}
           >
             <IoMdClose size={18} />
-          </IconButton>
+          </IconButton> */}
+          <button
+            style={{
+              position: "absolute",
+              right: 5,
+              top: 2,
+              cursor: "pointer",
+              zIndex: 9999,
+            }}
+            onClick={() => {
+              console.log("clicked:: ");
+              setOpenOrderModal({
+                open: false,
+              });
+            }}
+          >
+            <IoMdClose
+              size={18}
+              color={currentMode === "dark" ? "#ffffff" : "#000000"}
+            />
+          </button>
           <div
             className="w-full flex items-center py-1 mb-2"
             style={{
