@@ -16,7 +16,10 @@ const MenuList = ({
 }) => {
   const { currentMode, isArabic, primaryColor, t, themeBgImg } =
     useStateContext();
-  const [openOrderModal, setOpenOrderModal] = useState(false);
+  const [openOrderModal, setOpenOrderModal] = useState({
+    open: false,
+    data: null,
+  });
 
   const imagePaths = ["../assets/offers_static_img.png"];
 
@@ -114,7 +117,7 @@ const MenuList = ({
                     ? "blur-bg-dark text-white"
                     : "blur-bg-light text-black"
                 } `}
-                onClick={() => setOpenOrderModal(menu)}
+                onClick={() => setOpenOrderModal({ open: true, data: menu })}
               >
                 {menu?.itemPrice && (
                   <Box sx={{ ...ribbonStyles }}>
