@@ -7,7 +7,7 @@ import {
   Modal,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
 import axios from "../../axoisConfig";
@@ -21,19 +21,37 @@ const style = {
 const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
   const { currentMode, t, darkModeColors, BACKEND_URL } = useStateContext();
   const [orderBtnLoading, setOrderBtnLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
   const token = localStorage.getItem("auth-token");
+  const data = openOrderModal?.data;
 
-  console.log("order placment :::: ", openOrderModal?.id);
+  console.log("order placment :::: ", data);
 
   const [orderDetails, setOrderDetails] = useState({
-    itemId: String(openOrderModal?.id),
+    itemId: null,
     quantity: null,
-    amount: openOrderModal?.itemPrice || null,
+    amount: null,
     notes: null,
-    orderStatus: "pending",
+    orderStatus: null,
   });
 
   console.log("orderdetails:::: ", orderDetails);
+
+  const handleQuantity = (e) => {
+    console.log("quantity: ", e.target.value);
+    setShowError(false);
+    const quantity = e.target.value;
+    if (quantity < 1 || quantity > 10) {
+      setShowError(true);
+      return;
+    }
+    const totalAmount = quantity * orderDetails?.amount;
+    setOrderDetails({
+      ...orderDetails,
+      [e.target.name]: quantity,
+      amount: totalAmount,
+    });
+  };
 
   const placeOrder = async () => {
     setOrderBtnLoading(true);
@@ -64,11 +82,14 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
         }
       );
       setOrderBtnLoading(false);
-      setOpenOrderModal(false);
+      setOpenOrderModal({
+        open: false,
+        data: null,
+      });
 
       console.log("order place:::: ", placeOrder);
 
-      toast.success(`Order for ${openOrderModal?.itemName} is placed.`, {
+      toast.success(`Order for ${data?.itemName} is placed.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -94,11 +115,28 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      console.log("useeffect called");
+      setOrderDetails({
+        itemId: String(data?.id),
+        quantity: 1,
+        amount: data?.itemPrice,
+        notes: null,
+        orderStatus: "pending",
+      });
+    }
+  }, [data]);
   return (
     <Modal
       keepMounted
-      open={openOrderModal}
-      onClose={() => setOpenOrderModal(false)}
+      open={openOrderModal?.open}
+      onClose={() =>
+        setOpenOrderModal({
+          open: false,
+        })
+      }
       aria-labelledby="keep-mounted-modal-title"
       aria-describedby="keep-mounted-modal-description"
       closeAfterTransition
@@ -122,7 +160,12 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
               cursor: "pointer",
               color: (theme) => theme.palette.grey[500],
             }}
-            onClick={() => setOpenOrderModal(false)}
+            onClick={() =>
+              setOpenOrderModal({
+                open: false,
+                data: null,
+              })
+            }
           >
             <IoMdClose size={18} />
           </IconButton>
@@ -141,7 +184,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 currentMode === "dark" ? "text-white" : "text-black"
               }`}
             >
-              {openOrderModal?.itemName}
+              {data?.itemName}
             </h1>
           </div>
         </div>
@@ -151,36 +194,30 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
             <div className="flex justify-between space-x-4">
               <TextField
                 type={"number"}
-                id="Manager"
+                id="demo-helper-text-misaligned-no-helper"
                 name="quantity"
                 placeholder={t("label_order_qty")}
                 label={t("label_order_qty")}
                 value={orderDetails?.quantity}
-                onChange={(e) =>
-                  setOrderDetails({
-                    ...orderDetails,
-                    [e.target.name]: e.target.value,
-                  })
-                }
+                onChange={(e) => handleQuantity(e)}
                 size="small"
                 className="w-full p-2"
                 displayEmpty
+                helperText={
+                  showError && "Quantity should be in limit of 1 - 10"
+                }
               />
+
               <TextField
                 type={"number"}
-                id="Manager"
                 name="amount"
                 placeholder={t("label_order_amount")}
                 label={t("label_order_amount")}
                 value={orderDetails?.amount}
-                onChange={(e) =>
-                  setOrderDetails({
-                    ...orderDetails,
-                    [e.target.name]: e.target.value,
-                  })
-                }
+                onChange={(e) => e.preventDefault()}
                 size="small"
                 className="w-full p-2"
+                readOnly={true}
                 displayEmpty
               />
             </div>
