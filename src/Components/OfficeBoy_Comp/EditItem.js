@@ -35,10 +35,10 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
   );
   const [itemData, setITemData] = useState({
     itemName: editITem?.itemName || editModal?.itemName || null,
-    itemPrice: editITem?.itemPrice || editModal?.itemPrice || null,
+    itemPrice: editITem?.itemPrice || editModal?.itemPrice || 0,
     itemStatus: editITem?.itemStatus?.toLowerCase() || editModal?.itemStatus,
     notes: editITem?.notes || editModal?.notes || null,
-    image: editITem?.image || editModal?.image || null,
+    image: editITem?.image_pah || editModal?.image || null,
   });
 
   console.log("ITem Data:::: ", itemData);
@@ -71,14 +71,15 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
     const file = e.target.files[0];
     console.log("file:: ", file);
 
-    setITemData({
-      ...itemData,
-      image: file,
-    });
-
     const reader = new FileReader();
     reader.onload = () => {
       setImagePreview(reader.result);
+
+      const base64Image = reader.result;
+      setITemData({
+        ...itemData,
+        image: base64Image,
+      });
     };
     reader.readAsDataURL(file);
   };

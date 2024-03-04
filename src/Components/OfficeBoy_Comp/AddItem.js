@@ -31,7 +31,7 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [itemData, setITemData] = useState({
     itemName: null,
-    itemPrice: null,
+    itemPrice: 0,
     itemStatus: "available",
     notes: null,
     image: null,
