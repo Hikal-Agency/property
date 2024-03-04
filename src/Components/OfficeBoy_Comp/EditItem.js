@@ -35,7 +35,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
   );
   const [itemData, setITemData] = useState({
     itemName: editITem?.itemName || null,
-    itemPrice: editITem?.itemPrice || null,
+    itemPrice: editITem?.itemPrice || 0,
     itemStatus: editITem?.itemStatus?.toLowerCase() || "available",
     notes: editITem?.notes || null,
     image: editITem?.image_pah || null,
