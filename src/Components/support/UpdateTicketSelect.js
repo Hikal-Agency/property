@@ -174,7 +174,6 @@ const UpdateTicketSelect = ({ cellValues }) => {
             }}
           >
             <MenuItem value={"select"}>{t("select_status")}</MenuItem>
-            <MenuItem value={"pending"}>{t("status_pending")}</MenuItem>
             <MenuItem value={"open"}>{t("status_open")}</MenuItem>
             <MenuItem value={"in process"}>{t("status_in_process")}</MenuItem>
             <MenuItem value={"closed"}>{t("status_closed")}</MenuItem>
