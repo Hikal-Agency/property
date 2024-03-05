@@ -24,11 +24,12 @@ const Tickets = () => {
     setValue(newValue);
   };
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchCategories = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
       const response = await axios.get(`${BACKEND_URL}/categories`, {
@@ -129,6 +130,8 @@ const Tickets = () => {
                   <CreateTicket
                     categories={categories}
                     setCategories={setCategories}
+                    fetchCategories={fetchCategories}
+                    loading={loading}
                   />
                 </TabPanel>
                 <TabPanel value={value} index={1}>

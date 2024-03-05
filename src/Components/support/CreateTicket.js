@@ -19,8 +19,14 @@ import { socket } from "../../Pages/App";
 
 import axios from "../../axoisConfig";
 
-const CreateTicket = ({ categories, setCategories }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, User, t, themeBgImg } = useStateContext();
+const CreateTicket = ({
+  categories,
+  setCategories,
+  fetchCategories,
+  loading,
+}) => {
+  const { currentMode, darkModeColors, BACKEND_URL, User, t, themeBgImg } =
+    useStateContext();
   const [newCategory, setNewCategory] = useState();
   const [showTextInput, setShowTextInput] = useState(false);
   const [values, setValues] = useState({
@@ -31,103 +37,7 @@ const CreateTicket = ({ categories, setCategories }) => {
     ticketStatus: "",
   });
   const [btnloading, setbtnloading] = useState(false);
-
-  const handleAddCategory = (e) => {
-    e.preventDefault();
-    setShowTextInput(true);
-  };
-
-  const handleSubmitCategory = async (e) => {
-    e.preventDefault();
-
-    if (!newCategory) {
-      toast.error("Kindly enter category name.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      setbtnloading(false);
-
-      return;
-    }
-
-    if (categories?.find((cat) => cat?.catName === newCategory)) {
-      toast.error("Category already exists, try another one!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      setbtnloading(false);
-      return;
-    }
-
-    setbtnloading(true);
-
-    try {
-      const token = localStorage.getItem("auth-token");
-
-      const NewCategory = new FormData();
-
-      NewCategory.append("status", 1);
-      NewCategory.append("catName", newCategory);
-      NewCategory.append("type", 1);
-      NewCategory.append("is_parent", 1);
-
-      const add_category = await axios.post(
-        `${BACKEND_URL}/categories`,
-        NewCategory,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      console.log("Category Added: ", add_category.data.categories);
-      setbtnloading(false);
-      setCategories([...categories, add_category.data.categories]);
-      setShowTextInput(false);
-      setNewCategory("");
-
-      toast.success("Category created successfully.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch (error) {
-      console.log("Error : ", error);
-      toast.error("Creating new category failed.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setbtnloading(false);
-    }
-  };
-
-  const handleCreateCategory = (e) => {
-    console.log("NEw Cat: ", e.target.value);
-    setNewCategory(e.target.value);
-  };
+  const token = localStorage.getItem("auth-token");
 
   const handleSubmit = async (e) => {
     try {
@@ -140,7 +50,7 @@ const CreateTicket = ({ categories, setCategories }) => {
           description: values.ticketDescription,
           category: values.ticketCategory.toLocaleLowerCase(),
           source: values.supportSource.toLowerCase(),
-          status: values.ticketStatus,
+          status: "Open",
           issue: values.ticketIssue,
         }),
         {
@@ -203,8 +113,13 @@ const CreateTicket = ({ categories, setCategories }) => {
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5">
         <div
           className={`${
-            !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
-            : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+            !themeBgImg
+              ? currentMode === "dark"
+                ? "bg-black"
+                : "bg-white"
+              : currentMode === "dark"
+              ? "blur-bg-dark"
+              : "blur-bg-light"
           } rounded-xl shadow-sm space-3 p-7`}
         >
           <h3 className="mb-3 font-semibold text-center uppercase">
@@ -253,67 +168,20 @@ const CreateTicket = ({ categories, setCategories }) => {
                   <MenuItem disabled selected value="">
                     {t("select_category")}
                   </MenuItem>
+                  {/* {loading ? ( */}
                   {categories?.map((category) => {
-                    if (category.catName) {
-                      return (
-                        <MenuItem key={category.id} value={category.catName}>
-                          {category.catName}
-                        </MenuItem>
-                      );
-                    }
-                  })}
-                  {showTextInput && (
-                    <>
-                      <MenuItem onKeyDown={(e) => e.stopPropagation()}>
-                        <TextField
-                          placeholder={t("new_category")}
-                          value={newCategory}
-                          onChange={handleCreateCategory}
-                          fullWidth
-                        />
+                    return (
+                      <MenuItem key={category.id} value={category.category}>
+                        {category.category}
                       </MenuItem>
-                      <Button
-                        size="medium"
-                        className="bg-btn-primary text-white rounded-lg py-3 font-semibold mb-3 ml-5"
-                        style={{ color: "#ffffff" }}
-                        sx={{ marginLeft: "20px" }}
-                        onClick={handleSubmitCategory}
-                        disabled={btnloading ? true : false}
-                      >
-                        {btnloading ? (
-                          <CircularProgress
-                            size={23}
-                            sx={{ color: "white" }}
-                            className="text-white"
-                          />
-                        ) : (
-                          <span>{t("btn_add")}</span>
-                        )}
-                      </Button>
-                    </>
-                  )}
-                  {showTextInput || (
-                    <>
-                      {btnloading ? (
-                        <CircularProgress
-                          size={23}
-                          sx={{ color: "white" }}
-                          className="text-white"
-                        />
-                      ) : (
-                        <span
-                          className="fw-bold ml-4 cursor-pointer"
-                          onClick={handleAddCategory}
-                          sx={{ marginLeft: "200px" }}
-                        >
-                          + {t("add_category")}
-                        </span>
-                      )}
-                    </>
-                  )}
+                    );
+                  })}
+                  {/* ) : (
+                    <CircularProgress />
+                  )} */}
                 </Select>
               </FormControl>
-              
+
               <TextField
                 id="issue"
                 type={"text"}
@@ -344,7 +212,7 @@ const CreateTicket = ({ categories, setCategories }) => {
               />
               {/* SUPORT VIA  */}
               <FormControl fullWidth>
-                <InputLabel>Support Source</InputLabel>
+                <InputLabel> {t("ticket_source_label")}</InputLabel>
                 <Select
                   label={t("support_source")}
                   size="medium"
@@ -356,16 +224,22 @@ const CreateTicket = ({ categories, setCategories }) => {
                   required
                 >
                   <MenuItem disabled value="">
-                   {t("select_support_source")}
+                    {t("select_support_source")}
                   </MenuItem>
                   <MenuItem value={"Email"}>{t("support_via_email")}</MenuItem>
-                  <MenuItem value={"Video Call"}>{t("support_via_video_call")}</MenuItem>
-                  <MenuItem value={"Phone Call"}>{t("support_via_call")}</MenuItem>
-                  <MenuItem value={"WhatsApp Chat"}>{t("support_via_whatsapp")}</MenuItem>
+                  <MenuItem value={"Video Call"}>
+                    {t("support_via_video_call")}
+                  </MenuItem>
+                  <MenuItem value={"Phone Call"}>
+                    {t("support_via_call")}
+                  </MenuItem>
+                  <MenuItem value={"WhatsApp Chat"}>
+                    {t("support_via_whatsapp")}
+                  </MenuItem>
                 </Select>
               </FormControl>
               {/* Status */}
-              <FormControl fullWidth>
+              {/* <FormControl fullWidth>
                 <InputLabel>{t("ticket_status")}</InputLabel>
                 <Select
                   label={t("ticket_status")}
@@ -406,7 +280,7 @@ const CreateTicket = ({ categories, setCategories }) => {
                     </div>
                   </MenuItem>
                 </Select>
-              </FormControl>
+              </FormControl> */}
               <Button
                 type="submit"
                 size="medium"
@@ -426,17 +300,20 @@ const CreateTicket = ({ categories, setCategories }) => {
           <h3 className="mb-3 font-semibold text-primary text-center">
             {t("24x7_note")}
           </h3>
-          <h6 className="mb-3 text-center">
-            {t("24x7_subnote")}
-          </h6>
+          <h6 className="mb-3 text-center">{t("24x7_subnote")}</h6>
           {/* <h6 className="mb-3 text-center">For any questions or issues related to our website or services, please feel free to contact our friendly support team at support@hikalcrm.com, and we will do our best to assist you as soon as possible.</h6> */}
           <hr className="mb-5"></hr>
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
             {/* EMAIL  */}
             <div
               className={`${
-                !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
-                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                !themeBgImg
+                  ? currentMode === "dark"
+                    ? "bg-black"
+                    : "bg-white"
+                  : currentMode === "dark"
+                  ? "blur-bg-dark"
+                  : "blur-bg-light"
               } rounded-lg p-3`}
             >
               <div className="gap-2">
@@ -455,8 +332,13 @@ const CreateTicket = ({ categories, setCategories }) => {
             {/* PHONE  */}
             <div
               className={`${
-                !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
-                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                !themeBgImg
+                  ? currentMode === "dark"
+                    ? "bg-black"
+                    : "bg-white"
+                  : currentMode === "dark"
+                  ? "blur-bg-dark"
+                  : "blur-bg-light"
               } rounded-lg p-3`}
             >
               <div className="gap-2 text-center">
@@ -473,8 +355,13 @@ const CreateTicket = ({ categories, setCategories }) => {
             {/* WHATSAPP CHAT  */}
             <div
               className={`${
-                !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
-                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                !themeBgImg
+                  ? currentMode === "dark"
+                    ? "bg-black"
+                    : "bg-white"
+                  : currentMode === "dark"
+                  ? "blur-bg-dark"
+                  : "blur-bg-light"
               } rounded-lg p-3`}
             >
               <div className="gap-2 text-center">
@@ -491,8 +378,13 @@ const CreateTicket = ({ categories, setCategories }) => {
             {/* VIDEO CALL */}
             <div
               className={`${
-                !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
-                : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                !themeBgImg
+                  ? currentMode === "dark"
+                    ? "bg-black"
+                    : "bg-white"
+                  : currentMode === "dark"
+                  ? "blur-bg-dark"
+                  : "blur-bg-light"
               } rounded-lg p-3`}
             >
               <div className="gap-2 text-center">
