@@ -42,6 +42,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [btnloading, setBtnLoading] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const imagePaths = ["../assets/offers_static_img.png"];
 
   const {
     t,
@@ -202,13 +203,27 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       width: 150,
       headerAlign: "center",
       renderCell: (cellValues) => {
+        const image = cellValues?.row?.image_path;
         return (
           <div className=" rounded-lg border my-3">
-            <img
-              src={`${cellValues?.row?.image_path}`}
-              width="80px"
-              height="80px"
-            />
+            {/* <img src={`${image}`} width="80px" height="80px" /> */}
+            {image ? (
+              <img
+                src={image}
+                alt="menu"
+                // className="w-full object-cover "
+                width="80px"
+                height="80px"
+              />
+            ) : (
+              <img
+                src={imagePaths[0]}
+                alt="menu"
+                // className="w-full object-cover"
+                width="80px"
+                height="80px"
+              />
+            )}
           </div>
         );
       },
