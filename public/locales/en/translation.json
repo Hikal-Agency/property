@@ -896,6 +896,9 @@
     "funnel_form_save": "Save",
 
 
-    "ticket_source_label": "What is your preffered medium to be contacted?"
+    "ticket_source_label": "What is your preffered medium to be contacted?",
+    "status_initiated": "Initiated",
+    "status_transferred": "Transferred"
+
 
 }

@@ -26,7 +26,8 @@ const UpdateTicketSelect = ({ cellValues }) => {
     setreloadDataGrid,
     reloadDataGrid,
     BACKEND_URL,
-    User, t
+    User,
+    t,
   } = useStateContext();
 
   const [selectedPriority, setSelectedPriority] = useState(Priority);
@@ -42,7 +43,6 @@ const UpdateTicketSelect = ({ cellValues }) => {
   };
 
   console.log("Priority: ", Priority);
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -157,7 +157,7 @@ const UpdateTicketSelect = ({ cellValues }) => {
         >
           <Select
             id="status"
-            value={selectedPriority || "select"}
+            value={selectedPriority?.toLowerCase() || "select"}
             onChange={(e) => handlePriorityChange(e.target.value)}
             sx={{
               "& .MuiSelect-select": {
@@ -179,6 +179,8 @@ const UpdateTicketSelect = ({ cellValues }) => {
             <MenuItem value={"in process"}>{t("status_in_process")}</MenuItem>
             <MenuItem value={"closed"}>{t("status_closed")}</MenuItem>
             <MenuItem value={"resolved"}>{t("status_resolved")}</MenuItem>
+            <MenuItem value={"transferred"}>{t("status_transferred")}</MenuItem>
+            <MenuItem value={"initiated"}>{t("status_initiated")}</MenuItem>
           </Select>
         </FormControl>
       </Box>
@@ -248,10 +250,7 @@ const UpdateTicketSelect = ({ cellValues }) => {
               </IconButton>
               <div className="px-10 py-5">
                 <div className="flex flex-col justify-center items-center">
-                  <IoIosAlert
-                    size={50}
-                    className="text-primary text-2xl"
-                  />
+                  <IoIosAlert size={50} className="text-primary text-2xl" />
                   <h1 className="font-semibold pt-3 text-lg text-center">
                     {t("want_to_change_priority")} {t("from")}{" "}
                     <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
