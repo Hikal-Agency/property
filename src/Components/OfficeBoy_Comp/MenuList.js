@@ -119,7 +119,7 @@ const MenuList = ({
                 } `}
                 onClick={() => setOpenOrderModal({ open: true, data: menu })}
               >
-                {menu?.itemPrice && (
+                {menu?.itemPrice !== 0 && (
                   <Box sx={{ ...ribbonStyles }}>
                     <div className="wrap">
                       <span>{menu?.itemPrice}</span>
