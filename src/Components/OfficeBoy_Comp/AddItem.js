@@ -348,9 +348,7 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                             {
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
+                              right: isLangRTL(i18n.language) ? "2.5rem" : "",
                               transformOrigin: isLangRTL(i18n.language)
                                 ? "right"
                                 : "left",
@@ -404,7 +402,7 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
                           onChange={handleChange}
                         />
 
-                        <FormControl fullWidth>
+                        {/* <FormControl fullWidth>
                           <InputLabel>{t("inventory_status")}</InputLabel>
 
                           <Select
@@ -426,7 +424,20 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
                               {t("inventory_status_stock")}
                             </MenuItem>
                           </Select>
-                        </FormControl>
+                        </FormControl> */}
+                        <TextField
+                          select
+                          label={t("inventory_status")}
+                          className="w-full"
+                          size="small"
+                        >
+                          <MenuItem value="Available">
+                            {t("inventory_status_avail")}
+                          </MenuItem>
+                          <MenuItem value="Out Of Stock">
+                            {t("inventory_status_stock")}
+                          </MenuItem>
+                        </TextField>
                       </Box>
                     </div>
 
