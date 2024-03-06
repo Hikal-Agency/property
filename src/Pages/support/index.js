@@ -38,7 +38,7 @@ const Tickets = () => {
           Authorization: "Bearer " + token,
         },
       });
-      const data = response.data.cagtegories.data;
+      const data = response.data.cagtegories;
       setCategories(data);
       setLoading(false);
     } catch (error) {

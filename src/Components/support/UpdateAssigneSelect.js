@@ -89,7 +89,7 @@ const UpdateAssigneSelect = ({ cellValues }) => {
   }, []);
 
   useEffect(() => {
-    fetchsupportUsers();
+    // fetchsupportUsers();
   }, [cellValues?.assigned_to]);
 
   const SelectStyles = {
