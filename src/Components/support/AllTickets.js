@@ -1,24 +1,104 @@
 import { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { DataGrid } from "@mui/x-data-grid";
 
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 import UpdateTicketSelect from "./UpdateTicketSelect";
+import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
+import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
 
 const AllTickets = ({ value, setValue }) => {
   const { currentMode, DataGridStyles, BACKEND_URL, User, t } =
     useStateContext();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [noteModal, setNoteModal] = useState(false);
+  const [btnloading, setBtnLoading] = useState(false);
+  const [ticketNote, setTicketNote] = useState("");
   const navigate = useNavigate();
+  const token = localStorage.getItem("auth-token");
 
   // ROW CLICK FUNCTION
   const handleRowClick = async (params, event) => {
-    console.log("ID: ", params?.id);
-    const ticketId = params?.id;
-    navigate(`/support/singleTicket/${ticketId}`);
+    if (!event.target.closest(".action")) {
+      console.log("ID: ", params?.id);
+      const ticketId = params?.id;
+      navigate(`/support/singleTicket/${ticketId}`);
+    }
+  };
+
+  const addNote = async (e, noteModal) => {
+    e.preventDefault();
+    console.log("notemodal::: ", noteModal);
+    setBtnLoading(true);
+
+    if (!ticketNote) {
+      toast.error("Notes field cannot be empty.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setBtnLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/tickets/${noteModal?.row?.id}`,
+        { description: ticketNote },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("Note added::: ", response);
+
+      setBtnLoading(false);
+
+      toast.success("Note added successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setNoteModal(false);
+      setTicketNote("");
+      fetchTickets();
+    } catch (error) {
+      setBtnLoading(false);
+      console.log("Error::: ", error);
+      toast.error("Unable to add the note.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const columns = [
@@ -99,49 +179,7 @@ const AllTickets = ({ value, setValue }) => {
       },
       hide: !(User?.role === 1),
     },
-    // {
-    //   field: "status",
-    //   headerName: "Status",
-    //   headerAlign: "center",
-    //   editable: false,
-    //   minWidth: 50,
-    //   flex: 1,
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <>
-    //         {cellValues.formattedValue === "closed" && (
-    //           <div className="w-full h-full flex justify-center items-center text-red-400 px-5 text-xs font-semibold">
-    //             CLOSED
-    //           </div>
-    //         )}
 
-    //         {cellValues.formattedValue === "open" && (
-    //           <div className="w-full h-full flex justify-center items-center text-green-400 px-5 text-xs font-semibold">
-    //             OPEN
-    //           </div>
-    //         )}
-
-    //         {cellValues.formattedValue === "pending" && (
-    //           <div className="w-full h-full flex justify-center items-center text-blue-400 px-5 text-xs font-semibold">
-    //             PENDING
-    //           </div>
-    //         )}
-
-    //         {cellValues.formattedValue === "in process" && (
-    //           <div className="w-full h-full flex justify-center items-center text-slate-400 px-5 text-xs font-semibold">
-    //             IN PROCESS
-    //           </div>
-    //         )}
-
-    //         {cellValues.formattedValue === "resolved" && (
-    //           <div className="w-full h-full flex justify-center items-center text-purple-400 px-5 text-xs font-semibold">
-    //             RESOLVED
-    //           </div>
-    //         )}
-    //       </>
-    //     );
-    //   },
-    // },
     {
       field: "edit",
       headerName: "Update Status",
@@ -154,6 +192,54 @@ const AllTickets = ({ value, setValue }) => {
       renderCell: (cellValues) => (
         <UpdateTicketSelect cellValues={cellValues} />
       ),
+    },
+    {
+      field: "action",
+      headerName: t("label_action"),
+      flex: 1,
+      minWidth: 100,
+      maxWidth: "auto",
+      sortable: false,
+      filterable: false,
+      headerAlign: "center",
+
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`action w-full h-full px-1 flex items-center justify-center`}
+          >
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Add notes" arrow>
+                <button onClick={() => setNoteModal(cellValues)}>
+                  <FiEdit size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="View Timeline" arrow>
+                <button>
+                  <AiOutlineHistory size={16} />
+                </button>
+              </Tooltip>
+            </p>
+          </div>
+        );
+      },
     },
   ];
 
@@ -252,6 +338,77 @@ const AllTickets = ({ value, setValue }) => {
           }
         />
       </Box>
+      {noteModal && (
+        <>
+          <Dialog
+            sx={{
+              "& .MuiPaper-root": {
+                boxShadow: "none !important",
+              },
+              "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                {
+                  backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                },
+            }}
+            open={noteModal}
+            onClose={(e) => setNoteModal(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <IconButton
+              sx={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                color: (theme) => theme.palette.grey[500],
+              }}
+              onClick={() => setNoteModal(false)}
+            >
+              <IoMdClose size={18} />
+            </IconButton>
+            <div className="px-10 py-5">
+              <div className="flex items-center mb-6  w-full">
+                <div className="bg-primary h-10 w-1 mr-2 rounded-full"></div>
+                <div>
+                  <h1 className="font-semibold pt-3 text-lg text-center">
+                    {t("ticket_add_note_label")}
+                  </h1>
+                </div>
+              </div>
+              <TextField
+                id="issue"
+                type={"text"}
+                label={t("menu_notes")}
+                className="w-full mb-5"
+                style={{ marginBottom: "20px" }}
+                variant="outlined"
+                size="medium"
+                required
+                onChange={(e) => setTicketNote(e.target.value)}
+                value={ticketNote}
+                multiline
+                maxRows={6}
+              />
+              <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                <Button
+                  className={`bg-btn-primary text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                  ripple={true}
+                  size="lg"
+                  onClick={(e) => addNote(e, noteModal)}
+                >
+                  {btnloading ? (
+                    <CircularProgress size={18} sx={{ color: "white" }} />
+                  ) : (
+                    <span className="text-white">
+                      {t("ticket_add_note_label")}
+                    </span>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </Dialog>
+        </>
+      )}
     </div>
   );
 };

@@ -898,7 +898,8 @@
 
     "ticket_source_label": "What is your preffered medium to be contacted?",
     "status_initiated": "Initiated",
-    "status_transferred": "Transferred"
+    "status_transferred": "Transferred",
+    "ticket_add_note_label": "Add Note"
 
 
 }
