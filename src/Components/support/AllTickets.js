@@ -18,6 +18,7 @@ import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import TicketCycle from "./TicketCycle";
 
 const AllTickets = ({ value, setValue }) => {
   const { currentMode, DataGridStyles, BACKEND_URL, User, t } =
@@ -27,6 +28,7 @@ const AllTickets = ({ value, setValue }) => {
   const [noteModal, setNoteModal] = useState(false);
   const [btnloading, setBtnLoading] = useState(false);
   const [ticketNote, setTicketNote] = useState("");
+  const [ticketCycle, setTicketCycle] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
 
@@ -37,6 +39,10 @@ const AllTickets = ({ value, setValue }) => {
       const ticketId = params?.id;
       navigate(`/support/singleTicket/${ticketId}`);
     }
+  };
+
+  const HandleViewTimeline = (params) => {
+    setTicketCycle(params.row);
   };
 
   const addNote = async (e, noteModal) => {
@@ -232,7 +238,7 @@ const AllTickets = ({ value, setValue }) => {
               } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
-                <button>
+                <button onClick={() => HandleViewTimeline(cellValues)}>
                   <AiOutlineHistory size={16} />
                 </button>
               </Tooltip>
@@ -408,6 +414,13 @@ const AllTickets = ({ value, setValue }) => {
             </div>
           </Dialog>
         </>
+      )}
+
+      {ticketCycle && (
+        <TicketCycle
+          ticketCycle={ticketCycle}
+          setTicketCycle={setTicketCycle}
+        />
       )}
     </div>
   );
