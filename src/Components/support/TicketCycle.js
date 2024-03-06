@@ -38,7 +38,6 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
     i18n,
   } = useStateContext();
   const [leadsCycle, setLeadsCycle] = useState(null);
-  const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ticketCycleData, setTicketCycleData] = useState(true);
@@ -202,7 +201,7 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                     >
-                      {t("timeline")}
+                      {t("ticket_history")}
                     </h1>
                   </div>
 
@@ -213,103 +212,6 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
                       } p-4 `}
                     >
                       <div className="grid sm:grid-cols-12 gap-1">
-                        <div className="col-span-12 md:col-span-4 w-full">
-                          {loading ? (
-                            <div className="flex items-center justify-center w-full">
-                              <h1 className="font-semibold text-lg">Loading</h1>
-                            </div>
-                          ) : (
-                            <>
-                              <h3
-                                className="text-lg font-bold uppercase mb-5"
-                                style={{
-                                  fontFamily: isArabic(leadDetails.leadName)
-                                    ? "Noto Kufi Arabic"
-                                    : "inherit",
-                                }}
-                              >
-                                {leadDetails.leadName}
-                              </h3>
-                              <div className="w-[80%] bg-primary h-0.5 my-5"></div>
-                              <div className="sm:before:mx-0">
-                                {/* CONTACT NUMBER  */}
-                                <div className="grid grid-cols-8 gap-3 my-3">
-                                  <BsTelephone size={16} />
-                                  <div className="col-span-7">
-                                    {leadDetails.leadContact?.replaceAll(
-                                      " ",
-                                      ""
-                                    ) !== "" ? (
-                                      <p>
-                                        {leadDetails.leadContact?.replaceAll(
-                                          " ",
-                                          ""
-                                        )}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
-                                  </div>
-                                </div>
-                                {/* EMAIL ADDRESS  */}
-                                {leadDetails.leadEmail !== "" &&
-                                leadDetails.leadEmail != "null" ? (
-                                  <div className="grid grid-cols-8 gap-3 my-3">
-                                    <GoMail size={16} />
-                                    <div className="col-span-7">
-                                      {leadDetails.leadEmail}
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <></>
-                                )}
-                                {/* PROJECT  */}
-                                <div className="grid grid-cols-8 gap-3 my-3">
-                                  <BsBuildings size={16} />
-                                  <div className="col-span-7">
-                                    {leadDetails.project === "null"
-                                      ? "-"
-                                      : leadDetails.project}{" "}
-                                    {leadDetails.leadType === "null"
-                                      ? "-"
-                                      : leadDetails.leadType}{" "}
-                                  </div>
-                                </div>
-                                {/* ENQUIRY  */}
-                                <div className="grid grid-cols-8 gap-3 my-3">
-                                  <BiBed size={16} />
-                                  <div className="col-span-7">
-                                    {leadDetails.enquiryType === "null"
-                                      ? "-"
-                                      : leadDetails.enquiryType}{" "}
-                                    {leadDetails.leadFor === "null"
-                                      ? "-"
-                                      : leadDetails.leadFor}{" "}
-                                  </div>
-                                </div>
-
-                                <div className="w-[80%] bg-primary h-0.5 my-5"></div>
-
-                                {/* CREATION DATE  */}
-                                <div className="text-sm mb-5">
-                                  <p>{t("lead_added_on")}:</p>
-                                  <p>
-                                    {datetimeLong(leadDetails.creationDate)}
-                                  </p>
-                                </div>
-                                <div className="text-sm mb-5">
-                                  <p>{t("lead_edited_on")}:</p>
-                                  <p>
-                                    {leadDetails?.lastEdited === null
-                                      ? "-"
-                                      : datetimeLong(leadDetails.lastEdited)}
-                                  </p>
-                                </div>
-                              </div>
-                            </>
-                          )}
-                        </div>
-
                         <div className="relative col-span-12 space-y-6 md:col-span-8 w-full">
                           <div className="flex flex-col md:grid grid-cols-12 w-full">
                             {loading ? (
