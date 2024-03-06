@@ -19,6 +19,7 @@ import { FiEdit } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import TicketCycle from "./TicketCycle";
+import UpdateAssigneSelect from "./UpdateAssigneSelect";
 
 const AllTickets = ({ value, setValue }) => {
   const { currentMode, DataGridStyles, BACKEND_URL, User, t } =
@@ -186,6 +187,19 @@ const AllTickets = ({ value, setValue }) => {
       hide: !(User?.role === 1),
     },
 
+    {
+      field: "assigned_to",
+      headerName: t("ticket_label_assign"),
+      // width: 150,
+      minWidth: 170,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      renderCell: (cellValues) => (
+        <UpdateAssigneSelect cellValues={cellValues} />
+      ),
+    },
     {
       field: "edit",
       headerName: "Update Status",
