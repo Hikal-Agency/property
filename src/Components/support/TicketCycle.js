@@ -7,6 +7,7 @@ import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 import { Backdrop, Modal } from "@mui/material";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
+import { RiCoupon2Line } from "react-icons/ri";
 
 import { BiBed, BiCalendarExclamation } from "react-icons/bi";
 import {
@@ -336,7 +337,7 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
                                                   : "-ml-2"
                                               } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
                                             >
-                                              <FaUserCheck
+                                              <BsBookmarkCheckFill
                                                 className="text-white"
                                                 size={16}
                                               />
@@ -450,7 +451,7 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
                                                   : "-ml-2"
                                               } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
                                             >
-                                              <BsBookmarkCheckFill
+                                              <RiCoupon2Line
                                                 className="text-white"
                                                 size={16}
                                               />
@@ -474,7 +475,7 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
                                             </p>
                                             {/* NEW TICKET  */}
                                             <p className="font-semibold tracking-wide">
-                                              {ticketCycle?.description}.
+                                              {timeline?.description}.
                                             </p>
                                             {/* CREATION DATE  */}
                                             <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
