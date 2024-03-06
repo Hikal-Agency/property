@@ -60,8 +60,8 @@ const AllTickets = ({ value, setValue }) => {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/tickets/${noteModal?.row?.id}`,
-        { description: ticketNote },
+        `${BACKEND_URL}/ticketcycles`,
+        { ticket_id: noteModal?.row?.id, description: ticketNote },
         {
           headers: {
             "Content-Type": "application/json",
