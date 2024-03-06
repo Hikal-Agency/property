@@ -68,8 +68,10 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
         }
       );
 
-      console.log("ticketcycle:: ", response);
-      setTicketCycleData(response);
+      const data = response?.data?.ticketcycle;
+
+      console.log("ticketcycle response:: ", data);
+      setTicketCycleData(data);
       setLoading(false);
     } catch (error) {
       console.log("Error: ", error);
@@ -221,18 +223,13 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
                                 </h1>
                               </div>
                             ) : (
-                              groupLeadsByDate(leadsCycle).map(
-                                (timeline, index) => {
-                                  return (
-                                    <>
-                                      <div
-                                        className={`${
-                                          isLangRTL(i18n.language)
-                                            ? "ml-3"
-                                            : "mr-3"
-                                        } col-start-1 col-end-3 md:mx-auto relative`}
-                                      >
-                                        <div className="h-full w-6 flex items-center justify-center">
+                              <>
+                                <div
+                                  className={`${
+                                    isLangRTL(i18n.language) ? "ml-3" : "mr-3"
+                                  } col-start-1 col-end-3 md:mx-auto relative`}
+                                >
+                                  {/* <div className="h-full w-6 flex items-center justify-center">
                                           <div
                                             className={`h-full border-b-[${primaryColor}] rounded-xl shadow-sm px-2 py-1 text-sm`}
                                             style={{
@@ -242,66 +239,66 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
                                           >
                                             {timeline.date}
                                           </div>
-                                        </div>
-                                      </div>
-                                      {timeline.leads.map((timeline, index) => {
-                                        return (
+                                        </div> */}
+                                </div>
+                                {ticketCycleData?.map((timeline, index) => {
+                                  return (
+                                    <div
+                                      key={index}
+                                      className="flex md:contents"
+                                    >
+                                      {/* TICKET NOTE  */}
+                                      {timeline?.note == 1 ? (
+                                        <>
                                           <div
-                                            key={index}
-                                            className="flex md:contents"
+                                            className={`${
+                                              isLangRTL(i18n.language)
+                                                ? "ml-3"
+                                                : "mr-3"
+                                            } col-start-1 col-end-3 md:mx-auto relative`}
                                           >
-                                            {/* LEAD NOTE  */}
-                                            {timeline.leadNote ? (
-                                              <>
-                                                <div
-                                                  className={`${
-                                                    isLangRTL(i18n.language)
-                                                      ? "ml-3"
-                                                      : "mr-3"
-                                                  } col-start-1 col-end-3 md:mx-auto relative`}
-                                                >
-                                                  <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
-                                                    } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                  >
-                                                    <MdNoteAlt
-                                                      className="text-white"
-                                                      size={16}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "bg-[#1C1C1C]"
-                                                      : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                >
-                                                  {/* ADDED BY  */}
-                                                  <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
-                                                    <HiUser size={12} />
-                                                    {timeline.addedBy}
-                                                  </p>
-                                                  {/* LEAD NOTE  */}
-                                                  <p
-                                                    className="font-semibold tracking-wide mb-2"
-                                                    style={{
-                                                      fontFamily: isArabic(
-                                                        timeline.leadNote
-                                                      )
-                                                        ? "Noto Kufi Arabic"
-                                                        : "inherit",
-                                                    }}
-                                                  >
-                                                    {timeline.leadNote}
-                                                  </p>
-                                                  {/* FEEDBACK 
+                                            <div className="h-full w-6 flex items-center justify-center">
+                                              <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
+                                            </div>
+                                            <div
+                                              className={`${
+                                                isLangRTL(i18n.language)
+                                                  ? "-mr-2"
+                                                  : "-ml-2"
+                                              } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                            >
+                                              <MdNoteAlt
+                                                className="text-white"
+                                                size={16}
+                                              />
+                                            </div>
+                                          </div>
+                                          <div
+                                            className={`${
+                                              currentMode === "dark"
+                                                ? "bg-[#1C1C1C]"
+                                                : "bg-[#EEEEEE]"
+                                            } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                          >
+                                            {/* ADDED BY  */}
+                                            <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
+                                              <HiUser size={12} />
+                                              {timeline?.added_by_name}
+                                            </p>
+                                            {/* TICKET NOTE  */}
+                                            <p
+                                              className="font-semibold tracking-wide mb-2"
+                                              style={{
+                                                fontFamily: isArabic(
+                                                  timeline.leadNote
+                                                )
+                                                  ? "Noto Kufi Arabic"
+                                                  : "inherit",
+                                              }}
+                                            >
+                                              {timeline?.description}
+                                            </p>
+                                            {/* FEEDBACK 
                                                   {timeline?.feedback &&
                                                   timeline.feedback !== "0" && (
                                                     <p className="font-semibold tracking-wide">
@@ -311,333 +308,189 @@ const TicketCycle = ({ ticketCycle, setTicketCycle }) => {
                                                       </span>.
                                                     </p>
                                                   )} */}
-                                                  {/* CREATION DATE  */}
-                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                    {datetimeLong(
-                                                      timeline.creationDate
-                                                    )}
-                                                  </p>
-                                                </div>
-                                              </>
-                                            ) : // MANAGER
-                                            timeline.manager &&
-                                              timeline.manager !== "0" ? (
-                                              <>
-                                                <div
-                                                  className={`${
-                                                    isLangRTL(i18n.language)
-                                                      ? "ml-3"
-                                                      : "mr-3"
-                                                  } col-start-1 col-end-3 md:mx-auto relative`}
-                                                >
-                                                  <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
-                                                    } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                  >
-                                                    <FaUserCheck
-                                                      className="text-white"
-                                                      size={16}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "bg-[#1C1C1C]"
-                                                      : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                  // style={{
-                                                  //   transform:
-                                                  //     "translateX(-30px)",
-                                                  // }}
-                                                >
-                                                  {/* ADDED BY  */}
-                                                  <p className="text-sm tracking-wide text-[#AAAAAA] font-italic justify-end flex items-center gap-2">
-                                                    <HiUser size={12} />
-                                                    {timeline.addedBy}
-                                                  </p>
-                                                  {/* AGENT  */}
-                                                  <p className="font-semibold tracking-wide">
-                                                    {t(
-                                                      "salesmanager_updated_to"
-                                                    )}{" "}
-                                                    <span className="font-bold text-primary">
-                                                      {timeline.manager}
-                                                    </span>
-                                                    .
-                                                  </p>
-                                                  {/* CREATION DATE  */}
-                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                    {datetimeLong(
-                                                      timeline.CreationDate
-                                                    )}
-                                                  </p>
-                                                </div>
-                                              </>
-                                            ) : // SALESPERSON
-                                            timeline.agent &&
-                                              timeline.agent !== "0" ? (
-                                              <>
-                                                <div
-                                                  className={`${
-                                                    isLangRTL(i18n.language)
-                                                      ? "ml-2"
-                                                      : "mr-2"
-                                                  } col-start-1 col-end-3 md:mx-auto relative`}
-                                                >
-                                                  <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
-                                                    } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                  >
-                                                    <FaUserCheck
-                                                      className="text-white"
-                                                      size={16}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "bg-[#1C1C1C]"
-                                                      : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                  // style={{
-                                                  //   transform:
-                                                  //     "translateX(-30px)",
-                                                  // }}
-                                                >
-                                                  {/* ADDED BY  */}
-                                                  <p className="text-sm tracking-wide font-italic gap-2 text-[#AAAAAA] justify-end flex items-center">
-                                                    <HiUser size={12} />
-                                                    {timeline.addedBy}
-                                                  </p>
-                                                  {/* AGENT  */}
-                                                  <p className="font-semibold tracking-wide">
-                                                    {t("salesagent_updated_to")}{" "}
-                                                    <span className="font-bold text-primary">
-                                                      {timeline.agent}
-                                                    </span>
-                                                    .
-                                                  </p>
-                                                  {/* CREATION DATE  */}
-                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                    {datetimeLong(
-                                                      timeline.CreationDate
-                                                    )}
-                                                  </p>
-                                                </div>
-                                              </>
-                                            ) : // FEEDBACK
-                                            timeline.feedback &&
-                                              timeline.feedback !== "0" ? (
-                                              <>
-                                                <div
-                                                  className={`${
-                                                    isLangRTL(i18n.language)
-                                                      ? "ml-3"
-                                                      : "mr-3"
-                                                  } col-start-1 col-end-3 md:mx-auto relative`}
-                                                >
-                                                  <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
-                                                    } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                  >
-                                                    <BsBookmarkCheckFill
-                                                      className="text-white"
-                                                      size={16}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "bg-[#1C1C1C]"
-                                                      : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                  // style={{
-                                                  //   transform:
-                                                  //     "translateX(-30px)",
-                                                  // }}
-                                                >
-                                                  {/* ADDED BY  */}
-                                                  <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
-                                                    <HiUser size={12} />
-                                                    {timeline.addedBy}
-                                                  </p>
-                                                  {/* FEEDBACK  */}
-                                                  <p className="font-semibold tracking-wide">
-                                                    {t("feedback_updated_to")}{" "}
-                                                    <span className="font-bold text-primary">
-                                                      {timeline.feedback}
-                                                    </span>
-                                                    .
-                                                  </p>
-                                                  {/* CREATION DATE  */}
-                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                    {datetimeLong(
-                                                      timeline.CreationDate
-                                                    )}
-                                                  </p>
-                                                </div>
-                                              </>
-                                            ) : // MEETING STATUS
-                                            timeline.meetingStatus &&
-                                              timeline.meetingStatus !== "0" ? (
-                                              <>
-                                                <div
-                                                  className={`${
-                                                    isLangRTL(i18n.language)
-                                                      ? "ml-3"
-                                                      : "mr-3"
-                                                  } col-start-1 col-end-3 md:mx-auto relative`}
-                                                >
-                                                  <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
-                                                    } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                  >
-                                                    <BiCalendarExclamation
-                                                      className="text-white"
-                                                      size={16}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "bg-[#1C1C1C]"
-                                                      : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                  // style={{
-                                                  //   transform:
-                                                  //     "translateX(-30px)",
-                                                  // }}
-                                                >
-                                                  {/* ADDED BY  */}
-                                                  <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
-                                                    <HiUser size={12} />
-                                                    {timeline.addedBy}
-                                                  </p>
-                                                  {/* FEEDBACK  */}
-                                                  <p className="font-semibold tracking-wide">
-                                                    {t(
-                                                      "meeting_status_updated_to"
-                                                    )}{" "}
-                                                    <span className="font-bold text-primary">
-                                                      {timeline.meetingStatus}
-                                                    </span>
-                                                    .
-                                                  </p>
-                                                  {/* CREATION DATE  */}
-                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                    {datetimeLong(
-                                                      timeline.CreationDate
-                                                    )}
-                                                  </p>
-                                                </div>
-                                              </>
-                                            ) : // MEETING DATE TIME
-                                            timeline.meetingDate &&
-                                              timeline.meetingDate !== "0" ? (
-                                              <>
-                                                <div
-                                                  className={`${
-                                                    isLangRTL(i18n.language)
-                                                      ? "ml-3"
-                                                      : "mr-3"
-                                                  } col-start-1 col-end-3 md:mx-auto relative`}
-                                                >
-                                                  <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
-                                                    } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                  >
-                                                    <BsClockFill
-                                                      className="text-white"
-                                                      size={16}
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "bg-[#1C1C1C]"
-                                                      : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                  // style={{
-                                                  //   transform:
-                                                  //     "translateX(-30px)",
-                                                  // }}
-                                                >
-                                                  {/* ADDED BY  */}
-                                                  <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
-                                                    <HiUser size={12} />
-                                                    {timeline.addedBy}
-                                                  </p>
-                                                  {/* FEEDBACK  */}
-                                                  <p className="font-semibold tracking-wide">
-                                                    {t("meeting_set_to")}{" "}
-                                                    <span className="font-bold text-primary">
-                                                      {!timeline.meetingTime ||
-                                                      timeline.meetingTime ===
-                                                        ""
-                                                        ? ""
-                                                        : `${timeline.meetingTime}, `}{" "}
-                                                      {(timeline.meetingDate ||
-                                                        timeline.meetingDate !==
-                                                          "") &&
-                                                        moment(
-                                                          timeline.meetingDate
-                                                        ).format("MMMM D, Y")}
-                                                    </span>
-                                                    .
-                                                  </p>
-                                                  {/* CREATION DATE  */}
-                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                    {datetimeLong(
-                                                      timeline.CreationDate
-                                                    )}
-                                                  </p>
-                                                </div>
-                                              </>
-                                            ) : (
-                                              <></>
-                                            )}
+                                            {/* CREATION DATE  */}
+                                            <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                              {datetimeLong(
+                                                timeline?.created_at
+                                              )}
+                                            </p>
                                           </div>
-                                        );
-                                      })}
-                                    </>
+                                        </>
+                                      ) : // STATUS
+                                      timeline?.status != null ? (
+                                        <>
+                                          <div
+                                            className={`${
+                                              isLangRTL(i18n.language)
+                                                ? "ml-3"
+                                                : "mr-3"
+                                            } col-start-1 col-end-3 md:mx-auto relative`}
+                                          >
+                                            <div className="h-full w-6 flex items-center justify-center">
+                                              <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                            </div>
+                                            <div
+                                              className={`${
+                                                isLangRTL(i18n.language)
+                                                  ? "-mr-2"
+                                                  : "-ml-2"
+                                              } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                            >
+                                              <FaUserCheck
+                                                className="text-white"
+                                                size={16}
+                                              />
+                                            </div>
+                                          </div>
+                                          <div
+                                            className={`${
+                                              currentMode === "dark"
+                                                ? "bg-[#1C1C1C]"
+                                                : "bg-[#EEEEEE]"
+                                            } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                            // style={{
+                                            //   transform:
+                                            //     "translateX(-30px)",
+                                            // }}
+                                          >
+                                            {/* ADDED BY */}
+                                            <p className="text-sm tracking-wide text-[#AAAAAA] font-italic justify-end flex items-center gap-2">
+                                              <HiUser size={12} />
+                                              {timeline?.added_by_name}
+                                            </p>
+                                            {/* STATUS  */}
+                                            <p className="font-semibold tracking-wide">
+                                              {t("ticketCycle_ticket_status")}{" "}
+                                              <span className="font-bold text-primary">
+                                                {timeline?.status}
+                                              </span>
+                                              .
+                                            </p>
+                                            {/* CREATION DATE  */}
+                                            <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                              {datetimeLong(
+                                                timeline.created_at
+                                              )}
+                                            </p>
+                                          </div>
+                                        </>
+                                      ) : // SUPPORT PERSON
+                                      timeline?.user_id != null ? (
+                                        <>
+                                          <div
+                                            className={`${
+                                              isLangRTL(i18n.language)
+                                                ? "ml-2"
+                                                : "mr-2"
+                                            } col-start-1 col-end-3 md:mx-auto relative`}
+                                          >
+                                            <div className="h-full w-6 flex items-center justify-center">
+                                              <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                            </div>
+                                            <div
+                                              className={`${
+                                                isLangRTL(i18n.language)
+                                                  ? "-mr-2"
+                                                  : "-ml-2"
+                                              } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                            >
+                                              <FaUserCheck
+                                                className="text-white"
+                                                size={16}
+                                              />
+                                            </div>
+                                          </div>
+                                          <div
+                                            className={`${
+                                              currentMode === "dark"
+                                                ? "bg-[#1C1C1C]"
+                                                : "bg-[#EEEEEE]"
+                                            } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                            // style={{
+                                            //   transform:
+                                            //     "translateX(-30px)",
+                                            // }}
+                                          >
+                                            {/* ADDED BY  */}
+                                            <p className="text-sm tracking-wide font-italic gap-2 text-[#AAAAAA] justify-end flex items-center">
+                                              <HiUser size={12} />
+                                              {timeline?.added_by_name}
+                                            </p>
+                                            {/* SUPPORT PERSON  */}
+                                            <p className="font-semibold tracking-wide">
+                                              {timeline?.description} .
+                                            </p>
+                                            {/* CREATION DATE  */}
+                                            <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                              {datetimeLong(
+                                                timeline.created_at
+                                              )}
+                                            </p>
+                                          </div>
+                                        </>
+                                      ) : // FEEDBACK
+                                      timeline?.user_id == null &&
+                                        timeline?.status == null &&
+                                        timeline?.note == null ? (
+                                        <>
+                                          <div
+                                            className={`${
+                                              isLangRTL(i18n.language)
+                                                ? "ml-3"
+                                                : "mr-3"
+                                            } col-start-1 col-end-3 md:mx-auto relative`}
+                                          >
+                                            <div className="h-full w-6 flex items-center justify-center">
+                                              <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                            </div>
+                                            <div
+                                              className={`${
+                                                isLangRTL(i18n.language)
+                                                  ? "-mr-2"
+                                                  : "-ml-2"
+                                              } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                            >
+                                              <BsBookmarkCheckFill
+                                                className="text-white"
+                                                size={16}
+                                              />
+                                            </div>
+                                          </div>
+                                          <div
+                                            className={`${
+                                              currentMode === "dark"
+                                                ? "bg-[#1C1C1C]"
+                                                : "bg-[#EEEEEE]"
+                                            } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                            // style={{
+                                            //   transform:
+                                            //     "translateX(-30px)",
+                                            // }}
+                                          >
+                                            {/* ADDED BY  */}
+                                            <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
+                                              <HiUser size={12} />
+                                              {timeline?.added_by_name}
+                                            </p>
+                                            {/* NEW TICKET  */}
+                                            <p className="font-semibold tracking-wide">
+                                              {ticketCycle?.description}.
+                                            </p>
+                                            {/* CREATION DATE  */}
+                                            <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                              {datetimeLong(
+                                                timeline.created_at
+                                              )}
+                                            </p>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </div>
                                   );
-                                }
-                              )
+                                })}
+                              </>
                             )}
                           </div>
                         </div>

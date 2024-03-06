@@ -900,7 +900,11 @@
     "status_initiated": "Initiated",
     "status_transferred": "Transferred",
     "ticket_add_note_label": "Add Note",
-    "ticket_history": "Ticket History"
+    "ticket_history": "Ticket History",
+    "ticketCycle_ticket_status": "Ticket status has been updated to ",
+    "ticketCycle_ticket_assign": "Ticket has been assigned to ",
+    "ticketCycle_ticket_create": "New ticket has been craeted for ",
+    "ticketCycle_ticket_category": "category by "
 
 
 }
