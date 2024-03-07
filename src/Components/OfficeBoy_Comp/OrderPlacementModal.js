@@ -85,6 +85,15 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
         }
       );
       setOrderBtnLoading(false);
+
+      setOrderDetails({
+        itemId: "",
+        quantity: "",
+        amount: "",
+        notes: "",
+        orderStatus: "",
+      });
+
       setOpenOrderModal({
         open: false,
         data: null,
@@ -236,13 +245,17 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 placeholder={t("label_order_amount")}
                 label={t("label_order_amount")}
                 value={orderDetails?.amount}
-                // onChange={(e) => e.preventDefault()}
                 size="small"
-                className="w-full p-2 text-white"
+                className="w-full p-2 "
                 disabled={true}
-                InputProps={{
-                  style: { color: currentMode === "dark" ? "#fff" : "#000" }, // Ensure text color remains visible
-                  disableUnderline: true, // Remove underline
+                sx={{
+                  "& .MuiInputBase-input.Mui-disabled": {
+                    WebkitTextFillColor:
+                      currentMode === "dark" ? "#fff" : "#000",
+                  },
+                  "& .MuiFormHelperText-root": {
+                    color: "#fff !important",
+                  },
                 }}
                 InputLabelProps={{
                   shrink: true, // Allow label to shrink when value is disabled
