@@ -901,7 +901,8 @@
     "status_transferred": "Transferred",
     "ticket_add_note_label": "Add Note",
     "ticket_history": "Ticket History",
-    "ticket_label_assign": "Assigned To"
+    "ticket_label_assign": "Assigned To",
+    "label_select_support": "Select Support Assisstant"
    
 
 

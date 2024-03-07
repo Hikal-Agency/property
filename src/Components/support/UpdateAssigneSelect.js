@@ -16,7 +16,8 @@ import { IoIosAlert, IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 
-const UpdateAssigneSelect = ({ cellValues }) => {
+const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
+  console.log("Support users list:: ", supportUser);
   const [loading, setLoading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
   const [Priority, setPriority] = useState(cellValues?.row?.status);
@@ -87,10 +88,6 @@ const UpdateAssigneSelect = ({ cellValues }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  useEffect(() => {
-    // fetchsupportUsers();
-  }, [cellValues?.assigned_to]);
 
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
@@ -207,13 +204,11 @@ const UpdateAssigneSelect = ({ cellValues }) => {
               },
             }}
           >
-            <MenuItem value={"select"}>{t("select_status")}</MenuItem>
-            <MenuItem value={"open"}>{t("status_open")}</MenuItem>
-            <MenuItem value={"in process"}>{t("status_in_process")}</MenuItem>
-            <MenuItem value={"closed"}>{t("status_closed")}</MenuItem>
-            <MenuItem value={"resolved"}>{t("status_resolved")}</MenuItem>
-            <MenuItem value={"transferred"}>{t("status_transferred")}</MenuItem>
-            <MenuItem value={"initiated"}>{t("status_initiated")}</MenuItem>
+            <MenuItem value={"select"}>{t("label_select_support")}</MenuItem>
+            {supportUser?.length > 0 &&
+              supportUser?.map((user) => (
+                <MenuItem value={user?.id}>{user?.userName}</MenuItem>
+              ))}
           </Select>
         </FormControl>
       </Box>
