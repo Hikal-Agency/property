@@ -237,6 +237,9 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 helperText={
                   showError && "Quantity should be in limit of 1 - 10"
                 }
+                FormHelperTextProps={{
+                  sx: { color: currentMode === "dark" ? "#fff" : "#000" },
+                }}
               />
 
               <TextField
@@ -252,9 +255,6 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                   "& .MuiInputBase-input.Mui-disabled": {
                     WebkitTextFillColor:
                       currentMode === "dark" ? "#fff" : "#000",
-                  },
-                  "& .MuiFormHelperText-root": {
-                    color: "#fff !important",
                   },
                 }}
                 InputLabelProps={{
