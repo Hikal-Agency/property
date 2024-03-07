@@ -903,7 +903,15 @@
     "ticket_history": "Ticket History",
     "ticket_label_assign": "Assigned To",
     "label_select_support": "Select Support Assisstant",
-    "want_to_assign_ticket": "Do you really want to assign ticket from"
+    "want_to_assign_ticket": "Do you really want to assign ticket from",
+
+    
+    "ticket_filter_user": "User",
+    "ticket_filter_status": "Status",
+    "ticket_filter_source": "Source",
+    "ticket_filter_category": "Category",
+    "ticket_filter_assigne": "Assignee"
+
    
 
 

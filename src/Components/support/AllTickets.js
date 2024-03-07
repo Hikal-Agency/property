@@ -42,6 +42,8 @@ const AllTickets = ({ value, setValue }) => {
   const [ticketNote, setTicketNote] = useState("");
   const [ticketCycle, setTicketCycle] = useState(false);
   const [supportUser, setSupportUser] = useState([]);
+  const [user, setUser] = useState([]);
+
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
 
@@ -283,25 +285,33 @@ const AllTickets = ({ value, setValue }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
-      const [ticketsResponse, supportResponse] = await Promise.all([
-        axios.get(`${BACKEND_URL}/tickets`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-        axios.get(`${BACKEND_URL}/supportusers`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-      ]);
+      const [ticketsResponse, supportResponse, userResponse] =
+        await Promise.all([
+          axios.get(`${BACKEND_URL}/tickets`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+          axios.get(`${BACKEND_URL}/supportusers`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+          axios.get(`${BACKEND_URL}/users`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+        ]);
 
       console.log(
-        "ticket and support users:: ",
+        "ticket and support users and users:: ",
         ticketsResponse,
-        supportResponse
+        supportResponse,
+        userResponse
       );
 
       // Process tickets data
@@ -314,6 +324,7 @@ const AllTickets = ({ value, setValue }) => {
       console.log("TicketRowslist: ", ticketsRowsList);
 
       setSupportUser(supportResponse?.data?.support);
+      setUser(userResponse?.data?.managers?.data);
 
       setLoading(false);
     } catch (error) {
@@ -379,11 +390,16 @@ const AllTickets = ({ value, setValue }) => {
         {/* User  */}
         <Box className="m-1" sx={{ minWidth: "100px" }}>
           <Select
+            label={t("ticket_filter_user")}
+            placeholder={t("ticket_filter_user")}
             id="user_category"
-            // options={leadOrigins.map((origin) => ({
-            //   value: origin.id,
-            //   label: t("origin_" + origin.id),
-            // }))}
+            options={
+              user?.length > 0 &&
+              user?.map((user) => ({
+                value: user?.id,
+                label: user?.userName,
+              }))
+            }
             // value={{
             //   value: leadOriginSelected?.id || "hotleads",
             //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
