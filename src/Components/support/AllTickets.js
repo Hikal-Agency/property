@@ -19,6 +19,7 @@ import { FiEdit } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import TicketCycle from "./TicketCycle";
+import UpdateAssigneSelect from "./UpdateAssigneSelect";
 
 const AllTickets = ({ value, setValue }) => {
   const { currentMode, DataGridStyles, BACKEND_URL, User, t } =
@@ -29,6 +30,7 @@ const AllTickets = ({ value, setValue }) => {
   const [btnloading, setBtnLoading] = useState(false);
   const [ticketNote, setTicketNote] = useState("");
   const [ticketCycle, setTicketCycle] = useState(false);
+  const [supportUser, setSupportUser] = useState([]);
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
 
@@ -187,6 +189,23 @@ const AllTickets = ({ value, setValue }) => {
     },
 
     {
+      field: "assigned_to",
+      headerName: t("ticket_label_assign"),
+      // width: 150,
+      minWidth: 170,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      renderCell: (cellValues) => (
+        <UpdateAssigneSelect
+          cellValues={cellValues}
+          supportUser={supportUser}
+          setSupportUser={setSupportUser}
+        />
+      ),
+    },
+    {
       field: "edit",
       headerName: "Update Status",
       // width: 150,
@@ -253,23 +272,51 @@ const AllTickets = ({ value, setValue }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
-      const response = await axios.get(`${BACKEND_URL}/tickets`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      const rowsList = response.data.tickets.data;
-      rowsList.forEach((row) => {
-        row.creationDate = row.created_at || "-";
-        row.userName = row.added_by_name || "-";
-      });
-      setRows(rowsList);
+      const [ticketsResponse, supportResponse] = await Promise.all([
+        axios.get(`${BACKEND_URL}/tickets`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+        axios.get(`${BACKEND_URL}/supportusers`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+      ]);
+
+      console.log(
+        "ticket and support users:: ",
+        ticketsResponse,
+        supportResponse
+      );
+
+      // Process tickets data
+      const ticketsRowsList = ticketsResponse.data.tickets.data.map((row) => ({
+        ...row,
+        creationDate: row.created_at || "-",
+        userName: row.added_by_name || "-",
+      }));
+      setRows(ticketsRowsList);
+      console.log("TicketRowslist: ", ticketsRowsList);
+
+      setSupportUser(supportResponse?.data?.support);
+
       setLoading(false);
-      console.log("Rowslist: ", rowsList);
     } catch (error) {
       setLoading(false);
       console.log(error);
+      toast.error("Unable to fetch data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
