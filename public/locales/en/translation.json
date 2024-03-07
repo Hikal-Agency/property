@@ -902,7 +902,8 @@
     "ticket_add_note_label": "Add Note",
     "ticket_history": "Ticket History",
     "ticket_label_assign": "Assigned To",
-    "label_select_support": "Select Support Assisstant"
+    "label_select_support": "Select Support Assisstant",
+    "want_to_assign_ticket": "Do you really want to assign ticket from"
    
 
 

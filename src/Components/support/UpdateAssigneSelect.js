@@ -20,7 +20,11 @@ const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
   console.log("Support users list:: ", supportUser);
   const [loading, setLoading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
-  const [Priority, setPriority] = useState(cellValues?.row?.assigned_to);
+  const [supportUserName, setSupportUserName] = useState({});
+  const [Priority, setPriority] = useState({
+    id: cellValues?.row?.assigned_to,
+    name: cellValues?.row?.assigned_to_name,
+  });
   const [newPriority, setnewPriority] = useState("");
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   const {
@@ -32,13 +36,20 @@ const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
     t,
   } = useStateContext();
 
-  const [selectedPriority, setSelectedPriority] = useState(Priority);
+  const [selectedPriority, setSelectedPriority] = useState(Priority?.id);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const token = localStorage.getItem("auth-token");
 
   const handlePriorityChange = (newPriority) => {
+    console.log("new priority: ", newPriority);
+
     setSelectedPriority(newPriority);
+    const supportUserName = supportUser?.find(
+      (user) => user?.id === newPriority
+    );
+    console.log("supportUserNAme: ", supportUserName);
+    setSupportUserName(supportUserName);
     setIsDropdownOpen(false);
 
     setnewPriority(newPriority);
@@ -104,40 +115,35 @@ const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
     },
   };
 
-  const selectedItemColor = {
-    closed: "#B95454",
-    open: "#49DA7D",
-    pending: "#3B659A",
-    resolved: "#AF78E5",
-    "in process": "#2445b6",
-  };
-
-  const UpdatePriority = async () => {
+  const AssignSupport = async () => {
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
-    const UpdateLeadData = new FormData();
-    // UpdateLeadData.append("id", cellValues?.row?.id);
-    UpdateLeadData.append("status", newPriority);
+    const AssignSupportAssist = new FormData();
+    AssignSupportAssist.append("assigned_to", newPriority);
+    AssignSupportAssist.append("assigned_to_name", supportUserName?.userName);
 
     console.log(cellValues);
 
     await axios
-      .post(`${BACKEND_URL}/tickets/${cellValues?.row?.id}`, UpdateLeadData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
+      .post(
+        `${BACKEND_URL}/tickets/${cellValues?.row?.id}`,
+        AssignSupportAssist,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
       .then((result) => {
-        console.log("Ticket Updated successfull");
-        console.log(result);
-        socket.emit("notification_ticket_update", {
-          from: { id: User?.id, userName: User?.userName },
-          ticketNumber: result?.data?.ticket?.id,
-          newStatus: result?.data?.ticket?.status,
-          participants: [],
-        });
-        toast.success("Ticket Updated Successfully", {
+        console.log("Ticket Assigned:: ", result);
+        // socket.emit("notification_ticket_update", {
+        //   from: { id: User?.id, userName: User?.userName },
+        //   ticketNumber: result?.data?.ticket?.id,
+        //   newStatus: result?.data?.ticket?.status,
+        //   participants: [],
+        // });
+        toast.success(`Ticket assigned to ${supportUserName?.userName}`, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -152,8 +158,8 @@ const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
         setPriorityDialogue(false);
       })
       .catch((err) => {
-        console.log(err);
-        toast.error("Error in Updating Ticket", {
+        console.log("error", err);
+        toast.error("Error in assigning ticket", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -164,12 +170,6 @@ const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
         });
         setbtnloading(false);
       });
-  };
-
-  const priorityColors = {
-    High: "red",
-    Medium: "yellow",
-    Low: "gray",
   };
 
   return (
@@ -255,13 +255,13 @@ const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
                 <div className="flex flex-col justify-center items-center">
                   <IoIosAlert size={50} className="text-primary text-2xl" />
                   <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("want_to_change_priority")} {t("from")}{" "}
+                    {t("want_to_assign_ticket")}{" "}
                     <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                      {Priority === null ? "Null" : Priority}
+                      {Priority?.id === null ? "Null" : Priority?.name}
                     </span>{" "}
                     {t("to")}{" "}
                     <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                      {newPriority}
+                      {supportUserName?.userName}
                     </span>{" "}
                     ?
                   </h1>
@@ -271,7 +271,7 @@ const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
                     className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
                     ripple={true}
                     size="lg"
-                    onClick={() => UpdatePriority(cellValues)}
+                    onClick={() => AssignSupport(cellValues)}
                   >
                     {btnloading ? (
                       <CircularProgress size={18} sx={{ color: "white" }} />
