@@ -123,7 +123,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
     if (data) {
       setOrderDetails({
         itemId: String(data?.id),
-        quantity: 1,
+        quantity: null,
         amount: data?.itemPrice,
         notes: null,
         orderStatus: "pending",
@@ -238,9 +238,10 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 value={orderDetails?.amount}
                 // onChange={(e) => e.preventDefault()}
                 size="small"
-                className="w-full p-2"
+                className="w-full p-2 text-white"
                 disabled={true}
                 InputProps={{
+                  style: { color: currentMode === "dark" ? "#fff" : "#000" }, // Ensure text color remains visible
                   disableUnderline: true, // Remove underline
                 }}
                 InputLabelProps={{
