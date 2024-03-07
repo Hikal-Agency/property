@@ -20,10 +20,21 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import TicketCycle from "./TicketCycle";
 import UpdateAssigneSelect from "./UpdateAssigneSelect";
+import Select from "react-select";
+import { selectBgStyles, pageStyles } from "../_elements/SelectStyles";
 
 const AllTickets = ({ value, setValue }) => {
-  const { currentMode, DataGridStyles, BACKEND_URL, User, t } =
-    useStateContext();
+  const {
+    currentMode,
+    DataGridStyles,
+    BACKEND_URL,
+    User,
+    darkModeColors,
+    t,
+    blurDarkColor,
+    blurLightColor,
+    primaryColor,
+  } = useStateContext();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noteModal, setNoteModal] = useState(false);
@@ -330,22 +341,70 @@ const AllTickets = ({ value, setValue }) => {
         currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
       } rounded-md`}
     >
-      {/* <Box sx={{ height: 600, width: '100%' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
-          // checkboxSelection
-          disableRowSelectionOnClick
-        />
-      </Box> */}
+      <Box
+        sx={{
+          // darkModeColors,
+          ...darkModeColors,
+          marginTop: "5px",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "end",
+          "& .MuiSelect-select": {
+            padding: "2px",
+            paddingLeft: "6px !important",
+            paddingRight: "20px",
+            borderRadius: "8px",
+          },
+          "& .MuiInputBase-root": {
+            width: "max-content",
+            marginRight: "5px",
+          },
+          "& input": {
+            paddingTop: "0",
+          },
+          "& .applied-filter": {
+            background: primaryColor,
+            borderRadius: 4,
+            width: "max-content",
+            padding: "3px 8px",
+            color: "white",
+            marginRight: "0.25rem",
+          },
+          "& .applied-filter span": {
+            marginRight: "3px",
+          },
+        }}
+        className={"items-center mb-1"}
+      >
+        {/* User  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            id="user_category"
+            // options={leadOrigins.map((origin) => ({
+            //   value: origin.id,
+            //   label: t("origin_" + origin.id),
+            // }))}
+            // value={{
+            //   value: leadOriginSelected?.id || "hotleads",
+            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
+            // }}
+            // onChange={(selectedOption) => {
+            //   searchRef.current.querySelector("input").value = "";
+            //   setLeadOriginSelected(
+            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
+            //   );
+            // }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+      </Box>
 
       <Box
         width={"100%"}
