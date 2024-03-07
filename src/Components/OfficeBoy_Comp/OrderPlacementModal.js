@@ -236,11 +236,16 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 placeholder={t("label_order_amount")}
                 label={t("label_order_amount")}
                 value={orderDetails?.amount}
-                onChange={(e) => e.preventDefault()}
+                // onChange={(e) => e.preventDefault()}
                 size="small"
                 className="w-full p-2"
-                readOnly={true}
-                displayEmpty
+                disabled={true}
+                InputProps={{
+                  disableUnderline: true, // Remove underline
+                }}
+                InputLabelProps={{
+                  shrink: true, // Allow label to shrink when value is disabled
+                }}
               />
             </div>
           </Box>
