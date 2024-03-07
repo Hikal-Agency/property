@@ -20,7 +20,7 @@ const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
   console.log("Support users list:: ", supportUser);
   const [loading, setLoading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
-  const [Priority, setPriority] = useState(cellValues?.row?.status);
+  const [Priority, setPriority] = useState(cellValues?.row?.assigned_to);
   const [newPriority, setnewPriority] = useState("");
   const [PriorityDialogue, setPriorityDialogue] = useState(false);
   const {
@@ -188,23 +188,29 @@ const UpdateAssigneSelect = ({ cellValues, setSupportUser, supportUser }) => {
         >
           <Select
             id="status"
-            value={selectedPriority?.toLowerCase() || "select"}
+            value={selectedPriority || "select"}
             onChange={(e) => handlePriorityChange(e.target.value)}
             sx={{
               "& .MuiSelect-select": {
-                color: selectedItemColor[selectedPriority.toLowerCase()],
+                // color: selectedItemColor[selectedPriority],
                 fontWeight: "bold",
               },
             }}
             MenuProps={{
               sx: {
                 "&& .Mui-selected": {
-                  color: selectedItemColor[selectedPriority.toLowerCase()],
+                  // color: selectedItemColor[selectedPriority.toLowerCase()],
                 },
               },
             }}
           >
             <MenuItem value={"select"}>{t("label_select_support")}</MenuItem>
+            {selectedPriority === 102 && (
+              <MenuItem value={selectedPriority}>
+                {cellValues?.row?.assigned_to_name}
+              </MenuItem>
+            )}
+
             {supportUser?.length > 0 &&
               supportUser?.map((user) => (
                 <MenuItem value={user?.id}>{user?.userName}</MenuItem>
