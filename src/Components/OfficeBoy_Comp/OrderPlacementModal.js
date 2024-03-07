@@ -43,7 +43,6 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
     const quantity = e.target.value;
     if (quantity < 1 || quantity > 10) {
       setShowError(true);
-      return;
     }
     const totalAmount = quantity * orderDetails?.amount;
     setOrderDetails({
@@ -56,8 +55,12 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
   const placeOrder = async () => {
     setOrderBtnLoading(true);
 
-    if (!orderDetails?.quantity) {
-      toast.error(`Order quantity is required.`, {
+    if (
+      !orderDetails?.quantity ||
+      orderDetails?.quantity < 1 ||
+      orderDetails?.quantity > 10
+    ) {
+      toast.error(`Order quantity should be in between 1-10.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
