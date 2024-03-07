@@ -48,7 +48,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
     setOrderDetails({
       ...orderDetails,
       [e.target.name]: quantity,
-      amount: totalAmount,
+      amount: quantity !== 0 && totalAmount,
     });
   };
 
