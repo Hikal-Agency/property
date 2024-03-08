@@ -54,6 +54,9 @@ const AllTickets = ({ value, setValue, categories }) => {
 
   console.log("selectedUser: ", selectedUser);
   console.log("selectedCat: ", selectedCategory);
+  console.log("selectedstatus: ", selectedStatus);
+  console.log("selectedSource: ", selectedSource);
+  console.log("selectedAssigne: ", selectedAssigne);
 
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
@@ -412,8 +415,8 @@ const AllTickets = ({ value, setValue, categories }) => {
               }))
             }
             value={{
-              value: selectedUser?.id,
-              label: selectedUser?.userName,
+              value: selectedUser?.id || null,
+              label: selectedUser?.userName || t("ticket_filter_user"),
             }}
             onChange={(selectedUser) => {
               console.log("onchange selected use: ", selectedUser);
@@ -447,8 +450,8 @@ const AllTickets = ({ value, setValue, categories }) => {
               }))
             }
             value={{
-              value: selectedCategory?.category,
-              label: selectedCategory?.category,
+              value: selectedCategory?.category || null,
+              label: selectedCategory?.category || t("ticket_filter_category"),
             }}
             onChange={(selectedCategory) => {
               console.log("onchange selected category: ", selectedCategory);
@@ -480,16 +483,19 @@ const AllTickets = ({ value, setValue, categories }) => {
               value: status?.value,
               label: status?.label,
             }))}
-            // value={{
-            //   value: leadOriginSelected?.id || "hotleads",
-            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
-            // }}
-            // onChange={(selectedOption) => {
-            //   searchRef.current.querySelector("input").value = "";
-            //   setLeadOriginSelected(
-            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
-            //   );
-            // }}
+            value={{
+              value: selectedStatus?.value || null,
+              label: selectedStatus?.label || t("ticket_filter_status"),
+            }}
+            onChange={(selectedStatus) => {
+              console.log("onchange selected status: ", selectedStatus);
+
+              setSelectedStatus(
+                ticket_status(t)?.find(
+                  (status) => status.value === selectedStatus.value
+                )
+              );
+            }}
             className="w-full"
             menuPortalTarget={document.body}
             styles={selectBgStyles(
@@ -510,16 +516,19 @@ const AllTickets = ({ value, setValue, categories }) => {
               value: status?.value,
               label: status?.label,
             }))}
-            // value={{
-            //   value: leadOriginSelected?.id || "hotleads",
-            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
-            // }}
-            // onChange={(selectedOption) => {
-            //   searchRef.current.querySelector("input").value = "";
-            //   setLeadOriginSelected(
-            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
-            //   );
-            // }}
+            value={{
+              value: selectedSource?.value || null,
+              label: selectedSource?.label || t("ticket_filter_source"),
+            }}
+            onChange={(selectedSource) => {
+              console.log("onchange selected source: ", selectedSource);
+
+              setSelectedSource(
+                ticket_source(t)?.find(
+                  (source) => source.value === selectedSource.value
+                )
+              );
+            }}
             className="w-full"
             menuPortalTarget={document.body}
             styles={selectBgStyles(
@@ -540,16 +549,19 @@ const AllTickets = ({ value, setValue, categories }) => {
               value: support?.id,
               label: support?.userName,
             }))}
-            // value={{
-            //   value: leadOriginSelected?.id || "hotleads",
-            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
-            // }}
-            // onChange={(selectedOption) => {
-            //   searchRef.current.querySelector("input").value = "";
-            //   setLeadOriginSelected(
-            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
-            //   );
-            // }}
+            value={{
+              value: selectedAssigne?.id || null,
+              label: selectedAssigne?.userName || t("ticket_filter_assigne"),
+            }}
+            onChange={(selectedAssigne) => {
+              console.log("onchange selected assigned: ", selectedAssigne);
+
+              setSelectedAssigne(
+                supportUser?.find(
+                  (support) => support?.id === selectedAssigne.value
+                )
+              );
+            }}
             className="w-full"
             menuPortalTarget={document.body}
             styles={selectBgStyles(
