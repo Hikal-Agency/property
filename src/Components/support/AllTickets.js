@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -20,10 +20,24 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import TicketCycle from "./TicketCycle";
 import UpdateAssigneSelect from "./UpdateAssigneSelect";
+import Select from "react-select";
+import { selectBgStyles, pageStyles } from "../_elements/SelectStyles";
+import { ticket_status, ticket_source } from "../_elements/SelectOptions";
 
-const AllTickets = ({ value, setValue }) => {
-  const { currentMode, DataGridStyles, BACKEND_URL, User, t } =
-    useStateContext();
+const AllTickets = ({ value, setValue, categories }) => {
+  const {
+    currentMode,
+    DataGridStyles,
+    BACKEND_URL,
+    User,
+    darkModeColors,
+    t,
+    blurDarkColor,
+    blurLightColor,
+    primaryColor,
+  } = useStateContext();
+  const searchRef = useRef();
+
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noteModal, setNoteModal] = useState(false);
@@ -31,6 +45,19 @@ const AllTickets = ({ value, setValue }) => {
   const [ticketNote, setTicketNote] = useState("");
   const [ticketCycle, setTicketCycle] = useState(false);
   const [supportUser, setSupportUser] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedSource, setSelectedSource] = useState(null);
+  const [selectedAssigne, setSelectedAssigne] = useState(null);
+  const [user, setUser] = useState([]);
+
+  console.log("selectedUser: ", selectedUser);
+  console.log("selectedCat: ", selectedCategory);
+  console.log("selectedstatus: ", selectedStatus);
+  console.log("selectedSource: ", selectedSource);
+  console.log("selectedAssigne: ", selectedAssigne);
+
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
 
@@ -272,25 +299,33 @@ const AllTickets = ({ value, setValue }) => {
     setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
-      const [ticketsResponse, supportResponse] = await Promise.all([
-        axios.get(`${BACKEND_URL}/tickets`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-        axios.get(`${BACKEND_URL}/supportusers`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-      ]);
+      const [ticketsResponse, supportResponse, userResponse] =
+        await Promise.all([
+          axios.get(`${BACKEND_URL}/tickets`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+          axios.get(`${BACKEND_URL}/supportusers`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+          axios.get(`${BACKEND_URL}/users`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }),
+        ]);
 
       console.log(
-        "ticket and support users:: ",
+        "ticket and support users and users:: ",
         ticketsResponse,
-        supportResponse
+        supportResponse,
+        userResponse
       );
 
       // Process tickets data
@@ -303,6 +338,7 @@ const AllTickets = ({ value, setValue }) => {
       console.log("TicketRowslist: ", ticketsRowsList);
 
       setSupportUser(supportResponse?.data?.support);
+      setUser(userResponse?.data?.managers?.data);
 
       setLoading(false);
     } catch (error) {
@@ -330,22 +366,213 @@ const AllTickets = ({ value, setValue }) => {
         currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
       } rounded-md`}
     >
-      {/* <Box sx={{ height: 600, width: '100%' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
-              },
-            },
-          }}
-          pageSizeOptions={[5]}
-          // checkboxSelection
-          disableRowSelectionOnClick
-        />
-      </Box> */}
+      <Box
+        sx={{
+          // darkModeColors,
+          ...darkModeColors,
+          marginTop: "5px",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "end",
+          "& .MuiSelect-select": {
+            padding: "2px",
+            paddingLeft: "6px !important",
+            paddingRight: "20px",
+            borderRadius: "8px",
+          },
+          "& .MuiInputBase-root": {
+            width: "max-content",
+            marginRight: "5px",
+          },
+          "& input": {
+            paddingTop: "0",
+          },
+          "& .applied-filter": {
+            background: primaryColor,
+            borderRadius: 4,
+            width: "max-content",
+            padding: "3px 8px",
+            color: "white",
+            marginRight: "0.25rem",
+          },
+          "& .applied-filter span": {
+            marginRight: "3px",
+          },
+        }}
+        className={"items-center mb-1"}
+      >
+        {/* User  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            label={t("ticket_filter_user")}
+            placeholder={t("ticket_filter_user")}
+            id="user_category"
+            options={
+              user?.length > 0 &&
+              user?.map((user) => ({
+                value: user?.id,
+                label: user?.userName,
+              }))
+            }
+            value={{
+              value: selectedUser?.id || null,
+              label: selectedUser?.userName || t("ticket_filter_user"),
+            }}
+            onChange={(selectedUser) => {
+              console.log("onchange selected use: ", selectedUser);
+              // searchRef.current.querySelector("input").value = "";
+
+              setSelectedUser(
+                user?.find((user) => user.id === selectedUser.value)
+              );
+            }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+
+        {/* Category  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            placeholder={t("ticket_filter_category")}
+            id="user_category"
+            options={
+              categories?.length > 0 &&
+              categories?.map((cat) => ({
+                value: cat?.category,
+                label: cat?.category,
+              }))
+            }
+            value={{
+              value: selectedCategory?.category || null,
+              label: selectedCategory?.category || t("ticket_filter_category"),
+            }}
+            onChange={(selectedCategory) => {
+              console.log("onchange selected category: ", selectedCategory);
+              // searchRef.current.querySelector("input").value = "";
+
+              setSelectedCategory(
+                categories?.find(
+                  (cat) => cat.category === selectedCategory.value
+                )
+              );
+            }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+
+        {/* TICKET STATUS  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            placeholder={t("ticket_filter_status")}
+            id="ticket_status"
+            options={ticket_status(t)?.map((status) => ({
+              value: status?.value,
+              label: status?.label,
+            }))}
+            value={{
+              value: selectedStatus?.value || null,
+              label: selectedStatus?.label || t("ticket_filter_status"),
+            }}
+            onChange={(selectedStatus) => {
+              console.log("onchange selected status: ", selectedStatus);
+
+              setSelectedStatus(
+                ticket_status(t)?.find(
+                  (status) => status.value === selectedStatus.value
+                )
+              );
+            }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+
+        {/* TICKET SOURCE  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            placeholder={t("ticket_filter_source")}
+            id="ticket_status"
+            options={ticket_source(t)?.map((status) => ({
+              value: status?.value,
+              label: status?.label,
+            }))}
+            value={{
+              value: selectedSource?.value || null,
+              label: selectedSource?.label || t("ticket_filter_source"),
+            }}
+            onChange={(selectedSource) => {
+              console.log("onchange selected source: ", selectedSource);
+
+              setSelectedSource(
+                ticket_source(t)?.find(
+                  (source) => source.value === selectedSource.value
+                )
+              );
+            }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+
+        {/* TICKET ASSIGNE  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            placeholder={t("ticket_filter_assigne")}
+            id="ticket_status"
+            options={supportUser?.map((support) => ({
+              value: support?.id,
+              label: support?.userName,
+            }))}
+            value={{
+              value: selectedAssigne?.id || null,
+              label: selectedAssigne?.userName || t("ticket_filter_assigne"),
+            }}
+            onChange={(selectedAssigne) => {
+              console.log("onchange selected assigned: ", selectedAssigne);
+
+              setSelectedAssigne(
+                supportUser?.find(
+                  (support) => support?.id === selectedAssigne.value
+                )
+              );
+            }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+      </Box>
 
       <Box
         width={"100%"}
