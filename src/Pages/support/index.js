@@ -8,6 +8,7 @@ import Loader from "../../Components/Loader";
 
 import axios from "../../axoisConfig";
 import { useSearchParams } from "react-router-dom";
+import AllCategories from "../../Components/support/AllCategories";
 
 const Tickets = () => {
   const {
@@ -123,6 +124,7 @@ const Tickets = () => {
                 >
                   <Tab label={t("create_new_ticket")} />
                   <Tab label={t("all_tickets")} />
+                  <Tab label={t("ticket_tab_category")} />
                 </Tabs>
               </Box>
               <div className="mt-3 pb-3">
@@ -136,6 +138,13 @@ const Tickets = () => {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <AllTickets categories={categories} />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  <AllCategories
+                    categories={categories}
+                    setCategories={setCategories}
+                    fetchCategories={fetchCategories}
+                  />
                 </TabPanel>
               </div>
             </div>

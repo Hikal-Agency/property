@@ -910,8 +910,11 @@
     "ticket_filter_status": "Status",
     "ticket_filter_source": "Source",
     "ticket_filter_category": "Category",
-    "ticket_filter_assigne": "Assignee"
-
+    "ticket_filter_assigne": "Assignee",
+    "ticket_tab_category": "Category",
+    "ticket_cat_header_category": "Category",
+    "ticket_cat_header_addedBy": "Added By",
+    "ticket_cat_header_date": "Date"
    
 
 
