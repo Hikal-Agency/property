@@ -356,9 +356,66 @@ const AllTickets = ({ value, setValue, categories }) => {
     }
   };
 
+  const fetchSearchTickets = async () => {
+    setLoading(true);
+
+    const query = {};
+    if (selectedStatus) query.status = selectedStatus?.value;
+    if (selectedCategory) query.category = selectedCategory?.category;
+    if (selectedAssigne) query.assigned_to = selectedAssigne?.id;
+    if (selectedUser) query.added_by = selectedUser?.id;
+    if (selectedSource) query.source = selectedSource?.value;
+
+    try {
+      const token = localStorage.getItem("auth-token");
+      const filterTickets = await axios.get(`${BACKEND_URL}/tickets`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        params: query,
+      });
+
+      console.log("filteredtickets:: ", filterTickets);
+
+      // Process tickets data
+      const ticketsRowsList = filterTickets?.data?.tickets?.data.map((row) => ({
+        ...row,
+        creationDate: row.created_at || "-",
+        userName: row.added_by_name || "-",
+      }));
+      setRows(ticketsRowsList);
+      console.log("TicketRowslist: ", ticketsRowsList);
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      toast.error("Unable to fetch data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchTickets();
   }, []);
+
+  useEffect(() => {
+    fetchSearchTickets();
+  }, [
+    selectedUser,
+    selectedAssigne,
+    selectedCategory,
+    selectedSource,
+    selectedStatus,
+  ]);
 
   return (
     <div
