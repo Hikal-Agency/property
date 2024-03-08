@@ -561,3 +561,51 @@ export const order_status = (t) => [
     label: t("order_pending"),
   },
 ];
+
+// TICKET STATUS
+export const ticket_status = (t) => [
+  {
+    value: "initiated",
+    label: t("status_initiated"),
+  },
+  {
+    value: "open",
+    label: t("status_open"),
+  },
+  {
+    value: "in process",
+    label: t("status_in_process"),
+  },
+  {
+    value: "closed",
+    label: t("status_closed"),
+  },
+  {
+    value: "resolved",
+    label: t("status_resolved"),
+  },
+  {
+    value: "transferred",
+    label: t("status_transferred"),
+  },
+];
+
+// TICKET SOURCE
+export const ticket_source = (t) => [
+  {
+    value: "Email",
+    label: t("support_via_email"),
+  },
+  {
+    value: "Video Call",
+    label: t("support_via_video_call"),
+  },
+  {
+    value: "Phone Call",
+    label: t("support_via_call"),
+  },
+  {
+    value: "WhatsApp Chat",
+    label: t("support_via_whatsapp"),
+  },
+];

@@ -135,7 +135,7 @@ const Tickets = () => {
                   />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                  <AllTickets />
+                  <AllTickets categories={categories} />
                 </TabPanel>
               </div>
             </div>

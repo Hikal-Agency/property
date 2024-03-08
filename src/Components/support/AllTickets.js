@@ -22,8 +22,9 @@ import TicketCycle from "./TicketCycle";
 import UpdateAssigneSelect from "./UpdateAssigneSelect";
 import Select from "react-select";
 import { selectBgStyles, pageStyles } from "../_elements/SelectStyles";
+import { ticket_status, ticket_source } from "../_elements/SelectOptions";
 
-const AllTickets = ({ value, setValue }) => {
+const AllTickets = ({ value, setValue, categories }) => {
   const {
     currentMode,
     DataGridStyles,
@@ -400,6 +401,129 @@ const AllTickets = ({ value, setValue }) => {
                 label: user?.userName,
               }))
             }
+            // value={{
+            //   value: leadOriginSelected?.id || "hotleads",
+            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
+            // }}
+            // onChange={(selectedOption) => {
+            //   searchRef.current.querySelector("input").value = "";
+            //   setLeadOriginSelected(
+            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
+            //   );
+            // }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+
+        {/* Category  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            placeholder={t("ticket_filter_category")}
+            id="user_category"
+            options={
+              categories?.length > 0 &&
+              categories?.map((cat) => ({
+                value: cat?.category,
+                label: cat?.category,
+              }))
+            }
+            // value={{
+            //   value: leadOriginSelected?.id || "hotleads",
+            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
+            // }}
+            // onChange={(selectedOption) => {
+            //   searchRef.current.querySelector("input").value = "";
+            //   setLeadOriginSelected(
+            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
+            //   );
+            // }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+
+        {/* TICKET STATUS  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            placeholder={t("ticket_filter_status")}
+            id="ticket_status"
+            options={ticket_status(t)?.map((status) => ({
+              value: status?.value,
+              label: status?.label,
+            }))}
+            // value={{
+            //   value: leadOriginSelected?.id || "hotleads",
+            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
+            // }}
+            // onChange={(selectedOption) => {
+            //   searchRef.current.querySelector("input").value = "";
+            //   setLeadOriginSelected(
+            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
+            //   );
+            // }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+
+        {/* TICKET SOURCE  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            placeholder={t("ticket_filter_source")}
+            id="ticket_status"
+            options={ticket_source(t)?.map((status) => ({
+              value: status?.value,
+              label: status?.label,
+            }))}
+            // value={{
+            //   value: leadOriginSelected?.id || "hotleads",
+            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
+            // }}
+            // onChange={(selectedOption) => {
+            //   searchRef.current.querySelector("input").value = "";
+            //   setLeadOriginSelected(
+            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
+            //   );
+            // }}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectBgStyles(
+              currentMode,
+              primaryColor,
+              blurDarkColor,
+              blurLightColor
+            )}
+          />
+        </Box>
+
+        {/* TICKET ASSIGNE  */}
+        <Box className="m-1" sx={{ minWidth: "100px" }}>
+          <Select
+            placeholder={t("ticket_filter_assigne")}
+            id="ticket_status"
+            options={supportUser?.map((support) => ({
+              value: support?.id,
+              label: support?.userName,
+            }))}
             // value={{
             //   value: leadOriginSelected?.id || "hotleads",
             //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
