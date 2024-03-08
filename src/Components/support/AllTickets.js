@@ -356,9 +356,66 @@ const AllTickets = ({ value, setValue, categories }) => {
     }
   };
 
+  const fetchSearchTickets = async () => {
+    setLoading(true);
+
+    const query = {};
+    if (selectedStatus) query.status = selectedStatus?.value;
+    if (selectedCategory) query.category = selectedCategory?.category;
+    if (selectedAssigne) query.assigned_to = selectedAssigne?.id;
+    if (selectedUser) query.added_by = selectedUser?.id;
+    if (selectedSource) query.source = selectedSource?.value;
+
+    try {
+      const token = localStorage.getItem("auth-token");
+      const filterTickets = await axios.get(`${BACKEND_URL}/tickets`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        params: query,
+      });
+
+      console.log("filteredtickets:: ", filterTickets);
+
+      // Process tickets data
+      const ticketsRowsList = filterTickets?.data?.tickets?.data.map((row) => ({
+        ...row,
+        creationDate: row.created_at || "-",
+        userName: row.added_by_name || "-",
+      }));
+      setRows(ticketsRowsList);
+      console.log("TicketRowslist: ", ticketsRowsList);
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      toast.error("Unable to fetch data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchTickets();
   }, []);
+
+  useEffect(() => {
+    fetchSearchTickets();
+  }, [
+    selectedUser,
+    selectedAssigne,
+    selectedCategory,
+    selectedSource,
+    selectedStatus,
+  ]);
 
   return (
     <div
@@ -402,40 +459,60 @@ const AllTickets = ({ value, setValue, categories }) => {
         className={"items-center mb-1"}
       >
         {/* User  */}
-        <Box className="m-1" sx={{ minWidth: "100px" }}>
-          <Select
-            label={t("ticket_filter_user")}
-            placeholder={t("ticket_filter_user")}
-            id="user_category"
-            options={
-              user?.length > 0 &&
-              user?.map((user) => ({
-                value: user?.id,
-                label: user?.userName,
-              }))
-            }
-            value={{
-              value: selectedUser?.id || null,
-              label: selectedUser?.userName || t("ticket_filter_user"),
-            }}
-            onChange={(selectedUser) => {
-              console.log("onchange selected use: ", selectedUser);
-              // searchRef.current.querySelector("input").value = "";
-
-              setSelectedUser(
-                user?.find((user) => user.id === selectedUser.value)
-              );
-            }}
-            className="w-full"
-            menuPortalTarget={document.body}
-            styles={selectBgStyles(
-              currentMode,
-              primaryColor,
-              blurDarkColor,
-              blurLightColor
+        <div style={{ position: "relative" }}>
+          {/* <label
+            htmlFor="enquiryType"
+            style={{ position: "absolute", top: "-20px", right: 0 }}
+            className={`flex justify-end items-center ${
+              currentMode === "dark" ? "text-white" : "text-dark"
+            } `}
+          >
+            {selectedUser?.id ? (
+              <strong
+                className="ml-4 text-sm cursor-pointer"
+                onClick={() => setSelectedUser(null)}
+              >
+                {t("clear")}
+              </strong>
+            ) : (
+              ""
             )}
-          />
-        </Box>
+          </label> */}
+          <Box className="m-1" sx={{ minWidth: "100px" }}>
+            <Select
+              label={t("ticket_filter_user")}
+              placeholder={t("ticket_filter_user")}
+              id="user_category"
+              options={
+                user?.length > 0 &&
+                user?.map((user) => ({
+                  value: user?.id,
+                  label: user?.userName,
+                }))
+              }
+              value={{
+                value: selectedUser?.id || null,
+                label: selectedUser?.userName || t("ticket_filter_user"),
+              }}
+              onChange={(selectedUser) => {
+                console.log("onchange selected use: ", selectedUser);
+                // searchRef.current.querySelector("input").value = "";
+
+                setSelectedUser(
+                  user?.find((user) => user.id === selectedUser.value)
+                );
+              }}
+              className="w-full"
+              menuPortalTarget={document.body}
+              styles={selectBgStyles(
+                currentMode,
+                primaryColor,
+                blurDarkColor,
+                blurLightColor
+              )}
+            />
+          </Box>
+        </div>
 
         {/* Category  */}
         <Box className="m-1" sx={{ minWidth: "100px" }}>
