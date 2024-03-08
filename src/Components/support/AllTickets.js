@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -36,6 +36,8 @@ const AllTickets = ({ value, setValue, categories }) => {
     blurLightColor,
     primaryColor,
   } = useStateContext();
+  const searchRef = useRef();
+
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noteModal, setNoteModal] = useState(false);
@@ -43,7 +45,15 @@ const AllTickets = ({ value, setValue, categories }) => {
   const [ticketNote, setTicketNote] = useState("");
   const [ticketCycle, setTicketCycle] = useState(false);
   const [supportUser, setSupportUser] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedSource, setSelectedSource] = useState(null);
+  const [selectedAssigne, setSelectedAssigne] = useState(null);
   const [user, setUser] = useState([]);
+
+  console.log("selectedUser: ", selectedUser);
+  console.log("selectedCat: ", selectedCategory);
 
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
@@ -401,16 +411,18 @@ const AllTickets = ({ value, setValue, categories }) => {
                 label: user?.userName,
               }))
             }
-            // value={{
-            //   value: leadOriginSelected?.id || "hotleads",
-            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
-            // }}
-            // onChange={(selectedOption) => {
-            //   searchRef.current.querySelector("input").value = "";
-            //   setLeadOriginSelected(
-            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
-            //   );
-            // }}
+            value={{
+              value: selectedUser?.id,
+              label: selectedUser?.userName,
+            }}
+            onChange={(selectedUser) => {
+              console.log("onchange selected use: ", selectedUser);
+              // searchRef.current.querySelector("input").value = "";
+
+              setSelectedUser(
+                user?.find((user) => user.id === selectedUser.value)
+              );
+            }}
             className="w-full"
             menuPortalTarget={document.body}
             styles={selectBgStyles(
@@ -434,16 +446,20 @@ const AllTickets = ({ value, setValue, categories }) => {
                 label: cat?.category,
               }))
             }
-            // value={{
-            //   value: leadOriginSelected?.id || "hotleads",
-            //   label: t("origin_" + (leadOriginSelected?.id || "hotleads")),
-            // }}
-            // onChange={(selectedOption) => {
-            //   searchRef.current.querySelector("input").value = "";
-            //   setLeadOriginSelected(
-            //     leadOrigins.find((origin) => origin.id === selectedOption.value)
-            //   );
-            // }}
+            value={{
+              value: selectedCategory?.category,
+              label: selectedCategory?.category,
+            }}
+            onChange={(selectedCategory) => {
+              console.log("onchange selected category: ", selectedCategory);
+              // searchRef.current.querySelector("input").value = "";
+
+              setSelectedCategory(
+                categories?.find(
+                  (cat) => cat.category === selectedCategory.value
+                )
+              );
+            }}
             className="w-full"
             menuPortalTarget={document.body}
             styles={selectBgStyles(
