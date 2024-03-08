@@ -212,15 +212,20 @@ const CreateTicket = ({
               />
               {/* SUPORT VIA  */}
               <FormControl fullWidth>
-                <InputLabel> {t("ticket_source_label")}</InputLabel>
+                <InputLabel id="label-id">
+                  {" "}
+                  {t("ticket_source_label")}
+                </InputLabel>
                 <Select
-                  label={t("support_source")}
+                  labelId="label-id"
+                  label={t("ticket_source_label")}
                   size="medium"
                   className="w-full mb-5"
                   onChange={(e) =>
                     setValues({ ...values, supportSource: e.target.value })
                   }
                   value={values.supportSource}
+                  variant="outlined"
                   required
                 >
                   <MenuItem disabled value="">
