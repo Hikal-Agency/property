@@ -606,6 +606,11 @@ const AllTickets = ({ value, setValue, categories }) => {
             onChange={(selectedStatus) => {
               console.log("onchange selected status: ", selectedStatus);
 
+              if (selectedStatus === null) {
+                setSelectedStatus(null);
+                return;
+              }
+
               setSelectedStatus(
                 ticket_status(t)?.find(
                   (status) => status.value === selectedStatus.value
@@ -650,6 +655,11 @@ const AllTickets = ({ value, setValue, categories }) => {
             onChange={(selectedSource) => {
               console.log("onchange selected source: ", selectedSource);
 
+              if (selectedSource === null) {
+                setSelectedSource(null);
+                return;
+              }
+
               setSelectedSource(
                 ticket_source(t)?.find(
                   (source) => source.value === selectedSource.value
@@ -658,12 +668,23 @@ const AllTickets = ({ value, setValue, categories }) => {
             }}
             className="w-full"
             menuPortalTarget={document.body}
-            styles={selectBgStyles(
-              currentMode,
-              primaryColor,
-              blurDarkColor,
-              blurLightColor
-            )}
+            isClearable
+            styles={{
+              ...selectBgStyles(
+                currentMode,
+                primaryColor,
+                blurDarkColor,
+                blurLightColor
+              ),
+              dropdownIndicator: (provided) => ({
+                ...provided,
+                display: selectedSource?.value ? "none" : "block",
+              }),
+              clearIndicator: (provided) => ({
+                ...provided,
+                display: selectedSource?.value ? "block" : "none",
+              }),
+            }}
           />
         </Box>
 
@@ -683,6 +704,11 @@ const AllTickets = ({ value, setValue, categories }) => {
             onChange={(selectedAssigne) => {
               console.log("onchange selected assigned: ", selectedAssigne);
 
+              if (selectedAssigne === null) {
+                setSelectedAssigne(null);
+                return;
+              }
+
               setSelectedAssigne(
                 supportUser?.find(
                   (support) => support?.id === selectedAssigne.value
@@ -690,13 +716,24 @@ const AllTickets = ({ value, setValue, categories }) => {
               );
             }}
             className="w-full"
+            isClearable
             menuPortalTarget={document.body}
-            styles={selectBgStyles(
-              currentMode,
-              primaryColor,
-              blurDarkColor,
-              blurLightColor
-            )}
+            styles={{
+              ...selectBgStyles(
+                currentMode,
+                primaryColor,
+                blurDarkColor,
+                blurLightColor
+              ),
+              dropdownIndicator: (provided) => ({
+                ...provided,
+                display: selectedAssigne?.id ? "none" : "block",
+              }),
+              clearIndicator: (provided) => ({
+                ...provided,
+                display: selectedAssigne?.id ? "block" : "none",
+              }),
+            }}
           />
         </Box>
       </Box>
