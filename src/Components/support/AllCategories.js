@@ -13,7 +13,6 @@ import { DataGrid } from "@mui/x-data-grid";
 
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
-import UpdateTicketSelect from "./UpdateTicketSelect";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
@@ -24,7 +23,8 @@ import Select from "react-select";
 import { selectBgStyles, pageStyles } from "../_elements/SelectStyles";
 import { ticket_status, ticket_source } from "../_elements/SelectOptions";
 
-const AllTickets = ({ value, setValue, categories }) => {
+const AllCategories = ({ value, setValue, categories }) => {
+  console.log("all categories::", categories);
   const {
     currentMode,
     DataGridStyles,
@@ -38,25 +38,13 @@ const AllTickets = ({ value, setValue, categories }) => {
   } = useStateContext();
   const searchRef = useRef();
 
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState(categories);
   const [loading, setLoading] = useState(false);
   const [noteModal, setNoteModal] = useState(false);
   const [btnloading, setBtnLoading] = useState(false);
   const [ticketNote, setTicketNote] = useState("");
   const [ticketCycle, setTicketCycle] = useState(false);
   const [supportUser, setSupportUser] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(null);
-  const [selectedSource, setSelectedSource] = useState(null);
-  const [selectedAssigne, setSelectedAssigne] = useState(null);
-  const [user, setUser] = useState([]);
-
-  console.log("selectedUser: ", selectedUser);
-  console.log("selectedCat: ", selectedCategory);
-  console.log("selectedstatus: ", selectedStatus);
-  console.log("selectedSource: ", selectedSource);
-  console.log("selectedAssigne: ", selectedAssigne);
 
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
@@ -95,8 +83,8 @@ const AllTickets = ({ value, setValue, categories }) => {
 
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/ticketcycles`,
-        { ticket_id: noteModal?.row?.id, description: ticketNote },
+        `${BACKEND_URL}/tickets/${noteModal?.row?.id}`,
+        { description: ticketNote },
         {
           headers: {
             "Content-Type": "application/json",
@@ -120,7 +108,7 @@ const AllTickets = ({ value, setValue, categories }) => {
       });
       setNoteModal(false);
       setTicketNote("");
-      fetchTickets();
+      fetchSupportUser();
     } catch (error) {
       setBtnLoading(false);
       console.log("Error::: ", error);
@@ -138,16 +126,8 @@ const AllTickets = ({ value, setValue, categories }) => {
 
   const columns = [
     {
-      field: "creationDate",
-      headerName: t("ticket_date"),
-      headerAlign: "center",
-      editable: false,
-      minWidth: 60,
-      flex: 1,
-    },
-    {
-      field: "userName",
-      headerName: t("label_user_name"),
+      field: "id",
+      headerName: "#",
       headerAlign: "center",
       editable: false,
       minWidth: 120,
@@ -164,14 +144,14 @@ const AllTickets = ({ value, setValue, categories }) => {
     },
     {
       field: "category",
-      headerName: t("label_category"),
+      headerName: t("ticket_cat_header_category"),
       headerAlign: "center",
       editable: false,
-      minWidth: 40,
+      minWidth: 120,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full flex items-center justify-center">
+          <div className="w-full ">
             <p className="text-center capitalize">
               {cellValues?.formattedValue}
             </p>
@@ -179,6 +159,7 @@ const AllTickets = ({ value, setValue, categories }) => {
         );
       },
     },
+
     {
       field: "description",
       headerName: t("description"),
@@ -197,54 +178,31 @@ const AllTickets = ({ value, setValue, categories }) => {
       },
     },
     {
-      field: "issue",
-      headerName: t("label_issue"),
+      field: "added_by_name",
+      headerName: t("ticket_cat_header_addedBy"),
       headerAlign: "center",
       editable: false,
-      minWidth: 130,
+      minWidth: 150,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
+          <div className="w-full flex items-center justify-center">
             <p className="text-center capitalize">
               {cellValues?.formattedValue}
             </p>
           </div>
         );
       },
-      hide: !(User?.role === 1),
+    },
+    {
+      field: "created_at",
+      headerName: t("ticket_cat_header_date"),
+      headerAlign: "center",
+      editable: false,
+      minWidth: 60,
+      flex: 1,
     },
 
-    {
-      field: "assigned_to",
-      headerName: t("ticket_label_assign"),
-      // width: 150,
-      minWidth: 170,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-      renderCell: (cellValues) => (
-        <UpdateAssigneSelect
-          cellValues={cellValues}
-          supportUser={supportUser}
-          setSupportUser={setSupportUser}
-        />
-      ),
-    },
-    {
-      field: "edit",
-      headerName: "Update Status",
-      // width: 150,
-      minWidth: 170,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-      renderCell: (cellValues) => (
-        <UpdateTicketSelect cellValues={cellValues} />
-      ),
-    },
     {
       field: "action",
       headerName: t("label_action"),
@@ -295,97 +253,20 @@ const AllTickets = ({ value, setValue, categories }) => {
     },
   ];
 
-  const fetchTickets = async () => {
+  const fetchSupportUser = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("auth-token");
-      const [ticketsResponse, supportResponse, userResponse] =
-        await Promise.all([
-          axios.get(`${BACKEND_URL}/tickets`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }),
-          axios.get(`${BACKEND_URL}/supportusers`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }),
-          axios.get(`${BACKEND_URL}/users`, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }),
-        ]);
-
-      console.log(
-        "ticket and support users and users:: ",
-        ticketsResponse,
-        supportResponse,
-        userResponse
-      );
-
-      // Process tickets data
-      const ticketsRowsList = ticketsResponse.data.tickets.data.map((row) => ({
-        ...row,
-        creationDate: row.created_at || "-",
-        userName: row.added_by_name || "-",
-      }));
-      setRows(ticketsRowsList);
-      console.log("TicketRowslist: ", ticketsRowsList);
-
-      setSupportUser(supportResponse?.data?.support);
-      setUser(userResponse?.data?.managers?.data);
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-      toast.error("Unable to fetch data.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
-  const fetchSearchTickets = async () => {
-    setLoading(true);
-
-    const query = {};
-    if (selectedStatus) query.status = selectedStatus?.value;
-    if (selectedCategory) query.category = selectedCategory?.category;
-    if (selectedAssigne) query.assigned_to = selectedAssigne?.id;
-    if (selectedUser) query.added_by = selectedUser?.id;
-    if (selectedSource) query.source = selectedSource?.value;
-
-    try {
-      const token = localStorage.getItem("auth-token");
-      const filterTickets = await axios.get(`${BACKEND_URL}/tickets`, {
+      const support = await axios.get(`${BACKEND_URL}/supportusers`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
-        params: query,
       });
 
-      console.log("filteredtickets:: ", filterTickets);
+      console.log("support users :: ", support);
 
-      // Process tickets data
-      const ticketsRowsList = filterTickets?.data?.tickets?.data.map((row) => ({
-        ...row,
-        creationDate: row.created_at || "-",
-        userName: row.added_by_name || "-",
-      }));
-      setRows(ticketsRowsList);
-      console.log("TicketRowslist: ", ticketsRowsList);
+      setSupportUser(support?.data?.support);
 
       setLoading(false);
     } catch (error) {
@@ -403,19 +284,9 @@ const AllTickets = ({ value, setValue, categories }) => {
     }
   };
 
-  useEffect(() => {
-    fetchTickets();
-  }, []);
-
-  useEffect(() => {
-    fetchSearchTickets();
-  }, [
-    selectedUser,
-    selectedAssigne,
-    selectedCategory,
-    selectedSource,
-    selectedStatus,
-  ]);
+  //   useEffect(() => {
+  //     fetchSupportUser();
+  //   }, []);
 
   return (
     <div
@@ -459,7 +330,7 @@ const AllTickets = ({ value, setValue, categories }) => {
         className={"items-center mb-1"}
       >
         {/* User  */}
-        <div style={{ position: "relative" }}>
+        {/* <div style={{ position: "relative" }}>
           {/* <label
             htmlFor="enquiryType"
             style={{ position: "absolute", top: "-20px", right: 0 }}
@@ -477,7 +348,7 @@ const AllTickets = ({ value, setValue, categories }) => {
             ) : (
               ""
             )}
-          </label> */}
+          </label> 
           <Box className="m-1" sx={{ minWidth: "100px" }}>
             <Select
               label={t("ticket_filter_user")}
@@ -490,7 +361,6 @@ const AllTickets = ({ value, setValue, categories }) => {
                   label: user?.userName,
                 }))
               }
-              isClearable
               value={{
                 value: selectedUser?.id || null,
                 label: selectedUser?.userName || t("ticket_filter_user"),
@@ -499,243 +369,21 @@ const AllTickets = ({ value, setValue, categories }) => {
                 console.log("onchange selected use: ", selectedUser);
                 // searchRef.current.querySelector("input").value = "";
 
-                if (selectedUser === null) {
-                  setSelectedUser(null);
-                  return;
-                }
-                const findUser = user?.find(
-                  (user) => user.id === selectedUser.value
+                setSelectedUser(
+                  user?.find((user) => user.id === selectedUser.value)
                 );
-
-                setSelectedUser(findUser || null);
               }}
               className="w-full"
-              styles={{
-                ...selectBgStyles(
-                  currentMode,
-                  primaryColor,
-                  blurDarkColor,
-                  blurLightColor
-                ),
-                dropdownIndicator: (provided) => ({
-                  ...provided,
-                  display: selectedUser?.id ? "none" : "block",
-                }),
-                clearIndicator: (provided) => ({
-                  ...provided,
-                  display: selectedUser?.id ? "block" : "none",
-                }),
-              }}
               menuPortalTarget={document.body}
-              // styles={selectBgStyles(
-              //   currentMode,
-              //   primaryColor,
-              //   blurDarkColor,
-              //   blurLightColor
-              // )}
+              styles={selectBgStyles(
+                currentMode,
+                primaryColor,
+                blurDarkColor,
+                blurLightColor
+              )}
             />
           </Box>
-        </div>
-
-        {/* Category  */}
-        <Box className="m-1" sx={{ minWidth: "100px" }}>
-          <Select
-            placeholder={t("ticket_filter_category")}
-            id="user_category"
-            options={
-              categories?.length > 0 &&
-              categories?.map((cat) => ({
-                value: cat?.category,
-                label: cat?.category,
-              }))
-            }
-            value={{
-              value: selectedCategory?.category || null,
-              label: selectedCategory?.category || t("ticket_filter_category"),
-            }}
-            onChange={(selectedCategory) => {
-              console.log("onchange selected category: ", selectedCategory);
-              // searchRef.current.querySelector("input").value = "";
-
-              if (selectedCategory === null) {
-                setSelectedCategory(null);
-                return;
-              }
-
-              setSelectedCategory(
-                categories?.find(
-                  (cat) => cat.category === selectedCategory.value
-                )
-              );
-            }}
-            className="w-full"
-            isClearable
-            menuPortalTarget={document.body}
-            styles={{
-              ...selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              ),
-              dropdownIndicator: (provided) => ({
-                ...provided,
-                display: selectedCategory?.category ? "none" : "block",
-              }),
-              clearIndicator: (provided) => ({
-                ...provided,
-                display: selectedCategory?.category ? "block" : "none",
-              }),
-            }}
-          />
-        </Box>
-
-        {/* TICKET STATUS  */}
-        <Box className="m-1" sx={{ minWidth: "100px" }}>
-          <Select
-            placeholder={t("ticket_filter_status")}
-            id="ticket_status"
-            options={ticket_status(t)?.map((status) => ({
-              value: status?.value,
-              label: status?.label,
-            }))}
-            value={{
-              value: selectedStatus?.value || null,
-              label: selectedStatus?.label || t("ticket_filter_status"),
-            }}
-            onChange={(selectedStatus) => {
-              console.log("onchange selected status: ", selectedStatus);
-
-              if (selectedStatus === null) {
-                setSelectedStatus(null);
-                return;
-              }
-
-              setSelectedStatus(
-                ticket_status(t)?.find(
-                  (status) => status.value === selectedStatus.value
-                )
-              );
-            }}
-            isClearable
-            className="w-full"
-            menuPortalTarget={document.body}
-            styles={{
-              ...selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              ),
-              dropdownIndicator: (provided) => ({
-                ...provided,
-                display: selectedStatus?.value ? "none" : "block",
-              }),
-              clearIndicator: (provided) => ({
-                ...provided,
-                display: selectedStatus?.value ? "block" : "none",
-              }),
-            }}
-          />
-        </Box>
-
-        {/* TICKET SOURCE  */}
-        <Box className="m-1" sx={{ minWidth: "100px" }}>
-          <Select
-            placeholder={t("ticket_filter_source")}
-            id="ticket_status"
-            options={ticket_source(t)?.map((status) => ({
-              value: status?.value,
-              label: status?.label,
-            }))}
-            value={{
-              value: selectedSource?.value || null,
-              label: selectedSource?.label || t("ticket_filter_source"),
-            }}
-            onChange={(selectedSource) => {
-              console.log("onchange selected source: ", selectedSource);
-
-              if (selectedSource === null) {
-                setSelectedSource(null);
-                return;
-              }
-
-              setSelectedSource(
-                ticket_source(t)?.find(
-                  (source) => source.value === selectedSource.value
-                )
-              );
-            }}
-            className="w-full"
-            menuPortalTarget={document.body}
-            isClearable
-            styles={{
-              ...selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              ),
-              dropdownIndicator: (provided) => ({
-                ...provided,
-                display: selectedSource?.value ? "none" : "block",
-              }),
-              clearIndicator: (provided) => ({
-                ...provided,
-                display: selectedSource?.value ? "block" : "none",
-              }),
-            }}
-          />
-        </Box>
-
-        {/* TICKET ASSIGNE  */}
-        <Box className="m-1" sx={{ minWidth: "100px" }}>
-          <Select
-            placeholder={t("ticket_filter_assigne")}
-            id="ticket_status"
-            options={supportUser?.map((support) => ({
-              value: support?.id,
-              label: support?.userName,
-            }))}
-            value={{
-              value: selectedAssigne?.id || null,
-              label: selectedAssigne?.userName || t("ticket_filter_assigne"),
-            }}
-            onChange={(selectedAssigne) => {
-              console.log("onchange selected assigned: ", selectedAssigne);
-
-              if (selectedAssigne === null) {
-                setSelectedAssigne(null);
-                return;
-              }
-
-              setSelectedAssigne(
-                supportUser?.find(
-                  (support) => support?.id === selectedAssigne.value
-                )
-              );
-            }}
-            className="w-full"
-            isClearable
-            menuPortalTarget={document.body}
-            styles={{
-              ...selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              ),
-              dropdownIndicator: (provided) => ({
-                ...provided,
-                display: selectedAssigne?.id ? "none" : "block",
-              }),
-              clearIndicator: (provided) => ({
-                ...provided,
-                display: selectedAssigne?.id ? "block" : "none",
-              }),
-            }}
-          />
-        </Box>
+        </div> */}
       </Box>
 
       <Box
@@ -864,4 +512,4 @@ const AllTickets = ({ value, setValue, categories }) => {
   );
 };
 
-export default AllTickets;
+export default AllCategories;
