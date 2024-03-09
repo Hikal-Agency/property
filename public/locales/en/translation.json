@@ -914,7 +914,11 @@
     "ticket_tab_category": "Category",
     "ticket_cat_header_category": "Category",
     "ticket_cat_header_addedBy": "Added By",
-    "ticket_cat_header_date": "Date"
+    "ticket_cat_header_date": "Date",
+    "ticket_cat_delete_cat": "Delete Category",
+    "edit_cat_description_label": "Description",
+    "edit_cat_label": "Category Name",
+    "edit_category": "Edit Category"
    
 
 
