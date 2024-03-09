@@ -490,6 +490,7 @@ const AllTickets = ({ value, setValue, categories }) => {
                   label: user?.userName,
                 }))
               }
+              isClearable
               value={{
                 value: selectedUser?.id || null,
                 label: selectedUser?.userName || t("ticket_filter_user"),
@@ -498,18 +499,40 @@ const AllTickets = ({ value, setValue, categories }) => {
                 console.log("onchange selected use: ", selectedUser);
                 // searchRef.current.querySelector("input").value = "";
 
-                setSelectedUser(
-                  user?.find((user) => user.id === selectedUser.value)
+                if (selectedUser === null) {
+                  setSelectedUser(null);
+                  return;
+                }
+                const findUser = user?.find(
+                  (user) => user.id === selectedUser.value
                 );
+
+                setSelectedUser(findUser || null);
               }}
               className="w-full"
+              styles={{
+                ...selectBgStyles(
+                  currentMode,
+                  primaryColor,
+                  blurDarkColor,
+                  blurLightColor
+                ),
+                dropdownIndicator: (provided) => ({
+                  ...provided,
+                  display: selectedUser?.id ? "none" : "block",
+                }),
+                clearIndicator: (provided) => ({
+                  ...provided,
+                  display: selectedUser?.id ? "block" : "none",
+                }),
+              }}
               menuPortalTarget={document.body}
-              styles={selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              )}
+              // styles={selectBgStyles(
+              //   currentMode,
+              //   primaryColor,
+              //   blurDarkColor,
+              //   blurLightColor
+              // )}
             />
           </Box>
         </div>
@@ -534,6 +557,11 @@ const AllTickets = ({ value, setValue, categories }) => {
               console.log("onchange selected category: ", selectedCategory);
               // searchRef.current.querySelector("input").value = "";
 
+              if (selectedCategory === null) {
+                setSelectedCategory(null);
+                return;
+              }
+
               setSelectedCategory(
                 categories?.find(
                   (cat) => cat.category === selectedCategory.value
@@ -541,13 +569,24 @@ const AllTickets = ({ value, setValue, categories }) => {
               );
             }}
             className="w-full"
+            isClearable
             menuPortalTarget={document.body}
-            styles={selectBgStyles(
-              currentMode,
-              primaryColor,
-              blurDarkColor,
-              blurLightColor
-            )}
+            styles={{
+              ...selectBgStyles(
+                currentMode,
+                primaryColor,
+                blurDarkColor,
+                blurLightColor
+              ),
+              dropdownIndicator: (provided) => ({
+                ...provided,
+                display: selectedCategory?.category ? "none" : "block",
+              }),
+              clearIndicator: (provided) => ({
+                ...provided,
+                display: selectedCategory?.category ? "block" : "none",
+              }),
+            }}
           />
         </Box>
 
@@ -573,14 +612,25 @@ const AllTickets = ({ value, setValue, categories }) => {
                 )
               );
             }}
+            isClearable
             className="w-full"
             menuPortalTarget={document.body}
-            styles={selectBgStyles(
-              currentMode,
-              primaryColor,
-              blurDarkColor,
-              blurLightColor
-            )}
+            styles={{
+              ...selectBgStyles(
+                currentMode,
+                primaryColor,
+                blurDarkColor,
+                blurLightColor
+              ),
+              dropdownIndicator: (provided) => ({
+                ...provided,
+                display: selectedStatus?.value ? "none" : "block",
+              }),
+              clearIndicator: (provided) => ({
+                ...provided,
+                display: selectedStatus?.value ? "block" : "none",
+              }),
+            }}
           />
         </Box>
 
