@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import {
   Box,
   Button,
@@ -10,20 +10,16 @@ import {
 } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { DataGrid } from "@mui/x-data-grid";
+import { MdDelete } from "react-icons/md";
 
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import TicketCycle from "./TicketCycle";
-import UpdateAssigneSelect from "./UpdateAssigneSelect";
-import Select from "react-select";
-import { selectBgStyles, pageStyles } from "../_elements/SelectStyles";
-import { ticket_status, ticket_source } from "../_elements/SelectOptions";
+import EditCategory from "./EditCategory";
 
-const AllCategories = ({ value, setValue, categories }) => {
+const AllCategories = ({ categories, fetchCategories }) => {
   console.log("all categories::", categories);
   const {
     currentMode,
@@ -41,9 +37,10 @@ const AllCategories = ({ value, setValue, categories }) => {
   const [rows, setRows] = useState(categories);
   const [loading, setLoading] = useState(false);
   const [noteModal, setNoteModal] = useState(false);
+  const [deleteCat, setDeleteCat] = useState(false);
   const [btnloading, setBtnLoading] = useState(false);
   const [ticketNote, setTicketNote] = useState("");
-  const [ticketCycle, setTicketCycle] = useState(false);
+  const [editCategory, setEditCategory] = useState(false);
   const [supportUser, setSupportUser] = useState([]);
 
   const navigate = useNavigate();
@@ -59,32 +56,18 @@ const AllCategories = ({ value, setValue, categories }) => {
   };
 
   const HandleViewTimeline = (params) => {
-    setTicketCycle(params.row);
+    setEditCategory(params.row);
   };
 
-  const addNote = async (e, noteModal) => {
+  const deleteCategory = async (e, noteModal) => {
     e.preventDefault();
     console.log("notemodal::: ", noteModal);
     setBtnLoading(true);
 
-    if (!ticketNote) {
-      toast.error("Notes field cannot be empty.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setBtnLoading(false);
-      return;
-    }
-
     try {
-      const response = await axios.post(
-        `${BACKEND_URL}/tickets/${noteModal?.row?.id}`,
-        { description: ticketNote },
+      const response = await axios.delete(
+        `${BACKEND_URL}/categories/${deleteCat?.row?.id}`,
+
         {
           headers: {
             "Content-Type": "application/json",
@@ -93,11 +76,11 @@ const AllCategories = ({ value, setValue, categories }) => {
         }
       );
 
-      console.log("Note added::: ", response);
+      console.log("Category deleted::: ", response);
 
       setBtnLoading(false);
 
-      toast.success("Note added successfully", {
+      toast.success("Category deleted.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -106,13 +89,12 @@ const AllCategories = ({ value, setValue, categories }) => {
         progress: undefined,
         theme: "light",
       });
-      setNoteModal(false);
-      setTicketNote("");
-      fetchSupportUser();
+      setDeleteCat(false);
+      fetchCategories();
     } catch (error) {
       setBtnLoading(false);
       console.log("Error::: ", error);
-      toast.error("Unable to add the note.", {
+      toast.error("Unable to delete category.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -136,7 +118,7 @@ const AllCategories = ({ value, setValue, categories }) => {
         return (
           <div className="w-full ">
             <p className="text-center capitalize">
-              {cellValues?.formattedValue}
+              {cellValues?.formattedValue || "-"}
             </p>
           </div>
         );
@@ -153,7 +135,7 @@ const AllCategories = ({ value, setValue, categories }) => {
         return (
           <div className="w-full ">
             <p className="text-center capitalize">
-              {cellValues?.formattedValue}
+              {cellValues?.formattedValue || "-"}
             </p>
           </div>
         );
@@ -171,7 +153,7 @@ const AllCategories = ({ value, setValue, categories }) => {
         return (
           <div className="w-full flex items-center justify-center">
             <p className="text-center capitalize">
-              {cellValues?.formattedValue}
+              {cellValues?.formattedValue || "-"}
             </p>
           </div>
         );
@@ -188,7 +170,7 @@ const AllCategories = ({ value, setValue, categories }) => {
         return (
           <div className="w-full flex items-center justify-center">
             <p className="text-center capitalize">
-              {cellValues?.formattedValue}
+              {cellValues?.formattedValue || "-"}
             </p>
           </div>
         );
@@ -226,8 +208,8 @@ const AllCategories = ({ value, setValue, categories }) => {
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
               } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <Tooltip title="Add notes" arrow>
-                <button onClick={() => setNoteModal(cellValues)}>
+              <Tooltip title="Edit Category" arrow>
+                <button onClick={() => setEditCategory(cellValues)}>
                   <FiEdit size={16} />
                 </button>
               </Tooltip>
@@ -241,9 +223,9 @@ const AllCategories = ({ value, setValue, categories }) => {
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
               } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <Tooltip title="View Timeline" arrow>
-                <button onClick={() => HandleViewTimeline(cellValues)}>
-                  <AiOutlineHistory size={16} />
+              <Tooltip title="Delete Category" arrow>
+                <button onClick={() => setDeleteCat(cellValues)}>
+                  <MdDelete size={16} />
                 </button>
               </Tooltip>
             </p>
@@ -253,39 +235,8 @@ const AllCategories = ({ value, setValue, categories }) => {
     },
   ];
 
-  const fetchSupportUser = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("auth-token");
-      const support = await axios.get(`${BACKEND_URL}/supportusers`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      console.log("support users :: ", support);
-
-      setSupportUser(support?.data?.support);
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-      toast.error("Unable to fetch data.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
   //   useEffect(() => {
-  //     fetchSupportUser();
+  //     fetchCategories();
   //   }, []);
 
   return (
@@ -430,7 +381,7 @@ const AllCategories = ({ value, setValue, categories }) => {
           }
         />
       </Box>
-      {noteModal && (
+      {deleteCat && (
         <>
           <Dialog
             sx={{
@@ -442,8 +393,8 @@ const AllCategories = ({ value, setValue, categories }) => {
                   backgroundColor: "rgba(0, 0, 0, 0.6) !important",
                 },
             }}
-            open={noteModal}
-            onClose={(e) => setNoteModal(false)}
+            open={deleteCat}
+            onClose={(e) => setDeleteCat(false)}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
@@ -454,7 +405,7 @@ const AllCategories = ({ value, setValue, categories }) => {
                 top: 10,
                 color: (theme) => theme.palette.grey[500],
               }}
-              onClick={() => setNoteModal(false)}
+              onClick={() => setDeleteCat(false)}
             >
               <IoMdClose size={18} />
             </IconButton>
@@ -463,36 +414,27 @@ const AllCategories = ({ value, setValue, categories }) => {
                 <div className="bg-primary h-10 w-1 mr-2 rounded-full"></div>
                 <div>
                   <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("ticket_add_note_label")}
+                    {t("ticket_cat_delete_cat")}
                   </h1>
                 </div>
               </div>
-              <TextField
-                id="issue"
-                type={"text"}
-                label={t("menu_notes")}
-                className="w-full mb-5"
-                style={{ marginBottom: "20px" }}
-                variant="outlined"
-                size="medium"
-                required
-                onChange={(e) => setTicketNote(e.target.value)}
-                value={ticketNote}
-                multiline
-                maxRows={6}
-              />
+
+              <h1 className="font-semibold my-3  ">
+                {t("want_to_delete", { DataName: deleteCat?.row?.category })}
+              </h1>
+
               <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                 <Button
                   className={`bg-btn-primary text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
                   ripple={true}
                   size="lg"
-                  onClick={(e) => addNote(e, noteModal)}
+                  onClick={(e) => deleteCategory(e, deleteCat)}
                 >
                   {btnloading ? (
                     <CircularProgress size={18} sx={{ color: "white" }} />
                   ) : (
                     <span className="text-white">
-                      {t("ticket_add_note_label")}
+                      {t("ticket_cat_delete_cat")}
                     </span>
                   )}
                 </Button>
@@ -502,10 +444,11 @@ const AllCategories = ({ value, setValue, categories }) => {
         </>
       )}
 
-      {ticketCycle && (
-        <TicketCycle
-          ticketCycle={ticketCycle}
-          setTicketCycle={setTicketCycle}
+      {editCategory && (
+        <EditCategory
+          editModal={editCategory}
+          setEditCategory={setEditCategory}
+          fetchCategories={fetchCategories}
         />
       )}
     </div>
