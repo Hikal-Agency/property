@@ -410,10 +410,10 @@ const AllLeads = ({
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
-        <RenderFeedback 
-        className="renderDD" 
-        cellValues={cellValues}
-        lead_origin={lead_origin} 
+        <RenderFeedback
+          className="renderDD"
+          cellValues={cellValues}
+          lead_origin={lead_origin}
         />
       ),
       // onFeedbackClick={handleFeedbackClick}
@@ -426,10 +426,10 @@ const AllLeads = ({
       flex: 1,
       hideable: false,
       renderCell: (cellValues) => (
-        <RenderPriority 
-        className="renderDD" 
-        cellValues={cellValues} 
-        lead_origin={lead_origin} 
+        <RenderPriority
+          className="renderDD"
+          cellValues={cellValues}
+          lead_origin={lead_origin}
         />
       ),
     },
@@ -527,7 +527,7 @@ const AllLeads = ({
       },
     },
     {
-      field: "edit",
+      field: "ticket_edit",
       headerName: t("label_action"),
       flex: 1,
       minWidth: 130,
@@ -758,35 +758,38 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Meeting`;
-      } 
+      }
       // CALLBACK
       else if (lead_type === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Callback`;
-      } 
+      }
       // SWITCHED OFF
       else if (lead_type === "switched off") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Switched Off`;
-      } 
+      }
       // FOLLOW UP
       else if (lead_type === "follow up short term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up (Short Term)`;
-      } 
-      else if (lead_type === "follow up long term") {
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Follow Up (Short Term)`;
+      } else if (lead_type === "follow up long term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up (Long Term)`;
-      } 
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Follow Up (Long Term)`;
+      }
       // else if (lead_type === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
       //     pageState.page
       //   }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up`;
-      // } 
+      // }
       else if (lead_type === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -841,35 +844,38 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Meeting`;
-      } 
+      }
       // CALLBACK
       else if (lead_type === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Callback`;
-      } 
+      }
       // SWITCHED OFF
       else if (lead_type === "switched off") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Switched Off`;
-      } 
+      }
       // FOLLOW UP
       else if (lead_type === "follow up short term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Follow Up (Short Term)`;
-      } 
-      else if (lead_type === "follow up long term") {
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=1&feedback=Follow Up (Short Term)`;
+      } else if (lead_type === "follow up long term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Follow Up (Long Term)`;
-      } 
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=1&feedback=Follow Up (Long Term)`;
+      }
       // else if (lead_type === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
       //     pageState.page
       //   }&perpage=${pageState.perpage || 14}&coldCall=1&feedback=Follow Up`;
-      // } 
+      // }
       else if (lead_type === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -912,35 +918,38 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Meeting`;
-      } 
+      }
       // CALLBACK
       else if (lead_type === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Callback`;
-      } 
+      }
       // SWITCHED OFF
       else if (lead_type === "switched off") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Switched Off`;
-      } 
+      }
       // FOLLOW UP
       else if (lead_type === "follow up short term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Follow Up (Short Term)`;
-      } 
-      else if (lead_type === "follow up long term") {
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=3&feedback=Follow Up (Short Term)`;
+      } else if (lead_type === "follow up long term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Follow Up (Long Term)`;
-      } 
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=3&feedback=Follow Up (Long Term)`;
+      }
       // else if (lead_type === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
       //     pageState.page
       //   }&perpage=${pageState.perpage || 14}&coldCall=3&feedback=Follow Up`;
-      // } 
+      // }
       else if (lead_type === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -983,35 +992,38 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Meeting`;
-      } 
+      }
       // CALLBACK
       else if (lead_type === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Callback`;
-      } 
+      }
       // SWITCHED OFF
       else if (lead_type === "switched off") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Switched Off`;
-      } 
+      }
       // FOLLOW UP
       else if (lead_type === "follow up short term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Follow Up (Short Term)`;
-      } 
-      else if (lead_type === "follow up long term") {
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=2&feedback=Follow Up (Short Term)`;
+      } else if (lead_type === "follow up long term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Follow Up (Long Term)`;
-      } 
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=2&feedback=Follow Up (Long Term)`;
+      }
       // else if (lead_type === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
       //     pageState.page
       //   }&perpage=${pageState.perpage || 14}&coldCall=2&feedback=Follow Up`;
-      // } 
+      // }
       else if (lead_type === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -1054,35 +1066,38 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Meeting`;
-      } 
+      }
       // CALLBACK
       else if (lead_type === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Callback`;
-      } 
+      }
       // SWITCHED OFF
       else if (lead_type === "switched off") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Switched Off`;
-      } 
+      }
       // FOLLOW UP
       else if (lead_type === "follow up short term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Follow Up (Short Term)`;
-      } 
-      else if (lead_type === "follow up long term") {
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=4&feedback=Follow Up (Short Term)`;
+      } else if (lead_type === "follow up long term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Follow Up (Long Term)`;
-      } 
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=4&feedback=Follow Up (Long Term)`;
+      }
       // else if (lead_type === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
       //     pageState.page
       //   }&perpage=${pageState.perpage || 14}&coldCall=4&feedback=Follow Up`;
-      // } 
+      // }
       else if (lead_type === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -1130,37 +1145,44 @@ const AllLeads = ({
         }&perpage=${
           pageState.perpage || 14
         }&coldCall=0&feedback=Meeting&leadStatus=Transferred`;
-      } 
+      }
       // CALLBACK
       else if (lead_type === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Callback&leadStatus=Transferred`;
-      } 
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Callback&leadStatus=Transferred`;
+      }
       // SWITCHED OFF
       else if (lead_type === "switched off") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Switched Off&leadStatus=Transferred`;
-      } 
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Switched Off&leadStatus=Transferred`;
+      }
       // FOLLOW UP
       else if (lead_type === "follow up short term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up (Short Term)&leadStatus=Transferred`;
-      } 
-      else if (lead_type === "follow up long term") {
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Follow Up (Short Term)&leadStatus=Transferred`;
+      } else if (lead_type === "follow up long term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=0&feedback=Follow Up (Long Term)&leadStatus=Transferred`;
-      } 
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=0&feedback=Follow Up (Long Term)&leadStatus=Transferred`;
+      }
       // else if (lead_type === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
       //     pageState.page
       //   }&perpage=${
       //     pageState.perpage || 14
       //   }&coldCall=0&feedback=Follow Up&leadStatus=Transferred`;
-      // } 
+      // }
       else if (lead_type === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -1200,35 +1222,38 @@ const AllLeads = ({
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Meeting`;
-      } 
+      }
       // CALLBACK
       else if (lead_type === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Callback`;
-      } 
+      }
       // SWITCHED OFF
       else if (lead_type === "switched off") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Switched Off`;
-      } 
+      }
       // FOLLOW UP
       else if (lead_type === "follow up short term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Follow Up (Short Term)`;
-      } 
-      else if (lead_type === "follow up long term") {
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=6&feedback=Follow Up (Short Term)`;
+      } else if (lead_type === "follow up long term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
-        }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Follow Up (Long Term)`;
-      } 
+        }&perpage=${
+          pageState.perpage || 14
+        }&coldCall=6&feedback=Follow Up (Long Term)`;
+      }
       // else if (lead_type === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
       //     pageState.page
       //   }&perpage=${pageState.perpage || 14}&coldCall=6&feedback=Follow Up`;
-      // } 
+      // }
       else if (lead_type === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -1278,7 +1303,7 @@ const AllLeads = ({
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Meeting`;
-      } 
+      }
       // CALLBACK
       else if (lead_type === "callback") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1286,7 +1311,7 @@ const AllLeads = ({
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Callback`;
-      } 
+      }
       // SWITCHED OFF
       else if (lead_type === "switched off") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1294,7 +1319,7 @@ const AllLeads = ({
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Switched Off`;
-      } 
+      }
       // FOLLOW UP
       else if (lead_type === "follow up short term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
@@ -1302,21 +1327,20 @@ const AllLeads = ({
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Follow Up (Short Term)`;
-      } 
-      else if (lead_type === "follow up long term") {
+      } else if (lead_type === "follow up long term") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
         }&perpage=${
           pageState.perpage || 14
         }&unassigned=1&coldCall=0&feedback=Follow Up (Long Term)`;
-      } 
+      }
       // else if (lead_type === "follow up") {
       //   FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
       //     pageState.page
       //   }&perpage=${
       //     pageState.perpage || 14
       //   }&unassigned=1&coldCall=0&feedback=Follow Up`;
-      // } 
+      // }
       else if (lead_type === "low budget") {
         FetchLeads_url = `${BACKEND_URL}/coldLeads?page=${
           pageState.page
@@ -1470,11 +1494,7 @@ const AllLeads = ({
       });
   };
 
-  const FetchSourceForProject = async (
-    token,
-    projectName,
-  ) => {
-
+  const FetchSourceForProject = async (token, projectName) => {
     let ProjectSource = "";
     ProjectSource = `${BACKEND_URL}/totalSource?coldCall=0&unassigned=1&project=${projectName}`;
 
@@ -1685,8 +1705,12 @@ const AllLeads = ({
       const leadProjects = data[0].data?.data?.query_result
         ?.filter((proj) => proj?.project)
         ?.map((proj) => ({ label: proj?.project, value: proj?.project }));
-      const leadSources = data[1].data?.data?.query_result?.filter((source) => source?.leadSource)
-        ?.map((source) => ({ label: source?.leadSource, value: source?.leadSource }));
+      const leadSources = data[1].data?.data?.query_result
+        ?.filter((source) => source?.leadSource)
+        ?.map((source) => ({
+          label: source?.leadSource,
+          value: source?.leadSource,
+        }));
 
       if (
         typeof leadSources === "object" &&
@@ -1734,7 +1758,7 @@ const AllLeads = ({
     if (selectedProject !== "All") {
       FetchSourceForProject(
         localStorage.getItem("auth-token"),
-        selectedProject,
+        selectedProject
       );
     }
   }, [selectedProject, selectedSource, unassignedFeedback]);

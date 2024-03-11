@@ -9,6 +9,7 @@ import Loader from "../../Components/Loader";
 import axios from "../../axoisConfig";
 import { useSearchParams } from "react-router-dom";
 import AllCategories from "../../Components/support/AllCategories";
+import usePermission from "../../utils/usePermission";
 
 const Tickets = () => {
   const {
@@ -20,7 +21,7 @@ const Tickets = () => {
     value,
     setValue,
   } = useStateContext();
-  // const [value, setValue] = useState(0);
+  const { hasPermission } = usePermission();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -124,7 +125,9 @@ const Tickets = () => {
                 >
                   <Tab label={t("create_new_ticket")} />
                   <Tab label={t("all_tickets")} />
-                  <Tab label={t("ticket_tab_category")} />
+                  {hasPermission("support_category") && (
+                    <Tab label={t("ticket_tab_category")} />
+                  )}
                 </Tabs>
               </Box>
               <div className="mt-3 pb-3">
