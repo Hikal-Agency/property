@@ -918,7 +918,8 @@
     "ticket_cat_delete_cat": "Delete Category",
     "edit_cat_description_label": "Description",
     "edit_cat_label": "Category Name",
-    "edit_category": "Edit Category"
+    "edit_category": "Edit Category",
+    "show_category_form": "Add Category"
    
 
 

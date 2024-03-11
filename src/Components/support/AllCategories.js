@@ -18,6 +18,8 @@ import { FiEdit } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import EditCategory from "./EditCategory";
+import { FaCheck } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 
 const AllCategories = ({ categories, fetchCategories }) => {
   console.log("all categories::", categories);
@@ -31,6 +33,8 @@ const AllCategories = ({ categories, fetchCategories }) => {
     blurDarkColor,
     blurLightColor,
     primaryColor,
+    isLangRTL,
+    i18n,
   } = useStateContext();
   const searchRef = useRef();
 
@@ -39,25 +43,87 @@ const AllCategories = ({ categories, fetchCategories }) => {
   const [noteModal, setNoteModal] = useState(false);
   const [deleteCat, setDeleteCat] = useState(false);
   const [btnloading, setBtnLoading] = useState(false);
-  const [ticketNote, setTicketNote] = useState("");
+  const [showCatForm, setShowCatForm] = useState(false);
   const [editCategory, setEditCategory] = useState(false);
-  const [supportUser, setSupportUser] = useState([]);
 
-  const navigate = useNavigate();
-  const token = localStorage.getItem("auth-token");
+  const [categoryData, setCategoryData] = useState({
+    category: null,
+    description: null,
+  });
 
-  // ROW CLICK FUNCTION
-  const handleRowClick = async (params, event) => {
-    if (!event.target.closest(".action")) {
-      console.log("ID: ", params?.id);
-      const ticketId = params?.id;
-      navigate(`/support/singleTicket/${ticketId}`);
+  const handleChange = (e) => {
+    console.log("handlechange ::: ", e.target.value);
+    setCategoryData({
+      ...categoryData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addCategory = async () => {
+    setBtnLoading(true);
+    if (!categoryData?.category) {
+      setBtnLoading(false);
+      toast.error(`Category name is required.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
+    try {
+      const editCategory = await axios.post(
+        `${BACKEND_URL}/categories`,
+        categoryData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      console.log("add category::::: ", editCategory);
+
+      toast.success(`Category added successfully.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setBtnLoading(false);
+      setEditCategory(false);
+      setCategoryData({
+        category: null,
+        description: null,
+      });
+      fetchCategories();
+    } catch (error) {
+      setBtnLoading(false);
+      console.log("error:::: ", error);
+      toast.error(`Unable to add category.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
-  const HandleViewTimeline = (params) => {
-    setEditCategory(params.row);
-  };
+  const token = localStorage.getItem("auth-token");
 
   const deleteCategory = async (e, noteModal) => {
     e.preventDefault();
@@ -247,94 +313,126 @@ const AllCategories = ({ categories, fetchCategories }) => {
     >
       <Box
         sx={{
-          // darkModeColors,
+          darkModeColors,
           ...darkModeColors,
           marginTop: "5px",
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "end",
-          "& .MuiSelect-select": {
-            padding: "2px",
-            paddingLeft: "6px !important",
-            paddingRight: "20px",
-            borderRadius: "8px",
-          },
+
           "& .MuiInputBase-root": {
             width: "max-content",
             marginRight: "5px",
           },
-          "& input": {
-            paddingTop: "0",
-          },
-          "& .applied-filter": {
-            background: primaryColor,
-            borderRadius: 4,
-            width: "max-content",
-            padding: "3px 8px",
-            color: "white",
-            marginRight: "0.25rem",
-          },
-          "& .applied-filter span": {
-            marginRight: "3px",
-          },
         }}
-        className={"items-center mb-1"}
+        className="p-2"
       >
-        {/* User  */}
-        {/* <div style={{ position: "relative" }}>
-          {/* <label
-            htmlFor="enquiryType"
-            style={{ position: "absolute", top: "-20px", right: 0 }}
-            className={`flex justify-end items-center ${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            {selectedUser?.id ? (
-              <strong
-                className="ml-4 text-sm cursor-pointer"
-                onClick={() => setSelectedUser(null)}
-              >
-                {t("clear")}
-              </strong>
-            ) : (
-              ""
-            )}
-          </label> 
-          <Box className="m-1" sx={{ minWidth: "100px" }}>
-            <Select
-              label={t("ticket_filter_user")}
-              placeholder={t("ticket_filter_user")}
-              id="user_category"
-              options={
-                user?.length > 0 &&
-                user?.map((user) => ({
-                  value: user?.id,
-                  label: user?.userName,
-                }))
-              }
-              value={{
-                value: selectedUser?.id || null,
-                label: selectedUser?.userName || t("ticket_filter_user"),
+        {showCatForm ? (
+          <>
+            <Box
+              sx={{
+                ...darkModeColors,
+                "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                  {
+                    right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                    transformOrigin: isLangRTL(i18n.language)
+                      ? "right"
+                      : "left",
+                  },
+                "& legend": {
+                  textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                },
               }}
-              onChange={(selectedUser) => {
-                console.log("onchange selected use: ", selectedUser);
-                // searchRef.current.querySelector("input").value = "";
+            >
+              <TextField
+                type={"text"}
+                label={t("edit_cat_label")}
+                className="w-full"
+                style={{
+                  marginBottom: "20px",
+                }}
+                variant="outlined"
+                size="small"
+                name="category"
+                value={categoryData?.category}
+                onChange={handleChange}
+                required
+              />
+            </Box>
 
-                setSelectedUser(
-                  user?.find((user) => user.id === selectedUser.value)
-                );
+            <Box
+              sx={{
+                ...darkModeColors,
+                "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                  {
+                    right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                    transformOrigin: isLangRTL(i18n.language)
+                      ? "right"
+                      : "left",
+                  },
+                "& legend": {
+                  textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                },
               }}
-              className="w-full"
-              menuPortalTarget={document.body}
-              styles={selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              )}
-            />
-          </Box>
-        </div> */}
+            >
+              <TextField
+                type={"text"}
+                label={t("edit_cat_description_label")}
+                className="w-full"
+                style={{
+                  marginBottom: "20px",
+                }}
+                variant="outlined"
+                name="description"
+                size="small"
+                value={categoryData?.description}
+                onChange={handleChange}
+              />
+            </Box>
+
+            <Box sx={{ darkModeColors }}>
+              <IconButton
+                sx={{
+                  border: `1px solid  ${
+                    currentMode === "dark" ? "#fff" : "#000"
+                  }`,
+                  marginLeft: "5px",
+                }}
+                className="bg-btn-primary"
+                onClick={addCategory}
+              >
+                {btnloading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <FaCheck color="#fff" />
+                )}
+              </IconButton>
+            </Box>
+            <Box sx={{ darkModeColors }}>
+              <IconButton
+                sx={{
+                  border: `1px solid  ${
+                    currentMode === "dark" ? "#fff" : "#000"
+                  }`,
+                  marginLeft: "5px",
+                }}
+                className="border-primary"
+                disabled={btnloading && true}
+                onClick={() => setShowCatForm(false)}
+              >
+                <RxCross2 color={currentMode === "dark" ? "#fff" : "#000"} />
+              </IconButton>
+            </Box>
+          </>
+        ) : (
+          <button
+            onClick={() => setShowCatForm(true)}
+            className={`rounded
+                bg-primary w-fit h-fit p-3 my-4 z-10 text-white`}
+          >
+            {t("show_category_form")}
+          </button>
+        )}
       </Box>
 
       <Box
@@ -345,7 +443,7 @@ const AllCategories = ({ categories, fetchCategories }) => {
         <DataGrid
           disableDensitySelector
           autoHeight
-          onRowClick={handleRowClick}
+          //   onRowClick={handleRowClick}
           disableSelectionOnClick
           rowsPerPageOptions={[30, 50, 75, 100]}
           pagination
