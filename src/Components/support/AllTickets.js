@@ -218,7 +218,7 @@ const AllTickets = ({ value, setValue, categories }) => {
     },
 
     {
-      field: "ticket_assigned_to",
+      field: "assigned_to",
       headerName: t("ticket_label_assign"),
       // width: 150,
       minWidth: 170,
@@ -764,10 +764,7 @@ const AllTickets = ({ value, setValue, categories }) => {
           // })}
           columns={columns?.filter((c) => {
             console.log("columns:: ", c);
-            if (
-              c?.field === "ticket_assigned_to" ||
-              c?.field === "ticket_edit"
-            ) {
+            if (c?.field === "assigned_to" || c?.field === "ticket_edit") {
               // return hasPermission("ticket_col" + c?.field);
               return hasPermission(c?.field);
             } else {
