@@ -23,6 +23,7 @@ import UpdateAssigneSelect from "./UpdateAssigneSelect";
 import Select from "react-select";
 import { selectBgStyles, pageStyles } from "../_elements/SelectStyles";
 import { ticket_status, ticket_source } from "../_elements/SelectOptions";
+import usePermission from "../../utils/usePermission";
 
 const AllTickets = ({ value, setValue, categories }) => {
   const {
@@ -37,6 +38,7 @@ const AllTickets = ({ value, setValue, categories }) => {
     primaryColor,
   } = useStateContext();
   const searchRef = useRef();
+  const { hasPermission } = usePermission();
 
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -216,7 +218,7 @@ const AllTickets = ({ value, setValue, categories }) => {
     },
 
     {
-      field: "assigned_to",
+      field: "ticket_assigned_to",
       headerName: t("ticket_label_assign"),
       // width: 150,
       minWidth: 170,
@@ -233,7 +235,7 @@ const AllTickets = ({ value, setValue, categories }) => {
       ),
     },
     {
-      field: "edit",
+      field: "ticket_edit",
       headerName: "Update Status",
       // width: 150,
       minWidth: 170,
@@ -274,21 +276,22 @@ const AllTickets = ({ value, setValue, categories }) => {
                 </button>
               </Tooltip>
             </p>
-
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-            >
-              <Tooltip title="View Timeline" arrow>
-                <button onClick={() => HandleViewTimeline(cellValues)}>
-                  <AiOutlineHistory size={16} />
-                </button>
-              </Tooltip>
-            </p>
+            {hasPermission("ticketcycles") && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <button onClick={() => HandleViewTimeline(cellValues)}>
+                    <AiOutlineHistory size={16} />
+                  </button>
+                </Tooltip>
+              </p>
+            )}
           </div>
         );
       },
@@ -459,57 +462,104 @@ const AllTickets = ({ value, setValue, categories }) => {
         className={"items-center mb-1"}
       >
         {/* User  */}
-        <div style={{ position: "relative" }}>
-          {/* <label
-            htmlFor="enquiryType"
-            style={{ position: "absolute", top: "-20px", right: 0 }}
-            className={`flex justify-end items-center ${
-              currentMode === "dark" ? "text-white" : "text-dark"
-            } `}
-          >
-            {selectedUser?.id ? (
-              <strong
-                className="ml-4 text-sm cursor-pointer"
-                onClick={() => setSelectedUser(null)}
-              >
-                {t("clear")}
-              </strong>
-            ) : (
-              ""
-            )}
-          </label> */}
+        {hasPermission("ticket_filter_user") && (
+          <div style={{ position: "relative" }}>
+            <Box className="m-1" sx={{ minWidth: "100px" }}>
+              <Select
+                label={t("ticket_filter_user")}
+                placeholder={t("ticket_filter_user")}
+                id="user_category"
+                options={
+                  user?.length > 0 &&
+                  user?.map((user) => ({
+                    value: user?.id,
+                    label: user?.userName,
+                  }))
+                }
+                isClearable
+                value={{
+                  value: selectedUser?.id || null,
+                  label: selectedUser?.userName || t("ticket_filter_user"),
+                }}
+                onChange={(selectedUser) => {
+                  console.log("onchange selected use: ", selectedUser);
+                  // searchRef.current.querySelector("input").value = "";
+
+                  if (selectedUser === null) {
+                    setSelectedUser(null);
+                    return;
+                  }
+                  const findUser = user?.find(
+                    (user) => user.id === selectedUser.value
+                  );
+
+                  setSelectedUser(findUser || null);
+                }}
+                className="w-full"
+                styles={{
+                  ...selectBgStyles(
+                    currentMode,
+                    primaryColor,
+                    blurDarkColor,
+                    blurLightColor
+                  ),
+                  dropdownIndicator: (provided) => ({
+                    ...provided,
+                    display: selectedUser?.id ? "none" : "block",
+                  }),
+                  clearIndicator: (provided) => ({
+                    ...provided,
+                    display: selectedUser?.id ? "block" : "none",
+                  }),
+                }}
+                menuPortalTarget={document.body}
+                // styles={selectBgStyles(
+                //   currentMode,
+                //   primaryColor,
+                //   blurDarkColor,
+                //   blurLightColor
+                // )}
+              />
+            </Box>
+          </div>
+        )}
+
+        {/* Category  */}
+        {hasPermission("ticket_filter_category") && (
           <Box className="m-1" sx={{ minWidth: "100px" }}>
             <Select
-              label={t("ticket_filter_user")}
-              placeholder={t("ticket_filter_user")}
+              placeholder={t("ticket_filter_category")}
               id="user_category"
               options={
-                user?.length > 0 &&
-                user?.map((user) => ({
-                  value: user?.id,
-                  label: user?.userName,
+                categories?.length > 0 &&
+                categories?.map((cat) => ({
+                  value: cat?.category,
+                  label: cat?.category,
                 }))
               }
-              isClearable
               value={{
-                value: selectedUser?.id || null,
-                label: selectedUser?.userName || t("ticket_filter_user"),
+                value: selectedCategory?.category || null,
+                label:
+                  selectedCategory?.category || t("ticket_filter_category"),
               }}
-              onChange={(selectedUser) => {
-                console.log("onchange selected use: ", selectedUser);
+              onChange={(selectedCategory) => {
+                console.log("onchange selected category: ", selectedCategory);
                 // searchRef.current.querySelector("input").value = "";
 
-                if (selectedUser === null) {
-                  setSelectedUser(null);
+                if (selectedCategory === null) {
+                  setSelectedCategory(null);
                   return;
                 }
-                const findUser = user?.find(
-                  (user) => user.id === selectedUser.value
-                );
 
-                setSelectedUser(findUser || null);
+                setSelectedCategory(
+                  categories?.find(
+                    (cat) => cat.category === selectedCategory.value
+                  )
+                );
               }}
               className="w-full"
+              isClearable
+              menuPortalTarget={document.body}
               styles={{
                 ...selectBgStyles(
                   currentMode,
@@ -519,223 +569,169 @@ const AllTickets = ({ value, setValue, categories }) => {
                 ),
                 dropdownIndicator: (provided) => ({
                   ...provided,
-                  display: selectedUser?.id ? "none" : "block",
+                  display: selectedCategory?.category ? "none" : "block",
                 }),
                 clearIndicator: (provided) => ({
                   ...provided,
-                  display: selectedUser?.id ? "block" : "none",
+                  display: selectedCategory?.category ? "block" : "none",
                 }),
               }}
-              menuPortalTarget={document.body}
-              // styles={selectBgStyles(
-              //   currentMode,
-              //   primaryColor,
-              //   blurDarkColor,
-              //   blurLightColor
-              // )}
             />
           </Box>
-        </div>
-
-        {/* Category  */}
-        <Box className="m-1" sx={{ minWidth: "100px" }}>
-          <Select
-            placeholder={t("ticket_filter_category")}
-            id="user_category"
-            options={
-              categories?.length > 0 &&
-              categories?.map((cat) => ({
-                value: cat?.category,
-                label: cat?.category,
-              }))
-            }
-            value={{
-              value: selectedCategory?.category || null,
-              label: selectedCategory?.category || t("ticket_filter_category"),
-            }}
-            onChange={(selectedCategory) => {
-              console.log("onchange selected category: ", selectedCategory);
-              // searchRef.current.querySelector("input").value = "";
-
-              if (selectedCategory === null) {
-                setSelectedCategory(null);
-                return;
-              }
-
-              setSelectedCategory(
-                categories?.find(
-                  (cat) => cat.category === selectedCategory.value
-                )
-              );
-            }}
-            className="w-full"
-            isClearable
-            menuPortalTarget={document.body}
-            styles={{
-              ...selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              ),
-              dropdownIndicator: (provided) => ({
-                ...provided,
-                display: selectedCategory?.category ? "none" : "block",
-              }),
-              clearIndicator: (provided) => ({
-                ...provided,
-                display: selectedCategory?.category ? "block" : "none",
-              }),
-            }}
-          />
-        </Box>
+        )}
 
         {/* TICKET STATUS  */}
-        <Box className="m-1" sx={{ minWidth: "100px" }}>
-          <Select
-            placeholder={t("ticket_filter_status")}
-            id="ticket_status"
-            options={ticket_status(t)?.map((status) => ({
-              value: status?.value,
-              label: status?.label,
-            }))}
-            value={{
-              value: selectedStatus?.value || null,
-              label: selectedStatus?.label || t("ticket_filter_status"),
-            }}
-            onChange={(selectedStatus) => {
-              console.log("onchange selected status: ", selectedStatus);
+        {hasPermission("ticket_filter_status") && (
+          <Box className="m-1" sx={{ minWidth: "100px" }}>
+            <Select
+              placeholder={t("ticket_filter_status")}
+              id="ticket_status"
+              options={ticket_status(t)?.map((status) => ({
+                value: status?.value,
+                label: status?.label,
+              }))}
+              value={{
+                value: selectedStatus?.value || null,
+                label: selectedStatus?.label || t("ticket_filter_status"),
+              }}
+              onChange={(selectedStatus) => {
+                console.log("onchange selected status: ", selectedStatus);
 
-              if (selectedStatus === null) {
-                setSelectedStatus(null);
-                return;
-              }
+                if (selectedStatus === null) {
+                  setSelectedStatus(null);
+                  return;
+                }
 
-              setSelectedStatus(
-                ticket_status(t)?.find(
-                  (status) => status.value === selectedStatus.value
-                )
-              );
-            }}
-            isClearable
-            className="w-full"
-            menuPortalTarget={document.body}
-            styles={{
-              ...selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              ),
-              dropdownIndicator: (provided) => ({
-                ...provided,
-                display: selectedStatus?.value ? "none" : "block",
-              }),
-              clearIndicator: (provided) => ({
-                ...provided,
-                display: selectedStatus?.value ? "block" : "none",
-              }),
-            }}
-          />
-        </Box>
+                setSelectedStatus(
+                  ticket_status(t)?.find(
+                    (status) => status.value === selectedStatus.value
+                  )
+                );
+              }}
+              isClearable
+              className="w-full"
+              menuPortalTarget={document.body}
+              styles={{
+                ...selectBgStyles(
+                  currentMode,
+                  primaryColor,
+                  blurDarkColor,
+                  blurLightColor
+                ),
+                dropdownIndicator: (provided) => ({
+                  ...provided,
+                  display: selectedStatus?.value ? "none" : "block",
+                }),
+                clearIndicator: (provided) => ({
+                  ...provided,
+                  display: selectedStatus?.value ? "block" : "none",
+                }),
+              }}
+            />
+          </Box>
+        )}
 
         {/* TICKET SOURCE  */}
-        <Box className="m-1" sx={{ minWidth: "100px" }}>
-          <Select
-            placeholder={t("ticket_filter_source")}
-            id="ticket_status"
-            options={ticket_source(t)?.map((status) => ({
-              value: status?.value,
-              label: status?.label,
-            }))}
-            value={{
-              value: selectedSource?.value || null,
-              label: selectedSource?.label || t("ticket_filter_source"),
-            }}
-            onChange={(selectedSource) => {
-              console.log("onchange selected source: ", selectedSource);
+        {hasPermission("ticket_filter_source") && (
+          <Box className="m-1" sx={{ minWidth: "100px" }}>
+            <Select
+              placeholder={t("ticket_filter_source")}
+              id="ticket_status"
+              options={ticket_source(t)?.map((status) => ({
+                value: status?.value,
+                label: status?.label,
+              }))}
+              value={{
+                value: selectedSource?.value || null,
+                label: selectedSource?.label || t("ticket_filter_source"),
+              }}
+              onChange={(selectedSource) => {
+                console.log("onchange selected source: ", selectedSource);
 
-              if (selectedSource === null) {
-                setSelectedSource(null);
-                return;
-              }
+                if (selectedSource === null) {
+                  setSelectedSource(null);
+                  return;
+                }
 
-              setSelectedSource(
-                ticket_source(t)?.find(
-                  (source) => source.value === selectedSource.value
-                )
-              );
-            }}
-            className="w-full"
-            menuPortalTarget={document.body}
-            isClearable
-            styles={{
-              ...selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              ),
-              dropdownIndicator: (provided) => ({
-                ...provided,
-                display: selectedSource?.value ? "none" : "block",
-              }),
-              clearIndicator: (provided) => ({
-                ...provided,
-                display: selectedSource?.value ? "block" : "none",
-              }),
-            }}
-          />
-        </Box>
+                setSelectedSource(
+                  ticket_source(t)?.find(
+                    (source) => source.value === selectedSource.value
+                  )
+                );
+              }}
+              className="w-full"
+              menuPortalTarget={document.body}
+              isClearable
+              styles={{
+                ...selectBgStyles(
+                  currentMode,
+                  primaryColor,
+                  blurDarkColor,
+                  blurLightColor
+                ),
+                dropdownIndicator: (provided) => ({
+                  ...provided,
+                  display: selectedSource?.value ? "none" : "block",
+                }),
+                clearIndicator: (provided) => ({
+                  ...provided,
+                  display: selectedSource?.value ? "block" : "none",
+                }),
+              }}
+            />
+          </Box>
+        )}
 
         {/* TICKET ASSIGNE  */}
-        <Box className="m-1" sx={{ minWidth: "100px" }}>
-          <Select
-            placeholder={t("ticket_filter_assigne")}
-            id="ticket_status"
-            options={supportUser?.map((support) => ({
-              value: support?.id,
-              label: support?.userName,
-            }))}
-            value={{
-              value: selectedAssigne?.id || null,
-              label: selectedAssigne?.userName || t("ticket_filter_assigne"),
-            }}
-            onChange={(selectedAssigne) => {
-              console.log("onchange selected assigned: ", selectedAssigne);
+        {hasPermission("ticket_filter_assistant") && (
+          <Box className="m-1" sx={{ minWidth: "100px" }}>
+            <Select
+              placeholder={t("ticket_filter_assigne")}
+              id="ticket_status"
+              options={supportUser?.map((support) => ({
+                value: support?.id,
+                label: support?.userName,
+              }))}
+              value={{
+                value: selectedAssigne?.id || null,
+                label: selectedAssigne?.userName || t("ticket_filter_assigne"),
+              }}
+              onChange={(selectedAssigne) => {
+                console.log("onchange selected assigned: ", selectedAssigne);
 
-              if (selectedAssigne === null) {
-                setSelectedAssigne(null);
-                return;
-              }
+                if (selectedAssigne === null) {
+                  setSelectedAssigne(null);
+                  return;
+                }
 
-              setSelectedAssigne(
-                supportUser?.find(
-                  (support) => support?.id === selectedAssigne.value
-                )
-              );
-            }}
-            className="w-full"
-            isClearable
-            menuPortalTarget={document.body}
-            styles={{
-              ...selectBgStyles(
-                currentMode,
-                primaryColor,
-                blurDarkColor,
-                blurLightColor
-              ),
-              dropdownIndicator: (provided) => ({
-                ...provided,
-                display: selectedAssigne?.id ? "none" : "block",
-              }),
-              clearIndicator: (provided) => ({
-                ...provided,
-                display: selectedAssigne?.id ? "block" : "none",
-              }),
-            }}
-          />
-        </Box>
+                setSelectedAssigne(
+                  supportUser?.find(
+                    (support) => support?.id === selectedAssigne.value
+                  )
+                );
+              }}
+              className="w-full"
+              isClearable
+              menuPortalTarget={document.body}
+              styles={{
+                ...selectBgStyles(
+                  currentMode,
+                  primaryColor,
+                  blurDarkColor,
+                  blurLightColor
+                ),
+                dropdownIndicator: (provided) => ({
+                  ...provided,
+                  display: selectedAssigne?.id ? "none" : "block",
+                }),
+                clearIndicator: (provided) => ({
+                  ...provided,
+                  display: selectedAssigne?.id ? "block" : "none",
+                }),
+              }}
+            />
+          </Box>
+        )}
       </Box>
 
       <Box
@@ -754,7 +750,30 @@ const AllTickets = ({ value, setValue, categories }) => {
           width="auto"
           paginationMode="server"
           rows={rows}
-          columns={columns}
+          // columns={columns}
+          // columns={columns?.filter((c) => {
+          //   if (
+          //     c?.field === "ticket_col_assigned_to" ||
+          //     c?.field === "ticket_col_edit"
+          //   ) {
+          //     hasPermission("ticket_col" + c?.field);
+          //     return;
+          //   } else {
+          //     return c;
+          //   }
+          // })}
+          columns={columns?.filter((c) => {
+            console.log("columns:: ", c);
+            if (
+              c?.field === "ticket_assigned_to" ||
+              c?.field === "ticket_edit"
+            ) {
+              // return hasPermission("ticket_col" + c?.field);
+              return hasPermission(c?.field);
+            } else {
+              return true; // Keep other columns
+            }
+          })}
           componentsProps={{
             toolbar: {
               showQuickFilter: false,
