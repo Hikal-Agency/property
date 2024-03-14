@@ -197,7 +197,7 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
       console.log("table data::: ", tableData);
 
       //   start creating tables
-      if (tableData.length > 0) {
+      if (tableData && tableData.length > 0) {
         const totalWidth = columns.length * 30;
         const fontSize = 7;
 
