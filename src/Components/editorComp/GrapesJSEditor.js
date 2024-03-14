@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import grapesjs from "grapesjs";
 import gjsPresetWebpage from "grapesjs-preset-webpage";
-// import "grapesjs-preset-webpage/dist/grapesjs-preset-webpage.min.css";
-// import "grapesjs/dist/css/grapes.min.css";
+import axios from "../../axoisConfig";
+import { useStateContext } from "../../context/ContextProvider";
 const GrapesJSEditor = () => {
   const editorRef = useRef(null);
+  const { t } = useStateContext();
+  const [getCode, setGetCode] = useState(false);
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -43,13 +45,38 @@ const GrapesJSEditor = () => {
       category: "Basic", // Specify the category under which the block should be listed
     });
 
+    // save
+
+    const saveLandingPage = async (editor) => {
+      console.log("Editor ref:: ", editor);
+
+      const html = editor.getHtml(); // Get HTML code
+      const css = editor.getCss(); // Get CSS code
+      const storage = editor.getStorages(); // Get storage
+
+      console.log("html,css::: ", html, css);
+      console.log("storage:::  ", storage);
+
+      return;
+
+      try {
+        const response = await axios.post("your-api-endpoint", { html, css });
+        console.log("Export successful", response.data);
+      } catch (error) {
+        console.error("Export failed", error);
+      }
+    };
+    if (getCode === true) {
+      saveLandingPage(editor);
+    }
+
     // Cleanup function to destroy the editor when the component unmounts
     return () => {
       if (editor) {
         editor.destroy();
       }
     };
-  }, []);
+  }, [getCode]);
 
   const addCustomBlocks = (editor) => {
     // Text Block
@@ -234,7 +261,36 @@ const GrapesJSEditor = () => {
     });
   };
 
-  return <div id="gjs" ref={editorRef}></div>;
+  // save template
+  const saveLandingPage = async () => {
+    console.log("Editor ref:: ", editorRef);
+    return;
+    const html = editorRef.current.getHtml(); // Get HTML code
+    const css = editorRef.current.getCss(); // Get CSS code
+
+    console.log("html,css::: ", html, css);
+    return;
+
+    try {
+      const response = await axios.post("your-api-endpoint", { html, css });
+      console.log("Export successful", response.data);
+    } catch (error) {
+      console.error("Export failed", error);
+    }
+  };
+
+  return (
+    <>
+      <button
+        className="rounded-md bg-primary p-2 text-white"
+        // onClick={saveLandingPage}
+        onClick={() => setGetCode(true)}
+      >
+        {t("funnel_form_save")}
+      </button>
+      <div id="gjs" ref={editorRef}></div>
+    </>
+  );
 };
 
 export default GrapesJSEditor;
