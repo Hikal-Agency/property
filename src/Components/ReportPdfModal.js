@@ -245,7 +245,8 @@ const ReportPdfModal = ({ reportModal, setReportModal }) => {
 
         // Load the logo image
         const logoImg = new Image();
-        logoImg.src = "/assets/hikal_watermark.png";
+        logoImg.src = "/assets/hikal_watermark.jpg";
+        console.log("logo:: ", logoImg);
         logoImg.onload = () => {
           const originalWidth = logoImg.width;
           const originalHeight = logoImg.height;
