@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import grapesjs from "grapesjs";
 import gjsPresetWebpage from "grapesjs-preset-webpage";
-import axios from "../../axoisConfig";
 import { useStateContext } from "../../context/ContextProvider";
+// import "grapesjs-preset-webpage/dist/grapesjs-preset-webpage.min.css";
+// import "grapesjs/dist/css/grapes.min.css";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
 const GrapesJSEditor = () => {
   const editorRef = useRef(null);
-  const { t } = useStateContext();
-  const [getCode, setGetCode] = useState(false);
+  const { t, BACKEND_URL } = useStateContext();
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -45,30 +47,8 @@ const GrapesJSEditor = () => {
       category: "Basic", // Specify the category under which the block should be listed
     });
 
-    // save
-
-    const saveLandingPage = async (editor) => {
-      console.log("Editor ref:: ", editor);
-
-      const html = editor.getHtml(); // Get HTML code
-      const css = editor.getCss(); // Get CSS code
-      const storage = editor.getStorages(); // Get storage
-
-      console.log("html,css::: ", html, css);
-      console.log("storage:::  ", storage);
-
-      return;
-
-      try {
-        const response = await axios.post("your-api-endpoint", { html, css });
-        console.log("Export successful", response.data);
-      } catch (error) {
-        console.error("Export failed", error);
-      }
-    };
-    if (getCode === true) {
-      saveLandingPage(editor);
-    }
+    // reference to editor instance for use in any function
+    editorRef.current = editor;
 
     // Cleanup function to destroy the editor when the component unmounts
     return () => {
@@ -76,7 +56,7 @@ const GrapesJSEditor = () => {
         editor.destroy();
       }
     };
-  }, [getCode]);
+  }, []);
 
   const addCustomBlocks = (editor) => {
     // Text Block
@@ -261,21 +241,62 @@ const GrapesJSEditor = () => {
     });
   };
 
-  // save template
   const saveLandingPage = async () => {
-    console.log("Editor ref:: ", editorRef);
-    return;
+    if (!editorRef.current) {
+      console.error("The GrapesJS editor instance is not initialized");
+      return;
+    }
+
+    const token = localStorage.getItem("auth-token");
     const html = editorRef.current.getHtml(); // Get HTML code
     const css = editorRef.current.getCss(); // Get CSS code
 
-    console.log("html,css::: ", html, css);
-    return;
+    // Log HTML and CSS for debugging purposes
+    console.log("HTML:", html);
+    console.log("CSS:", css);
+
+    const data = {
+      template_name: "Template 3",
+      template_type: "Basic",
+      html: html,
+      css: css,
+    };
 
     try {
-      const response = await axios.post("your-api-endpoint", { html, css });
-      console.log("Export successful", response.data);
+      const response = await axios.post(
+        `${BACKEND_URL}/page-templates/`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      console.log("successfully posted", response.data);
+
+      toast.success("Page successfully saved.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } catch (error) {
       console.error("Export failed", error);
+      toast.error("Unable to save page.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -283,8 +304,7 @@ const GrapesJSEditor = () => {
     <>
       <button
         className="rounded-md bg-primary p-2 text-white"
-        // onClick={saveLandingPage}
-        onClick={() => setGetCode(true)}
+        onClick={saveLandingPage}
       >
         {t("funnel_form_save")}
       </button>
