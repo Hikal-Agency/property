@@ -5,6 +5,7 @@ import usePermission from "../../utils/usePermission";
 import { AiOutlinePlus } from "react-icons/ai";
 
 import React, { useState } from "react";
+import AddTemplateModal from "../../Components/editorComp/AddTemplateModal";
 
 const TemplatesList = () => {
   const {
@@ -20,6 +21,7 @@ const TemplatesList = () => {
   } = useStateContext();
   const { hasPermission } = usePermission();
   const token = localStorage.getItem("auth-token");
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <>
@@ -41,18 +43,25 @@ const TemplatesList = () => {
                   {t("templates_list")}{" "}
                 </h1>
               </div>
-              <Link
-                to="/editor"
+              <button
                 className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
+                onClick={() => setOpenModal(true)}
               >
                 <span className="flex justify-between items-center ">
                   <AiOutlinePlus style={{ marginRight: "0.5em" }} />
                   {t("btn_add_template")}
                 </span>
-              </Link>
+              </button>
             </div>
             <TemplatesListComp />
           </div>
+
+          {openModal && (
+            <AddTemplateModal
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+            />
+          )}
         </div>
       </div>
     </>
