@@ -13,7 +13,9 @@ const GrapesJSEditor = () => {
   const { t, BACKEND_URL, darkModeColors } = useStateContext();
   const [templateName, setTemplateName] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
+  const { id } = useNavigate();
   const navigate = useNavigate();
+  const token = localStorage.getItem("auth-token");
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -54,6 +56,42 @@ const GrapesJSEditor = () => {
 
     // reference to editor instance for use in any function
     editorRef.current = editor;
+
+    const loadTemplate = async () => {
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/page-templates/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const { html, css } = response.data;
+
+        const editor = editorRef.current;
+        editor.setComponents(html);
+        editor.setStyle(css);
+      } catch (error) {
+        console.error("Error fetching template data:", error);
+        toast.error("Error fetching template.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        navigate("/templates");
+      }
+    };
+
+    if (id) {
+      loadTemplate();
+    }
 
     // Cleanup function to destroy the editor when the component unmounts
     return () => {
@@ -279,7 +317,6 @@ const GrapesJSEditor = () => {
 
     setBtnLoading(true);
 
-    const token = localStorage.getItem("auth-token");
     const html = editorRef.current.getHtml(); // Get HTML code
     const css = editorRef.current.getCss(); // Get CSS code
 
