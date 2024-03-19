@@ -21,13 +21,14 @@ import { AiFillUnlock } from "react-icons/ai";
 
 const UserTable = ({}) => {
   const [loading, setLoading] = useState(false);
-  const { 
-    currentMode, 
-    BACKEND_URL, 
-    pageState, 
-    setpageState, 
+  const {
+    currentMode,
+    BACKEND_URL,
+    pageState,
+    setpageState,
     primaryColor,
-    themeBgImg, t
+    themeBgImg,
+    t,
   } = useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [userData, setUserData] = useState([]);
@@ -50,7 +51,7 @@ const UserTable = ({}) => {
   };
 
   const handlePageChange = (event, value) => {
-    console.log(value);
+    console.log("pagination value: ", value);
     setpageState({ ...pageState, page: value });
     // setCurrentPage();
   };
@@ -140,8 +141,7 @@ const UserTable = ({}) => {
         {loading ? (
           <Loader />
         ) : (
-          <div
-            className={`w-full`}>
+          <div className={`w-full`}>
             <div className="px-5">
               <div className="mt-5 md:mt-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-3 pb-3">
@@ -150,16 +150,18 @@ const UserTable = ({}) => {
                       <div
                         key={index}
                         className={`${
-                          !themeBgImg 
-                            ? (currentMode === "dark"
+                          !themeBgImg
+                            ? currentMode === "dark"
                               ? "bg-[#1c1c1c] text-white"
-                              : "bg-[#EEEEEE] text-black")
-                            : (currentMode === "dark"
-                              ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              : "bg-[#EEEEEE] text-black"
+                            : currentMode === "dark"
+                            ? "blur-bg-dark text-white"
+                            : "blur-bg-light text-black"
                         } rounded-md relative hover:shadow-lg text-sm`}
                       >
-                        <div className={`border-primary grid grid-cols-12 border-t-2 rounded-md`}>
+                        <div
+                          className={`border-primary grid grid-cols-12 border-t-2 rounded-md`}
+                        >
                           <div className="col-span-10 p-2">
                             <div className="flex items-center m-1 mb-4">
                               {/* IMAGE  */}
@@ -198,15 +200,21 @@ const UserTable = ({}) => {
                               </div>
 
                               {item?.status !== 1 ? (
-                                <p className="text-red-600 text-xs font-semibold">DEACTIVATED ACCOUNT</p>
+                                <p className="text-red-600 text-xs font-semibold">
+                                  DEACTIVATED ACCOUNT
+                                </p>
                               ) : (
-                                <p className="text-green-600 text-xs font-semibold">ACTIVE ACCOUNT</p>
+                                <p className="text-green-600 text-xs font-semibold">
+                                  ACTIVE ACCOUNT
+                                </p>
                               )}
                             </div>
                           </div>
 
                           <div className={`col-span-2 px-2 rounded-md`}>
-                            <div className={`flex flex-col space-y-1 justify-center p-1 pt-3 rounded-b-full`}>
+                            <div
+                              className={`flex flex-col space-y-1 justify-center p-1 pt-3 rounded-b-full`}
+                            >
                               {/* VIEW  */}
                               <div className="w-full flex justify-center">
                                 <Tooltip title="View User Details" arrow>
@@ -214,7 +222,10 @@ const UserTable = ({}) => {
                                     onClick={() => handleModel(item?.id)}
                                     className="rounded-full bg-primary p-2"
                                   >
-                                    <MdOutlinePermContactCalendar size={18} className={`text-white hover:text-black`} />
+                                    <MdOutlinePermContactCalendar
+                                      size={18}
+                                      className={`text-white hover:text-black`}
+                                    />
                                   </button>
                                 </Tooltip>
                               </div>
@@ -222,15 +233,14 @@ const UserTable = ({}) => {
                               {/* EDIT  */}
                               <div className="w-full flex justify-center items-center">
                                 <Tooltip title="Edit User Details" arrow>
-                                  <button 
-                                    onClick={() =>
-                                      handleEditModal(
-                                        item?.id
-                                      )
-                                    }
+                                  <button
+                                    onClick={() => handleEditModal(item?.id)}
                                     className="rounded-full bg-primary p-2"
                                   >
-                                    <AiOutlineEdit size={18} className={`text-white hover:text-black`} />
+                                    <AiOutlineEdit
+                                      size={18}
+                                      className={`text-white hover:text-black`}
+                                    />
                                   </button>
                                 </Tooltip>
                               </div>
@@ -252,7 +262,10 @@ const UserTable = ({}) => {
                                             }
                                             className="rounded-full bg-primary p-2"
                                           >
-                                            <HiOutlineBan size={18} className={`text-white hover:text-black`} />
+                                            <HiOutlineBan
+                                              size={18}
+                                              className={`text-white hover:text-black`}
+                                            />
                                           </button>
                                         </Tooltip>
                                       ) : (
@@ -277,8 +290,6 @@ const UserTable = ({}) => {
                                 </div>
                               )}
                             </div>
-                            
-                           
                           </div>
                         </div>
 

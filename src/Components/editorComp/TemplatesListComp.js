@@ -8,6 +8,8 @@ import {
   Menu,
   MenuItem,
   Modal,
+  Pagination,
+  Stack,
   Tooltip,
 } from "@mui/material";
 import { MdMoreVert } from "react-icons/md";
@@ -20,11 +22,19 @@ import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 
 const TemplatesListComp = () => {
-  const { themeBgImg, currentMode, isLangRTL, i18n, t, BACKEND_URL } =
-    useStateContext();
+  const {
+    themeBgImg,
+    currentMode,
+    isLangRTL,
+    i18n,
+    t,
+    BACKEND_URL,
+    primaryColor,
+  } = useStateContext();
   const [loading, setloading] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
+  const [page, setPage] = useState(1);
   const [btnLoading, setBtnLoading] = useState(false);
   const [openSingleTemplate, setOpenSingleTemplate] = useState({
     open: false,
@@ -41,6 +51,7 @@ const TemplatesListComp = () => {
   const handleCloseModal = () => setDeleteTemplate(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [maxPage, setMaxPage] = useState(0);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -67,6 +78,7 @@ const TemplatesListComp = () => {
 
       console.log("templates list::: ", response);
       setTemplatesList(response?.data?.data);
+      setMaxPage(response?.data?.data?.last_page);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -408,6 +420,28 @@ const TemplatesListComp = () => {
             </div>
           </div>
         )} */}
+
+        <Stack spacing={2} marginTop={2}>
+          <Pagination
+            count={maxPage}
+            color={currentMode === "dark" ? "primary" : "secondary"}
+            onChange={(value) => setPage(value)}
+            style={{ margin: "auto" }}
+            page={page}
+            sx={{
+              "& .Mui-selected": {
+                color: "white !important",
+                backgroundColor: `${primaryColor} !important`,
+                "&:hover": {
+                  backgroundColor: currentMode === "dark" ? "black" : "white",
+                },
+              },
+              "& .MuiPaginationItem-root": {
+                color: currentMode === "dark" ? "white" : "black",
+              },
+            }}
+          />
+        </Stack>
       </Box>
     </div>
   );
