@@ -4,6 +4,8 @@ import { useStateContext } from "../../context/ContextProvider";
 import { MdClose } from "react-icons/md";
 import GrapesJSEditor from "./GrapesJSEditor";
 import FunnelSettings from "./FunnelSettings";
+import { Link } from "react-router-dom";
+import { AiOutlinePlus } from "react-icons/ai";
 
 const SingleTemplateModal = ({
   setOpenSingleTemplate,
@@ -88,19 +90,31 @@ const SingleTemplateModal = ({
     p-4 h-[100vh] w-[80vw] overflow-y-scroll 
     `}
         >
-          <div className="w-full flex items-center pb-3 ">
-            <div
-              className={`${
-                isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-              } bg-primary h-10 w-1 rounded-full my-1`}
-            ></div>
-            <h1
-              className={`text-lg font-semibold ${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
+          <div className="flex justify-between items-center  ">
+            <div className="flex items-center pb-3">
+              <div
+                className={`${
+                  isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                } bg-primary h-10 w-1 rounded-full my-1`}
+              ></div>
+              <h1
+                className={`text-lg font-semibold ${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              >
+                {t("btn_add_template")}
+              </h1>
+            </div>
+
+            <Link
+              to={`/editor/${openSingleTemplate?.image?.id}`}
+              className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
             >
-              Landing Page
-            </h1>
+              <span className="flex justify-between items-center ">
+                {/* <AiOutlinePlus style={{ marginRight: "0.5em" }} /> */}
+                {t("edit")}
+              </span>
+            </Link>
           </div>
 
           <div className="mb-4">
@@ -132,16 +146,16 @@ const SingleTemplateModal = ({
                 variant="variant"
                 className="w-full m-1"
               >
-                <Tab label={t("edit_landing_page")?.toUpperCase()} />
+                {/* <Tab label={t("edit_landing_page")?.toUpperCase()} /> */}
                 <Tab label={t("landing_page_settings")?.toUpperCase()} />
               </Tabs>
             </Box>
 
             <div className="mt-3 pb-3">
-              <TabPanel value={value} index={0}>
+              {/* <TabPanel value={value} index={0}>
                 <GrapesJSEditor />
-              </TabPanel>
-              <TabPanel value={value} index={1}>
+              </TabPanel> */}
+              <TabPanel value={value} index={0}>
                 <FunnelSettings />
               </TabPanel>
             </div>
