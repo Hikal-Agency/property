@@ -7,13 +7,15 @@ import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { Box, CircularProgress, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const GrapesJSEditor = () => {
   const editorRef = useRef(null);
   const { t, BACKEND_URL, darkModeColors } = useStateContext();
   const [templateName, setTemplateName] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
-  const { id } = useNavigate();
+  const { id } = useParams();
+
+  console.log("template id:: ", id);
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
 
@@ -68,7 +70,9 @@ const GrapesJSEditor = () => {
             },
           }
         );
-        const { html, css } = response.data;
+        console.log("single page template:: ", response);
+        const { html, css, template_name } = response.data;
+        setTemplateName(template_name);
 
         const editor = editorRef.current;
         editor.setComponents(html);

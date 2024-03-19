@@ -513,6 +513,11 @@ const routes = [
     pageName: "Editor",
   },
   {
+    path: "/editor/:id",
+    element: <Editor />,
+    pageName: "Editor",
+  },
+  {
     path: "*",
     element: <Error />,
   },

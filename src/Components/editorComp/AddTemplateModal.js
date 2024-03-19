@@ -4,16 +4,16 @@ import { useStateContext } from "../../context/ContextProvider";
 import { MdClose } from "react-icons/md";
 import GrapesJSEditor from "./GrapesJSEditor";
 import FunnelSettings from "./FunnelSettings";
+import TemplatesListComp from "./TemplatesListComp";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 
-const SingleTemplateModal = ({
-  setOpenSingleTemplate,
-  openSingleTemplate,
+const AddTemplateModal = ({
+  setOpenModal,
+  openModal,
   hikalrewhite,
   hikalre,
 }) => {
-  console.log("single template:: ", openSingleTemplate);
   const { currentMode, i18n, isLangRTL, t, darkModeColors, themeBgImg } =
     useStateContext();
   const [value, setValue] = useState();
@@ -28,9 +28,7 @@ const SingleTemplateModal = ({
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
-      setOpenSingleTemplate({
-        open: false,
-      });
+      setOpenModal(false);
     }, 1000);
   };
   const style = {
@@ -41,7 +39,7 @@ const SingleTemplateModal = ({
   return (
     <Modal
       keepMounted
-      open={openSingleTemplate?.open}
+      open={openModal}
       onClose={handleClose}
       aria-labelledby="keep-mounted-modal-title"
       aria-describedby="keep-mounted-modal-description"
@@ -90,7 +88,7 @@ const SingleTemplateModal = ({
     p-4 h-[100vh] w-[80vw] overflow-y-scroll 
     `}
         >
-          <div className="flex justify-between items-center  ">
+          <div className=" flex justify-between items-center ">
             <div className="flex items-center pb-3">
               <div
                 className={`${
@@ -107,74 +105,21 @@ const SingleTemplateModal = ({
             </div>
 
             <Link
-              to={`/editor/${openSingleTemplate?.image?.id}`}
+              to="/editor"
               className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
             >
               <span className="flex justify-between items-center ">
-                {/* <AiOutlinePlus style={{ marginRight: "0.5em" }} /> */}
-                {t("edit")}
+                <AiOutlinePlus style={{ marginRight: "0.5em" }} />
+                {t("scratch_landing_page")}
               </span>
             </Link>
           </div>
 
           <div className="mb-4">
-            <Box
-              sx={{
-                ...darkModeColors,
-                "& .MuiTabs-indicator": {
-                  height: "100%",
-                  borderRadius: "5px",
-                },
-                "& .Mui-selected": {
-                  color: "white !important",
-                  zIndex: "1",
-                },
-              }}
-              className={`w-full rounded-lg overflow-hidden ${
-                !themeBgImg
-                  ? currentMode === "dark"
-                    ? "bg-[#1c1c1c]"
-                    : "bg-[#EEEEEE]"
-                  : currentMode === "dark"
-                  ? "blur-bg-dark"
-                  : "blur-bg-light"
-              } `}
-            >
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                variant="variant"
-                className="w-full m-1"
-              >
-                {/* <Tab label={t("edit_landing_page")?.toUpperCase()} /> */}
-                <Tab label={t("landing_page_settings")?.toUpperCase()} />
-              </Tabs>
-            </Box>
-
             <div className="mt-3 pb-3">
-              {/* <TabPanel value={value} index={0}>
-                <GrapesJSEditor />
-              </TabPanel> */}
-              <TabPanel value={value} index={0}>
-                <FunnelSettings />
-              </TabPanel>
+              <TemplatesListComp />
             </div>
           </div>
-
-          {!value && (
-            <div className="w-full">
-              <img
-                src={openSingleTemplate?.image}
-                alt="overlay"
-                className="h-[70vh] w-[90vw]"
-              />
-              <img
-                src={hikalrewhite}
-                alt="hikal real estate"
-                className="absolute right-4 bottom-4 w-[100px] p-2 bg-[#000000] bg-opacity-70"
-              />
-            </div>
-          )}
         </div>
       </div>
     </Modal>
@@ -186,4 +131,4 @@ const SingleTemplateModal = ({
   }
 };
 
-export default SingleTemplateModal;
+export default AddTemplateModal;
