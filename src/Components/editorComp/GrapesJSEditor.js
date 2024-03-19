@@ -14,6 +14,8 @@ const GrapesJSEditor = () => {
   const [templateName, setTemplateName] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
   const { id } = useNavigate();
+
+  console.log("template id:: ", id);
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
 

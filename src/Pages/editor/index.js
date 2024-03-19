@@ -202,58 +202,6 @@ const Editor = () => {
     }
   };
 
-  const handleTrainerSwitchChange = async (cellValues) => {
-    console.log("Id: ", cellValues?.id);
-    const token = localStorage.getItem("auth-token");
-
-    const make_trainer = cellValues?.formattedValue === 1 ? 2 : 1;
-
-    console.log("Make trainer: ", make_trainer);
-
-    const Update_trainer = new FormData();
-
-    Update_trainer.append("is_trainer", make_trainer);
-
-    try {
-      const is_trainer = await axios.post(
-        `${BACKEND_URL}/updateuser/${cellValues?.id}`,
-        Update_trainer,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      toast.success("User trainer permission updated.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      fetchUsers(token);
-
-      console.log("Response: ", is_trainer);
-    } catch (error) {
-      toast.error("Unable to update user.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
   return (
     <>
       <div className="flex min-h-screen">
