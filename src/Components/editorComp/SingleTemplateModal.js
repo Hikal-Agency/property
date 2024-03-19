@@ -11,6 +11,7 @@ const SingleTemplateModal = ({
   hikalrewhite,
   hikalre,
 }) => {
+  console.log("single template:: ", openSingleTemplate);
   const { currentMode, i18n, isLangRTL, t, darkModeColors, themeBgImg } =
     useStateContext();
   const [value, setValue] = useState();

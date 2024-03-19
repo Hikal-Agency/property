@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import {
   Box,
@@ -13,10 +13,13 @@ import { MdMoreVert } from "react-icons/md";
 
 import { MdClose } from "react-icons/md";
 import SingleTemplateModal from "./SingleTemplateModal";
+import { toast } from "react-toastify";
+import axios from "../../axoisConfig";
 
 const TemplatesListComp = () => {
-  const { themeBgImg, currentMode, isLangRTL, i18n, t } = useStateContext();
-  const [loading, setloadng] = useState(false);
+  const { themeBgImg, currentMode, isLangRTL, i18n, t, BACKEND_URL } =
+    useStateContext();
+  const [loading, setloading] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
   const [btnloading, setBtnLoading] = useState(false);
@@ -24,6 +27,8 @@ const TemplatesListComp = () => {
     open: false,
     image: null,
   });
+  const [templatesList, setTemplatesList] = useState({});
+  const token = localStorage.getItem("auth-token");
   const static_img = "assets/no-image.png";
   const hikalre = "fullLogoRE.png";
   const hikalrewhite = "fullLogoREWhite.png";
@@ -38,17 +43,46 @@ const TemplatesListComp = () => {
     setAnchorEl(null);
   };
 
-  const listing = [
-    {
-      img: static_img,
-    },
-    {
-      img: static_img,
-    },
-    {
-      img: static_img,
-    },
-  ];
+  // const templatesList = [
+  //   {
+  //     img: static_img,
+  //   },
+  //   {
+  //     img: static_img,
+  //   },
+  //   {
+  //     img: static_img,
+  //   },
+  // ];
+
+  const fetchTemplates = async () => {
+    setloading(true);
+    try {
+      const response = await axios.get(`${BACKEND_URL}/page-templates`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("templates list::: ", response);
+      setTemplatesList(response?.data?.data);
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      console.error("Error fetching template data:", error);
+      toast.error("Error fetching templates.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const handleCloseOverlay = () => {
     setShowOverlay(false);
@@ -58,6 +92,11 @@ const TemplatesListComp = () => {
     setActiveImage(imageUrl);
     setShowOverlay(true);
   };
+
+  useEffect(() => {
+    fetchTemplates();
+  }, []);
+
   return (
     <div className="relative">
       <Box className="p-0">
@@ -65,14 +104,14 @@ const TemplatesListComp = () => {
           <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
             <CircularProgress />
           </div>
-        ) : listing?.length > 0 ? (
+        ) : templatesList?.data?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-            {listing?.map((listing, index) => {
+            {templatesList?.data?.map((templatesList, index) => {
               return (
                 <div
                   key={index}
                   className={`card-hover relative overflow-hidden offers-page-${
-                    listing?.page
+                    templatesList?.page
                   } ${
                     !themeBgImg
                       ? currentMode === "dark"
@@ -120,25 +159,17 @@ const TemplatesListComp = () => {
                     </div>
 
                     <div className="">
-                      {listing?.img ? (
-                        <img
-                          src={listing?.img}
-                          alt="secondary"
-                          className="w-full h-[500px] object-cover"
-                          onClick={() =>
-                            setOpenSingleTemplate({
-                              open: true,
-                              image: listing?.img,
-                            })
-                          }
-                        />
-                      ) : (
-                        <img
-                          src={static_img}
-                          alt="secondary"
-                          className="w-full h-[200px] object-cover"
-                        />
-                      )}
+                      <img
+                        src={static_img}
+                        alt="secondary"
+                        className="w-full h-[500px] object-cover"
+                        onClick={() =>
+                          setOpenSingleTemplate({
+                            open: true,
+                            image: templatesList,
+                          })
+                        }
+                      />
 
                       <div
                         className={`absolute top-0 ${
@@ -148,21 +179,21 @@ const TemplatesListComp = () => {
                         {/* <div className="flex flex-col gap-2">
                           <Tooltip title="View Property" arrow>
                             <button
-                              onClick={() => HandleSingleListing(listing?.id)}
+                              onClick={() => HandleSingleListing(templatesList?.id)}
                               className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
                             >
                               <BsListStars size={16} color={"#FFFFFF"} />
                             </button>
                           </Tooltip>
                           {hasPermission("delete_listing") && (
-                            <Tooltip title="Delete Listing" arrow>
+                            <Tooltip title="Delete templatesList" arrow>
                               <button
                                 className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
                                 onClick={(e) =>
                                   handleOpenDialogue(
                                     e,
-                                    listing?.id,
-                                    listing?.project
+                                    templatesList?.id,
+                                    templatesList?.project
                                   )
                                 }
                               >
