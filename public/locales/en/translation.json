@@ -899,7 +899,8 @@
 
 
     "landing_page_name":"Enter page name",
-    "scratch_landing_page":"Create from Scratch"
+    "scratch_landing_page":"Create from Scratch",
+    "no_landing_pages":"No templates available"
 
 
 
