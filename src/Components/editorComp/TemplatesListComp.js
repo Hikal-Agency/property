@@ -311,12 +311,24 @@ const TemplatesListComp = () => {
                           })
                         }
                       /> */}
-                      <div
+                      {/* <div
                         className="html-content-container w-full h-[500px] object-cover overflow-y-auto overflow-x-hidden"
                         dangerouslySetInnerHTML={createMarkup(
                           templatesList?.html
                         )}
-                      />
+                      /> */}
+                      <iframe
+                        className="html-content-container w-full h-[500px] object-cover overflow-y-auto overflow-x-hidden"
+                        sandbox="allow-same-origin allow-scripts"
+                        // srcDoc={DOMPurify.sanitize(templatesList?.html)}
+                        srcDoc={`<html><head><style>${DOMPurify.sanitize(
+                          templatesList?.css || ""
+                        )}</style></head><body>${DOMPurify.sanitize(
+                          templatesList?.html || ""
+                        )}</body></html>`}
+                        frameBorder="0"
+                        allowFullScreen
+                      ></iframe>
 
                       <div
                         className={`absolute top-0 ${
