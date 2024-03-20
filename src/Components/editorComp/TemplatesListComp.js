@@ -21,6 +21,7 @@ import SingleTemplateModal from "./SingleTemplateModal";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const TemplatesListComp = () => {
   const {
@@ -42,7 +43,7 @@ const TemplatesListComp = () => {
     image: null,
   });
   const navigate = useNavigate();
-  const [templatesList, setTemplatesList] = useState({});
+  const [templatesList, setTemplatesList] = useState([]);
   const token = localStorage.getItem("auth-token");
   const static_img = "assets/no-image.png";
   const hikalre = "fullLogoRE.png";
@@ -183,6 +184,28 @@ const TemplatesListComp = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("templates list useeffect:: ", templatesList);
+    if (!templatesList) {
+      return;
+    }
+    const css =
+      templatesList && templatesList?.map((template) => template.css).join(" ");
+    const style = document.createElement("style");
+    style.type = "text/css";
+    style.innerHTML = css;
+    document.head.appendChild(style);
+
+    // Remove the style tag on component unmount
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, [templatesList]);
+
+  const createMarkup = (htmlContent) => {
+    return { __html: DOMPurify.sanitize(htmlContent) };
+  };
+
   const handleCloseOverlay = () => {
     setShowOverlay(false);
   };
@@ -277,7 +300,7 @@ const TemplatesListComp = () => {
                     </div>
 
                     <div className="">
-                      <img
+                      {/* <img
                         src={static_img}
                         alt="secondary"
                         className="w-full h-[500px] object-cover"
@@ -287,6 +310,12 @@ const TemplatesListComp = () => {
                             image: templatesList,
                           })
                         }
+                      /> */}
+                      <div
+                        className="html-content-container w-full h-[500px] object-cover overflow-y-auto overflow-x-hidden"
+                        dangerouslySetInnerHTML={createMarkup(
+                          templatesList?.html
+                        )}
                       />
 
                       <div
