@@ -203,9 +203,9 @@ const TemplatesListComp = () => {
           <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
             <CircularProgress />
           </div>
-        ) : templatesList?.data?.length > 0 ? (
+        ) : templatesList?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-            {templatesList?.data?.map((templatesList, index) => {
+            {templatesList?.map((templatesList, index) => {
               return (
                 <div
                   key={index}
