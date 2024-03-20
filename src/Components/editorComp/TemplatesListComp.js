@@ -14,12 +14,14 @@ import {
 } from "@mui/material";
 import { MdMoreVert } from "react-icons/md";
 import { IoIosAlert } from "react-icons/io";
+import pako from "pako";
 
 import { MdClose } from "react-icons/md";
 import SingleTemplateModal from "./SingleTemplateModal";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const TemplatesListComp = () => {
   const {
@@ -41,7 +43,7 @@ const TemplatesListComp = () => {
     image: null,
   });
   const navigate = useNavigate();
-  const [templatesList, setTemplatesList] = useState({});
+  const [templatesList, setTemplatesList] = useState([]);
   const token = localStorage.getItem("auth-token");
   const static_img = "assets/no-image.png";
   const hikalre = "fullLogoRE.png";
@@ -66,6 +68,31 @@ const TemplatesListComp = () => {
     setAnchorEl(null);
   };
 
+  // Decompression utility function
+  const decompressData = (base64Data) => {
+    console.log("base64:: ", base64Data);
+    let decompressedData;
+    let compressedDataArray = atob(base64Data).split(",");
+
+    try {
+      decompressedData = JSON.parse(
+        pako.inflate(
+          // new Uint8Array(compressedDataArray.map(compressedDataArray)),
+          new Uint8Array(compressedDataArray),
+          {
+            raw: true,
+            to: "string",
+          }
+        )
+      );
+      console.log("Decompressed data: ", decompressedData);
+    } catch (e) {
+      throw new Error(e);
+    }
+
+    return decompressedData;
+  };
+
   const fetchTemplates = async () => {
     setloading(true);
     try {
@@ -76,8 +103,23 @@ const TemplatesListComp = () => {
         },
       });
 
+      const templates = response?.data?.data;
       console.log("templates list::: ", response);
-      setTemplatesList(response?.data?.data);
+
+      //  decompress the html and css
+      const decompressedTemplates = templates?.data?.map((template) => {
+        return {
+          ...template,
+          html: decompressData(template.html),
+          css: decompressData(template.css),
+        };
+      });
+
+      console.log("docompressed data:: ", decompressedTemplates);
+
+      setTemplatesList(decompressedTemplates);
+
+      // setTemplatesList(response?.data?.data);
       setMaxPage(response?.data?.data?.last_page);
       setloading(false);
     } catch (error) {
@@ -142,6 +184,28 @@ const TemplatesListComp = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("templates list useeffect:: ", templatesList);
+    if (!templatesList) {
+      return;
+    }
+    const css =
+      templatesList && templatesList?.map((template) => template.css).join(" ");
+    const style = document.createElement("style");
+    style.type = "text/css";
+    style.innerHTML = css;
+    document.head.appendChild(style);
+
+    // Remove the style tag on component unmount
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, [templatesList]);
+
+  const createMarkup = (htmlContent) => {
+    return { __html: DOMPurify.sanitize(htmlContent) };
+  };
+
   const handleCloseOverlay = () => {
     setShowOverlay(false);
   };
@@ -162,9 +226,9 @@ const TemplatesListComp = () => {
           <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
             <CircularProgress />
           </div>
-        ) : templatesList?.data?.length > 0 ? (
+        ) : templatesList?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-            {templatesList?.data?.map((templatesList, index) => {
+            {templatesList?.map((templatesList, index) => {
               return (
                 <div
                   key={index}
@@ -236,7 +300,7 @@ const TemplatesListComp = () => {
                     </div>
 
                     <div className="">
-                      <img
+                      {/* <img
                         src={static_img}
                         alt="secondary"
                         className="w-full h-[500px] object-cover"
@@ -246,6 +310,12 @@ const TemplatesListComp = () => {
                             image: templatesList,
                           })
                         }
+                      /> */}
+                      <div
+                        className="html-content-container w-full h-[500px] object-cover overflow-y-auto overflow-x-hidden"
+                        dangerouslySetInnerHTML={createMarkup(
+                          templatesList?.html
+                        )}
                       />
 
                       <div
@@ -302,7 +372,7 @@ const TemplatesListComp = () => {
         ) : (
           <div className="flex justify-center items-center col-span-3 h-[500px] w-full">
             <h2 className="text-primary font-bold text-2xl">
-              {t("no_listings_available")}
+              {t("no_landing_pages")}
             </h2>
           </div>
         )}

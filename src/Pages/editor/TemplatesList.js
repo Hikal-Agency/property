@@ -44,7 +44,7 @@ const TemplatesList = () => {
                 </h1>
               </div>
               <button
-                className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2 "
+                className="bg-btn-primary text-white px-4 py-2 rounded-md mr-2  mb-3"
                 onClick={() => setOpenModal(true)}
               >
                 <span className="flex justify-between items-center ">
