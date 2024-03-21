@@ -454,8 +454,9 @@ const GrapesJSEditor = () => {
               )}
             </button>
           </div>
-          </>
-        )} */}
+          <div id="gjs" ref={editorRef}></div>
+        </>
+      )} */}
       <div className="flex justify-end space-x-3">
         <Box sx={darkModeColors}>
           <TextField
