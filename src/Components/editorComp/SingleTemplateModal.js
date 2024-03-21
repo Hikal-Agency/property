@@ -6,6 +6,7 @@ import GrapesJSEditor from "./GrapesJSEditor";
 import FunnelSettings from "./FunnelSettings";
 import { Link } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
+import DOMPurify from "dompurify";
 
 const SingleTemplateModal = ({
   setOpenSingleTemplate,
@@ -17,6 +18,8 @@ const SingleTemplateModal = ({
   const { currentMode, i18n, isLangRTL, t, darkModeColors, themeBgImg } =
     useStateContext();
   const [value, setValue] = useState();
+
+  const data = openSingleTemplate?.image;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -161,20 +164,20 @@ const SingleTemplateModal = ({
             </div>
           </div>
 
-          {!value && (
-            <div className="w-full">
-              <img
-                src={openSingleTemplate?.image}
-                alt="overlay"
-                className="h-[70vh] w-[90vw]"
-              />
-              <img
-                src={hikalrewhite}
-                alt="hikal real estate"
-                className="absolute right-4 bottom-4 w-[100px] p-2 bg-[#000000] bg-opacity-70"
-              />
-            </div>
-          )}
+          <div className="w-full">
+            <iframe
+              className="html-content-container w-full h-[80vh]  overflow-y-auto overflow-x-hidden"
+              sandbox="allow-same-origin allow-scripts"
+              // srcDoc={DOMPurify.sanitize(template?.html)}
+              srcDoc={`<html><head><style>${DOMPurify.sanitize(
+                data?.css || ""
+              )}</style></head><body>${DOMPurify.sanitize(
+                data?.html || ""
+              )}</body></html>`}
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+          </div>
         </div>
       </div>
     </Modal>
