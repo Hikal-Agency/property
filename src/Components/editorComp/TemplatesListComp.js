@@ -15,6 +15,7 @@ import {
 import { MdMoreVert } from "react-icons/md";
 import { IoIosAlert } from "react-icons/io";
 import pako from "pako";
+import { IoEye } from "react-icons/io5";
 
 import { MdClose } from "react-icons/md";
 import SingleTemplateModal from "./SingleTemplateModal";
@@ -326,6 +327,20 @@ const TemplatesListComp = () => {
                           )}
                         </div> */}
                       </div>
+
+                      <button
+                        className={`absolute top-[410px]   z-10 rounded-full bg-btn-primary ${
+                          isLangRTL(i18n.language) ? "left-0" : "right-0"
+                        } p-3`}
+                        onClick={() =>
+                          setOpenSingleTemplate({
+                            open: true,
+                            image: template,
+                          })
+                        }
+                      >
+                        <IoEye />
+                      </button>
                       <div
                         className={`absolute top-[450px] ${
                           isLangRTL(i18n.language) ? "left-0" : "right-0"
