@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
+import { decompressData } from "../../utils/compressionFunction";
 
 const TemplatesListComp = () => {
   const {
@@ -66,31 +67,6 @@ const TemplatesListComp = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  // Decompression utility function
-  const decompressData = (base64Data) => {
-    console.log("base64:: ", base64Data);
-    let decompressedData;
-    let compressedDataArray = atob(base64Data).split(",");
-
-    try {
-      decompressedData = JSON.parse(
-        pako.inflate(
-          // new Uint8Array(compressedDataArray.map(compressedDataArray)),
-          new Uint8Array(compressedDataArray),
-          {
-            raw: true,
-            to: "string",
-          }
-        )
-      );
-      console.log("Decompressed data: ", decompressedData);
-    } catch (e) {
-      throw new Error(e);
-    }
-
-    return decompressedData;
   };
 
   const fetchTemplates = async () => {
