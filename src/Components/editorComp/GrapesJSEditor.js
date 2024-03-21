@@ -8,6 +8,7 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { Box, CircularProgress, TextField } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import { compressData } from "../../utils/compressionFunction";
 import pako from "pako";
 const GrapesJSEditor = () => {
   const editorRef = useRef(null);
@@ -329,54 +330,34 @@ const GrapesJSEditor = () => {
     console.log("HTML:", html);
     console.log("CSS:", css);
 
-    let compressHtml;
-    let compressCSS;
-    let base64HTML;
-    let base64CSS;
-    try {
-      compressHtml = pako.deflate(JSON.stringify(html), {
-        raw: true,
-        to: "string",
-      });
-      compressCSS = pako.deflate(JSON.stringify(css), {
-        raw: true,
-        to: "string",
-      });
+    const compressHTML = compressData(html);
+    const compressCSS = compressData(css);
 
-      console.log("compress html: ", compressHtml);
-      console.log("compress css: ", compressCSS);
-      // Convert the compressed binary data to Base64
-      base64HTML = btoa(compressHtml);
-      base64CSS = btoa(compressCSS);
+    if (compressHTML?.success === false || compressCSS?.success === false) {
+      console.error("error", compressCSS?.error, compressHTML?.error);
+      toast.error("Unable to compress the data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setBtnLoading(false);
 
-      console.log("base64 html: ", base64HTML);
-      console.log("base64 css: ", base64CSS);
-    } catch (e) {
-      throw new Error(e);
+      return;
     }
 
-    // let deCompressHTML;
-    // let decompressData;
-    // let compressedDataArray = atob(base64Data).split(",");
-
-    // try {
-    //   deCompressHTML = JSON.parse(
-    //     pako.inflate(new Uint8Array(compressedDataArray), {
-    //       raw: true,
-    //       to: "string",
-    //     })
-    //   );
-
-    //   console.log("decompress html: ", deCompressHTML);
-    // } catch (e) {
-    //   throw new Error(e);
-    // }
+    console.log("compress html: ", compressHTML);
+    console.log("compress css: ", compressCSS);
 
     const data = {
       template_name: templateName,
       template_type: "Basic",
-      html: base64HTML,
-      css: base64CSS,
+      html: compressHTML,
+      css: compressCSS,
     };
 
     try {

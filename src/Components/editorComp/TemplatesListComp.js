@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
+import { decompressData } from "../../utils/compressionFunction";
 
 const TemplatesListComp = () => {
   const {
@@ -66,31 +67,6 @@ const TemplatesListComp = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  // Decompression utility function
-  const decompressData = (base64Data) => {
-    console.log("base64:: ", base64Data);
-    let decompressedData;
-    let compressedDataArray = atob(base64Data).split(",");
-
-    try {
-      decompressedData = JSON.parse(
-        pako.inflate(
-          // new Uint8Array(compressedDataArray.map(compressedDataArray)),
-          new Uint8Array(compressedDataArray),
-          {
-            raw: true,
-            to: "string",
-          }
-        )
-      );
-      console.log("Decompressed data: ", decompressedData);
-    } catch (e) {
-      throw new Error(e);
-    }
-
-    return decompressedData;
   };
 
   const fetchTemplates = async () => {
@@ -184,28 +160,6 @@ const TemplatesListComp = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("templates list useeffect:: ", templatesList);
-    if (!templatesList) {
-      return;
-    }
-    const css =
-      templatesList && templatesList?.map((template) => template.css).join(" ");
-    const style = document.createElement("style");
-    style.type = "text/css";
-    style.innerHTML = css;
-    document.head.appendChild(style);
-
-    // Remove the style tag on component unmount
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, [templatesList]);
-
-  const createMarkup = (htmlContent) => {
-    return { __html: DOMPurify.sanitize(htmlContent) };
-  };
-
   const handleCloseOverlay = () => {
     setShowOverlay(false);
   };
@@ -242,7 +196,7 @@ const TemplatesListComp = () => {
                       : currentMode === "dark"
                       ? "blur-bg-dark text-white"
                       : "blur-bg-light text-black"
-                  } rounded-lg`}
+                  } rounded-lg `}
                 >
                   <div className="rounded-md flex flex-col justify-between">
                     <div className="flex items-center justify-between mr-2 ">
@@ -299,7 +253,15 @@ const TemplatesListComp = () => {
                       </h3>
                     </div>
 
-                    <div className="">
+                    <div
+                      className="cursor-pointer"
+                      onClick={() =>
+                        setOpenSingleTemplate({
+                          open: true,
+                          image: templatesList,
+                        })
+                      }
+                    >
                       {/* <img
                         src={static_img}
                         alt="secondary"
