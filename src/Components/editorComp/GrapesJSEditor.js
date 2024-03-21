@@ -8,13 +8,14 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { Box, CircularProgress, TextField } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { compressData } from "../../utils/compressionFunction";
+import { compressData, decompressData } from "../../utils/compressionFunction";
 import pako from "pako";
 const GrapesJSEditor = () => {
   const editorRef = useRef(null);
   const { t, BACKEND_URL, darkModeColors } = useStateContext();
   const [templateName, setTemplateName] = useState("");
   const [btnLoading, setBtnLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
   console.log("template id:: ", id);
@@ -35,6 +36,54 @@ const GrapesJSEditor = () => {
         gjsPresetWebpage: {},
       },
     });
+
+    const loadTemplate = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/page-templates/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        console.log("single page template:: ", response);
+        const { html, css, template_name } = response?.data?.data;
+        const deCompressHTML = decompressData(html);
+        const deCompressCSS = decompressData(css);
+        setTemplateName(template_name);
+
+        console.log("decompress html: ", deCompressHTML);
+        console.log("decompress css: ", deCompressCSS);
+        console.log("editor loaded: ", editor);
+
+        // const editor = editorRef.current;
+        editor.setComponents(deCompressHTML);
+        editor.setStyle(deCompressCSS);
+
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching template data:", error);
+        toast.error("Error fetching template.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        navigate("/templates");
+      }
+    };
+
+    if (id) {
+      loadTemplate();
+    }
 
     addCustomBlocks(editor);
 
@@ -60,44 +109,6 @@ const GrapesJSEditor = () => {
 
     // reference to editor instance for use in any function
     editorRef.current = editor;
-
-    const loadTemplate = async () => {
-      try {
-        const response = await axios.get(
-          `${BACKEND_URL}/page-templates/${id}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }
-        );
-        console.log("single page template:: ", response);
-        const { html, css, template_name } = response.data;
-        setTemplateName(template_name);
-
-        const editor = editorRef.current;
-        editor.setComponents(html);
-        editor.setStyle(css);
-      } catch (error) {
-        console.error("Error fetching template data:", error);
-        toast.error("Error fetching template.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        navigate("/templates");
-      }
-    };
-
-    if (id) {
-      loadTemplate();
-    }
 
     // Cleanup function to destroy the editor when the component unmounts
     return () => {
@@ -360,20 +371,24 @@ const GrapesJSEditor = () => {
       css: compressCSS,
     };
 
+    let url;
+
+    if (id) {
+      url = `${BACKEND_URL}/page-templates/${id}`;
+    } else {
+      url = `${BACKEND_URL}/page-templates/`;
+    }
+
     try {
-      const response = await axios.post(
-        `${BACKEND_URL}/page-templates/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const response = await axios.post(url, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
       console.log("successfully posted", response.data);
 
-      toast.success("Page successfully saved.", {
+      toast.success(`Page successfully ${id ? "updated" : "saved"}.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -403,6 +418,44 @@ const GrapesJSEditor = () => {
 
   return (
     <>
+      {/* {loading ? (
+        <div className="w-full flex items-center justify-center h-[500px]">
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-end space-x-3">
+            <Box sx={darkModeColors}>
+              <TextField
+                id="username"
+                type={"text"}
+                label={t("landing_page_name")}
+                // className="w-full"
+                style={{
+                  marginBottom: "20px",
+                }}
+                variant="outlined"
+                size="small"
+                required
+                value={templateName}
+                onChange={(e) => {
+                  setTemplateName(e.target.value);
+                }}
+              />
+            </Box>
+            <button
+              className="rounded-md bg-primary p-2 text-white mb-5 "
+              onClick={saveLandingPage}
+            >
+              {btnLoading ? (
+                <CircularProgress />
+              ) : (
+                <span>{t("funnel_form_save")}</span>
+              )}
+            </button>
+          </div>
+          </>
+        )} */}
       <div className="flex justify-end space-x-3">
         <Box sx={darkModeColors}>
           <TextField

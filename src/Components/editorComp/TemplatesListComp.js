@@ -20,7 +20,7 @@ import { MdClose } from "react-icons/md";
 import SingleTemplateModal from "./SingleTemplateModal";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { decompressData } from "../../utils/compressionFunction";
 
@@ -55,9 +55,13 @@ const TemplatesListComp = () => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [maxPage, setMaxPage] = useState(0);
+  const [currentID, setCurrentID] = useState(null);
+
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event, id) => {
+    console.log("id: ", id);
     setAnchorEl(event.currentTarget);
+    setCurrentID(id);
   };
 
   const style = {
@@ -182,12 +186,12 @@ const TemplatesListComp = () => {
           </div>
         ) : templatesList?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-            {templatesList?.map((templatesList, index) => {
+            {templatesList?.map((template, index) => {
               return (
                 <div
                   key={index}
                   className={`card-hover relative overflow-hidden offers-page-${
-                    templatesList?.page
+                    template?.page
                   } ${
                     !themeBgImg
                       ? currentMode === "dark"
@@ -206,7 +210,7 @@ const TemplatesListComp = () => {
                         aria-controls={open ? "long-menu" : undefined}
                         aria-expanded={open ? "true" : undefined}
                         aria-haspopup="true"
-                        onClick={handleClick}
+                        onClick={(event) => handleClick(event, template?.id)}
                       >
                         <MdMoreVert
                           color={currentMode === "dark" ? "#fff" : "#000"}
@@ -228,15 +232,13 @@ const TemplatesListComp = () => {
                         }}
                       >
                         <MenuItem
-                          onClick={() =>
-                            navigate(`/editor/${templatesList?.id}`)
-                          }
+                        // onClick={() => navigate(`/editor/${template?.id}`)}
                         >
-                          {t("edit")}
+                          <Link to={`/editor/${currentID}`}>{t("edit")}</Link>
                         </MenuItem>
                         <MenuItem
                           onClick={() => {
-                            setDeleteTemplate(templatesList);
+                            setDeleteTemplate(template);
                             handleClose();
                           }}
                         >
@@ -249,7 +251,7 @@ const TemplatesListComp = () => {
                           currentMode === "dark" ? "text-white" : "text-dark"
                         } font-bold text-lg`}
                       >
-                        {templatesList?.template_name}
+                        {template?.template_name}
                       </h3>
                     </div>
 
@@ -258,7 +260,7 @@ const TemplatesListComp = () => {
                       onClick={() =>
                         setOpenSingleTemplate({
                           open: true,
-                          image: templatesList,
+                          image: template,
                         })
                       }
                     >
@@ -269,24 +271,24 @@ const TemplatesListComp = () => {
                         onClick={() =>
                           setOpenSingleTemplate({
                             open: true,
-                            image: templatesList,
+                            image: template,
                           })
                         }
                       /> */}
                       {/* <div
                         className="html-content-container w-full h-[500px] object-cover overflow-y-auto overflow-x-hidden"
                         dangerouslySetInnerHTML={createMarkup(
-                          templatesList?.html
+                          template?.html
                         )}
                       /> */}
                       <iframe
                         className="html-content-container w-full h-[500px] object-cover overflow-y-auto overflow-x-hidden"
                         sandbox="allow-same-origin allow-scripts"
-                        // srcDoc={DOMPurify.sanitize(templatesList?.html)}
+                        // srcDoc={DOMPurify.sanitize(template?.html)}
                         srcDoc={`<html><head><style>${DOMPurify.sanitize(
-                          templatesList?.css || ""
+                          template?.css || ""
                         )}</style></head><body>${DOMPurify.sanitize(
-                          templatesList?.html || ""
+                          template?.html || ""
                         )}</body></html>`}
                         frameBorder="0"
                         allowFullScreen
@@ -300,21 +302,21 @@ const TemplatesListComp = () => {
                         {/* <div className="flex flex-col gap-2">
                           <Tooltip title="View Property" arrow>
                             <button
-                              onClick={() => HandleSingleListing(templatesList?.id)}
+                              onClick={() => HandleSingleListing(template?.id)}
                               className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
                             >
                               <BsListStars size={16} color={"#FFFFFF"} />
                             </button>
                           </Tooltip>
                           {hasPermission("delete_listing") && (
-                            <Tooltip title="Delete templatesList" arrow>
+                            <Tooltip title="Delete template" arrow>
                               <button
                                 className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
                                 onClick={(e) =>
                                   handleOpenDialogue(
                                     e,
-                                    templatesList?.id,
-                                    templatesList?.project
+                                    template?.id,
+                                    template?.project
                                   )
                                 }
                               >
