@@ -110,9 +110,37 @@ const GrapesJSEditor = () => {
     // reference to editor instance for use in any function
     editorRef.current = editor;
 
+    editor.on("component:add", (model) => {
+      console.log("attributes type:: ", model.attributes);
+      if (model.attributes.tagName === "form") {
+        console.log("form");
+
+        const actualForm = model.getEl(); // Get actual DOM element from the component
+        actualForm.addEventListener("submit", handleForm);
+        // }
+      }
+    });
+
+    // editor.on("component:update", (component) => {
+    //   console.log("component::::::::::::::::: ", component);
+    //   // if (component.is("form")) {
+    //   if (component.attributes.tagName === "form") {
+    //     console.log("form");
+    //     // This checks if the component is a form
+    //     const formElement = component.getEl();
+    //     formElement.addEventListener("submit", handleForm);
+    //   }
+    // });
+
     // Cleanup function to destroy the editor when the component unmounts
     return () => {
       if (editor) {
+        editor.getComponents().forEach((component) => {
+          if (component.attributes.tagName === "form") {
+            const formElement = component.getEl();
+            formElement.removeEventListener("submit", handleForm);
+          }
+        });
         editor.destroy();
       }
     };
@@ -199,7 +227,12 @@ const GrapesJSEditor = () => {
       content: {
         tagName: "form",
         draggable: true, // Allow the form to be draggable in the editor
-        attributes: { method: "POST", action: "#" }, // Example attributes
+        editable: true,
+        attributes: {
+          method: "POST",
+          action: "https://testing.hikalcrm.com/api/create-lead",
+          class: "custom-form",
+        }, // Example attributes
         style: {
           display: "flex", // Use flexbox
           "flex-direction": "column", // Stack children vertically
@@ -212,11 +245,30 @@ const GrapesJSEditor = () => {
             tagName: "label",
             content: "Name:",
             attributes: { for: "name" },
+            classes: ["custom-form"],
           },
           {
             tagName: "input",
             type: "text",
-            attributes: { name: "name", placeholder: "Enter your name" },
+            attributes: { name: "leadName", placeholder: "Enter your name" },
+            style: {
+              padding: "5px",
+              margin: "5px 0",
+              width: "calc(100% - 10px)",
+            }, // Ensure inputs take full width
+          },
+          {
+            tagName: "label",
+            content: "Phone:",
+            attributes: { for: "text" },
+          },
+          {
+            tagName: "input",
+            type: "text",
+            attributes: {
+              name: "leadContact",
+              placeholder: "Enter your phone",
+            },
             style: {
               padding: "5px",
               margin: "5px 0",
@@ -231,7 +283,10 @@ const GrapesJSEditor = () => {
           {
             tagName: "input",
             type: "email",
-            attributes: { name: "email", placeholder: "Enter your email" },
+            attributes: {
+              name: "leadEmail",
+              placeholder: "Enter your email",
+            },
             style: {
               padding: "5px",
               margin: "5px 0",
@@ -299,6 +354,56 @@ const GrapesJSEditor = () => {
       },
       category: "Forms",
     });
+  };
+
+  const handleForm = async (e) => {
+    e.preventDefault();
+    console.log("handle form");
+
+    var form = e.target;
+    console.log("form ", form);
+
+    const formData = new FormData(e.target);
+    console.log("formdata:: ", formData);
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    try {
+      const saveData = await axios.post(
+        `https://testing.hikalcrm.com/api/create-lead`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("save form data:: ", saveData);
+      toast.success("Form submitted successfully..", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log("error:: ", error);
+      toast.error("Unable to save the data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const saveLandingPage = async () => {
