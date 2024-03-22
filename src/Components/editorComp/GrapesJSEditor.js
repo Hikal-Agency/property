@@ -230,7 +230,7 @@ const GrapesJSEditor = () => {
         editable: true,
         attributes: {
           method: "POST",
-          action: "#",
+          action: "https://testing.hikalcrm.com/api/create-lead",
           class: "custom-form",
         }, // Example attributes
         style: {
@@ -250,7 +250,25 @@ const GrapesJSEditor = () => {
           {
             tagName: "input",
             type: "text",
-            attributes: { name: "name", placeholder: "Enter your name" },
+            attributes: { name: "leadName", placeholder: "Enter your name" },
+            style: {
+              padding: "5px",
+              margin: "5px 0",
+              width: "calc(100% - 10px)",
+            }, // Ensure inputs take full width
+          },
+          {
+            tagName: "label",
+            content: "Phone:",
+            attributes: { for: "text" },
+          },
+          {
+            tagName: "input",
+            type: "text",
+            attributes: {
+              name: "leadContact",
+              placeholder: "Enter your phone",
+            },
             style: {
               padding: "5px",
               margin: "5px 0",
@@ -266,7 +284,7 @@ const GrapesJSEditor = () => {
             tagName: "input",
             type: "email",
             attributes: {
-              name: "email",
+              name: "leadEmail",
               placeholder: "Enter your email",
             },
             style: {
@@ -338,7 +356,7 @@ const GrapesJSEditor = () => {
     });
   };
 
-  const handleForm = (e) => {
+  const handleForm = async (e) => {
     e.preventDefault();
     console.log("handle form");
 
@@ -349,6 +367,42 @@ const GrapesJSEditor = () => {
     console.log("formdata:: ", formData);
     for (let [key, value] of formData.entries()) {
       console.log(key, value);
+    }
+
+    try {
+      const saveData = await axios.post(
+        `https://testing.hikalcrm.com/api/create-lead`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("save form data:: ", saveData);
+      toast.success("Form submitted successfully..", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      console.log("error:: ", error);
+      toast.error("Unable to save the data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
