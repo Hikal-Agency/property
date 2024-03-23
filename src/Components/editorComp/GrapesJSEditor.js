@@ -245,7 +245,14 @@ const GrapesJSEditor = () => {
             tagName: "label",
             content: "Name:",
             attributes: { for: "name" },
-            classes: ["custom-form"],
+            traits: [
+              {
+                type: "text",
+                label: "Text",
+                name: "content",
+                changeProp: 1,
+              },
+            ],
           },
           {
             tagName: "input",
@@ -305,55 +312,55 @@ const GrapesJSEditor = () => {
     });
 
     // Input Field
-    editor.BlockManager.add("input-block", {
-      label: "Input",
-      content: {
-        tagName: "input",
-        type: "text",
-        attributes: { type: "text", placeholder: "Enter text here" },
-        style: { padding: "10px", margin: "5px 0", width: "calc(100% - 20px)" },
-      },
-      category: "Forms",
-    });
+    // editor.BlockManager.add("input-block", {
+    //   label: "Input",
+    //   content: {
+    //     tagName: "input",
+    //     type: "text",
+    //     attributes: { type: "text", placeholder: "Enter text here" },
+    //     style: { padding: "10px", margin: "5px 0", width: "calc(100% - 20px)" },
+    //   },
+    //   category: "Forms",
+    // });
 
     // Textarea
-    editor.BlockManager.add("textarea-block", {
-      label: "Textarea",
-      content: {
-        tagName: "textarea",
-        content: "",
-        attributes: { placeholder: "Enter your message" },
-        style: {
-          padding: "10px",
-          margin: "5px 0",
-          width: "calc(100% - 20px)",
-          height: "100px",
-        },
-      },
-      category: "Forms",
-    });
+    // editor.BlockManager.add("textarea-block", {
+    //   label: "Textarea",
+    //   content: {
+    //     tagName: "textarea",
+    //     content: "",
+    //     attributes: { placeholder: "Enter your message" },
+    //     style: {
+    //       padding: "10px",
+    //       margin: "5px 0",
+    //       width: "calc(100% - 20px)",
+    //       height: "100px",
+    //     },
+    //   },
+    //   category: "Forms",
+    // });
 
     // Checkbox
-    editor.BlockManager.add("checkbox-block", {
-      label: "Checkbox",
-      content: {
-        tagName: "label",
-        content: `<input type="checkbox" name="checkbox" value="1"> Checkbox`,
-        style: { margin: "5px 0", display: "inline-block" },
-      },
-      category: "Forms",
-    });
+    // editor.BlockManager.add("checkbox-block", {
+    //   label: "Checkbox",
+    //   content: {
+    //     tagName: "label",
+    //     content: `<input type="checkbox" name="checkbox" value="1"> Checkbox`,
+    //     style: { margin: "5px 0", display: "inline-block" },
+    //   },
+    //   category: "Forms",
+    // });
 
     // Radio Button
-    editor.BlockManager.add("radio-block", {
-      label: "Radio Button",
-      content: {
-        tagName: "label",
-        content: `<input type="radio" name="radio" value="1"> Radio`,
-        style: { margin: "5px 0", display: "inline-block" },
-      },
-      category: "Forms",
-    });
+    // editor.BlockManager.add("radio-block", {
+    //   label: "Radio Button",
+    //   content: {
+    //     tagName: "label",
+    //     content: `<input type="radio" name="radio" value="1"> Radio`,
+    //     style: { margin: "5px 0", display: "inline-block" },
+    //   },
+    //   category: "Forms",
+    // });
   };
 
   const handleForm = async (e) => {
