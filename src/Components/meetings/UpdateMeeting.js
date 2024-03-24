@@ -45,7 +45,7 @@ const UpdateMeeting = ({
     t,
     isLangRTL,
     i18n,
-    primaryColor
+    primaryColor,
   } = useStateContext();
   const [btnloading, setbtnloading] = useState(false);
   const [meetingStatus, setMeetingStatus] = useState(
@@ -53,11 +53,11 @@ const UpdateMeeting = ({
   );
   const [isClosing, setIsClosing] = useState(false);
 
-  const [meetingTime, setMeetingTime] = useState("");
+  const [meetingTime, setMeetingTime] = useState(meetingData?.meetingTime);
   const [meetingTimeValue, setMeetingTimeValue] = useState(
     dayjs("2023-01-01 " + meetingData?.meetingTime)
   );
-  const [meetingDate, setMeetingDate] = useState("");
+  const [meetingDate, setMeetingDate] = useState(meetingData?.meetingDate);
   const [meetingDateValue, setMeetingDateValue] = useState(
     meetingData?.meetingDate
   );
@@ -158,11 +158,23 @@ const UpdateMeeting = ({
       const token = localStorage.getItem("auth-token");
       // const { id } = meetingModalOpen;
 
+      console.log("meeting date:: ", meetingDate);
+      console.log("meeting time:: ", meetingTime);
+      // setbtnloading(false);
+
+      // return;
+
       const meetingData = new FormData();
       meetingData.append("id", id);
       meetingData.append("meetingStatus", meetingStatus);
-      meetingData.append("meetingTime", meetingTime);
-      meetingData.append("meetingDate", meetingDate);
+      meetingData.append(
+        "meetingTime",
+        meetingTime || meetingData?.meetingTime
+      );
+      meetingData.append(
+        "meetingDate",
+        meetingDate || meetingData?.meetingDate
+      );
       meetingData.append("mLat", String(meetingLocation.lat));
       meetingData.append("mLong", String(meetingLocation.lng));
       meetingData.append("meetingLocation", meetingLocation.addressText);
@@ -269,9 +281,11 @@ const UpdateMeeting = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) 
-              ? (currentMode === "dark" && "border-r-2 border-primary") 
-              : (currentMode === "dark" && "border-l-2 border-primary")}
+            } ${
+              isLangRTL(i18n.language)
+                ? currentMode === "dark" && "border-r-2 border-primary"
+                : currentMode === "dark" && "border-l-2 border-primary"
+            }
              p-4 h-[100vh] w-[80vw] overflow-y-scroll
             `}
           >
@@ -293,7 +307,7 @@ const UpdateMeeting = ({
             >
               <div className="w-full px-4 pt-4">
                 <Box sx={darkModeColors}>
-                <div className="flex flex-col justify-center items-center">
+                  <div className="flex flex-col justify-center items-center">
                     {/* DATE  */}
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
@@ -312,12 +326,14 @@ const UpdateMeeting = ({
                           <TextField
                             sx={{
                               "& input": {
-                                color: currentMode === "dark" ? "white" : "black",
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                               "& .MuiSvgIcon-root": {
-                                color: currentMode === "dark" ? "white" : "black",
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
-                              marginBottom: "20px"
+                              marginBottom: "20px",
                             }}
                             fullWidth
                             size="small"
@@ -357,10 +373,12 @@ const UpdateMeeting = ({
                               //   color: currentMode === "dark" ? "white" : "",
                               // },
                               "& input": {
-                                color: currentMode === "dark" ? "white" : "black",
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                               "& .MuiSvgIcon-root": {
-                                color: currentMode === "dark" ? "white" : "black",
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                               // "&": {
                               //   borderRadius: "4px",
@@ -370,7 +388,7 @@ const UpdateMeeting = ({
                               "&:focus": {
                                 border: "",
                               },
-                              marginBottom: "20px"
+                              marginBottom: "20px",
                             }}
                             onKeyDown={(e) => e.preventDefault()}
                             readOnly={true}
@@ -392,15 +410,18 @@ const UpdateMeeting = ({
                     {/* STATUS  */}
                     <Select
                       id="meeting-status"
-                      value={{ value: meetingStatus, label: t(`status_${meetingStatus.toLowerCase()}`) }}
+                      value={{
+                        value: meetingStatus,
+                        label: t(`status_${meetingStatus.toLowerCase()}`),
+                      }}
                       onChange={(selectedOption) => {
                         setMeetingStatus(selectedOption.value);
                       }}
                       options={[
-                        { value: 'Pending', label: t('status_pending') },
-                        { value: 'Postponed', label: t('status_postponed') },
-                        { value: 'Attended', label: t('status_attended') },
-                        { value: 'Cancelled', label: t('status_cancelled') },
+                        { value: "Pending", label: t("status_pending") },
+                        { value: "Postponed", label: t("status_postponed") },
+                        { value: "Attended", label: t("status_attended") },
+                        { value: "Cancelled", label: t("status_cancelled") },
                       ]}
                       isSearchable={false}
                       className="w-full"
@@ -448,7 +469,7 @@ const UpdateMeeting = ({
                             ? "Noto Kufi Arabic"
                             : "inherit",
                         },
-                        marginBottom: "20px"
+                        marginBottom: "20px",
                       }}
                       name="text"
                       value={meetingNotes}
