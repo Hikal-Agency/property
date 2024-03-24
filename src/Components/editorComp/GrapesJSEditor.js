@@ -55,6 +55,8 @@ const GrapesJSEditor = () => {
           theme: "light",
         });
         console.log("Script copied to clipboard!");
+        setScriptModal(false);
+        navigate("/templates");
       },
       (err) => {
         console.error("Could not copy text: ", err);
@@ -563,7 +565,7 @@ const GrapesJSEditor = () => {
       });
       setBtnLoading(false);
       setScriptModal(response?.data?.data);
-      navigate("/templates");
+      // navigate("/templates");
     } catch (error) {
       setBtnLoading(false);
       console.error("Export failed", error);
