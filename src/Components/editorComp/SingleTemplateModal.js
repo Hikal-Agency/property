@@ -159,7 +159,7 @@ const SingleTemplateModal = ({
                 <GrapesJSEditor />
               </TabPanel> */}
               <TabPanel value={value} index={0}>
-                <FunnelSettings />
+                <FunnelSettings data={data} />
               </TabPanel>
             </div>
           </div>

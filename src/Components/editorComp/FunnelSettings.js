@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Box, CircularProgress, TextField } from "@mui/material";
 
-const FunnelSettings = () => {
+const FunnelSettings = ({ data }) => {
+  console.log("landing page data in funnel settings::: ", data);
   const { darkModeColors, t } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [formdata, setformdata] = useState({
-    name: null,
+    name: data?.template_name || null,
     path_head: null,
     tracking_code: null,
     domain: null,
@@ -53,7 +54,7 @@ const FunnelSettings = () => {
                   value={formdata?.name}
                   onChange={handleSettingsData}
                 />
-                <TextField
+                {/* <TextField
                   id="path_head"
                   type={"text"}
                   label={t("funnel_form_path")}
@@ -66,7 +67,7 @@ const FunnelSettings = () => {
                   required
                   value={formdata?.path_head}
                   onChange={handleSettingsData}
-                />
+                /> */}
                 <TextField
                   id="tracking_code"
                   type={"text"}
@@ -84,7 +85,7 @@ const FunnelSettings = () => {
               </div>
 
               <div className="p-4">
-                <TextField
+                {/* <TextField
                   id="domain"
                   type={"text"}
                   label={t("funnel_form_domain")}
@@ -97,7 +98,7 @@ const FunnelSettings = () => {
                   required
                   value={formdata?.domain}
                   onChange={handleSettingsData}
-                />
+                /> */}
                 <TextField
                   id="favicon_url"
                   type={"text"}
