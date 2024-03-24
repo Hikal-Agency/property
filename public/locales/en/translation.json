@@ -900,7 +900,10 @@
 
     "landing_page_name":"Enter page name",
     "scratch_landing_page":"Create from Scratch",
-    "no_landing_pages":"No templates available"
+    "no_landing_pages":"No templates available",
+    "funnel_footer_code":"Footer tracking code",
+    "funnel_header_code":"Header tracking code"
+
 
 
 

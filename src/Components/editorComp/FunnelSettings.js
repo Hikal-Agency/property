@@ -8,11 +8,12 @@ const FunnelSettings = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [formdata, setformdata] = useState({
     name: data?.template_name || null,
-    path_head: null,
-    tracking_code: null,
-    domain: null,
+    // path_head: null,
+    // domain: null,
     favicon_url: null,
     body_tracking_code: null,
+    header_code: null,
+    footer_code: null,
   });
 
   console.log("formData::: ", formdata);
@@ -68,10 +69,11 @@ const FunnelSettings = ({ data }) => {
                   value={formdata?.path_head}
                   onChange={handleSettingsData}
                 /> */}
+
                 <TextField
-                  id="tracking_code"
+                  id="header_code"
                   type={"text"}
-                  label={t("funnel_form_tracking_code")}
+                  label={t("funnel_header_code")}
                   className="w-full"
                   style={{
                     marginBottom: "20px",
@@ -79,7 +81,7 @@ const FunnelSettings = ({ data }) => {
                   variant="outlined"
                   size="small"
                   required
-                  value={formdata?.tracking_code}
+                  value={formdata?.header_code}
                   onChange={handleSettingsData}
                 />
               </div>
@@ -99,6 +101,7 @@ const FunnelSettings = ({ data }) => {
                   value={formdata?.domain}
                   onChange={handleSettingsData}
                 /> */}
+
                 <TextField
                   id="favicon_url"
                   type={"text"}
@@ -111,6 +114,20 @@ const FunnelSettings = ({ data }) => {
                   size="small"
                   required
                   value={formdata?.favicon_url}
+                  onChange={handleSettingsData}
+                />
+                <TextField
+                  id="footer_code"
+                  type={"text"}
+                  label={t("funnel_footer_code")}
+                  className="w-full"
+                  style={{
+                    marginBottom: "20px",
+                  }}
+                  variant="outlined"
+                  size="small"
+                  required
+                  value={formdata?.footer_code}
                   onChange={handleSettingsData}
                 />
                 <TextField
