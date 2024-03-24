@@ -458,6 +458,7 @@ const TemplatesListComp = () => {
             setOpenSingleTemplate={setOpenSingleTemplate}
             hikalre={hikalre}
             hikalrewhite={hikalrewhite}
+            fetchTemplates={fetchTemplates}
           />
         )}
 

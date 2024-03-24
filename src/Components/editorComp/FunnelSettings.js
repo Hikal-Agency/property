@@ -1,17 +1,24 @@
 import React, { useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { Box, CircularProgress, TextField } from "@mui/material";
+import { toast } from "react-toastify";
+import axios from "../../axoisConfig";
 
-const FunnelSettings = () => {
-  const { darkModeColors, t } = useStateContext();
+const FunnelSettings = ({ data, fetchTemplates, handleClose }) => {
+  console.log("landing page data in funnel settings::: ", data);
+  const { darkModeColors, t, BACKEND_URL } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [formdata, setformdata] = useState({
-    name: null,
-    path_head: null,
-    tracking_code: null,
-    domain: null,
+    page_id: data?.id || null,
+    // funnel_page_type: data?.template_type || null,
+    funnel_page_name: data?.template_name || null,
+    // path_head: null,
+    // domain: null,
     favicon_url: null,
-    body_tracking_code: null,
+    body_code: null,
+    header_code: null,
+    footer_code: null,
+    domain: "#",
   });
 
   console.log("formData::: ", formdata);
@@ -23,7 +30,66 @@ const FunnelSettings = () => {
     }));
   };
 
-  const saveSettings = async (e) => {};
+  const saveSettings = async (e) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("auth-token");
+      const response = await axios.post(
+        `${BACKEND_URL}/page-settings`,
+        formdata,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      console.log("successfully posted", response.data);
+
+      if (response?.data?.status == false) {
+        setLoading(false);
+        toast.error(`${response?.data?.message}`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        return;
+      }
+
+      toast.success(`Settings update.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setLoading(false);
+      handleClose();
+      fetchTemplates();
+    } catch (error) {
+      setLoading(false);
+      console.error("error in updating funnel settings", error);
+      toast.error("Unable to save settings.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   return (
     <div>
@@ -40,7 +106,7 @@ const FunnelSettings = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               <div className="p-4">
                 <TextField
-                  id="name"
+                  id="funnel_page_name"
                   type={"text"}
                   label={t("funnel_form_name")}
                   className="w-full"
@@ -50,10 +116,10 @@ const FunnelSettings = () => {
                   variant="outlined"
                   size="small"
                   required
-                  value={formdata?.name}
+                  value={formdata?.funnel_page_name}
                   onChange={handleSettingsData}
                 />
-                <TextField
+                {/* <TextField
                   id="path_head"
                   type={"text"}
                   label={t("funnel_form_path")}
@@ -66,25 +132,25 @@ const FunnelSettings = () => {
                   required
                   value={formdata?.path_head}
                   onChange={handleSettingsData}
-                />
+                /> */}
+
                 <TextField
-                  id="tracking_code"
+                  id="header_code"
                   type={"text"}
-                  label={t("funnel_form_tracking_code")}
+                  label={t("funnel_header_code")}
                   className="w-full"
                   style={{
                     marginBottom: "20px",
                   }}
                   variant="outlined"
                   size="small"
-                  required
-                  value={formdata?.tracking_code}
+                  value={formdata?.header_code}
                   onChange={handleSettingsData}
                 />
               </div>
 
               <div className="p-4">
-                <TextField
+                {/* <TextField
                   id="domain"
                   type={"text"}
                   label={t("funnel_form_domain")}
@@ -97,7 +163,8 @@ const FunnelSettings = () => {
                   required
                   value={formdata?.domain}
                   onChange={handleSettingsData}
-                />
+                /> */}
+
                 <TextField
                   id="favicon_url"
                   type={"text"}
@@ -108,12 +175,24 @@ const FunnelSettings = () => {
                   }}
                   variant="outlined"
                   size="small"
-                  required
                   value={formdata?.favicon_url}
                   onChange={handleSettingsData}
                 />
                 <TextField
-                  id="body_tracking_code"
+                  id="footer_code"
+                  type={"text"}
+                  label={t("funnel_footer_code")}
+                  className="w-full"
+                  style={{
+                    marginBottom: "20px",
+                  }}
+                  variant="outlined"
+                  size="small"
+                  value={formdata?.footer_code}
+                  onChange={handleSettingsData}
+                />
+                <TextField
+                  id="body_code"
                   type={"text"}
                   label={t("funnel_form_body_tracking_code")}
                   className="w-full"
@@ -122,18 +201,17 @@ const FunnelSettings = () => {
                   }}
                   variant="outlined"
                   size="small"
-                  required
-                  value={formdata?.body_tracking_code}
+                  value={formdata?.body_code}
                   onChange={handleSettingsData}
                 />
               </div>
             </div>
           </Box>
-          <div className="p-4">
+          <div className="p-4 flex justify-center">
             <button
               disabled={loading ? true : false}
               type="submit"
-              className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary py-3 px-4 text-white  focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
+              className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex  justify-center rounded-md border border-transparent bg-btn-primary py-3 px-4 text-white  focus:outline-none focus:ring-2 focus:ring-offset-2 text-md font-bold uppercase"
             >
               {loading ? (
                 <CircularProgress

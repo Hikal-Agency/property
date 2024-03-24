@@ -13,6 +13,7 @@ const SingleTemplateModal = ({
   openSingleTemplate,
   hikalrewhite,
   hikalre,
+  fetchTemplates,
 }) => {
   console.log("single template:: ", openSingleTemplate);
   const { currentMode, i18n, isLangRTL, t, darkModeColors, themeBgImg } =
@@ -159,7 +160,11 @@ const SingleTemplateModal = ({
                 <GrapesJSEditor />
               </TabPanel> */}
               <TabPanel value={value} index={0}>
-                <FunnelSettings />
+                <FunnelSettings
+                  data={data}
+                  fetchTemplates={fetchTemplates}
+                  handleClose={handleClose}
+                />
               </TabPanel>
             </div>
           </div>
