@@ -930,7 +930,12 @@
     "edit_cat_description_label": "Description",
     "edit_cat_label": "Category Name",
     "edit_category": "Edit Category",
-    "show_category_form": "Add Category"
+    "show_category_form": "Add Category",
+
+
+    "copy_script": "Copy the following script and paste in your html file to get the template.",
+    "close": "Close."
+
    
 
 

@@ -6,14 +6,22 @@ import { useStateContext } from "../../context/ContextProvider";
 // import "grapesjs/dist/css/grapes.min.css";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
-import { Box, CircularProgress, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  Modal,
+  TextField,
+} from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { compressData, decompressData } from "../../utils/compressionFunction";
 import pako from "pako";
 const GrapesJSEditor = () => {
   const editorRef = useRef(null);
-  const { t, BACKEND_URL, darkModeColors } = useStateContext();
+  const { t, BACKEND_URL, darkModeColors, currentMode } = useStateContext();
   const [templateName, setTemplateName] = useState("");
+  const [scriptModal, setScriptModal] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
@@ -21,6 +29,48 @@ const GrapesJSEditor = () => {
   console.log("template id:: ", id);
   const navigate = useNavigate();
   const token = localStorage.getItem("auth-token");
+
+  const style = {
+    transform: "translate(-50%, -50%)",
+    boxShadow: 24,
+  };
+
+  const copyScript = (e) => {
+    e.preventDefault();
+
+    const getScript = document.getElementById("template-script");
+
+    console.log("getscript :: ", getScript.textContent);
+
+    navigator.clipboard.writeText(getScript.textContent).then(
+      () => {
+        toast.success("Script copied.", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        console.log("Script copied to clipboard!");
+      },
+      (err) => {
+        console.error("Could not copy text: ", err);
+        toast.error("Unable to copy the script.", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    );
+  };
 
   useEffect(() => {
     const editor = grapesjs.init({
@@ -468,6 +518,7 @@ const GrapesJSEditor = () => {
         progress: undefined,
         theme: "light",
       });
+
       setBtnLoading(false);
 
       return;
@@ -511,6 +562,7 @@ const GrapesJSEditor = () => {
         theme: "light",
       });
       setBtnLoading(false);
+      setScriptModal(response?.data?.data);
       navigate("/templates");
     } catch (error) {
       setBtnLoading(false);
@@ -600,6 +652,127 @@ const GrapesJSEditor = () => {
         </button>
       </div>
       <div id="gjs" ref={editorRef}></div>
+
+      {scriptModal && (
+        <Modal
+          keepMounted
+          open={scriptModal}
+          onClose={() => setScriptModal(false)}
+          aria-labelledby="keep-mounted-modal-title"
+          aria-describedby="keep-mounted-modal-description"
+          closeAfterTransition
+          // BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <div
+            style={style}
+            className={`w-[calc(100%-20px)] md:w-[40%]  ${
+              currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+            } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+          >
+            <div className="flex flex-col justify-center items-center">
+              <h1
+                className={`font-semibold pt-3 text-lg ${
+                  currentMode === "dark" ? "text-white" : "text-dark"
+                }`}
+              >
+                {t("copy_script")}
+              </h1>
+            </div>
+
+            <pre
+              className={`
+               bg-[#f5f5f5] h-[300px] p-4 rounded-md overflow-auto mt-4 `}
+            >
+              <code id="template-script">
+                {`<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako_inflate.min.js"></script>
+    <script>
+      (function () {
+        var uniqueId = ${scriptModal?.id};
+        var endpoint =
+          "https://testing.hikalcrm.com/api/page-templates/" + uniqueId;
+
+        fetch(endpoint, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer " + "34|5npCV56W9y5YpMvePVpkTsQc1l9qAIUOSMVH2bsu934ef9b4",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Data:: ", data);
+            // Assuming 'data' contains the base64 encoded and compressed HTML and CSS
+            var decompressedHtml = decompressData(data?.data?.html);
+            var decompressedCss = decompressData(data?.data?.css);
+
+            var container = document.createElement("div");
+            container.innerHTML = decompressedHtml;
+            document.body.appendChild(container);
+
+            var styleTag = document.createElement("style");
+            styleTag.innerHTML = decompressedCss;
+            document.head.appendChild(styleTag);
+          })
+          .catch((error) =>
+            console.error("Error loading landing page:", error)
+          );
+
+        function decompressData(base64Data) {
+          console.log("data to decompressed:: ", base64Data);
+          try {
+            var compressedDataArray = atob(base64Data).split(",");
+            //   .map((char) => char.charCodeAt(0));
+            var decompressedData = JSON.parse(
+              pako.inflate(new Uint8Array(compressedDataArray), {
+                raw: true,
+                to: "string",
+              })
+            );
+            return decompressedData;
+          } catch (e) {
+            console.error("Decompression error:", e);
+            return "";
+          }
+        }
+      })();
+    </script>`}
+              </code>
+            </pre>
+
+            <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+              <IconButton
+                className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                ripple="true"
+                size="lg"
+                onClick={(e) => copyScript(e)}
+              >
+                {btnLoading ? (
+                  <CircularProgress size={18} sx={{ color: "blue" }} />
+                ) : (
+                  <span>{t("confirm")}</span>
+                )}
+              </IconButton>
+
+              <Button
+                onClick={() => setScriptModal(false)}
+                ripple="true"
+                variant="outlined"
+                className={`shadow-none  rounded-md text-sm  ${
+                  currentMode === "dark"
+                    ? "text-white border-white"
+                    : "text-main-red-color border-main-red-color"
+                }`}
+              >
+                {t("close")}
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </>
   );
 };
