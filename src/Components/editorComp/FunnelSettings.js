@@ -4,20 +4,21 @@ import { Box, CircularProgress, TextField } from "@mui/material";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 
-const FunnelSettings = ({ data }) => {
+const FunnelSettings = ({ data, fetchTemplates, handleClose }) => {
   console.log("landing page data in funnel settings::: ", data);
   const { darkModeColors, t, BACKEND_URL } = useStateContext();
   const [loading, setLoading] = useState(false);
   const [formdata, setformdata] = useState({
     page_id: data?.id || null,
-    funnel_page_type: data?.template_type || null,
+    // funnel_page_type: data?.template_type || null,
     funnel_page_name: data?.template_name || null,
     // path_head: null,
     // domain: null,
     favicon_url: null,
-    body_tracking_code: null,
+    body_code: null,
     header_code: null,
     footer_code: null,
+    domain: "#",
   });
 
   console.log("formData::: ", formdata);
@@ -34,7 +35,7 @@ const FunnelSettings = ({ data }) => {
     try {
       const token = localStorage.getItem("auth-token");
       const response = await axios.post(
-        `${BACKEND_URL}/funnel-pages`,
+        `${BACKEND_URL}/page-settings`,
         formdata,
         {
           headers: {
@@ -72,6 +73,8 @@ const FunnelSettings = ({ data }) => {
         theme: "light",
       });
       setLoading(false);
+      handleClose();
+      fetchTemplates();
     } catch (error) {
       setLoading(false);
       console.error("error in updating funnel settings", error);
@@ -189,7 +192,7 @@ const FunnelSettings = ({ data }) => {
                   onChange={handleSettingsData}
                 />
                 <TextField
-                  id="body_tracking_code"
+                  id="body_code"
                   type={"text"}
                   label={t("funnel_form_body_tracking_code")}
                   className="w-full"
@@ -198,7 +201,7 @@ const FunnelSettings = ({ data }) => {
                   }}
                   variant="outlined"
                   size="small"
-                  value={formdata?.body_tracking_code}
+                  value={formdata?.body_code}
                   onChange={handleSettingsData}
                 />
               </div>
