@@ -529,6 +529,7 @@ const GrapesJSEditor = () => {
 
       return;
     }
+    // comment
 
     console.log("compress html: ", compressHTML);
     console.log("compress css: ", compressCSS);
