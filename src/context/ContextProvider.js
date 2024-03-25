@@ -207,7 +207,7 @@ export const ContextProvider = ({ children }) => {
   const MenuItemStyles = {
     "& .MuiMenuItem-root": {
       backgroundColor: currentMode === "dark" ? blurDarkColor : blurLightColor,
-    }
+    },
   };
 
   const darkModeColors = {
@@ -264,7 +264,7 @@ export const ContextProvider = ({ children }) => {
       backgroundColor: `${primaryColor} !important`,
     },
 
-    // DROPDOWN SELECT 
+    // DROPDOWN SELECT
     "& .MuiPaper-root, .MuiPopover-paper, .MuiMenu-paper": {
       backgroundColor: currentMode === "dark" ? blurDarkColor : blurLightColor,
     },
@@ -300,7 +300,7 @@ export const ContextProvider = ({ children }) => {
 
   function formatNum(value) {
     if (value === 0) {
-      return 0;
+      return "0" + 0;
     } else if (value < 10) {
       return "0" + value;
     } else {
