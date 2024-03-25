@@ -341,7 +341,7 @@ const TemplatesListComp = () => {
                       >
                         <IoEye />
                       </button>
-                      <div
+                      {/* <div
                         className={`absolute top-[450px] ${
                           isLangRTL(i18n.language) ? "left-0" : "right-0"
                         } p-2 rounded-b-full`}
@@ -351,7 +351,7 @@ const TemplatesListComp = () => {
                           alt="secondary"
                           className="h-[30px]"
                         />
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* </Link> */}
