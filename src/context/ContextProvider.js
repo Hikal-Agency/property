@@ -300,6 +300,7 @@ export const ContextProvider = ({ children }) => {
 
   function formatNum(value) {
     if (value === 0) {
+      // return "0" + 0;
       return "0" + 0;
     } else if (value < 10) {
       return "0" + value;
