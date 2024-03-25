@@ -576,7 +576,7 @@ const GrapesJSEditor = () => {
     } catch (error) {
       setBtnLoading(false);
       console.error("Export failed", error);
-      toast.error("Unable to save page.", {
+      toast.error(`Unable to ${id ? "udpate" : "save"} page.`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -701,7 +701,7 @@ const GrapesJSEditor = () => {
       (function () {
         var uniqueId = ${scriptModal?.data?.id};
         var endpoint =
-          "https://testing.hikalcrm.com/api/page-templates/" + uniqueId;
+          '${BACKEND_URL}/page-templates/' + uniqueId;
 
         fetch(endpoint, {
           method: "GET",
