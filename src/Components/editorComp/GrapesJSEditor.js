@@ -705,11 +705,7 @@ const GrapesJSEditor = () => {
 
         fetch(endpoint, {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization:
-              "Bearer " + "34|5npCV56W9y5YpMvePVpkTsQc1l9qAIUOSMVH2bsu934ef9b4",
-          },
+          
         })
           .then((response) => response.json())
           .then((data) => {
