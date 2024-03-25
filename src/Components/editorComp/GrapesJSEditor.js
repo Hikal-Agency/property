@@ -21,7 +21,10 @@ const GrapesJSEditor = () => {
   const editorRef = useRef(null);
   const { t, BACKEND_URL, darkModeColors, currentMode } = useStateContext();
   const [templateName, setTemplateName] = useState("");
-  const [scriptModal, setScriptModal] = useState(false);
+  const [scriptModal, setScriptModal] = useState({
+    open: false,
+    data: null,
+  });
   const [btnLoading, setBtnLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
@@ -55,7 +58,7 @@ const GrapesJSEditor = () => {
           theme: "light",
         });
         console.log("Script copied to clipboard!");
-        setScriptModal(false);
+        setScriptModal({ open: false });
         navigate("/templates");
       },
       (err) => {
@@ -102,7 +105,8 @@ const GrapesJSEditor = () => {
           }
         );
         console.log("single page template:: ", response);
-        const { html, css, template_name } = response?.data?.data;
+        const { html, css, template_name } =
+          response?.data?.data?.page_template;
         const deCompressHTML = decompressData(html);
         const deCompressCSS = decompressData(css);
         setTemplateName(template_name);
@@ -564,7 +568,10 @@ const GrapesJSEditor = () => {
         theme: "light",
       });
       setBtnLoading(false);
-      setScriptModal(response?.data?.data);
+      setScriptModal({
+        open: true,
+        data: response?.data?.data,
+      });
       // navigate("/templates");
     } catch (error) {
       setBtnLoading(false);
@@ -655,11 +662,11 @@ const GrapesJSEditor = () => {
       </div>
       <div id="gjs" ref={editorRef}></div>
 
-      {scriptModal && (
+      {scriptModal?.open && (
         <Modal
           keepMounted
-          open={scriptModal}
-          onClose={() => setScriptModal(false)}
+          open={scriptModal?.open}
+          onClose={() => setScriptModal({ open: false })}
           aria-labelledby="keep-mounted-modal-title"
           aria-describedby="keep-mounted-modal-description"
           closeAfterTransition
@@ -692,7 +699,7 @@ const GrapesJSEditor = () => {
                 {`<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.3/pako_inflate.min.js"></script>
     <script>
       (function () {
-        var uniqueId = ${scriptModal?.id};
+        var uniqueId = ${scriptModal?.data?.id};
         var endpoint =
           "https://testing.hikalcrm.com/api/page-templates/" + uniqueId;
 
@@ -707,9 +714,11 @@ const GrapesJSEditor = () => {
           .then((response) => response.json())
           .then((data) => {
             console.log("Data:: ", data);
-            // Assuming 'data' contains the base64 encoded and compressed HTML and CSS
-            var decompressedHtml = decompressData(data?.data?.html);
-            var decompressedCss = decompressData(data?.data?.css);
+            const resData = data?.data?.page_template
+            //  'data' contains the base64 encoded and compressed HTML and CSS
+
+            var decompressedHtml = decompressData(resData?.html);
+            var decompressedCss = decompressData(resData?.css);
 
             var container = document.createElement("div");
             container.innerHTML = decompressedHtml;
@@ -746,8 +755,8 @@ const GrapesJSEditor = () => {
             </pre>
 
             <div className="action buttons mt-5 flex items-center justify-center space-x-2">
-              <IconButton
-                className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+              <Button
+                className={`bg-btn-primary `}
                 ripple="true"
                 size="lg"
                 onClick={(e) => copyScript(e)}
@@ -755,12 +764,12 @@ const GrapesJSEditor = () => {
                 {btnLoading ? (
                   <CircularProgress size={18} sx={{ color: "blue" }} />
                 ) : (
-                  <span>{t("confirm")}</span>
+                  <span className="text-white text-lg">{t("copy")}</span>
                 )}
-              </IconButton>
+              </Button>
 
               <Button
-                onClick={() => setScriptModal(false)}
+                onClick={() => setScriptModal({ open: false })}
                 ripple="true"
                 variant="outlined"
                 className={`shadow-none  rounded-md text-sm  ${
