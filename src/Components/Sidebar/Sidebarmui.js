@@ -270,13 +270,17 @@ const Sidebarmui = () => {
           // TODO BECAUSE ALL NEW TABS WERE OPENING TO ATTENDANCE FOR OTHER USERS
           if (wordIndex !== -1) {
             const specificWord = permissionsArray[wordIndex];
-            console.log("specificWord: ", specificWord); // Output: "cherry"
+            console.log("specificWord: ", specificWord);
           } else {
             console.log("Word not found in the string.");
 
-            if (result?.data?.user[0]?.role === 6) {
+            if (
+              result?.data?.user[0]?.role === 6 ||
+              result?.data?.user[0]?.role === 9
+            ) {
               navigate("/attendance_self");
             }
+
             // if (result?.data?.user[0]?.role !== 1) {
             //   // navigate("/attendance_self");
             // }
