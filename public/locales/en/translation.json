@@ -840,6 +840,7 @@
     "payment_duration": "Payment Duration",
     "registered_on": "Registered On",
     "update_client": "Update Client",
+<<<<<<< HEAD
     "integrate_twillio": " Twillio",
     "twillio_id": "Twillio Id",
     "twillio_token": "Token",
@@ -939,5 +940,37 @@
 
    
 
+=======
+    "order":"Order",
+    "order_history":"Order History",
+    "label_order_qty":"Order Quantity",
+    "label_order_amount":"Amount",
+    "label_order_note":"Note",
+    "product_inventory":"Inventory",
+    "inventory_status":"Item Status",
+    "inventory_status_avail":"Available",
+    "inventory_status_stock":"Out Of Stock",
+    "add_item":"Add Item",
+    "edit_item":"Edit Item",
+    "label_item_name":"Item Name",
+    "label_item_price":"Item Price",
+    "order_status_preparing":"Preparing",
+    "order_status_delivered":"Delivered",
+    "order_status_out_of_stock":"Out Of Stock",
+    "order_cancel":"Cancelled",
+    "order_pending":"Pending",
+
+    "label_select_currency": "Currency",
+    "pak_currency": "PKR",
+    "uae_currency": "AED",
+    "india_currency": "INR",
+    "nepal_currency": "NPR",
+    "usa_currency": "USD",
+    "uk_currency": "GBP",
+    "japan_currency": "JPY",
+    "china_currency": "CNY",
+    "australia_currency": "AUD",
+    "canada_currency": "CAD"
+>>>>>>> office_boy
 
 }
