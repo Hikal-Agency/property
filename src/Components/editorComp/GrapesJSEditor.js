@@ -400,6 +400,103 @@ const GrapesJSEditor = () => {
       category: "Forms", // Categorize under 'Forms' in the block manager
     });
 
+    // custom html css
+    editor.DomComponents.addType("html-css-component", {
+      model: {
+        defaults: {
+          tagName: "div",
+          draggable: true,
+          droppable: true,
+          components: [
+            {
+              tagName: "textarea",
+              content: "Enter HTML here",
+              attributes: { class: "html-input" },
+            },
+            {
+              tagName: "textarea",
+              content: "Enter CSS here",
+              attributes: { class: "css-input" },
+            },
+            {
+              tagName: "div",
+              attributes: { class: "output" },
+              content: "The output will be rendered here",
+            },
+          ],
+          script: function () {
+            const htmlInput = this.querySelector(".html-input");
+            const cssInput = this.querySelector(".css-input");
+            const output = this.querySelector(".output");
+
+            htmlInput.addEventListener("input", function () {
+              output.innerHTML = htmlInput.value;
+            });
+
+            cssInput.addEventListener("input", function () {
+              const style = document.createElement("style");
+              style.innerHTML = cssInput.value;
+              document.head.appendChild(style);
+            });
+          },
+        },
+      },
+    });
+
+    // editor.DomComponents.addType("html-css-component", {
+    //   model: {
+    //     defaults: {
+    //       tagName: "div",
+    //       traits: [
+    //         {
+    //           type: "textarea",
+    //           label: "HTML",
+    //           name: "inner-html",
+    //           changeProp: 1,
+    //         },
+    //         {
+    //           type: "textarea",
+    //           label: "CSS",
+    //           name: "inner-css",
+    //           changeProp: 1,
+    //         },
+    //       ],
+    //       script: function () {
+    //         // This function will run in the browser where the component is rendered
+    //         console.log("component rendnered:");
+    //         const css = this.getAttribute("inner-css");
+    //         const style = document.createElement("style");
+    //         style.innerHTML = css;
+    //         this.appendChild(style);
+    //       },
+    //     },
+    //     init() {
+    //       this.on("change:inner-html", function () {
+    //         this.set("content", this.get("inner-html"));
+    //       });
+    //       this.on("change:inner-css", function () {
+    //         const css = this.get("inner-css");
+    //         const style = document.createElement("style");
+    //         style.innerHTML = css;
+    //         this.getEl().appendChild(style);
+    //       });
+    //     },
+    //   },
+    // });
+
+    editor.BlockManager.add("html-css-block", {
+      label: "HTML/CSS",
+      content: {
+        type: "html-css-component",
+        "inner-html": "Type your HTML here",
+        "inner-css": "/* Type your CSS here */",
+      },
+      category: "Advanced",
+      attributes: {
+        class: "fa fa-code",
+      },
+    });
+
     // Input Field
     // editor.BlockManager.add("input-block", {
     //   label: "Input",
