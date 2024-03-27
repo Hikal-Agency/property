@@ -177,15 +177,14 @@ const GrapesJSEditor = () => {
       }
     });
 
-    // editor.on("component:update", (component) => {
-    //   console.log("component::::::::::::::::: ", component);
-    //   // if (component.is("form")) {
-    //   if (component.attributes.tagName === "form") {
-    //     console.log("form");
-    //     // This checks if the component is a form
-    //     const formElement = component.getEl();
-    //     formElement.addEventListener("submit", handleForm);
-    //   }
+    // editor.on("component:update:align-self", (component) => {
+    //   const selectedValue = component
+    //     .get("traits")
+    //     .find((trait) => trait.get("name") === "align-self")
+    //     .get("value");
+    //   const componentStyle = component.getStyle();
+    //   componentStyle["align-self"] = selectedValue;
+    //   component.setStyle(componentStyle);
     // });
 
     // Cleanup function to destroy the editor when the component unmounts
@@ -208,8 +207,42 @@ const GrapesJSEditor = () => {
       label: "Text",
       content: '<div data-gjs-type="text">Insert your text here</div>',
       category: "Basic",
+      traits: [
+        {
+          type: "select",
+          label: "Alignment",
+          name: "alignment",
+          options: [
+            { value: "", name: "None" },
+            { value: "left", name: "Left" },
+            { value: "center", name: "Center" },
+            { value: "right", name: "Right" },
+          ],
+        },
+      ],
     });
 
+    // editor.BlockManager.get("text-block").set({
+    //   attributes: {
+    //     // ...editor.BlockManager.get("text-block").get("attributes"),
+    //     traits: [
+    //       // ...editor.BlockManager.get("text-block").get("traits"),
+    //       {
+    //         type: "select",
+    //         label: "Container Align",
+    //         name: "align-self",
+    //         options: [
+    //           { value: "auto", name: "Auto" },
+    //           { value: "flex-start", name: "Left" },
+    //           { value: "center", name: "Center" },
+    //           { value: "flex-end", name: "Right" },
+    //           { value: "stretch", name: "Stretch" },
+    //         ],
+    //         changeProp: 1,
+    //       },
+    //     ],
+    //   },
+    // });
     // Image Block
     editor.BlockManager.add("image-block", {
       label: "Image",
