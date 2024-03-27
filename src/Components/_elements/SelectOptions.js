@@ -562,7 +562,6 @@ export const order_status = (t) => [
   },
 ];
 
-<<<<<<< HEAD
 // TICKET STATUS
 export const ticket_status = (t) => [
   {
@@ -608,8 +607,9 @@ export const ticket_source = (t) => [
   {
     value: "WhatsApp Chat",
     label: t("support_via_whatsapp"),
-=======
-// CURRENCIES
+  },
+];
+
 export const currencies = (t) => [
   {
     value: "PKR",
@@ -650,6 +650,5 @@ export const currencies = (t) => [
   {
     value: "CAD",
     label: t("canada_currency"),
->>>>>>> office_boy
   },
 ];
