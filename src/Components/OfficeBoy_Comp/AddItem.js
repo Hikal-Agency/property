@@ -11,6 +11,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+// import Select from "react-select";
 import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
@@ -20,6 +21,8 @@ import axios from "../../axoisConfig";
 
 import { BiTrash } from "react-icons/bi";
 import { toast } from "react-toastify";
+import { currencies } from "../_elements/SelectOptions";
+import { selectBgStyles } from "../_elements/SelectStyles";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -35,7 +38,10 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
     itemStatus: "available",
     notes: null,
     image: null,
+    currency: null,
   });
+
+  console.log("currencies:: ", currencies);
 
   console.log("ITem Data:::: ", itemData);
 
@@ -49,6 +55,9 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
     darkModeColors,
     fontFam,
     BACKEND_URL,
+    blurDarkColor,
+    blurLightColor,
+    themeBgImg,
   } = useStateContext();
   const [isClosing, setIsClosing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -379,16 +388,72 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
                         />
                         <TextField
                           type={"number"}
-                          label={t("label_item_price")}
+                          // label={t("label_item_price")}
                           className="w-full"
                           style={{
                             marginBottom: "20px",
                           }}
+                          placeholder={t("label_item_price")}
                           variant="outlined"
                           name="itemPrice"
                           size="small"
                           value={itemData?.itemPrice}
                           onChange={handleChange}
+                          InputProps={{
+                            startAdornment: (
+                              <Box
+                                sx={{
+                                  minWidth: "90px",
+                                  padding: 0,
+                                  marginLeft: isLangRTL(i18n.language)
+                                    ? "0px"
+                                    : "0px",
+                                  marginRight: isLangRTL(i18n.language)
+                                    ? "0px"
+                                    : "10px",
+                                }}
+                              >
+                                <TextField
+                                  value={currencies(t).find(
+                                    (option) =>
+                                      option.value === itemData?.currency
+                                  )}
+                                  name="currency"
+                                  onChange={handleChange}
+                                  options={currencies}
+                                  label={t("label_select_currency")}
+                                  // placeholder={t("label_select_currency")}
+                                  className={`w-full p-0 ${
+                                    !themeBgImg
+                                      ? currentMode === "dark"
+                                        ? "bg-[#333333]"
+                                        : "bg-[#DDDDDD]"
+                                      : currentMode === "dark"
+                                      ? "blur-bg-dark"
+                                      : "blur-bg-light"
+                                  } `}
+                                  size="small"
+                                  select
+                                  // menuPortalTarget={document.body}
+                                  // styles={selectBgStyles(
+                                  //   currentMode,
+                                  //   primaryColor,
+                                  //   blurDarkColor,
+                                  //   blurLightColor
+                                  // )}
+                                >
+                                  <MenuItem disabled selected value="">
+                                    {t("inventory_status")}
+                                  </MenuItem>
+                                  {currencies(t)?.map((currency) => (
+                                    <MenuItem value={currency?.value}>
+                                      {currency?.label}
+                                    </MenuItem>
+                                  ))}
+                                </TextField>
+                              </Box>
+                            ),
+                          }}
                         />
                         <TextField
                           type={"text"}

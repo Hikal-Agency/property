@@ -860,6 +860,18 @@
     "order_status_delivered":"Delivered",
     "order_status_out_of_stock":"Out Of Stock",
     "order_cancel":"Cancelled",
-    "order_pending":"Pending"
+    "order_pending":"Pending",
+
+    "label_select_currency": "Currency",
+    "pak_currency": "PKR",
+    "uae_currency": "AED",
+    "india_currency": "INR",
+    "nepal_currency": "NPR",
+    "usa_currency": "USD",
+    "uk_currency": "GBP",
+    "japan_currency": "JPY",
+    "china_currency": "CNY",
+    "australia_currency": "AUD",
+    "canada_currency": "CAD"
 
 }
