@@ -431,7 +431,6 @@ const GrapesJSEditor = () => {
             },
           ],
           script: function () {
-            const editorMode = "{[ editorMode ]}";
             const htmlInput = this.querySelector(".html-input");
             const cssInput = this.querySelector(".css-input");
             const jsInput = this.querySelector(".js-input");
@@ -605,6 +604,16 @@ const GrapesJSEditor = () => {
 
     setBtnLoading(true);
 
+    // editorRef.current
+    //   .getWrapper()
+    //   .find(".html-input, .css-input, .js-input")
+    //   .forEach((component) => {
+    //     console.log("component::: ", component);
+    //     component.addStyle({
+    //       visibility: "hidden",
+    //     });
+    //   });
+
     const html = editorRef.current.getHtml(); // Get HTML code
     const css = editorRef.current.getCss(); // Get CSS code
 
@@ -632,7 +641,6 @@ const GrapesJSEditor = () => {
 
       return;
     }
-    // comment
 
     console.log("compress html: ", compressHTML);
     console.log("compress css: ", compressCSS);
