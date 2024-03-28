@@ -57,12 +57,14 @@ const TemplatesListComp = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [maxPage, setMaxPage] = useState(0);
   const [currentID, setCurrentID] = useState(null);
+  const [deleteTemp, setDeleteTemp] = useState(null);
 
   const open = Boolean(anchorEl);
-  const handleClick = (event, id) => {
+  const handleClick = (event, id, data) => {
     console.log("id: ", id);
     setAnchorEl(event.currentTarget);
     setCurrentID(id);
+    setDeleteTemp(data);
   };
 
   const style = {
@@ -135,7 +137,7 @@ const TemplatesListComp = () => {
       );
 
       console.log("template delete", response);
-      toast.success("Template Delete successfully.", {
+      toast.success("Template Deleted successfully.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -211,7 +213,9 @@ const TemplatesListComp = () => {
                         aria-controls={open ? "long-menu" : undefined}
                         aria-expanded={open ? "true" : undefined}
                         aria-haspopup="true"
-                        onClick={(event) => handleClick(event, template?.id)}
+                        onClick={(event) =>
+                          handleClick(event, template?.id, template)
+                        }
                       >
                         <MdMoreVert
                           color={currentMode === "dark" ? "#fff" : "#000"}
@@ -417,7 +421,7 @@ const TemplatesListComp = () => {
                     currentMode === "dark" ? "text-white" : "text-dark"
                   }`}
                 >
-                  {`Do you really want to delete this template ${deleteTemplate?.template_name}?`}
+                  {`Do you really want to delete this template ${deleteTemp?.template_name}?`}
                 </h1>
               </div>
 
@@ -426,7 +430,7 @@ const TemplatesListComp = () => {
                   className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
                   ripple="true"
                   size="lg"
-                  onClick={(e) => handleDeleteTemplate(e, deleteTemplate)}
+                  onClick={(e) => handleDeleteTemplate(e, deleteTemp)}
                 >
                   {btnLoading ? (
                     <CircularProgress size={18} sx={{ color: "blue" }} />
