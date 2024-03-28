@@ -122,7 +122,8 @@ const MenuList = ({
                 {menu?.itemPrice && menu?.itemPrice !== 0 ? (
                   <Box sx={{ ...ribbonStyles }}>
                     <div className="wrap">
-                      <span>{menu?.itemPrice}</span>
+                      {menu?.currency}
+                      <span className="ml-2">{menu?.itemPrice}</span>
                     </div>
                   </Box>
                 ) : null}
