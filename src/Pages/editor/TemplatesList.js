@@ -18,6 +18,7 @@ const TemplatesList = () => {
     darkModeColors,
     themeBgImg,
     t,
+    modal,
   } = useStateContext();
   const { hasPermission } = usePermission();
   const token = localStorage.getItem("auth-token");
@@ -60,6 +61,7 @@ const TemplatesList = () => {
             <AddTemplateModal
               openModal={openModal}
               setOpenModal={setOpenModal}
+              modal="modal"
             />
           )}
         </div>

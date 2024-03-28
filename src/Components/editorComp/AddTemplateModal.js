@@ -117,7 +117,7 @@ const AddTemplateModal = ({
 
           <div className="mb-4">
             <div className="mt-3 pb-3">
-              <TemplatesListComp />
+              <TemplatesListComp modal="modal" />
             </div>
           </div>
         </div>

@@ -25,7 +25,8 @@ import { Link, useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { decompressData } from "../../utils/compressionFunction";
 
-const TemplatesListComp = () => {
+const TemplatesListComp = ({ modal }) => {
+  console.log("modal", modal);
   const {
     themeBgImg,
     currentMode,
@@ -190,22 +191,140 @@ const TemplatesListComp = () => {
         ) : templatesList?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
             {templatesList?.map((template, index) => {
-              return (
-                <div
-                  key={index}
-                  className={`card-hover relative overflow-hidden offers-page-${
-                    template?.page
-                  } ${
-                    !themeBgImg
-                      ? currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                      : currentMode === "dark"
-                      ? "blur-bg-dark text-white"
-                      : "blur-bg-light text-black"
-                  } rounded-lg `}
-                >
-                  <div className="rounded-md flex flex-col justify-between">
+              if (modal) {
+                return (
+                  <div
+                    key={index}
+                    className={`card-hover relative overflow-hidden offers-page-${
+                      template?.page
+                    } ${
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black"
+                    } rounded-lg `}
+                  >
+                    <div className="rounded-md flex flex-col justify-between">
+                      <div className="flex items-center justify-between mr-2 ">
+                        <IconButton
+                          aria-label="more"
+                          id="long-button"
+                          aria-controls={open ? "long-menu" : undefined}
+                          aria-expanded={open ? "true" : undefined}
+                          aria-haspopup="true"
+                          onClick={(event) =>
+                            handleClick(event, template?.id, template)
+                          }
+                        >
+                          <MdMoreVert
+                            color={currentMode === "dark" ? "#fff" : "#000"}
+                          />
+                        </IconButton>
+                        <Menu
+                          id="long-menu"
+                          MenuListProps={{
+                            "aria-labelledby": "long-button",
+                          }}
+                          anchorEl={anchorEl}
+                          open={open}
+                          onClose={handleClose}
+                          PaperProps={{
+                            style: {
+                              maxHeight: ITEM_HEIGHT * 4.5,
+                              width: "20ch",
+                            },
+                          }}
+                        >
+                          <MenuItem
+                          // onClick={() => navigate(`/editor/${template?.id}`)}
+                          >
+                            <Link to={`/editor/${currentID}`}>{t("edit")}</Link>
+                          </MenuItem>
+                          <MenuItem
+                            onClick={() => {
+                              setDeleteTemplate(template);
+                              handleClose();
+                            }}
+                          >
+                            {t("btn_delete")}
+                          </MenuItem>
+                        </Menu>
+
+                        <h3
+                          className={`${
+                            currentMode === "dark" ? "text-white" : "text-dark"
+                          } font-bold text-lg`}
+                        >
+                          {template?.template_name}
+                        </h3>
+                      </div>
+
+                      <div
+                        className="cursor-pointer"
+                        onClick={() =>
+                          setOpenSingleTemplate({
+                            open: true,
+                            image: template,
+                          })
+                        }
+                      >
+                        <iframe
+                          className="html-content-container w-full h-[500px] object-cover overflow-y-auto overflow-x-hidden"
+                          sandbox="allow-same-origin allow-scripts"
+                          // srcDoc={DOMPurify.sanitize(template?.html)}
+                          srcDoc={`<html><head><style>${DOMPurify.sanitize(
+                            template?.css || ""
+                          )}</style></head><body>${DOMPurify.sanitize(
+                            template?.html || ""
+                          )}</body></html>`}
+                          frameBorder="0"
+                          allowFullScreen
+                        ></iframe>
+
+                        <div
+                          className={`absolute top-0 ${
+                            isLangRTL(i18n.language) ? "left-0" : "right-0"
+                          } p-2`}
+                        ></div>
+
+                        <button
+                          className={`absolute top-[410px]   z-10 rounded-full bg-btn-primary ${
+                            isLangRTL(i18n.language) ? "left-0" : "right-0"
+                          } p-3`}
+                          onClick={() =>
+                            setOpenSingleTemplate({
+                              open: true,
+                              image: template,
+                            })
+                          }
+                        >
+                          <IoEye />
+                        </button>
+                      </div>
+
+                      {/* </Link> */}
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div
+                    key={index}
+                    className={`card-hover relative overflow-hidden offers-page-${
+                      template?.page
+                    } ${
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                        : currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black"
+                    } rounded-lg cursor-pointer `}
+                  >
                     <div className="flex items-center justify-between mr-2 ">
                       <IconButton
                         aria-label="more"
@@ -236,9 +355,7 @@ const TemplatesListComp = () => {
                           },
                         }}
                       >
-                        <MenuItem
-                        // onClick={() => navigate(`/editor/${template?.id}`)}
-                        >
+                        <MenuItem>
                           <Link to={`/editor/${currentID}`}>{t("edit")}</Link>
                         </MenuItem>
                         <MenuItem
@@ -250,18 +367,9 @@ const TemplatesListComp = () => {
                           {t("btn_delete")}
                         </MenuItem>
                       </Menu>
-
-                      <h3
-                        className={`${
-                          currentMode === "dark" ? "text-white" : "text-dark"
-                        } font-bold text-lg`}
-                      >
-                        {template?.template_name}
-                      </h3>
                     </div>
-
                     <div
-                      className="cursor-pointer"
+                      className="flex items-center justify-center mr-2  py-5"
                       onClick={() =>
                         setOpenSingleTemplate({
                           open: true,
@@ -269,99 +377,17 @@ const TemplatesListComp = () => {
                         })
                       }
                     >
-                      {/* <img
-                        src={static_img}
-                        alt="secondary"
-                        className="w-full h-[500px] object-cover"
-                        onClick={() =>
-                          setOpenSingleTemplate({
-                            open: true,
-                            image: template,
-                          })
-                        }
-                      /> */}
-                      {/* <div
-                        className="html-content-container w-full h-[500px] object-cover overflow-y-auto overflow-x-hidden"
-                        dangerouslySetInnerHTML={createMarkup(
-                          template?.html
-                        )}
-                      /> */}
-                      <iframe
-                        className="html-content-container w-full h-[500px] object-cover overflow-y-auto overflow-x-hidden"
-                        sandbox="allow-same-origin allow-scripts"
-                        // srcDoc={DOMPurify.sanitize(template?.html)}
-                        srcDoc={`<html><head><style>${DOMPurify.sanitize(
-                          template?.css || ""
-                        )}</style></head><body>${DOMPurify.sanitize(
-                          template?.html || ""
-                        )}</body></html>`}
-                        frameBorder="0"
-                        allowFullScreen
-                      ></iframe>
-
-                      <div
-                        className={`absolute top-0 ${
-                          isLangRTL(i18n.language) ? "left-0" : "right-0"
-                        } p-2`}
+                      <h3
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-dark"
+                        } font-bold text-lg capitalize`}
                       >
-                        {/* <div className="flex flex-col gap-2">
-                          <Tooltip title="View Property" arrow>
-                            <button
-                              onClick={() => HandleSingleListing(template?.id)}
-                              className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
-                            >
-                              <BsListStars size={16} color={"#FFFFFF"} />
-                            </button>
-                          </Tooltip>
-                          {hasPermission("delete_listing") && (
-                            <Tooltip title="Delete template" arrow>
-                              <button
-                                className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
-                                onClick={(e) =>
-                                  handleOpenDialogue(
-                                    e,
-                                    template?.id,
-                                    template?.project
-                                  )
-                                }
-                              >
-                                <BsTrash size={16} color="#ffffff" />
-                              </button>
-                            </Tooltip>
-                          )}
-                        </div> */}
-                      </div>
-
-                      <button
-                        className={`absolute top-[410px]   z-10 rounded-full bg-btn-primary ${
-                          isLangRTL(i18n.language) ? "left-0" : "right-0"
-                        } p-3`}
-                        onClick={() =>
-                          setOpenSingleTemplate({
-                            open: true,
-                            image: template,
-                          })
-                        }
-                      >
-                        <IoEye />
-                      </button>
-                      {/* <div
-                        className={`absolute top-[450px] ${
-                          isLangRTL(i18n.language) ? "left-0" : "right-0"
-                        } p-2 rounded-b-full`}
-                      >
-                        <img
-                          src={currentMode === "dark" ? hikalrewhite : hikalre}
-                          alt="secondary"
-                          className="h-[30px]"
-                        />
-                      </div> */}
+                        {template?.template_name}
+                      </h3>
                     </div>
-
-                    {/* </Link> */}
                   </div>
-                </div>
-              );
+                );
+              }
             })}
           </div>
         ) : (
@@ -463,6 +489,7 @@ const TemplatesListComp = () => {
             hikalre={hikalre}
             hikalrewhite={hikalrewhite}
             fetchTemplates={fetchTemplates}
+            modal="modal"
           />
         )}
 
