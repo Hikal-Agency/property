@@ -196,6 +196,14 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
       type: "number",
       width: 150,
       headerAlign: "center",
+      renderCell: (cellValues) => (
+        <div>
+          <p>
+            <span className="mr-2">{cellValues?.row?.currency}</span>
+            {cellValues?.row?.itemPrice}
+          </p>
+        </div>
+      ),
     },
     {
       field: "image_path",
