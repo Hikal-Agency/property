@@ -22,6 +22,8 @@ import { BiTrash } from "react-icons/bi";
 import { toast } from "react-toastify";
 import { currencies } from "../_elements/SelectOptions";
 
+console.log("currencies:: ", currencies);
+
 const style = {
   transform: "translate(0%, 0%)",
   boxShadow: 24,
@@ -58,6 +60,11 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
     BACKEND_URL,
     themeBgImg,
   } = useStateContext();
+  console.log(
+    "selected currency:: ",
+    currencies(t)?.find((c) => c.value === itemData?.currency)
+  );
+
   const [isClosing, setIsClosing] = useState(false);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("auth-token");
@@ -363,13 +370,15 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                                 }}
                               >
                                 <TextField
-                                  value={currencies(t).find(
-                                    (option) =>
-                                      option.value === itemData?.currency
-                                  )}
+                                  value={
+                                    currencies(t).find(
+                                      (option) =>
+                                        option.value === itemData?.currency
+                                    )?.value
+                                  }
                                   name="currency"
                                   onChange={handleChange}
-                                  options={currencies}
+                                  // options={currencies}
                                   label={t("label_select_currency")}
                                   // placeholder={t("label_select_currency")}
                                   className={`w-full p-0 ${
@@ -383,13 +392,6 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                                   } `}
                                   size="small"
                                   select
-                                  // menuPortalTarget={document.body}
-                                  // styles={selectBgStyles(
-                                  //   currentMode,
-                                  //   primaryColor,
-                                  //   blurDarkColor,
-                                  //   blurLightColor
-                                  // )}
                                 >
                                   <MenuItem disabled selected value="">
                                     {t("inventory_status")}
