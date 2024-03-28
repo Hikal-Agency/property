@@ -177,15 +177,14 @@ const GrapesJSEditor = () => {
       }
     });
 
-    // editor.on("component:update", (component) => {
-    //   console.log("component::::::::::::::::: ", component);
-    //   // if (component.is("form")) {
-    //   if (component.attributes.tagName === "form") {
-    //     console.log("form");
-    //     // This checks if the component is a form
-    //     const formElement = component.getEl();
-    //     formElement.addEventListener("submit", handleForm);
-    //   }
+    // editor.on("component:update:align-self", (component) => {
+    //   const selectedValue = component
+    //     .get("traits")
+    //     .find((trait) => trait.get("name") === "align-self")
+    //     .get("value");
+    //   const componentStyle = component.getStyle();
+    //   componentStyle["align-self"] = selectedValue;
+    //   component.setStyle(componentStyle);
     // });
 
     // Cleanup function to destroy the editor when the component unmounts
@@ -208,8 +207,42 @@ const GrapesJSEditor = () => {
       label: "Text",
       content: '<div data-gjs-type="text">Insert your text here</div>',
       category: "Basic",
+      traits: [
+        {
+          type: "select",
+          label: "Alignment",
+          name: "alignment",
+          options: [
+            { value: "", name: "None" },
+            { value: "left", name: "Left" },
+            { value: "center", name: "Center" },
+            { value: "right", name: "Right" },
+          ],
+        },
+      ],
     });
 
+    // editor.BlockManager.get("text-block").set({
+    //   attributes: {
+    //     // ...editor.BlockManager.get("text-block").get("attributes"),
+    //     traits: [
+    //       // ...editor.BlockManager.get("text-block").get("traits"),
+    //       {
+    //         type: "select",
+    //         label: "Container Align",
+    //         name: "align-self",
+    //         options: [
+    //           { value: "auto", name: "Auto" },
+    //           { value: "flex-start", name: "Left" },
+    //           { value: "center", name: "Center" },
+    //           { value: "flex-end", name: "Right" },
+    //           { value: "stretch", name: "Stretch" },
+    //         ],
+    //         changeProp: 1,
+    //       },
+    //     ],
+    //   },
+    // });
     // Image Block
     editor.BlockManager.add("image-block", {
       label: "Image",
@@ -367,6 +400,75 @@ const GrapesJSEditor = () => {
       category: "Forms", // Categorize under 'Forms' in the block manager
     });
 
+    // custom html css
+    editor.DomComponents.addType("html-css-component", {
+      model: {
+        defaults: {
+          tagName: "div",
+          draggable: true,
+          droppable: true,
+
+          components: [
+            {
+              tagName: "textarea",
+              content: "Enter HTML here",
+              attributes: { class: "html-input" },
+            },
+            {
+              tagName: "textarea",
+              content: "Enter CSS here",
+              attributes: { class: "css-input" },
+            },
+            {
+              tagName: "textarea",
+              content: "Enter Javascirpt here",
+              attributes: { class: "js-input" },
+            },
+            {
+              tagName: "div",
+              attributes: { class: "output" },
+              content: "The output will be rendered here",
+            },
+          ],
+          script: function () {
+            const htmlInput = this.querySelector(".html-input");
+            const cssInput = this.querySelector(".css-input");
+            const jsInput = this.querySelector(".js-input");
+            const output = this.querySelector(".output");
+
+            htmlInput.addEventListener("input", function () {
+              output.innerHTML = htmlInput.value;
+            });
+
+            cssInput.addEventListener("input", function () {
+              const style = document.createElement("style");
+              style.innerHTML = cssInput.value;
+              document.head.appendChild(style);
+            });
+
+            jsInput.addEventListener("input", function () {
+              const script = document.createElement("script");
+              script.innerHTML = jsInput.value;
+              document.body.appendChild(script);
+            });
+          },
+        },
+      },
+    });
+
+    editor.BlockManager.add("html-css-block", {
+      label: "HTML/CSS",
+      content: {
+        type: "html-css-component",
+        "inner-html": "Type your HTML here",
+        "inner-css": "/* Type your CSS here */",
+      },
+      category: "Advanced",
+      attributes: {
+        class: "fa fa-code",
+      },
+    });
+
     // Input Field
     // editor.BlockManager.add("input-block", {
     //   label: "Input",
@@ -502,6 +604,16 @@ const GrapesJSEditor = () => {
 
     setBtnLoading(true);
 
+    // editorRef.current
+    //   .getWrapper()
+    //   .find(".html-input, .css-input, .js-input")
+    //   .forEach((component) => {
+    //     console.log("component::: ", component);
+    //     component.addStyle({
+    //       visibility: "hidden",
+    //     });
+    //   });
+
     const html = editorRef.current.getHtml(); // Get HTML code
     const css = editorRef.current.getCss(); // Get CSS code
 
@@ -529,7 +641,6 @@ const GrapesJSEditor = () => {
 
       return;
     }
-    // comment
 
     console.log("compress html: ", compressHTML);
     console.log("compress css: ", compressCSS);
