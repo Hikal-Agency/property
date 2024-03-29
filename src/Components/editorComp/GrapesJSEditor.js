@@ -4,6 +4,8 @@ import gjsPresetWebpage from "grapesjs-preset-webpage";
 import { useStateContext } from "../../context/ContextProvider";
 // import "grapesjs-preset-webpage/dist/grapesjs-preset-webpage.min.css";
 // import "grapesjs/dist/css/grapes.min.css";
+import customCodePlugin from "grapesjs-custom-code";
+
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import {
@@ -86,7 +88,7 @@ const GrapesJSEditor = () => {
       // width: "auto",
       // storageManager: false, // Disable storage manager for demo purposes
       // plugins: ["gjs-preset-webpage"],
-      plugins: [gjsPresetWebpage],
+      plugins: [gjsPresetWebpage, customCodePlugin],
       pluginsOpts: {
         gjsPresetWebpage: {},
       },
@@ -176,16 +178,6 @@ const GrapesJSEditor = () => {
         // }
       }
     });
-
-    // editor.on("component:update:align-self", (component) => {
-    //   const selectedValue = component
-    //     .get("traits")
-    //     .find((trait) => trait.get("name") === "align-self")
-    //     .get("value");
-    //   const componentStyle = component.getStyle();
-    //   componentStyle["align-self"] = selectedValue;
-    //   component.setStyle(componentStyle);
-    // });
 
     // Cleanup function to destroy the editor when the component unmounts
     return () => {
@@ -401,73 +393,73 @@ const GrapesJSEditor = () => {
     });
 
     // custom html css
-    editor.DomComponents.addType("html-css-component", {
-      model: {
-        defaults: {
-          tagName: "div",
-          draggable: true,
-          droppable: true,
+    // editor.DomComponents.addType("html-css-component", {
+    //   model: {
+    //     defaults: {
+    //       tagName: "div",
+    //       draggable: true,
+    //       droppable: true,
 
-          components: [
-            {
-              tagName: "textarea",
-              content: "Enter HTML here",
-              attributes: { class: "html-input" },
-            },
-            {
-              tagName: "textarea",
-              content: "Enter CSS here",
-              attributes: { class: "css-input" },
-            },
-            {
-              tagName: "textarea",
-              content: "Enter Javascirpt here",
-              attributes: { class: "js-input" },
-            },
-            {
-              tagName: "div",
-              attributes: { class: "output" },
-              content: "The output will be rendered here",
-            },
-          ],
-          script: function () {
-            const htmlInput = this.querySelector(".html-input");
-            const cssInput = this.querySelector(".css-input");
-            const jsInput = this.querySelector(".js-input");
-            const output = this.querySelector(".output");
+    //       components: [
+    //         {
+    //           tagName: "textarea",
+    //           content: "Enter HTML here",
+    //           attributes: { class: "html-input" },
+    //         },
+    //         {
+    //           tagName: "textarea",
+    //           content: "Enter CSS here",
+    //           attributes: { class: "css-input" },
+    //         },
+    //         {
+    //           tagName: "textarea",
+    //           content: "Enter Javascirpt here",
+    //           attributes: { class: "js-input" },
+    //         },
+    //         {
+    //           tagName: "div",
+    //           attributes: { class: "output" },
+    //           content: "The output will be rendered here",
+    //         },
+    //       ],
+    //       script: function () {
+    //         const htmlInput = this.querySelector(".html-input");
+    //         const cssInput = this.querySelector(".css-input");
+    //         const jsInput = this.querySelector(".js-input");
+    //         const output = this.querySelector(".output");
 
-            htmlInput.addEventListener("input", function () {
-              output.innerHTML = htmlInput.value;
-            });
+    //         htmlInput.addEventListener("input", function () {
+    //           output.innerHTML = htmlInput.value;
+    //         });
 
-            cssInput.addEventListener("input", function () {
-              const style = document.createElement("style");
-              style.innerHTML = cssInput.value;
-              document.head.appendChild(style);
-            });
+    //         cssInput.addEventListener("input", function () {
+    //           const style = document.createElement("style");
+    //           style.innerHTML = cssInput.value;
+    //           document.head.appendChild(style);
+    //         });
 
-            jsInput.addEventListener("input", function () {
-              const script = document.createElement("script");
-              script.innerHTML = jsInput.value;
-              document.body.appendChild(script);
-            });
-          },
-        },
-      },
-    });
+    //         jsInput.addEventListener("input", function () {
+    //           const script = document.createElement("script");
+    //           script.innerHTML = jsInput.value;
+    //           document.body.appendChild(script);
+    //         });
+    //       },
+    //     },
+    //   },
+    // });
 
-    editor.BlockManager.add("html-css-block", {
-      label: "HTML/CSS",
-      content: {
-        type: "html-css-component",
-        "inner-html": "Type your HTML here",
-        "inner-css": "/* Type your CSS here */",
-      },
-      category: "Advanced",
-      attributes: {
-        class: "fa fa-code",
-      },
-    });
+    // editor.BlockManager.add("html-css-block", {
+    //   label: "HTML/CSS",
+    //   content: {
+    //     type: "html-css-component",
+    //     "inner-html": "Type your HTML here",
+    //     "inner-css": "/* Type your CSS here */",
+    //   },
+    //   category: "Advanced",
+    //   attributes: {
+    //     class: "fa fa-code",
+    //   },
+    // });
 
     // Input Field
     // editor.BlockManager.add("input-block", {
@@ -620,6 +612,9 @@ const GrapesJSEditor = () => {
     // Log HTML and CSS for debugging purposes
     console.log("HTML:", html);
     console.log("CSS:", css);
+
+    setBtnLoading(false);
+    return;
 
     const compressHTML = compressData(html);
     const compressCSS = compressData(css);
