@@ -613,9 +613,6 @@ const GrapesJSEditor = () => {
     console.log("HTML:", html);
     console.log("CSS:", css);
 
-    setBtnLoading(false);
-    return;
-
     const compressHTML = compressData(html);
     const compressCSS = compressData(css);
 
