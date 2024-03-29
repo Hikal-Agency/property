@@ -527,7 +527,7 @@ const AllLeads = ({
       },
     },
     {
-      field: "ticket_edit",
+      field: "edit",
       headerName: t("label_action"),
       flex: 1,
       minWidth: 130,
