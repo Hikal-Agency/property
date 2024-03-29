@@ -84,8 +84,8 @@ const GrapesJSEditor = () => {
       container: "#gjs",
       // Add your GrapesJS options here
       // fromElement: true, // Initializes the editor from the content inside the container
-      // height: "100vh",
-      // width: "auto",
+      height: "80vh",
+      width: "auto",
       // storageManager: false, // Disable storage manager for demo purposes
       // plugins: ["gjs-preset-webpage"],
       plugins: [gjsPresetWebpage, customCodePlugin],
