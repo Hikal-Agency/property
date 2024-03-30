@@ -935,8 +935,10 @@
 
     "copy_script": "Copy the following script and paste in your html file to get the template.",
     "close": "Close.",
-    "copy": "Copy."
+    "copy": "Copy.",
 
+    "booking_details":"Booking Details",
+    "client_details":"Client Details"
    
 
 
