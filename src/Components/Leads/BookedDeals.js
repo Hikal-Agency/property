@@ -177,22 +177,26 @@ const BookedDeals = ({
   };
 
   const handleBookedFormClose = () => setBookedForm(false);
+  const [newFeedback, setnewFeedback] = useState("");
+  const [bookedData, setBookedData] = useState(null);
 
   const RenderFeedback = ({ cellValues }) => {
     const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
-    const [newFeedback, setnewFeedback] = useState("");
+    // const [newFeedback, setnewFeedback] = useState("");
     const [DialogueVal, setDialogue] = useState(false);
     const [btnloading, setbtnloading] = useState(false);
     const [leadDateValue, setLeadDateValue] = useState({});
     const [leadDate, setLeadDate] = useState("");
     const [leadAmount, setLeadAmount] = useState("");
     const [unitNo, setUnitNo] = useState("");
+    console.log("Feedback: ", Feedback);
 
     const ChangeFeedback = (e) => {
       setnewFeedback(e.value);
       if (e.value.toLowerCase() === "closed deal") {
-        console.log("closed deal:::: ");
-        setBookedForm(true);
+        console.log("closed deal:::: ", e.value);
+        setBookedData(cellValues?.row);
+        setBookedForm(e.value);
         return;
       }
       setDialogue(true);
@@ -1359,8 +1363,8 @@ const BookedDeals = ({
           <BookedDealsForm
             BookedForm={bookedForm}
             handleBookedFormClose={handleBookedFormClose}
-            // newFeedback={newFeedback}
-            // Feedback={Feedback}
+            newFeedback={newFeedback}
+            Feedback={bookedData}
           />
         )}
       </Box>

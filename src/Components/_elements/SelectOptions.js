@@ -609,3 +609,47 @@ export const ticket_source = (t) => [
     label: t("support_via_whatsapp"),
   },
 ];
+
+// CURRENCIES
+export const currencies = (t) => [
+  {
+    value: "PKR",
+    label: t("pak_currency"),
+  },
+  {
+    value: "AED",
+    label: t("uae_currency"),
+  },
+  {
+    value: "INR",
+    label: t("india_currency"),
+  },
+  {
+    value: "NPR",
+    label: t("nepal_currency"),
+  },
+  {
+    value: "USD",
+    label: t("usa_currency"),
+  },
+  {
+    value: "GBP",
+    label: t("uk_currency"),
+  },
+  {
+    value: "JPY",
+    label: t("japan_currency"),
+  },
+  {
+    value: "CNY",
+    label: t("china_currency"),
+  },
+  {
+    value: "AUD",
+    label: t("australia_currency"),
+  },
+  {
+    value: "CAD",
+    label: t("canada_currency"),
+  },
+];

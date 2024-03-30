@@ -13,6 +13,7 @@ import {
   Box,
 } from "@mui/material";
 import Select from "react-select";
+import { currencies } from "../_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
 import { datetimeLong } from "../_elements/formatDateTime";
@@ -24,7 +25,7 @@ import { getCountryFromNumber } from "../_elements/CountryCodeChecker";
 
 import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
 import { IoIosAlert } from "react-icons/io";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdFileUpload } from "react-icons/md";
 import { BiBlock, BiBed } from "react-icons/bi";
 import {
   BsShuffle,
@@ -43,6 +44,9 @@ import {
   BsPhone,
 } from "react-icons/bs";
 import { selectStyles } from "../_elements/SelectStyles";
+import dayjs from "dayjs";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const BookedDealsForm = ({
   BookedForm,
@@ -51,6 +55,7 @@ const BookedDealsForm = ({
   Feedback,
 }) => {
   console.log("Booked Form: ", BookedForm);
+  console.log("Booked Data: ", Feedback);
   const {
     darkModeColors,
     currentMode,
@@ -205,7 +210,7 @@ const BookedDealsForm = ({
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                     style={{
-                      fontFamily: isArabic(Feedback?.leadName)
+                      fontFamily: isArabic(Feedback?.feedback)
                         ? "Noto Kufi Arabic"
                         : "inherit",
                     }}
@@ -215,7 +220,9 @@ const BookedDealsForm = ({
                       <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                         {t(
                           "feedback_" +
-                            Feedback?.toLowerCase()?.replaceAll(" ", "_")
+                            Feedback?.feedback
+                              ?.toLowerCase()
+                              ?.replaceAll(" ", "_")
                         )}
                       </span>{" "}
                       {t("to")}{" "}
@@ -246,32 +253,94 @@ const BookedDealsForm = ({
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
-                    <Select
-                      id="Manager"
-                      //   options={Managers.map((person) => ({
-                      //     value: person.id,
-                      //     label: person.userName,
-                      //   }))}
-                      value={null}
-                      //   onChange={ChangeManager}
-                      placeholder={t("label_select_manager")}
-                      className={`mb-5`}
-                      menuPortalTarget={document.body}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
-                    <Select
-                      id="Manager"
-                      //   options={Managers.map((person) => ({
-                      //     value: person.id,
-                      //     label: person.userName,
-                      //   }))}
-                      value={null}
-                      //   onChange={ChangeManager}
-                      placeholder={t("label_select_manager")}
-                      className={`mb-5`}
-                      menuPortalTarget={document.body}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      }}
+                    >
+                      <TextField
+                        id="project_name"
+                        type={"text"}
+                        label={t("label_project_name")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={Feedback?.project}
+                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        required
+                      />
+                      <TextField
+                        id="project_name"
+                        type={"text"}
+                        label={t("label_enquiry_for")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={Feedback?.enquiryType}
+                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        required
+                      />
+                      <TextField
+                        id="selling_amount"
+                        type={"text"}
+                        label={t("selling_amount")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={Feedback?.enquiryType}
+                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        required
+                      />
+                      <TextField
+                        id="unit"
+                        type={"text"}
+                        label={t("unit")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        // value={Feedback?.enquiryType}
+                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        required
+                      />
+                    </Box>
                   </div>
                 </div>
 
@@ -289,20 +358,116 @@ const BookedDealsForm = ({
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
-                    <Select
-                      id="Manager"
-                      //   options={Managers.map((person) => ({
-                      //     value: person.id,
-                      //     label: person.userName,
-                      //   }))}
-                      value={null}
-                      isDisabled={User?.role === 3}
-                      //   onChange={ChangeManager}
-                      placeholder={t("label_select_manager")}
-                      className={`mb-5`}
-                      menuPortalTarget={document.body}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        // marginTop:"20p"
+                      }}
+                    >
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          //   value={reportMonthValue || new Date()?.toString()}
+                          label={t("booking_date")}
+                          views={["month", "year"]}
+                          //   onChange={(newValue) => {
+                          //     if (newValue) {
+                          //       // Extract the month digit
+                          //       const monthDigit = moment(newValue.$d).format(
+                          //         "M"
+                          //       );
+
+                          //       // Convert the month digit string to an integer
+                          //       const monthDigitInt = parseInt(monthDigit, 10);
+                          //       console.log(
+                          //         "month digit int :: ",
+                          //         typeof monthDigitInt
+                          //       );
+
+                          //       // Extract the year
+                          //       const year = moment(newValue.$d).format("YYYY");
+
+                          //       // Set the report month digit as an integer and the year
+                          //       setReportMonth({
+                          //         month: monthDigitInt,
+                          //         year: parseInt(year, 10),
+                          //       });
+                          //     }
+                          //     console.log("val:", newValue);
+
+                          //     setReportMonthValue(newValue?.$d);
+                          //   }}
+                          format="MM-YYYY"
+                          renderInput={(params) => (
+                            <TextField
+                              sx={{
+                                "& input": {
+                                  color:
+                                    currentMode === "dark" ? "white" : "black",
+                                },
+                                "& .MuiSvgIcon-root": {
+                                  color:
+                                    currentMode === "dark" ? "white" : "black",
+                                },
+                                marginBottom: "15px",
+                              }}
+                              fullWidth
+                              size="small"
+                              {...params}
+                              onKeyDown={(e) => e.preventDefault()}
+                              readOnly={true}
+                            />
+                          )}
+                          maxDate={dayjs().startOf("day").toDate()}
+                        />
+                      </LocalizationProvider>
+                      <TextField
+                        id="project_name"
+                        type={"text"}
+                        label={t("booked_perc")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        // value={Feedback?.enquiryType}
+                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        required
+                      />
+                      <Select
+                        id="Manager"
+                        options={currencies(t)?.map((curr) => ({
+                          value: curr.value,
+                          label: curr.label,
+                        }))}
+                        value={null}
+                        //   onChange={ChangeManager}
+                        placeholder={t("label_select_currency")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      <TextField
+                        id="booking_amount"
+                        type={"text"}
+                        label={t("booking_amount")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={Feedback?.enquiryType}
+                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        required
+                      />
+                    </Box>
                   </div>
                 </div>
 
@@ -320,24 +485,87 @@ const BookedDealsForm = ({
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
-                    <Select
-                      id="Manager"
-                      //   options={Managers.map((person) => ({
-                      //     value: person.id,
-                      //     label: person.userName,
-                      //   }))}
-                      value={null}
-                      //   onChange={ChangeManager}
-                      placeholder={t("label_select_manager")}
-                      className={`mb-5`}
-                      menuPortalTarget={document.body}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
+                    <Box sx={darkModeColors} className="p-2">
+                      {/* <Box
+                          sx={{
+                            ...darkModeColors,
+                            "& .MuiTypography-root": {
+                              fontFamily: fontFam,
+                            },
+                          }}
+                        >
+                          <label className="font-semibold mb-1">
+                            <span className="text-primary">{`${t("offer")} ${t(
+                              "label_validity"
+                            )}`}</span>
+                          </label>
+                          <br></br>
+                        </Box> */}
+
+                      <div className="  mb-5 flex items-center justify-center ">
+                        <div className=" rounded-lg border">
+                          <img
+                            //   src={imagePreview}
+                            width="100px"
+                            height="100px"
+                          />
+                        </div>
+                      </div>
+                      <input
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        id="contained-button-file"
+                        type="file"
+                        //   onChange={handleImgUpload}
+                      />
+                      <label htmlFor="contained-button-file">
+                        <Button
+                          variant="contained"
+                          size="medium"
+                          className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+                          style={{
+                            color: "#ffffff",
+                            border: "1px solid white",
+                            fontFamily: fontFam,
+                          }}
+                          component="span" // Required so the button doesn't automatically submit form
+                          disabled={loading ? true : false}
+                          startIcon={
+                            loading ? null : (
+                              <MdFileUpload className="mx-2" size={16} />
+                            )
+                          }
+                        >
+                          <span>{t("label_passport_image")}</span>
+                        </Button>
+                      </label>
+                    </Box>
                   </div>
                 </div>
               </div>
             </>
           )}
+          <Button
+            type="submit"
+            size="medium"
+            style={{
+              color: "white",
+              fontFamily: fontFam,
+            }}
+            className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
+            //   onClick={handleClick}
+            disabled={loading ? true : false}
+          >
+            {loading ? (
+              <CircularProgress
+                size={23}
+                sx={{ color: "white" }}
+                className="text-white"
+              />
+            ) : (
+              <span>{t("create")}</span>
+            )}
+          </Button>
         </div>
       </div>
     </Modal>

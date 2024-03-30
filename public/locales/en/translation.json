@@ -938,7 +938,25 @@
     "copy": "Copy.",
 
     "booking_details":"Booking Details",
-    "client_details":"Client Details"
+    "booked_perc":"Booking %",
+    "booking_date":"Booking Date",
+    "client_details":"Client Details",
+    "selling_amount":"Selling Amount",
+    "unit":"Unit",
+    "booking_amount":"Booking amount",
+    "label_passport_image":"Upload passport image",
+
+    "label_select_currency": "Currency",
+    "pak_currency": "PKR",
+    "uae_currency": "AED",
+    "india_currency": "INR",
+    "nepal_currency": "NPR",
+    "usa_currency": "USD",
+    "uk_currency": "GBP",
+    "japan_currency": "JPY",
+    "china_currency": "CNY",
+    "australia_currency": "AUD",
+    "canada_currency": "CAD"
    
 
 
