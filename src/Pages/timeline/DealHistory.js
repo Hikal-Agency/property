@@ -5,7 +5,7 @@ import Error from "../Error";
 
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
-import { Backdrop, Modal } from "@mui/material";
+import { Backdrop, Box, Modal } from "@mui/material";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
 
 import { BiBed, BiCalendarExclamation } from "react-icons/bi";
@@ -16,10 +16,11 @@ import {
   BsClockFill,
   BsFlagFill,
 } from "react-icons/bs";
-import { FaUserCheck } from "react-icons/fa";
+import { FaCheck, FaPlus, FaUserCheck } from "react-icons/fa";
 import { GoMail } from "react-icons/go";
 import { HiUser } from "react-icons/hi";
 import { MdNoteAlt, MdClose } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -28,8 +29,8 @@ const style = {
 
 const DealHistory = ({
   LeadData,
-  handleCloseTimelineModel,
-  timelineModelOpen,
+  handleCloseDealHistory,
+  dealHistoryModel,
 }) => {
   const {
     currentMode,
@@ -46,14 +47,79 @@ const DealHistory = ({
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  console.log("deal history lead data:: ", LeadData);
+
+  const statuses = [
+    {
+      text: t("pdc"),
+      icon: <RxCross2 size={16} color="white" />,
+      bgColor: "#FF0000",
+    },
+    {
+      text: t("spa"),
+      icon: <FaCheck size={16} color="white" />,
+      bgColor: "green",
+    },
+    {
+      text: t("commission"),
+      icon: <FaCheck size={16} color="white" />,
+      bgColor: "#FF0000",
+    },
+  ];
+
   const [isClosing, setIsClosing] = useState(false);
 
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
-      handleCloseTimelineModel();
+      handleCloseDealHistory();
     }, 1000);
+  };
+
+  const ribbonStyles = {
+    width: "100px",
+    height: "30px",
+    filter: "grayscale(0) !important",
+    lineHeight: "52px",
+    position: "absolute",
+    top: "20px",
+    right: "-30px",
+    color: "white",
+    zIndex: 2,
+    overflow: "hidden",
+    transform: "rotate(45deg)",
+    boxShadow: `0 0 0 3px ${primaryColor}, 0px 21px 5px -18px rgba(0,0,0,0.6)`,
+    background: primaryColor,
+    textAlign: "center",
+
+    "& .wrap": {
+      width: "100%",
+      height: "188px",
+      position: "absolute",
+      top: "-8px",
+      left: "8px",
+      overflow: "hidden",
+    },
+    "& .wrap:before, .wrap:after": {
+      content: "''",
+      position: "absolute",
+    },
+    "& .wrap:before": {
+      width: "40px",
+      height: "8px",
+      right: "100px",
+      background: "#4D6530",
+      borderRadius: "8px 8px 0px 0px",
+    },
+    "& .wrap:after": {
+      width: "8px",
+      height: "40px",
+      right: "0px",
+      top: "100px",
+      background: "#4D6530",
+      borderRadius: "0px 8px 8px 0px",
+    },
   };
 
   const fetchLeadsData = async (token, LeadID) => {
@@ -135,8 +201,8 @@ const DealHistory = ({
     <>
       <Modal
         keepMounted
-        open={timelineModelOpen}
-        // onClose={handleCloseTimelineModel}
+        open={dealHistoryModel}
+        // onClose={handleCloseDealHistory}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
@@ -159,7 +225,7 @@ const DealHistory = ({
         w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
-            // onClick={handleCloseTimelineModel}
+            // onClick={handleCloseDealHistory}
             onClick={handleClose}
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
@@ -192,15 +258,22 @@ const DealHistory = ({
                 <Error />
               ) : (
                 <div className="">
-                  <div className="w-full flex items-center pb-3 ">
-                    <div className="bg-primary h-10 w-1 rounded-full"></div>
-                    <h1
-                      className={`text-lg font-semibold mx-2 uppercase ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
-                    >
-                      {t("timeline")}
-                    </h1>
+                  <div className="w-full flex items-center justify-between pb-3 ">
+                    <div className="flex items-center ">
+                      <div className="bg-primary h-10 w-1 rounded-full"></div>
+                      <h1
+                        className={`text-lg font-semibold mx-2 uppercase ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                      >
+                        {t("deal_history")}
+                      </h1>
+                    </div>
+                    <div>
+                      <button className="bg-btn-primary rounded-md py-2 px-4">
+                        {t("btn_view_invoice")}
+                      </button>
+                    </div>
                   </div>
 
                   <div>
@@ -217,90 +290,93 @@ const DealHistory = ({
                             </div>
                           ) : (
                             <>
-                              <h3
-                                className="text-lg font-bold uppercase mb-5"
-                                style={{
-                                  fontFamily: isArabic(leadDetails.leadName)
-                                    ? "Noto Kufi Arabic"
-                                    : "inherit",
-                                }}
-                              >
-                                {leadDetails.leadName}
+                              <h3 className="text-sm text-center font-semibold uppercase mb-5">
+                                {t("status")}
                               </h3>
-                              <div className="w-[80%] bg-primary h-0.5 my-5"></div>
-                              <div className="sm:before:mx-0">
-                                {/* CONTACT NUMBER  */}
-                                <div className="grid grid-cols-8 gap-3 my-3">
-                                  <BsTelephone size={16} />
-                                  <div className="col-span-7">
-                                    {leadDetails.leadContact?.replaceAll(
-                                      " ",
-                                      ""
-                                    ) !== "" ? (
-                                      <p>
-                                        {leadDetails.leadContact?.replaceAll(
-                                          " ",
-                                          ""
-                                        )}
-                                      </p>
-                                    ) : (
-                                      <></>
-                                    )}
+                              <div className="w-full flex items-center justify-center  space-x-2 mb-4">
+                                {statuses?.map((status) => (
+                                  <div
+                                    className={`${
+                                      currentMode === "dark"
+                                        ? "bg-[#1C1C1C]"
+                                        : "bg-[#EEEEEE]"
+                                    } py-4 px-9 rounded-md `}
+                                  >
+                                    <p
+                                      className={`
+                    bg-[${status?.bgColor}]
+                rounded-full shadow-none p-1.5 mr-1 flex items-center mb-3`}
+                                    >
+                                      {status?.icon}
+                                    </p>
+                                    <p>{status?.text}</p>
                                   </div>
+                                ))}
+                              </div>
+                              <div className="flex items-center justify-between  flex-row">
+                                <h3 className="text-sm  font-semibold uppercase mb-5 mt-3">
+                                  {t("transactions")}
+                                </h3>
+
+                                <div>
+                                  <button className="bg-btn-primary rounded-full p-2">
+                                    <FaPlus />
+                                  </button>
                                 </div>
-                                {/* EMAIL ADDRESS  */}
-                                {leadDetails.leadEmail !== "" &&
-                                leadDetails.leadEmail != "null" ? (
-                                  <div className="grid grid-cols-8 gap-3 my-3">
-                                    <GoMail size={16} />
-                                    <div className="col-span-7">
-                                      {leadDetails.leadEmail}
+                              </div>
+                              <div
+                                className={`${
+                                  currentMode === "dark"
+                                    ? "bg-[#1C1C1C]"
+                                    : "bg-[#EEEEEE]"
+                                } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full relative`}
+                              >
+                                <Box sx={{ ...ribbonStyles }}>
+                                  <div className="wrap">
+                                    <span>SPA</span>
+                                  </div>
+                                </Box>
+                                <div className="flex items-center justify-between mt-5">
+                                  <div>
+                                    <div className="flex gap-2 my-3">
+                                      <p>{t("percentage")}:</p>
+                                      <div>
+                                        <p className="font-semibold ml-2">
+                                          5.5%
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    <div className="flex gap-2 my-3">
+                                      <p>{t("label_amount")}:</p>
+                                      <div>
+                                        <p className="font-semibold ml-2">
+                                          AED 32433423
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    <div className="flex gap-2 my-3">
+                                      <p>{t("date")}:</p>
+                                      <div>
+                                        <p className="font-semibold ml-2">
+                                          date
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    <div className="flex gap-2 my-3">
+                                      <p>{t("label_added_by")}:</p>
+                                      <div>
+                                        <p className="font-semibold ml-2">
+                                          Username
+                                        </p>
+                                      </div>
                                     </div>
                                   </div>
-                                ) : (
-                                  <></>
-                                )}
-                                {/* PROJECT  */}
-                                <div className="grid grid-cols-8 gap-3 my-3">
-                                  <BsBuildings size={16} />
-                                  <div className="col-span-7">
-                                    {leadDetails.project === "null"
-                                      ? "-"
-                                      : leadDetails.project}{" "}
-                                    {leadDetails.leadType === "null"
-                                      ? "-"
-                                      : leadDetails.leadType}{" "}
+                                  <div className="rounded-md border">
+                                    <img src="#" width="100px" height="100px" />
                                   </div>
-                                </div>
-                                {/* ENQUIRY  */}
-                                <div className="grid grid-cols-8 gap-3 my-3">
-                                  <BiBed size={16} />
-                                  <div className="col-span-7">
-                                    {leadDetails.enquiryType === "null"
-                                      ? "-"
-                                      : leadDetails.enquiryType}{" "}
-                                    {leadDetails.leadFor === "null"
-                                      ? "-"
-                                      : leadDetails.leadFor}{" "}
-                                  </div>
-                                </div>
-
-                                <div className="w-[80%] bg-primary h-0.5 my-5"></div>
-
-                                {/* CREATION DATE  */}
-                                <div className="text-sm mb-5">
-                                  <p>{t("lead_added_on")}:</p>
-                                  <p>
-                                    {datetimeLong(leadDetails.creationDate)}
-                                  </p>
-                                </div>
-                                <div className="text-sm mb-5">
-                                  <p>{t("lead_edited_on")}:</p>
-                                  <p>
-                                    {leadDetails?.lastEdited === null
-                                      ? "-"
-                                      : datetimeLong(leadDetails.lastEdited)}
-                                  </p>
                                 </div>
                               </div>
                             </>

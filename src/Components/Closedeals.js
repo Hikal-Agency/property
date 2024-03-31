@@ -769,8 +769,8 @@ const Closedeals = ({ pageState, setpageState }) => {
 
       {dealHisotryModel && (
         <DealHistory
-          timelineModelOpen={timelineModelOpen}
-          handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+          dealHistoryModel={dealHisotryModel}
+          handleCloseDealHistory={() => setDealHistoryModel(false)}
           LeadData={singleLeadData}
         />
       )}

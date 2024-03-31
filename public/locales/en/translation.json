@@ -960,7 +960,12 @@
 
 
     "spa": "SPA",
-    "commission": "Commission"
+    "commission": "Commission",
+    "deal_history": "Deal History",
+    "btn_view_invoice": "View Invoice",
+    "pdc": "PDC",
+    "transactions": "Transactions",
+    "percentage": "Percentage"
    
 
 
