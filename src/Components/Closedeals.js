@@ -24,6 +24,7 @@ import { RxCross2 } from "react-icons/rx";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { renderSourceIcons } from "./_elements/SourceIconsDataGrid";
 import { renderOTPIcons } from "./_elements/OTPIconsDataGrid";
+import DealHistory from "../Pages/timeline/DealHistory";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
@@ -44,6 +45,7 @@ const Closedeals = ({ pageState, setpageState }) => {
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
+  const [dealHisotryModel, setDealHistoryModel] = useState(false);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
   const handleUpdateLeadModelClose = () => {
     setUpdateLeadModelOpen(false);
@@ -52,6 +54,10 @@ const Closedeals = ({ pageState, setpageState }) => {
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
     setTimelineModelOpen(true);
+  };
+  const HandleViewDealHistory = (params) => {
+    setsingleLeadData(params.row);
+    setDealHistoryModel(true);
   };
 
   const handleRangeChange = (e) => {
@@ -334,9 +340,9 @@ const Closedeals = ({ pageState, setpageState }) => {
               } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
-                {/* <button onClick={() => HandleViewTimeline(cellValues)}> */}
-                <FaHandshake size={16} />
-                {/* </button> */}
+                <button onClick={() => HandleViewDealHistory(cellValues)}>
+                  <FaHandshake size={16} />
+                </button>
               </Tooltip>
             </p>
           </div>
@@ -755,6 +761,14 @@ const Closedeals = ({ pageState, setpageState }) => {
 
       {timelineModelOpen && (
         <Timeline
+          timelineModelOpen={timelineModelOpen}
+          handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+          LeadData={singleLeadData}
+        />
+      )}
+
+      {dealHisotryModel && (
+        <DealHistory
           timelineModelOpen={timelineModelOpen}
           handleCloseTimelineModel={() => setTimelineModelOpen(false)}
           LeadData={singleLeadData}
