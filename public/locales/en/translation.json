@@ -956,7 +956,11 @@
     "japan_currency": "JPY",
     "china_currency": "CNY",
     "australia_currency": "AUD",
-    "canada_currency": "CAD"
+    "canada_currency": "CAD",
+
+
+    "spa": "SPA",
+    "commission": "Commission"
    
 
 
