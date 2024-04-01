@@ -21,6 +21,7 @@ import { GoMail } from "react-icons/go";
 import { HiUser } from "react-icons/hi";
 import { MdNoteAlt, MdClose } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
+import CommissionModal from "./CommissionModal";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -42,12 +43,17 @@ const DealHistory = ({
     i18n,
   } = useStateContext();
   const [leadsCycle, setLeadsCycle] = useState(null);
+  const [commissionModal, setCommissionModal] = useState(false);
   const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   console.log("deal history lead data:: ", LeadData);
+
+  const handleCommissionModalOpen = () => {
+    setCommissionModal(true);
+  };
 
   const statuses = [
     {
@@ -64,6 +70,7 @@ const DealHistory = ({
       text: t("commission"),
       icon: <FaCheck size={16} color="white" />,
       bgColor: "#FF0000",
+      type: "commission",
     },
   ];
 
@@ -300,7 +307,15 @@ const DealHistory = ({
                                       currentMode === "dark"
                                         ? "bg-[#1C1C1C]"
                                         : "bg-[#EEEEEE]"
-                                    } py-4 px-9 rounded-md `}
+                                    } py-4 px-9 rounded-md ${
+                                      status?.type === "commission" &&
+                                      "cursor-pointer"
+                                    } `}
+                                    onClick={
+                                      status?.type === "commission"
+                                        ? () => handleCommissionModalOpen()
+                                        : undefined
+                                    }
                                   >
                                     <p
                                       className={`
@@ -818,6 +833,13 @@ const DealHistory = ({
                 </div>
               )}
             </div>
+            {commissionModal && (
+              <CommissionModal
+                commissionModal={commissionModal}
+                setCommissionModal={setCommissionModal}
+                handleCloseCommissionModal={() => setCommissionModal(false)}
+              />
+            )}
           </div>
         </div>
       </Modal>

@@ -961,11 +961,16 @@
 
     "spa": "SPA",
     "commission": "Commission",
+    "btn_add_commission": "Add Commission",
     "deal_history": "Deal History",
     "btn_view_invoice": "View Invoice",
     "pdc": "PDC",
     "transactions": "Transactions",
-    "percentage": "Percentage"
+    "percentage": "Percentage",
+    "claim": "Claim",
+    "commission_perc": "Commission Percentage",
+    "vat_amount": "VAT Amount",
+    "payment_source": "Payment Source"
    
 
 
