@@ -23,6 +23,7 @@ import { MdNoteAlt, MdClose } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdPerson } from "react-icons/io";
 import { FaPencilAlt } from "react-icons/fa";
+import AddCommissionModal from "./AddCommissionModal";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -43,9 +44,14 @@ const CommissionModal = ({ commissionModal, handleCloseCommissionModal }) => {
   const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [addCommissionModal, setOpenAddCommissionModal] = useState(false);
   const navigate = useNavigate();
 
   console.log("deal history lead data:: ", commissionModal);
+
+  const handleOpenModal = () => {
+    setOpenAddCommissionModal(true);
+  };
 
   const [isClosing, setIsClosing] = useState(false);
 
@@ -250,7 +256,10 @@ const CommissionModal = ({ commissionModal, handleCloseCommissionModal }) => {
                       </h1>
                     </div>
                     <div>
-                      <button className="bg-btn-primary rounded-md py-2 px-4">
+                      <button
+                        onClick={handleOpenModal}
+                        className="bg-btn-primary rounded-md py-2 px-4"
+                      >
                         {t("btn_add_commission")}
                       </button>
                     </div>
@@ -383,6 +392,12 @@ const CommissionModal = ({ commissionModal, handleCloseCommissionModal }) => {
               )}
             </div>
           </div>
+          {addCommissionModal && (
+            <AddCommissionModal
+              addCommissionModal={addCommissionModal}
+              handleCloseAddCommission={() => setOpenAddCommissionModal(false)}
+            />
+          )}
         </div>
       </Modal>
     </>
