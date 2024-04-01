@@ -22,6 +22,7 @@ import { HiUser } from "react-icons/hi";
 import { MdNoteAlt, MdClose } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdPerson } from "react-icons/io";
+import { FaPencilAlt } from "react-icons/fa";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -268,17 +269,6 @@ const CommissionModal = ({ commissionModal, handleCloseCommissionModal }) => {
                           </div>
                         ) : (
                           <>
-                            <div className="flex items-center justify-between  flex-row">
-                              <h3 className="text-sm  font-semibold uppercase mb-5 mt-3">
-                                {t("transactions")}
-                              </h3>
-
-                              <div>
-                                <button className="bg-btn-primary rounded-full p-2">
-                                  <FaPlus />
-                                </button>
-                              </div>
-                            </div>
                             <div
                               className={`${
                                 currentMode === "dark"
@@ -286,6 +276,9 @@ const CommissionModal = ({ commissionModal, handleCloseCommissionModal }) => {
                                   : "bg-[#EEEEEE]"
                               } p-4 space-y-3 rounded-xl shadow-sm card-hover  my-2 w-full relative`}
                             >
+                              <p className="text-red-600 text-right font-semibold">
+                                - AED 2323
+                              </p>
                               <div className="flex items-center justify-between mt-5">
                                 <div
                                   className={`${
@@ -374,6 +367,11 @@ const CommissionModal = ({ commissionModal, handleCloseCommissionModal }) => {
                                     Added by name
                                   </p>
                                 </div>
+                              </div>
+                              <div className="flex justify-end">
+                                <button className="bg-btn-primary rounded-full p-3 bottom-0 ">
+                                  <FaPencilAlt />
+                                </button>
                               </div>
                             </div>
                           </>
