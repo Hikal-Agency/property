@@ -988,7 +988,10 @@
     "upload_invoice": "Upload Invoice",
     "evidence": "Evidence",
     "vendor": "Vendor"   ,
-    "invoice": "Invoice"   
+    "invoice": "Invoice"   ,
+    "transactions_details": "Transactions Details"   ,
+    "receipt": "Receipt" ,  
+    "booking": "Booking" 
 
 
 }

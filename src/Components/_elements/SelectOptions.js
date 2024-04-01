@@ -690,3 +690,20 @@ export const payment_source = (t) => [
     label: t("payment_source_cash"),
   },
 ];
+
+// TRANSACTION TYPE
+export const transaction_type = (t) => [
+  {
+    value: "Booking",
+    label: t("booking"),
+  },
+  {
+    value: "PDC",
+    label: t("pdc"),
+  },
+
+  {
+    value: "SPA",
+    label: t("spa"),
+  },
+];

@@ -22,6 +22,7 @@ import { HiUser } from "react-icons/hi";
 import { MdNoteAlt, MdClose } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import CommissionModal from "./CommissionModal";
+import AddTransactionsModal from "../../Components/Transactions/AddTransactionsModal";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -45,6 +46,7 @@ const DealHistory = ({
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [commissionModal, setCommissionModal] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
+  const [addTransactionModal, setAddTransactionModal] = useState(false);
   const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -58,6 +60,10 @@ const DealHistory = ({
       setInvoiceModal(true);
     }
     setCommissionModal(true);
+  };
+
+  const handleTransactionModalOpen = () => {
+    setAddTransactionModal(true);
   };
 
   const statuses = [
@@ -342,7 +348,10 @@ const DealHistory = ({
                                 </h3>
 
                                 <div>
-                                  <button className="bg-btn-primary rounded-full p-2">
+                                  <button
+                                    className="bg-btn-primary rounded-full p-2"
+                                    onClick={handleTransactionModalOpen}
+                                  >
                                     <FaPlus />
                                   </button>
                                 </div>
@@ -850,6 +859,15 @@ const DealHistory = ({
                   setInvoiceModal(false);
                 }}
                 invoiceModal={invoiceModal}
+              />
+            )}
+            {addTransactionModal && (
+              <AddTransactionsModal
+                addTransactionModal={addTransactionModal}
+                setAddTransactionModal={setAddTransactionModal}
+                handleCloseTransactionModal={() =>
+                  setAddTransactionModal(false)
+                }
               />
             )}
           </div>
