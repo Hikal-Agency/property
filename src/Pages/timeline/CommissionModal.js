@@ -30,7 +30,12 @@ const style = {
   boxShadow: 24,
 };
 
-const CommissionModal = ({ commissionModal, handleCloseCommissionModal }) => {
+const CommissionModal = ({
+  commissionModal,
+  handleCloseCommissionModal,
+  invoiceModal,
+}) => {
+  console.log("invoice modal: ", invoiceModal);
   const {
     currentMode,
     BACKEND_URL,
@@ -252,16 +257,20 @@ const CommissionModal = ({ commissionModal, handleCloseCommissionModal }) => {
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {t("commission")}
+                        {invoiceModal ? t("invoice") : t("commission")}
                       </h1>
                     </div>
                     <div>
-                      <button
-                        onClick={handleOpenModal}
-                        className="bg-btn-primary rounded-md py-2 px-4"
-                      >
-                        {t("btn_add_commission")}
-                      </button>
+                      {!invoiceModal && (
+                        <>
+                          <button
+                            onClick={handleOpenModal}
+                            className="bg-btn-primary rounded-md py-2 px-4"
+                          >
+                            {t("btn_add_commission")}
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
 

@@ -987,7 +987,8 @@
     "total_amount": "Total Amount",
     "upload_invoice": "Upload Invoice",
     "evidence": "Evidence",
-    "vendor": "Vendor"   
+    "vendor": "Vendor"   ,
+    "invoice": "Invoice"   
 
 
 }

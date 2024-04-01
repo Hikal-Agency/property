@@ -44,6 +44,7 @@ const DealHistory = ({
   } = useStateContext();
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [commissionModal, setCommissionModal] = useState(false);
+  const [invoiceModal, setInvoiceModal] = useState(false);
   const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -51,7 +52,11 @@ const DealHistory = ({
 
   console.log("deal history lead data:: ", LeadData);
 
-  const handleCommissionModalOpen = () => {
+  const handleCommissionModalOpen = (invoice) => {
+    console.log("open invoice", invoice);
+    if (invoice) {
+      setInvoiceModal(true);
+    }
     setCommissionModal(true);
   };
 
@@ -277,7 +282,10 @@ const DealHistory = ({
                       </h1>
                     </div>
                     <div>
-                      <button className="bg-btn-primary rounded-md py-2 px-4">
+                      <button
+                        onClick={() => handleCommissionModalOpen("invoice")}
+                        className="bg-btn-primary rounded-md py-2 px-4"
+                      >
                         {t("btn_view_invoice")}
                       </button>
                     </div>
@@ -837,7 +845,11 @@ const DealHistory = ({
               <CommissionModal
                 commissionModal={commissionModal}
                 setCommissionModal={setCommissionModal}
-                handleCloseCommissionModal={() => setCommissionModal(false)}
+                handleCloseCommissionModal={() => {
+                  setCommissionModal(false);
+                  setInvoiceModal(false);
+                }}
+                invoiceModal={invoiceModal}
               />
             )}
           </div>
