@@ -76,7 +76,12 @@ import {
 import { TbWorldWww } from "react-icons/tb";
 import moment from "moment";
 import DeleteLeadModel from "./DeleteLead";
-import { pageStyles, renderStyles, renderStyles2 } from "../_elements/SelectStyles";
+import BookedDealsForm from "./BookedDealsForm";
+import {
+  pageStyles,
+  renderStyles,
+  renderStyles2,
+} from "../_elements/SelectStyles";
 import { renderOTPIcons } from "../_elements/OTPIconsDataGrid";
 import { renderSourceIcons } from "../_elements/SourceIconsDataGrid";
 
@@ -114,7 +119,7 @@ const BookedDeals = ({
       if (l) {
         return l.code.toUpperCase();
       } else {
-        return (language === "null" ? "-" : language);
+        return language === "null" ? "-" : language;
       }
     } else {
       return null;
@@ -134,11 +139,10 @@ const BookedDeals = ({
     Managers,
     primaryColor,
     t,
-    feedbackTheme
+    feedbackTheme,
   } = useStateContext();
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
-
 
   const handleRangeChange = (e) => {
     const value = e.value;
@@ -157,6 +161,7 @@ const BookedDeals = ({
   const handleLeadModelClose = () => setLeadModelOpen(false);
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
+  const [bookedForm, setBookedForm] = useState(false);
 
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
@@ -171,19 +176,31 @@ const BookedDeals = ({
     setTimelineModelOpen(true);
   };
 
+  const handleBookedFormClose = () => setBookedForm(false);
+  const [newFeedback, setnewFeedback] = useState("");
+  const [bookedData, setBookedData] = useState(null);
+
   const RenderFeedback = ({ cellValues }) => {
     const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
-    const [newFeedback, setnewFeedback] = useState("");
+    // const [newFeedback, setnewFeedback] = useState("");
     const [DialogueVal, setDialogue] = useState(false);
     const [btnloading, setbtnloading] = useState(false);
     const [leadDateValue, setLeadDateValue] = useState({});
     const [leadDate, setLeadDate] = useState("");
     const [leadAmount, setLeadAmount] = useState("");
     const [unitNo, setUnitNo] = useState("");
+    console.log("Feedback: ", Feedback);
 
     const ChangeFeedback = (e) => {
       setnewFeedback(e.value);
+      if (e.value.toLowerCase() === "closed deal") {
+        console.log("closed deal:::: ", e.value);
+        setBookedData(cellValues?.row);
+        setBookedForm(e.value);
+        return;
+      }
       setDialogue(true);
+      return;
     };
 
     const UpdateFeedback = async (event) => {
@@ -280,30 +297,26 @@ const BookedDeals = ({
         {feedbackTheme === "renderStyles" ? (
           <Select
             id="feedback"
-            value={
-              Feedback
-                ? { label: Feedback, value: Feedback }
-                : null
-            }
+            value={Feedback ? { label: Feedback, value: Feedback } : null}
             onChange={(selectedOption) => ChangeFeedback(selectedOption)}
             // onChange={(selectedOption) => ChangeFeedback(selectedOption?.value || null)}
             options={[
-              { 
-                label: t("feedback_booked"), 
+              {
+                label: t("feedback_booked"),
                 value: "Booked",
-                bgColor: "#81CA9D", 
+                bgColor: "#81CA9D",
                 color: "#000000",
               },
-              { 
-                label: t("feedback_closed"), 
+              {
+                label: t("feedback_closed"),
                 value: "Closed Deal",
-                bgColor: "#00A650", 
+                bgColor: "#00A650",
                 color: "#FFFFFF",
               },
-              { 
-                label: t("feedback_cancelled"), 
+              {
+                label: t("feedback_cancelled"),
                 value: "Dead",
-                bgColor: "#F16C4D", 
+                bgColor: "#F16C4D",
                 color: "#FFFFFF",
               },
             ]}
@@ -315,30 +328,26 @@ const BookedDeals = ({
         ) : (
           <Select
             id="feedback"
-            value={
-              Feedback
-                ? { label: Feedback, value: Feedback }
-                : null
-            }
+            value={Feedback ? { label: Feedback, value: Feedback } : null}
             onChange={(selectedOption) => ChangeFeedback(selectedOption)}
             // onChange={(selectedOption) => ChangeFeedback(selectedOption?.value || null)}
             options={[
-              { 
-                label: t("feedback_booked"), 
+              {
+                label: t("feedback_booked"),
                 value: "Booked",
-                bgColor: "#81CA9D", 
+                bgColor: "#81CA9D",
                 color: "#000000",
               },
-              { 
-                label: t("feedback_closed"), 
+              {
+                label: t("feedback_closed"),
                 value: "Closed Deal",
-                bgColor: "#00A650", 
+                bgColor: "#00A650",
                 color: "#FFFFFF",
               },
-              { 
-                label: t("feedback_cancelled"), 
+              {
+                label: t("feedback_cancelled"),
                 value: "Dead",
-                bgColor: "#F16C4D", 
+                bgColor: "#F16C4D",
                 color: "#FFFFFF",
               },
             ]}
@@ -412,13 +421,23 @@ const BookedDeals = ({
                   <div className="flex flex-col justify-center items-center">
                     <IoIosAlert size={50} className="text-primary text-2xl" />
                     <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("want_to_change_feedback")}{" "} {t("from")}
+                      {t("want_to_change_feedback")} {t("from")}
                       <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                      {Feedback ? t("feedback_" + Feedback?.toLowerCase()?.replaceAll(" ", "_")) : t("no_feedback")}
+                        {Feedback
+                          ? t(
+                              "feedback_" +
+                                Feedback?.toLowerCase()?.replaceAll(" ", "_")
+                            )
+                          : t("no_feedback")}
                       </span>{" "}
                       {t("to")}{" "}
                       <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                        {newFeedback ? t("feedback_" + newFeedback?.toLowerCase()?.replaceAll(" ", "_")) : t("no_feedback")}
+                        {newFeedback
+                          ? t(
+                              "feedback_" +
+                                newFeedback?.toLowerCase()?.replaceAll(" ", "_")
+                            )
+                          : t("no_feedback")}
                       </span>{" "}
                       ?
                     </h1>
@@ -434,14 +453,13 @@ const BookedDeals = ({
                               maxDate={new Date()}
                               onChange={(newValue) => {
                                 setLeadDateValue(newValue);
-             
+
                                 const formattedDate = moment(
                                   newValue?.$d
                                 ).format("YYYY-MM-DD");
                                 setLeadDate(formattedDate);
                               }}
                               format="yyyy-MM-dd"
-                  
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
@@ -607,7 +625,9 @@ const BookedDeals = ({
 
         // Replace last 4 digits with "*"
         const stearics =
-          contactNumber?.replaceAll(" ", "")?.slice(0, contactNumber?.replaceAll(" ", "")?.length - 4) + "****";
+          contactNumber
+            ?.replaceAll(" ", "")
+            ?.slice(0, contactNumber?.replaceAll(" ", "")?.length - 4) + "****";
         let finalNumber;
 
         if (hasPermission("number_masking")) {
@@ -718,12 +738,12 @@ const BookedDeals = ({
       renderCell: (cellValues) => {
         return (
           <div className="flex items-center justify-center">
-            {cellValues.row.booked_amount === null || cellValues.row.booked_amount === "null" || cellValues.row.booked_amount === "" ? (
+            {cellValues.row.booked_amount === null ||
+            cellValues.row.booked_amount === "null" ||
+            cellValues.row.booked_amount === "" ? (
               <>-</>
             ) : (
-              <>
-                {cellValues.row.booked_amount}
-              </>
+              <>{cellValues.row.booked_amount}</>
             )}
           </div>
         );
@@ -732,13 +752,15 @@ const BookedDeals = ({
     {
       field: "otp",
       headerName:
-        lead_origin === "transfferedleads" ? t("label_transferred_from") : t("label_otp"),
+        lead_origin === "transfferedleads"
+          ? t("label_transferred_from")
+          : t("label_otp"),
       minWidth: 30,
       headerAlign: "center",
       // headerClassName: headerClasses.header,
       headerClassName: "break-normal",
       flex: 1,
-      renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode)
+      renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
     },
 
     {
@@ -747,7 +769,7 @@ const BookedDeals = ({
       flex: 1,
       minWidth: 40,
       headerAlign: "center",
-      renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode)
+      renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode),
     },
     {
       field: "language",
@@ -1146,7 +1168,7 @@ const BookedDeals = ({
 
           <p className="mr-3">Rows Per Page</p>
 
-          <Select 
+          <Select
             id="select-page-size-label"
             value={{ label: pageState.pageSize, value: pageState.pageSize }}
             onChange={handleRangeChange}
@@ -1334,6 +1356,15 @@ const BookedDeals = ({
             LeadData={singleLeadData}
             BACKEND_URL={BACKEND_URL}
             FetchLeads={FetchLeads}
+          />
+        )}
+
+        {bookedForm && (
+          <BookedDealsForm
+            BookedForm={bookedForm}
+            handleBookedFormClose={handleBookedFormClose}
+            newFeedback={newFeedback}
+            Feedback={bookedData}
           />
         )}
       </Box>

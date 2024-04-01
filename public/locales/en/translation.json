@@ -937,9 +937,14 @@
     "close": "Close.",
     "copy": "Copy.",
 
-   
-
-   
+    "booking_details":"Booking Details",
+    "booked_perc":"Booking %",
+    "booking_date":"Booking Date",
+    "client_details":"Client Details",
+    "selling_amount":"Selling Amount",
+    "unit":"Unit",
+    "booking_amount":"Booking amount",
+    "label_passport_image":"Upload passport image",
 
     "label_select_currency": "Currency",
     "pak_currency": "PKR",
@@ -951,6 +956,50 @@
     "japan_currency": "JPY",
     "china_currency": "CNY",
     "australia_currency": "AUD",
-    "canada_currency": "CAD"
+    "canada_currency": "CAD",
+
+
+    "spa": "SPA",
+    "commission": "Commission",
+    "btn_add_commission": "Add Commission",
+    "deal_history": "Deal History",
+    "btn_view_invoice": "View Invoice",
+    "pdc": "PDC",
+    "transactions": "Transactions",
+    "percentage": "Percentage",
+    "claim": "Claim",
+    "commission_perc": "Commission Percentage",
+    "vat_amount": "VAT Amount",
+    "payment_source": "Payment Source",
+    "commission_details": "Commission Details",
+    "commission_type": "Commission Type",
+    "claim_1": "First Claim  ",
+    "claim_2": "Second Claim",
+    "claim_3": "Third Claim",
+    "full_claim": "Full Claim",
+    "income": "Received from Developer",
+    "expense": "Sent to Property Consultant",
+    "commission_amount": "Commission Amount",
+    "payment_paid": "Paid",
+    "payment_unpaid": "Unpaid",
+    "payment_source_cash": "Cash",
+    "payment_source_cheque": "Cheque",
+    "total_amount": "Total Amount",
+    "upload_invoice": "Upload Invoice",
+    "evidence": "Evidence",
+    "vendor": "Vendor"   ,
+    "invoice": "Invoice"   ,
+    "transactions_details": "Transactions Details"   ,
+    "receipt": "Receipt" ,  
+    "booking": "Booking" ,
+    "menu_transaction": "Transactions" ,
+    "new_transaction": "New Transaction",
+    "btn_new_transaction": "Add New Transaction",
+    "percent": "Percent",
+    "amount": "Amount"
+
+   
+
+  
 
 }

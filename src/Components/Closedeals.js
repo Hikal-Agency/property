@@ -18,16 +18,26 @@ import { pageStyles } from "./_elements/SelectStyles";
 import axios from "../axoisConfig";
 import UpdateClosedLead from "./Leads/UpdateClosedLead";
 import Timeline from "../Pages/timeline";
+import { FaCheck, FaCheckCircle, FaHandshake } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { renderSourceIcons } from "./_elements/SourceIconsDataGrid";
 import { renderOTPIcons } from "./_elements/OTPIconsDataGrid";
+import DealHistory from "../Pages/timeline/DealHistory";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
-  const { currentMode, DataGridStyles, BACKEND_URL, User, isArabic, primaryColor, t } =
-    useStateContext();
+  const {
+    currentMode,
+    DataGridStyles,
+    BACKEND_URL,
+    User,
+    isArabic,
+    primaryColor,
+    t,
+  } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   const [pageRange, setPageRange] = useState();
@@ -35,6 +45,7 @@ const Closedeals = ({ pageState, setpageState }) => {
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
+  const [dealHisotryModel, setDealHistoryModel] = useState(false);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
   const handleUpdateLeadModelClose = () => {
     setUpdateLeadModelOpen(false);
@@ -43,6 +54,10 @@ const Closedeals = ({ pageState, setpageState }) => {
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
     setTimelineModelOpen(true);
+  };
+  const HandleViewDealHistory = (params) => {
+    setsingleLeadData(params.row);
+    setDealHistoryModel(true);
   };
 
   const handleRangeChange = (e) => {
@@ -69,7 +84,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       flex: 1,
       minWidth: 40,
       headerAlign: "center",
-      renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode)
+      renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode),
     },
     // LEAD NAME
     {
@@ -111,8 +126,12 @@ const Closedeals = ({ pageState, setpageState }) => {
             }}
             className="flex flex-col"
           >
-            <p>{cellValues.row.project === "null" ? "-" : cellValues.row.project}</p>
-            <p>{cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}</p>
+            <p>
+              {cellValues.row.project === "null" ? "-" : cellValues.row.project}
+            </p>
+            <p>
+              {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
+            </p>
           </div>
         );
       },
@@ -127,13 +146,21 @@ const Closedeals = ({ pageState, setpageState }) => {
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>{cellValues.row.enquiryType === "null" ? "-" : cellValues.row.enquiryType}</p>
-            <p>{cellValues.row.leadType === "null" ? "-" : cellValues.row.leadType}</p>
+            <p>
+              {cellValues.row.enquiryType === "null"
+                ? "-"
+                : cellValues.row.enquiryType}
+            </p>
+            <p>
+              {cellValues.row.leadType === "null"
+                ? "-"
+                : cellValues.row.leadType}
+            </p>
           </div>
         );
       },
     },
-    // UNIT 
+    // UNIT
     {
       field: "unit",
       headerAlign: "center",
@@ -189,7 +216,77 @@ const Closedeals = ({ pageState, setpageState }) => {
       minWidth: 30,
       headerAlign: "center",
       flex: 1,
-      renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode)
+      renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
+    },
+    // SPA
+    {
+      field: "spa_status",
+      headerName: t("spa"),
+      minWidth: 30,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        const value = cellValues?.row;
+        return (
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {value?.spa_status === 1 ? (
+              <p
+                className={`
+                   text-[#1C1C1C] bg-[green]
+                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <FaCheck size={16} color="white" />
+              </p>
+            ) : (
+              <p
+                className={` text-[#1C1C1C] bg-[#FF0000]
+              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <RxCross2 size={16} />
+                </Tooltip>
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
+    // COMMISSION
+    {
+      field: "commission",
+      headerName: t("commission"),
+      minWidth: 30,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        const value = cellValues?.row;
+        return (
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {value?.comm_status === 1 ? (
+              <p
+                className={`
+                   text-[#1C1C1C] bg-[green]
+                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <FaCheck size={16} color="white" />
+              </p>
+            ) : (
+              <p
+                className={` text-[#1C1C1C] bg-[#FF0000]
+              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <Tooltip title="View Timeline" arrow>
+                  <RxCross2 size={16} />
+                </Tooltip>
+              </p>
+            )}
+          </div>
+        );
+      },
     },
     {
       field: "",
@@ -201,31 +298,9 @@ const Closedeals = ({ pageState, setpageState }) => {
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          // <div className="space-x-2 w-full flex items-center justify-center ">
-          //   <Button
-          //     className={`${
-          //       currentMode === "dark"
-          //         ? "text-white bg-transparent rounded-md p-1 shadow-none "
-          //         : "text-black bg-transparent rounded-md p-1 shadow-none "
-          //     }`}
-          //   >
-          //     <AiOutlineHistory
-          //       size={16}
-          //       onClick={() => HandleViewTimeline(cellValues)}
-          //     />
-          //   </Button>
-          //   <Button
-          //     onClick={() => HandleEditFunc(cellValues)}
-          //     className={`${
-          //       currentMode === "dark"
-          //         ? "text-white bg-transparent rounded-md p-1 shadow-none "
-          //         : "text-black bg-transparent rounded-md p-1 shadow-none "
-          //     }`}
-          //   >
-          //     <AiOutlineEdit size={16} />
-          //   </Button>
-          // </div>
-          <div className={`w-full h-full px-1 flex items-center justify-center`}>
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
             <p
               style={{ cursor: "pointer" }}
               className={`${
@@ -252,6 +327,21 @@ const Closedeals = ({ pageState, setpageState }) => {
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
                   <AiOutlineHistory size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="View Timeline" arrow>
+                <button onClick={() => HandleViewDealHistory(cellValues)}>
+                  <FaHandshake size={16} />
                 </button>
               </Tooltip>
             </p>
@@ -377,7 +467,9 @@ const Closedeals = ({ pageState, setpageState }) => {
       filterable: false,
       renderCell: (cellValues) => {
         return (
-          <div className={`w-full h-full px-1 flex items-center justify-center`}>
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
             <p
               style={{ cursor: "pointer" }}
               className={`${
@@ -405,6 +497,20 @@ const Closedeals = ({ pageState, setpageState }) => {
                 <button onClick={() => HandleViewTimeline(cellValues)}>
                   <AiOutlineHistory size={16} />
                 </button>
+              </Tooltip>
+            </p>
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="View Timeline" arrow>
+                {/* <button onClick={() => HandleViewTimeline(cellValues)}> */}
+                <FaHandshake size={16} />
+                {/* </button> */}
               </Tooltip>
             </p>
           </div>
@@ -521,7 +627,7 @@ const Closedeals = ({ pageState, setpageState }) => {
 
           <p className="mr-3">Rows Per Page</p>
 
-          <Select 
+          <Select
             id="select-page-size-label"
             value={{ label: pageState.pageSize, value: pageState.pageSize }}
             onChange={handleRangeChange}
@@ -657,6 +763,14 @@ const Closedeals = ({ pageState, setpageState }) => {
         <Timeline
           timelineModelOpen={timelineModelOpen}
           handleCloseTimelineModel={() => setTimelineModelOpen(false)}
+          LeadData={singleLeadData}
+        />
+      )}
+
+      {dealHisotryModel && (
+        <DealHistory
+          dealHistoryModel={dealHisotryModel}
+          handleCloseDealHistory={() => setDealHistoryModel(false)}
           LeadData={singleLeadData}
         />
       )}

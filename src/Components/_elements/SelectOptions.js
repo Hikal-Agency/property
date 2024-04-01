@@ -610,6 +610,7 @@ export const ticket_source = (t) => [
   },
 ];
 
+// CURRENCIES
 export const currencies = (t) => [
   {
     value: "PKR",
@@ -650,5 +651,59 @@ export const currencies = (t) => [
   {
     value: "CAD",
     label: t("canada_currency"),
+  },
+];
+
+// CLAIM
+export const claim = (t) => [
+  {
+    value: "first claim",
+    label: t("claim_1"),
+  },
+  {
+    value: "second claim",
+    label: t("claim_2"),
+  },
+  {
+    value: "third claim",
+    label: t("claim_3"),
+  },
+  {
+    value: "full claim",
+    label: t("full_claim"),
+  },
+];
+
+// PAYMENT SOURCE
+export const payment_source = (t) => [
+  {
+    value: "bank transfer",
+    label: t("form_account_bank"),
+  },
+  {
+    value: "cheque",
+    label: t("payment_source_cheque"),
+  },
+
+  {
+    value: "cash",
+    label: t("payment_source_cash"),
+  },
+];
+
+// TRANSACTION TYPE
+export const transaction_type = (t) => [
+  {
+    value: "Booking",
+    label: t("booking"),
+  },
+  {
+    value: "PDC",
+    label: t("pdc"),
+  },
+
+  {
+    value: "SPA",
+    label: t("spa"),
   },
 ];

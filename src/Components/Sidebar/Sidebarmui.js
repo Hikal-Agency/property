@@ -9,6 +9,7 @@ import {
   sidebarClasses,
 } from "react-pro-sidebar";
 import { GiForkKnifeSpoon, GiHamburger } from "react-icons/gi";
+import { BsArrowLeftRight } from "react-icons/bs";
 
 import { GrConnect } from "react-icons/gr";
 import { FaFileAlt, FaWrench } from "react-icons/fa";
@@ -1664,6 +1665,20 @@ const Sidebarmui = () => {
           icon: <FaHistory size={16} />,
           // pro: true,
           link: "/onboarding/clientsList",
+        },
+      ],
+    },
+    // TRANSACTION
+    {
+      title: t("menu_transaction"),
+      icon: <BsArrowLeftRight size={18} />,
+      // pro: true,
+      links: [
+        {
+          name: t("menu_transaction"),
+          icon: <BsArrowLeftRight size={16} />,
+          // pro: true,
+          link: "/transactions",
         },
       ],
     },
