@@ -991,7 +991,12 @@
     "invoice": "Invoice"   ,
     "transactions_details": "Transactions Details"   ,
     "receipt": "Receipt" ,  
-    "booking": "Booking" 
+    "booking": "Booking" ,
+    "menu_transaction": "Transactions" ,
+    "new_transaction": "New Transaction",
+    "btn_new_transaction": "Add New Transaction",
+    "percent": "Percent",
+    "amount": "Amount"
 
 
 }
