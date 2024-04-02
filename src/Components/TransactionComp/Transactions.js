@@ -1,29 +1,13 @@
 import React, { useState } from "react";
-import {
-  Box,
-  TextField,
-  FormControl,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Button,
-  CircularProgress,
-  MenuItem,
-  InputAdornment,
-  Checkbox,
-  FormLabel,
-  IconButton,
-} from "@mui/material";
+import { Box, TextField, Button } from "@mui/material";
 import Select from "react-select";
 // import { Select as libSelect } from "@mui/material";
-import { BsSearch } from "react-icons/bs";
 import { FaHome } from "react-icons/fa";
 
 import { FaLinkedin } from "react-icons/fa";
 
 import { useStateContext } from "../../context/ContextProvider";
 import dayjs from "dayjs";
-import { MdFileUpload } from "react-icons/md";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -31,19 +15,12 @@ import moment from "moment";
 
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
-import { Textarea } from "@material-tailwind/react";
-import { t } from "i18next";
 import { ImFacebook2 } from "react-icons/im";
 import { FaInstagramSquare, FaTiktok, FaSnapchat } from "react-icons/fa";
 import { IoLogoYoutube } from "react-icons/io";
-import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData,
-} from "react-country-region-selector";
+import { CountryDropdown } from "react-country-region-selector";
 import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
 import { useRef } from "react";
-import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
 import { FaWallet } from "react-icons/fa";
 import {
   currencies,

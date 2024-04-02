@@ -17,7 +17,11 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { IoMdClose } from "react-icons/io";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdFileUpload } from "react-icons/md";
+import { selectStyles } from "../_elements/SelectStyles";
+import Select from "react-select";
+import { currencies } from "../_elements/SelectOptions";
+import usePermission from "../../utils/usePermission";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -37,8 +41,12 @@ const UpdateLead = ({
     t,
     isLangRTL,
     i18n,
+    fontFam,
+    isArabic,
+    primaryColor,
   } = useStateContext();
   const [isClosing, setIsClosing] = useState(false);
+  const { hasPermission } = usePermission();
 
   const [loading, setloading] = useState(true);
   const [btnloading, setbtnloading] = useState(false);
@@ -288,126 +296,447 @@ const UpdateLead = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${currentMode === "dark" && (isLangRTL(i18n.language) ? "border-primary border-r-2" : "border-primary border-l-2")}
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
-            `}
+            } ${
+              isLangRTL(i18n.language)
+                ? currentMode === "dark" && " border-primary border-r-2"
+                : currentMode === "dark" && " border-primary border-l-2"
+            }
+            p-4 h-[100vh] w-[80vw] overflow-y-scroll 
+          `}
           >
             {loading ? (
-              <div className="w-full flex items-center justify-center space-x-1">
-                <CircularProgress size={20} />
-                <span className="font-semibold text-lg">
-                  {t("fetching_your_lead")}
-                </span>
+              <div className="flex justify-center">
+                <CircularProgress />
               </div>
             ) : (
               <>
-                <div className="w-full flex items-center pb-3 mb-5">
-                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                  <h1
-                    className={`text-lg font-semibold ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    {t("update_closed_details")}
-                  </h1>
+                <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5">
+                  <div className="w-full flex items-center pb-3 ">
+                    <div
+                      className={`${
+                        isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                      } bg-primary h-10 w-1 rounded-full my-1`}
+                    ></div>
+                    <h1
+                      className={`text-lg font-semibold ${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
+                      style={{
+                        fontFamily: isArabic(Feedback?.feedback)
+                          ? "Noto Kufi Arabic"
+                          : "inherit",
+                      }}
+                    ></h1>
+                  </div>
                 </div>
-                <form
-                  className="p-4"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    UpdateLeadFunc();
-                  }}
-                >
-                  <div className="grid sm:grid-cols-1">
-                    <div className="flex flex-col justify-center items-center gap-7 mb-5">
-                      <Box sx={darkModeColors} className="w-full">
+
+                <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5 p-5">
+                  {/* Project DETAILS  */}
+                  <div
+                    className={`p-4 rounded-xl shadow-sm card-hover
+                  ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-[#EEEEEE] text-black"
+                  }`}
+                  >
+                    <h1 className="text-center uppercase font-semibold">
+                      {t("project_details")?.toUpperCase()}
+                    </h1>
+                    <hr className="my-4" />
+                    <div className="w-full">
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
+                        <TextField
+                          id="project_name"
+                          type={"text"}
+                          label={t("label_project_name")}
+                          className="w-full"
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={Feedback?.project}
+                          //   onChange={(e) => setLeadNotes(e.target.value)}
+                          required
+                        />
+                        <TextField
+                          id="project_name"
+                          type={"text"}
+                          label={t("label_enquiry_for")}
+                          className="w-full"
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={Feedback?.enquiryType}
+                          //   onChange={(e) => setLeadNotes(e.target.value)}
+                          required
+                        />
+                        <TextField
+                          id="selling_amount"
+                          type={"text"}
+                          label={t("selling_amount")}
+                          className="w-full"
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={Feedback?.enquiryType}
+                          //   onChange={(e) => setLeadNotes(e.target.value)}
+                          required
+                        />
+                        <TextField
+                          id="unit"
+                          type={"text"}
+                          label={t("unit")}
+                          className="w-full"
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          // value={Feedback?.enquiryType}
+                          //   onChange={(e) => setLeadNotes(e.target.value)}
+                          required
+                        />
+                        <Select
+                          id="Manager"
+                          options={currencies(t)?.map((curr) => ({
+                            value: curr.value,
+                            label: curr.label,
+                          }))}
+                          value={null}
+                          //   onChange={ChangeManager}
+                          placeholder={t("label_select_currency")}
+                          className={`mb-5`}
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
-                            label={t("closed_deal_date")}
-                            value={leadDateValue}
-                            views={["year", "month", "day"]}
-                            required
-                            onChange={(newValue) => {
-                              setLeadDateValue(newValue);
-                              console.log("newvalue: ", newValue);
-                              setLeadDate(
-                                formatNum(newValue.$d.getUTCFullYear()) +
-                                  "-" +
-                                  formatNum(newValue.$d.getUTCMonth() + 1) +
-                                  "-" +
-                                  formatNum(newValue.$d.getUTCDate() + 1)
-                              );
-                            }}
-                            format="yyyy-MM-dd"
-                            // renderInput={(params) => (
-                            //   <TextField {...params} fullWidth />
-                            // )}
+                            //   value={reportMonthValue || new Date()?.toString()}
+                            label={t("deal_date")}
+                            views={["month", "year"]}
+                            //   onChange={(newValue) => {
+                            //     if (newValue) {
+                            //       // Extract the month digit
+                            //       const monthDigit = moment(newValue.$d).format(
+                            //         "M"
+                            //       );
+
+                            //       // Convert the month digit string to an integer
+                            //       const monthDigitInt = parseInt(monthDigit, 10);
+                            //       console.log(
+                            //         "month digit int :: ",
+                            //         typeof monthDigitInt
+                            //       );
+
+                            //       // Extract the year
+                            //       const year = moment(newValue.$d).format("YYYY");
+
+                            //       // Set the report month digit as an integer and the year
+                            //       setReportMonth({
+                            //         month: monthDigitInt,
+                            //         year: parseInt(year, 10),
+                            //       });
+                            //     }
+                            //     console.log("val:", newValue);
+
+                            //     setReportMonthValue(newValue?.$d);
+                            //   }}
+                            format="MM-YYYY"
                             renderInput={(params) => (
                               <TextField
+                                sx={{
+                                  "& input": {
+                                    color:
+                                      currentMode === "dark"
+                                        ? "white"
+                                        : "black",
+                                  },
+                                  "& .MuiSvgIcon-root": {
+                                    color:
+                                      currentMode === "dark"
+                                        ? "white"
+                                        : "black",
+                                  },
+                                  marginBottom: "15px",
+                                }}
+                                fullWidth
+                                size="small"
                                 {...params}
                                 onKeyDown={(e) => e.preventDefault()}
                                 readOnly={true}
-                                fullWidth
-                                size="small"
-                                style={{
-                                  marginBottom: "15px"
-                                }}
                               />
                             )}
+                            maxDate={dayjs().startOf("day").toDate()}
                           />
                         </LocalizationProvider>
-                      </Box>
-                      <Box sx={darkModeColors} className="w-full">
-                        <TextField
-                          required
-                          fullWidth
-                          label={t("closed_amount")}
-                          value={leadAmount}
-                          size="small"
-                          style={{
-                            marginBottom: "15px"
-                          }}
-                          onChange={(e) => {
-                            setLeadAmount(e.target.value);
-                          }}
-                        />
-                      </Box>
-                      <Box sx={darkModeColors} className="w-full">
-                        <TextField
-                          required
-                          fullWidth
-                          label={t("label_unit")}
-                          value={unitNo}
-                          size="small"
-                          style={{
-                            marginBottom: "15px"
-                          }}
-                          onChange={(e) => {
-                            setUnitNo(e.target.value);
-                          }}
-                        />
                       </Box>
                     </div>
                   </div>
 
-                  <Button
-                    className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
-                    ripple={true}
-                    size="lg"
-                    type="submit"
-                    disabled={btnloading ? true : false}
-                  >
-                    {btnloading ? (
-                      <div className="flex items-center justify-center space-x-1">
-                        <CircularProgress size={18} sx={{ color: "white" }} />
+                  {/* COMMISSION DETAILS  */}
+                  {hasPermission("deal_commission") && (
+                    <div
+                      className={`p-4 rounded-xl shadow-sm card-hover
+                  ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-[#EEEEEE] text-black"
+                  }`}
+                    >
+                      <h1 className="text-center uppercase font-semibold">
+                        {t("commission_details")?.toUpperCase()}
+                      </h1>
+                      <hr className="my-4" />
+                      <div className="w-full">
+                        <Box
+                          sx={{
+                            ...darkModeColors,
+                            // marginTop:"20p"
+                          }}
+                        >
+                          <TextField
+                            id="project_name"
+                            type={"text"}
+                            label={t("total_commission")}
+                            className="w-full"
+                            sx={{
+                              "&": {
+                                marginBottom: "1.25rem !important",
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            // value={Feedback?.enquiryType}
+                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            required
+                          />
+
+                          <TextField
+                            id="booking_amount"
+                            type={"text"}
+                            label={t("total_commission_amount")}
+                            className="w-full"
+                            sx={{
+                              "&": {
+                                marginBottom: "1.25rem !important",
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={Feedback?.enquiryType}
+                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            required
+                          />
+
+                          <TextField
+                            id="booking_amount"
+                            type={"text"}
+                            label={t("vat_perc")}
+                            className="w-full"
+                            sx={{
+                              "&": {
+                                marginBottom: "1.25rem !important",
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={Feedback?.enquiryType}
+                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            required
+                          />
+
+                          <TextField
+                            id="booking_amount"
+                            type={"text"}
+                            label={t("vat_amount")}
+                            className="w-full"
+                            sx={{
+                              "&": {
+                                marginBottom: "1.25rem !important",
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={Feedback?.enquiryType}
+                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            required
+                          />
+
+                          <TextField
+                            id="booking_amount"
+                            type={"text"}
+                            label={t("agent_comm_perc")}
+                            className="w-full"
+                            sx={{
+                              "&": {
+                                marginBottom: "1.25rem !important",
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={Feedback?.enquiryType}
+                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            required
+                          />
+
+                          <TextField
+                            id="booking_amount"
+                            type={"text"}
+                            label={t("agent_comm_amount")}
+                            className="w-full"
+                            sx={{
+                              "&": {
+                                marginBottom: "1.25rem !important",
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={Feedback?.enquiryType}
+                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            required
+                          />
+                        </Box>
                       </div>
-                    ) : (
-                      <span> {t("btn_update_lead")}</span>
-                    )}
-                  </Button>
-                </form>
+                    </div>
+                  )}
+
+                  {/* CLIENT  DETAILS  */}
+                  <div
+                    className={`p-4 rounded-xl shadow-sm card-hover
+                  ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-[#EEEEEE] text-black"
+                  }`}
+                  >
+                    <h1 className="text-center uppercase font-semibold">
+                      {t("client_details")?.toUpperCase()}
+                    </h1>
+                    <hr className="my-4" />
+                    <div className="w-full">
+                      <Box sx={darkModeColors} className="p-2">
+                        {/* <Box
+                          sx={{
+                            ...darkModeColors,
+                            "& .MuiTypography-root": {
+                              fontFamily: fontFam,
+                            },
+                          }}
+                        >
+                          <label className="font-semibold mb-1">
+                            <span className="text-primary">{`${t("offer")} ${t(
+                              "label_validity"
+                            )}`}</span>
+                          </label>
+                          <br></br>
+                        </Box> */}
+
+                        <div className="  mb-5 flex items-center justify-center ">
+                          <div className=" rounded-lg border">
+                            <img
+                              //   src={imagePreview}
+                              width="100px"
+                              height="100px"
+                            />
+                          </div>
+                        </div>
+                        <input
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          id="contained-button-file"
+                          type="file"
+                          //   onChange={handleImgUpload}
+                        />
+                        <label htmlFor="contained-button-file">
+                          <Button
+                            variant="contained"
+                            size="medium"
+                            className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+                            style={{
+                              color: "#ffffff",
+                              border: "1px solid white",
+                              fontFamily: fontFam,
+                            }}
+                            component="span" // Required so the button doesn't automatically submit form
+                            disabled={loading ? true : false}
+                            startIcon={
+                              loading ? null : (
+                                <MdFileUpload className="mx-2" size={16} />
+                              )
+                            }
+                          >
+                            <span>{t("label_passport_image")}</span>
+                          </Button>
+                        </label>
+                      </Box>
+                    </div>
+                  </div>
+                </div>
               </>
             )}
+            <Button
+              type="submit"
+              size="medium"
+              style={{
+                color: "white",
+                fontFamily: fontFam,
+              }}
+              className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
+              //   onClick={handleClick}
+              disabled={loading ? true : false}
+            >
+              {loading ? (
+                <CircularProgress
+                  size={23}
+                  sx={{ color: "white" }}
+                  className="text-white"
+                />
+              ) : (
+                <span>{t("update")}</span>
+              )}
+            </Button>
           </div>
         </div>
       </Modal>
