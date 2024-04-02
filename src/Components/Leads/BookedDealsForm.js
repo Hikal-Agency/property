@@ -72,7 +72,53 @@ const BookedDealsForm = ({
   const { hasPermission } = usePermission();
 
   const [loading, setLoading] = useState(false);
+  const [btnloading, setbtnloading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+
+  const [closedDealData, setClosedDealsData] = useState({
+    leadId: Feedback?.id,
+    unit: null,
+    dealDate: null,
+    currency: "AED",
+    booking_percent: null,
+    booking_amount: null,
+    passport: null,
+    project: Feedback?.project,
+    enquiryType: Feedback?.enquiryType,
+  });
+
+  console.log("closed deal data:: ", closedDealData);
+
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const handleImgUpload = (e) => {
+    const file = e.target.files[0];
+
+    console.log("files:: ", file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+
+      const base64Image = reader.result;
+      setClosedDealsData({
+        ...closedDealData,
+        passport: base64Image,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleChange = (e) => {
+    console.log("E::: ", e);
+    const value = e.target.value;
+    const id = e.target.id;
+
+    setClosedDealsData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
 
   const handleClose = () => {
     setIsClosing(true);
@@ -87,56 +133,63 @@ const BookedDealsForm = ({
     boxShadow: 24,
   };
 
-  //   const AddNote = (note = "") => {
-  //     setaddNoteloading(true);
-  //     const token = localStorage.getItem("auth-token");
+  const AddClosedDeal = () => {
+    setbtnloading(true);
+    const token = localStorage.getItem("auth-token");
+    if (!closedDealData?.passport) {
+      toast.error("Passport image is required", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setbtnloading(false);
 
-  //     const data = {
-  //       leadId: LeadData.leadId || LeadData.id,
-  //       leadNote: note || AddNoteTxt,
-  //       addedBy: User?.id,
-  //       addedByName: User?.userName,
-  //     };
-  //     axios
-  //       .post(`${BACKEND_URL}/leadNotes`, data, {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       })
-  //       .then((result) => {
-  //         console.log("Result: ");
-  //         console.log("Result: ", result);
-  //         setaddNoteloading(false);
-  //         setAddNoteTxt("");
-  //         if (!note) {
-  //           toast.success("Note added Successfully", {
-  //             position: "top-right",
-  //             autoClose: 3000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           });
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         setaddNoteloading(false);
-  //         console.log(err);
-  //         toast.error("Soemthing Went Wrong! Please Try Again", {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       });
-  //   };
+      return;
+    }
+
+    axios
+      .post(`${BACKEND_URL}/closeddeals`, closedDealData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Result: ");
+        console.log("Result: ", result);
+        setbtnloading(false);
+        handleClose();
+        toast.success("Closed deal added successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch((err) => {
+        setbtnloading(false);
+        console.log(err);
+        toast.error("Soemthing Went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
 
   return (
     <Modal
@@ -273,7 +326,7 @@ const BookedDealsForm = ({
                       }}
                     >
                       <TextField
-                        id="project_name"
+                        id="project"
                         type={"text"}
                         label={t("label_project_name")}
                         className="w-full"
@@ -285,12 +338,12 @@ const BookedDealsForm = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={Feedback?.project}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={closedDealData?.project}
+                        onChange={(e) => handleChange(e)}
                         required
                       />
                       <TextField
-                        id="project_name"
+                        id="enquiryType"
                         type={"text"}
                         label={t("label_enquiry_for")}
                         className="w-full"
@@ -302,12 +355,12 @@ const BookedDealsForm = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={closedDealData.enquiryType}
+                        onChange={(e) => handleChange(e)}
                         required
                       />
                       <TextField
-                        id="selling_amount"
+                        id="amount"
                         type={"text"}
                         label={t("selling_amount")}
                         className="w-full"
@@ -319,8 +372,8 @@ const BookedDealsForm = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={closedDealData?.amount}
+                        onChange={(e) => handleChange(e)}
                         required
                       />
                       <TextField
@@ -336,8 +389,8 @@ const BookedDealsForm = ({
                         }}
                         variant="outlined"
                         size="small"
-                        // value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={closedDealData?.unit}
+                        onChange={(e) => handleChange(e)}
                         required
                       />
                     </Box>
@@ -366,37 +419,22 @@ const BookedDealsForm = ({
                     >
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          //   value={reportMonthValue || new Date()?.toString()}
+                          value={
+                            closedDealData?.dealDate || new Date()?.toString()
+                          }
                           label={t("booking_date")}
-                          views={["month", "year"]}
-                          //   onChange={(newValue) => {
-                          //     if (newValue) {
-                          //       // Extract the month digit
-                          //       const monthDigit = moment(newValue.$d).format(
-                          //         "M"
-                          //       );
+                          views={["day", "month", "year"]}
+                          onChange={(newValue) => {
+                            const formattedDate = moment(newValue?.$d).format(
+                              "YYYY-MM-DD"
+                            );
 
-                          //       // Convert the month digit string to an integer
-                          //       const monthDigitInt = parseInt(monthDigit, 10);
-                          //       console.log(
-                          //         "month digit int :: ",
-                          //         typeof monthDigitInt
-                          //       );
-
-                          //       // Extract the year
-                          //       const year = moment(newValue.$d).format("YYYY");
-
-                          //       // Set the report month digit as an integer and the year
-                          //       setReportMonth({
-                          //         month: monthDigitInt,
-                          //         year: parseInt(year, 10),
-                          //       });
-                          //     }
-                          //     console.log("val:", newValue);
-
-                          //     setReportMonthValue(newValue?.$d);
-                          //   }}
-                          format="MM-YYYY"
+                            setClosedDealsData((prev) => ({
+                              ...prev,
+                              dealDate: formattedDate,
+                            }));
+                          }}
+                          format="DD-MM-YYYY"
                           renderInput={(params) => (
                             <TextField
                               sx={{
@@ -421,7 +459,7 @@ const BookedDealsForm = ({
                         />
                       </LocalizationProvider>
                       <TextField
-                        id="project_name"
+                        id="booking_percent"
                         type={"text"}
                         label={t("booked_perc")}
                         className="w-full"
@@ -433,18 +471,22 @@ const BookedDealsForm = ({
                         }}
                         variant="outlined"
                         size="small"
-                        // value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={closedDealData?.booking_percent}
+                        onChange={(e) => handleChange(e)}
                         required
                       />
                       <Select
-                        id="Manager"
-                        options={currencies(t)?.map((curr) => ({
-                          value: curr.value,
-                          label: curr.label,
-                        }))}
-                        value={null}
-                        //   onChange={ChangeManager}
+                        id="currency"
+                        options={currencies(t)}
+                        value={currencies(t)?.find(
+                          (curr) => curr.value === closedDealData?.currency
+                        )}
+                        onChange={(e) => {
+                          setClosedDealsData({
+                            ...closedDealData,
+                            currency: e.value,
+                          });
+                        }}
                         placeholder={t("label_select_currency")}
                         className={`mb-5`}
                         menuPortalTarget={document.body}
@@ -463,8 +505,8 @@ const BookedDealsForm = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={closedDealData?.booking_amount}
+                        onChange={(e) => handleChange(e)}
                         required
                       />
                     </Box>
@@ -505,7 +547,7 @@ const BookedDealsForm = ({
                       <div className="  mb-5 flex items-center justify-center ">
                         <div className=" rounded-lg border">
                           <img
-                            //   src={imagePreview}
+                            src={imagePreview}
                             width="100px"
                             height="100px"
                           />
@@ -516,7 +558,7 @@ const BookedDealsForm = ({
                         style={{ display: "none" }}
                         id="contained-button-file"
                         type="file"
-                        //   onChange={handleImgUpload}
+                        onChange={handleImgUpload}
                       />
                       <label htmlFor="contained-button-file">
                         <Button
@@ -553,10 +595,10 @@ const BookedDealsForm = ({
               fontFamily: fontFam,
             }}
             className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-            //   onClick={handleClick}
-            disabled={loading ? true : false}
+            onClick={AddClosedDeal}
+            disabled={btnloading ? true : false}
           >
-            {loading ? (
+            {btnloading ? (
               <CircularProgress
                 size={23}
                 sx={{ color: "white" }}
