@@ -153,7 +153,7 @@ const BookedDealsForm = ({
     }
 
     axios
-      .post(`${BACKEND_URL}/closeddeals`, closedDealData, {
+      .post(`${BACKEND_URL}/closedDeals`, closedDealData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -163,6 +163,20 @@ const BookedDealsForm = ({
         console.log("Result: ");
         console.log("Result: ", result);
         setbtnloading(false);
+        if (result?.data?.status === false) {
+          toast.error(result?.data?.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          return;
+        }
+
         handleClose();
         toast.success("Closed deal added successfully", {
           position: "top-right",
