@@ -48,7 +48,7 @@ const DealHistory = ({
   const [commissionModal, setCommissionModal] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [addTransactionModal, setAddTransactionModal] = useState(false);
-  const [leadDetails, setLeadDetails] = useState(null);
+  const [transactions, setTransactions] = useState([]);
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -71,18 +71,33 @@ const DealHistory = ({
   const statuses = [
     {
       text: t("pdc"),
-      icon: <RxCross2 size={16} color="white" />,
-      bgColor: "#FF0000",
+      icon:
+        LeadData?.comm_status === 1 ? (
+          <FaCheck size={16} color="white" />
+        ) : (
+          <RxCross2 size={16} color="white" />
+        ),
+      bgColor: LeadData?.comm_status === 1 ? "green" : "#FF0000",
     },
     {
       text: t("spa"),
-      icon: <FaCheck size={16} color="white" />,
-      bgColor: "green",
+      icon:
+        LeadData?.spa_status === 1 ? (
+          <FaCheck size={16} color="white" />
+        ) : (
+          <RxCross2 size={16} color="white" />
+        ),
+      bgColor: LeadData?.spa_status === 1 ? "green" : "#FF0000",
     },
     {
       text: t("commission"),
-      icon: <FaCheck size={16} color="white" />,
-      bgColor: "#FF0000",
+      icon:
+        LeadData?.comm_status === 1 ? (
+          <FaCheck size={16} color="white" />
+        ) : (
+          <RxCross2 size={16} color="white" />
+        ),
+      bgColor: LeadData?.comm_status === 1 ? "green" : "#FF0000",
       type: "commission",
     },
   ];
@@ -155,6 +170,7 @@ const DealHistory = ({
 
       console.log("deal history::: ", leadsCycleResult);
       setLeadsCycle(leadsCycleResult?.data?.data?.history?.data);
+      setTransactions(leadsCycleResult?.data?.data?.spa);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -363,6 +379,7 @@ const DealHistory = ({
                                   </button>
                                 </div>
                               </div>
+
                               <div
                                 className={`${
                                   currentMode === "dark"
@@ -370,53 +387,61 @@ const DealHistory = ({
                                     : "bg-[#EEEEEE]"
                                 } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full relative`}
                               >
-                                <Box sx={{ ...ribbonStyles }}>
-                                  <div className="wrap">
-                                    <span>SPA</span>
-                                  </div>
-                                </Box>
-                                <div className="flex items-center justify-between mt-5">
-                                  <div>
-                                    <div className="flex gap-2 my-3">
-                                      <p>{t("percentage")}:</p>
-                                      <div>
-                                        <p className="font-semibold ml-2">
-                                          5.5%
-                                        </p>
+                                {transactions?.map((spa) => (
+                                  <>
+                                    <Box sx={{ ...ribbonStyles }}>
+                                      <div className="wrap">
+                                        <span>SPA</span>
                                       </div>
-                                    </div>
+                                    </Box>
+                                    <div className="flex items-center justify-between mt-5">
+                                      <div>
+                                        <div className="flex gap-2 my-3">
+                                          <p>{t("percentage")}:</p>
+                                          <div>
+                                            <p className="font-semibold ml-2">
+                                              5.5%
+                                            </p>
+                                          </div>
+                                        </div>
 
-                                    <div className="flex gap-2 my-3">
-                                      <p>{t("label_amount")}:</p>
-                                      <div>
-                                        <p className="font-semibold ml-2">
-                                          AED 32433423
-                                        </p>
-                                      </div>
-                                    </div>
+                                        <div className="flex gap-2 my-3">
+                                          <p>{t("label_amount")}:</p>
+                                          <div>
+                                            <p className="font-semibold ml-2">
+                                              AED 32433423
+                                            </p>
+                                          </div>
+                                        </div>
 
-                                    <div className="flex gap-2 my-3">
-                                      <p>{t("date")}:</p>
-                                      <div>
-                                        <p className="font-semibold ml-2">
-                                          date
-                                        </p>
-                                      </div>
-                                    </div>
+                                        <div className="flex gap-2 my-3">
+                                          <p>{t("date")}:</p>
+                                          <div>
+                                            <p className="font-semibold ml-2">
+                                              date
+                                            </p>
+                                          </div>
+                                        </div>
 
-                                    <div className="flex gap-2 my-3">
-                                      <p>{t("label_added_by")}:</p>
-                                      <div>
-                                        <p className="font-semibold ml-2">
-                                          Username
-                                        </p>
+                                        <div className="flex gap-2 my-3">
+                                          <p>{t("label_added_by")}:</p>
+                                          <div>
+                                            <p className="font-semibold ml-2">
+                                              Username
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="rounded-md border">
+                                        <img
+                                          src="#"
+                                          width="100px"
+                                          height="100px"
+                                        />
                                       </div>
                                     </div>
-                                  </div>
-                                  <div className="rounded-md border">
-                                    <img src="#" width="100px" height="100px" />
-                                  </div>
-                                </div>
+                                  </>
+                                ))}
                               </div>
                             </>
                           )}
