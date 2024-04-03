@@ -391,7 +391,7 @@ const DealHistory = ({
                                   <>
                                     <Box sx={{ ...ribbonStyles }}>
                                       <div className="wrap">
-                                        <span>SPA</span>
+                                        <span>{spa?.type}</span>
                                       </div>
                                     </Box>
                                     <div className="flex items-center justify-between mt-5">
