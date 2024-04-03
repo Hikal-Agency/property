@@ -5,7 +5,7 @@ import Error from "../Error";
 
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
-import { Backdrop, Box, Modal } from "@mui/material";
+import { Backdrop, Box, Modal, Pagination, Stack } from "@mui/material";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
 
 import { BiBed, BiCalendarExclamation } from "react-icons/bi";
@@ -51,6 +51,9 @@ const DealHistory = ({
   const [transactions, setTransactions] = useState([]);
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [maxPage, setMaxPage] = useState(0);
+  const [page, setPage] = useState(1);
+
   const navigate = useNavigate();
 
   console.log("lead Data:: ", LeadData);
@@ -170,6 +173,7 @@ const DealHistory = ({
 
       console.log("deal history::: ", leadsCycleResult);
       setLeadsCycle(leadsCycleResult?.data?.data?.history?.data);
+      setMaxPage(leadsCycleResult?.data?.data?.history?.last_page);
       setTransactions(leadsCycleResult?.data?.data?.spa);
       setLoading(false);
     } catch (error) {
@@ -872,6 +876,33 @@ const DealHistory = ({
                               )
                             )}
                           </div>
+                          <Stack spacing={2} marginTop={2}>
+                            <Pagination
+                              count={maxPage}
+                              color={
+                                currentMode === "dark" ? "primary" : "secondary"
+                              }
+                              onChange={(value) => setPage(value)}
+                              style={{ margin: "auto" }}
+                              page={page}
+                              sx={{
+                                "& .Mui-selected": {
+                                  color: "white !important",
+                                  backgroundColor: `${primaryColor} !important`,
+                                  "&:hover": {
+                                    backgroundColor:
+                                      currentMode === "dark"
+                                        ? "black"
+                                        : "white",
+                                  },
+                                },
+                                "& .MuiPaginationItem-root": {
+                                  color:
+                                    currentMode === "dark" ? "white" : "black",
+                                },
+                              }}
+                            />
+                          </Stack>
                         </div>
                       </div>
                     </div>
