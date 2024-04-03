@@ -400,7 +400,7 @@ const DealHistory = ({
                                           <p>{t("percentage")}:</p>
                                           <div>
                                             <p className="font-semibold ml-2">
-                                              5.5%
+                                              {spa?.percent}%
                                             </p>
                                           </div>
                                         </div>
@@ -409,7 +409,7 @@ const DealHistory = ({
                                           <p>{t("label_amount")}:</p>
                                           <div>
                                             <p className="font-semibold ml-2">
-                                              AED 32433423
+                                              {spa?.currency} {spa?.amount}
                                             </p>
                                           </div>
                                         </div>
@@ -418,7 +418,7 @@ const DealHistory = ({
                                           <p>{t("date")}:</p>
                                           <div>
                                             <p className="font-semibold ml-2">
-                                              date
+                                              {spa?.dealDate}
                                             </p>
                                           </div>
                                         </div>
@@ -427,7 +427,7 @@ const DealHistory = ({
                                           <p>{t("label_added_by")}:</p>
                                           <div>
                                             <p className="font-semibold ml-2">
-                                              Username
+                                              {spa?.added_by_name}
                                             </p>
                                           </div>
                                         </div>
