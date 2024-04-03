@@ -62,9 +62,9 @@ const DealHistory = ({
   const handleCommissionModalOpen = (invoice) => {
     console.log("open invoice", invoice);
     if (invoice) {
-      setInvoiceModal(true);
+      setInvoiceModal(LeadData);
     }
-    setCommissionModal(true);
+    setCommissionModal(LeadData);
   };
 
   const handleTransactionModalOpen = () => {

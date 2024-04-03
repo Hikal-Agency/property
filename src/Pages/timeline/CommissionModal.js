@@ -24,6 +24,7 @@ import { RxCross2 } from "react-icons/rx";
 import { IoMdPerson } from "react-icons/io";
 import { FaPencilAlt } from "react-icons/fa";
 import AddCommissionModal from "./AddCommissionModal";
+import { toast } from "react-toastify";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -36,6 +37,7 @@ const CommissionModal = ({
   invoiceModal,
 }) => {
   console.log("invoice modal: ", invoiceModal);
+  console.log("comission modal: ", commissionModal);
   const {
     currentMode,
     BACKEND_URL,
@@ -50,6 +52,10 @@ const CommissionModal = ({
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addCommissionModal, setOpenAddCommissionModal] = useState(false);
+  const [maxPage, setMaxPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState(null);
+
   const navigate = useNavigate();
 
   console.log("deal history lead data:: ", commissionModal);
@@ -114,28 +120,38 @@ const CommissionModal = ({
   };
 
   const fetchLeadsData = async (token, LeadID) => {
-    const urlLeadsCycle = `${BACKEND_URL}/leadscycle/${LeadID}}`;
-    const urlLeadDetails = `${BACKEND_URL}/leads/${LeadID}`;
+    setLoading(true);
+    let dataUrl;
+    if (invoiceModal) {
+      dataUrl = `${BACKEND_URL}/invoices`;
+    }
     try {
-      const [leadsCycleResult, leadDetailsResult] = await Promise.all([
-        axios.get(urlLeadsCycle, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-        axios.get(urlLeadDetails, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-      ]);
-      setLeadsCycle(leadsCycleResult.data.history);
-      setLeadDetails(leadDetailsResult.data.data);
+      const leadsCycleResult = await axios.get(dataUrl, {
+        params: { user_id: commissionModal?.lid },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("invoice history::: ", leadsCycleResult);
+      setMaxPage(leadsCycleResult?.data?.data?.last_page);
+      setData(leadsCycleResult?.data?.data?.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
+
+      toast.error("Unable to fetch the deal history", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setError404(true);
     }
   };
@@ -150,43 +166,6 @@ const CommissionModal = ({
     fetchLeadsData(token, LeadID);
     //eslint-disable-next-line
   }, []);
-
-  function groupLeadsByDate(leads) {
-    const groups = {};
-    leads.forEach((lead) => {
-      let date;
-      if (lead.CreationDate) date = (lead.CreationDate + " ").split(" ")[0];
-      else date = (lead.creationDate + " ").split(" ")[0];
-
-      if (groups[date]) {
-        groups[date].push(lead);
-      } else {
-        groups[date] = [lead];
-      }
-    });
-
-    let grouped = Object.keys(groups).map((date) => {
-      return {
-        date: date,
-        leads: groups[date],
-      };
-    });
-
-    grouped = grouped.sort((a, b) => {
-      return new Date(b.date) - new Date(a.date);
-    });
-
-    grouped = grouped.map((obj) => {
-      const sortedLeads = obj.leads.sort((a, b) => {
-        return new Date(b.CreationDate) - new Date(a.CreationDate);
-      });
-      // return the sorted leads array as part of a new object with the same date
-      return { date: obj.date, leads: sortedLeads };
-    });
-
-    console.log(grouped);
-    return grouped;
-  }
 
   return (
     <>
