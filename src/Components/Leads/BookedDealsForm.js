@@ -27,6 +27,7 @@ const BookedDealsForm = ({
   handleBookedFormClose,
   newFeedback,
   Feedback,
+  FetchLeads,
 }) => {
   console.log("Booked Form: ", BookedForm);
   console.log("Booked Data: ", Feedback);
@@ -55,10 +56,11 @@ const BookedDealsForm = ({
     dealDate: null,
     currency: "AED",
     booking_percent: null,
-    booking_amount: null,
+    booking_amount: Feedback?.booked_amount,
     passport: null,
     project: Feedback?.project,
     enquiryType: Feedback?.enquiryType,
+    amount: null,
   });
 
   console.log("closed deal data:: ", closedDealData);
@@ -77,7 +79,7 @@ const BookedDealsForm = ({
       const base64Image = reader.result;
       setClosedDealsData({
         ...closedDealData,
-        passport: base64Image,
+        passport: file,
       });
     };
     reader.readAsDataURL(file);
@@ -107,9 +109,9 @@ const BookedDealsForm = ({
     boxShadow: 24,
   };
 
+  const token = localStorage.getItem("auth-token");
   const AddClosedDeal = () => {
     setbtnloading(true);
-    const token = localStorage.getItem("auth-token");
     if (!closedDealData?.passport) {
       toast.error("Passport image is required", {
         position: "top-right",
@@ -129,7 +131,7 @@ const BookedDealsForm = ({
     axios
       .post(`${BACKEND_URL}/closedDeals`, closedDealData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       })
@@ -137,8 +139,8 @@ const BookedDealsForm = ({
         console.log("Result: ");
         console.log("Result: ", result);
         setbtnloading(false);
-        if (result?.data?.status === false) {
-          toast.error(result?.data?.message, {
+        if (result?.data?.status === false || result?.status) {
+          toast.error(result?.data?.message || result?.message, {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -162,6 +164,7 @@ const BookedDealsForm = ({
           progress: undefined,
           theme: "light",
         });
+        FetchLeads(token);
       })
       .catch((err) => {
         setbtnloading(false);

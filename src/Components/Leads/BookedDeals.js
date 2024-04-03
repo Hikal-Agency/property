@@ -1365,6 +1365,7 @@ const BookedDeals = ({
             handleBookedFormClose={handleBookedFormClose}
             newFeedback={newFeedback}
             Feedback={bookedData}
+            FetchLeads={FetchLeads}
           />
         )}
       </Box>
