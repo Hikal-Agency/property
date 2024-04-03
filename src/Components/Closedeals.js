@@ -578,6 +578,8 @@ const Closedeals = ({ pageState, setpageState }) => {
           lid: row?.id,
           leadId: row?.leadId,
           unit: row?.unit,
+          spa_status: row?.spa_status,
+          comm_status: row?.comm_status,
         }));
 
         setpageState((old) => ({

@@ -81,7 +81,7 @@ const UpdateLead = ({
       const base64Image = reader.result;
       setUpdateLeadData({
         ...updateLeadData,
-        passport: base64Image,
+        passport: file,
       });
     };
     reader.readAsDataURL(file);
