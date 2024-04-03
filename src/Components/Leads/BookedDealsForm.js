@@ -1,48 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
 import moment from "moment";
-import momentTimeZone from "moment-timezone";
 import {
   Backdrop,
   CircularProgress,
   Modal,
   TextField,
   Button,
-  Tooltip,
   Box,
 } from "@mui/material";
 import Select from "react-select";
 import { currencies } from "../_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
-import { datetimeLong } from "../_elements/formatDateTime";
 import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
-import BlockIPModal from "./BlockIPModal";
-import AddNewListingModal from "../Listings/AddNewListingModal";
-import { getCountryFromNumber } from "../_elements/CountryCodeChecker";
 
-import { VscCallOutgoing, VscMail, VscEdit } from "react-icons/vsc";
-import { IoIosAlert } from "react-icons/io";
 import { MdClose, MdFileUpload } from "react-icons/md";
-import { BiBlock, BiBed } from "react-icons/bi";
-import {
-  BsShuffle,
-  BsTelephone,
-  BsEnvelopeAt,
-  BsType,
-  BsHouseGear,
-  BsBuildings,
-  BsTrash,
-  BsBuildingGear,
-  BsPersonPlus,
-  BsBookmarkFill,
-  BsPersonGear,
-  BsChatLeftText,
-  BsClockHistory,
-  BsPhone,
-} from "react-icons/bs";
 import { selectStyles } from "../_elements/SelectStyles";
 import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";

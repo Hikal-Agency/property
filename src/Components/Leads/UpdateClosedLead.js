@@ -4,7 +4,6 @@ import {
   CircularProgress,
   Modal,
   TextField,
-  IconButton,
   Box,
 } from "@mui/material";
 
@@ -16,12 +15,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
-import { IoMdClose } from "react-icons/io";
 import { MdClose, MdFileUpload } from "react-icons/md";
 import { selectStyles } from "../_elements/SelectStyles";
 import Select from "react-select";
 import { currencies } from "../_elements/SelectOptions";
 import usePermission from "../../utils/usePermission";
+import moment from "moment";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -48,7 +47,7 @@ const UpdateLead = ({
   const [isClosing, setIsClosing] = useState(false);
   const { hasPermission } = usePermission();
 
-  const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
   // const style = {
   //   transform: "translate(-50%, -50%)",
@@ -58,39 +57,34 @@ const UpdateLead = ({
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
-  //eslint-disable-next-line
-  const [PropertyType, setPropertyType] = useState("");
-  //eslint-disable-next-line
-  const [EnquiryType, setEnquiryType] = useState("");
-  //eslint-disable-next-line
-  const [ForType, setForType] = useState("");
-  //eslint-disable-next-line
-  const [LanguagePrefered, setLanguagePrefered] = useState("");
-  //eslint-disable-next-line
-  const [LeadStatus, setLeadStatus] = useState("");
-  // eslint-disable-next-line
-  const [Feedback, setFeedback] = useState("");
-  //eslint-disable-next-line
-  const [Manager, setManager] = useState("");
-  const [Manager2, setManager2] = useState([]);
-  //eslint-disable-next-line
-  const [SalesPerson, setSalesPerson] = useState([]);
-  //eslint-disable-next-line
-  const [SalesPerson2, setSalesPerson2] = useState("");
-  //eslint-disable-next-line
-  const [LeadName, setLeadName] = useState("");
-  const [leadDate, setLeadDate] = useState("");
-  const [leadDateValue, setLeadDateValue] = useState({});
-  const [leadAmount, setLeadAmount] = useState("");
-  const [unitNo, setUnitNo] = useState("");
 
-  // eslint-disable-next-line
-  const ChangeLeadStatus = (event) => {
-    setLeadStatus(event.target.value);
-  };
-  // eslint-disable-next-line
-  const ChangeFeedback = (event) => {
-    setFeedback(event.target.value);
+  const [Feedback, setFeedback] = useState("");
+
+  const [leadDate, setLeadDate] = useState("");
+
+  const [updateLeadData, setUpdateLeadData] = useState({});
+
+  console.log("update lead data:: ", updateLeadData);
+
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const handleImgUpload = (e) => {
+    console.log("image upload: ");
+    const file = e.target.files[0];
+
+    console.log("files:: ", file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+
+      const base64Image = reader.result;
+      setUpdateLeadData({
+        ...updateLeadData,
+        passport: base64Image,
+      });
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleClose = () => {
@@ -100,27 +94,25 @@ const UpdateLead = ({
       handleLeadModelClose();
     }, 1000);
   };
+
+  const handleChange = (e) => {
+    console.log("E::: ", e);
+    const value = e.target.value;
+    const id = e.target.id;
+
+    setUpdateLeadData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
   useEffect(() => {
     console.log("lead data is ");
     console.log(LeadData);
     const token = localStorage.getItem("auth-token");
 
-    axios
-      .get(`${BACKEND_URL}/teamMembers/${User.id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        // console.log(result);
-        setManager2(result.data.team);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     // GETTING LEAD DETAILS
+    setloading(true);
     axios
       .post(
         `${BACKEND_URL}/editdeal/${LeadData.lid}`,
@@ -135,12 +127,36 @@ const UpdateLead = ({
       .then((result) => {
         console.log("the lead details is given by");
         console.log(result);
+        setloading(false);
 
         if (result.data.status) {
-          const { amount, dealDate, unit } = result.data.closeddeals;
-          setLeadDateValue(dayjs(dealDate));
-          setLeadAmount(amount);
-          setUnitNo(unit);
+          const newData = result.data.closeddeals;
+          setUpdateLeadData({
+            agent_comm_amount: newData.agent_comm_amount,
+            agent_comm_percent: newData.agent_comm_percent,
+            amount: newData.amount,
+
+            comm_amount: newData.comm_amount,
+            comm_percent: newData.comm_percent,
+            comm_status: newData.comm_status,
+
+            currency: newData.currency,
+            dealDate: newData.dealDate,
+            id: newData.id,
+            leadId: newData.leadId,
+            managerId: newData.managerId,
+            passport: newData.passport,
+            // pdc_status: newData.pdc_status,
+            // salesId: newData.salesId,
+            // spa_status: newData.spa_status,
+            unit: newData.unit,
+            updated_at: newData.updated_at,
+            updated_by: newData.updated_by,
+            updated_by_name: newData.updated_by_name,
+            vat: newData.vat,
+            project: LeadData?.project,
+            enquiryType: LeadData?.enquiryType,
+          });
         } else {
           toast.error("Error in Fetching the Lead", {
             position: "top-right",
@@ -157,6 +173,8 @@ const UpdateLead = ({
         setloading(false);
       })
       .catch((err) => {
+        setloading(false);
+
         console.error(err);
         toast.error("Error in Fetching the Lead", {
           position: "top-right",
@@ -172,17 +190,6 @@ const UpdateLead = ({
       });
     // eslint-disable-next-line
   }, []);
-  useEffect(() => {
-    // console.log("manager hook is calling");
-    // console.log(Manager2);
-    // console.log(Manager);
-    const SalesPersons = Manager2.filter(function (el) {
-      return el.uid === parseInt(Manager);
-    });
-    // console.log(SalesPersons);
-    setSalesPerson(SalesPersons[0]?.child ? SalesPersons[0].child : []);
-    // eslint-disable-next-line
-  }, [Manager]);
 
   console.log("leadDate:: ", leadDate);
 
@@ -196,16 +203,9 @@ const UpdateLead = ({
 
     setbtnloading(true);
     const token = localStorage.getItem("auth-token");
-    const UpdateLeadData = new FormData();
-    // UpdateLeadData.append("id", User.id);
-    // const updateLeadDate = dayjs(leadDate).format("YYYY-MM-DD");
-    const updateLeadDate = dayjs(date).format("YYYY-MM-DD");
-    UpdateLeadData.append("amount", leadAmount);
-    UpdateLeadData.append("dealDate", updateLeadDate);
-    UpdateLeadData.append("unit", unitNo);
 
     await axios
-      .post(`${BACKEND_URL}/editdeal/${LeadData.lid}`, UpdateLeadData, {
+      .post(`${BACKEND_URL}/editdeal/${LeadData.lid}`, updateLeadData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -326,7 +326,9 @@ const UpdateLead = ({
                           ? "Noto Kufi Arabic"
                           : "inherit",
                       }}
-                    ></h1>
+                    >
+                      {t("update_closed_details")}
+                    </h1>
                   </div>
                 </div>
 
@@ -365,7 +367,7 @@ const UpdateLead = ({
                         }}
                       >
                         <TextField
-                          id="project_name"
+                          id="project"
                           type={"text"}
                           label={t("label_project_name")}
                           className="w-full"
@@ -377,12 +379,12 @@ const UpdateLead = ({
                           }}
                           variant="outlined"
                           size="small"
-                          value={Feedback?.project}
-                          //   onChange={(e) => setLeadNotes(e.target.value)}
+                          value={updateLeadData?.project}
+                          onChange={(e) => handleChange(e)}
                           required
                         />
                         <TextField
-                          id="project_name"
+                          id="enquiryType"
                           type={"text"}
                           label={t("label_enquiry_for")}
                           className="w-full"
@@ -394,12 +396,12 @@ const UpdateLead = ({
                           }}
                           variant="outlined"
                           size="small"
-                          value={Feedback?.enquiryType}
-                          //   onChange={(e) => setLeadNotes(e.target.value)}
+                          value={updateLeadData?.enquiryType}
+                          onChange={(e) => handleChange(e)}
                           required
                         />
                         <TextField
-                          id="selling_amount"
+                          id="amount"
                           type={"text"}
                           label={t("selling_amount")}
                           className="w-full"
@@ -411,8 +413,8 @@ const UpdateLead = ({
                           }}
                           variant="outlined"
                           size="small"
-                          value={Feedback?.enquiryType}
-                          //   onChange={(e) => setLeadNotes(e.target.value)}
+                          value={updateLeadData?.amount}
+                          onChange={(e) => handleChange(e)}
                           required
                         />
                         <TextField
@@ -428,18 +430,25 @@ const UpdateLead = ({
                           }}
                           variant="outlined"
                           size="small"
-                          // value={Feedback?.enquiryType}
-                          //   onChange={(e) => setLeadNotes(e.target.value)}
+                          value={updateLeadData?.unit}
+                          onChange={(e) => handleChange(e)}
                           required
                         />
                         <Select
-                          id="Manager"
+                          id="currency"
                           options={currencies(t)?.map((curr) => ({
                             value: curr.value,
                             label: curr.label,
                           }))}
-                          value={null}
-                          //   onChange={ChangeManager}
+                          value={currencies(t)?.find(
+                            (curr) => curr.value === updateLeadData?.currency
+                          )}
+                          onChange={(e) => {
+                            setUpdateLeadData({
+                              ...updateLeadData,
+                              currency: e.value,
+                            });
+                          }}
                           placeholder={t("label_select_currency")}
                           className={`mb-5`}
                           menuPortalTarget={document.body}
@@ -447,37 +456,22 @@ const UpdateLead = ({
                         />
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
-                            //   value={reportMonthValue || new Date()?.toString()}
+                            value={
+                              updateLeadData?.dealDate || new Date()?.toString()
+                            }
                             label={t("deal_date")}
-                            views={["month", "year"]}
-                            //   onChange={(newValue) => {
-                            //     if (newValue) {
-                            //       // Extract the month digit
-                            //       const monthDigit = moment(newValue.$d).format(
-                            //         "M"
-                            //       );
+                            views={["day", "month", "year"]}
+                            onChange={(newValue) => {
+                              const formattedDate = moment(newValue?.$d).format(
+                                "YYYY-MM-DD"
+                              );
 
-                            //       // Convert the month digit string to an integer
-                            //       const monthDigitInt = parseInt(monthDigit, 10);
-                            //       console.log(
-                            //         "month digit int :: ",
-                            //         typeof monthDigitInt
-                            //       );
-
-                            //       // Extract the year
-                            //       const year = moment(newValue.$d).format("YYYY");
-
-                            //       // Set the report month digit as an integer and the year
-                            //       setReportMonth({
-                            //         month: monthDigitInt,
-                            //         year: parseInt(year, 10),
-                            //       });
-                            //     }
-                            //     console.log("val:", newValue);
-
-                            //     setReportMonthValue(newValue?.$d);
-                            //   }}
-                            format="MM-YYYY"
+                              setUpdateLeadData((prev) => ({
+                                ...prev,
+                                dealDate: formattedDate,
+                              }));
+                            }}
+                            format="DD-MM-YYYY"
                             renderInput={(params) => (
                               <TextField
                                 sx={{
@@ -531,7 +525,7 @@ const UpdateLead = ({
                           }}
                         >
                           <TextField
-                            id="project_name"
+                            id="comm_percent"
                             type={"text"}
                             label={t("total_commission")}
                             className="w-full"
@@ -543,13 +537,13 @@ const UpdateLead = ({
                             }}
                             variant="outlined"
                             size="small"
-                            // value={Feedback?.enquiryType}
-                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            value={updateLeadData?.comm_percent}
+                            onChange={(e) => handleChange(e)}
                             required
                           />
 
                           <TextField
-                            id="booking_amount"
+                            id="comm_amount"
                             type={"text"}
                             label={t("total_commission_amount")}
                             className="w-full"
@@ -561,13 +555,13 @@ const UpdateLead = ({
                             }}
                             variant="outlined"
                             size="small"
-                            value={Feedback?.enquiryType}
-                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            value={updateLeadData?.comm_amount}
+                            onChange={(e) => handleChange(e)}
                             required
                           />
 
                           <TextField
-                            id="booking_amount"
+                            id="vat"
                             type={"text"}
                             label={t("vat_perc")}
                             className="w-full"
@@ -579,13 +573,13 @@ const UpdateLead = ({
                             }}
                             variant="outlined"
                             size="small"
-                            value={Feedback?.enquiryType}
-                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            value={updateLeadData?.vat}
+                            onChange={(e) => handleChange(e)}
                             required
                           />
 
                           <TextField
-                            id="booking_amount"
+                            id="vat"
                             type={"text"}
                             label={t("vat_amount")}
                             className="w-full"
@@ -597,13 +591,13 @@ const UpdateLead = ({
                             }}
                             variant="outlined"
                             size="small"
-                            value={Feedback?.enquiryType}
-                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            value={updateLeadData?.vat}
+                            onChange={(e) => handleChange(e)}
                             required
                           />
 
                           <TextField
-                            id="booking_amount"
+                            id="agent_comm_percent"
                             type={"text"}
                             label={t("agent_comm_perc")}
                             className="w-full"
@@ -615,13 +609,13 @@ const UpdateLead = ({
                             }}
                             variant="outlined"
                             size="small"
-                            value={Feedback?.enquiryType}
-                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            value={updateLeadData?.agent_comm_percent}
+                            onChange={(e) => handleChange(e)}
                             required
                           />
 
                           <TextField
-                            id="booking_amount"
+                            id="agent_comm_amount"
                             type={"text"}
                             label={t("agent_comm_amount")}
                             className="w-full"
@@ -633,8 +627,8 @@ const UpdateLead = ({
                             }}
                             variant="outlined"
                             size="small"
-                            value={Feedback?.enquiryType}
-                            //   onChange={(e) => setLeadNotes(e.target.value)}
+                            value={updateLeadData?.agent_comm_amount}
+                            onChange={(e) => handleChange(e)}
                             required
                           />
                         </Box>
@@ -657,26 +651,10 @@ const UpdateLead = ({
                     <hr className="my-4" />
                     <div className="w-full">
                       <Box sx={darkModeColors} className="p-2">
-                        {/* <Box
-                          sx={{
-                            ...darkModeColors,
-                            "& .MuiTypography-root": {
-                              fontFamily: fontFam,
-                            },
-                          }}
-                        >
-                          <label className="font-semibold mb-1">
-                            <span className="text-primary">{`${t("offer")} ${t(
-                              "label_validity"
-                            )}`}</span>
-                          </label>
-                          <br></br>
-                        </Box> */}
-
                         <div className="  mb-5 flex items-center justify-center ">
                           <div className=" rounded-lg border">
                             <img
-                              //   src={imagePreview}
+                              src={imagePreview}
                               width="100px"
                               height="100px"
                             />
@@ -687,7 +665,7 @@ const UpdateLead = ({
                           style={{ display: "none" }}
                           id="contained-button-file"
                           type="file"
-                          //   onChange={handleImgUpload}
+                          onChange={handleImgUpload}
                         />
                         <label htmlFor="contained-button-file">
                           <Button
@@ -700,11 +678,8 @@ const UpdateLead = ({
                               fontFamily: fontFam,
                             }}
                             component="span" // Required so the button doesn't automatically submit form
-                            disabled={loading ? true : false}
                             startIcon={
-                              loading ? null : (
-                                <MdFileUpload className="mx-2" size={16} />
-                              )
+                              <MdFileUpload className="mx-2" size={16} />
                             }
                           >
                             <span>{t("label_passport_image")}</span>
@@ -724,10 +699,10 @@ const UpdateLead = ({
                 fontFamily: fontFam,
               }}
               className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-              //   onClick={handleClick}
-              disabled={loading ? true : false}
+              onClick={UpdateLeadFunc}
+              disabled={btnloading ? true : false}
             >
-              {loading ? (
+              {btnloading ? (
                 <CircularProgress
                   size={23}
                   sx={{ color: "white" }}
