@@ -23,6 +23,7 @@ import { MdNoteAlt, MdClose } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import CommissionModal from "./CommissionModal";
 import AddTransactionsModal from "../../Components/Transactions/AddTransactionsModal";
+import { toast } from "react-toastify";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -52,7 +53,8 @@ const DealHistory = ({
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  console.log("deal history lead data:: ", LeadData);
+  console.log("lead Data:: ", LeadData);
+  console.log("deal history modal: ", dealHistoryModel);
 
   const handleCommissionModalOpen = (invoice) => {
     console.log("open invoice", invoice);
@@ -141,28 +143,33 @@ const DealHistory = ({
   };
 
   const fetchLeadsData = async (token, LeadID) => {
-    const urlLeadsCycle = `${BACKEND_URL}/leadscycle/${LeadID}}`;
-    const urlLeadDetails = `${BACKEND_URL}/leads/${LeadID}`;
+    const urlLeadsCycle = `${BACKEND_URL}/deal-history`;
+    const urlLeadDetails = `${BACKEND_URL}/leads/${LeadData?.id}`;
     try {
-      const [leadsCycleResult, leadDetailsResult] = await Promise.all([
-        axios.get(urlLeadsCycle, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-        axios.get(urlLeadDetails, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-      ]);
+      const leadsCycleResult = await axios.get(urlLeadsCycle, {
+        params: { deal_id: LeadData?.lid },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("deal history::: ", leadsCycleResult);
       setLeadsCycle(leadsCycleResult.data.history);
-      setLeadDetails(leadDetailsResult.data.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
+
+      toast.error("Unable to fetch the deal history", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setError404(true);
     }
   };
