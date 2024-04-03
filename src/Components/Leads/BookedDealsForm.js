@@ -51,7 +51,7 @@ const BookedDealsForm = ({
   const [isClosing, setIsClosing] = useState(false);
 
   const [closedDealData, setClosedDealsData] = useState({
-    leadId: Feedback?.id,
+    leadId: Feedback?.leadId,
     unit: null,
     dealDate: null,
     currency: "AED",
@@ -139,7 +139,7 @@ const BookedDealsForm = ({
         console.log("Result: ");
         console.log("Result: ", result);
         setbtnloading(false);
-        if (result?.data?.status === false || result?.status) {
+        if (result?.data?.status === false || result?.status === false) {
           toast.error(result?.data?.message || result?.message, {
             position: "top-right",
             autoClose: 3000,
