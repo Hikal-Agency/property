@@ -436,13 +436,15 @@ const DealHistory = ({
                                           </div>
                                         </div>
                                       </div>
-                                      <div className="rounded-md border">
-                                        <img
-                                          src="#"
-                                          width="100px"
-                                          height="100px"
-                                        />
-                                      </div>
+                                      {spa?.image && (
+                                        <div className="rounded-md border">
+                                          <img
+                                            src={spa?.image}
+                                            width="100px"
+                                            height="100px"
+                                          />
+                                        </div>
+                                      )}
                                     </div>
                                   </>
                                 ))}

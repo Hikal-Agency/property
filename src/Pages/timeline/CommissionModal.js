@@ -124,11 +124,11 @@ const CommissionModal = ({
     let params;
     if (invoiceModal) {
       dataUrl = `${BACKEND_URL}/invoices`;
-      params = { user_id: commissionModal?.lid };
+      params = { deal_id: commissionModal?.lid };
     }
     try {
       const leadsCycleResult = await axios.get(dataUrl, {
-        // params: params,
+        params: params,
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -404,8 +404,10 @@ const CommissionModal = ({
                                 </div>
                               ))
                             ) : (
-                              <div>
-                                <h1>{t("no_data_found")}</h1>
+                              <div className="h-[300px] w-full flex items-center justify-center">
+                                <h1 className="text-lg font-bold capitalize">
+                                  {t("no_data_found")}
+                                </h1>
                               </div>
                             )}
                           </>
