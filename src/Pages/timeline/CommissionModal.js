@@ -53,7 +53,9 @@ const CommissionModal = ({
   const [addCommissionModal, setOpenAddCommissionModal] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
   const [page, setPage] = useState(1);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
+
+  console.log("data fetched:: ", data);
 
   const navigate = useNavigate();
 
@@ -123,11 +125,11 @@ const CommissionModal = ({
     let dataUrl;
     let params;
     dataUrl = `${BACKEND_URL}/invoices`;
-    if (invoiceModal) {
-      params = { deal_id: commissionModal?.lid };
-    } else {
-      params = { deal_id: commissionModal?.lid, category: "Commission" };
-    }
+    // if (invoiceModal) {
+    //   params = { deal_id: commissionModal?.lid };
+    // } else {
+    //   params = { deal_id: commissionModal?.lid, category: "Commission" };
+    // }
     try {
       const leadsCycleResult = await axios.get(dataUrl, {
         params: params,
@@ -139,7 +141,7 @@ const CommissionModal = ({
 
       console.log("invoice history::: ", leadsCycleResult);
       setMaxPage(leadsCycleResult?.data?.data?.last_page);
-      setData(leadsCycleResult?.data?.data?.data);
+      setData(leadsCycleResult?.data?.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -278,14 +280,16 @@ const CommissionModal = ({
                                       : "bg-[#EEEEEE]"
                                   } p-4 space-y-3 rounded-xl shadow-sm card-hover  my-2 w-full relative`}
                                 >
-                                  {data?.invoice_type.toLowerCase() ===
+                                  {data?.invoice?.invoice_type.toLowerCase() ===
                                   "expense" ? (
                                     <p className="text-red-600 text-right font-semibold">
-                                      - {data?.currency} {data?.amount}
+                                      - {data?.invoice?.currency}{" "}
+                                      {data?.invoice?.amount}
                                     </p>
                                   ) : (
                                     <p className="text-green-600 text-right font-semibold">
-                                      + {data?.currency} {data?.amount}
+                                      + {data?.invoice?.currency}{" "}
+                                      {data?.invoice?.amount}
                                     </p>
                                   )}
                                   <div className="flex items-center justify-between mt-5">
@@ -302,7 +306,7 @@ const CommissionModal = ({
                                       <div className="flex justify-between  my-3">
                                         <p>{t("date")}:</p>
                                         <p className="font-semibold ml-2">
-                                          {data?.date}
+                                          {data?.invoice?.date}
                                         </p>
                                       </div>
 
@@ -316,28 +320,28 @@ const CommissionModal = ({
                                       <div className="flex justify-between  my-3">
                                         <p>{t("commission_perc")}:</p>
                                         <p className="font-semibold ml-2">
-                                          {data?.comm_percent}
+                                          {data?.invoice?.comm_percent}
                                         </p>
                                       </div>
 
                                       <div className="flex justify-between  my-3">
                                         <p>{t("vat_amount")}:</p>
                                         <p className="font-semibold ml-2">
-                                          {data?.vat}
+                                          {data?.invoice?.vat}
                                         </p>
                                       </div>
 
                                       <div className="flex justify-between  my-3">
                                         <p>{t("status")}:</p>
                                         <p className="font-semibold ml-2">
-                                          {data?.status}
+                                          {data?.invoice?.status}
                                         </p>
                                       </div>
 
                                       <div className="flex justify-between  my-3">
                                         <p>{t("payment_source")}:</p>
                                         <p className="font-semibold ml-2">
-                                          {data?.paid_by}
+                                          {data?.invoice?.paid_by}
                                         </p>
                                       </div>
                                     </div>
@@ -349,7 +353,7 @@ const CommissionModal = ({
                                       } rounded-md p-5 w-[400px] h-[250px]`}
                                     >
                                       <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
-                                        {data?.invoice_type.toLowerCase() ===
+                                        {data?.invoice?.invoice_type.toLowerCase() ===
                                         "expense"
                                           ? t("user_details")
                                           : t("vendor_details")}
@@ -357,28 +361,28 @@ const CommissionModal = ({
                                       <div className="flex justify-between  my-3">
                                         <p>{t("name")}:</p>
                                         <p className="font-semibold ml-2">
-                                          {data?.added_by_name}
+                                          {data?.invoice?.added_by_name}
                                         </p>
                                       </div>
 
                                       <div className="flex justify-between  my-3">
                                         <p>{t("label_position")}:</p>
                                         <p className="font-semibold ml-2">
-                                          Position
+                                          {data?.user?.position}
                                         </p>
                                       </div>
 
                                       <div className="flex justify-between  my-3">
                                         <p>{t("label_contact")}:</p>
                                         <p className="font-semibold ml-2">
-                                          Contact
+                                          {data?.user?.userContact}
                                         </p>
                                       </div>
 
                                       <div className="flex justify-between  my-3">
                                         <p>{t("label_email")}:</p>
                                         <p className="font-semibold ml-2">
-                                          Email
+                                          {data?.user?.userEmail}
                                         </p>
                                       </div>
                                     </div>
