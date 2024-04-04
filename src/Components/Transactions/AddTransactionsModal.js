@@ -55,7 +55,7 @@ const AddTransactionsModal = ({
     type: null,
     amount: null,
     dealDate: null,
-    // currency: null,
+    currency: null,
     percent: null,
     image: null,
   });
@@ -107,20 +107,20 @@ const AddTransactionsModal = ({
     setBtnLoading(true);
     const token = localStorage.getItem("auth-token");
 
-    if (!transactionData?.image) {
-      toast.error("Image required.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setBtnLoading(false);
-      return;
-    }
+    // if (!transactionData?.image) {
+    //   toast.error("Image required.", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+    //   });
+    //   setBtnLoading(false);
+    //   return;
+    // }
 
     axios
       .post(`${BACKEND_URL}/deal-spa`, transactionData, {
@@ -349,6 +349,24 @@ const AddTransactionsModal = ({
                         value={transactionData?.percent}
                         onChange={handleChange}
                         required
+                      />
+
+                      <Select
+                        id="currency"
+                        options={currencies(t)}
+                        value={currencies(t)?.find(
+                          (curr) => curr.value === transactionData?.currency
+                        )}
+                        onChange={(e) => {
+                          setTransactionData({
+                            ...transactionData,
+                            currency: e.value,
+                          });
+                        }}
+                        placeholder={t("label_select_currency")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
                       />
 
                       <TextField

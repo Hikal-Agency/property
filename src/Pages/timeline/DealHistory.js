@@ -384,14 +384,14 @@ const DealHistory = ({
                                 </div>
                               </div>
 
-                              <div
-                                className={`${
-                                  currentMode === "dark"
-                                    ? "bg-[#1C1C1C]"
-                                    : "bg-[#EEEEEE]"
-                                } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full relative`}
-                              >
-                                {transactions?.map((spa) => (
+                              {transactions?.map((spa) => (
+                                <div
+                                  className={`${
+                                    currentMode === "dark"
+                                      ? "bg-[#1C1C1C]"
+                                      : "bg-[#EEEEEE]"
+                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full relative`}
+                                >
                                   <>
                                     <Box sx={{ ...ribbonStyles }}>
                                       <div className="wrap">
@@ -447,8 +447,8 @@ const DealHistory = ({
                                       )}
                                     </div>
                                   </>
-                                ))}
-                              </div>
+                                </div>
+                              ))}
                             </>
                           )}
                         </div>
