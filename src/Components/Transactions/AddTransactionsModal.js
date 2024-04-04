@@ -107,20 +107,20 @@ const AddTransactionsModal = ({
     setBtnLoading(true);
     const token = localStorage.getItem("auth-token");
 
-    // if (!transactionData?.image) {
-    //   toast.error("Image required.", {
-    //     position: "top-right",
-    //     autoClose: 3000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //   });
-    //   setBtnLoading(false);
-    //   return;
-    // }
+    if (!transactionData?.image) {
+      toast.error("Image required.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setBtnLoading(false);
+      return;
+    }
 
     axios
       .post(`${BACKEND_URL}/deal-spa`, transactionData, {
