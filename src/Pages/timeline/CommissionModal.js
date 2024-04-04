@@ -125,11 +125,11 @@ const CommissionModal = ({
     let dataUrl;
     let params;
     dataUrl = `${BACKEND_URL}/invoices`;
-    // if (invoiceModal) {
-    //   params = { deal_id: commissionModal?.lid };
-    // } else {
-    //   params = { deal_id: commissionModal?.lid, category: "Commission" };
-    // }
+    if (invoiceModal) {
+      params = { deal_id: commissionModal?.lid };
+    } else {
+      params = { deal_id: commissionModal?.lid, category: "Commission" };
+    }
     try {
       const leadsCycleResult = await axios.get(dataUrl, {
         params: params,
@@ -313,7 +313,7 @@ const CommissionModal = ({
                                       <div className="flex justify-between  my-3">
                                         <p>{t("claim")}:</p>
                                         <p className="font-semibold ml-2">
-                                          Claim
+                                          {data?.invoice?.claim}
                                         </p>
                                       </div>
 
@@ -396,7 +396,7 @@ const CommissionModal = ({
                                         <span className="mr-3">
                                           <IoMdPerson />
                                         </span>
-                                        {data?.added_by_name}
+                                        {data?.invoice?.added_by_name}
                                       </p>
                                     </div>
                                   </div>
