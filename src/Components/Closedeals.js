@@ -339,7 +339,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
               } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
-              <Tooltip title="View Timeline" arrow>
+              <Tooltip title="View Deal History" arrow>
                 <button onClick={() => HandleViewDealHistory(cellValues)}>
                   <FaHandshake size={16} />
                 </button>
@@ -580,6 +580,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           unit: row?.unit,
           spa_status: row?.spa_status,
           comm_status: row?.comm_status,
+          pdc_status: row?.pdc_status,
         }));
 
         setpageState((old) => ({

@@ -62,9 +62,9 @@ const DealHistory = ({
   const handleCommissionModalOpen = (invoice) => {
     console.log("open invoice", invoice);
     if (invoice) {
-      setInvoiceModal(true);
+      setInvoiceModal(LeadData);
     }
-    setCommissionModal(true);
+    setCommissionModal(LeadData);
   };
 
   const handleTransactionModalOpen = () => {
@@ -75,12 +75,12 @@ const DealHistory = ({
     {
       text: t("pdc"),
       icon:
-        LeadData?.comm_status === 1 ? (
+        LeadData?.pdc_status === 1 ? (
           <FaCheck size={16} color="white" />
         ) : (
           <RxCross2 size={16} color="white" />
         ),
-      bgColor: LeadData?.comm_status === 1 ? "green" : "#FF0000",
+      bgColor: LeadData?.pdc_status === 1 ? "green" : "#FF0000",
     },
     {
       text: t("spa"),
@@ -436,13 +436,15 @@ const DealHistory = ({
                                           </div>
                                         </div>
                                       </div>
-                                      <div className="rounded-md border">
-                                        <img
-                                          src="#"
-                                          width="100px"
-                                          height="100px"
-                                        />
-                                      </div>
+                                      {spa?.image && (
+                                        <div className="rounded-md border">
+                                          <img
+                                            src={spa?.image}
+                                            width="100px"
+                                            height="100px"
+                                          />
+                                        </div>
+                                      )}
                                     </div>
                                   </>
                                 ))}
@@ -480,7 +482,7 @@ const DealHistory = ({
                                               whiteSpace: "nowrap",
                                             }}
                                           >
-                                            {timeline.date}
+                                            {/* {timeline.date} */}
                                           </div>
                                         </div>
                                       </div>

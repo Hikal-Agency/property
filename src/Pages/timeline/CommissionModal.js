@@ -5,7 +5,7 @@ import Error from "../Error";
 
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
-import { Backdrop, Box, Modal } from "@mui/material";
+import { Backdrop, Box, Modal, Pagination, Stack } from "@mui/material";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
 
 import { BiBed, BiCalendarExclamation } from "react-icons/bi";
@@ -24,6 +24,7 @@ import { RxCross2 } from "react-icons/rx";
 import { IoMdPerson } from "react-icons/io";
 import { FaPencilAlt } from "react-icons/fa";
 import AddCommissionModal from "./AddCommissionModal";
+import { toast } from "react-toastify";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -36,6 +37,7 @@ const CommissionModal = ({
   invoiceModal,
 }) => {
   console.log("invoice modal: ", invoiceModal);
+  console.log("comission modal: ", commissionModal);
   const {
     currentMode,
     BACKEND_URL,
@@ -45,11 +47,14 @@ const CommissionModal = ({
     isLangRTL,
     i18n,
   } = useStateContext();
-  const [leadsCycle, setLeadsCycle] = useState(null);
-  const [leadDetails, setLeadDetails] = useState(null);
+
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addCommissionModal, setOpenAddCommissionModal] = useState(false);
+  const [maxPage, setMaxPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState(null);
+
   const navigate = useNavigate();
 
   console.log("deal history lead data:: ", commissionModal);
@@ -114,28 +119,42 @@ const CommissionModal = ({
   };
 
   const fetchLeadsData = async (token, LeadID) => {
-    const urlLeadsCycle = `${BACKEND_URL}/leadscycle/${LeadID}}`;
-    const urlLeadDetails = `${BACKEND_URL}/leads/${LeadID}`;
+    setLoading(true);
+    let dataUrl;
+    let params;
+    dataUrl = `${BACKEND_URL}/invoices`;
+    if (invoiceModal) {
+      params = { deal_id: commissionModal?.lid };
+    } else {
+      params = { deal_id: commissionModal?.lid, category: "Commission" };
+    }
     try {
-      const [leadsCycleResult, leadDetailsResult] = await Promise.all([
-        axios.get(urlLeadsCycle, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-        axios.get(urlLeadDetails, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-      ]);
-      setLeadsCycle(leadsCycleResult.data.history);
-      setLeadDetails(leadDetailsResult.data.data);
+      const leadsCycleResult = await axios.get(dataUrl, {
+        params: params,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("invoice history::: ", leadsCycleResult);
+      setMaxPage(leadsCycleResult?.data?.data?.last_page);
+      setData(leadsCycleResult?.data?.data?.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
+
+      toast.error("Unable to fetch the deal history", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setError404(true);
     }
   };
@@ -150,43 +169,6 @@ const CommissionModal = ({
     fetchLeadsData(token, LeadID);
     //eslint-disable-next-line
   }, []);
-
-  function groupLeadsByDate(leads) {
-    const groups = {};
-    leads.forEach((lead) => {
-      let date;
-      if (lead.CreationDate) date = (lead.CreationDate + " ").split(" ")[0];
-      else date = (lead.creationDate + " ").split(" ")[0];
-
-      if (groups[date]) {
-        groups[date].push(lead);
-      } else {
-        groups[date] = [lead];
-      }
-    });
-
-    let grouped = Object.keys(groups).map((date) => {
-      return {
-        date: date,
-        leads: groups[date],
-      };
-    });
-
-    grouped = grouped.sort((a, b) => {
-      return new Date(b.date) - new Date(a.date);
-    });
-
-    grouped = grouped.map((obj) => {
-      const sortedLeads = obj.leads.sort((a, b) => {
-        return new Date(b.CreationDate) - new Date(a.CreationDate);
-      });
-      // return the sorted leads array as part of a new object with the same date
-      return { date: obj.date, leads: sortedLeads };
-    });
-
-    console.log(grouped);
-    return grouped;
-  }
 
   return (
     <>
@@ -287,114 +269,179 @@ const CommissionModal = ({
                           </div>
                         ) : (
                           <>
-                            <div
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-[#1C1C1C]"
-                                  : "bg-[#EEEEEE]"
-                              } p-4 space-y-3 rounded-xl shadow-sm card-hover  my-2 w-full relative`}
-                            >
-                              <p className="text-red-600 text-right font-semibold">
-                                - AED 2323
-                              </p>
-                              <div className="flex items-center justify-between mt-5">
+                            {data && data?.length > 0 ? (
+                              data?.map((data) => (
                                 <div
                                   className={`${
                                     currentMode === "dark"
-                                      ? "bg-[#000000]"
-                                      : "bg-[#ffffff]"
-                                  } rounded-md p-5 w-[400px] h-[250px]`}
+                                      ? "bg-[#1C1C1C]"
+                                      : "bg-[#EEEEEE]"
+                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover  my-2 w-full relative`}
                                 >
-                                  <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
-                                    {t("commissions")}
-                                  </h3>
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("date")}:</p>
-                                    <p className="font-semibold ml-2">Date</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("claim")}:</p>
-                                    <p className="font-semibold ml-2">Claim</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("commission_perc")}:</p>
-                                    <p className="font-semibold ml-2">
-                                      Commission Percentage
+                                  {data?.invoice_type.toLowerCase() ===
+                                  "expense" ? (
+                                    <p className="text-red-600 text-right font-semibold">
+                                      - {data?.currency} {data?.amount}
                                     </p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("vat_amount")}:</p>
-                                    <p className="font-semibold ml-2">VAT</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("status")}:</p>
-                                    <p className="font-semibold ml-2">Status</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("payment_source")}:</p>
-                                    <p className="font-semibold ml-2">
-                                      Payment Source
+                                  ) : (
+                                    <p className="text-green-600 text-right font-semibold">
+                                      + {data?.currency} {data?.amount}
                                     </p>
+                                  )}
+                                  <div className="flex items-center justify-between mt-5">
+                                    <div
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-[#000000]"
+                                          : "bg-[#ffffff]"
+                                      } rounded-md p-5 w-[400px] h-[250px]`}
+                                    >
+                                      <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
+                                        {t("commissions")}
+                                      </h3>
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("date")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.date}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("claim")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          Claim
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("commission_perc")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.comm_percent}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("vat_amount")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.vat}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("status")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.status}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("payment_source")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.paid_by}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-[#000000]"
+                                          : "bg-[#ffffff]"
+                                      } rounded-md p-5 w-[400px] h-[250px]`}
+                                    >
+                                      <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
+                                        {data?.invoice_type.toLowerCase() ===
+                                        "expense"
+                                          ? t("user_details")
+                                          : t("vendor_details")}
+                                      </h3>
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("name")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.added_by_name}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("label_position")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          Position
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("label_contact")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          Contact
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("label_email")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          Email
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className=" flex flex-col items-center justify-center mr-5 w-40">
+                                      <img
+                                        src="#"
+                                        width="300px"
+                                        height="300px"
+                                      />
+                                      <p className="flex">
+                                        <span className="mr-3">
+                                          <IoMdPerson />
+                                        </span>
+                                        {data?.added_by_name}
+                                      </p>
+                                    </div>
                                   </div>
+                                  {!invoiceModal && (
+                                    <div className="flex justify-end">
+                                      <button className="bg-btn-primary rounded-full p-3 bottom-0 ">
+                                        <FaPencilAlt />
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
-                                <div
-                                  className={`${
-                                    currentMode === "dark"
-                                      ? "bg-[#000000]"
-                                      : "bg-[#ffffff]"
-                                  } rounded-md p-5 w-[400px] h-[250px]`}
-                                >
-                                  <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
-                                    {t("user_details")}
-                                  </h3>
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("name")}:</p>
-                                    <p className="font-semibold ml-2">Name</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("label_position")}:</p>
-                                    <p className="font-semibold ml-2">
-                                      Position
-                                    </p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("label_contact")}:</p>
-                                    <p className="font-semibold ml-2">
-                                      Contact
-                                    </p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("label_email")}:</p>
-                                    <p className="font-semibold ml-2">Email</p>
-                                  </div>
-                                </div>
-                                <div className=" flex flex-col items-center justify-center mr-5 w-40">
-                                  <img src="#" width="300px" height="300px" />
-                                  <p className="flex">
-                                    <span className="mr-3">
-                                      <IoMdPerson />
-                                    </span>
-                                    Added by name
-                                  </p>
-                                </div>
+                              ))
+                            ) : (
+                              <div className="h-[300px] w-full flex items-center justify-center">
+                                <h1 className="text-lg font-bold capitalize">
+                                  {t("no_data_found")}
+                                </h1>
                               </div>
-                              <div className="flex justify-end">
-                                <button className="bg-btn-primary rounded-full p-3 bottom-0 ">
-                                  <FaPencilAlt />
-                                </button>
-                              </div>
-                            </div>
+                            )}
                           </>
                         )}
                       </div>
+                      {data && data?.length > 0 ? (
+                        <Stack spacing={2} marginTop={2}>
+                          <Pagination
+                            count={maxPage}
+                            color={
+                              currentMode === "dark" ? "primary" : "secondary"
+                            }
+                            onChange={(value) => setPage(value)}
+                            style={{ margin: "auto" }}
+                            page={page}
+                            sx={{
+                              "& .Mui-selected": {
+                                color: "white !important",
+                                backgroundColor: `${primaryColor} !important`,
+                                "&:hover": {
+                                  backgroundColor:
+                                    currentMode === "dark" ? "black" : "white",
+                                },
+                              },
+                              "& .MuiPaginationItem-root": {
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                            }}
+                          />
+                        </Stack>
+                      ) : null}
                     </div>
                   </div>
                 </div>
