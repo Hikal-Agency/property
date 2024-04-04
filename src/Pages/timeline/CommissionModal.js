@@ -125,11 +125,11 @@ const CommissionModal = ({
     let dataUrl;
     let params;
     dataUrl = `${BACKEND_URL}/invoices`;
-    if (invoiceModal) {
-      params = { deal_id: commissionModal?.lid };
-    } else {
-      params = { deal_id: commissionModal?.lid, category: "Commission" };
-    }
+    // if (invoiceModal) {
+    //   params = { deal_id: commissionModal?.lid };
+    // } else {
+    //   params = { deal_id: commissionModal?.lid, category: "Commission" };
+    // }
     try {
       const leadsCycleResult = await axios.get(dataUrl, {
         params: params,
@@ -387,11 +387,13 @@ const CommissionModal = ({
                                       </div>
                                     </div>
                                     <div className=" flex flex-col items-center justify-center mr-5 w-40">
-                                      <img
-                                        src="#"
-                                        width="300px"
-                                        height="300px"
-                                      />
+                                      {data?.receipt[0]?.image && (
+                                        <img
+                                          src={data?.receipt[0]?.image}
+                                          width="300px"
+                                          height="300px"
+                                        />
+                                      )}
                                       <p className="flex">
                                         <span className="mr-3">
                                           <IoMdPerson />
