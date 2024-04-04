@@ -707,3 +707,28 @@ export const transaction_type = (t) => [
     label: t("spa"),
   },
 ];
+
+// COMMISSION TYPE
+export const commission_type = (t) => [
+  {
+    value: "Income",
+    label: t("income"),
+  },
+  {
+    value: "Expnese",
+    label: t("expense"),
+  },
+];
+
+// PAYMENT STATUS
+
+export const payment_status = (t) => [
+  {
+    value: "paid",
+    label: t("payment_paid"),
+  },
+  {
+    value: "unpaid",
+    label: t("payment_unpaid"),
+  },
+];
