@@ -122,9 +122,11 @@ const CommissionModal = ({
     setLoading(true);
     let dataUrl;
     let params;
+    dataUrl = `${BACKEND_URL}/invoices`;
     if (invoiceModal) {
-      dataUrl = `${BACKEND_URL}/invoices`;
       params = { deal_id: commissionModal?.lid };
+    } else {
+      params = { deal_id: commissionModal?.lid, category: "Commission" };
     }
     try {
       const leadsCycleResult = await axios.get(dataUrl, {

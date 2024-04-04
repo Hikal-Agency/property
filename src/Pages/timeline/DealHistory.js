@@ -482,7 +482,7 @@ const DealHistory = ({
                                               whiteSpace: "nowrap",
                                             }}
                                           >
-                                            {timeline.date}
+                                            {/* {timeline.date} */}
                                           </div>
                                         </div>
                                       </div>
