@@ -62,7 +62,7 @@ const CommissionModal = ({
   console.log("deal history lead data:: ", commissionModal);
 
   const handleOpenModal = () => {
-    setOpenAddCommissionModal(true);
+    setOpenAddCommissionModal(commissionModal);
   };
 
   const [isClosing, setIsClosing] = useState(false);

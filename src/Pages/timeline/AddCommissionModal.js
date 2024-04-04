@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Backdrop,
   CircularProgress,
@@ -10,7 +10,9 @@ import {
 import Select from "react-select";
 import {
   claim,
+  commission_type,
   payment_source,
+  payment_status,
 } from "../../Components/_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -22,6 +24,9 @@ import { selectStyles } from "../../Components/_elements/SelectStyles";
 import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 const AddCommissionModal = ({
   addCommissionModal,
@@ -30,6 +35,7 @@ const AddCommissionModal = ({
 }) => {
   console.log("Booked Form: ", addCommissionModal);
   console.log("Booked Data: ", Feedback);
+  const token = localStorage.getItem("auth-token");
   const {
     darkModeColors,
     currentMode,
@@ -47,6 +53,54 @@ const AddCommissionModal = ({
 
   const [loading, setLoading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [vendor, setVendor] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const [commissionData, setCommissionData] = useState({
+    user_id: null,
+    deal_id: addCommissionModal?.lid,
+    vendor_id: null,
+    invoice_type: null,
+    date: null,
+    amount: null,
+    vat: null,
+    status: null,
+    comm_percent: null,
+    claim: null,
+    comm_amount: null,
+    paid_by: null,
+    image: null,
+  });
+
+  console.log("commission data:: ", commissionData);
+
+  const handleImgUpload = (e) => {
+    const file = e.target.files[0];
+
+    console.log("files:: ", file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+
+      const base64Image = reader.result;
+      setCommissionData({
+        ...commissionData,
+        image: file,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const id = e.target.id;
+
+    setCommissionData({
+      ...commissionData,
+      [id]: value,
+    });
+  };
 
   const handleClose = () => {
     setIsClosing(true);
@@ -60,6 +114,44 @@ const AddCommissionModal = ({
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
+
+  const fetchVendors = async () => {
+    setLoading(true);
+
+    try {
+      const vendorsList = await axios.get(`${BACKEND_URL}/vendors`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("vendors history::: ", vendorsList);
+
+      setVendor(vendorsList?.data?.data?.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+
+      toast.error("Unable to fetch the vendors", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      handleClose();
+    }
+  };
+
+  useEffect(() => {
+    fetchVendors();
+  }, []);
 
   //   const AddNote = (note = "") => {
   //     setaddNoteloading(true);
@@ -226,18 +318,19 @@ const AddCommissionModal = ({
                       }}
                     >
                       <Select
-                        options={[
-                          {
-                            value: "Income",
-                            label: t("income"),
-                          },
-                          {
-                            value: "Expnese",
-                            label: t("expense"),
-                          },
-                        ]}
-                        value={null}
-                        //   onChange={ChangeManager}
+                        options={commission_type(t)?.map((comm_type) => ({
+                          value: comm_type?.value,
+                          label: comm_type?.label,
+                        }))}
+                        value={commission_type(t)?.filter(
+                          (comm) => comm?.value === commissionData?.invoice_type
+                        )}
+                        onChange={(e) => {
+                          setCommissionData({
+                            ...commissionData,
+                            invoice_type: e.value,
+                          });
+                        }}
                         placeholder={t("commission_type")}
                         className={`mb-5`}
                         menuPortalTarget={document.body}
@@ -246,36 +339,19 @@ const AddCommissionModal = ({
                       />
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          //   value={reportMonthValue || new Date()?.toString()}
+                          value={commissionData?.date}
                           label={t("booking_date")}
                           views={["month", "year"]}
-                          //   onChange={(newValue) => {
-                          //     if (newValue) {
-                          //       // Extract the month digit
-                          //       const monthDigit = moment(newValue.$d).format(
-                          //         "M"
-                          //       );
+                          onChange={(newValue) => {
+                            const formattedDate = moment(newValue?.$d).format(
+                              "YYYY-MM-DD"
+                            );
 
-                          //       // Convert the month digit string to an integer
-                          //       const monthDigitInt = parseInt(monthDigit, 10);
-                          //       console.log(
-                          //         "month digit int :: ",
-                          //         typeof monthDigitInt
-                          //       );
-
-                          //       // Extract the year
-                          //       const year = moment(newValue.$d).format("YYYY");
-
-                          //       // Set the report month digit as an integer and the year
-                          //       setReportMonth({
-                          //         month: monthDigitInt,
-                          //         year: parseInt(year, 10),
-                          //       });
-                          //     }
-                          //     console.log("val:", newValue);
-
-                          //     setReportMonthValue(newValue?.$d);
-                          //   }}
+                            setCommissionData((prev) => ({
+                              ...prev,
+                              date: formattedDate,
+                            }));
+                          }}
                           format="MM-YYYY"
                           renderInput={(params) => (
                             <TextField
@@ -305,15 +381,22 @@ const AddCommissionModal = ({
                           value: claim.value,
                           label: claim.label,
                         }))}
-                        value={null}
-                        //   onChange={ChangeManager}
+                        value={claim(t)?.filter(
+                          (claim) => claim?.value === commissionData?.claim
+                        )}
+                        onChange={(e) => {
+                          setCommissionData({
+                            ...commissionData,
+                            claim: e.value,
+                          });
+                        }}
                         placeholder={t("claim")}
                         className={`mb-5`}
                         menuPortalTarget={document.body}
                         styles={selectStyles(currentMode, primaryColor)}
                       />
                       <TextField
-                        id="project_name"
+                        id="comm_percent"
                         type={"text"}
                         label={t("commission_perc")}
                         className="w-full"
@@ -325,12 +408,12 @@ const AddCommissionModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={Feedback?.project}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={commissionData?.comm_percent}
+                        onChange={handleChange}
                         required
                       />
                       <TextField
-                        id="project_name"
+                        id="comm_amount"
                         type={"text"}
                         label={t("commission_amount")}
                         className="w-full"
@@ -342,8 +425,8 @@ const AddCommissionModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={commissionData?.comm_amount}
+                        onChange={handleChange}
                         required
                       />
                     </Box>
@@ -372,18 +455,19 @@ const AddCommissionModal = ({
                     >
                       <Select
                         id="Manager"
-                        options={[
-                          {
-                            value: "paid",
-                            label: t("payment_paid"),
-                          },
-                          {
-                            value: "unpaid",
-                            label: t("payment_unpaid"),
-                          },
-                        ]}
-                        value={null}
-                        //   onChange={ChangeManager}
+                        options={payment_status(t)?.map((status) => ({
+                          value: status?.value,
+                          label: status?.label,
+                        }))}
+                        value={payment_status(t)?.filter(
+                          (status) => status?.value === commissionData?.status
+                        )}
+                        onChange={(e) => {
+                          setCommissionData({
+                            ...commissionData,
+                            status: e.value,
+                          });
+                        }}
                         placeholder={t("status")}
                         className={`mb-5`}
                         menuPortalTarget={document.body}
@@ -395,8 +479,16 @@ const AddCommissionModal = ({
                           value: payment.value,
                           label: payment.label,
                         }))}
-                        value={null}
-                        //   onChange={ChangeManager}
+                        value={payment_source(t)?.filter(
+                          (pay_src) =>
+                            pay_src?.value === commissionData?.paid_by
+                        )}
+                        onChange={(e) => {
+                          setCommissionData({
+                            ...commissionData,
+                            paid_by: e.value,
+                          });
+                        }}
                         placeholder={t("payment_source")}
                         className={`mb-5`}
                         menuPortalTarget={document.body}
@@ -404,19 +496,27 @@ const AddCommissionModal = ({
                       />
                       <Select
                         id="Manager"
-                        options={payment_source(t)?.map((payment) => ({
-                          value: payment.value,
-                          label: payment.label,
+                        options={vendor?.map((vendor) => ({
+                          value: vendor.id,
+                          label: vendor.vendor_name,
                         }))}
-                        value={null}
-                        //   onChange={ChangeManager}
+                        value={vendor?.filter(
+                          (ven) => ven?.id === commissionData?.vendor_id
+                        )}
+                        onChange={(e) => {
+                          console.log(" vendor: ", e);
+                          setCommissionData({
+                            ...commissionData,
+                            vendor_id: e.value,
+                          });
+                        }}
                         placeholder={t("vendor")}
                         className={`mb-5`}
                         menuPortalTarget={document.body}
                         styles={selectStyles(currentMode, primaryColor)}
                       />
                       <TextField
-                        id="booking_amount"
+                        id="vat"
                         type={"text"}
                         label={t("vat_amount")}
                         className="w-full"
@@ -428,12 +528,12 @@ const AddCommissionModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={commissionData?.vat}
+                        onChange={handleChange}
                         required
                       />
                       <TextField
-                        id="booking_amount"
+                        id="amount"
                         type={"text"}
                         label={t("total_amount")}
                         className="w-full"
@@ -445,8 +545,8 @@ const AddCommissionModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={commissionData?.amount}
+                        onChange={handleChange}
                         required
                       />
                     </Box>
@@ -468,26 +568,10 @@ const AddCommissionModal = ({
                   <hr className="my-4" />
                   <div className="w-full">
                     <Box sx={darkModeColors} className="p-2">
-                      {/* <Box
-                          sx={{
-                            ...darkModeColors,
-                            "& .MuiTypography-root": {
-                              fontFamily: fontFam,
-                            },
-                          }}
-                        >
-                          <label className="font-semibold mb-1">
-                            <span className="text-primary">{`${t("offer")} ${t(
-                              "label_validity"
-                            )}`}</span>
-                          </label>
-                          <br></br>
-                        </Box> */}
-
                       <div className="  mb-5 flex items-center justify-center ">
                         <div className=" rounded-lg border">
                           <img
-                            //   src={imagePreview}
+                            src={imagePreview}
                             width="100px"
                             height="100px"
                           />
@@ -498,7 +582,7 @@ const AddCommissionModal = ({
                         style={{ display: "none" }}
                         id="contained-button-file"
                         type="file"
-                        //   onChange={handleImgUpload}
+                        onChange={handleImgUpload}
                       />
                       <label htmlFor="contained-button-file">
                         <Button
