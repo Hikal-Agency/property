@@ -68,7 +68,7 @@ const DealHistory = ({
   };
 
   const handleTransactionModalOpen = () => {
-    setAddTransactionModal(true);
+    setAddTransactionModal(LeadData);
   };
 
   const statuses = [

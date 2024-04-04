@@ -12,12 +12,15 @@ import { currencies, transaction_type } from "../_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
+import axios from "../../axoisConfig";
 
 import { MdClose, MdFileUpload } from "react-icons/md";
 import { selectStyles } from "../_elements/SelectStyles";
 import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 const AddTransactionsModal = ({
   addTransactionModal,
@@ -43,7 +46,49 @@ const AddTransactionsModal = ({
   const { hasPermission } = usePermission();
 
   const [loading, setLoading] = useState(false);
+  const [btnloading, setBtnLoading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const [transactionData, setTransactionData] = useState({
+    deal_id: addTransactionModal?.lid,
+    type: null,
+    amount: null,
+    dealDate: null,
+    // currency: null,
+    percent: null,
+    image: null,
+  });
+
+  console.log("transaction data:: ", transactionData);
+
+  const handleChange = (e) => {
+    const id = e.target.id;
+    const value = e.target.value;
+
+    setTransactionData({
+      ...transactionData,
+      [id]: value,
+    });
+  };
+
+  const handleImgUpload = (e) => {
+    const file = e.target.files[0];
+
+    console.log("files:: ", file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+
+      const base64Image = reader.result;
+      setTransactionData({
+        ...transactionData,
+        image: file,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleClose = () => {
     setIsClosing(true);
@@ -58,56 +103,78 @@ const AddTransactionsModal = ({
     boxShadow: 24,
   };
 
-  //   const AddNote = (note = "") => {
-  //     setaddNoteloading(true);
-  //     const token = localStorage.getItem("auth-token");
+  const AddTransaction = () => {
+    setBtnLoading(true);
+    const token = localStorage.getItem("auth-token");
 
-  //     const data = {
-  //       leadId: LeadData.leadId || LeadData.id,
-  //       leadNote: note || AddNoteTxt,
-  //       addedBy: User?.id,
-  //       addedByName: User?.userName,
-  //     };
-  //     axios
-  //       .post(`${BACKEND_URL}/leadNotes`, data, {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       })
-  //       .then((result) => {
-  //         console.log("Result: ");
-  //         console.log("Result: ", result);
-  //         setaddNoteloading(false);
-  //         setAddNoteTxt("");
-  //         if (!note) {
-  //           toast.success("Note added Successfully", {
-  //             position: "top-right",
-  //             autoClose: 3000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           });
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         setaddNoteloading(false);
-  //         console.log(err);
-  //         toast.error("Soemthing Went Wrong! Please Try Again", {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       });
-  //   };
+    if (!transactionData?.image) {
+      toast.error("Image required.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setBtnLoading(false);
+      return;
+    }
+
+    axios
+      .post(`${BACKEND_URL}/deal-spa`, transactionData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Result: ");
+        console.log("Result: ", result);
+
+        if (result?.data?.status === false) {
+          toast.error(result?.data?.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setBtnLoading(false);
+          return;
+        }
+        toast.success("Transaction Added successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setBtnLoading(false);
+        handleClose();
+      })
+      .catch((err) => {
+        setBtnLoading(false);
+        console.log(err);
+        toast.error("Soemthing Went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
 
   return (
     <Modal
@@ -208,13 +275,20 @@ const AddTransactionsModal = ({
                       }}
                     >
                       <Select
-                        id="Manager"
+                        id="type"
                         options={transaction_type(t)?.map((trans) => ({
                           value: trans.value,
                           label: trans.label,
                         }))}
-                        value={null}
-                        //   onChange={ChangeManager}
+                        value={transaction_type(t)?.find(
+                          (trans) => trans.value === transactionData?.type
+                        )}
+                        onChange={(e) => {
+                          setTransactionData({
+                            ...transactionData,
+                            type: e.value,
+                          });
+                        }}
                         placeholder={t("type")}
                         className={`mb-5`}
                         menuPortalTarget={document.body}
@@ -222,37 +296,20 @@ const AddTransactionsModal = ({
                       />
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          //   value={reportMonthValue || new Date()?.toString()}
+                          value={transactionData?.dealDate}
                           label={t("date")}
-                          views={["month", "year"]}
-                          //   onChange={(newValue) => {
-                          //     if (newValue) {
-                          //       // Extract the month digit
-                          //       const monthDigit = moment(newValue.$d).format(
-                          //         "M"
-                          //       );
+                          views={["day", "month", "year"]}
+                          onChange={(newValue) => {
+                            const formattedDate = moment(newValue?.$d).format(
+                              "YYYY-MM-DD"
+                            );
 
-                          //       // Convert the month digit string to an integer
-                          //       const monthDigitInt = parseInt(monthDigit, 10);
-                          //       console.log(
-                          //         "month digit int :: ",
-                          //         typeof monthDigitInt
-                          //       );
-
-                          //       // Extract the year
-                          //       const year = moment(newValue.$d).format("YYYY");
-
-                          //       // Set the report month digit as an integer and the year
-                          //       setReportMonth({
-                          //         month: monthDigitInt,
-                          //         year: parseInt(year, 10),
-                          //       });
-                          //     }
-                          //     console.log("val:", newValue);
-
-                          //     setReportMonthValue(newValue?.$d);
-                          //   }}
-                          format="MM-YYYY"
+                            setTransactionData((prev) => ({
+                              ...prev,
+                              dealDate: formattedDate,
+                            }));
+                          }}
+                          format="DD-MM-YYYY"
                           renderInput={(params) => (
                             <TextField
                               sx={{
@@ -277,7 +334,7 @@ const AddTransactionsModal = ({
                         />
                       </LocalizationProvider>
                       <TextField
-                        id="project_name"
+                        id="percent"
                         type={"text"}
                         label={t("percentage")}
                         className="w-full"
@@ -289,13 +346,13 @@ const AddTransactionsModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        // value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={transactionData?.percent}
+                        onChange={handleChange}
                         required
                       />
 
                       <TextField
-                        id="booking_amount"
+                        id="amount"
                         type={"text"}
                         label={t("label_amount")}
                         className="w-full"
@@ -307,8 +364,8 @@ const AddTransactionsModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={Feedback?.enquiryType}
-                        //   onChange={(e) => setLeadNotes(e.target.value)}
+                        value={transactionData?.amount}
+                        onChange={handleChange}
                         required
                       />
                     </Box>
@@ -330,26 +387,10 @@ const AddTransactionsModal = ({
                   <hr className="my-4" />
                   <div className="w-full">
                     <Box sx={darkModeColors} className="p-2">
-                      {/* <Box
-                          sx={{
-                            ...darkModeColors,
-                            "& .MuiTypography-root": {
-                              fontFamily: fontFam,
-                            },
-                          }}
-                        >
-                          <label className="font-semibold mb-1">
-                            <span className="text-primary">{`${t("offer")} ${t(
-                              "label_validity"
-                            )}`}</span>
-                          </label>
-                          <br></br>
-                        </Box> */}
-
                       <div className="  mb-5 flex items-center justify-center ">
                         <div className=" rounded-lg border">
                           <img
-                            //   src={imagePreview}
+                            src={imagePreview}
                             width="100px"
                             height="100px"
                           />
@@ -360,7 +401,7 @@ const AddTransactionsModal = ({
                         style={{ display: "none" }}
                         id="contained-button-file"
                         type="file"
-                        //   onChange={handleImgUpload}
+                        onChange={handleImgUpload}
                       />
                       <label htmlFor="contained-button-file">
                         <Button
@@ -373,11 +414,9 @@ const AddTransactionsModal = ({
                             fontFamily: fontFam,
                           }}
                           component="span" // Required so the button doesn't automatically submit form
-                          disabled={loading ? true : false}
+                          disabled={btnloading ? true : false}
                           startIcon={
-                            loading ? null : (
-                              <MdFileUpload className="mx-2" size={16} />
-                            )
+                            <MdFileUpload className="mx-2" size={16} />
                           }
                         >
                           <span>{t("button_upload_image")}</span>
@@ -397,10 +436,10 @@ const AddTransactionsModal = ({
               fontFamily: fontFam,
             }}
             className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-            //   onClick={handleClick}
-            disabled={loading ? true : false}
+            onClick={AddTransaction}
+            disabled={btnloading ? true : false}
           >
-            {loading ? (
+            {btnloading ? (
               <CircularProgress
                 size={23}
                 sx={{ color: "white" }}
