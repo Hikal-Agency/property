@@ -75,12 +75,12 @@ const DealHistory = ({
     {
       text: t("pdc"),
       icon:
-        LeadData?.comm_status === 1 ? (
+        LeadData?.pdc_status === 1 ? (
           <FaCheck size={16} color="white" />
         ) : (
           <RxCross2 size={16} color="white" />
         ),
-      bgColor: LeadData?.comm_status === 1 ? "green" : "#FF0000",
+      bgColor: LeadData?.pdc_status === 1 ? "green" : "#FF0000",
     },
     {
       text: t("spa"),

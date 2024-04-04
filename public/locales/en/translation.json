@@ -1002,7 +1002,8 @@
     "total_commission_amount": "Total Commission Amount",
     "vat_perc": "VAT %",
     "agent_comm_perc": "Agent Commission %",
-    "agent_comm_amount": "Agent Commission Amount"
+    "agent_comm_amount": "Agent Commission Amount",
+    "vendor_details": "Vendor Details"
 
 
 }

@@ -5,7 +5,7 @@ import Error from "../Error";
 
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
-import { Backdrop, Box, Modal } from "@mui/material";
+import { Backdrop, Box, Modal, Pagination, Stack } from "@mui/material";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
 
 import { BiBed, BiCalendarExclamation } from "react-icons/bi";
@@ -47,8 +47,7 @@ const CommissionModal = ({
     isLangRTL,
     i18n,
   } = useStateContext();
-  const [leadsCycle, setLeadsCycle] = useState(null);
-  const [leadDetails, setLeadDetails] = useState(null);
+
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addCommissionModal, setOpenAddCommissionModal] = useState(false);
@@ -122,12 +121,14 @@ const CommissionModal = ({
   const fetchLeadsData = async (token, LeadID) => {
     setLoading(true);
     let dataUrl;
+    let params;
     if (invoiceModal) {
       dataUrl = `${BACKEND_URL}/invoices`;
+      params = { user_id: commissionModal?.lid };
     }
     try {
       const leadsCycleResult = await axios.get(dataUrl, {
-        params: { user_id: commissionModal?.lid },
+        // params: params,
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -266,114 +267,177 @@ const CommissionModal = ({
                           </div>
                         ) : (
                           <>
-                            <div
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-[#1C1C1C]"
-                                  : "bg-[#EEEEEE]"
-                              } p-4 space-y-3 rounded-xl shadow-sm card-hover  my-2 w-full relative`}
-                            >
-                              <p className="text-red-600 text-right font-semibold">
-                                - AED 2323
-                              </p>
-                              <div className="flex items-center justify-between mt-5">
+                            {data && data?.length > 0 ? (
+                              data?.map((data) => (
                                 <div
                                   className={`${
                                     currentMode === "dark"
-                                      ? "bg-[#000000]"
-                                      : "bg-[#ffffff]"
-                                  } rounded-md p-5 w-[400px] h-[250px]`}
+                                      ? "bg-[#1C1C1C]"
+                                      : "bg-[#EEEEEE]"
+                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover  my-2 w-full relative`}
                                 >
-                                  <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
-                                    {t("commissions")}
-                                  </h3>
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("date")}:</p>
-                                    <p className="font-semibold ml-2">Date</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("claim")}:</p>
-                                    <p className="font-semibold ml-2">Claim</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("commission_perc")}:</p>
-                                    <p className="font-semibold ml-2">
-                                      Commission Percentage
+                                  {data?.invoice_type.toLowerCase() ===
+                                  "expense" ? (
+                                    <p className="text-red-600 text-right font-semibold">
+                                      - {data?.currency} {data?.amount}
                                     </p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("vat_amount")}:</p>
-                                    <p className="font-semibold ml-2">VAT</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("status")}:</p>
-                                    <p className="font-semibold ml-2">Status</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("payment_source")}:</p>
-                                    <p className="font-semibold ml-2">
-                                      Payment Source
+                                  ) : (
+                                    <p className="text-green-600 text-right font-semibold">
+                                      + {data?.currency} {data?.amount}
                                     </p>
+                                  )}
+                                  <div className="flex items-center justify-between mt-5">
+                                    <div
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-[#000000]"
+                                          : "bg-[#ffffff]"
+                                      } rounded-md p-5 w-[400px] h-[250px]`}
+                                    >
+                                      <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
+                                        {t("commissions")}
+                                      </h3>
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("date")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.date}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("claim")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          Claim
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("commission_perc")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.comm_percent}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("vat_amount")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.vat}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("status")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.status}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("payment_source")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.paid_by}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-[#000000]"
+                                          : "bg-[#ffffff]"
+                                      } rounded-md p-5 w-[400px] h-[250px]`}
+                                    >
+                                      <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
+                                        {data?.invoice_type.toLowerCase() ===
+                                        "expense"
+                                          ? t("user_details")
+                                          : t("vendor_details")}
+                                      </h3>
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("name")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.added_by_name}
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("label_position")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          Position
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("label_contact")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          Contact
+                                        </p>
+                                      </div>
+
+                                      <div className="flex justify-between  my-3">
+                                        <p>{t("label_email")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          Email
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className=" flex flex-col items-center justify-center mr-5 w-40">
+                                      <img
+                                        src="#"
+                                        width="300px"
+                                        height="300px"
+                                      />
+                                      <p className="flex">
+                                        <span className="mr-3">
+                                          <IoMdPerson />
+                                        </span>
+                                        {data?.added_by_name}
+                                      </p>
+                                    </div>
                                   </div>
+                                  {!invoiceModal && (
+                                    <div className="flex justify-end">
+                                      <button className="bg-btn-primary rounded-full p-3 bottom-0 ">
+                                        <FaPencilAlt />
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
-                                <div
-                                  className={`${
-                                    currentMode === "dark"
-                                      ? "bg-[#000000]"
-                                      : "bg-[#ffffff]"
-                                  } rounded-md p-5 w-[400px] h-[250px]`}
-                                >
-                                  <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
-                                    {t("user_details")}
-                                  </h3>
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("name")}:</p>
-                                    <p className="font-semibold ml-2">Name</p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("label_position")}:</p>
-                                    <p className="font-semibold ml-2">
-                                      Position
-                                    </p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("label_contact")}:</p>
-                                    <p className="font-semibold ml-2">
-                                      Contact
-                                    </p>
-                                  </div>
-
-                                  <div className="flex justify-between  my-3">
-                                    <p>{t("label_email")}:</p>
-                                    <p className="font-semibold ml-2">Email</p>
-                                  </div>
-                                </div>
-                                <div className=" flex flex-col items-center justify-center mr-5 w-40">
-                                  <img src="#" width="300px" height="300px" />
-                                  <p className="flex">
-                                    <span className="mr-3">
-                                      <IoMdPerson />
-                                    </span>
-                                    Added by name
-                                  </p>
-                                </div>
+                              ))
+                            ) : (
+                              <div>
+                                <h1>{t("no_data_found")}</h1>
                               </div>
-                              <div className="flex justify-end">
-                                <button className="bg-btn-primary rounded-full p-3 bottom-0 ">
-                                  <FaPencilAlt />
-                                </button>
-                              </div>
-                            </div>
+                            )}
                           </>
                         )}
                       </div>
+                      {data && data?.length > 0 ? (
+                        <Stack spacing={2} marginTop={2}>
+                          <Pagination
+                            count={maxPage}
+                            color={
+                              currentMode === "dark" ? "primary" : "secondary"
+                            }
+                            onChange={(value) => setPage(value)}
+                            style={{ margin: "auto" }}
+                            page={page}
+                            sx={{
+                              "& .Mui-selected": {
+                                color: "white !important",
+                                backgroundColor: `${primaryColor} !important`,
+                                "&:hover": {
+                                  backgroundColor:
+                                    currentMode === "dark" ? "black" : "white",
+                                },
+                              },
+                              "& .MuiPaginationItem-root": {
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                            }}
+                          />
+                        </Stack>
+                      ) : null}
                     </div>
                   </div>
                 </div>
