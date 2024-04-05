@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { Box, TextField, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  CircularProgress,
+  Stack,
+  Pagination,
+} from "@mui/material";
 import Select from "react-select";
 // import { Select as libSelect } from "@mui/material";
 import { FaHome } from "react-icons/fa";
@@ -23,15 +30,18 @@ import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
 import { useRef } from "react";
 import { FaWallet } from "react-icons/fa";
 import {
+  commission_type,
+  countries_list,
   currencies,
+  invoice_category,
   payment_source,
+  payment_status,
   transaction_type,
 } from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
+import { MdFileUpload } from "react-icons/md";
 
-const currentDate = dayjs();
-
-const Transactions = ({ isLoading }) => {
+const Transactions = () => {
   const {
     currentMode,
     darkModeColors,
@@ -45,218 +55,74 @@ const Transactions = ({ isLoading }) => {
     isLangRTL,
     i18n,
   } = useStateContext();
-  const [validFromDate, setValidFromDate] = useState("");
-  const [validFromDateValue, setValidFromDateValue] = useState({});
-  const [validToDate, setValidToDate] = useState("");
-  const [validToDateValue, setValidToDateValue] = useState({});
-  const [loading, setloading] = useState(false);
-  const [showTextInput, setShowTextInput] = useState(false);
-  const [img, setImg] = useState();
+
+  const [loading, setloading] = useState(true);
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [transactionsData, setTransactionsData] = useState([]);
+  const [maxPage, setMaxPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const token = localStorage.getItem("auth-token");
-  const [userLoading, setUserLoading] = useState(false);
-  const [user, setUser] = useState([]);
-  const [selectedUser, setSelectedUSer] = useState(null);
-  const searchRef = useRef("");
+  const [vendors, setVendors] = useState([]);
 
-  const fetchUsers = async (keyword = "", pageNo = 1) => {
-    console.log("keyword: ", keyword);
-    if (!keyword) {
-      setUserLoading(true);
-    }
-    try {
-      let url = "";
-      if (keyword) {
-        url = `${BACKEND_URL}/users?title=${keyword}`;
-      } else {
-        url = `${BACKEND_URL}/users?page=${pageNo}`;
-      }
-      const response = await axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      console.log("Users: ", response);
+  console.log("vendors array:: ", vendors);
 
-      setUser(response?.data?.managers?.data);
-      setUserLoading(false);
-    } catch (error) {
-      setUserLoading(false);
-      console.log(error);
-      toast.error("Unable to fetch users.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
-  const [country, setCountry] = useState("");
   const imagesInputRef = useRef(null);
 
-  const [onBoardData, setBoardData] = useState({
-    bussiness_name: "",
+  const [addTransactionData, setAddTransactionData] = useState({
+    user_id: "",
+    invoice_type: "",
+    amount: "",
+    date: "",
+    currency: "",
+    comm_percent: "",
     country: "",
-    name_of_person: "",
-    contact: "",
-    email: "",
-    logo: "",
-    documents: [],
-    account_type: "",
-    no_of_users: "",
-    payment_duration: "monthly",
-    terms_and_conditions: true,
+    status: "",
+    paid_by: "",
+    vendor_id: "",
+    category: "",
+    image: "",
   });
-  const [allDocs, setAllDocs] = useState([]);
-  const [documentModal, setDocumentModal] = useState(false);
-  const [customAccountType, setCustomAccountType] = useState("");
 
-  const selectCountry = (e) => {
-    setBoardData((prev) => ({
-      ...prev,
-      country: e,
-    }));
-  };
+  console.log("addtransaction:: ", addTransactionData);
 
-  const handleAddCategory = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log("btnclicked==============>");
-    setShowTextInput(true);
+  const handleChange = (e) => {
+    const id = e.target.id;
+    const value = e.target.value;
+
+    setAddTransactionData({
+      ...addTransactionData,
+      [id]: value,
+    });
   };
 
   const handleImgUpload = (e) => {
     const file = e.target.files[0];
 
-    console.log("Uploaded img: ", file);
+    console.log("files:: ", file);
 
-    setBoardData({
-      ...onBoardData,
-      logo: file,
-    });
+    const reader = new FileReader();
+    reader.onload = () => {
+      // setImagePreview(reader.result);
+
+      const base64Image = reader.result;
+      setAddTransactionData({
+        ...addTransactionData,
+        image: file,
+      });
+    };
+    reader.readAsDataURL(file);
   };
 
-  const [accountTypes, setAccountTypes] = useState([
-    {
-      value: "stripe",
-      label: "Stripe",
-      icon: <FaStripe size={30} color="#635bff" className="mr-2" />,
-    },
-    {
-      value: "paypal",
-      label: "PayPal",
-      icon: <FaPaypal size={20} color="#00207d" className="mr-2" />,
-    },
-    {
-      value: "credit",
-      label: "Credit Card",
-      icon: <FaCreditCard size={20} color="#dd2122" className="mr-2" />,
-    },
-    {
-      value: "bank",
-      label: "Bank",
-      icon: <FaUniversity size={20} color="black" className="mr-2" />,
-    },
-  ]);
-  const handleCreateCustomAccountType = () => {
-    if (customAccountType.trim() !== "") {
-      setAccountTypes((prevTypes) => [
-        ...prevTypes,
-        {
-          value: customAccountType.toLowerCase(),
-          label: customAccountType,
-          icon: <FaWallet size={20} color="green" className="mr-2" />,
-        },
-      ]);
-      setCustomAccountType("");
-      setShowTextInput(false);
-    }
-  };
-
-  console.log("img state: ", img);
-
-  const handleClick = async (e) => {
+  const handleTransaction = async (e) => {
     e.preventDefault();
 
-    const {
-      bussiness_name,
-      country,
-      account_type,
-      contact,
-      name_of_person,
-      no_of_users,
-      email,
-    } = onBoardData;
-
-    if (
-      !bussiness_name ||
-      !country ||
-      !account_type ||
-      !contact ||
-      !name_of_person ||
-      !no_of_users ||
-      !email
-    ) {
-      toast.error("Please fill all the required fields", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return;
-    }
-
-    console.log("OFFer Data: ", onBoardData);
-
-    setloading(true);
-    const token = localStorage.getItem("auth-token");
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    const creationDate = new Date();
-    const Board = new FormData();
-
-    Board.append(
-      "creationDate",
-      moment(creationDate).format("YYYY/MM/DD HH:mm:ss")
-    );
-    Board.append("bussiness_name", onBoardData.bussiness_name);
-    // Board.append("offer_image", img);
-    Board.append("country", onBoardData.country);
-    Board.append("name_of_person", onBoardData.name_of_person);
-    Board.append("contact", onBoardData.contact);
-    Board.append("email", onBoardData.email);
-    Board.append("account_type", onBoardData?.account_type);
-    Board.append("no_of_users", onBoardData?.no_of_users);
-    Board.append("payment_duration", onBoardData?.payment_duration);
-    Board.append("logo", onBoardData?.logo);
-    Board.append("terms_and_conditions", onBoardData?.terms_and_conditions);
-
-    social_links.forEach((social) => {
-      const socialLinkValue = onBoardData[social?.name];
-      if (socialLinkValue) {
-        Board.append(social.name, socialLinkValue);
-      }
-    });
-
-    if (allDocs?.length > 0)
-      allDocs?.forEach((doc, index) => {
-        Board.append(`documents[${index}]`, doc);
-      });
+    setBtnLoading(true);
 
     try {
-      const submitOnBoard = await axios.post(
-        `${BACKEND_URL}/onboarding/store`,
-        Board,
+      const submitTransaction = await axios.post(
+        `${BACKEND_URL}/invoices`,
+        addTransactionData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -265,9 +131,9 @@ const Transactions = ({ isLoading }) => {
         }
       );
 
-      console.log("Client request submitted: ", submitOnBoard);
+      console.log("transaction submited ", submitTransaction);
 
-      toast.success("Registeration Successfull.", {
+      toast.success("Transaction Added.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -278,32 +144,27 @@ const Transactions = ({ isLoading }) => {
         theme: "light",
       });
 
-      setBoardData({
-        bussiness_name: "",
+      fetchTransactions();
+
+      setAddTransactionData({
+        user_id: "",
+        invoice_type: "",
+        amount: "",
+        date: "",
+        currency: "",
+        comm_percent: "",
         country: "",
-        name_of_person: "",
-        contact: "",
-        email: "",
-        account_type: "",
-        no_of_users: "",
-        documents: [],
-        logo: "",
-        payment_duration: "monthly",
+        status: "",
+        paid_by: "",
+        vendor_id: "",
+        category: "",
+        image: "",
       });
 
-      social_links.forEach((social) => {
-        const socialLinkValue = onBoardData[social?.name];
-        if (socialLinkValue) {
-          setBoardData({
-            socialLinkValue: "",
-          });
-        }
-      });
-
-      setloading(false);
+      setBtnLoading(false);
     } catch (error) {
       console.log("Error: ", error);
-      setloading(false);
+      setBtnLoading(false);
       toast.error("Something went wrong! Please Try Again", {
         position: "top-right",
         autoClose: 3000,
@@ -317,32 +178,93 @@ const Transactions = ({ isLoading }) => {
     }
   };
 
-  const social_links = [
-    {
-      name: "linkedin",
-      icon: <FaLinkedin color="#0A66C2" size={20} />,
-    },
-    {
-      name: "facebook",
-      icon: <ImFacebook2 color="#0866FF" size={20} />,
-    },
-    {
-      name: "instagram",
-      icon: <FaInstagramSquare color="#C40FEC" size={20} />,
-    },
-    {
-      name: "tiktok",
-      icon: <FaTiktok color="#2CF5F0" size={20} />,
-    },
-    {
-      name: "snapchat",
-      icon: <FaSnapchat color="#FFFC09" size={20} />,
-    },
-    {
-      name: "youtube",
-      icon: <IoLogoYoutube color="#FE0808" size={20} />,
-    },
-  ];
+  const handlePageChange = (event, value) => {
+    console.log("pagination value: ", value);
+    setPage(value);
+  };
+
+  const fetchVendor = async () => {
+    let url;
+
+    if (addTransactionData?.category === "salary") {
+      url = `${BACKEND_URL}/users`;
+    } else {
+      url = `${BACKEND_URL}/vendors`;
+    }
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("vendors list:: ", response);
+
+      if (addTransactionData?.category === "salary") {
+        setVendors(response?.data?.managers?.data);
+      } else {
+        setVendors(response?.data?.data?.data);
+      }
+    } catch (error) {
+      setloading(false);
+      console.error("Error fetching transactions:", error);
+      toast.error("Unable to fetch vendors", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const fetchTransactions = async () => {
+    setloading(true);
+    try {
+      const response = await axios.get(`${BACKEND_URL}/invoices?page=${page}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("transactions list:: ", response);
+      setTransactionsData(response.data?.data?.data);
+      setMaxPage(response.data?.data?.last_page);
+
+      if (vendors?.length == 0) {
+        await fetchVendor();
+      }
+    } catch (error) {
+      setloading(false);
+      console.error("Error fetching transactions:", error);
+      toast.error("Unable to fetch the Transactions", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } finally {
+      setloading(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log("hhhhhiiiiiiiiihhhhhhhhhi");
+    fetchTransactions();
+  }, [page]);
+
+  useEffect(() => {
+    console.log("hhhhhiiiiiiiiihhhhhhhhhi");
+    fetchVendor();
+  }, [addTransactionData?.category]);
 
   return (
     <div
@@ -374,78 +296,81 @@ const Transactions = ({ isLoading }) => {
           )}`}</h3>
           <br></br>
           <Select
-            id="Manager"
-            options={transaction_type(t)?.map((trans) => ({
+            id="category"
+            options={invoice_category(t)?.map((trans) => ({
               value: trans.value,
               label: trans.label,
             }))}
-            value={null}
-            //   onChange={ChangeManager}
-            placeholder={t("type")}
+            value={invoice_category(t)?.filter(
+              (trans) => trans?.value === addTransactionData?.category
+            )}
+            onChange={(e) => {
+              setAddTransactionData({
+                ...addTransactionData,
+                category: e.value,
+              });
+            }}
+            placeholder={t("label_category")}
             className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
           <Select
-            id="Manager"
-            options={transaction_type(t)?.map((trans) => ({
+            id="invoice_type"
+            options={commission_type(t)?.map((trans) => ({
               value: trans.value,
               label: trans.label,
             }))}
-            value={null}
-            //   onChange={ChangeManager}
-            placeholder={t("category")}
+            value={commission_type(t)?.filter(
+              (comm) => comm?.value === addTransactionData?.invoice_type
+            )}
+            onChange={(e) => {
+              setAddTransactionData({
+                ...addTransactionData,
+                invoice_type: e.value,
+              });
+            }}
+            placeholder={t("type")}
             className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
-          <CountryDropdown
-            value={onBoardData?.country}
-            onChange={selectCountry}
-            label={t("form_country")}
-            className="country-dropdown-container"
-            style={{
-              width: "100%",
-              borderRadius: "5px",
-              padding: "6px 8px",
-              border: `1px solid ${currentMode === "dark" ? "#fff" : "#000"}`,
-              background: "none",
-              marginBottom: "20px",
+
+          <Select
+            id="country"
+            options={countries_list(t)?.map((country) => ({
+              value: country.value,
+              label: country.label,
+            }))}
+            value={countries_list(t)?.filter(
+              (country) => country?.value === addTransactionData?.country
+            )}
+            onChange={(e) => {
+              setAddTransactionData({
+                ...addTransactionData,
+                country: e.value,
+              });
             }}
+            placeholder={t("label_country")}
+            className={`mb-5`}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
           />
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              //   value={reportMonthValue || new Date()?.toString()}
+              value={addTransactionData?.date}
               label={t("date")}
-              views={["month", "year"]}
-              //   onChange={(newValue) => {
-              //     if (newValue) {
-              //       // Extract the month digit
-              //       const monthDigit = moment(newValue.$d).format(
-              //         "M"
-              //       );
+              views={["day", "month", "year"]}
+              onChange={(newValue) => {
+                const formattedDate = moment(newValue?.$d).format("YYYY-MM-DD");
 
-              //       // Convert the month digit string to an integer
-              //       const monthDigitInt = parseInt(monthDigit, 10);
-              //       console.log(
-              //         "month digit int :: ",
-              //         typeof monthDigitInt
-              //       );
-
-              //       // Extract the year
-              //       const year = moment(newValue.$d).format("YYYY");
-
-              //       // Set the report month digit as an integer and the year
-              //       setReportMonth({
-              //         month: monthDigitInt,
-              //         year: parseInt(year, 10),
-              //       });
-              //     }
-              //     console.log("val:", newValue);
-
-              //     setReportMonthValue(newValue?.$d);
-              //   }}
-              format="MM-YYYY"
+                setAddTransactionData((prev) => ({
+                  ...prev,
+                  date: formattedDate,
+                }));
+              }}
+              format="DD-MM-YYYY"
               renderInput={(params) => (
                 <TextField
                   sx={{
@@ -468,65 +393,117 @@ const Transactions = ({ isLoading }) => {
             />
           </LocalizationProvider>
           <Select
-            id="Manager"
-            options={[
-              {
-                value: "paid",
-                label: t("payment_paid"),
-              },
-              {
-                value: "unpaid",
-                label: t("payment_unpaid"),
-              },
-            ]}
-            value={null}
-            //   onChange={ChangeManager}
+            id="status"
+            options={payment_status(t)?.map((pay_status) => ({
+              value: pay_status?.value,
+              label: pay_status?.label,
+            }))}
+            value={payment_status(t)?.filter(
+              (pay_status) => pay_status?.value === addTransactionData?.status
+            )}
+            onChange={(e) => {
+              setAddTransactionData({
+                ...addTransactionData,
+                status: e.value,
+              });
+            }}
             placeholder={t("status")}
             className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
           <Select
-            id="Manager"
+            id="paid_by"
             options={payment_source(t)?.map((payment) => ({
               value: payment.value,
               label: payment.label,
             }))}
-            value={null}
-            //   onChange={ChangeManager}
+            value={payment_source(t)?.filter(
+              (payment) => payment?.value === addTransactionData?.paid_by
+            )}
+            onChange={(e) => {
+              setAddTransactionData({
+                ...addTransactionData,
+                paid_by: e.value,
+              });
+            }}
             placeholder={t("payment_source")}
             className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
           <Select
-            id="Manager"
-            options={payment_source(t)?.map((payment) => ({
-              value: payment.value,
-              label: payment.label,
-            }))}
-            value={null}
-            //   onChange={ChangeManager}
-            placeholder={t("vendor")}
+            id="vendor_id"
+            options={
+              vendors &&
+              vendors?.map((ven) => ({
+                value: ven.id,
+                label:
+                  addTransactionData?.category === "salary"
+                    ? ven?.userName
+                    : ven.vendor_name,
+              }))
+            }
+            value={
+              vendors?.filter((ven) =>
+                (ven?.id === addTransactionData?.category) === "salary"
+                  ? addTransactionData?.user_id
+                  : addTransactionData?.vendor_id
+              )?.vendor_name
+            }
+            // value={
+            //   addTransactionData?.category === "salary"
+            //     ? addTransactionData?.user_id
+            //     : addTransactionData?.vendor_id
+            // }
+            onChange={(e) => {
+              setAddTransactionData({
+                ...addTransactionData,
+                // vendor_id: addTransactionData?.vendor_id,
+
+                vendor_id:
+                  addTransactionData?.category === "salary"
+                    ? null
+                    : addTransactionData.vendor_id,
+                user_id:
+                  addTransactionData?.category === "salary"
+                    ? addTransactionData.user_id
+                    : null,
+              });
+            }}
+            isLoading={loading}
+            placeholder={
+              addTransactionData?.category === "salary"
+                ? t("user")
+                : t("vendor")
+            }
             className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
 
           <Select
-            id="Manager"
+            id="currency"
             options={currencies(t)?.map((curr) => ({
               value: curr.value,
               label: curr.label,
             }))}
-            value={null}
-            //   onChange={ChangeManager}
+            value={currencies(t)?.filter(
+              (curr) => curr?.value === addTransactionData?.currency
+            )}
+            onChange={(e) => {
+              setAddTransactionData({
+                ...addTransactionData,
+                currency: e.value,
+              });
+            }}
             placeholder={t("label_currency")}
             className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
           <TextField
+            id="comm_percent"
             type={"text"}
             label={t("percent")}
             className="w-full mt-3"
@@ -536,13 +513,11 @@ const Transactions = ({ isLoading }) => {
             variant="outlined"
             name="bussiness_name"
             size="small"
-            value={onBoardData.bussiness_name}
-            onChange={(e) =>
-              setBoardData({ ...onBoardData, bussiness_name: e.target.value })
-            }
-            required
+            value={addTransactionData.comm_percent}
+            onChange={handleChange}
           />
           <TextField
+            id="amount"
             type={"text"}
             label={t("amount")}
             className="w-full mt-3"
@@ -552,12 +527,36 @@ const Transactions = ({ isLoading }) => {
             variant="outlined"
             name="bussiness_name"
             size="small"
-            value={onBoardData.bussiness_name}
-            onChange={(e) =>
-              setBoardData({ ...onBoardData, bussiness_name: e.target.value })
-            }
-            required
+            value={addTransactionData.amount}
+            onChange={handleChange}
           />
+
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="contained-button-file"
+            type="file"
+            onChange={handleImgUpload}
+          />
+
+          <label htmlFor="contained-button-file">
+            <Button
+              variant="contained"
+              size="medium"
+              className="bg-btn-primary w-max text-white rounded-lg py-3 font-semibold my-3"
+              style={{
+                color: "#ffffff",
+                border: "1px solid white",
+                fontFamily: fontFam,
+                marginBottom: "3px",
+              }}
+              component="span" // Required so the button doesn't automatically submit form
+              disabled={loading ? true : false}
+              startIcon={<MdFileUpload className="mx-2" size={16} />}
+            >
+              <span>{t("upload_invoice")}</span>
+            </Button>
+          </label>
 
           <Button
             variant="contained"
@@ -569,13 +568,14 @@ const Transactions = ({ isLoading }) => {
               // border: "1px solid #DA1F26",
             }}
             // component="span"
-            disabled={loading ? true : false}
-            onClick={() => {
-              imagesInputRef.current?.click();
-            }}
-            // startIcon={loading ? null : <MdFileUpload />}
+            // disabled={setBtnLoading ? true : false}
+            onClick={handleTransaction}
           >
-            <span>{t("btn_new_transaction")}</span>
+            {btnLoading ? (
+              <CircularProgress />
+            ) : (
+              <span>{t("btn_new_transaction")}</span>
+            )}
           </Button>
         </Box>
         <div>
@@ -593,27 +593,70 @@ const Transactions = ({ isLoading }) => {
             }}
             className="p-2"
           >
-            <div>
-              <p>29 March,2024</p>
-              <div className="flex items-center justify-between my-3">
-                <div>
-                  <div className="flex flex-col">
-                    <div className="flex items-center mb-1">
-                      <span className="border rounded-md p-3 mr-3">
-                        <FaHome size={20} />
-                      </span>
-                      <p>Vendor Name</p>
-                    </div>
-                    <p className="text-sm self-start pl-[calc(20px+2rem)]">
-                      Commission
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <p className="font-semibold text-green-600">+ AED 50000</p>
-                </div>
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <CircularProgress />
               </div>
-            </div>
+            ) : (
+              <div className="h-[600px] overflow-y-scroll ">
+                {transactionsData && transactionsData?.length > 0 ? (
+                  transactionsData?.map((trans) => (
+                    <>
+                      <div className="mb-9 mx-3">
+                        <p>{trans?.dealDate}</p>
+                        <div className="flex items-center justify-between my-3">
+                          <div>
+                            <div className="flex flex-col">
+                              <div className="flex items-center mb-1">
+                                <span className="border rounded-md p-3 mr-3">
+                                  <FaHome size={20} />
+                                </span>
+                                <p>{trans?.added_by_name}</p>
+                              </div>
+                              <p className="text-sm self-start pl-[calc(20px+2rem)]">
+                                {trans?.percent}
+                              </p>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-green-600">
+                              + {trans?.currency} {trans?.amount}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ))
+                ) : (
+                  <div>
+                    <h1>{t("no_data_found")}</h1>
+                  </div>
+                )}
+
+                <Stack spacing={2} marginTop={2}>
+                  <Pagination
+                    count={maxPage}
+                    color={currentMode === "dark" ? "primary" : "secondary"}
+                    onChange={handlePageChange}
+                    style={{ margin: "auto" }}
+                    page={page}
+                    sx={{
+                      "& .Mui-selected": {
+                        color: "white !important",
+                        backgroundColor: `${primaryColor} !important`,
+                        "&:hover": {
+                          backgroundColor:
+                            currentMode === "dark" ? "black" : "white",
+                        },
+                      },
+                      "& .MuiPaginationItem-root": {
+                        color: currentMode === "dark" ? "white" : "black",
+                      },
+                    }}
+                  />
+                </Stack>
+              </div>
+            )}
           </Box>
         </div>
         <div
@@ -622,179 +665,7 @@ const Transactions = ({ isLoading }) => {
             (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
           }
               } rounded-lg p-5`}
-        >
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            }}
-            className="p-2"
-          >
-            <h3 className="text-primary text-center font-semibold text-lg">{` ${t(
-              "btn_filters"
-            )}`}</h3>
-            <br></br>
-
-            <Select
-              id="Manager"
-              options={transaction_type(t)?.map((trans) => ({
-                value: trans.value,
-                label: trans.label,
-              }))}
-              value={null}
-              //   onChange={ChangeManager}
-              placeholder={t("type")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <Select
-              id="Manager"
-              options={transaction_type(t)?.map((trans) => ({
-                value: trans.value,
-                label: trans.label,
-              }))}
-              value={null}
-              //   onChange={ChangeManager}
-              placeholder={t("category")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <CountryDropdown
-              value={onBoardData?.country}
-              onChange={selectCountry}
-              label={t("form_country")}
-              className="country-dropdown-container"
-              style={{
-                width: "100%",
-                borderRadius: "5px",
-                padding: "6px 8px",
-                border: `1px solid ${currentMode === "dark" ? "#fff" : "#000"}`,
-                background: "none",
-                marginBottom: "20px",
-              }}
-            />
-
-            <Select
-              id="Manager"
-              options={[
-                {
-                  value: "paid",
-                  label: t("payment_paid"),
-                },
-                {
-                  value: "unpaid",
-                  label: t("payment_unpaid"),
-                },
-              ]}
-              value={null}
-              //   onChange={ChangeManager}
-              placeholder={t("status")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <Select
-              id="Manager"
-              options={payment_source(t)?.map((payment) => ({
-                value: payment.value,
-                label: payment.label,
-              }))}
-              value={null}
-              //   onChange={ChangeManager}
-              placeholder={t("payment_source")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <Select
-              id="Manager"
-              options={payment_source(t)?.map((payment) => ({
-                value: payment.value,
-                label: payment.label,
-              }))}
-              value={null}
-              //   onChange={ChangeManager}
-              placeholder={t("vendor")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-
-            <Select
-              id="Manager"
-              options={currencies(t)?.map((curr) => ({
-                value: curr.value,
-                label: curr.label,
-              }))}
-              value={null}
-              //   onChange={ChangeManager}
-              placeholder={t("label_currency")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <TextField
-              type={"text"}
-              label={t("percent")}
-              className="w-full mt-3"
-              style={{
-                marginBottom: "20px",
-              }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={onBoardData.bussiness_name}
-              onChange={(e) =>
-                setBoardData({ ...onBoardData, bussiness_name: e.target.value })
-              }
-              required
-            />
-            <TextField
-              type={"text"}
-              label={t("amount")}
-              className="w-full mt-3"
-              style={{
-                marginBottom: "20px",
-              }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={onBoardData.bussiness_name}
-              onChange={(e) =>
-                setBoardData({ ...onBoardData, bussiness_name: e.target.value })
-              }
-              required
-            />
-
-            <Button
-              variant="contained"
-              size="lg"
-              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-              style={{
-                // backgroundColor: "#111827",
-                color: "#ffffff",
-                // border: "1px solid #DA1F26",
-              }}
-              // component="span"
-              disabled={loading ? true : false}
-              onClick={() => {
-                imagesInputRef.current?.click();
-              }}
-              // startIcon={loading ? null : <MdFileUpload />}
-            >
-              <span>{t("clear_all")}</span>
-            </Button>
-          </Box>
-        </div>
+        ></div>
       </div>
     </div>
   );

@@ -721,7 +721,6 @@ export const commission_type = (t) => [
 ];
 
 // PAYMENT STATUS
-
 export const payment_status = (t) => [
   {
     value: "paid",
@@ -730,5 +729,33 @@ export const payment_status = (t) => [
   {
     value: "unpaid",
     label: t("payment_unpaid"),
+  },
+];
+
+//  INVOICES COUNTRIES
+export const countries_list = (t) => [
+  {
+    value: "UAE",
+    label: t("country_uae"),
+  },
+  {
+    value: "Egypt",
+    label: t("country_eqypt"),
+  },
+  {
+    value: "Pakistan",
+    label: t("country_pakistan"),
+  },
+];
+
+//  INVOICES CATEGORIES
+export const invoice_category = (t) => [
+  {
+    value: "purchase",
+    label: t("purchase"),
+  },
+  {
+    value: "salary",
+    label: t("label_salary"),
   },
 ];

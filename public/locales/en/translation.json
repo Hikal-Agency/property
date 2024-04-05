@@ -1003,7 +1003,10 @@
     "vat_perc": "VAT %",
     "agent_comm_perc": "Agent Commission %",
     "agent_comm_amount": "Agent Commission Amount",
-    "vendor_details": "Vendor Details"
+    "vendor_details": "Vendor Details",
+    "country_uae": "UAE",
+    "country_pakistan": "Paskitan",
+    "country_eqypt": "Egypt"
 
    
 
