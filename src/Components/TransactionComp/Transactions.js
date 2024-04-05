@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { Box, TextField, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  CircularProgress,
+  Stack,
+  Pagination,
+} from "@mui/material";
 import Select from "react-select";
 // import { Select as libSelect } from "@mui/material";
 import { FaHome } from "react-icons/fa";
@@ -51,51 +58,16 @@ const Transactions = ({ isLoading }) => {
   const [validToDateValue, setValidToDateValue] = useState({});
   const [loading, setloading] = useState(false);
   const [showTextInput, setShowTextInput] = useState(false);
+  const [transactionsData, setTransactionsData] = useState([]);
   const [img, setImg] = useState();
+  const [maxPage, setMaxPage] = useState(0);
+  const [page, setPage] = useState(1);
 
   const token = localStorage.getItem("auth-token");
   const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState([]);
   const [selectedUser, setSelectedUSer] = useState(null);
   const searchRef = useRef("");
-
-  const fetchUsers = async (keyword = "", pageNo = 1) => {
-    console.log("keyword: ", keyword);
-    if (!keyword) {
-      setUserLoading(true);
-    }
-    try {
-      let url = "";
-      if (keyword) {
-        url = `${BACKEND_URL}/users?title=${keyword}`;
-      } else {
-        url = `${BACKEND_URL}/users?page=${pageNo}`;
-      }
-      const response = await axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      console.log("Users: ", response);
-
-      setUser(response?.data?.managers?.data);
-      setUserLoading(false);
-    } catch (error) {
-      setUserLoading(false);
-      console.log(error);
-      toast.error("Unable to fetch users.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
 
   const [country, setCountry] = useState("");
   const imagesInputRef = useRef(null);
@@ -114,7 +86,6 @@ const Transactions = ({ isLoading }) => {
     terms_and_conditions: true,
   });
   const [allDocs, setAllDocs] = useState([]);
-  const [documentModal, setDocumentModal] = useState(false);
   const [customAccountType, setCustomAccountType] = useState("");
 
   const selectCountry = (e) => {
@@ -122,61 +93,6 @@ const Transactions = ({ isLoading }) => {
       ...prev,
       country: e,
     }));
-  };
-
-  const handleAddCategory = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log("btnclicked==============>");
-    setShowTextInput(true);
-  };
-
-  const handleImgUpload = (e) => {
-    const file = e.target.files[0];
-
-    console.log("Uploaded img: ", file);
-
-    setBoardData({
-      ...onBoardData,
-      logo: file,
-    });
-  };
-
-  const [accountTypes, setAccountTypes] = useState([
-    {
-      value: "stripe",
-      label: "Stripe",
-      icon: <FaStripe size={30} color="#635bff" className="mr-2" />,
-    },
-    {
-      value: "paypal",
-      label: "PayPal",
-      icon: <FaPaypal size={20} color="#00207d" className="mr-2" />,
-    },
-    {
-      value: "credit",
-      label: "Credit Card",
-      icon: <FaCreditCard size={20} color="#dd2122" className="mr-2" />,
-    },
-    {
-      value: "bank",
-      label: "Bank",
-      icon: <FaUniversity size={20} color="black" className="mr-2" />,
-    },
-  ]);
-  const handleCreateCustomAccountType = () => {
-    if (customAccountType.trim() !== "") {
-      setAccountTypes((prevTypes) => [
-        ...prevTypes,
-        {
-          value: customAccountType.toLowerCase(),
-          label: customAccountType,
-          icon: <FaWallet size={20} color="green" className="mr-2" />,
-        },
-      ]);
-      setCustomAccountType("");
-      setShowTextInput(false);
-    }
   };
 
   console.log("img state: ", img);
@@ -343,6 +259,45 @@ const Transactions = ({ isLoading }) => {
       icon: <IoLogoYoutube color="#FE0808" size={20} />,
     },
   ];
+  const handlePageChange = (event, value) => {
+    console.log("pagination value: ", value);
+    setPage(value);
+  };
+
+  const fetchTransactions = async () => {
+    setloading(true);
+    try {
+      const response = await axios.get(`${BACKEND_URL}/deal-spa?page=${page}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("transactions list:: ", response);
+      setTransactionsData(response.data?.data?.data);
+      setMaxPage(response.data?.data?.last_page);
+    } catch (error) {
+      setloading(false);
+      console.error("Error fetching transactions:", error);
+      toast.error("Unable to fetch the Transactions", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } finally {
+      setloading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [page]);
 
   return (
     <div
@@ -593,27 +548,70 @@ const Transactions = ({ isLoading }) => {
             }}
             className="p-2"
           >
-            <div>
-              <p>29 March,2024</p>
-              <div className="flex items-center justify-between my-3">
-                <div>
-                  <div className="flex flex-col">
-                    <div className="flex items-center mb-1">
-                      <span className="border rounded-md p-3 mr-3">
-                        <FaHome size={20} />
-                      </span>
-                      <p>Vendor Name</p>
-                    </div>
-                    <p className="text-sm self-start pl-[calc(20px+2rem)]">
-                      Commission
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <p className="font-semibold text-green-600">+ AED 50000</p>
-                </div>
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <CircularProgress />
               </div>
-            </div>
+            ) : (
+              <div className="h-[600px] overflow-y-scroll ">
+                {transactionsData && transactionsData?.length > 0 ? (
+                  transactionsData?.map((trans) => (
+                    <>
+                      <div className="mb-9 mx-3">
+                        <p>{trans?.dealDate}</p>
+                        <div className="flex items-center justify-between my-3">
+                          <div>
+                            <div className="flex flex-col">
+                              <div className="flex items-center mb-1">
+                                <span className="border rounded-md p-3 mr-3">
+                                  <FaHome size={20} />
+                                </span>
+                                <p>{trans?.added_by_name}</p>
+                              </div>
+                              <p className="text-sm self-start pl-[calc(20px+2rem)]">
+                                {trans?.percent}
+                              </p>
+                            </div>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-green-600">
+                              + {trans?.currency} {trans?.amount}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ))
+                ) : (
+                  <div>
+                    <h1>{t("no_data_found")}</h1>
+                  </div>
+                )}
+
+                <Stack spacing={2} marginTop={2}>
+                  <Pagination
+                    count={maxPage}
+                    color={currentMode === "dark" ? "primary" : "secondary"}
+                    onChange={handlePageChange}
+                    style={{ margin: "auto" }}
+                    page={page}
+                    sx={{
+                      "& .Mui-selected": {
+                        color: "white !important",
+                        backgroundColor: `${primaryColor} !important`,
+                        "&:hover": {
+                          backgroundColor:
+                            currentMode === "dark" ? "black" : "white",
+                        },
+                      },
+                      "& .MuiPaginationItem-root": {
+                        color: currentMode === "dark" ? "white" : "black",
+                      },
+                    }}
+                  />
+                </Stack>
+              </div>
+            )}
           </Box>
         </div>
         <div
