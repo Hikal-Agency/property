@@ -88,11 +88,7 @@ const Transactions = () => {
 
   console.log(
     "find find vendor: ",
-    vendors?.find((ven) =>
-      addTransactionData?.category.toLowerCase() === "salary"
-        ? ven?.id === addTransactionData?.user_id
-        : ven?.id === addTransactionData?.vendor_id
-    )?.vendor_name
+    vendors?.filter((ven) => ven?.id === addTransactionData?.user_id)
   );
 
   const [filtersData, setFilterData] = useState({
@@ -230,7 +226,10 @@ const Transactions = () => {
   const fetchVendor = async () => {
     let url;
 
-    if (addTransactionData?.category.toLowerCase() === "salary") {
+    if (
+      addTransactionData?.category.toLowerCase() === "salary" ||
+      filtersData?.category.toLowerCase() === "salary"
+    ) {
       url = `${BACKEND_URL}/users`;
     } else {
       url = `${BACKEND_URL}/vendors`;
@@ -244,7 +243,10 @@ const Transactions = () => {
       });
       console.log("vendors list:: ", response);
 
-      if (addTransactionData?.category.toLowerCase() === "salary") {
+      if (
+        addTransactionData?.category.toLowerCase() === "salary" ||
+        filtersData?.category.toLowerCase() === "salary"
+      ) {
         setVendors(response?.data?.managers?.data);
       } else {
         setVendors(response?.data?.data?.data);
@@ -326,7 +328,7 @@ const Transactions = () => {
   useEffect(() => {
     console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchVendor();
-  }, [addTransactionData?.category]);
+  }, [addTransactionData?.category, filtersData?.category]);
 
   return (
     <div
@@ -494,8 +496,8 @@ const Transactions = () => {
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
-          <Select
-            id="vendor_id"
+          {/* <Select
+            // id="vendor_id"
             options={
               vendors &&
               vendors?.map((ven) => ({
@@ -506,12 +508,29 @@ const Transactions = () => {
                     : ven.vendor_name,
               }))
             }
+            // value={
+            //   vendors?.find((ven) =>
+            //     addTransactionData?.category.toLowerCase() === "salary"
+            //       ? ven?.id === addTransactionData?.user_id
+            //       : ven?.id === addTransactionData?.vendor_id
+            //   )?.vendor_name
+            // }
             value={
               vendors?.find((ven) =>
                 addTransactionData?.category.toLowerCase() === "salary"
                   ? ven?.id === addTransactionData?.user_id
                   : ven?.id === addTransactionData?.vendor_id
-              )?.vendor_name
+              ) && {
+                value:
+                  addTransactionData?.category.toLowerCase() === "salary"
+                    ? addTransactionData?.user_id
+                    : addTransactionData?.vendor_id,
+                label: vendors?.find((ven) =>
+                  addTransactionData?.category.toLowerCase() === "salary"
+                    ? ven?.id === addTransactionData?.user_id
+                    : ven?.id === addTransactionData?.vendor_id
+                )?.vendor_name, // This should be the property that matches the label structure
+              }
             }
             onChange={(e) => {
               console.log("e vendor:: ", e);
@@ -542,7 +561,66 @@ const Transactions = () => {
             className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
+          /> */}
+          {addTransactionData?.category.toLowerCase() === "salary" ? (
+            <Select
+              id="user_id"
+              options={
+                vendors &&
+                vendors?.map((ven) => ({
+                  value: ven.id,
+                  label: ven.userName,
+                }))
+              }
+              // value={addTransactionData?.user_id}
+              value={
+                vendors?.filter(
+                  (ven) => ven?.id === addTransactionData?.user_id
+                )?.userName
+              }
+              onChange={(e) => {
+                console.log("e value: ", e);
+                setAddTransactionData({
+                  ...addTransactionData,
+                  vendor_id: null,
+                  user_id: e.value,
+                });
+              }}
+              isLoading={loading}
+              placeholder={t("user")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+          ) : (
+            <Select
+              id="vendor_id"
+              options={
+                vendors &&
+                vendors?.map((ven) => ({
+                  value: ven.id,
+                  label: ven.vendor_name,
+                }))
+              }
+              value={
+                vendors?.filter(
+                  (ven) => ven?.id === addTransactionData?.vendor_id
+                )?.vendor_name
+              }
+              onChange={(e) => {
+                setAddTransactionData({
+                  ...addTransactionData,
+                  vendor_id: e.value,
+                  user_id: null,
+                });
+              }}
+              isLoading={loading}
+              placeholder={t("vendor")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+          )}
 
           <Select
             id="currency"
@@ -854,7 +932,7 @@ const Transactions = () => {
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
             />
-            <Select
+            {/* <Select
               id="vendor_id"
               options={
                 vendors &&
@@ -896,7 +974,62 @@ const Transactions = () => {
               className={`mb-5`}
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
-            />
+            /> */}
+            {filtersData?.category.toLowerCase() === "salary" ? (
+              <Select
+                id="user_id"
+                options={
+                  vendors &&
+                  vendors?.map((ven) => ({
+                    value: ven.id,
+                    label: ven.userName,
+                  }))
+                }
+                value={
+                  vendors?.filter((ven) => ven?.id === filtersData?.user_id)
+                    ?.userName
+                }
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    vendor_id: null,
+                    user_id: e.value,
+                  });
+                }}
+                isLoading={loading}
+                placeholder={t("user")}
+                className={`mb-5`}
+                menuPortalTarget={document.body}
+                styles={selectStyles(currentMode, primaryColor)}
+              />
+            ) : (
+              <Select
+                id="vendor_id"
+                options={
+                  vendors &&
+                  vendors?.map((ven) => ({
+                    value: ven.id,
+                    label: ven.vendor_name,
+                  }))
+                }
+                value={
+                  vendors?.filter((ven) => ven?.id === filtersData?.vendor_id)
+                    ?.vendor_name
+                }
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    vendor_id: e.value,
+                    user_id: null,
+                  });
+                }}
+                isLoading={loading}
+                placeholder={t("vendor")}
+                className={`mb-5`}
+                menuPortalTarget={document.body}
+                styles={selectStyles(currentMode, primaryColor)}
+              />
+            )}
 
             <Select
               id="currency"
