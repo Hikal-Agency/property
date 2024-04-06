@@ -254,7 +254,7 @@ const CommissionModal = ({
                         <>
                           <button
                             onClick={handleOpenModal}
-                            className="bg-btn-primary rounded-md py-2 px-4"
+                            className="bg-btn-primary rounded-md py-2 px-4 text-white"
                           >
                             {t("btn_add_commission")}
                           </button>
