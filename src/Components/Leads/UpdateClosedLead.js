@@ -562,7 +562,7 @@ const UpdateLead = ({
                             required
                           />
 
-                          <TextField
+                          {/* <TextField
                             id="vat"
                             type={"text"}
                             label={t("vat_perc")}
@@ -578,7 +578,7 @@ const UpdateLead = ({
                             value={updateLeadData?.vat}
                             onChange={(e) => handleChange(e)}
                             required
-                          />
+                          /> */}
 
                           <TextField
                             id="vat"
