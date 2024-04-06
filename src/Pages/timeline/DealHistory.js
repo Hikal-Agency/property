@@ -160,7 +160,9 @@ const DealHistory = ({
     },
   };
 
-  const fetchLeadsData = async (token, LeadID) => {
+  const token = localStorage.getItem("auth-token");
+
+  const fetchLeadsData = async (LeadID) => {
     const urlLeadsCycle = `${BACKEND_URL}/deal-history`;
     try {
       const leadsCycleResult = await axios.get(urlLeadsCycle, {
@@ -930,6 +932,7 @@ const DealHistory = ({
                 handleCloseTransactionModal={() =>
                   setAddTransactionModal(false)
                 }
+                fetchLeadsData={fetchLeadsData}
               />
             )}
           </div>
