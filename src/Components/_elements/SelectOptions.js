@@ -715,7 +715,7 @@ export const commission_type = (t) => [
     label: t("income"),
   },
   {
-    value: "Expnese",
+    value: "Expense",
     label: t("expense"),
   },
 ];
