@@ -410,9 +410,7 @@ const BookedDealsForm = ({
                     >
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          value={
-                            closedDealData?.dealDate || new Date()?.toString()
-                          }
+                          value={closedDealData?.dealDate}
                           label={t("booking_date")}
                           views={["day", "month", "year"]}
                           onChange={(newValue) => {
