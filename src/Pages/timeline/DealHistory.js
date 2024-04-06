@@ -24,6 +24,7 @@ import { RxCross2 } from "react-icons/rx";
 import CommissionModal from "./CommissionModal";
 import AddTransactionsModal from "../../Components/Transactions/AddTransactionsModal";
 import { toast } from "react-toastify";
+import SingleTransImage from "./SingleTransImage";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -47,6 +48,7 @@ const DealHistory = ({
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [commissionModal, setCommissionModal] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
+  const [imageModal, setOpenImageModal] = useState(false);
   const [addTransactionModal, setAddTransactionModal] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [error404, setError404] = useState(false);
@@ -439,7 +441,12 @@ const DealHistory = ({
                                         </div>
                                       </div>
                                       {spa?.image && (
-                                        <div className="rounded-md border">
+                                        <div
+                                          className="rounded-md border cursor-pointer"
+                                          onClick={(e) =>
+                                            setOpenImageModal(spa)
+                                          }
+                                        >
                                           <img
                                             src={spa?.image}
                                             width="100px"
@@ -933,6 +940,13 @@ const DealHistory = ({
                   setAddTransactionModal(false)
                 }
                 fetchLeadsData={fetchLeadsData}
+              />
+            )}
+            {imageModal && (
+              <SingleTransImage
+                imageModal={imageModal}
+                setOpenImageModal={setOpenImageModal}
+                handleCloseTransactionModal={() => setOpenImageModal(false)}
               />
             )}
           </div>
