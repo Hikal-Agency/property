@@ -126,9 +126,13 @@ const CommissionModal = ({
     let params;
     dataUrl = `${BACKEND_URL}/invoices`;
     if (invoiceModal) {
-      params = { deal_id: commissionModal?.lid };
+      params = { page: page, deal_id: commissionModal?.lid };
     } else {
-      params = { deal_id: commissionModal?.lid, category: "Commission" };
+      params = {
+        page: page,
+        deal_id: commissionModal?.lid,
+        category: "Commission",
+      };
     }
     try {
       const leadsCycleResult = await axios.get(dataUrl, {
@@ -170,7 +174,7 @@ const CommissionModal = ({
     }
     fetchLeadsData(token, LeadID);
     //eslint-disable-next-line
-  }, []);
+  }, [page]);
 
   return (
     <>
