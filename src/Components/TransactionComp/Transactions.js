@@ -86,6 +86,15 @@ const Transactions = () => {
 
   console.log("addtransaction:: ", addTransactionData);
 
+  console.log(
+    "find find vendor: ",
+    vendors?.find((ven) =>
+      addTransactionData?.category.toLowerCase() === "salary"
+        ? ven?.id === addTransactionData?.user_id
+        : ven?.id === addTransactionData?.vendor_id
+    )?.vendor_name
+  );
+
   const [filtersData, setFilterData] = useState({
     user_id: "",
     invoice_type: "",
@@ -505,6 +514,12 @@ const Transactions = () => {
               )?.vendor_name
             }
             onChange={(e) => {
+              console.log("e vendor:: ", e);
+              console.log(
+                "find vendor :: ",
+                vendors?.find((ven) => ven?.id === e.value)?.vendor_name
+              );
+
               setAddTransactionData({
                 ...addTransactionData,
 

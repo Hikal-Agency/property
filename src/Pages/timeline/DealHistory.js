@@ -82,7 +82,7 @@ const DealHistory = ({
         ) : (
           <RxCross2 size={16} color="white" />
         ),
-      bgColor: LeadData?.pdc_status === 1 ? "green" : "#ff0000",
+      bgColor: LeadData?.pdc_status === 1 ? "green" : "#FF0000",
     },
     {
       text: t("spa"),
@@ -92,7 +92,7 @@ const DealHistory = ({
         ) : (
           <RxCross2 size={16} color="white" />
         ),
-      bgColor: LeadData?.spa_status === 1 ? "green" : "#ff0000",
+      bgColor: LeadData?.spa_status === 1 ? "green" : "#FF0000",
     },
     {
       text: t("commission"),
@@ -102,7 +102,7 @@ const DealHistory = ({
         ) : (
           <RxCross2 size={16} color="white" />
         ),
-      bgColor: LeadData?.comm_status === 1 ? "green" : "#ff0000",
+      bgColor: LeadData?.comm_status === 1 ? "green" : "#FF0000",
       type: "commission",
     },
   ];
