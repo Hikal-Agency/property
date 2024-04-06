@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Select from "react-select";
 // import { Select as libSelect } from "@mui/material";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaUser } from "react-icons/fa";
 
 import { FaLinkedin } from "react-icons/fa";
 
@@ -232,7 +232,7 @@ const Transactions = () => {
       });
 
       console.log("transactions list:: ", response);
-      setTransactionsData(response.data?.data?.data);
+      setTransactionsData(response?.data?.data);
       setMaxPage(response.data?.data?.last_page);
 
       if (vendors?.length == 0) {
@@ -600,61 +600,58 @@ const Transactions = () => {
             ) : (
               <div className="h-[600px] overflow-y-scroll ">
                 {transactionsData && transactionsData?.length > 0 ? (
-                  transactionsData?.map((trans) => (
-                    <>
-                      <div className="mb-9 mx-3">
-                        <p>{trans?.dealDate}</p>
-                        <div className="flex items-center justify-between my-3">
-                          <div>
-                            <div className="flex flex-col">
-                              <div className="flex items-center mb-1">
-                                <span className="border rounded-md p-3 mr-3">
-                                  <FaHome size={20} />
-                                </span>
-                                <p>{trans?.added_by_name}</p>
+                  transactionsData?.map((trans) => {
+                    let user;
+                    if (trans?.invoice?.category?.toLowerCase() === "salary") {
+                      user = true;
+                    } else {
+                      user = false;
+                    }
+
+                    return (
+                      <>
+                        <div className="mb-9 mx-3">
+                          <p>{trans?.invoice?.date}</p>
+                          <div className="flex items-center justify-between my-3">
+                            <div>
+                              <div className="flex flex-col">
+                                <div className="flex items-center mb-1">
+                                  <span className="border rounded-md p-3 mr-3">
+                                    {user ? <FaUser /> : <FaHome size={20} />}
+                                  </span>
+                                  <p>
+                                    {user
+                                      ? trans?.user?.userName
+                                      : trans?.vendor?.vendor_name}
+                                  </p>
+                                </div>
+                                <p className="text-sm self-start pl-[calc(20px+2rem)]">
+                                  {trans?.invoice?.category}
+                                </p>
                               </div>
-                              <p className="text-sm self-start pl-[calc(20px+2rem)]">
-                                {trans?.percent}
+                            </div>
+                            <div>
+                              <p
+                                className={`font-semibold ${
+                                  trans?.invoice_type == "Income"
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                } `}
+                              >
+                                {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                                {trans?.currency} {trans?.amount}
                               </p>
                             </div>
                           </div>
-                          <div>
-                            <p className="font-semibold text-green-600">
-                              + {trans?.currency} {trans?.amount}
-                            </p>
-                          </div>
                         </div>
-                      </div>
-                    </>
-                  ))
+                      </>
+                    );
+                  })
                 ) : (
                   <div>
                     <h1>{t("no_data_found")}</h1>
                   </div>
                 )}
-
-                <Stack spacing={2} marginTop={2}>
-                  <Pagination
-                    count={maxPage}
-                    color={currentMode === "dark" ? "primary" : "secondary"}
-                    onChange={handlePageChange}
-                    style={{ margin: "auto" }}
-                    page={page}
-                    sx={{
-                      "& .Mui-selected": {
-                        color: "white !important",
-                        backgroundColor: `${primaryColor} !important`,
-                        "&:hover": {
-                          backgroundColor:
-                            currentMode === "dark" ? "black" : "white",
-                        },
-                      },
-                      "& .MuiPaginationItem-root": {
-                        color: currentMode === "dark" ? "white" : "black",
-                      },
-                    }}
-                  />
-                </Stack>
               </div>
             )}
           </Box>
