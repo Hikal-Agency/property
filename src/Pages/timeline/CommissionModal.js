@@ -443,13 +443,13 @@ const CommissionModal = ({
                                         </p>
                                       </div>
                                     </div>
-                                    {!invoiceModal && (
+                                    {/* {!invoiceModal && (
                                       <div className="flex justify-end">
                                         <button className="bg-btn-primary rounded-full p-3 bottom-0 ">
                                           <FaPencilAlt />
                                         </button>
                                       </div>
-                                    )}
+                                    )} */}
                                   </div>
                                 );
                               })

@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -49,6 +49,8 @@ const UpdateLead = ({
 
   const [loading, setloading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
+  const inputFileRef = useRef(null);
+
   // const style = {
   //   transform: "translate(-50%, -50%)",
   //   boxShadow: 24,
@@ -119,7 +121,7 @@ const UpdateLead = ({
         {},
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: "Bearer " + token,
           },
         }
@@ -305,7 +307,7 @@ const UpdateLead = ({
           `}
           >
             {loading ? (
-              <div className="flex justify-center">
+              <div className="flex justify-center items-center h-[200px]">
                 <CircularProgress />
               </div>
             ) : (
@@ -666,6 +668,7 @@ const UpdateLead = ({
                           id="contained-button-file"
                           type="file"
                           onChange={handleImgUpload}
+                          ref={inputFileRef}
                         />
                         <label htmlFor="contained-button-file">
                           <Button
@@ -678,11 +681,13 @@ const UpdateLead = ({
                               fontFamily: fontFam,
                             }}
                             component="span" // Required so the button doesn't automatically submit form
+                            disabled={btnloading ? true : false}
                             startIcon={
                               <MdFileUpload className="mx-2" size={16} />
                             }
+                            onClick={() => inputFileRef.current.click()}
                           >
-                            <span>{t("label_passport_image")}</span>
+                            <span>{t("button_upload_image")}</span>
                           </Button>
                         </label>
                       </Box>
