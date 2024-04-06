@@ -53,7 +53,7 @@ const BookedDealsForm = ({
   const [closedDealData, setClosedDealsData] = useState({
     leadId: Feedback?.leadId,
     unit: null,
-    dealDate: null,
+    dealDate: moment(Feedback?.creationDate).format("YYYY-MM-DD"),
     currency: "AED",
     booking_percent: null,
     booking_amount: Feedback?.booked_amount,
