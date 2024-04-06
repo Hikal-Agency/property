@@ -246,7 +246,9 @@ const SingleEmployee = ({ user }) => {
       minWidth: 80,
       flex: 1,
       renderCell: (params) => {
-        return calculateExtraMins(params?.row) > 0 ? calculateExtraMins(params?.row) + " minutes" : "-";
+        return calculateExtraMins(params?.row) > 0
+          ? calculateExtraMins(params?.row) + " minutes"
+          : "-";
       },
     },
 
@@ -1639,11 +1641,11 @@ const SingleEmployee = ({ user }) => {
   }, [pageState.page, selectedMonth]);
 
   useEffect(() => {
-    if(empData?.length){
-      let sum = 0; 
-      empData?.forEach(day => {
-        sum += (calculateExtraMins(day) > 0 ? calculateExtraMins(day) : 0);
-      }) 
+    if (empData?.length) {
+      let sum = 0;
+      empData?.forEach((day) => {
+        sum += calculateExtraMins(day) > 0 ? calculateExtraMins(day) : 0;
+      });
       setTotalExtraMins(sum);
     }
   }, [empData]);
@@ -1837,7 +1839,9 @@ const SingleEmployee = ({ user }) => {
                           </h1>
                         </div>
                         <div className="font-bold">
-                          {`${empData[0]?.currency} ${salaryCalc?.salary} `}
+                          {`${empData[0]?.currency || "-"} ${
+                            salaryCalc?.salary || "-"
+                          } `}
                         </div>
                       </div>
                       <div className="text-center">
@@ -1847,7 +1851,9 @@ const SingleEmployee = ({ user }) => {
                           </h1>
                         </div>
                         <div className="font-bold">
-                          {`${empData[0]?.currency} ${salaryCalc?.salary_per_day}`}
+                          {`${empData[0]?.currency || "-"} ${
+                            salaryCalc?.salary_per_day || "-"
+                          }`}
                         </div>
                       </div>
                     </div>
@@ -1942,7 +1948,9 @@ const SingleEmployee = ({ user }) => {
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LEAVE_DAYS) =========== TOTAL_LEAVE_DAYS = WORKING_DAYS - ATTENDED_DAYS */}
                           <div className="font-bold">
-                            {`${empData[0]?.currency} ${salaryCalc?.leave_day_salary} `}
+                            {`${empData[0]?.currency || "-"} ${
+                              salaryCalc?.leave_day_salary || "-"
+                            } `}
                           </div>
                         </div>
                         <div className="text-center">
@@ -1953,7 +1961,9 @@ const SingleEmployee = ({ user }) => {
                           </div>
                           {/* (SALARY_PER_DAY * TOTAL_LATE_DAYS) / 2 ========== TOTAL_LATE_DAYS = COUNT(is_late) WHERE is_late = 1 */}
                           <div className="font-bold">
-                            {`${empData[0]?.currency} ${salaryCalc?.late_day_salary}`}
+                            {`${empData[0]?.currency || "-"} ${
+                              salaryCalc?.late_day_salary || "-"
+                            }`}
                           </div>
                         </div>
                       </div>
@@ -1980,7 +1990,9 @@ const SingleEmployee = ({ user }) => {
                           <h1 className="font-semibold">{t("total_salary")}</h1>
                         </div>
                         <div className="font-bold">
-                          {`${empData[0]?.currency} ${salaryCalc?.net_salary} `}
+                          {`${empData[0]?.currency || "-"} ${
+                            salaryCalc?.net_salary || "-"
+                          } `}
                         </div>
                       </div>
                     </div>
