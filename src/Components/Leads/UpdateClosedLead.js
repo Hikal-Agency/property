@@ -209,7 +209,7 @@ const UpdateLead = ({
     await axios
       .post(`${BACKEND_URL}/editdeal/${LeadData.lid}`, updateLeadData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       })
@@ -562,7 +562,7 @@ const UpdateLead = ({
                             required
                           />
 
-                          <TextField
+                          {/* <TextField
                             id="vat"
                             type={"text"}
                             label={t("vat_perc")}
@@ -578,7 +578,7 @@ const UpdateLead = ({
                             value={updateLeadData?.vat}
                             onChange={(e) => handleChange(e)}
                             required
-                          />
+                          /> */}
 
                           <TextField
                             id="vat"
