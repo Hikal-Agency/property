@@ -86,13 +86,53 @@ const Transactions = () => {
 
   console.log("addtransaction:: ", addTransactionData);
 
-  const handleChange = (e) => {
+  const [filtersData, setFilterData] = useState({
+    user_id: "",
+    invoice_type: "",
+    amount: "",
+    currency: "",
+    comm_percent: "",
+    country: "",
+    status: "",
+    paid_by: "",
+    vendor_id: "",
+    category: "",
+  });
+
+  console.log("filter data:: ", addTransactionData);
+
+  const handleChange = (e, filter) => {
+    console.log("filter: ", filter);
     const id = e.target.id;
     const value = e.target.value;
+
+    if (filter) {
+      setFilterData({
+        ...filtersData,
+        [id]: value,
+      });
+
+      return;
+    }
 
     setAddTransactionData({
       ...addTransactionData,
       [id]: value,
+    });
+  };
+
+  const clearFilter = () => {
+    setFilterData({
+      user_id: "",
+      invoice_type: "",
+      amount: "",
+      currency: "",
+      comm_percent: "",
+      country: "",
+      status: "",
+      paid_by: "",
+      vendor_id: "",
+      category: "",
     });
   };
 
@@ -178,11 +218,6 @@ const Transactions = () => {
     }
   };
 
-  const handlePageChange = (event, value) => {
-    console.log("pagination value: ", value);
-    setPage(value);
-  };
-
   const fetchVendor = async () => {
     let url;
 
@@ -224,16 +259,41 @@ const Transactions = () => {
   const fetchTransactions = async () => {
     setloading(true);
     try {
-      const response = await axios.get(`${BACKEND_URL}/invoices?page=${page}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+      // const isFilterApplied = Object.values(filtersData).some(
+      //   (value) => value !== ""
+      // );
+      // const queryParams = isFilterApplied
+      //   ? `?${new URLSearchParams(filtersData).toString()}`
+      //   : "";
+
+      // Filter out empty values and construct query parameters
+      const activeFilters = Object.entries(filtersData).reduce(
+        (acc, [key, value]) => {
+          if (value !== "") acc[key] = value;
+          return acc;
         },
-      });
+        {}
+      );
+      const queryParams =
+        Object.keys(activeFilters).length > 0
+          ? `?${new URLSearchParams(activeFilters).toString()}`
+          : "";
+
+      console.log("activeFilters:: ", activeFilters);
+      console.log("queryParams:: ", queryParams);
+
+      const response = await axios.get(
+        `${BACKEND_URL}/invoices${queryParams}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
       console.log("transactions list:: ", response);
       setTransactionsData(response?.data?.data);
-      setMaxPage(response.data?.data?.last_page);
 
       if (vendors?.length == 0) {
         await fetchVendor();
@@ -259,7 +319,7 @@ const Transactions = () => {
   useEffect(() => {
     console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchTransactions();
-  }, [page]);
+  }, [filtersData]);
 
   useEffect(() => {
     console.log("hhhhhiiiiiiiiihhhhhhhhhi");
@@ -662,7 +722,243 @@ const Transactions = () => {
             (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
           }
               } rounded-lg p-5`}
-        ></div>
+        >
+          <Box
+            sx={{
+              ...darkModeColors,
+              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
+              "& legend": {
+                textAlign: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            }}
+            className={`p-4 ${
+              !themeBgImg &&
+              (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+            }`}
+          >
+            <h3 className="text-primary text-center font-semibold text-lg">{` ${t(
+              "btn_filters"
+            )}`}</h3>
+            <br></br>
+            <Select
+              id="category"
+              options={invoice_category(t)?.map((trans) => ({
+                value: trans.value,
+                label: trans.label,
+              }))}
+              value={invoice_category(t)?.filter(
+                (trans) => trans?.value === filtersData?.category
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  category: e.value,
+                });
+              }}
+              placeholder={t("label_category")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+            <Select
+              id="invoice_type"
+              options={commission_type(t)?.map((trans) => ({
+                value: trans.value,
+                label: trans.label,
+              }))}
+              value={commission_type(t)?.filter(
+                (comm) => comm?.value === filtersData?.invoice_type
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  invoice_type: e.value,
+                });
+              }}
+              placeholder={t("type")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+
+            <Select
+              id="country"
+              options={countries_list(t)?.map((country) => ({
+                value: country.value,
+                label: country.label,
+              }))}
+              value={countries_list(t)?.filter(
+                (country) => country?.value === filtersData?.country
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  country: e.value,
+                });
+              }}
+              placeholder={t("label_country")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+
+            <Select
+              id="status"
+              options={payment_status(t)?.map((pay_status) => ({
+                value: pay_status?.value,
+                label: pay_status?.label,
+              }))}
+              value={payment_status(t)?.filter(
+                (pay_status) => pay_status?.value === filtersData?.status
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  status: e.value,
+                });
+              }}
+              placeholder={t("status")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+            <Select
+              id="paid_by"
+              options={payment_source(t)?.map((payment) => ({
+                value: payment.value,
+                label: payment.label,
+              }))}
+              value={payment_source(t)?.filter(
+                (payment) => payment?.value === filtersData?.paid_by
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  paid_by: e.value,
+                });
+              }}
+              placeholder={t("payment_source")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+            <Select
+              id="vendor_id"
+              options={
+                vendors &&
+                vendors?.map((ven) => ({
+                  value: ven.id,
+                  label:
+                    filtersData?.category === "salary"
+                      ? ven?.userName
+                      : ven.vendor_name,
+                }))
+              }
+              value={
+                vendors?.filter((ven) =>
+                  (ven?.id === filtersData?.category) === "salary"
+                    ? filtersData?.user_id
+                    : filtersData?.vendor_id
+                )?.vendor_name
+              }
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  // vendor_id: addTransactionData?.vendor_id,
+
+                  vendor_id:
+                    filtersData?.category === "salary"
+                      ? null
+                      : filtersData.vendor_id,
+                  user_id:
+                    filtersData?.category === "salary"
+                      ? filtersData.user_id
+                      : null,
+                });
+              }}
+              isLoading={loading}
+              placeholder={
+                filtersData?.category === "salary" ? t("user") : t("vendor")
+              }
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+
+            <Select
+              id="currency"
+              options={currencies(t)?.map((curr) => ({
+                value: curr.value,
+                label: curr.label,
+              }))}
+              value={currencies(t)?.filter(
+                (curr) => curr?.value === filtersData?.currency
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  currency: e.value,
+                });
+              }}
+              placeholder={t("label_currency")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+            <TextField
+              id="comm_percent"
+              type={"text"}
+              label={t("percent")}
+              className="w-full mt-3"
+              style={{
+                marginBottom: "20px",
+              }}
+              variant="outlined"
+              name="bussiness_name"
+              size="small"
+              value={filtersData.comm_percent}
+              onChange={handleChange}
+            />
+            <TextField
+              id="amount"
+              type={"text"}
+              label={t("amount")}
+              className="w-full mt-3"
+              style={{
+                marginBottom: "20px",
+              }}
+              variant="outlined"
+              name="bussiness_name"
+              size="small"
+              value={filtersData.amount}
+              onChange={(e) => handleChange(e, "filter")}
+            />
+
+            <Button
+              variant="contained"
+              size="lg"
+              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+              style={{
+                // backgroundColor: "#111827",
+                color: "#ffffff",
+                // border: "1px solid #DA1F26",
+              }}
+              // component="span"
+              // disabled={setBtnLoading ? true : false}
+              onClick={clearFilter}
+            >
+              {btnLoading ? (
+                <CircularProgress />
+              ) : (
+                <span>{t("clear_all")}</span>
+              )}
+            </Button>
+          </Box>
+        </div>
       </div>
     </div>
   );
