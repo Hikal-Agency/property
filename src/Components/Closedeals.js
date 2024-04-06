@@ -245,7 +245,7 @@ const Closedeals = ({ pageState, setpageState }) => {
               rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Timeline" arrow>
-                  <RxCross2 size={16} />
+                  <RxCross2 size={16} color="#ffffff" />
                 </Tooltip>
               </p>
             )}
@@ -280,7 +280,7 @@ const Closedeals = ({ pageState, setpageState }) => {
               rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Timeline" arrow>
-                  <RxCross2 size={16} />
+                  <RxCross2 size={16} color="#ffffff" />
                 </Tooltip>
               </p>
             )}
