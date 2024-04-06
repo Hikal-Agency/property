@@ -321,7 +321,7 @@ const DealHistory = ({
                     <div>
                       <button
                         onClick={() => handleCommissionModalOpen("invoice")}
-                        className="bg-btn-primary rounded-md py-2 px-4"
+                        className="bg-btn-primary rounded-md py-2 px-4 text-white"
                       >
                         {t("btn_view_invoice")}
                       </button>
@@ -383,7 +383,7 @@ const DealHistory = ({
                                     className="bg-btn-primary rounded-full p-2"
                                     onClick={handleTransactionModalOpen}
                                   >
-                                    <FaPlus />
+                                    <FaPlus color="white" />
                                   </button>
                                 </div>
                               </div>
