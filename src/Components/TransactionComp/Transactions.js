@@ -699,7 +699,8 @@ const Transactions = () => {
                                 } `}
                               >
                                 {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
-                                {trans?.currency} {trans?.amount}
+                                {trans?.invoice?.currency}{" "}
+                                {trans?.invoice?.amount}
                               </p>
                             </div>
                           </div>
@@ -716,6 +717,8 @@ const Transactions = () => {
             )}
           </Box>
         </div>
+
+        {/* filters form */}
         <div
           className={`${
             !themeBgImg &&
