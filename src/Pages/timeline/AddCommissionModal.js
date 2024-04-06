@@ -33,6 +33,7 @@ const AddCommissionModal = ({
   addCommissionModal,
   handleCloseAddCommission,
   Feedback,
+  fetchLeadsData,
 }) => {
   console.log("Booked Form: ", addCommissionModal);
   console.log("Booked Data: ", Feedback);
@@ -74,6 +75,7 @@ const AddCommissionModal = ({
     paid_by: null,
     image: null,
     currency: null,
+    category: "Commission",
   });
 
   console.log("commission data:: ", commissionData);
@@ -176,7 +178,7 @@ const AddCommissionModal = ({
 
     axios
       .post(`${BACKEND_URL}/invoices`, commissionData, {
-        params: { category: "Commission" },
+        // params: { category: "Commission" },
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -213,6 +215,7 @@ const AddCommissionModal = ({
         });
         setBtnLoading(false);
         handleClose();
+        fetchLeadsData();
       })
       .catch((err) => {
         setBtnLoading(false);
@@ -522,25 +525,32 @@ const AddCommissionModal = ({
                             ? vendor.vendor_name
                             : vendor.userName,
                       }))}
+                      // value={
+                      //   vendor?.filter((ven) =>
+                      //     commissionData?.category === "Expense"
+                      //       ? ven?.id === commissionData?.user_id
+                      //       : ven?.id === commissionData?.vendor_id
+                      //   )?.vendor_name
+                      // }
                       value={
-                        vendor?.filter(
-                          (ven) => ven?.id === commissionData?.vendor_id
+                        vendor?.find((ven) =>
+                          commissionData?.invoice_type === "Expense"
+                            ? ven?.id === commissionData?.user_id
+                            : ven?.id === commissionData?.vendor_id
                         )?.vendor_name
                       }
                       onChange={(e) => {
                         console.log(" vendor: ", e);
                         setCommissionData({
                           ...commissionData,
-                          // [commissionData?.invoice_type === "Income"
-                          //   ? "vendor_id"
-                          //   : "user_id"]: e.value,
+
                           vendor_id:
                             commissionData?.invoice_type === "Expense"
                               ? null
-                              : commissionData.vendor_id,
+                              : e.value,
                           user_id:
                             commissionData?.invoice_type === "Expense"
-                              ? commissionData.user_id
+                              ? e.value
                               : null,
                         });
                       }}

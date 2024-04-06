@@ -657,19 +657,19 @@ export const currencies = (t) => [
 // CLAIM
 export const claim = (t) => [
   {
-    value: "first claim",
+    value: "First claim",
     label: t("claim_1"),
   },
   {
-    value: "second claim",
+    value: "Second claim",
     label: t("claim_2"),
   },
   {
-    value: "third claim",
+    value: "Third claim",
     label: t("claim_3"),
   },
   {
-    value: "full claim",
+    value: "Full claim",
     label: t("full_claim"),
   },
 ];
@@ -677,16 +677,16 @@ export const claim = (t) => [
 // PAYMENT SOURCE
 export const payment_source = (t) => [
   {
-    value: "bank transfer",
+    value: "Bank transfer",
     label: t("form_account_bank"),
   },
   {
-    value: "cheque",
+    value: "Cheque",
     label: t("payment_source_cheque"),
   },
 
   {
-    value: "cash",
+    value: "Cash",
     label: t("payment_source_cash"),
   },
 ];
@@ -723,11 +723,11 @@ export const commission_type = (t) => [
 // PAYMENT STATUS
 export const payment_status = (t) => [
   {
-    value: "paid",
+    value: "Paid",
     label: t("payment_paid"),
   },
   {
-    value: "unpaid",
+    value: "Unpaid",
     label: t("payment_unpaid"),
   },
 ];
@@ -751,11 +751,11 @@ export const countries_list = (t) => [
 //  INVOICES CATEGORIES
 export const invoice_category = (t) => [
   {
-    value: "purchase",
+    value: "Purchase",
     label: t("purchase"),
   },
   {
-    value: "salary",
+    value: "Salary",
     label: t("label_salary"),
   },
 ];
