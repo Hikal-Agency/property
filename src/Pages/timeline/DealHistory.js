@@ -442,15 +442,16 @@ const DealHistory = ({
                                       </div>
                                       {spa?.image && (
                                         <div
-                                          className="rounded-md border cursor-pointer w-[100px] h-[100px] overflow-hidden"
+                                          className="rounded-md border cursor-pointer  w-[100px] h-[100px]  overflow-hidden"
                                           onClick={(e) =>
                                             setOpenImageModal(spa)
                                           }
                                         >
                                           <img
                                             src={spa?.image}
-                                            width="100px"
-                                            height="100px"
+                                            // width="100px"
+                                            // height="100px"
+                                            className="object-fill"
                                           />
                                         </div>
                                       )}
