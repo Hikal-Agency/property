@@ -209,7 +209,7 @@ const UpdateLead = ({
     await axios
       .post(`${BACKEND_URL}/editdeal/${LeadData.lid}`, updateLeadData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       })
