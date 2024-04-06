@@ -27,6 +27,7 @@ const AddTransactionsModal = ({
   setAddTransactionModal,
   newFeedback,
   Feedback,
+  fetchLeadsData,
 }) => {
   console.log("Booked Form: ", addTransactionModal);
   console.log("Booked Data: ", Feedback);
@@ -159,6 +160,7 @@ const AddTransactionsModal = ({
         });
         setBtnLoading(false);
         handleClose();
+        fetchLeadsData();
       })
       .catch((err) => {
         setBtnLoading(false);

@@ -221,7 +221,7 @@ const Transactions = () => {
   const fetchVendor = async () => {
     let url;
 
-    if (addTransactionData?.category === "salary") {
+    if (addTransactionData?.category.toLowerCase() === "salary") {
       url = `${BACKEND_URL}/users`;
     } else {
       url = `${BACKEND_URL}/vendors`;
@@ -235,7 +235,7 @@ const Transactions = () => {
       });
       console.log("vendors list:: ", response);
 
-      if (addTransactionData?.category === "salary") {
+      if (addTransactionData?.category.toLowerCase() === "salary") {
         setVendors(response?.data?.managers?.data);
       } else {
         setVendors(response?.data?.data?.data);
@@ -259,13 +259,6 @@ const Transactions = () => {
   const fetchTransactions = async () => {
     setloading(true);
     try {
-      // const isFilterApplied = Object.values(filtersData).some(
-      //   (value) => value !== ""
-      // );
-      // const queryParams = isFilterApplied
-      //   ? `?${new URLSearchParams(filtersData).toString()}`
-      //   : "";
-
       // Filter out empty values and construct query parameters
       const activeFilters = Object.entries(filtersData).reduce(
         (acc, [key, value]) => {
@@ -499,41 +492,35 @@ const Transactions = () => {
               vendors?.map((ven) => ({
                 value: ven.id,
                 label:
-                  addTransactionData?.category === "salary"
+                  addTransactionData?.category.toLowerCase() === "salary"
                     ? ven?.userName
                     : ven.vendor_name,
               }))
             }
             value={
-              vendors?.filter((ven) =>
-                (ven?.id === addTransactionData?.category) === "salary"
-                  ? addTransactionData?.user_id
-                  : addTransactionData?.vendor_id
+              vendors?.find((ven) =>
+                addTransactionData?.category.toLowerCase() === "salary"
+                  ? ven?.id === addTransactionData?.user_id
+                  : ven?.id === addTransactionData?.vendor_id
               )?.vendor_name
             }
-            // value={
-            //   addTransactionData?.category === "salary"
-            //     ? addTransactionData?.user_id
-            //     : addTransactionData?.vendor_id
-            // }
             onChange={(e) => {
               setAddTransactionData({
                 ...addTransactionData,
-                // vendor_id: addTransactionData?.vendor_id,
 
                 vendor_id:
-                  addTransactionData?.category === "salary"
+                  addTransactionData?.category.toLowerCase() === "salary"
                     ? null
-                    : addTransactionData.vendor_id,
+                    : e.value,
                 user_id:
-                  addTransactionData?.category === "salary"
-                    ? addTransactionData.user_id
+                  addTransactionData?.category.toLowerCase() === "salary"
+                    ? e.value
                     : null,
               });
             }}
             isLoading={loading}
             placeholder={
-              addTransactionData?.category === "salary"
+              addTransactionData?.category.toLowerCase() === "salary"
                 ? t("user")
                 : t("vendor")
             }
@@ -638,6 +625,7 @@ const Transactions = () => {
             )}
           </Button>
         </Box>
+        {/* transactions list */}
         <div>
           <Box
             sx={{
@@ -693,13 +681,16 @@ const Transactions = () => {
                             <div>
                               <p
                                 className={`font-semibold ${
-                                  trans?.invoice_type == "Income"
+                                  trans?.invoice?.invoice_type == "Income"
                                     ? "text-green-600"
                                     : "text-red-600"
                                 } `}
                               >
-                                {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
-                                {trans?.currency} {trans?.amount}
+                                {trans?.invoice?.invoice_type === "Income"
+                                  ? "+"
+                                  : "-"}{" "}
+                                {trans?.invoice?.currency}{" "}
+                                {trans?.invoice?.amount}
                               </p>
                             </div>
                           </div>
@@ -716,6 +707,8 @@ const Transactions = () => {
             )}
           </Box>
         </div>
+
+        {/* filters form */}
         <div
           className={`${
             !themeBgImg &&
@@ -853,36 +846,37 @@ const Transactions = () => {
                 vendors?.map((ven) => ({
                   value: ven.id,
                   label:
-                    filtersData?.category === "salary"
+                    filtersData?.category.toLowerCase() === "salary"
                       ? ven?.userName
                       : ven.vendor_name,
                 }))
               }
               value={
-                vendors?.filter((ven) =>
-                  (ven?.id === filtersData?.category) === "salary"
-                    ? filtersData?.user_id
-                    : filtersData?.vendor_id
+                vendors?.find((ven) =>
+                  filtersData?.category.toLowerCase() === "salary"
+                    ? ven?.id === filtersData?.user_id
+                    : ven?.id === filtersData?.vendor_id
                 )?.vendor_name
               }
               onChange={(e) => {
                 setFilterData({
                   ...filtersData,
-                  // vendor_id: addTransactionData?.vendor_id,
 
                   vendor_id:
-                    filtersData?.category === "salary"
+                    filtersData?.category.toLowerCase() === "salary"
                       ? null
-                      : filtersData.vendor_id,
+                      : e.value,
                   user_id:
-                    filtersData?.category === "salary"
-                      ? filtersData.user_id
+                    filtersData?.category.toLowerCase() === "salary"
+                      ? e.value
                       : null,
                 });
               }}
               isLoading={loading}
               placeholder={
-                filtersData?.category === "salary" ? t("user") : t("vendor")
+                filtersData?.category.toLowerCase() === "salary"
+                  ? t("user")
+                  : t("vendor")
               }
               className={`mb-5`}
               menuPortalTarget={document.body}
@@ -921,7 +915,7 @@ const Transactions = () => {
               name="bussiness_name"
               size="small"
               value={filtersData.comm_percent}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e, "filter")}
             />
             <TextField
               id="amount"
