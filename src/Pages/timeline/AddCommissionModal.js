@@ -533,7 +533,7 @@ const AddCommissionModal = ({
                       //   )?.vendor_name
                       // }
                       value={
-                        vendor?.find((ven) =>
+                        vendor?.filter((ven) =>
                           commissionData?.invoice_type === "Expense"
                             ? ven?.id === commissionData?.user_id
                             : ven?.id === commissionData?.vendor_id
