@@ -119,8 +119,9 @@ const CommissionModal = ({
       borderRadius: "0px 8px 8px 0px",
     },
   };
+  const token = localStorage.getItem("auth-token");
 
-  const fetchLeadsData = async (token, LeadID) => {
+  const fetchLeadsData = async () => {
     setLoading(true);
     let dataUrl;
     let params;
@@ -499,6 +500,7 @@ const CommissionModal = ({
             <AddCommissionModal
               addCommissionModal={addCommissionModal}
               handleCloseAddCommission={() => setOpenAddCommissionModal(false)}
+              fetchLeadsData={fetchLeadsData}
             />
           )}
         </div>
