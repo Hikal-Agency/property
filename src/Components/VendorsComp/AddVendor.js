@@ -13,6 +13,7 @@ import {
   countries_list,
   currencies,
   transaction_type,
+  vendor_type,
 } from "../_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -267,12 +268,12 @@ const AddVendor = ({
                     >
                       <Select
                         id="type"
-                        options={commission_type(t)?.map((comm) => ({
-                          value: comm.value,
-                          label: comm.label,
+                        options={vendor_type(t)?.map((ven) => ({
+                          value: ven.value,
+                          label: ven.label,
                         }))}
-                        value={commission_type(t)?.find(
-                          (comm) => comm.value === vendorData?.type
+                        value={vendor_type(t)?.find(
+                          (ven) => ven.value === vendorData?.type
                         )}
                         onChange={(e) => {
                           setVendorData({
