@@ -12,7 +12,7 @@ import { GiForkKnifeSpoon, GiHamburger } from "react-icons/gi";
 import { BsArrowLeftRight } from "react-icons/bs";
 
 import { GrConnect } from "react-icons/gr";
-import { FaFileAlt, FaWrench } from "react-icons/fa";
+import { FaFileAlt, FaWrench, FaChartLine, FaHome } from "react-icons/fa";
 
 import { toast } from "react-toastify";
 import ReactConfetti from "react-confetti";
@@ -1670,8 +1670,8 @@ const Sidebarmui = () => {
     },
     // TRANSACTION
     {
-      title: t("menu_transaction"),
-      icon: <BsArrowLeftRight size={18} />,
+      title: t("menu_finance"),
+      icon: <FaChartLine size={18} />,
       // pro: true,
       links: [
         {
@@ -1680,6 +1680,12 @@ const Sidebarmui = () => {
           // pro: true,
           link: "/transactions",
         },
+        // {
+        //   name: t("menu_vendors"),
+        //   icon: <FaHome size={16} />,
+        //   // pro: true,
+        //   link: "/vendors",
+        // },
       ],
     },
     // OFFICE BOY

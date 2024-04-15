@@ -25,6 +25,7 @@ import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import { renderSourceIcons } from "./_elements/SourceIconsDataGrid";
 import { renderOTPIcons } from "./_elements/OTPIconsDataGrid";
 import DealHistory from "../Pages/timeline/DealHistory";
+import usePermission from "../utils/usePermission";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
@@ -41,6 +42,7 @@ const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
   const [pageRange, setPageRange] = useState();
+  const { hasPermission } = usePermission();
 
   //Update LEAD MODAL VARIABLES
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
@@ -331,20 +333,22 @@ const Closedeals = ({ pageState, setpageState }) => {
               </Tooltip>
             </p>
 
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-            >
-              <Tooltip title="View Deal History" arrow>
-                <button onClick={() => HandleViewDealHistory(cellValues)}>
-                  <FaHandshake size={16} />
-                </button>
-              </Tooltip>
-            </p>
+            {hasPermission("deal_history") && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <Tooltip title="View Deal History" arrow>
+                  <button onClick={() => HandleViewDealHistory(cellValues)}>
+                    <FaHandshake size={16} />
+                  </button>
+                </Tooltip>
+              </p>
+            )}
           </div>
         );
       },
@@ -716,6 +720,9 @@ const Closedeals = ({ pageState, setpageState }) => {
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
           columns={User?.role === 1 ? columns : otherColumns}
+          // columns={columns?.filter((c) =>
+          //   hasPermission("leads_col_" + c?.field)
+          // )}
           components={{
             Toolbar: GridToolbar,
             Pagination: CustomPagination,
