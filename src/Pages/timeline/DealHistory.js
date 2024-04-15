@@ -25,6 +25,7 @@ import CommissionModal from "./CommissionModal";
 import AddTransactionsModal from "../../Components/Transactions/AddTransactionsModal";
 import { toast } from "react-toastify";
 import SingleTransImage from "./SingleTransImage";
+import usePermission from "../../utils/usePermission";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -45,6 +46,7 @@ const DealHistory = ({
     isLangRTL,
     i18n,
   } = useStateContext();
+  const { hasPermission } = usePermission();
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [commissionModal, setCommissionModal] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
@@ -319,12 +321,14 @@ const DealHistory = ({
                       </h1>
                     </div>
                     <div>
-                      <button
-                        onClick={() => handleCommissionModalOpen("invoice")}
-                        className="bg-btn-primary rounded-md py-2 px-4 text-white"
-                      >
-                        {t("btn_view_invoice")}
-                      </button>
+                      {hasPermission("view_invoice") && (
+                        <button
+                          onClick={() => handleCommissionModalOpen("invoice")}
+                          className="bg-btn-primary rounded-md py-2 px-4 text-white"
+                        >
+                          {t("btn_view_invoice")}
+                        </button>
+                      )}
                     </div>
                   </div>
 
@@ -346,118 +350,132 @@ const DealHistory = ({
                                 {t("status")}
                               </h3>
                               <div className="w-full flex items-center justify-center  space-x-2 mb-4">
-                                {statuses?.map((status) => (
-                                  <div
-                                    className={`${
-                                      currentMode === "dark"
-                                        ? "bg-[#1C1C1C]"
-                                        : "bg-[#EEEEEE]"
-                                    } py-4 px-9 rounded-md ${
-                                      status?.type === "commission" &&
-                                      "cursor-pointer"
-                                    } `}
-                                    onClick={
-                                      status?.type === "commission"
-                                        ? () => handleCommissionModalOpen()
-                                        : undefined
-                                    }
-                                  >
-                                    <p
-                                      className={`
+                                {statuses?.map((status) => {
+                                  return (
+                                    <div
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-[#1C1C1C]"
+                                          : "bg-[#EEEEEE]"
+                                      } py-4 px-9 rounded-md ${
+                                        status?.type === "commission" &&
+                                        hasPermission("add_commission")
+                                          ? "cursor-pointer"
+                                          : null
+                                      } `}
+                                      onClick={
+                                        status?.type === "commission" &&
+                                        hasPermission("add_commission")
+                                          ? () => handleCommissionModalOpen()
+                                          : undefined
+                                      }
+                                    >
+                                      <p
+                                        className={`
                     bg-[${status?.bgColor}]
                 rounded-full shadow-none p-1.5 mr-1 flex items-center mb-3`}
-                                    >
-                                      {status?.icon}
-                                    </p>
-                                    <p>{status?.text}</p>
-                                  </div>
-                                ))}
-                              </div>
-                              <div className="flex items-center justify-between  flex-row">
-                                <h3 className="text-sm  font-semibold uppercase mb-5 mt-3">
-                                  {t("transactions")}
-                                </h3>
-
-                                <div>
-                                  <button
-                                    className="bg-btn-primary rounded-full p-2"
-                                    onClick={handleTransactionModalOpen}
-                                  >
-                                    <FaPlus color="white" />
-                                  </button>
-                                </div>
-                              </div>
-
-                              {transactions?.map((spa) => (
-                                <div
-                                  className={`${
-                                    currentMode === "dark"
-                                      ? "bg-[#1C1C1C]"
-                                      : "bg-[#EEEEEE]"
-                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full relative`}
-                                >
-                                  <>
-                                    <Box sx={{ ...ribbonStyles }}>
-                                      <div className="wrap">
-                                        <span>{spa?.type}</span>
-                                      </div>
-                                    </Box>
-                                    <div className="flex items-center justify-between mt-5">
-                                      <div>
-                                        <div className="flex gap-2 my-3">
-                                          <p>{t("percentage")}:</p>
-                                          <div>
-                                            <p className="font-semibold ml-2">
-                                              {spa?.percent}%
-                                            </p>
-                                          </div>
-                                        </div>
-
-                                        <div className="flex gap-2 my-3">
-                                          <p>{t("label_amount")}:</p>
-                                          <div>
-                                            <p className="font-semibold ml-2">
-                                              {spa?.currency} {spa?.amount}
-                                            </p>
-                                          </div>
-                                        </div>
-
-                                        <div className="flex gap-2 my-3">
-                                          <p>{t("date")}:</p>
-                                          <div>
-                                            <p className="font-semibold ml-2">
-                                              {spa?.dealDate}
-                                            </p>
-                                          </div>
-                                        </div>
-
-                                        <div className="flex gap-2 my-3">
-                                          <p>{t("label_added_by")}:</p>
-                                          <div>
-                                            <p className="font-semibold ml-2">
-                                              {spa?.added_by_name}
-                                            </p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      {spa?.image && (
-                                        <div
-                                          className="rounded-md border cursor-pointer"
-                                          onClick={(e) =>
-                                            setOpenImageModal(spa)
-                                          }
-                                        >
-                                          <img
-                                            src={spa?.image}
-                                            width="100px"
-                                            height="100px"
-                                          />
-                                        </div>
-                                      )}
+                                      >
+                                        {status?.icon}
+                                      </p>
+                                      <p>{status?.text}</p>
                                     </div>
-                                  </>
-                                </div>
-                              ))}
+                                  );
+                                })}
+                              </div>
+
+                              {hasPermission("add_deal_spa") && (
+                                <>
+                                  <div className="flex items-center justify-between  flex-row">
+                                    <h3 className="text-sm  font-semibold uppercase mb-5 mt-3">
+                                      {t("transactions")}
+                                    </h3>
+
+                                    <div>
+                                      <button
+                                        className="bg-btn-primary rounded-full p-2"
+                                        onClick={handleTransactionModalOpen}
+                                      >
+                                        <FaPlus color="white" />
+                                      </button>
+                                    </div>
+                                  </div>
+                                </>
+                              )}
+
+                              {hasPermission("deal_spa") && (
+                                <>
+                                  {transactions?.map((spa) => (
+                                    <div
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-[#1C1C1C]"
+                                          : "bg-[#EEEEEE]"
+                                      } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full relative`}
+                                    >
+                                      <>
+                                        <Box sx={{ ...ribbonStyles }}>
+                                          <div className="wrap">
+                                            <span>{spa?.type}</span>
+                                          </div>
+                                        </Box>
+                                        <div className="flex items-center justify-between mt-5">
+                                          <div>
+                                            <div className="flex gap-2 my-3">
+                                              <p>{t("percentage")}:</p>
+                                              <div>
+                                                <p className="font-semibold ml-2">
+                                                  {spa?.percent}%
+                                                </p>
+                                              </div>
+                                            </div>
+
+                                            <div className="flex gap-2 my-3">
+                                              <p>{t("label_amount")}:</p>
+                                              <div>
+                                                <p className="font-semibold ml-2">
+                                                  {spa?.currency} {spa?.amount}
+                                                </p>
+                                              </div>
+                                            </div>
+
+                                            <div className="flex gap-2 my-3">
+                                              <p>{t("date")}:</p>
+                                              <div>
+                                                <p className="font-semibold ml-2">
+                                                  {spa?.dealDate}
+                                                </p>
+                                              </div>
+                                            </div>
+
+                                            <div className="flex gap-2 my-3">
+                                              <p>{t("label_added_by")}:</p>
+                                              <div>
+                                                <p className="font-semibold ml-2">
+                                                  {spa?.added_by_name}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          {spa?.image && (
+                                            <div
+                                              className="rounded-md border cursor-pointer"
+                                              onClick={(e) =>
+                                                setOpenImageModal(spa)
+                                              }
+                                            >
+                                              <img
+                                                src={spa?.image}
+                                                width="100px"
+                                                height="100px"
+                                              />
+                                            </div>
+                                          )}
+                                        </div>
+                                      </>
+                                    </div>
+                                  ))}
+                                </>
+                              )}
                             </>
                           )}
                         </div>
