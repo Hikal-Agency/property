@@ -222,9 +222,11 @@ const VendorsList = ({}) => {
                                   <BsPencil />
                                 </button>
                               </div>
-                              <div className="mx-1 bg-primary py-2 px-7 ">
-                                <p>{item?.type}</p>
-                              </div>
+                              {item?.type && (
+                                <div className="mx-1 bg-primary py-2 px-7 ">
+                                  <p>{item?.type}</p>
+                                </div>
+                              )}
                             </div>
 
                             <div className="space-y-4 m-1">
