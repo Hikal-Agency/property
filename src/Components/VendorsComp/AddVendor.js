@@ -31,12 +31,10 @@ import moment from "moment";
 const AddVendor = ({
   openVendorModal,
   setOpenVendorModal,
-  newFeedback,
-  Feedback,
-  fetchLeadsData,
+  edit,
+  fetchVendors,
 }) => {
-  console.log("Booked Form: ", openVendorModal);
-  console.log("Booked Data: ", Feedback);
+  console.log("Vendor data: ", openVendorModal);
   const {
     darkModeColors,
     currentMode,
@@ -55,19 +53,24 @@ const AddVendor = ({
   const [loading, setLoading] = useState(false);
   const [btnloading, setBtnLoading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
+  let editData;
+
+  if (edit) {
+    console.log("edit : ", edit);
+    editData = openVendorModal;
+  }
 
   const [vendorData, setVendorData] = useState({
-    type: null,
-    vendor_name: null,
-    address: null,
-    contact: null,
-    country: null,
-    pobox: null,
-    trn: null,
-    email: null,
-    link: null,
-    person_to_contact: null,
+    type: editData?.type || null,
+    vendor_name: editData?.vendor_name || null,
+    address: editData?.address || null,
+    contact: editData?.contact || null,
+    country: editData?.country || null,
+    pobox: editData?.pobox || null,
+    trn: editData?.trn || null,
+    email: editData?.email || null,
+    link: editData?.link || null,
+    person_to_contact: editData?.person_to_contact || null,
   });
 
   console.log("vendor data:: ", vendorData);
@@ -114,8 +117,16 @@ const AddVendor = ({
       return;
     }
 
+    let url;
+
+    if (edit) {
+      url = `${BACKEND_URL}/vendors/${editData?.id}`;
+    } else {
+      url = `${BACKEND_URL}/vendors`;
+    }
+
     axios
-      .post(`${BACKEND_URL}/vendors`, vendorData, {
+      .post(url, vendorData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -139,7 +150,7 @@ const AddVendor = ({
           setBtnLoading(false);
           return;
         }
-        toast.success("Vendor Added successfully.", {
+        toast.success(`Vendor ${edit ? "Updated" : "Added"} successfully.`, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -151,6 +162,9 @@ const AddVendor = ({
         });
         setBtnLoading(false);
         handleClose();
+        if (edit) {
+          fetchVendors();
+        }
       })
       .catch((err) => {
         setBtnLoading(false);
