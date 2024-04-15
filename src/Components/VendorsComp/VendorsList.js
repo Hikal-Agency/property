@@ -86,10 +86,6 @@ const VendorsList = ({}) => {
     setOpenModel(false);
   };
 
-  // useEffect(() => {
-  //   setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
-  // }, [pageState.page]);
-
   const fetchVendors = async () => {
     setLoading(true);
     try {

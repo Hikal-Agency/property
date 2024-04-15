@@ -56,44 +56,29 @@ const AddVendor = ({
   const [isClosing, setIsClosing] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
 
-  const [transactionData, setTransactionData] = useState({
-    deal_id: openVendorModal?.lid,
+  const [vendorData, setVendorData] = useState({
     type: null,
-    amount: null,
-    dealDate: null,
-    currency: null,
-    percent: null,
-    image: null,
+    vendor_name: null,
+    address: null,
+    contact: null,
+    country: null,
+    pobox: null,
+    trn: null,
+    email: null,
+    link: null,
+    person_to_contact: null,
   });
 
-  console.log("transaction data:: ", transactionData);
+  console.log("vendor data:: ", vendorData);
 
   const handleChange = (e) => {
     const id = e.target.id;
     const value = e.target.value;
 
-    setTransactionData({
-      ...transactionData,
+    setVendorData({
+      ...vendorData,
       [id]: value,
     });
-  };
-
-  const handleImgUpload = (e) => {
-    const file = e.target.files[0];
-
-    console.log("files:: ", file);
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImagePreview(reader.result);
-
-      const base64Image = reader.result;
-      setTransactionData({
-        ...transactionData,
-        image: file,
-      });
-    };
-    reader.readAsDataURL(file);
   };
 
   const handleClose = () => {
@@ -113,8 +98,8 @@ const AddVendor = ({
     setBtnLoading(true);
     const token = localStorage.getItem("auth-token");
 
-    if (!transactionData?.image) {
-      toast.error("Image required.", {
+    if (!vendorData?.vendor_name) {
+      toast.error("Vendor name required.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -129,9 +114,9 @@ const AddVendor = ({
     }
 
     axios
-      .post(`${BACKEND_URL}/deal-spa`, transactionData, {
+      .post(`${BACKEND_URL}/vendors`, vendorData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
       })
@@ -153,7 +138,7 @@ const AddVendor = ({
           setBtnLoading(false);
           return;
         }
-        toast.success("Transaction Added successfully.", {
+        toast.success("Vendor Added successfully.", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -165,7 +150,6 @@ const AddVendor = ({
         });
         setBtnLoading(false);
         handleClose();
-        fetchLeadsData();
       })
       .catch((err) => {
         setBtnLoading(false);
@@ -288,11 +272,11 @@ const AddVendor = ({
                           label: comm.label,
                         }))}
                         value={commission_type(t)?.find(
-                          (comm) => comm.value === transactionData?.type
+                          (comm) => comm.value === vendorData?.type
                         )}
                         onChange={(e) => {
-                          setTransactionData({
-                            ...transactionData,
+                          setVendorData({
+                            ...vendorData,
                             type: e.value,
                           });
                         }}
@@ -315,7 +299,7 @@ const AddVendor = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={transactionData?.percent}
+                        value={vendorData?.vendor_name}
                         onChange={handleChange}
                         required
                       />
@@ -333,21 +317,21 @@ const AddVendor = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={transactionData?.percent}
+                        value={vendorData?.address}
                         onChange={handleChange}
                         required
                       />
 
                       <Select
-                        id="currency"
+                        id="country"
                         options={countries_list(t)}
                         value={countries_list(t)?.find(
-                          (curr) => curr.value === transactionData?.currency
+                          (curr) => curr.value === vendorData?.country
                         )}
                         onChange={(e) => {
-                          setTransactionData({
-                            ...transactionData,
-                            currency: e.value,
+                          setVendorData({
+                            ...vendorData,
+                            country: e.value,
                           });
                         }}
                         placeholder={t("label_country")}
@@ -357,7 +341,7 @@ const AddVendor = ({
                       />
 
                       <TextField
-                        id="amount"
+                        id="pobox"
                         type={"text"}
                         label={t("po_box")}
                         className="w-full"
@@ -369,12 +353,12 @@ const AddVendor = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={transactionData?.amount}
+                        value={vendorData?.pobox}
                         onChange={handleChange}
                       />
 
                       <TextField
-                        id="amount"
+                        id="trn"
                         type={"text"}
                         label={t("trn")}
                         className="w-full"
@@ -386,7 +370,7 @@ const AddVendor = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={transactionData?.amount}
+                        value={vendorData?.trn}
                         onChange={handleChange}
                       />
                     </Box>
@@ -409,7 +393,7 @@ const AddVendor = ({
                   <div className="w-full">
                     <Box sx={darkModeColors} className="p-2">
                       <TextField
-                        id="address"
+                        id="person_to_contact"
                         type={"text"}
                         label={t("name")}
                         className="w-full"
@@ -421,12 +405,12 @@ const AddVendor = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={transactionData?.percent}
+                        value={vendorData?.person_to_contact}
                         onChange={handleChange}
                       />
 
                       <TextField
-                        id="address"
+                        id="contact"
                         type={"text"}
                         label={t("label_contact_number")}
                         className="w-full"
@@ -438,12 +422,12 @@ const AddVendor = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={transactionData?.percent}
+                        value={vendorData?.contact}
                         onChange={handleChange}
                       />
 
                       <TextField
-                        id="address"
+                        id="email"
                         type={"text"}
                         label={t("label_email")}
                         className="w-full"
@@ -455,12 +439,12 @@ const AddVendor = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={transactionData?.percent}
+                        value={vendorData?.email}
                         onChange={handleChange}
                       />
 
                       <TextField
-                        id="address"
+                        id="link"
                         type={"text"}
                         label={t("form_vendor_link")}
                         className="w-full"
@@ -472,7 +456,7 @@ const AddVendor = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={transactionData?.percent}
+                        value={vendorData?.link}
                         onChange={handleChange}
                       />
                     </Box>
