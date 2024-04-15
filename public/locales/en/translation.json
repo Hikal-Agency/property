@@ -1008,7 +1008,12 @@
     "country_pakistan": "Paskitan",
     "country_eqypt": "Egypt",
     "po_box": "PO Box",
-    "trn": "TRN"
+    "trn": "TRN",
+
+
+
+    "menu_finance": "Finance",
+    "menu_vendors": "Vendors"
 
 
 }
