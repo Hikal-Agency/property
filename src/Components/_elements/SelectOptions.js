@@ -759,3 +759,31 @@ export const invoice_category = (t) => [
     label: t("label_salary"),
   },
 ];
+
+//  VENDOR TYPES
+export const vendor_type = (t) => [
+  {
+    value: "Developer",
+    label: t("form_developer_name"),
+  },
+  {
+    value: "Supermarket",
+    label: t("vendor_type_market"),
+  },
+  {
+    value: "Agency",
+    label: t("vendor_type_agency"),
+  },
+  {
+    value: "Supplier",
+    label: t("vendor_type_supplier"),
+  },
+  {
+    value: "Car wash",
+    label: t("vendor_type_car_wash"),
+  },
+  {
+    value: "Fuel Station",
+    label: t("vendor_type_fuel"),
+  },
+];

@@ -23,6 +23,7 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { HiOutlineBan } from "react-icons/hi";
 import { AiFillUnlock } from "react-icons/ai";
 import { toast } from "react-toastify";
+import AddVendor from "./AddVendor";
 
 const VendorsList = ({}) => {
   const [loading, setLoading] = useState(false);
@@ -49,12 +50,10 @@ const VendorsList = ({}) => {
 
   console.log("vendors data: ", vendorsData);
 
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const handleCloseEditModal = () => setEditModalOpen(false);
-  const handleEditModal = (id) => {
-    setUserId(id);
-    setEditModalOpen(true);
-    // handleLeadModelClose();
+  const [openVendorModal, setOpenVendorModal] = useState(false);
+  const handleCloseEditModal = () => setOpenVendorModal(false);
+  const handleEditModal = (item) => {
+    setOpenVendorModal(item);
   };
 
   const handlePageChange = (event, value) => {
@@ -147,15 +146,16 @@ const VendorsList = ({}) => {
             UserName={username}
             fetchUser={fetchVendors}
           />
-        )}
-        {editModalOpen && (
-          <EditUserModal
-            vendorsData={userID}
+        )}*/}
+        {openVendorModal && (
+          <AddVendor
             handleCloseEditModal={handleCloseEditModal}
-            setEditModalOpen={setEditModalOpen}
-            fetchUser={fetchVendors}
+            setOpenVendorModal={setOpenVendorModal}
+            openVendorModal={openVendorModal}
+            edit="edit"
+            fetchVendors={fetchVendors}
           />
-        )} */}
+        )}
 
         {loading ? (
           <Loader />
@@ -214,7 +214,10 @@ const VendorsList = ({}) => {
                           <div>
                             <div className="flex items-center m-1 mt-2 mb-4">
                               <div className="mx-1 ">
-                                <button className="border rounded-full p-3 ">
+                                <button
+                                  className="border rounded-full p-3 "
+                                  onClick={() => handleEditModal(item)}
+                                >
                                   <BsPencil />
                                 </button>
                               </div>
