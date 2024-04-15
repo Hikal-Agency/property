@@ -458,7 +458,7 @@ const DealHistory = ({
                                           </div>
                                           {spa?.image && (
                                             <div
-                                              className="rounded-md border cursor-pointer"
+                                              className="rounded-md border cursor-pointer w-[100px] h-[100px]"
                                               onClick={(e) =>
                                                 setOpenImageModal(spa)
                                               }
