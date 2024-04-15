@@ -1680,12 +1680,12 @@ const Sidebarmui = () => {
           // pro: true,
           link: "/transactions",
         },
-        // {
-        //   name: t("menu_vendors"),
-        //   icon: <FaHome size={16} />,
-        //   // pro: true,
-        //   link: "/vendors",
-        // },
+        {
+          name: t("menu_vendors"),
+          icon: <FaHome size={16} />,
+          // pro: true,
+          link: "/vendors",
+        },
       ],
     },
     // OFFICE BOY
