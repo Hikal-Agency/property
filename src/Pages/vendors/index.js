@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import Loader from "../../Components/Loader";
 import VendorsList from "../../Components/VendorsComp/VendorsList";
 import { Button } from "@mui/base";
+import AddVendor from "../../Components/VendorsComp/AddVendor";
 
 const currentDate = dayjs();
 
@@ -21,6 +22,11 @@ const Vendors = ({ isLoading }) => {
   } = useStateContext();
 
   const [loading, setLoading] = useState(false);
+  const [openVendorModal, setOpenVendorModal] = useState(false);
+
+  const HandleOpenModel = () => {
+    setOpenVendorModal(true);
+  };
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -56,7 +62,7 @@ const Vendors = ({ isLoading }) => {
               <div>
                 <Button
                   className="bg-btn-primary w-40 text-white px-7 py-2 rounded-md mr-2 "
-                  //   onClick={HandleOpenModel}
+                  onClick={HandleOpenModel}
                 >
                   {t("add_vendor")}
                 </Button>
@@ -67,6 +73,13 @@ const Vendors = ({ isLoading }) => {
               <VendorsList />
             </div>
           </div>
+        )}
+
+        {openVendorModal && (
+          <AddVendor
+            openVendorModal={openVendorModal}
+            setOpenVendorModal={setOpenVendorModal}
+          />
         )}
       </div>
     </>

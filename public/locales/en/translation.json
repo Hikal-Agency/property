@@ -1014,7 +1014,10 @@
 
     "menu_finance": "Finance",
     "menu_vendors": "Vendors",
-    "add_vendor": "Add Vendor"
+    "add_vendor": "Add Vendor",
+    "person_to_contact": "Person To Contact",
+    "form_vendor_name": "Vendor Name",
+    "form_vendor_link": "Link"
 
 
 }
