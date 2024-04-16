@@ -62,7 +62,11 @@ const CommissionModal = ({
   console.log("deal history lead data:: ", commissionModal);
 
   const handleOpenModal = (e, data) => {
-    setOpenAddCommissionModal({ commissionModal: commissionModal, data: data });
+    setOpenAddCommissionModal({
+      commissionModal: commissionModal,
+      data: data,
+      image: data?.receipt[0]?.image,
+    });
   };
 
   const [isClosing, setIsClosing] = useState(false);
@@ -425,7 +429,7 @@ const CommissionModal = ({
                                           </p>
                                         </div>
                                       </div>
-                                      <div className=" flex flex-col items-center justify-center mr-5 w-40">
+                                      <div className=" flex flex-col items-center justify-center mr-5 w-40 mb-3">
                                         {data?.receipt[0]?.image && (
                                           <img
                                             src={data?.receipt[0]?.image}
@@ -448,7 +452,7 @@ const CommissionModal = ({
                                         <button
                                           className="bg-btn-primary rounded-full p-3 bottom-0 "
                                           onClick={(e) =>
-                                            handleOpenModal(e, data?.invoice)
+                                            handleOpenModal(e, data)
                                           }
                                         >
                                           <FaPencilAlt />

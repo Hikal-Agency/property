@@ -57,7 +57,7 @@ const AddCommissionModal = ({
   const [imagePreview, setImagePreview] = useState(null);
   const [btnLoading, setBtnLoading] = useState(false);
 
-  const commData = addCommissionModal?.data;
+  const commData = addCommissionModal?.data?.invoice;
 
   console.log("vendors or users:: ", vendor);
   const [commissionData, setCommissionData] = useState({
@@ -73,12 +73,29 @@ const AddCommissionModal = ({
     claim: commData?.claim || null,
     comm_amount: commData?.comm_amount || null,
     paid_by: commData?.paid_by || null,
-    file: commData?.image || null,
+    // file: commData?.image || null,
+    file: addCommissionModal?.image || null,
     currency: commData?.currency || null,
     category: commData?.category || "Commission",
   });
 
+  const getSelectedOption = () => {
+    return vendor?.find((ven) =>
+      commissionData?.invoice_type === "Expense"
+        ? ven?.id === commissionData?.user_id
+        : ven?.id === commissionData?.vendor_id
+    );
+  };
+
   console.log("commission data:: ", commissionData);
+  console.log(
+    "selected user or vendor: ",
+    vendor?.filter((ven) =>
+      commissionData?.invoice_type === "Expense"
+        ? ven?.id === commissionData?.user_id
+        : ven?.id === commissionData?.vendor_id
+    )?.[0]?.userName
+  );
 
   const handleImgUpload = (e) => {
     const file = e.target.files[0];
@@ -542,13 +559,20 @@ const AddCommissionModal = ({
                       //       : ven?.id === commissionData?.vendor_id
                       //   )?.vendor_name
                       // }
-                      value={
-                        vendor?.filter((ven) =>
-                          commissionData?.invoice_type === "Expense"
-                            ? ven?.id === commissionData?.user_id
-                            : ven?.id === commissionData?.vendor_id
-                        )?.vendor_name
-                      }
+                      // value={
+                      //   vendor?.filter((ven) =>
+                      //     commissionData?.invoice_type === "Expense"
+                      //       ? ven?.id === commissionData?.user_id
+                      //       : ven?.id === commissionData?.vendor_id
+                      //   )?.[0]?.userName
+                      // }
+                      value={{
+                        value: getSelectedOption()?.id,
+                        label:
+                          commissionData?.invoice_type === "Income"
+                            ? getSelectedOption()?.vendor_name
+                            : getSelectedOption()?.userName,
+                      }}
                       onChange={(e) => {
                         console.log(" vendor: ", e);
                         setCommissionData({
