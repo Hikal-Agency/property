@@ -1027,7 +1027,11 @@
     "vendor_type_agency": "Agency",
     "vendor_type_supplier": "Supplier",
     "vendor_type_car_wash": "Car Wash",
-    "vendor_type_fuel": "Fuel Station"
+    "vendor_type_fuel": "Fuel Station",
+
+
+    "edit_transaction_details": "Edit Transaction Details",
+    "btn_edit_transaction": "Edit Transaction"
 
 
     
