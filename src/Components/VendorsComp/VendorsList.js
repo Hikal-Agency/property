@@ -215,7 +215,11 @@ const VendorsList = ({}) => {
                             <div className="flex items-center m-1 mt-2 mb-4">
                               <div className="mx-1 ">
                                 <button
-                                  className="border rounded-full p-3 "
+                                  className={`border rounded-full p-3 ${
+                                    currentMode === "dark"
+                                      ? "border-white"
+                                      : "border-black"
+                                  }`}
                                   onClick={() => handleEditModal(item)}
                                 >
                                   <BsPencil />
@@ -223,7 +227,7 @@ const VendorsList = ({}) => {
                               </div>
                               {item?.type && (
                                 <div className="mx-1 bg-primary py-2 px-7 ">
-                                  <p>{item?.type}</p>
+                                  <p className="text-white">{item?.type}</p>
                                 </div>
                               )}
                             </div>
