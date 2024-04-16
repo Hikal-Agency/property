@@ -654,56 +654,62 @@ const AddCommissionModal = ({
               </div>
 
               {/* Eivdence  */}
-              <div
-                className={`p-4 rounded-xl shadow-sm card-hover
+              {!commData && (
+                <div
+                  className={`p-4 rounded-xl shadow-sm card-hover
                   ${
                     currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
                   }`}
-              >
-                <h1 className="text-center uppercase font-semibold">
-                  {t("evidence")?.toUpperCase()}
-                </h1>
-                <hr className="my-4" />
-                <div className="w-full">
-                  <Box sx={darkModeColors} className="p-2">
-                    <div className="  mb-5 flex items-center justify-center ">
-                      <div className=" rounded-lg border">
-                        <img src={imagePreview} width="100px" height="100px" />
+                >
+                  <h1 className="text-center uppercase font-semibold">
+                    {t("evidence")?.toUpperCase()}
+                  </h1>
+                  <hr className="my-4" />
+                  <div className="w-full">
+                    <Box sx={darkModeColors} className="p-2">
+                      <div className="  mb-5 flex items-center justify-center ">
+                        <div className=" rounded-lg border">
+                          <img
+                            src={imagePreview}
+                            width="100px"
+                            height="100px"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <input
-                      accept="image/*"
-                      style={{ display: "none" }}
-                      id="contained-button-file"
-                      type="file"
-                      onChange={handleImgUpload}
-                    />
-                    <label htmlFor="contained-button-file">
-                      <Button
-                        variant="contained"
-                        size="medium"
-                        className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
-                        style={{
-                          color: "#ffffff",
-                          border: "1px solid white",
-                          fontFamily: fontFam,
-                        }}
-                        component="span" // Required so the button doesn't automatically submit form
-                        disabled={loading ? true : false}
-                        startIcon={
-                          loading ? null : (
-                            <MdFileUpload className="mx-2" size={16} />
-                          )
-                        }
-                      >
-                        <span>{t("upload_invoice")}</span>
-                      </Button>
-                    </label>
-                  </Box>
+                      <input
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        id="contained-button-file"
+                        type="file"
+                        onChange={handleImgUpload}
+                      />
+                      <label htmlFor="contained-button-file">
+                        <Button
+                          variant="contained"
+                          size="medium"
+                          className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+                          style={{
+                            color: "#ffffff",
+                            border: "1px solid white",
+                            fontFamily: fontFam,
+                          }}
+                          component="span" // Required so the button doesn't automatically submit form
+                          disabled={loading ? true : false}
+                          startIcon={
+                            loading ? null : (
+                              <MdFileUpload className="mx-2" size={16} />
+                            )
+                          }
+                        >
+                          <span>{t("upload_invoice")}</span>
+                        </Button>
+                      </label>
+                    </Box>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </>
 
