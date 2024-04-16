@@ -61,8 +61,8 @@ const CommissionModal = ({
 
   console.log("deal history lead data:: ", commissionModal);
 
-  const handleOpenModal = () => {
-    setOpenAddCommissionModal(commissionModal);
+  const handleOpenModal = (e, data) => {
+    setOpenAddCommissionModal({ commissionModal: commissionModal, data: data });
   };
 
   const [isClosing, setIsClosing] = useState(false);
@@ -253,7 +253,7 @@ const CommissionModal = ({
                       {!invoiceModal && (
                         <>
                           <button
-                            onClick={handleOpenModal}
+                            onClick={(e) => handleOpenModal(e)}
                             className="bg-btn-primary rounded-md py-2 px-4"
                           >
                             {t("btn_add_commission")}
@@ -443,13 +443,18 @@ const CommissionModal = ({
                                         </p>
                                       </div>
                                     </div>
-                                    {/* {!invoiceModal && (
+                                    {!invoiceModal && (
                                       <div className="flex justify-end">
-                                        <button className="bg-btn-primary rounded-full p-3 bottom-0 ">
+                                        <button
+                                          className="bg-btn-primary rounded-full p-3 bottom-0 "
+                                          onClick={(e) =>
+                                            handleOpenModal(e, data?.invoice)
+                                          }
+                                        >
                                           <FaPencilAlt />
                                         </button>
                                       </div>
-                                    )} */}
+                                    )}
                                   </div>
                                 );
                               })

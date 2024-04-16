@@ -32,11 +32,9 @@ import moment from "moment";
 const AddCommissionModal = ({
   addCommissionModal,
   handleCloseAddCommission,
-  Feedback,
   fetchLeadsData,
 }) => {
-  console.log("Booked Form: ", addCommissionModal);
-  console.log("Booked Data: ", Feedback);
+  console.log("parent commission data: ", addCommissionModal);
   const token = localStorage.getItem("auth-token");
   const {
     darkModeColors,
@@ -59,23 +57,25 @@ const AddCommissionModal = ({
   const [imagePreview, setImagePreview] = useState(null);
   const [btnLoading, setBtnLoading] = useState(false);
 
+  const commData = addCommissionModal?.data;
+
   console.log("vendors or users:: ", vendor);
   const [commissionData, setCommissionData] = useState({
-    user_id: null,
-    deal_id: addCommissionModal?.lid,
-    vendor_id: null,
-    invoice_type: null,
-    date: null,
-    amount: null,
-    vat: null,
-    status: null,
-    comm_percent: null,
-    claim: null,
-    comm_amount: null,
-    paid_by: null,
-    image: null,
-    currency: null,
-    category: "Commission",
+    user_id: commData?.user_id || null,
+    deal_id: addCommissionModal?.commissionModal?.lid,
+    vendor_id: commData?.vendor_id || null,
+    invoice_type: commData?.invoice_type || null,
+    date: commData?.date || null,
+    amount: commData?.amount || null,
+    vat: commData?.vat || null,
+    status: commData?.status || null,
+    comm_percent: commData?.comm_percent || null,
+    claim: commData?.claim || null,
+    comm_amount: commData?.comm_amount || null,
+    paid_by: commData?.paid_by || null,
+    file: commData?.image || null,
+    currency: commData?.currency || null,
+    category: commData?.category || "Commission",
   });
 
   console.log("commission data:: ", commissionData);
@@ -92,7 +92,7 @@ const AddCommissionModal = ({
       const base64Image = reader.result;
       setCommissionData({
         ...commissionData,
-        image: file,
+        file: file,
       });
     };
     reader.readAsDataURL(file);
@@ -176,8 +176,15 @@ const AddCommissionModal = ({
     setBtnLoading(true);
     const token = localStorage.getItem("auth-token");
 
+    let url;
+    if (commData) {
+      url = `${BACKEND_URL}/invoices/${commData?.id}`;
+    } else {
+      url = `${BACKEND_URL}/invoices`;
+    }
+
     axios
-      .post(`${BACKEND_URL}/invoices`, commissionData, {
+      .post(url, commissionData, {
         // params: { category: "Commission" },
         headers: {
           "Content-Type": "multipart/form-data",
@@ -203,16 +210,19 @@ const AddCommissionModal = ({
           return;
         }
 
-        toast.success("Commission Added Successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success(
+          `Commission ${commData ? "Updated" : "Added"} Successfully.`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
         setBtnLoading(false);
         handleClose();
         fetchLeadsData();
@@ -302,7 +312,7 @@ const AddCommissionModal = ({
                   }`}
                 >
                   <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("commission_details")}
+                    {commData ? t("edit_commission") : t("commission_details")}
                   </h1>
                 </h1>
               </div>
@@ -691,7 +701,7 @@ const AddCommissionModal = ({
                 className="text-white"
               />
             ) : (
-              <span>{t("save")}</span>
+              <span>{commData ? t("edit_commission") : t("save")}</span>
             )}
           </Button>
         </div>
