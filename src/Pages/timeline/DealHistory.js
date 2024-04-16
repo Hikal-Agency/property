@@ -17,6 +17,8 @@ import {
   BsFlagFill,
 } from "react-icons/bs";
 import { FaCheck, FaPlus, FaUserCheck } from "react-icons/fa";
+import { BsPencil } from "react-icons/bs";
+
 import { GoMail } from "react-icons/go";
 import { HiUser } from "react-icons/hi";
 import { MdNoteAlt, MdClose } from "react-icons/md";
@@ -71,8 +73,8 @@ const DealHistory = ({
     setCommissionModal(LeadData);
   };
 
-  const handleTransactionModalOpen = () => {
-    setAddTransactionModal(LeadData);
+  const handleTransactionModalOpen = (e, data) => {
+    setAddTransactionModal({ LeadData: LeadData, data: data });
   };
 
   const statuses = [
@@ -413,6 +415,16 @@ const DealHistory = ({
                                       } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full relative`}
                                     >
                                       <>
+                                        <div className="absolute bottom-1 right-1">
+                                          <button
+                                            className="border rounded-full p-3 "
+                                            onClick={(e) =>
+                                              handleTransactionModalOpen(3, spa)
+                                            }
+                                          >
+                                            <BsPencil />
+                                          </button>
+                                        </div>
                                         <Box sx={{ ...ribbonStyles }}>
                                           <div className="wrap">
                                             <span>{spa?.type}</span>

@@ -25,12 +25,9 @@ import moment from "moment";
 const AddTransactionsModal = ({
   addTransactionModal,
   setAddTransactionModal,
-  newFeedback,
-  Feedback,
   fetchLeadsData,
 }) => {
-  console.log("Booked Form: ", addTransactionModal);
-  console.log("Booked Data: ", Feedback);
+  console.log("parent transaction data: ", addTransactionModal);
   const {
     darkModeColors,
     currentMode,
@@ -51,14 +48,18 @@ const AddTransactionsModal = ({
   const [isClosing, setIsClosing] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
 
+  const transData = addTransactionModal?.data;
+
+  console.log("trans data:: ", transData);
+
   const [transactionData, setTransactionData] = useState({
-    deal_id: addTransactionModal?.lid,
-    type: null,
-    amount: null,
-    dealDate: null,
-    currency: null,
-    percent: null,
-    image: null,
+    deal_id: addTransactionModal?.LeadData?.lid,
+    type: transData?.type || null,
+    amount: transData?.amount || null,
+    dealDate: transData?.dealDate || null,
+    currency: transData?.currency || null,
+    percent: transData?.percent || null,
+    image: transData?.image || null,
   });
 
   console.log("transaction data:: ", transactionData);
@@ -123,8 +124,15 @@ const AddTransactionsModal = ({
       return;
     }
 
+    let url;
+    if (transData) {
+      url = `${BACKEND_URL}/deal-spa/${transData?.id}`;
+    } else {
+      url = `${BACKEND_URL}/deal-spa`;
+    }
+
     axios
-      .post(`${BACKEND_URL}/deal-spa`, transactionData, {
+      .post(url, transactionData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -148,16 +156,19 @@ const AddTransactionsModal = ({
           setBtnLoading(false);
           return;
         }
-        toast.success("Transaction Added successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success(
+          `Transaction ${transData ? "Updated" : "Added"} successfully.`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
         setBtnLoading(false);
         handleClose();
         fetchLeadsData();
@@ -250,7 +261,9 @@ const AddTransactionsModal = ({
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
-                    {t("transactions_details")}
+                    {transData
+                      ? t("edit_transaction_details")
+                      : t("transactions_details")}
                   </h1>
                 </div>
               </div>
