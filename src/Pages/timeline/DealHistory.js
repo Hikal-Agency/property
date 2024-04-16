@@ -415,7 +415,7 @@ const DealHistory = ({
                                       } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full relative`}
                                     >
                                       <>
-                                        <div className="absolute bottom-1 right-1">
+                                        <div className="absolute bottom-1 right-1 mt-4">
                                           <button
                                             className="border rounded-full p-3 "
                                             onClick={(e) =>
@@ -470,7 +470,7 @@ const DealHistory = ({
                                           </div>
                                           {spa?.image && (
                                             <div
-                                              className="rounded-md border cursor-pointer"
+                                              className="rounded-md border cursor-pointer mb-6"
                                               onClick={(e) =>
                                                 setOpenImageModal(spa)
                                               }
