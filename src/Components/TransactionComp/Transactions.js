@@ -40,6 +40,7 @@ import {
 } from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
 import { MdFileUpload } from "react-icons/md";
+import SingleTransactionModal from "./SingleTransactionModal";
 
 const Transactions = () => {
   const {
@@ -59,6 +60,7 @@ const Transactions = () => {
   const [loading, setloading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
   const [transactionsData, setTransactionsData] = useState([]);
+  const [singleTransModal, setSingleTransModal] = useState(null);
   const [maxPage, setMaxPage] = useState(0);
   const [page, setPage] = useState(1);
 
@@ -751,7 +753,10 @@ const Transactions = () => {
 
                     return (
                       <>
-                        <div className="mb-9 mx-3">
+                        <div
+                          className="mb-9 mx-3 cursor-pointer"
+                          onClick={() => setSingleTransModal(trans)}
+                        >
                           <p>{trans?.invoice?.date}</p>
                           <div className="flex items-center justify-between my-3">
                             <div>
@@ -1102,6 +1107,12 @@ const Transactions = () => {
           </Box>
         </div>
       </div>
+      {singleTransModal && (
+        <SingleTransactionModal
+          singleTransModal={singleTransModal}
+          setSingleTransModal={setSingleTransModal}
+        />
+      )}
     </div>
   );
 };

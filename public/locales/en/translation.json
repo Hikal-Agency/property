@@ -1017,9 +1017,7 @@
     "add_vendor": "Add Vendor",
     "person_to_contact": "Person To Contact",
     "form_vendor_name": "Vendor Name",
-    "form_vendor_link": "Link",
-
-   
+    "form_vendor_link": "Link",   
 
   
 
@@ -1032,7 +1030,15 @@
 
     "edit_transaction_details": "Edit Transaction Details",
     "btn_edit_transaction": "Edit Transaction",
-    "edit_commission": "Edit Commission"
+    "edit_commission": "Edit Commission",
+
+
+    
+    "invoice_type": "Invoice Type",
+    "transaction_details": "Transaction Details",
+    "username": "Transaction Details",
+    "invoice_receipt": "Invoice Receipt"
+
 
 
     
