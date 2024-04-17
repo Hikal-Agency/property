@@ -316,23 +316,9 @@ const SingleTransactionModal = ({
                                 {/* vendor name  */}
                                 <div className="flex gap-3">
                                   <p className="font-bold capitalize">
-                                    {t("date")}:
+                                    {t("form_vendor_name")}:
                                   </p>
                                   <h6>{singleTrans?.vendor?.vendor_name} </h6>
-                                </div>
-                                {/* vendor address  */}
-                                <div className="flex gap-3">
-                                  <p className="font-bold capitalize">
-                                    {t("invoice_type")}:
-                                  </p>
-                                  <h6>{singleTrans?.vendor?.address} </h6>
-                                </div>
-                                {/* country  */}
-                                <div className="flex gap-3">
-                                  <p className="font-bold capitalize">
-                                    {t("label_category")}:
-                                  </p>
-                                  <h6>{singleTrans?.invoice?.country}</h6>
                                 </div>
                               </>
                             )}
