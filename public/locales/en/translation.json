@@ -1040,7 +1040,12 @@
     "invoice_receipt": "Invoice Receipt",
 
 
-    "menu_statements":"Statements"
+    "menu_statements":"Statements",
+    "monthly_statement":"Monthly Statement",
+    "total_income":"Total Income",
+    "total_expense":"Total Expense",
+    "profit_loss_perc":"Profit/Loss %",
+    "profit_loss":"Profit/Loss"
 
 
 

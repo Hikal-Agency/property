@@ -89,6 +89,7 @@ import Menu from "./officeBoy";
 import Editor from "./editor";
 import Transaction from "./transaction";
 import Vendors from "./vendors";
+import Statements from "./statements";
 
 const libraries = ["places"];
 
@@ -528,6 +529,11 @@ const routes = [
     path: "/vendors",
     element: <Vendors />,
     pageName: "Transaction",
+  },
+  {
+    path: "/statements",
+    element: <Statements />,
+    pageName: "Statements",
   },
   {
     path: "*",

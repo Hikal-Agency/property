@@ -4,12 +4,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import dayjs from "dayjs";
 
 import Loader from "../../Components/Loader";
-import VendorsList from "../../Components/VendorsComp/VendorsList";
-import { Button } from "@mui/base";
-import AddVendor from "../../Components/VendorsComp/AddVendor";
 import StatmentsList from "../../Components/StatmentComp/StatmentsList";
-
-const currentDate = dayjs();
 
 const Statements = ({ isLoading }) => {
   const {
@@ -54,19 +49,8 @@ const Statements = ({ isLoading }) => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  {t("vendor")}
-                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                    {pageState?.total}
-                  </span>
+                  {t("menu_statements")}
                 </h1>
-              </div>
-              <div>
-                <Button
-                  className="bg-btn-primary w-40 text-white px-7 py-2 rounded-md mr-2 "
-                  onClick={HandleOpenModel}
-                >
-                  {t("add_vendor")}
-                </Button>
               </div>
             </div>
 
