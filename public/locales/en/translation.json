@@ -1037,7 +1037,10 @@
     "invoice_type": "Invoice Type",
     "transaction_details": "Transaction Details",
     "username": "Transaction Details",
-    "invoice_receipt": "Invoice Receipt"
+    "invoice_receipt": "Invoice Receipt",
+
+
+    "menu_statements":"Statements"
 
 
 
