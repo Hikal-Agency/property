@@ -45,21 +45,51 @@ const StatmentsList = () => {
   const [filters, setFilters] = useState({
     currency: "",
     country: "",
-    date: moment().format("MM/YYYY"),
+    month: moment().format("MM"),
+    year: moment().format("YYYY"),
   });
+
+  const clearFilters = () => {
+    setFilters({
+      currency: "",
+      country: "",
+      month: moment().format("MM"),
+      year: moment().format("YYYY"),
+    });
+  };
 
   console.log("filter data:: ", filters);
 
   const fetchStatements = async () => {
     setloading(true);
+
+    if (!filters?.month || !filters?.year) {
+      toast.error("Month and year are required.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setloading(false);
+      return;
+    }
     try {
       const params = {
-        month: moment().format("MM"),
-        year: moment().format("YYYY"),
-        // country: filters?.country,
-        // currency: filters?.currency,
+        month: filters?.month,
+        year: filters?.year,
       };
 
+      // Conditionally add country and currency if they have values
+      if (filters?.country) {
+        params.country = filters.country;
+      }
+      if (filters?.currency) {
+        params.currency = filters.currency;
+      }
       const response = await axios.get(`${BACKEND_URL}/statements`, {
         params: params,
         headers: {
@@ -117,6 +147,14 @@ const StatmentsList = () => {
           className={`p-4 `}
         > */}
         <div className="flex items-center justify-between space-x-3">
+          <div className="mb-5">
+            <button
+              className="bg-btn-primary py-2 px-4  rounded-sm"
+              onClick={clearFilters}
+            >
+              {t("clear_all")}
+            </button>
+          </div>
           <Box
             sx={{
               ...darkModeColors,
@@ -140,7 +178,7 @@ const StatmentsList = () => {
               )}
               onChange={(e) => {
                 setFilters({
-                  ...statementsData,
+                  ...filters,
                   currency: e.value,
                 });
               }}
@@ -174,7 +212,7 @@ const StatmentsList = () => {
               )}
               onChange={(e) => {
                 setFilters({
-                  ...statementsData,
+                  ...filters,
                   country: e.value,
                 });
               }}
@@ -200,15 +238,18 @@ const StatmentsList = () => {
           >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                value={filters?.date}
+                value={dayjs(`${filters?.year}-${filters?.month}-01`)}
                 label={t("month_year")}
                 views={["month", "year"]}
                 onChange={(newValue) => {
-                  const formattedDate = moment(newValue?.$d).format("MM-YYYY");
+                  // Extract month and year as numbers from newValue
+                  const month = newValue ? newValue.$d.getMonth() + 1 : "";
+                  const year = newValue ? newValue.$d.getFullYear() : "";
 
                   setFilters((prev) => ({
                     ...prev,
-                    date: formattedDate,
+                    month: month.toString().padStart(2, "0"), // Ensure month is two digits
+                    year: year.toString(),
                   }));
                 }}
                 format="MM-YYYY"

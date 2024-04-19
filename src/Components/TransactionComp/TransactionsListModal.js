@@ -58,12 +58,26 @@ const TransactionsListModal = ({
 
   const fetchTransactions = async () => {
     setloading(true);
+    if (!filters?.month || !filters?.year) {
+      toast.error("Month and year are required.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setloading(false);
+      return;
+    }
     try {
       const params = {
-        month: moment().format("MM"),
-        year: moment().format("YYYY"),
-        // country: filters?.country,
-        // currency: filters?.currency,
+        month: filters?.month,
+        year: filters?.year,
+        country: filters?.country,
+        currency: filters?.currency,
       };
 
       const response = await axios.get(`${BACKEND_URL}/invoices`, {
