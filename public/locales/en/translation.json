@@ -1046,7 +1046,13 @@
     "total_expense":"Total Expense",
     "profit_loss_perc":"Profit/Loss %",
     "profit_loss":"Profit/Loss",
-    "month_year":"Select month and year"
+    "month_year":"Select month and year",
+
+
+
+    "btn_view_transactions":"View Transactions",
+    "income_amount":"Income",
+    "expense_amount":"Expense"
 
 
 

@@ -350,7 +350,7 @@ const StatmentsList = () => {
             </LocalizationProvider>
           </Box>
 
-          <div className="mb-10">
+          <div className="mb-4">
             <button className="bg-btn-primary p-4 mt-0 rounded-full">
               {" "}
               <BsDownload size={16} color={"#FFFFFF"} />
@@ -361,94 +361,60 @@ const StatmentsList = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
-        <Box
-          sx={{
-            ...darkModeColors,
-            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            "& legend": {
-              textAlign: isLangRTL(i18n.language) ? "right" : "left",
-            },
-          }}
-          className={`p-4 ${
-            !themeBgImg &&
-            (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-          }`}
-        >
-          <h3 className="text-primary text-center font-semibold text-lg">{` ${t(
-            "monthly_statement"
-          )}`}</h3>
-          <br></br>
+        <div className="flex flex-col">
+          <div
+            className={`${
+              currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#eeeeee]"
+            } p-5 mb-3`}
+          >
+            <div className="w-full flex justify-between items-center">
+              <div className="w-full flex items-center pb-3">
+                <div className="bg-primary h-10 w-1 rounded-full"></div>
+                <h1
+                  className={`text-lg font-semibold mx-2 uppercase text-primary `}
+                >
+                  AED
+                </h1>
+              </div>
+              <div>
+                <button className="bg-btn-primary text-white py-2 px-4 w-max">
+                  {t("btn_view_transactions")}
+                </button>
+              </div>
+            </div>
+            <br></br>
 
-          <div className="my-7 flex justify-center">
-            <FaBan size={200} />
-          </div>
+            <div>
+              <div className="flex items-center justify-center space-x-3 mt-2 w-full">
+                <div className={`rounded-md bg-white w-full p-5`}>
+                  <p className={`text-center text-sm text-black`}>
+                    {t("income_amount")}
+                  </p>
+                  <h1 className={`text-center text-lg font-bold text-black`}>
+                    {t("income_amount")}
+                  </h1>
+                </div>
+                <div className={`rounded-md bg-white w-full p-5`}>
+                  <p className={`text-center text-sm text-black`}>
+                    {t("expense_amount")}
+                  </p>
+                  <h1 className={`text-center text-lg font-bold text-black`}>
+                    {t("expense_amount")}
+                  </h1>
+                </div>
+              </div>
 
-          <div className="flex items-center justify-center space-x-3 mt-2">
-            <TextField
-              id="comm_percent"
-              type={"text"}
-              label={t("total_income")}
-              className="w-full mt-3"
-              style={{
-                marginBottom: "20px",
-              }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={addTransactionData.comm_percent}
-              onChange={handleChange}
-            />
-            <TextField
-              id="comm_percent"
-              type={"text"}
-              label={t("total_expense")}
-              className="w-full mt-3"
-              style={{
-                marginBottom: "20px",
-              }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={addTransactionData.comm_percent}
-              onChange={handleChange}
-            />
+              <div className={`rounded-md bg-[#E8C4C4] w-full p-5 mt-2 h-24 `}>
+                <p className={`text-center text-sm text-black`}>
+                  {t("income_amount")}
+                </p>
+                <h1 className={`text-center text-lg font-bold text-[#DA1F26]`}>
+                  {t("income_amount")}
+                </h1>
+              </div>
+            </div>
           </div>
-
-          <div className="flex items-center justify-center space-x-3 mt-1">
-            <TextField
-              id="comm_percent"
-              type={"text"}
-              label={t("profit_loss_perc")}
-              className="w-full mt-3"
-              style={{
-                marginBottom: "20px",
-              }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={addTransactionData.comm_percent}
-              onChange={handleChange}
-            />
-            <TextField
-              id="comm_percent"
-              type={"text"}
-              label={t("profit_loss")}
-              className="w-full mt-3"
-              style={{
-                marginBottom: "20px",
-              }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={addTransactionData.comm_percent}
-              onChange={handleChange}
-            />
-          </div>
-        </Box>
+        </div>
 
         {/* transactions list */}
         <div>
