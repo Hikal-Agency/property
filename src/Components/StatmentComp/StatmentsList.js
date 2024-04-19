@@ -10,11 +10,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 import SingleTransactionModal from "../TransactionComp/SingleTransactionModal";
+import Select from "react-select";
 
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { useRef } from "react";
 import { BsDownload } from "react-icons/bs";
+import { countries_list, currencies } from "../_elements/SelectOptions";
+import { selectStyles } from "../_elements/SelectStyles";
 
 const StatmentsList = () => {
   const {
@@ -43,13 +46,14 @@ const StatmentsList = () => {
 
   console.log("vendors array:: ", vendors);
 
-  const imagesInputRef = useRef(null);
+  const currentDate = moment();
+  const currentMonth = currentDate.month() + 1;
+  const currentYear = currentDate.year();
 
   const [addTransactionData, setAddTransactionData] = useState({
     user_id: "",
     invoice_type: "",
     amount: "",
-    date: "",
     currency: "",
     comm_percent: "",
     country: "",
@@ -58,14 +62,10 @@ const StatmentsList = () => {
     vendor_id: "",
     category: "",
     image: "",
+    date: dayjs().format("MM-YYYY"),
   });
 
   console.log("addtransaction:: ", addTransactionData);
-
-  console.log(
-    "find find vendor: ",
-    vendors?.filter((ven) => ven?.id === addTransactionData?.user_id)
-  );
 
   const [filtersData, setFilterData] = useState({
     user_id: "",
@@ -100,103 +100,6 @@ const StatmentsList = () => {
       ...addTransactionData,
       [id]: value,
     });
-  };
-
-  const clearFilter = () => {
-    setFilterData({
-      user_id: "",
-      invoice_type: "",
-      amount: "",
-      currency: "",
-      comm_percent: "",
-      country: "",
-      status: "",
-      paid_by: "",
-      vendor_id: "",
-      category: "",
-    });
-  };
-
-  const handleImgUpload = (e) => {
-    const file = e.target.files[0];
-
-    console.log("files:: ", file);
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      // setImagePreview(reader.result);
-
-      const base64Image = reader.result;
-      setAddTransactionData({
-        ...addTransactionData,
-        image: file,
-      });
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleTransaction = async (e) => {
-    e.preventDefault();
-
-    setBtnLoading(true);
-
-    try {
-      const submitTransaction = await axios.post(
-        `${BACKEND_URL}/invoices`,
-        addTransactionData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      console.log("transaction submited ", submitTransaction);
-
-      toast.success("Transaction Added.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      fetchTransactions();
-
-      setAddTransactionData({
-        user_id: "",
-        invoice_type: "",
-        amount: "",
-        date: "",
-        currency: "",
-        comm_percent: "",
-        country: "",
-        status: "",
-        paid_by: "",
-        vendor_id: "",
-        category: "",
-        image: "",
-      });
-
-      setBtnLoading(false);
-    } catch (error) {
-      console.log("Error: ", error);
-      setBtnLoading(false);
-      toast.error("Something went wrong! Please Try Again", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
   };
 
   const fetchVendor = async () => {
@@ -297,12 +200,10 @@ const StatmentsList = () => {
   };
 
   useEffect(() => {
-    console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchTransactions();
   }, [filtersData]);
 
   useEffect(() => {
-    console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchVendor();
   }, [addTransactionData?.category, filtersData?.category]);
 
@@ -313,6 +214,152 @@ const StatmentsList = () => {
         (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
       }`}
     >
+      <div className="flex items-center justify-between space-x-3">
+        <div></div>
+
+        {/* <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+          className={`p-4 `}
+        > */}
+        <div className="flex items-center justify-between space-x-3">
+          <Box
+            sx={{
+              ...darkModeColors,
+              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
+              "& legend": {
+                textAlign: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            }}
+          >
+            <Select
+              options={currencies(t)?.map((curr) => ({
+                value: curr?.value,
+                label: curr?.label,
+              }))}
+              value={currencies(t)?.filter(
+                (curr) => curr?.value === addTransactionData?.currency
+              )}
+              onChange={(e) => {
+                setAddTransactionData({
+                  ...transactionsData,
+                  currency: e.value,
+                });
+              }}
+              placeholder={t("label_currency")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+              required
+            />
+          </Box>
+          <Box
+            sx={{
+              ...darkModeColors,
+              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
+              "& legend": {
+                textAlign: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            }}
+          >
+            <Select
+              options={countries_list(t)?.map((country) => ({
+                value: country?.value,
+                label: country?.label,
+              }))}
+              value={countries_list(t)?.filter(
+                (country) => country?.value === addTransactionData?.country
+              )}
+              onChange={(e) => {
+                setAddTransactionData({
+                  ...transactionsData,
+                  country: e.value,
+                });
+              }}
+              placeholder={t("label_country")}
+              className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+              required
+            />
+          </Box>
+          <Box
+            sx={{
+              ...darkModeColors,
+              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
+              "& legend": {
+                textAlign: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            }}
+          >
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                value={addTransactionData?.date}
+                label={t("month_year")}
+                views={["month", "year"]}
+                onChange={(newValue) => {
+                  const formattedDate = moment(newValue?.$d).format("MM-YYYY");
+
+                  setAddTransactionData((prev) => ({
+                    ...prev,
+                    date: formattedDate,
+                  }));
+                }}
+                format="MM-YYYY"
+                renderInput={(params) => (
+                  <TextField
+                    sx={{
+                      "& input": {
+                        color: currentMode === "dark" ? "white" : "black",
+                      },
+                      "& .MuiSvgIcon-root": {
+                        color: currentMode === "dark" ? "white" : "black",
+                      },
+                      marginBottom: "20px",
+                    }}
+                    fullWidth
+                    size="small"
+                    {...params}
+                    onKeyDown={(e) => e.preventDefault()}
+                    readOnly={true}
+                  />
+                )}
+                maxDate={dayjs().startOf("day").toDate()}
+              />
+            </LocalizationProvider>
+          </Box>
+
+          <div className="mb-10">
+            <button className="bg-btn-primary p-4 mt-0 rounded-full">
+              {" "}
+              <BsDownload size={16} color={"#FFFFFF"} />
+            </button>
+          </div>
+        </div>
+        {/* </Box> */}
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
         <Box
           sx={{
@@ -335,89 +382,6 @@ const StatmentsList = () => {
             "monthly_statement"
           )}`}</h3>
           <br></br>
-
-          <div className="flex items-center justify-center space-x-3">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                value={addTransactionData?.date}
-                label={t("report_month")}
-                views={["month"]}
-                onChange={(newValue) => {
-                  const formattedDate = moment(newValue?.$d).format(
-                    "YYYY-MM-DD"
-                  );
-
-                  setAddTransactionData((prev) => ({
-                    ...prev,
-                    date: formattedDate,
-                  }));
-                }}
-                format="MM"
-                renderInput={(params) => (
-                  <TextField
-                    sx={{
-                      "& input": {
-                        color: currentMode === "dark" ? "white" : "black",
-                      },
-                      "& .MuiSvgIcon-root": {
-                        color: currentMode === "dark" ? "white" : "black",
-                      },
-                      marginBottom: "15px",
-                    }}
-                    fullWidth
-                    size="small"
-                    {...params}
-                    onKeyDown={(e) => e.preventDefault()}
-                    readOnly={true}
-                  />
-                )}
-                maxDate={dayjs().startOf("day").toDate()}
-              />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                value={addTransactionData?.date}
-                label={t("year")}
-                views={["year"]}
-                onChange={(newValue) => {
-                  const formattedDate = moment(newValue?.$d).format(
-                    "YYYY-MM-DD"
-                  );
-
-                  setAddTransactionData((prev) => ({
-                    ...prev,
-                    date: formattedDate,
-                  }));
-                }}
-                format="YYYY"
-                renderInput={(params) => (
-                  <TextField
-                    sx={{
-                      "& input": {
-                        color: currentMode === "dark" ? "white" : "black",
-                      },
-                      "& .MuiSvgIcon-root": {
-                        color: currentMode === "dark" ? "white" : "black",
-                      },
-                      marginBottom: "15px",
-                    }}
-                    fullWidth
-                    size="small"
-                    {...params}
-                    onKeyDown={(e) => e.preventDefault()}
-                    readOnly={true}
-                  />
-                )}
-                maxDate={dayjs().startOf("day").toDate()}
-              />
-            </LocalizationProvider>
-            {/* <div> */}
-            <button className="bg-btn-primary p-4 mt-0 rounded-full">
-              {" "}
-              <BsDownload size={16} color={"#FFFFFF"} />
-            </button>
-            {/* </div> */}
-          </div>
 
           <div className="my-7 flex justify-center">
             <FaBan size={200} />
