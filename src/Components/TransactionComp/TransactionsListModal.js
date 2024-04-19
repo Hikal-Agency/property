@@ -76,9 +76,15 @@ const TransactionsListModal = ({
       const params = {
         month: filters?.month,
         year: filters?.year,
-        country: filters?.country,
-        currency: filters?.currency,
       };
+
+      // Conditionally add country and currency if they have values
+      if (filters?.country) {
+        params.country = filters.country;
+      }
+      if (filters?.currency) {
+        params.currency = filters.currency;
+      }
 
       const response = await axios.get(`${BACKEND_URL}/invoices`, {
         params: params,
