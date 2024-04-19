@@ -36,7 +36,7 @@ const StatmentsList = () => {
 
   const [loading, setloading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
-  const [transactionsData, setTransactionsData] = useState([]);
+  const [statementsData, setStatementsData] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [maxPage, setMaxPage] = useState(0);
   const [page, setPage] = useState(1);
@@ -149,42 +149,29 @@ const StatmentsList = () => {
   const fetchTransactions = async () => {
     setloading(true);
     try {
-      // Filter out empty values and construct query parameters
-      const activeFilters = Object.entries(filtersData).reduce(
-        (acc, [key, value]) => {
-          if (value !== "") acc[key] = value;
-          return acc;
+      const params = {
+        month: moment().format("MM"),
+        year: moment().format("YYYY"),
+      };
+
+      const response = await axios.get(`${BACKEND_URL}/statements`, {
+        params: params,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         },
-        {}
-      );
-      const queryParams =
-        Object.keys(activeFilters).length > 0
-          ? `?${new URLSearchParams(activeFilters).toString()}`
-          : "";
+      });
 
-      console.log("activeFilters:: ", activeFilters);
-      console.log("queryParams:: ", queryParams);
-
-      const response = await axios.get(
-        `${BACKEND_URL}/invoices${queryParams}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      console.log("transactions list:: ", response);
-      setTransactionsData(response?.data?.data);
+      console.log("statements list:: ", response);
+      setStatementsData(response?.data?.data);
 
       if (vendors?.length == 0) {
         await fetchVendor();
       }
     } catch (error) {
       setloading(false);
-      console.error("Error fetching transactions:", error);
-      toast.error("Unable to fetch the StatmentsList", {
+      console.error("Error fetching statements:", error);
+      toast.error("Unable to fetch the Statments List", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -255,7 +242,7 @@ const StatmentsList = () => {
               )}
               onChange={(e) => {
                 setAddTransactionData({
-                  ...transactionsData,
+                  ...statementsData,
                   currency: e.value,
                 });
               }}
@@ -289,7 +276,7 @@ const StatmentsList = () => {
               )}
               onChange={(e) => {
                 setAddTransactionData({
-                  ...transactionsData,
+                  ...statementsData,
                   country: e.value,
                 });
               }}
@@ -361,60 +348,94 @@ const StatmentsList = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
-        <div className="flex flex-col">
-          <div
-            className={`${
-              currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#eeeeee]"
-            } p-5 mb-3`}
-          >
-            <div className="w-full flex justify-between items-center">
-              <div className="w-full flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase text-primary `}
-                >
-                  AED
-                </h1>
-              </div>
-              <div>
-                <button className="bg-btn-primary text-white py-2 px-4 w-max">
-                  {t("btn_view_transactions")}
-                </button>
-              </div>
-            </div>
-            <br></br>
-
-            <div>
-              <div className="flex items-center justify-center space-x-3 mt-2 w-full">
-                <div className={`rounded-md bg-white w-full p-5`}>
-                  <p className={`text-center text-sm text-black`}>
-                    {t("income_amount")}
-                  </p>
-                  <h1 className={`text-center text-lg font-bold text-black`}>
-                    {t("income_amount")}
-                  </h1>
-                </div>
-                <div className={`rounded-md bg-white w-full p-5`}>
-                  <p className={`text-center text-sm text-black`}>
-                    {t("expense_amount")}
-                  </p>
-                  <h1 className={`text-center text-lg font-bold text-black`}>
-                    {t("expense_amount")}
-                  </h1>
-                </div>
-              </div>
-
-              <div className={`rounded-md bg-[#E8C4C4] w-full p-5 mt-2 h-24 `}>
-                <p className={`text-center text-sm text-black`}>
-                  {t("income_amount")}
-                </p>
-                <h1 className={`text-center text-lg font-bold text-[#DA1F26]`}>
-                  {t("income_amount")}
-                </h1>
-              </div>
-            </div>
+        {loading ? (
+          <div className="flex items-center justify-center">
+            <CircularProgress />
           </div>
-        </div>
+        ) : (
+          <div className="flex flex-col h-[600px] overflow-y-scroll">
+            {statementsData && statementsData?.length > 0 ? (
+              statementsData?.map((stats) => {
+                let loss;
+                if (stats?.output?.toLowerCase() === "loss") {
+                  loss = true;
+                } else {
+                  loss = false;
+                }
+                return (
+                  <div
+                    className={`${
+                      currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#eeeeee]"
+                    } p-5 mb-3`}
+                  >
+                    <div className="w-full flex justify-between items-center">
+                      <div className="w-full flex items-center pb-3">
+                        <div className="bg-primary h-10 w-1 rounded-full"></div>
+                        <h1
+                          className={`text-lg font-semibold mx-2 uppercase text-primary `}
+                        >
+                          {stats?.currency}
+                        </h1>
+                      </div>
+                      <div>
+                        <button className="bg-btn-primary text-white py-2 px-4 w-max">
+                          {t("btn_view_transactions")}
+                        </button>
+                      </div>
+                    </div>
+                    <br></br>
+
+                    <div>
+                      <div className="flex items-center justify-center space-x-3 mt-2 w-full">
+                        <div className={`rounded-md bg-white w-full p-5`}>
+                          <p className={`text-center text-sm text-black`}>
+                            {t("income_amount")}
+                          </p>
+                          <h1
+                            className={`text-center text-lg font-bold text-black`}
+                          >
+                            {stats?.total_income}
+                          </h1>
+                        </div>
+                        <div className={`rounded-md bg-white w-full p-5`}>
+                          <p className={`text-center text-sm text-black`}>
+                            {t("expense_amount")}
+                          </p>
+                          <h1
+                            className={`text-center text-lg font-bold text-black`}
+                          >
+                            {stats?.total_expense}
+                          </h1>
+                        </div>
+                      </div>
+
+                      <div
+                        className={`rounded-md ${
+                          loss ? "bg-[#E8C4C4]" : "bg-[#D3E6D5]"
+                        } w-full p-5 mt-2 h-24 `}
+                      >
+                        <p className={`text-center text-sm text-black mb-3`}>
+                          {stats?.output}
+                        </p>
+                        <h1
+                          className={`text-center text-lg font-bold ${
+                            loss ? "text-[#DA1F26]" : "text-[#127339]"
+                          }`}
+                        >
+                          {stats?.profit_loss}
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div>
+                <h1>{t("no_data_found")}</h1>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* transactions list */}
         <div>
@@ -438,8 +459,8 @@ const StatmentsList = () => {
               </div>
             ) : (
               <div className="h-[600px] overflow-y-scroll ">
-                {transactionsData && transactionsData?.length > 0 ? (
-                  transactionsData?.map((trans) => {
+                {statementsData && statementsData?.length > 0 ? (
+                  statementsData?.map((trans) => {
                     let user;
                     if (trans?.invoice?.category?.toLowerCase() === "salary") {
                       user = true;
