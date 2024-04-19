@@ -18,6 +18,7 @@ import { useRef } from "react";
 import { BsDownload } from "react-icons/bs";
 import { countries_list, currencies } from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
+import TransactionsListModal from "../TransactionComp/TransactionsListModal";
 
 const StatmentsList = () => {
   const {
@@ -35,123 +36,28 @@ const StatmentsList = () => {
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
-  const [btnLoading, setBtnLoading] = useState(false);
   const [statementsData, setStatementsData] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
-  const [maxPage, setMaxPage] = useState(0);
-  const [page, setPage] = useState(1);
+  const [transactionsListModal, setTransactionsListModal] = useState(null);
 
   const token = localStorage.getItem("auth-token");
-  const [vendors, setVendors] = useState([]);
 
-  console.log("vendors array:: ", vendors);
-
-  const currentDate = moment();
-  const currentMonth = currentDate.month() + 1;
-  const currentYear = currentDate.year();
-
-  const [addTransactionData, setAddTransactionData] = useState({
-    user_id: "",
-    invoice_type: "",
-    amount: "",
+  const [filters, setFilters] = useState({
     currency: "",
-    comm_percent: "",
     country: "",
-    status: "",
-    paid_by: "",
-    vendor_id: "",
-    category: "",
-    image: "",
-    date: dayjs().format("MM-YYYY"),
+    date: moment().format("MM/YYYY"),
   });
 
-  console.log("addtransaction:: ", addTransactionData);
+  console.log("filter data:: ", filters);
 
-  const [filtersData, setFilterData] = useState({
-    user_id: "",
-    invoice_type: "",
-    amount: "",
-    currency: "",
-    comm_percent: "",
-    country: "",
-    status: "",
-    paid_by: "",
-    vendor_id: "",
-    category: "",
-  });
-
-  console.log("filter data:: ", addTransactionData);
-
-  const handleChange = (e, filter) => {
-    console.log("filter: ", filter);
-    const id = e.target.id;
-    const value = e.target.value;
-
-    if (filter) {
-      setFilterData({
-        ...filtersData,
-        [id]: value,
-      });
-
-      return;
-    }
-
-    setAddTransactionData({
-      ...addTransactionData,
-      [id]: value,
-    });
-  };
-
-  const fetchVendor = async () => {
-    let url;
-
-    if (
-      addTransactionData?.category.toLowerCase() === "salary" ||
-      filtersData?.category.toLowerCase() === "salary"
-    ) {
-      url = `${BACKEND_URL}/users`;
-    } else {
-      url = `${BACKEND_URL}/vendors`;
-    }
-    try {
-      const response = await axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      console.log("vendors list:: ", response);
-
-      if (
-        addTransactionData?.category.toLowerCase() === "salary" ||
-        filtersData?.category.toLowerCase() === "salary"
-      ) {
-        setVendors(response?.data?.managers?.data);
-      } else {
-        setVendors(response?.data?.data?.data);
-      }
-    } catch (error) {
-      setloading(false);
-      console.error("Error fetching transactions:", error);
-      toast.error("Unable to fetch vendors", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
-  const fetchTransactions = async () => {
+  const fetchStatements = async () => {
     setloading(true);
     try {
       const params = {
         month: moment().format("MM"),
         year: moment().format("YYYY"),
+        // country: filters?.country,
+        // currency: filters?.currency,
       };
 
       const response = await axios.get(`${BACKEND_URL}/statements`, {
@@ -164,10 +70,6 @@ const StatmentsList = () => {
 
       console.log("statements list:: ", response);
       setStatementsData(response?.data?.data);
-
-      if (vendors?.length == 0) {
-        await fetchVendor();
-      }
     } catch (error) {
       setloading(false);
       console.error("Error fetching statements:", error);
@@ -187,12 +89,8 @@ const StatmentsList = () => {
   };
 
   useEffect(() => {
-    fetchTransactions();
-  }, [filtersData]);
-
-  useEffect(() => {
-    fetchVendor();
-  }, [addTransactionData?.category, filtersData?.category]);
+    fetchStatements();
+  }, [filters]);
 
   return (
     <div
@@ -238,10 +136,10 @@ const StatmentsList = () => {
                 label: curr?.label,
               }))}
               value={currencies(t)?.filter(
-                (curr) => curr?.value === addTransactionData?.currency
+                (curr) => curr?.value === filters?.currency
               )}
               onChange={(e) => {
-                setAddTransactionData({
+                setFilters({
                   ...statementsData,
                   currency: e.value,
                 });
@@ -272,10 +170,10 @@ const StatmentsList = () => {
                 label: country?.label,
               }))}
               value={countries_list(t)?.filter(
-                (country) => country?.value === addTransactionData?.country
+                (country) => country?.value === filters?.country
               )}
               onChange={(e) => {
-                setAddTransactionData({
+                setFilters({
                   ...statementsData,
                   country: e.value,
                 });
@@ -302,13 +200,13 @@ const StatmentsList = () => {
           >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                value={addTransactionData?.date}
+                value={filters?.date}
                 label={t("month_year")}
                 views={["month", "year"]}
                 onChange={(newValue) => {
                   const formattedDate = moment(newValue?.$d).format("MM-YYYY");
 
-                  setAddTransactionData((prev) => ({
+                  setFilters((prev) => ({
                     ...prev,
                     date: formattedDate,
                   }));
@@ -378,7 +276,10 @@ const StatmentsList = () => {
                         </h1>
                       </div>
                       <div>
-                        <button className="bg-btn-primary text-white py-2 px-4 w-max">
+                        <button
+                          className="bg-btn-primary text-white py-2 px-4 w-max"
+                          onClick={() => setTransactionsListModal(true)}
+                        >
                           {t("btn_view_transactions")}
                         </button>
                       </div>
@@ -409,14 +310,16 @@ const StatmentsList = () => {
                         </div>
                       </div>
 
-                      <div
+                      {/* <div
                         className={`rounded-md ${
                           loss ? "bg-[#E8C4C4]" : "bg-[#D3E6D5]"
                         } w-full p-5 mt-2 h-24 `}
                       >
+                        
                         <p className={`text-center text-sm text-black mb-3`}>
                           {stats?.output}
                         </p>
+
                         <h1
                           className={`text-center text-lg font-bold ${
                             loss ? "text-[#DA1F26]" : "text-[#127339]"
@@ -424,6 +327,36 @@ const StatmentsList = () => {
                         >
                           {stats?.profit_loss}
                         </h1>
+                        
+                        <p
+                          className={`text-right -top-7 text-sm text-black mb-3`}
+                        >
+                          {stats?.percent}
+                        </p>
+                     
+                      </div> */}
+                      <div
+                        className={`rounded-md ${
+                          loss ? "bg-[#E8C4C4]" : "bg-[#D3E6D5]"
+                        } w-full p-5 mt-2 flex flex-col items-center justify-center`}
+                      >
+                        <div className="flex flex-col items-center justify-center">
+                          <p className="text-center text-sm text-black">
+                            {stats?.output}
+                          </p>
+                          <h1
+                            className={`text-center text-lg font-bold ${
+                              loss ? "text-[#DA1F26]" : "text-[#127339]"
+                            }`}
+                          >
+                            {stats?.profit_loss}
+                          </h1>
+                        </div>
+                        <p className="text-sm text-black self-end ">
+                          {stats?.percent
+                            ? parseFloat(stats?.percent).toFixed(3) + " " + "%"
+                            : ""}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -527,6 +460,13 @@ const StatmentsList = () => {
         <SingleTransactionModal
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
+        />
+      )}
+      {transactionsListModal && (
+        <TransactionsListModal
+          transactionsListModal={transactionsListModal}
+          setTransactionsListModal={setTransactionsListModal}
+          filters={filters}
         />
       )}
     </div>
