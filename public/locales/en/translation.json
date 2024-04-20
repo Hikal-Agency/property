@@ -1059,7 +1059,9 @@
     "menu_commission_vat":"Commission VAT",
     "title_commission_vat":"Incoming Commission VAT",
     "no_data_year":"No Data For This Year",
-    "select_year":"Select Year"
+    "select_year":"Select Year",
+    "vat_calculated_for":"VAT calculated for amount of ",
+    "invoices":"invoices"
 
 
 

@@ -340,13 +340,24 @@ const Commission_VAT_List = () => {
                                 <h1
                                   className={`text-center text-lg font-bold text-black mb-3`}
                                 >
-                                  {comm_vat?.count}
+                                  {vat?.vat}
                                 </h1>
 
                                 <p className={`text-center text-sm text-black`}>
                                   {t("vat_amount")}
                                 </p>
                               </div>
+                              <p className={`text-center text-sm my-3`}>
+                                {t("vat_calculated_for") +
+                                  " " +
+                                  vat?.amount +
+                                  " " +
+                                  t("from") +
+                                  " " +
+                                  vat?.count +
+                                  " " +
+                                  t("invoices")}
+                              </p>
                             </div>
                           </div>
                         </div>
