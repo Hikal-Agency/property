@@ -90,6 +90,7 @@ import Editor from "./editor";
 import Transaction from "./transaction";
 import Vendors from "./vendors";
 import Statements from "./statements";
+import Commission_VAT from "./commission_vat";
 
 const libraries = ["places"];
 
@@ -534,6 +535,11 @@ const routes = [
     path: "/statements",
     element: <Statements />,
     pageName: "Statements",
+  },
+  {
+    path: "/commission_vat",
+    element: <Commission_VAT />,
+    pageName: "Commission VAT",
   },
   {
     path: "*",

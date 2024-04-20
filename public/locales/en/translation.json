@@ -1056,7 +1056,9 @@
 
 
     "menu_new_transaction":"Add New Transaction",
-    "menu_commission_vat":"Commission VAT"
+    "menu_commission_vat":"Commission VAT",
+    "title_commission_vat":"Incoming Commission VAT",
+    "no_data_year":"No Data For This Year"
 
 
 
