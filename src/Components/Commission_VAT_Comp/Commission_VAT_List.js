@@ -381,11 +381,10 @@ const Commission_VAT_List = () => {
               </div>
             ) : (
               <div className="h-[600px] overflow-y-scroll ">
-                {transactionsData?.data &&
-                transactionsData?.data?.length > 0 ? (
-                  transactionsData?.data?.map((trans) => {
+                {transactionsData && transactionsData?.length > 0 ? (
+                  transactionsData?.map((trans) => {
                     let user;
-                    if (trans?.category?.toLowerCase() === "salary") {
+                    if (trans?.invoice?.category?.toLowerCase() === "salary") {
                       user = true;
                     } else {
                       user = false;
@@ -397,7 +396,7 @@ const Commission_VAT_List = () => {
                           className="mb-9 mx-3 cursor-pointer"
                           onClick={() => setSingleTransModal(trans)}
                         >
-                          <p>{trans?.date}</p>
+                          <p>{trans?.invoice?.date}</p>
                           <div className="flex items-center justify-between my-3">
                             <div>
                               <div className="flex flex-col">
@@ -412,7 +411,7 @@ const Commission_VAT_List = () => {
                                   </p>
                                 </div>
                                 <p className="text-sm self-start pl-[calc(20px+2rem)]">
-                                  {trans?.category}
+                                  {trans?.invoice?.category}
                                 </p>
                               </div>
                             </div>
@@ -424,8 +423,11 @@ const Commission_VAT_List = () => {
                                     : "text-red-600"
                                 } `}
                               >
-                                {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
-                                {trans?.currency} {trans?.amount}
+                                {trans?.invoice?.invoice_type === "Income"
+                                  ? "+"
+                                  : "-"}{" "}
+                                {trans?.invoice?.currency}{" "}
+                                {trans?.invoice?.amount}
                               </p>
                             </div>
                           </div>
