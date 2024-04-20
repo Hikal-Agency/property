@@ -19,6 +19,7 @@ import { BsDownload } from "react-icons/bs";
 import { countries_list, currencies } from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
 import TransactionsListModal from "../TransactionComp/TransactionsListModal";
+import StatmentsCharts from "./StatmentsChart";
 
 const StatmentsList = () => {
   const {
@@ -149,7 +150,7 @@ const StatmentsList = () => {
         <div className="flex items-center justify-between space-x-3">
           <div className="mb-5">
             <button
-              className="bg-btn-primary py-2 px-4  rounded-sm"
+              className="bg-btn-primary py-2 px-4 text-white  rounded-sm"
               onClick={clearFilters}
             >
               {t("clear_all")}
@@ -434,55 +435,11 @@ const StatmentsList = () => {
             ) : (
               <div className="h-[600px] overflow-y-scroll ">
                 {statementsData && statementsData?.length > 0 ? (
-                  statementsData?.map((trans) => {
-                    let user;
-                    if (trans?.invoice?.category?.toLowerCase() === "salary") {
-                      user = true;
-                    } else {
-                      user = false;
-                    }
-
+                  statementsData?.map((stats) => {
                     return (
                       <>
-                        <div
-                          className="mb-9 mx-3 cursor-pointer"
-                          onClick={() => setSingleTransModal(trans)}
-                        >
-                          <p>{trans?.invoice?.date}</p>
-                          <div className="flex items-center justify-between my-3">
-                            <div>
-                              <div className="flex flex-col">
-                                <div className="flex items-center mb-1">
-                                  <span className="border rounded-md p-3 mr-3">
-                                    {user ? <FaUser /> : <FaHome size={20} />}
-                                  </span>
-                                  <p>
-                                    {user
-                                      ? trans?.user?.userName
-                                      : trans?.vendor?.vendor_name}
-                                  </p>
-                                </div>
-                                <p className="text-sm self-start pl-[calc(20px+2rem)]">
-                                  {trans?.invoice?.category}
-                                </p>
-                              </div>
-                            </div>
-                            <div>
-                              <p
-                                className={`font-semibold ${
-                                  trans?.invoice?.invoice_type == "Income"
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                } `}
-                              >
-                                {trans?.invoice?.invoice_type === "Income"
-                                  ? "+"
-                                  : "-"}{" "}
-                                {trans?.invoice?.currency}{" "}
-                                {trans?.invoice?.amount}
-                              </p>
-                            </div>
-                          </div>
+                        <div className="mb-9 mx-3 cursor-pointer">
+                          <StatmentsCharts stats={stats} />
                         </div>
                       </>
                     );
