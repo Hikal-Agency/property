@@ -37,8 +37,10 @@ const Commission_VAT_List = () => {
 
   const [loading, setloading] = useState(true);
   const [comm_vat_data, setCommVATData] = useState([]);
+  const [transactionsData, setTransData] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
-  const [transactionsListModal, setTransactionsListModal] = useState(null);
+
+  console.log("transactions data:", transactionsData);
 
   const token = localStorage.getItem("auth-token");
 
@@ -99,6 +101,7 @@ const Commission_VAT_List = () => {
 
       console.log("commission vat list:: ", response);
       setCommVATData(response?.data?.data);
+      setTransData(response?.data?.data?.[0]?.invoices);
     } catch (error) {
       setloading(false);
       console.error("Error fetching statements:", error);
@@ -238,20 +241,17 @@ const Commission_VAT_List = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={dayjs(`${filters?.year}-${filters?.month}-01`)}
-                label={t("month_year")}
-                views={["month", "year"]}
+                label={t("select_year")}
+                views={["year"]}
                 onChange={(newValue) => {
-                  // Extract month and year as numbers from newValue
-                  const month = newValue ? newValue.$d.getMonth() + 1 : "";
                   const year = newValue ? newValue.$d.getFullYear() : "";
 
                   setFilters((prev) => ({
                     ...prev,
-                    month: month.toString().padStart(2, "0"), // Ensure month is two digits
                     year: year.toString(),
                   }));
                 }}
-                format="MM-YYYY"
+                format="YYYY"
                 renderInput={(params) => (
                   <TextField
                     sx={{
@@ -381,12 +381,54 @@ const Commission_VAT_List = () => {
               </div>
             ) : (
               <div className="h-[600px] overflow-y-scroll ">
-                {comm_vat_data && comm_vat_data?.length > 0 ? (
-                  comm_vat_data?.map((comm_vat) => {
+                {transactionsData?.data &&
+                transactionsData?.data?.length > 0 ? (
+                  transactionsData?.data?.map((trans) => {
+                    let user;
+                    if (trans?.category?.toLowerCase() === "salary") {
+                      user = true;
+                    } else {
+                      user = false;
+                    }
+
                     return (
                       <>
-                        <div className="mb-9 mx-3 cursor-pointer">
-                          Transactions list
+                        <div
+                          className="mb-9 mx-3 cursor-pointer"
+                          onClick={() => setSingleTransModal(trans)}
+                        >
+                          <p>{trans?.date}</p>
+                          <div className="flex items-center justify-between my-3">
+                            <div>
+                              <div className="flex flex-col">
+                                <div className="flex items-center mb-1">
+                                  <span className="border rounded-md p-3 mr-3">
+                                    {user ? <FaUser /> : <FaHome size={20} />}
+                                  </span>
+                                  <p>
+                                    {user
+                                      ? trans?.user?.userName
+                                      : trans?.vendor?.vendor_name}
+                                  </p>
+                                </div>
+                                <p className="text-sm self-start pl-[calc(20px+2rem)]">
+                                  {trans?.category}
+                                </p>
+                              </div>
+                            </div>
+                            <div>
+                              <p
+                                className={`font-semibold ${
+                                  trans?.invoice?.invoice_type == "Income"
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                } `}
+                              >
+                                {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                                {trans?.currency} {trans?.amount}
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </>
                     );
@@ -405,13 +447,6 @@ const Commission_VAT_List = () => {
         <SingleTransactionModal
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
-        />
-      )}
-      {transactionsListModal && (
-        <TransactionsListModal
-          transactionsListModal={transactionsListModal}
-          setTransactionsListModal={setTransactionsListModal}
-          filters={filters}
         />
       )}
     </div>
