@@ -1052,7 +1052,11 @@
 
     "btn_view_transactions":"View Transactions",
     "income_amount":"Income",
-    "expense_amount":"Expense"
+    "expense_amount":"Expense",
+
+
+    "menu_new_transaction":"Add New Transaction",
+    "menu_commission_vat":"Commission VAT"
 
 
 
