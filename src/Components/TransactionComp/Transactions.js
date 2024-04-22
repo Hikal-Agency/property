@@ -211,7 +211,7 @@ const Transactions = () => {
       console.log("transaction submited ", submitTransaction);
 
       if (submitTransaction?.data?.status === false) {
-        toast.success(`${submitTransaction?.data?.message}`, {
+        toast.error(`${submitTransaction?.data?.message}`, {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
