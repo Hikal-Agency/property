@@ -54,7 +54,7 @@ const Vendors = ({ isLoading }) => {
                   }`}
                 >
                   {t("vendor")}
-                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
+                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto ml-2">
                     {pageState?.total}
                   </span>
                 </h1>
