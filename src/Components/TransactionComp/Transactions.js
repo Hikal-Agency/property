@@ -165,6 +165,36 @@ const Transactions = () => {
     e.preventDefault();
 
     setBtnLoading(true);
+    // Check if any mandatory field is empty
+    // for (const key of Object.keys(addTransactionData)) {
+    //   if (
+    //     [
+    //       "invoice_type",
+    //       "category",
+    //       "country",
+    //       "date",
+    //       "status",
+    //       "paid_by",
+    //       "currency",
+    //       "amount",
+    //     ].includes(key) &&
+    //     !addTransactionData[key]
+    //   ) {
+    //     toast.error(`${key} is required.`, {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //     setBtnLoading(false);
+
+    //     return;
+    //   }
+    // }
 
     try {
       const submitTransaction = await axios.post(
@@ -179,6 +209,22 @@ const Transactions = () => {
       );
 
       console.log("transaction submited ", submitTransaction);
+
+      if (submitTransaction?.data?.status === false) {
+        toast.success(`${submitTransaction?.data?.message}`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setBtnLoading(false);
+
+        return;
+      }
 
       toast.success("Transaction Added.", {
         position: "top-right",
@@ -380,6 +426,7 @@ const Transactions = () => {
             className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
+            required={true}
           />
           <Select
             id="invoice_type"
@@ -1098,11 +1145,7 @@ const Transactions = () => {
               // disabled={setBtnLoading ? true : false}
               onClick={clearFilter}
             >
-              {btnLoading ? (
-                <CircularProgress />
-              ) : (
-                <span>{t("clear_all")}</span>
-              )}
+              <span>{t("clear_all")}</span>
             </Button>
           </Box>
         </div>
