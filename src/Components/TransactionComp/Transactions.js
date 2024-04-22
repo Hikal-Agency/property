@@ -61,6 +61,7 @@ const Transactions = () => {
   const [btnLoading, setBtnLoading] = useState(false);
   const [transactionsData, setTransactionsData] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
+  const [error, setError] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
   const [page, setPage] = useState(1);
 
@@ -128,6 +129,31 @@ const Transactions = () => {
     });
   };
 
+  // Function to merge selectStyles with error styles
+  const getMergedStyles = (hasError, currentStyles) => {
+    const errorStyles = {
+      control: (provided) => ({
+        ...provided,
+        borderColor: hasError ? "red" : provided.borderColor,
+        "&:hover": {
+          borderColor: hasError ? "red" : provided.borderColor,
+        },
+        boxShadow: hasError ? "0 0 0 1px red" : provided.boxShadow,
+      }),
+    };
+
+    // Merge the errorStyles with the currentStyles
+    const mergedStyles = {
+      ...currentStyles,
+      control: (provided) => ({
+        ...currentStyles.control(provided),
+        ...errorStyles.control(provided),
+      }),
+    };
+
+    return mergedStyles;
+  };
+
   const clearFilter = () => {
     setFilterData({
       user_id: "",
@@ -161,8 +187,54 @@ const Transactions = () => {
     reader.readAsDataURL(file);
   };
 
+  // Define an error state object
+  const [fieldErrors, setFieldErrors] = useState({
+    invoice_type: false,
+    amount: false,
+    date: false,
+    currency: false,
+    category: false,
+  });
+
+  console.log("field errors:: ", fieldErrors);
+
+  // Function to parse the error message and update the error state
+  const handleApiErrors = (message) => {
+    const requiredFields = [
+      "Invoice Type",
+      "Category",
+      "Date",
+      "Amount",
+      "Currency",
+    ];
+    const errors = {
+      invoice_type: false,
+      amount: false,
+      date: false,
+      currency: false,
+      category: false,
+    };
+
+    requiredFields.forEach((field) => {
+      if (message.includes(field)) {
+        const fieldKey = field.toLowerCase().replace(/ /g, "_"); // Convert field name to match state keys
+        errors[fieldKey] = true;
+      }
+    });
+
+    setFieldErrors(errors);
+  };
+
   const handleTransaction = async (e) => {
     e.preventDefault();
+
+    setFieldErrors({
+      invoice_type: false,
+      amount: false,
+      date: false,
+      currency: false,
+      category: false,
+    });
 
     setBtnLoading(true);
     // Check if any mandatory field is empty
@@ -222,6 +294,7 @@ const Transactions = () => {
           theme: "light",
         });
         setBtnLoading(false);
+        handleApiErrors(submitTransaction?.data?.message);
 
         return;
       }
@@ -425,7 +498,11 @@ const Transactions = () => {
             placeholder={t("label_category")}
             className={`mb-5`}
             menuPortalTarget={document.body}
-            styles={selectStyles(currentMode, primaryColor)}
+            // styles={selectStyles(currentMode, primaryColor)}
+            styles={getMergedStyles(
+              fieldErrors.category,
+              selectStyles(currentMode, primaryColor)
+            )}
             required={true}
           />
           <Select
@@ -446,7 +523,11 @@ const Transactions = () => {
             placeholder={t("type")}
             className={`mb-5`}
             menuPortalTarget={document.body}
-            styles={selectStyles(currentMode, primaryColor)}
+            // styles={selectStyles(currentMode, primaryColor)}
+            styles={getMergedStyles(
+              fieldErrors.invoice_type,
+              selectStyles(currentMode, primaryColor)
+            )}
           />
 
           <Select
@@ -492,6 +573,10 @@ const Transactions = () => {
                     },
                     "& .MuiSvgIcon-root": {
                       color: currentMode === "dark" ? "white" : "black",
+                    },
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor:
+                        fieldErrors?.date === true && "#DA1F26 !important",
                     },
                     marginBottom: "15px",
                   }}
@@ -545,72 +630,7 @@ const Transactions = () => {
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
-          {/* <Select
-            // id="vendor_id"
-            options={
-              vendors &&
-              vendors?.map((ven) => ({
-                value: ven.id,
-                label:
-                  addTransactionData?.category.toLowerCase() === "salary"
-                    ? ven?.userName
-                    : ven.vendor_name,
-              }))
-            }
-            // value={
-            //   vendors?.find((ven) =>
-            //     addTransactionData?.category.toLowerCase() === "salary"
-            //       ? ven?.id === addTransactionData?.user_id
-            //       : ven?.id === addTransactionData?.vendor_id
-            //   )?.vendor_name
-            // }
-            value={
-              vendors?.find((ven) =>
-                addTransactionData?.category.toLowerCase() === "salary"
-                  ? ven?.id === addTransactionData?.user_id
-                  : ven?.id === addTransactionData?.vendor_id
-              ) && {
-                value:
-                  addTransactionData?.category.toLowerCase() === "salary"
-                    ? addTransactionData?.user_id
-                    : addTransactionData?.vendor_id,
-                label: vendors?.find((ven) =>
-                  addTransactionData?.category.toLowerCase() === "salary"
-                    ? ven?.id === addTransactionData?.user_id
-                    : ven?.id === addTransactionData?.vendor_id
-                )?.vendor_name, // This should be the property that matches the label structure
-              }
-            }
-            onChange={(e) => {
-              console.log("e vendor:: ", e);
-              console.log(
-                "find vendor :: ",
-                vendors?.find((ven) => ven?.id === e.value)?.vendor_name
-              );
 
-              setAddTransactionData({
-                ...addTransactionData,
-
-                vendor_id:
-                  addTransactionData?.category.toLowerCase() === "salary"
-                    ? null
-                    : e.value,
-                user_id:
-                  addTransactionData?.category.toLowerCase() === "salary"
-                    ? e.value
-                    : null,
-              });
-            }}
-            isLoading={loading}
-            placeholder={
-              addTransactionData?.category.toLowerCase() === "salary"
-                ? t("user")
-                : t("vendor")
-            }
-            className={`mb-5`}
-            menuPortalTarget={document.body}
-            styles={selectStyles(currentMode, primaryColor)}
-          /> */}
           {addTransactionData?.category.toLowerCase() === "salary" ? (
             <Select
               id="user_id"
@@ -689,7 +709,11 @@ const Transactions = () => {
             placeholder={t("label_currency")}
             className={`mb-5`}
             menuPortalTarget={document.body}
-            styles={selectStyles(currentMode, primaryColor)}
+            // styles={selectStyles(currentMode, primaryColor)}
+            styles={getMergedStyles(
+              fieldErrors.currency,
+              selectStyles(currentMode, primaryColor)
+            )}
           />
           <TextField
             id="comm_percent"
@@ -709,15 +733,20 @@ const Transactions = () => {
             id="amount"
             type={"text"}
             label={t("amount")}
-            className="w-full mt-3"
-            style={{
+            className={`w-full mt-3 `}
+            sx={{
               marginBottom: "20px",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor:
+                  fieldErrors?.amount === true && "#DA1F26 !important",
+              },
             }}
             variant="outlined"
             name="bussiness_name"
             size="small"
             value={addTransactionData.amount}
             onChange={handleChange}
+            error={fieldErrors.amount}
           />
 
           <input
