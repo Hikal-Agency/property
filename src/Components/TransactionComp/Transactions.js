@@ -509,7 +509,7 @@ const Transactions = () => {
             id="invoice_type"
             options={commission_type(t)?.map((trans) => ({
               value: trans.value,
-              label: trans.label,
+              label: trans.value,
             }))}
             value={commission_type(t)?.filter(
               (comm) => comm?.value === addTransactionData?.invoice_type
@@ -935,7 +935,7 @@ const Transactions = () => {
               id="invoice_type"
               options={commission_type(t)?.map((trans) => ({
                 value: trans.value,
-                label: trans.label,
+                label: trans.value,
               }))}
               value={commission_type(t)?.filter(
                 (comm) => comm?.value === filtersData?.invoice_type

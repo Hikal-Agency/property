@@ -395,7 +395,7 @@ const AddCommissionModal = ({
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         value={commissionData?.date}
-                        label={t("booking_date")}
+                        label={t("date")}
                         views={["day", "month", "year"]}
                         onChange={(newValue) => {
                           const formattedDate = moment(newValue?.$d).format(
