@@ -18,12 +18,35 @@ const FunnelSettings = ({ data, fetchTemplates, handleClose }) => {
     body_code: null,
     header_code: null,
     footer_code: null,
-    domain: "#",
+    domain: null,
   });
 
   console.log("formData::: ", formdata);
 
   const handleSettingsData = (e) => {
+    if (e.target.id === "domain") {
+      let domain = e.target.value;
+
+      // Check if the domain has 'http://' or 'https://' prefix
+      const domainPrefixes = ["http://", "https://"];
+
+      // Loop through each prefix
+      for (const prefix of domainPrefixes) {
+        // If the domain has a prefix, remove it
+        if (domain.startsWith(prefix)) {
+          domain = domain.replace(prefix, "");
+          break; // Stop the loop once a prefix is removed
+        }
+      }
+
+      // Update the state with the cleaned domain
+      setformdata((prevFormData) => ({
+        ...prevFormData,
+        [e.target.id]: domain,
+      }));
+
+      return;
+    }
     setformdata(() => ({
       ...formdata,
       [e.target.id]: e.target.value,
@@ -32,6 +55,22 @@ const FunnelSettings = ({ data, fetchTemplates, handleClose }) => {
 
   const saveSettings = async (e) => {
     setLoading(true);
+
+    if (!formdata?.domain) {
+      toast.error(`domain is required`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setLoading(false);
+
+      return;
+    }
     try {
       const token = localStorage.getItem("auth-token");
       const response = await axios.post(
@@ -147,10 +186,7 @@ const FunnelSettings = ({ data, fetchTemplates, handleClose }) => {
                   value={formdata?.header_code}
                   onChange={handleSettingsData}
                 />
-              </div>
-
-              <div className="p-4">
-                {/* <TextField
+                <TextField
                   id="domain"
                   type={"text"}
                   label={t("funnel_form_domain")}
@@ -163,8 +199,10 @@ const FunnelSettings = ({ data, fetchTemplates, handleClose }) => {
                   required
                   value={formdata?.domain}
                   onChange={handleSettingsData}
-                /> */}
+                />
+              </div>
 
+              <div className="p-4">
                 <TextField
                   id="favicon_url"
                   type={"text"}
