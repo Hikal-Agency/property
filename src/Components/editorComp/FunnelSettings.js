@@ -8,6 +8,8 @@ const FunnelSettings = ({ data, fetchTemplates, handleClose }) => {
   console.log("landing page data in funnel settings::: ", data);
   const { darkModeColors, t, BACKEND_URL } = useStateContext();
   const [loading, setLoading] = useState(false);
+  const updateSetting = data?.settings?.length > 0 ? true : false;
+
   const [formdata, setformdata] = useState({
     page_id: data?.id || null,
     // funnel_page_type: data?.template_type || null,
@@ -18,7 +20,7 @@ const FunnelSettings = ({ data, fetchTemplates, handleClose }) => {
     body_code: null,
     header_code: null,
     footer_code: null,
-    domain: null,
+    domain: updateSetting ? data?.settings[0]?.domain : null,
   });
 
   console.log("formData::: ", formdata);
@@ -73,16 +75,20 @@ const FunnelSettings = ({ data, fetchTemplates, handleClose }) => {
     }
     try {
       const token = localStorage.getItem("auth-token");
-      const response = await axios.post(
-        `${BACKEND_URL}/page-settings`,
-        formdata,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+
+      let url;
+
+      if (updateSetting) {
+        url = `${BACKEND_URL}/page-settings/${data?.settings[0]?.id}`;
+      } else {
+        url = `${BACKEND_URL}/page-settings`;
+      }
+      const response = await axios.post(url, formdata, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
       console.log("successfully posted", response.data);
 
       if (response?.data?.status == false) {

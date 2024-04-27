@@ -892,7 +892,7 @@
     "funnel_form_name":"Name",
     "funnel_form_path":"Path Head",
     "funnel_form_tracking_code":"Tracking Code",
-    "funnel_form_domain":"Domain (without https:// or http://",
+    "funnel_form_domain":"Domain (without https:// or http://)",
     "funnel_form_favicon_url":"Favicon Url",
     "funnel_form_body_tracking_code":"Body tracking code",
     "funnel_form_save":"Save",

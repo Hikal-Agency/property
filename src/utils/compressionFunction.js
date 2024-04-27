@@ -25,6 +25,25 @@ export const compressData = (data) => {
 // Decompression utility function
 export const decompressData = (base64Data) => {
   console.log("data to be dcompressed:: ", base64Data);
+
+  // Check if the base64Data is a string and not empty
+  if (typeof base64Data !== "string" || base64Data.trim() === "") {
+    return {
+      success: false,
+      error: "Invalid input: Data must be a non-empty string.",
+    };
+  }
+
+  // Check if the string is valid base64
+  const base64Pattern =
+    /^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/;
+  if (!base64Pattern.test(base64Data)) {
+    return {
+      success: false,
+      error: "Invalid input: Data is not properly base64 encoded.",
+    };
+  }
+
   let decompressedData;
   let compressedDataArray = atob(base64Data).split(",");
 
