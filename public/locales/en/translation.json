@@ -1061,9 +1061,9 @@
     "no_data_year":"No Data For This Year",
     "select_year":"Select Year",
     "vat_calculated_for":"VAT calculated for amount of ",
-    "invoices":"invoices"
+    "invoices":"invoices",
 
-
+    "mark_all_commission_received": "Mark all Commission received"
 
     
 

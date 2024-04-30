@@ -321,7 +321,7 @@ const AddCommissionModal = ({
           `}
         >
           <>
-            <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5">
+            <div className={`w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5`}>
               <div className="w-full flex items-center pb-3 ">
                 <div
                   className={`${
@@ -340,7 +340,7 @@ const AddCommissionModal = ({
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5 p-5">
+            <div className={`grid md:grid-cols-2 sm:grid-cols-1 ${commData ? "lg:grid-cols-2" : "lg:grid-cols-3"} gap-5 p-5`}>
               {/* Commission DETAILS  */}
               <div
                 className={`p-4 rounded-xl shadow-sm card-hover

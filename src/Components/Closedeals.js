@@ -3,7 +3,7 @@ import moment from "moment/moment";
 
 import { Pagination, Tooltip } from "@mui/material";
 import Select from "react-select";
-import { Box } from "@mui/system";
+import { Box, maxWidth } from "@mui/system";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -126,12 +126,12 @@ const Closedeals = ({ pageState, setpageState }) => {
                 ? "Noto Kufi Arabic"
                 : "inherit",
             }}
-            className="flex flex-col"
+            className="w-full flex flex-col"
           >
-            <p>
+            <p className="flex-wrap whitespace-normal">
               {cellValues.row.project === "null" ? "-" : cellValues.row.project}
             </p>
-            <p>
+            <p className="flex-wrap whitespace-normal">
               {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
             </p>
           </div>
@@ -148,12 +148,12 @@ const Closedeals = ({ pageState, setpageState }) => {
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
-            <p>
+            <p className="flex-wrap whitespace-normal">
               {cellValues.row.enquiryType === "null"
                 ? "-"
                 : cellValues.row.enquiryType}
             </p>
-            <p>
+            <p className="flex-wrap whitespace-normal">
               {cellValues.row.leadType === "null"
                 ? "-"
                 : cellValues.row.leadType}
@@ -181,8 +181,8 @@ const Closedeals = ({ pageState, setpageState }) => {
         return (
           <div className="flex flex-col w-full ">
             {cellValues.formattedValue && (
-              <div className="bg-primary w-full text-white font-semibold rounded-md p-2">
-                AED {cellValues.formattedValue}
+              <div className="bg-primary w-full text-white font-semibold rounded-md p-2 flex-wrap whitespace-normal">
+                {cellValues.row.currency} {cellValues.formattedValue}
               </div>
             )}
           </div>
@@ -193,7 +193,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     {
       field: "dealDate",
       headerName: t("label_deal_date"),
-      minWidth: 50,
+      minWidth: 75,
       headerAlign: "center",
       flex: 1,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
@@ -236,19 +236,17 @@ const Closedeals = ({ pageState, setpageState }) => {
             {value?.spa_status === 1 ? (
               <p
                 className={`
-                   text-[#1C1C1C] bg-[green]
+                   text-[#1C1C1C] bg-green-600
                 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
-                <FaCheck size={16} color="white" />
+                <FaCheck size={14} color="white" />
               </p>
             ) : (
               <p
-                className={` text-[#1C1C1C] bg-[#FF0000]
+                className={` text-[#1C1C1C] bg-red-600
               rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
-                <Tooltip title="View Timeline" arrow>
-                  <RxCross2 size={16} color="#ffffff" />
-                </Tooltip>
+                <RxCross2 size={14} color="#ffffff" />
               </p>
             )}
           </div>
@@ -271,19 +269,17 @@ const Closedeals = ({ pageState, setpageState }) => {
             {value?.comm_status === 1 ? (
               <p
                 className={`
-                   text-[#1C1C1C] bg-[green]
+                   text-[#1C1C1C] bg-green-600
                 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
-                <FaCheck size={16} color="white" />
+                <FaCheck size={14} color="white" />
               </p>
             ) : (
               <p
-                className={` text-[#1C1C1C] bg-[#FF0000]
+                className={` text-[#1C1C1C] bg-red-600
               rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
-                <Tooltip title="View Timeline" arrow>
-                  <RxCross2 size={16} color="#ffffff" />
-                </Tooltip>
+                  <RxCross2 size={14} color="#ffffff" />
               </p>
             )}
           </div>
@@ -293,7 +289,8 @@ const Closedeals = ({ pageState, setpageState }) => {
     {
       field: "",
       headerName: t("label_action"),
-      minWidth: 50,
+      minWidth: 100,
+      maxWidth: 200,
       flex: 1,
       sortable: false,
       headerAlign: "center",
@@ -301,15 +298,17 @@ const Closedeals = ({ pageState, setpageState }) => {
       renderCell: (cellValues) => {
         return (
           <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
+            className={`w-full h-full px-1 flex items-center justify-center flex-wrap`}
+            style={{
+              minWidth: "100px !important",
+            }}
           >
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
+              className={`${currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
                 <button onClick={() => HandleEditFunc(cellValues)}>
@@ -320,11 +319,10 @@ const Closedeals = ({ pageState, setpageState }) => {
 
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
+              className={`${currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
@@ -336,11 +334,10 @@ const Closedeals = ({ pageState, setpageState }) => {
             {hasPermission("deal_history") && (
               <p
                 style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
+                className={`${currentMode === "dark"
                     ? "text-[#FFFFFF] bg-[#262626]"
                     : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                  } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Deal History" arrow>
                   <button onClick={() => HandleViewDealHistory(cellValues)}>
@@ -356,23 +353,25 @@ const Closedeals = ({ pageState, setpageState }) => {
   ];
 
   const otherColumns = [
+    // DEAL DATE
     {
       field: "dealDate",
       headerName: t("label_deal_date"),
-      minWidth: 50,
+      minWidth: 75,
       headerAlign: "center",
       flex: 1,
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
+    // LEAD NAME
     {
       field: "leadName",
       headerName: t("label_lead_name"),
-      minWidth: 60,
+      minWidth: 100,
       flex: 1,
       headerAlign: "center",
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
+          <div className="w-full">
             <p
               style={{
                 fontFamily: isArabic(cellValues?.formattedValue)
@@ -386,81 +385,172 @@ const Closedeals = ({ pageState, setpageState }) => {
         );
       },
     },
+    // PROJECT
     {
       field: "project",
       headerName: t("label_project"),
       headerAlign: "center",
-
-      minWidth: 60,
+      minWidth: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
-            <p
-              className="text-center capitalize"
-              style={{
-                fontFamily: isArabic(cellValues?.formattedValue)
-                  ? "Noto Kufi Arabic"
-                  : "inherit",
-              }}
-            >
-              {cellValues?.formattedValue}
+          <div
+            style={{
+              fontFamily: isArabic(cellValues?.formattedValue)
+                ? "Noto Kufi Arabic"
+                : "inherit",
+            }}
+            className="w-full flex flex-col"
+          >
+            <p className="flex-wrap whitespace-normal">
+              {cellValues.row.project === "null" ? "-" : cellValues.row.project}
+            </p>
+            <p className="flex-wrap whitespace-normal">
+              {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
             </p>
           </div>
         );
       },
     },
+    // ENQUIRY
     {
-      field: "enquiryType",
-      headerName: t("label_enquiry"),
       headerAlign: "center",
-
-      minWidth: 60,
-      flex: 1,
-    },
-    {
       field: "leadType",
-      headerAlign: "center",
-
       headerName: t("label_property"),
-      minWidth: 60,
+      minWidth: 80,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col">
+            <p className="flex-wrap whitespace-normal">
+              {cellValues.row.enquiryType === "null"
+                ? "-"
+                : cellValues.row.enquiryType}
+            </p>
+            <p className="flex-wrap whitespace-normal">
+              {cellValues.row.leadType === "null"
+                ? "-"
+                : cellValues.row.leadType}
+            </p>
+          </div>
+        );
+      },
     },
+    // UNIT
     {
       field: "unit",
       headerAlign: "center",
       headerName: t("label_unit"),
-      minWidth: 40,
+      minWidth: 80,
       flex: 1,
     },
+    // AMOUNT
     {
       field: "amount",
       headerAlign: "center",
       headerName: t("label_amount_aed"),
-      minWidth: 40,
+      minWidth: 80,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex flex-col w-full ">
+            {cellValues.formattedValue && (
+              <div className="bg-primary w-full text-white font-semibold rounded-md p-2 flex-wrap whitespace-normal">
+                {cellValues.row.currency} {cellValues.formattedValue}
+              </div>
+            )}
+          </div>
+        );
+      },
     },
+    // CONSULTANT
     {
       field: "userName",
       headerAlign: "center",
-      headerName: t("label_property_consultant"),
-      minWidth: 40,
+      headerName: t("label_consultant"),
+      minWidth: 100,
       flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div style={{ textWrap: "wrap" }}>{cellValues.formattedValue}</div>
+        );
+      },
     },
-    // {
-    //   field: "manager",
-    //   headerName: "Manager",
-    //   minWidth: 150,
-    //   flex: 1,
-    //   headerAlign: "center",
-    // },
-    // {
-    //   field: "salesperson",
-    //   headerName: "Agent",
-    //   minWidth: 150,
-    //   flex: 1,
-    //   headerAlign: "center",
-    // },
+    // OTP
+    {
+      field: "otp",
+      headerName: t("label_otp"),
+      minWidth: 30,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
+    },
+    // SPA
+    {
+      field: "spa_status",
+      headerName: t("spa"),
+      minWidth: 30,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        const value = cellValues?.row;
+        return (
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {value?.spa_status === 1 ? (
+              <p
+                className={`
+                   text-[#1C1C1C] bg-green-600
+                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <FaCheck size={14} color="white" />
+              </p>
+            ) : (
+              <p
+                className={` text-[#1C1C1C] bg-red-600
+              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <RxCross2 size={14} color="#ffffff" />
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
+    // COMMISSION
+    {
+      field: "commission",
+      headerName: t("commission"),
+      minWidth: 30,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        const value = cellValues?.row;
+        return (
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {value?.comm_status === 1 ? (
+              <p
+                className={`
+                   text-[#1C1C1C] bg-green-600
+                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <FaCheck size={14} color="white" />
+              </p>
+            ) : (
+              <p
+                className={` text-[#1C1C1C] bg-red-600
+              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                  <RxCross2 size={14} color="#ffffff" />
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
     {
       field: "",
       headerName: t("label_action"),
@@ -476,11 +566,10 @@ const Closedeals = ({ pageState, setpageState }) => {
           >
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
+              className={`${currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
                 <button onClick={() => HandleEditFunc(cellValues)}>
@@ -491,11 +580,10 @@ const Closedeals = ({ pageState, setpageState }) => {
 
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
+              className={`${currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
@@ -503,20 +591,21 @@ const Closedeals = ({ pageState, setpageState }) => {
                 </button>
               </Tooltip>
             </p>
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-            >
-              <Tooltip title="View Timeline" arrow>
-                {/* <button onClick={() => HandleViewTimeline(cellValues)}> */}
-                <FaHandshake size={16} />
-                {/* </button> */}
-              </Tooltip>
-            </p>
+            {hasPermission("deal_history") && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <Tooltip title="View Deal History" arrow>
+                  <button onClick={() => HandleViewDealHistory(cellValues)}>
+                    <FaHandshake size={16} />
+                  </button>
+                </Tooltip>
+              </p>
+            )}
           </div>
         );
       },
@@ -539,8 +628,7 @@ const Closedeals = ({ pageState, setpageState }) => {
 
     axios
       .get(
-        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${
-          pageState.perpage || 14
+        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${pageState.perpage || 14
         }`,
         {
           headers: {
@@ -564,8 +652,8 @@ const Closedeals = ({ pageState, setpageState }) => {
           id:
             pageState.page > 1
               ? pageState.page * pageState.pageSize -
-                (pageState.pageSize - 1) +
-                index
+              (pageState.pageSize - 1) +
+              index
               : index + 1,
           dealDate: row?.dealDate || "-",
           leadName: row?.leadName || "-",
@@ -573,15 +661,16 @@ const Closedeals = ({ pageState, setpageState }) => {
           project: row?.project || "-",
           enquiryType: row?.enquiryType || "-",
           leadType: row?.leadType || "-",
-          otp:
-            row?.otp === "No OTP" || row?.otp === "No OTP Used"
-              ? "No OTP Used"
-              : row?.otp || "No OTP Used",
+          otp: row?.otp === "No OTP" || row?.otp === "No OTP Used"
+            ? "No OTP Used"
+            : row?.otp || "No OTP Used",
           leadSource: row?.leadSource || "-",
           amount: row?.amount || "-",
           lid: row?.id,
           leadId: row?.leadId,
           unit: row?.unit,
+          currency: row?.currency,
+
           spa_status: row?.spa_status,
           comm_status: row?.comm_status,
           pdc_status: row?.pdc_status,

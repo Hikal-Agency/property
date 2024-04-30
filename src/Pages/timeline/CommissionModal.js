@@ -1,30 +1,20 @@
-import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useStateContext } from "../../context/ContextProvider";
-import Error from "../Error";
-
-import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Document, Page, pdfjs } from 'react-pdf';
 import { Backdrop, Box, Modal, Pagination, Stack } from "@mui/material";
+import { useStateContext } from "../../context/ContextProvider";
+import axios from "../../axoisConfig";
+import Error from "../Error";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
+import AddCommissionModal from "./AddCommissionModal";
 
-import { BiBed, BiCalendarExclamation } from "react-icons/bi";
-import {
-  BsTelephone,
-  BsBuildings,
-  BsBookmarkCheckFill,
-  BsClockFill,
-  BsFlagFill,
-} from "react-icons/bs";
-import { FaCheck, FaPlus, FaUserCheck } from "react-icons/fa";
-import { GoMail } from "react-icons/go";
-import { HiUser } from "react-icons/hi";
-import { MdNoteAlt, MdClose } from "react-icons/md";
-import { RxCross2 } from "react-icons/rx";
+import { BsCheck2All, BsFileEarmarkMedical } from "react-icons/bs";
+import { MdClose } from "react-icons/md";
 import { IoMdPerson } from "react-icons/io";
 import { FaPencilAlt } from "react-icons/fa";
-import AddCommissionModal from "./AddCommissionModal";
-import { toast } from "react-toastify";
+import OverlayFile from "../../Components/_elements/OverlayFile";
+import { over } from "lodash";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -55,6 +45,74 @@ const CommissionModal = ({
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
 
+  const [commissionMarked, setCommissionMarked] = useState(false);
+
+  const [showOverlayPdf, setShowOverlayPdf] = useState(false);
+  const [showOverlayImage, setShowOverlayImage] = useState(false);
+  const [overlayContent, setOverlayContent] = useState(null);
+
+  const handleImageClick = (image) => {
+    setOverlayContent(image);
+    console.log("OVERLAY IMAGE ========= ", overlayContent);
+    setShowOverlayPdf(false);
+    setShowOverlayImage(true);
+  };
+
+  const handlePdfClick = (pdf) => {
+    setOverlayContent(pdf);
+    console.log("OVERLAY PDF ========= ", overlayContent);
+    setShowOverlayImage(false);
+    setShowOverlayPdf(true);
+  };
+
+  useEffect(() => {
+    if (commissionModal && commissionModal.comm_status === 1) {
+      setCommissionMarked(true);
+    }
+  }, [commissionModal]);
+
+  const markCommission = () => {
+    const token = localStorage.getItem("auth-token");
+    const updatedData = { comm_status: 1 };
+
+    axios
+      .post(`${BACKEND_URL}/editdeal/${commissionModal.lid}`,
+        updatedData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Deal updated successfully.");
+        console.log(result);
+        toast.success("Commission marked successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setCommissionMarked(true);
+        handleClose();
+        // fetchLeadsData();
+      })
+      .catch((err) => {
+        toast.error("Error in Marking the commission.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
+
   console.log("data fetched:: ", data);
 
   const navigate = useNavigate();
@@ -65,9 +123,10 @@ const CommissionModal = ({
     setOpenAddCommissionModal({
       commissionModal: commissionModal,
       data: data,
-      image: data?.receipt[0]?.image,
+      image: data?.receipt[0]?.temp_file,
     });
   };
+
 
   const [isClosing, setIsClosing] = useState(false);
 
@@ -79,50 +138,6 @@ const CommissionModal = ({
     }, 1000);
   };
 
-  const ribbonStyles = {
-    width: "100px",
-    height: "30px",
-    filter: "grayscale(0) !important",
-    lineHeight: "52px",
-    position: "absolute",
-    top: "20px",
-    right: "-30px",
-    color: "white",
-    zIndex: 2,
-    overflow: "hidden",
-    transform: "rotate(45deg)",
-    boxShadow: `0 0 0 3px ${primaryColor}, 0px 21px 5px -18px rgba(0,0,0,0.6)`,
-    background: primaryColor,
-    textAlign: "center",
-
-    "& .wrap": {
-      width: "100%",
-      height: "188px",
-      position: "absolute",
-      top: "-8px",
-      left: "8px",
-      overflow: "hidden",
-    },
-    "& .wrap:before, .wrap:after": {
-      content: "''",
-      position: "absolute",
-    },
-    "& .wrap:before": {
-      width: "40px",
-      height: "8px",
-      right: "100px",
-      background: "#4D6530",
-      borderRadius: "8px 8px 0px 0px",
-    },
-    "& .wrap:after": {
-      width: "8px",
-      height: "40px",
-      right: "0px",
-      top: "100px",
-      background: "#4D6530",
-      borderRadius: "0px 8px 8px 0px",
-    },
-  };
   const token = localStorage.getItem("auth-token");
 
   const fetchLeadsData = async () => {
@@ -197,23 +212,20 @@ const CommissionModal = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseCommissionModal}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -225,15 +237,13 @@ const CommissionModal = ({
 
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+            className={` ${currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-            } 
+              } 
              p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
@@ -246,19 +256,32 @@ const CommissionModal = ({
                     <div className="flex items-center ">
                       <div className="bg-primary h-10 w-1 rounded-full"></div>
                       <h1
-                        className={`text-lg font-semibold mx-2 uppercase ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                        className={`text-lg font-semibold mx-2 uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
                       >
                         {invoiceModal ? t("invoice") : t("commission")}
                       </h1>
                     </div>
                     <div>
+                      {/* CHECK COMM_STATUS, THEN DISPLAY IF 0, MARK COMMISSION RECEIVED AS PAID */}
+                      {!commissionMarked && (
+                        <button
+                          onClick={(e) => markCommission(e)}
+                          className={`${currentMode === "dark" ? "bg-[#666666] text-white" : "bg-[#DDDDDD] text-black"} 
+                          rounded-md shadow-sm card-hover mx-3 py-2 px-4`}
+                        >
+                          <div className="flex gap-2">
+                            <BsCheck2All size={16} />
+                            <div>{t("mark_all_commission_received")}</div>
+                          </div>
+                        </button>
+                      )}
+
                       {!invoiceModal && (
                         <>
                           <button
                             onClick={(e) => handleOpenModal(e)}
-                            className="bg-btn-primary rounded-md py-2 px-4"
+                            className="bg-btn-primary  text-white rounded-md py-2 px-4"
                           >
                             {t("btn_add_commission")}
                           </button>
@@ -269,9 +292,8 @@ const CommissionModal = ({
 
                   <div>
                     <div
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      } p-4 `}
+                      className={`${currentMode === "dark" ? "text-white" : "text-black"
+                        } p-4 `}
                     >
                       <div className="col-span-12 md:col-span-4 w-full">
                         {loading ? (
@@ -296,39 +318,59 @@ const CommissionModal = ({
                                 console.log("user true or false: ", data?.user);
                                 return (
                                   <div
-                                    className={`${
-                                      currentMode === "dark"
-                                        ? "bg-[#1C1C1C]"
-                                        : "bg-[#EEEEEE]"
-                                    } p-4 space-y-3 rounded-xl shadow-sm card-hover  my-2 w-full relative`}
+                                    className={`${currentMode === "dark"
+                                      ? "bg-[#1C1C1C]"
+                                      : "bg-[#EEEEEE]"
+                                      } p-4 rounded-xl shadow-sm card-hover mb-5 w-full relative`}
                                   >
-                                    {data?.invoice?.invoice_type.toLowerCase() ===
-                                    "expense" ? (
-                                      <p className="text-red-600 text-right font-semibold">
-                                        - {data?.invoice?.currency}{" "}
-                                        {data?.invoice?.amount}
-                                      </p>
-                                    ) : (
-                                      <p className="text-green-600 text-right font-semibold">
-                                        + {data?.invoice?.currency}{" "}
-                                        {data?.invoice?.amount}
-                                      </p>
+                                    {/* AMOUNT  */}
+                                    <div className={`absolute top-4 p-2 text-white font-semibold rounded-sm ${isLangRTL(i18n.language) ? "left-4" : "right-4"
+                                      } ${data?.invoice?.invoice_type.toLowerCase() === "income" ? "bg-green-600" : "bg-red-600"
+                                      }
+                                    `}>
+                                      {data?.invoice?.invoice_type.toLowerCase() === "income" ? (
+                                        <>
+                                          {data?.invoice?.currency}{" "}{data?.invoice?.amount}
+                                        </>
+                                      ) : (
+                                        <>
+                                          - {data?.invoice?.currency}{" "}{data?.invoice?.amount}
+                                        </>
+                                      )}
+                                    </div>
+
+                                    {/* EDIT  */}
+                                    {!invoiceModal && (
+                                      <div className={`absolute bottom-4 ${isLangRTL(i18n.language) ? "left-4" : "right-4"
+                                        }`}>
+                                        <button
+                                          className="bg-btn-primary rounded-full p-3 bottom-0 "
+                                          onClick={(e) =>
+                                            handleOpenModal(e, data)
+                                          }
+                                        >
+                                          <FaPencilAlt size={16} color={"white"} />
+                                        </button>
+                                      </div>
                                     )}
-                                    <div className="flex items-center justify-between mt-5">
+
+                                    {/* GRID  */}
+                                    <div className="gap-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                                      {/* COMMISSION DETAILS */}
                                       <div
-                                        className={`${
-                                          currentMode === "dark"
-                                            ? "bg-[#000000]"
-                                            : "bg-[#ffffff]"
-                                        } rounded-md p-5 w-[400px] h-[250px]`}
+                                        className={`${currentMode === "dark"
+                                          ? "bg-[#000000]"
+                                          : "bg-[#ffffff]"
+                                          } rounded-md p-5 w-full`}
                                       >
                                         <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
                                           {t("commissions")}
                                         </h3>
-                                        <div className="flex justify-between  my-3">
+                                        <div className="flex justify-between my-3">
                                           <p>{t("date")}:</p>
                                           <p className="font-semibold ml-2">
-                                            {data?.invoice?.date}
+                                            {/* {data?.invoice?.date} */}
+                                            {new Date(data?.invoice?.date).toISOString().split('T')[0]}
                                           </p>
                                         </div>
 
@@ -367,16 +409,17 @@ const CommissionModal = ({
                                           </p>
                                         </div>
                                       </div>
+
+                                      {/* VENDOR/USER DETAILS */}
                                       <div
-                                        className={`${
-                                          currentMode === "dark"
-                                            ? "bg-[#000000]"
-                                            : "bg-[#ffffff]"
-                                        } rounded-md p-5 w-[400px] h-[250px]`}
+                                        className={`${currentMode === "dark"
+                                          ? "bg-[#000000]"
+                                          : "bg-[#ffffff]"
+                                          } rounded-md p-5 w-full`}
                                       >
-                                        <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
+                                        <h3 className="text-sm font-semibold uppercase mb-6 mt-3 text-center">
                                           {data?.invoice?.invoice_type.toLowerCase() ===
-                                          "expense"
+                                            "expense"
                                             ? t("user_details")
                                             : t("vendor_details")}
                                         </h3>
@@ -429,36 +472,53 @@ const CommissionModal = ({
                                           </p>
                                         </div>
                                       </div>
-                                      <div className=" flex flex-col items-center justify-center mr-5 w-40 mb-3">
-                                        {data?.receipt[0]?.image && (
-                                          <img
-                                            src={data?.receipt[0]?.image}
-                                            width="300px"
-                                            height="300px"
-                                          />
+
+                                      {/* RECEIPTS  */}
+                                      <div className="w-full p-4 items-center justify-center sm:col-span-2 md:col-span-2 lg:col-span-1 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-1"
+                                        onContextMenu={(e) => e.preventDefault()}
+                                      >
+                                        {data?.receipt[0]?.temp_file && (
+                                          <div className="flex items-center justify-center">
+                                            {(() => {
+                                              const ext = data?.receipt[0]?.image.split('.').pop().toLowerCase();
+                                              if (ext === 'pdf') {
+                                                return (
+                                                  <div className="mb-3">
+                                                    <BsFileEarmarkMedical
+                                                      size={100}
+                                                      color={"#AAAAAA"}
+                                                      // onClick={() => handlePdfClick(`data:application/pdf;base64, ${data?.receipt[0]?.temp_file}`)}
+                                                      onClick={() => handlePdfClick(data?.receipt[0]?.temp_file)}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else {
+                                                return (
+                                                  <img
+                                                    className="mb-3"
+                                                    src={`data:image/${ext};base64, ${data?.receipt[0]?.temp_file}`}
+                                                    width="150px"
+                                                    height="150px"
+                                                    onClick={() => handleImageClick(`data:image/${ext};base64, ${data?.receipt[0]?.temp_file}`)}
+                                                  />
+                                                );
+                                              }
+                                            })()}
+                                          </div>
                                         )}
-                                        <p className="flex">
-                                          <span className="mr-3">
-                                            <IoMdPerson />
-                                          </span>
-                                          {data?.invoice?.added_by_name}
-                                          {"-"}
-                                          {data?.invoice?.date}
+                                        <p className="flex items-center justify-center gap-4 w-full">
+                                          <IoMdPerson size={14} />
+                                          <div>
+                                            {data?.invoice?.added_by_name}
+                                            {"-"}
+                                            {datetimeLong(data?.invoice?.created_at)}
+                                          </div>
                                         </p>
                                       </div>
+
                                     </div>
-                                    {!invoiceModal && (
-                                      <div className="flex justify-end">
-                                        <button
-                                          className="bg-btn-primary rounded-full p-3 bottom-0 "
-                                          onClick={(e) =>
-                                            handleOpenModal(e, data)
-                                          }
-                                        >
-                                          <FaPencilAlt />
-                                        </button>
-                                      </div>
-                                    )}
+
+
                                   </div>
                                 );
                               })
@@ -512,8 +572,36 @@ const CommissionModal = ({
               fetchLeadsData={fetchLeadsData}
             />
           )}
+
+          {showOverlayPdf && (
+            <>
+              <OverlayFile
+                type={"pdf"}
+                content={overlayContent}
+                onClose={() => {
+                  setShowOverlayPdf(false);
+                  setShowOverlayImage(false); 
+                  setOverlayContent(null)
+                }} 
+                />
+            </>
+          )}
+          {showOverlayImage && (
+            <>
+              <OverlayFile
+                type={"image"}
+                content={overlayContent}
+                onClose={() => { 
+                  setShowOverlayImage(false); 
+                  setShowOverlayPdf(false);
+                  setOverlayContent(null) 
+                  }} 
+                  />
+            </>
+          )}
         </div>
       </Modal>
+
     </>
   );
 };

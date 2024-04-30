@@ -3,29 +3,24 @@ import React, { useEffect } from "react";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
-import Avatar from "@mui/material/Avatar";
-
-import axios from "../../axoisConfig";
-import { IoLocation, IoShieldOutline } from "react-icons/io5";
-import { IoMdMail } from "react-icons/io";
-import { BsMailbox, BsPencil } from "react-icons/bs";
-import { FaUser, FaPhoneAlt } from "react-icons/fa";
-
-import { Link } from "react-router-dom";
-// import SingleUser from "./SingleUser";
-import usePermission from "../../utils/usePermission";
-// import DeleteUser from "./DeleteUser";
-// import EditUserModal from "./EditUserModal";
-
-import { MdOutlineCall, MdOutlinePermContactCalendar } from "react-icons/md";
-import { TfiEmail } from "react-icons/tfi";
-import { AiOutlineEdit } from "react-icons/ai";
-import { HiOutlineBan } from "react-icons/hi";
-import { AiFillUnlock } from "react-icons/ai";
 import { toast } from "react-toastify";
+import usePermission from "../../utils/usePermission";
 import AddVendor from "./AddVendor";
 
-const VendorsList = ({}) => {
+import axios from "../../axoisConfig";
+import { IoMdMail } from "react-icons/io";
+import { 
+  BsMailbox, 
+  BsPencil,
+  BsPinMap,
+  BsShieldCheck,
+  BsPerson,
+  BsTelephone,
+  BsEnvelope 
+} from "react-icons/bs";
+import { FaUser, FaPhoneAlt } from "react-icons/fa";
+
+const VendorsList = ({ }) => {
   const [loading, setLoading] = useState(false);
   const {
     currentMode,
@@ -163,96 +158,78 @@ const VendorsList = ({}) => {
           <div className={`w-full`}>
             <div className="px-5">
               <div className="mt-5 md:mt-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3 pb-3">
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-5">
                   {vendorsData?.map((item, index) => {
                     return (
                       <div
                         key={index}
-                        className={`${
-                          !themeBgImg
-                            ? currentMode === "dark"
-                              ? "bg-[#1c1c1c] text-white"
-                              : "bg-[#EEEEEE] text-black"
-                            : currentMode === "dark"
+                        className={`${!themeBgImg
+                          ? currentMode === "dark"
+                            ? "bg-[#1c1c1c] text-white"
+                            : "bg-[#EEEEEE] text-black"
+                          : currentMode === "dark"
                             ? "blur-bg-dark text-white"
                             : "blur-bg-light text-black"
-                        } rounded-md relative hover:shadow-lg text-sm`}
+                          } rounded-xl relative shadow-sm card-hover text-sm border-primary border-b-2 p-4`}
                       >
-                        <div
-                          className={`border-primary flex justify-between border-t-2 rounded-md m-2`}
-                        >
-                          <div>
-                            <div className="flex items-center m-1 mt-3 mb-4 ">
-                              {/* NAME   */}
-                              <div className="mx-3 space-y-1 overflow-hidden">
-                                <p className=" ">{item?.country}</p>
-                                <h1 className="font-bold text-lg">
-                                  {item?.vendor_name}
-                                </h1>
-                              </div>
+                        {/* TITLE COUNTRY AND ACTIONS  */}
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-4">
+                            <div className="bg-primary py-1 px-2 rounded-md">
+                              <p className="text-white uppercase font-semibold">{item?.country}</p>
                             </div>
-
-                            <div className="space-y-4 m-1">
-                              {/* address */}
-                              <div className="flex">
-                                <IoLocation size={16} className="mr-3" />
-                                <p>{item?.address}</p>
-                              </div>
-                              {/* pobox */}
-                              <div className="flex">
-                                <BsMailbox size={16} className="mr-3" />
-                                <p>{item?.pobox}</p>
-                              </div>
-                              {/* trn */}
-                              <div className="flex">
-                                <IoShieldOutline size={16} className="mr-3" />
-                                <p>{item?.trn}</p>
-                              </div>
-                            </div>
+                            <p className="font-semibold">{item?.vendor_name}</p>
                           </div>
-
-                          <div>
-                            <div className="flex items-center m-1 mt-2 mb-4">
-                              <div className="mx-1 ">
-                                <button
-                                  className={`border rounded-full p-3 ${
-                                    currentMode === "dark"
-                                      ? "border-white"
-                                      : "border-black"
-                                  }`}
-                                  onClick={() => handleEditModal(item)}
-                                >
-                                  <BsPencil />
-                                </button>
-                              </div>
-                              {item?.type && (
-                                <div className="mx-1 bg-primary py-2 px-7 ">
-                                  <p className="text-white">{item?.type}</p>
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="space-y-4 m-1">
-                              {/* user to be contacted */}
-                              <div className="flex">
-                                <FaUser size={16} className="mr-3" />
-                                <p>{item?.person_to_contact}</p>
-                              </div>
-                              {/* phone */}
-                              <div className="flex">
-                                <FaPhoneAlt size={16} className="mr-3" />
-                                <p>{item?.contact}</p>
-                              </div>
-                              {/* email */}
-                              <div className="flex">
-                                <IoMdMail size={16} className="mr-3" />
-                                <p>{item?.email}</p>
-                              </div>
-                            </div>
+                          <div className="gap-4 flex items-center">
+                            {item?.type && (
+                              <p className="text-primary font-semibold">{item?.type}</p>
+                            )}
+                            <button
+                              className={`border bg-primary rounded-full p-2`}
+                              onClick={() => handleEditModal(item)}
+                            >
+                              <BsPencil size={16} color={"white"} />
+                            </button>
                           </div>
                         </div>
 
-                        <div className="absolute items-center right-2 flex flex-col space-y-10"></div>
+                        {/* DETAILS */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-4 flex flex-col gap-4">
+                            {/* ADDRESS  */}
+                            <div className="grid grid-cols-7 gap-2">
+                              <BsPinMap size={16} />
+                              <p className="col-span-6">{item?.address}</p>
+                            </div>
+                            {/* POBOX */}
+                            <div className="grid grid-cols-7 gap-2">
+                              <BsMailbox size={16} />
+                              <p className="col-span-6">{item?.pobox}</p>
+                            </div>
+                            {/* TRN */}
+                            <div className="grid grid-cols-7 gap-2">
+                              <BsShieldCheck size={16} />
+                              <p className="col-span-6">{item?.trn}</p>
+                            </div>
+                          </div>
+                          <div className="p-4 flex flex-col gap-4">
+                            {/* USER  */}
+                            <div className="grid grid-cols-7 gap-2">
+                              <BsPerson size={16} />
+                              <p className="col-span-6">{item?.person_to_contact}</p>
+                            </div>
+                            {/* CONTACT */}
+                            <div className="grid grid-cols-7 gap-2">
+                              <BsTelephone size={16} />
+                              <p className="col-span-6">{item?.contact}</p>
+                            </div>
+                            {/* EMAIL */}
+                            <div className="grid grid-cols-7 gap-2">
+                              <BsEnvelope size={16} />
+                              <p className="col-span-6">{item?.email}</p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     );
                   })}
