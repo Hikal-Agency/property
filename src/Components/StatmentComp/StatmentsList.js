@@ -124,33 +124,13 @@ const StatmentsList = () => {
   }, [filters]);
 
   return (
-    <div
-      className={`p-3 rounded-lg ${
-        themeBgImg &&
-        (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-      }`}
-    >
-      <div className="flex items-center justify-between space-x-3">
-        <div></div>
-
-        {/* <Box
-          sx={{
-            ...darkModeColors,
-            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            "& legend": {
-              textAlign: isLangRTL(i18n.language) ? "right" : "left",
-            },
-          }}
-          className={`p-4 `}
-        > */}
-        <div className="flex items-center justify-between space-x-3">
+    <div className="w-full">
+      {/* FILTERS  */}
+      <div className="flex justify-end">
+        <div className="flex items-center justify-between gap-4">
           <div className="mb-5">
             <button
-              className="bg-btn-primary py-2 px-4 text-white  rounded-sm"
+              className="bg-primary py-1 px-3 text-white rounded-md"
               onClick={clearFilters}
             >
               {t("clear_all")}
@@ -160,10 +140,10 @@ const StatmentsList = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -194,10 +174,10 @@ const StatmentsList = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -228,10 +208,10 @@ const StatmentsList = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -284,176 +264,93 @@ const StatmentsList = () => {
             </button>
           </div>
         </div>
-        {/* </Box> */}
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
-        {loading ? (
-          <div className="flex items-center justify-center">
-            <CircularProgress />
-          </div>
-        ) : (
-          <div className="flex flex-col h-[600px] overflow-y-scroll">
-            {statementsData && statementsData?.length > 0 ? (
-              statementsData?.map((stats) => {
-                let loss;
-                if (stats?.output?.toLowerCase() === "loss") {
-                  loss = true;
-                } else {
-                  loss = false;
-                }
-                return (
-                  <div
-                    className={`${
-                      currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#eeeeee]"
-                    } p-5 mb-3`}
-                  >
-                    <div className="w-full flex justify-between items-center">
-                      <div className="w-full flex items-center pb-3">
+      {/* DATA */}
+      {loading ? (
+        <div className="flex items-center justify-center">
+          <CircularProgress />
+        </div>
+      ) : (
+        <div className="flex flex-col gap-5">
+          {statementsData && statementsData?.length > 0 ? (
+            statementsData?.map((stats) => {
+              let loss;
+              if (stats?.output?.toLowerCase() === "loss") {
+                loss = true;
+              } else {
+                loss = false;
+              }
+              return (
+                <div className="w-full grid grid-cols-1 lg: grid-cols-2 gap-4">
+                  <div className={`p-4 pb-5 h-fit rounded-xl shadow-sm ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#EEEEEE] text-black"}`}>
+                    <div className="flex justify-between items-center gap-4 pb-5">
+                      {/* CURRENCY */}
+                      <div className="flex gap-2 items-center">
                         <div className="bg-primary h-10 w-1 rounded-full"></div>
-                        <h1
-                          className={`text-lg font-semibold mx-2 uppercase text-primary `}
-                        >
+                        <h1 className={`text-lg font-semibold uppercase text-primary`} >
                           {stats?.currency}
                         </h1>
                       </div>
-                      <div>
-                        <button
-                          className="bg-btn-primary text-white py-2 px-4 w-max"
-                          onClick={() => setTransactionsListModal(true)}
-                        >
-                          {t("btn_view_transactions")}
-                        </button>
-                      </div>
+                      {/* TRANSACTIONS */}
+                      <button
+                        className="bg-btn-primary rounded-md text-white py-2 px-4 w-max"
+                        onClick={() => setTransactionsListModal(true)}
+                      >
+                        {t("btn_view_transactions")}
+                      </button>
                     </div>
-                    <br></br>
-
-                    <div>
-                      <div className="flex items-center justify-center space-x-3 mt-2 w-full">
-                        <div className={`rounded-md bg-white w-full p-5`}>
-                          <p className={`text-center text-sm text-black`}>
-                            {t("income_amount")}
-                          </p>
-                          <h1
-                            className={`text-center text-lg font-bold text-black`}
-                          >
-                            {stats?.total_income}
-                          </h1>
-                        </div>
-                        <div className={`rounded-md bg-white w-full p-5`}>
-                          <p className={`text-center text-sm text-black`}>
-                            {t("expense_amount")}
-                          </p>
-                          <h1
-                            className={`text-center text-lg font-bold text-black`}
-                          >
-                            {stats?.total_expense}
-                          </h1>
-                        </div>
+                    <div className="grid grid-cols-2 gap-5 mb-2">
+                      {/* INCOME */}
+                      <div className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${currentMode === "dark" ? "bg-black" : "bg-white"}`}>
+                        <p className="text-center">
+                          {t("income_amount")}
+                        </p>
+                        <p className={`text-center text-xl font-semibold`} >
+                          {stats?.currency} {" "} {stats?.total_income}
+                        </p>
                       </div>
-
-                      {/* <div
-                        className={`rounded-md ${
-                          loss ? "bg-[#E8C4C4]" : "bg-[#D3E6D5]"
-                        } w-full p-5 mt-2 h-24 `}
-                      >
-                        
-                        <p className={`text-center text-sm text-black mb-3`}>
-                          {stats?.output}
+                      {/* EXPENSE */}
+                      <div className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${currentMode === "dark" ? "bg-black" : "bg-white"}`}>
+                        <p className="text-center">
+                          {t("expense_amount")}
                         </p>
-
-                        <h1
-                          className={`text-center text-lg font-bold ${
-                            loss ? "text-[#DA1F26]" : "text-[#127339]"
-                          }`}
-                        >
-                          {stats?.profit_loss}
-                        </h1>
-                        
-                        <p
-                          className={`text-right -top-7 text-sm text-black mb-3`}
-                        >
-                          {stats?.percent}
-                        </p>
-                     
-                      </div> */}
-                      <div
-                        className={`rounded-md ${
-                          loss ? "bg-[#E8C4C4]" : "bg-[#D3E6D5]"
-                        } w-full p-5 mt-2 flex flex-col items-center justify-center`}
-                      >
-                        <div className="flex flex-col items-center justify-center">
-                          <p className="text-center text-sm text-black">
-                            {stats?.output}
-                          </p>
-                          <h1
-                            className={`text-center text-lg font-bold ${
-                              loss ? "text-[#DA1F26]" : "text-[#127339]"
-                            }`}
-                          >
-                            {stats?.profit_loss}
-                          </h1>
-                        </div>
-                        <p className="text-sm text-black self-end ">
-                          {stats?.percent
-                            ? parseFloat(stats?.percent).toFixed(3) + " " + "%"
-                            : ""}
+                        <p className={`text-center text-xl font-semibold`} >
+                          {stats?.currency} {" "} {stats?.total_expense}
                         </p>
                       </div>
                     </div>
+                    <div className={`rounded-xl shadow-sm ${currentMode === "dark" ? loss ? "bg-red-900" : "bg-green-900" : loss ? "bg-[#E8C4C4]" : "bg-[#D3E6D5]"
+                      } w-full p-5 flex flex-col items-center justify-center gap-4 relative`} >
+                      <p className="text-center">
+                        {stats?.output}
+                      </p>
+                      <p className={`text-center text-xl font-bold ${currentMode === "dark" ? loss ? "text-[#E8C4C4]" : "text-[#D3E6D5]" : loss ? "text-[#DA1F26]" : "text-[#127339]"}`}>
+                        {stats?.currency} {" "} {stats?.profit_loss}
+                      </p>
+                      <div className={`absolute text-sm top-0 p-2 ${isLangRTL(i18n.langguage) ? "left-0 rounded-tl-xl" : "right-0 rounded-tr-xl"
+                        } ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
+                        } bg-black`}>
+                        {stats?.percent
+                          ? parseFloat(stats?.percent).toFixed(1) + " " + "%"
+                          : ""}
+                      </div>
+                    </div>
                   </div>
-                );
-              })
-            ) : (
-              <div>
-                <h1>{t("no_data_found")}</h1>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* transactions list */}
-        <div>
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            }}
-            className="p-2"
-          >
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <CircularProgress />
-              </div>
-            ) : (
-              <div className="h-[600px] overflow-y-scroll ">
-                {statementsData && statementsData?.length > 0 ? (
-                  statementsData?.map((stats) => {
-                    return (
-                      <>
-                        <div className="mb-9 mx-3 cursor-pointer">
-                          <StatmentsCharts stats={stats} />
-                        </div>
-                      </>
-                    );
-                  })
-                ) : (
-                  <div>
-                    <h1>{t("no_data_found")}</h1>
+                  {/* CHART */}
+                  <div className="">
+                    <StatmentsCharts stats={stats} />
                   </div>
-                )}
-              </div>
-            )}
-          </Box>
+                </div>
+              );
+            })
+          ) : (
+            <div>
+              <h1>{t("no_data_found")}</h1>
+            </div>
+          )}
         </div>
-      </div>
+      )}
+      
       {singleTransModal && (
         <SingleTransactionModal
           singleTransModal={singleTransModal}

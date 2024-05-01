@@ -54,7 +54,7 @@ const Statements = ({ isLoading }) => {
               </div>
             </div>
 
-            <div className="mt-3 pb-3">
+            <div className="pb-3">
               <StatmentsList />
             </div>
           </div>

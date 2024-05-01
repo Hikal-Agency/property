@@ -49,7 +49,12 @@ const UpdateLead = ({
 
   const [loading, setloading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
+
   const inputFileRef = useRef(null);
+  const [updateLeadData, setUpdateLeadData] = useState({});
+  const [Feedback, setFeedback] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
+  const [leadDate, setLeadDate] = useState("");
 
   // const style = {
   //   transform: "translate(-50%, -50%)",
@@ -60,15 +65,9 @@ const UpdateLead = ({
     boxShadow: 24,
   };
 
-  const [Feedback, setFeedback] = useState("");
-
-  const [leadDate, setLeadDate] = useState("");
-
-  const [updateLeadData, setUpdateLeadData] = useState({});
 
   console.log("update lead data:: ", updateLeadData);
 
-  const [imagePreview, setImagePreview] = useState(null);
 
   const handleImgUpload = (e) => {
     console.log("image upload: ");
@@ -114,84 +113,110 @@ const UpdateLead = ({
     const token = localStorage.getItem("auth-token");
 
     // GETTING LEAD DETAILS
-    setloading(true);
-    axios
-      .post(
-        `${BACKEND_URL}/editdeal/${LeadData.lid}`,
-        {},
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
-      .then((result) => {
-        console.log("the lead details is given by");
-        console.log(result);
-        setloading(false);
+    if (LeadData) {
+      setUpdateLeadData({
+        agent_comm_amount: LeadData.agent_comm_amount,
+        agent_comm_percent: LeadData.agent_comm_percent,
+        amount: LeadData.amount,
 
-        if (result.data.status) {
-          const newData = result.data.closeddeals;
-          setUpdateLeadData({
-            agent_comm_amount: newData.agent_comm_amount,
-            agent_comm_percent: newData.agent_comm_percent,
-            amount: newData.amount,
+        comm_amount: LeadData.comm_amount,
+        comm_percent: LeadData.comm_percent,
+        comm_status: LeadData.comm_status,
 
-            comm_amount: newData.comm_amount,
-            comm_percent: newData.comm_percent,
-            comm_status: newData.comm_status,
-
-            currency: newData.currency,
-            dealDate: newData.dealDate,
-            id: newData.id,
-            leadId: newData.leadId,
-            managerId: newData.managerId,
-            passport: newData.passport,
-            // pdc_status: newData.pdc_status,
-            // salesId: newData.salesId,
-            // spa_status: newData.spa_status,
-            unit: newData.unit,
-            updated_at: newData.updated_at,
-            updated_by: newData.updated_by,
-            updated_by_name: newData.updated_by_name,
-            vat: newData.vat,
-            project: LeadData?.project,
-            enquiryType: LeadData?.enquiryType,
-          });
-        } else {
-          toast.error("Error in Fetching the Lead", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          handleLeadModelClose();
-        }
-        setloading(false);
-      })
-      .catch((err) => {
-        setloading(false);
-
-        console.error(err);
-        toast.error("Error in Fetching the Lead", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        handleLeadModelClose();
+        currency: LeadData.currency,
+        dealDate: LeadData.dealDate,
+        id: LeadData.id,
+        leadId: LeadData.leadId,
+        managerId: LeadData.managerId,
+        passport: LeadData.passport,
+        // pdc_status: newData.pdc_status,
+        // salesId: newData.salesId,
+        // spa_status: newData.spa_status,
+        unit: LeadData.unit,
+        updated_at: LeadData.updated_at,
+        updated_by: LeadData.updated_by,
+        updated_by_name: LeadData.updated_by_name,
+        vat: LeadData.vat,
+        project: LeadData?.project,
+        enquiryType: LeadData?.enquiryType,
       });
+    }
+    // axios
+    //   .get(
+    //     `${BACKEND_URL}/closedDeals/${LeadData.lid}`,
+    //     {},
+    //     {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //         Authorization: "Bearer " + token,
+    //       },
+    //     }
+    //   )
+    //   .then((result) => {
+    //     console.log("the lead details is given by");
+    //     console.log(result);
+    //     setloading(false);
+
+    //     if (result.data.status) {
+    //       const newData = result.data.closeddeals;
+    //       setUpdateLeadData({
+    //         agent_comm_amount: newData.agent_comm_amount,
+    //         agent_comm_percent: newData.agent_comm_percent,
+    //         amount: newData.amount,
+
+    //         comm_amount: newData.comm_amount,
+    //         comm_percent: newData.comm_percent,
+    //         comm_status: newData.comm_status,
+
+    //         currency: newData.currency,
+    //         dealDate: newData.dealDate,
+    //         id: newData.id,
+    //         leadId: newData.leadId,
+    //         managerId: newData.managerId,
+    //         passport: newData.passport,
+    //         // pdc_status: newData.pdc_status,
+    //         // salesId: newData.salesId,
+    //         // spa_status: newData.spa_status,
+    //         unit: newData.unit,
+    //         updated_at: newData.updated_at,
+    //         updated_by: newData.updated_by,
+    //         updated_by_name: newData.updated_by_name,
+    //         vat: newData.vat,
+    //         project: LeadData?.project,
+    //         enquiryType: LeadData?.enquiryType,
+    //       });
+    //     } else {
+    //       toast.error("Error in Fetching the Lead", {
+    //         position: "top-right",
+    //         autoClose: 3000,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //         draggable: true,
+    //         progress: undefined,
+    //         theme: "light",
+    //       });
+    //       handleLeadModelClose();
+    //     }
+    //     setloading(false);
+    //   })
+    //   .catch((err) => {
+    //     setloading(false);
+    //     console.error(err);
+    //     toast.error("Error in Fetching the Lead", {
+    //       position: "top-right",
+    //       autoClose: 3000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //     handleLeadModelClose();
+    //   });
     // eslint-disable-next-line
-  }, []);
+  }, [LeadData]);
 
   console.log("leadDate:: ", leadDate);
 

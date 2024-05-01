@@ -1575,6 +1575,46 @@ const Sidebarmui = () => {
         },
       ],
     },
+    // TRANSACTION
+    {
+      title: t("menu_finance"),
+      icon: <FaChartLine size={18} />,
+      // pro: true,
+      links: [
+        {
+          name: t("menu_vendors"),
+          icon: <FaHome size={16} />,
+          // pro: true,
+          link: "/vendors",
+        },
+
+        {
+          name: t("menu_transaction"),
+          icon: <BsArrowLeftRight size={16} />,
+          pro: false,
+          submenu: [
+            {
+              name: t("menu_transaction"),
+              // icon: <BsArrowLeftRight size={16} />,
+              // pro: true,
+              link: "/transactions",
+            },
+            {
+              name: t("menu_statements"),
+              // icon: <FaHome size={16} />,
+              // pro: true,
+              link: "/statements",
+            },
+            {
+              name: t("menu_commission_vat"),
+              // icon: <FaHome size={16} />,
+              // pro: true,
+              link: "/commission_vat",
+            },
+          ],
+        },
+      ],
+    },
     // SOCIAL MEDIA
     // {
     //   title: t("menu_social_media"),
@@ -1665,46 +1705,6 @@ const Sidebarmui = () => {
           icon: <FaHistory size={16} />,
           // pro: true,
           link: "/onboarding/clientsList",
-        },
-      ],
-    },
-    // TRANSACTION
-    {
-      title: t("menu_finance"),
-      icon: <FaChartLine size={18} />,
-      // pro: true,
-      links: [
-        {
-          name: t("menu_vendors"),
-          icon: <FaHome size={16} />,
-          // pro: true,
-          link: "/vendors",
-        },
-
-        {
-          name: t("menu_transaction"),
-          icon: <BsArrowLeftRight size={16} />,
-          pro: false,
-          submenu: [
-            {
-              name: t("menu_new_transaction"),
-              // icon: <BsArrowLeftRight size={16} />,
-              // pro: true,
-              link: "/transactions",
-            },
-            {
-              name: t("menu_statements"),
-              // icon: <FaHome size={16} />,
-              // pro: true,
-              link: "/statements",
-            },
-            {
-              name: t("menu_commission_vat"),
-              // icon: <FaHome size={16} />,
-              // pro: true,
-              link: "/commission_vat",
-            },
-          ],
         },
       ],
     },
