@@ -553,7 +553,7 @@ const SingleEmployee = ({ user }) => {
           }),
           axios.get(`${BACKEND_URL}/agencies/1`),
           axios.post(`https://reports.hikalcrm.com/api/calculate_salary_user`, {
-            month: parseInt(currentMonthNumber, 10),
+            month: parseInt(selectedMonth, 10),
             year: parseInt(currentYear, 10),
             agency: 1,
             user_id: id,
