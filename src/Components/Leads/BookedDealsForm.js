@@ -112,21 +112,21 @@ const BookedDealsForm = ({
   const token = localStorage.getItem("auth-token");
   const AddClosedDeal = () => {
     setbtnloading(true);
-    if (!closedDealData?.passport) {
-      toast.error("Passport image is required", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setbtnloading(false);
+    // if (!closedDealData?.passport) {
+    //   toast.error("Passport image is required", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+    //   });
+    //   setbtnloading(false);
 
-      return;
-    }
+    //   return;
+    // }
 
     axios
       .post(`${BACKEND_URL}/closedDeals`, closedDealData, {
@@ -503,7 +503,7 @@ const BookedDealsForm = ({
                 </div>
 
                 {/* CLIENT  DETAILS  */}
-                <div
+                {/* <div
                   className={`p-4 rounded-xl shadow-sm card-hover
                   ${
                     currentMode === "dark"
@@ -517,21 +517,7 @@ const BookedDealsForm = ({
                   <hr className="my-4" />
                   <div className="w-full">
                     <Box sx={darkModeColors} className="p-2">
-                      {/* <Box
-                          sx={{
-                            ...darkModeColors,
-                            "& .MuiTypography-root": {
-                              fontFamily: fontFam,
-                            },
-                          }}
-                        >
-                          <label className="font-semibold mb-1">
-                            <span className="text-primary">{`${t("offer")} ${t(
-                              "label_validity"
-                            )}`}</span>
-                          </label>
-                          <br></br>
-                        </Box> */}
+                     
 
                       <div className="  mb-5 flex items-center justify-center ">
                         <div className=" rounded-lg border">
@@ -572,7 +558,7 @@ const BookedDealsForm = ({
                       </label>
                     </Box>
                   </div>
-                </div>
+                </div> */}
               </div>
             </>
           )}
