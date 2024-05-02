@@ -37,7 +37,7 @@ import {
   BsBuildings,
   BsQuestionLg,
   BsCart4,
-  BsCalendarCheck
+  BsCalendarCheck,
 } from "react-icons/bs";
 
 const Transactions = () => {
@@ -106,6 +106,12 @@ const Transactions = () => {
   });
 
   console.log("filter data:: ", addTransactionData);
+  console.log(
+    "commission type filter: ",
+    commission_type(t)?.filter(
+      (comm) => comm?.value === addTransactionData?.invoice_type
+    )
+  );
 
   const handleChange = (e, filter) => {
     console.log("filter: ", filter);
@@ -451,9 +457,10 @@ const Transactions = () => {
 
   return (
     <div
-      className={` ${themeBgImg &&
+      className={` ${
+        themeBgImg &&
         (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-        }`}
+      }`}
     >
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4">
         {/* NEW Transaction */}
@@ -461,17 +468,18 @@ const Transactions = () => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
           }}
-          className={`p-4 rounded-xl shadow-sm ${!themeBgImg &&
+          className={`p-4 rounded-xl shadow-sm ${
+            !themeBgImg &&
             (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-            }`}
+          }`}
         >
           <h3 className="text-primary mb-5 text-center font-semibold">{` ${t(
             "new_transaction"
@@ -507,10 +515,13 @@ const Transactions = () => {
               value: trans.value,
               label: trans.value,
             }))}
-            value={commission_type(t)?.filter(
-              (comm) => comm?.value === addTransactionData?.invoice_type
-            )}
+            value={
+              commission_type(t)?.filter(
+                (comm) => comm?.value === addTransactionData?.invoice_type
+              )?.value
+            }
             onChange={(e) => {
+              console.log("commission type e: ", e);
               setAddTransactionData({
                 ...addTransactionData,
                 invoice_type: e.value,
@@ -763,7 +774,7 @@ const Transactions = () => {
                 border: "1px solid white",
                 fontFamily: fontFam,
                 marginBottom: "20px",
-                width: "100%"
+                width: "100%",
               }}
               component="span" // Required so the button doesn't automatically submit form
               disabled={loading ? true : false}
@@ -798,10 +809,10 @@ const Transactions = () => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
@@ -833,7 +844,7 @@ const Transactions = () => {
                         <p className="mb-3 font-semibold text-sm">
                           {/* {new Date(trans?.invoice?.date).toISOString().split('T')[0]} */}
                           {/* {new Date(new Date(trans?.invoice?.date).getTime() - (new Date(trans?.invoice?.date).getTimezoneOffset() * 60000)).toISOString().split('T')[0]} */}
-                          {moment(trans?.invoice?.date).format('YYYY-MM-DD')}
+                          {moment(trans?.invoice?.date).format("YYYY-MM-DD")}
                         </p>
                         <div className="flex justify-between gap-4 mb-4">
                           <div className="flex gap-4">
@@ -849,13 +860,19 @@ const Transactions = () => {
                               )}
                             </div>
                             <div className="flex flex-col">
-                              <p >
+                              <p>
                                 {user
                                   ? trans?.user?.userName
                                   : trans?.vendor?.vendor_name}
                               </p>
                               <div className="flex gap-1 text-sm">
-                                <p className={trans?.invoice?.status === "Paid" ? "text-green-600" : "text-red-600"}>
+                                <p
+                                  className={
+                                    trans?.invoice?.status === "Paid"
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  }
+                                >
                                   {trans?.invoice?.status}
                                 </p>
                                 <p> - {trans?.invoice?.category}</p>
@@ -864,10 +881,11 @@ const Transactions = () => {
                           </div>
                           <div>
                             <p
-                              className={`font-semibold text-sm ${trans?.invoice?.invoice_type == "Income"
-                                ? "text-green-600"
-                                : "text-red-600"
-                                } `}
+                              className={`font-semibold text-sm ${
+                                trans?.invoice?.invoice_type == "Income"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              } `}
                             >
                               {trans?.invoice?.invoice_type === "Income"
                                 ? "+"
@@ -895,17 +913,18 @@ const Transactions = () => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
           }}
-          className={`p-4 rounded-xl shadow-sm ${!themeBgImg &&
+          className={`p-4 rounded-xl shadow-sm ${
+            !themeBgImg &&
             (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-            }`}
+          }`}
         >
           <h3 className="text-primary text-center font-semibold mb-5">{` ${t(
             "btn_filters"
