@@ -65,9 +65,7 @@ const UpdateLead = ({
     boxShadow: 24,
   };
 
-
   console.log("update lead data:: ", updateLeadData);
-
 
   const handleImgUpload = (e) => {
     console.log("image upload: ");
@@ -664,7 +662,7 @@ const UpdateLead = ({
                   )}
 
                   {/* CLIENT  DETAILS  */}
-                  <div
+                  {/* <div
                     className={`p-4 rounded-xl shadow-sm card-hover
                   ${
                     currentMode === "dark"
@@ -717,7 +715,7 @@ const UpdateLead = ({
                         </label>
                       </Box>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </>
             )}

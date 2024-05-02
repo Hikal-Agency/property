@@ -288,12 +288,12 @@ const CommissionModal = ({
 
                       {!invoiceModal && (
                         <>
-                          <button
+                          {/* <button
                             onClick={(e) => handleOpenModal(e)}
                             className="bg-btn-primary rounded-md py-2 px-4 mr-2"
                           >
                             {t("btn_commission_request")}
-                          </button>
+                          </button> */}
                           <button
                             onClick={(e) => handleOpenModal(e)}
                             className="bg-btn-primary rounded-md py-2 px-4"
