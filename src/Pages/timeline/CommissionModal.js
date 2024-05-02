@@ -15,6 +15,7 @@ import { IoMdPerson } from "react-icons/io";
 import { FaPencilAlt } from "react-icons/fa";
 import OverlayFile from "../../Components/_elements/OverlayFile";
 import { over } from "lodash";
+import moment from "moment";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -370,7 +371,8 @@ const CommissionModal = ({
                                           <p>{t("date")}:</p>
                                           <p className="font-semibold ml-2">
                                             {/* {data?.invoice?.date} */}
-                                            {new Date(data?.invoice?.date).toISOString().split('T')[0]}
+                                            {/* {new Date(data?.invoice?.date).toISOString().split('T')[0]} */}
+                                            {moment(data?.invoice?.date).format('YYYY-MM-DD')}
                                           </p>
                                         </div>
 

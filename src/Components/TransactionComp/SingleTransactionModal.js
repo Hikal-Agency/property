@@ -176,7 +176,8 @@ const SingleTransactionModal = ({
                               {t("date")}:
                             </p>
                             <p>
-                              {new Date(singleTrans?.invoice?.date).toISOString().split('T')[0]}
+                              {/* {new Date(?.invoice?.date).toISOString().split('T')[0]} */}
+                              {moment(singleTrans?.invoice?.date).format('YYYY-MM-DD')}
                             </p>
                           </div>
                           {/* invoice type  */}

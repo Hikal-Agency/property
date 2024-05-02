@@ -831,7 +831,9 @@ const Transactions = () => {
                         onClick={() => setSingleTransModal(trans)}
                       >
                         <p className="mb-3 font-semibold text-sm">
-                          {new Date(trans?.invoice?.date).toISOString().split('T')[0]}
+                          {/* {new Date(trans?.invoice?.date).toISOString().split('T')[0]} */}
+                          {/* {new Date(new Date(trans?.invoice?.date).getTime() - (new Date(trans?.invoice?.date).getTimezoneOffset() * 60000)).toISOString().split('T')[0]} */}
+                          {moment(trans?.invoice?.date).format('YYYY-MM-DD')}
                         </p>
                         <div className="flex justify-between gap-4 mb-4">
                           <div className="flex gap-4">
