@@ -10,11 +10,9 @@ import { datetimeLong } from "../../Components/_elements/formatDateTime";
 
 import { BiBed, BiCalendarExclamation } from "react-icons/bi";
 import {
-  BsTelephone,
-  BsBuildings,
   BsBookmarkCheckFill,
   BsClockFill,
-  BsFlagFill,
+  BsFileEarmarkMedical,
 } from "react-icons/bs";
 import { FaCheck, FaPlus, FaUserCheck } from "react-icons/fa";
 import { BsPencil } from "react-icons/bs";
@@ -28,6 +26,7 @@ import AddTransactionsModal from "../../Components/Transactions/AddTransactionsM
 import { toast } from "react-toastify";
 import SingleTransImage from "./SingleTransImage";
 import usePermission from "../../utils/usePermission";
+import OverlayFile from "../../Components/_elements/OverlayFile";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -62,6 +61,24 @@ const DealHistory = ({
 
   const navigate = useNavigate();
 
+  const [showOverlayPdf, setShowOverlayPdf] = useState(false);
+  const [showOverlayImage, setShowOverlayImage] = useState(false);
+  const [overlayContent, setOverlayContent] = useState(null);
+
+  const handleImageClick = (image) => {
+    setOverlayContent(image);
+    console.log("OVERLAY IMAGE ========= ", overlayContent);
+    setShowOverlayPdf(false);
+    setShowOverlayImage(true);
+  };
+
+  const handlePdfClick = (pdf) => {
+    setOverlayContent(pdf);
+    console.log("OVERLAY PDF ========= ", overlayContent);
+    setShowOverlayImage(false);
+    setShowOverlayPdf(true);
+  };
+
   console.log("lead Data:: ", LeadData);
   console.log("deal history modal: ", dealHistoryModel);
 
@@ -82,31 +99,28 @@ const DealHistory = ({
       text: t("pdc"),
       icon:
         LeadData?.pdc_status === 1 ? (
-          <FaCheck size={16} color="white" />
+          <FaCheck size={20} color="#1b8755" />
         ) : (
-          <RxCross2 size={16} color="white" />
+          <RxCross2 size={20} color="#DA1F26" />
         ),
-      bgColor: LeadData?.pdc_status === 1 ? "green" : "#FF0000",
     },
     {
       text: t("spa"),
       icon:
         LeadData?.spa_status === 1 ? (
-          <FaCheck size={16} color="white" />
+          <FaCheck size={20} color="#1b8755" />
         ) : (
-          <RxCross2 size={16} color="white" />
+          <RxCross2 size={20} color="#DA1F26" />
         ),
-      bgColor: LeadData?.spa_status === 1 ? "green" : "#FF0000",
     },
     {
       text: t("commission"),
       icon:
         LeadData?.comm_status === 1 ? (
-          <FaCheck size={16} color="white" />
+          <FaCheck size={20} color="#1b8755" />
         ) : (
-          <RxCross2 size={16} color="white" />
+          <RxCross2 size={20} color="#DA1F26" />
         ),
-      bgColor: LeadData?.comm_status === 1 ? "green" : "#FF0000",
       type: "commission",
     },
   ];
@@ -266,23 +280,20 @@ const DealHistory = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseDealHistory}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -294,15 +305,13 @@ const DealHistory = ({
 
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+            className={` ${currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-            } 
+              } 
              p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
@@ -315,9 +324,8 @@ const DealHistory = ({
                     <div className="flex items-center ">
                       <div className="bg-primary h-10 w-1 rounded-full"></div>
                       <h1
-                        className={`text-lg font-semibold mx-2 uppercase ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                        className={`text-lg font-semibold mx-2 uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
                       >
                         {t("deal_history")}
                       </h1>
@@ -336,9 +344,8 @@ const DealHistory = ({
 
                   <div>
                     <div
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      } p-4 `}
+                      className={`${currentMode === "dark" ? "text-white" : "text-black"
+                        } p-4 `}
                     >
                       <div className="grid sm:grid-cols-12 gap-1">
                         <div className="col-span-12 md:col-span-4 w-full">
@@ -351,31 +358,28 @@ const DealHistory = ({
                               <h3 className="text-sm text-center font-semibold uppercase mb-5">
                                 {t("status")}
                               </h3>
-                              <div className="w-full flex items-center justify-center  space-x-2 mb-4">
+                              {/* <div className="w-full flex items-center justify-center  space-x-2 mb-4"> */}
+                              <div className="w-full grid grid-cols-3 gap-4 mb-4">
                                 {statuses?.map((status) => {
                                   return (
                                     <div
-                                      className={`${
-                                        currentMode === "dark"
-                                          ? "bg-[#1C1C1C]"
-                                          : "bg-[#EEEEEE]"
-                                      } py-4 px-9 rounded-md ${
-                                        status?.type === "commission" &&
-                                        hasPermission("add_commission")
+                                      className={`${currentMode === "dark"
+                                        ? "bg-[#1C1C1C]"
+                                        : "bg-[#EEEEEE]"
+                                        } py-4 px-9 flex flex-col items-center justify-center rounded-md ${status?.type === "commission" &&
+                                          hasPermission("add_commission")
                                           ? "cursor-pointer"
                                           : null
-                                      } `}
+                                        } `}
                                       onClick={
                                         status?.type === "commission" &&
-                                        hasPermission("add_commission")
+                                          hasPermission("add_commission")
                                           ? () => handleCommissionModalOpen()
                                           : undefined
                                       }
                                     >
                                       <p
-                                        className={`
-                    bg-[${status?.bgColor}]
-                rounded-full shadow-none p-1.5 mr-1 flex items-center mb-3`}
+                                        className={`flex items-center mb-2`}
                                       >
                                         {status?.icon}
                                       </p>
@@ -385,13 +389,13 @@ const DealHistory = ({
                                 })}
                               </div>
 
-                              {hasPermission("add_deal_spa") && (
-                                <>
-                                  <div className="flex items-center justify-between  flex-row">
-                                    <h3 className="text-sm  font-semibold uppercase mb-5 mt-3">
-                                      {t("transactions")}
-                                    </h3>
+                              <div className="flex items-center justify-between  flex-row">
+                                <h3 className="text-sm  font-semibold uppercase mb-5 mt-3">
+                                  {t("transactions")}
+                                </h3>
 
+                                {hasPermission("add_deal_spa") && (
+                                  <>
                                     <div>
                                       <button
                                         className="bg-btn-primary rounded-full p-2"
@@ -400,95 +404,129 @@ const DealHistory = ({
                                         <FaPlus color="white" />
                                       </button>
                                     </div>
-                                  </div>
-                                </>
-                              )}
+                                  </>
+                                )}
+                              </div>
 
-                              {hasPermission("deal_spa") && (
-                                <>
-                                  {transactions?.map((spa) => (
-                                    <div
-                                      className={`${
-                                        currentMode === "dark"
-                                          ? "bg-[#1C1C1C]"
-                                          : "bg-[#EEEEEE]"
-                                      } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full relative`}
-                                    >
-                                      <>
-                                        <div className="absolute bottom-1 right-1 mt-4">
-                                          <button
-                                            className="border rounded-full p-3 "
+                              {/* {hasPermission("deal_spa") && ( */}
+                              <>
+                                {transactions?.map((spa) => (
+                                  <div
+                                    className={`${currentMode === "dark"
+                                      ? "bg-[#1C1C1C]"
+                                      : "bg-[#EEEEEE]"
+                                      } rounded-xl shadow-sm card-hover w-full relative mb-4`}
+                                  >
+                                    {/* EDIT BUTTON */}
+                                    {hasPermission("deal_spa") && (
+                                      <div className="absolute bottom-2 right-2">
+                                        <button
+                                          className="bg-primary text-white rounded-full p-2"
+                                          onClick={(e) =>
+                                            handleTransactionModalOpen(3, spa)
+                                          }
+                                        >
+                                          <BsPencil size={14} color={"white"} />
+                                        </button>
+                                      </div>
+                                    )}
+                                    {/* BANNER  */}
+                                    <div className="relative bg-primary p-2 rounded-t-xl text-center text-white font-semibold">
+                                      <div>{spa?.type}</div>
+                                    </div>
+                                    {/* DETAILS */}
+                                    <div className="p-4 grid grid-cols-2 justify-between gap-4">
+                                      {/* TEXT */}
+                                      <div className="flex flex-col gap-4">
+                                        <div className="flex gap-2">
+                                          <p>{t("percentage")}:</p>
+                                          <div>
+                                            <p className="font-semibold">
+                                              {spa?.percent}%
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        <div className="flex gap-2">
+                                          <p>{t("label_amount")}:</p>
+                                          <div>
+                                            <p className="font-semibold">
+                                              {spa?.currency} {spa?.amount}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        <div className="flex gap-2">
+                                          <p>{t("date")}:</p>
+                                          <div>
+                                            <p className="font-semibold">
+                                              {spa?.dealDate}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        <div className="flex gap-2">
+                                          <p>{t("label_added_by")}:</p>
+                                          <div>
+                                            <p className="font-semibold">
+                                              {spa?.added_by_name}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {/* FILE */}
+                                      <div className="w-full flex items-center justify-center">
+                                        {/* {spa?.temp_file && (
+                                          <div
+                                            className="rounded-md border cursor-pointer mb-8 "
                                             onClick={(e) =>
-                                              handleTransactionModalOpen(3, spa)
+                                              setOpenImageModal(spa)
                                             }
                                           >
-                                            <BsPencil />
-                                          </button>
-                                        </div>
-                                        <Box sx={{ ...ribbonStyles }}>
-                                          <div className="wrap">
-                                            <span>{spa?.type}</span>
+                                            <img
+                                              src={spa?.temp_file}
+                                              width="100px"
+                                              height="100px"
+                                              className="object-fill"
+                                            />
                                           </div>
-                                        </Box>
-                                        <div className="flex items-center justify-between mt-5">
-                                          <div>
-                                            <div className="flex gap-2 my-3">
-                                              <p>{t("percentage")}:</p>
-                                              <div>
-                                                <p className="font-semibold ml-2">
-                                                  {spa?.percent}%
-                                                </p>
-                                              </div>
-                                            </div>
-
-                                            <div className="flex gap-2 my-3">
-                                              <p>{t("label_amount")}:</p>
-                                              <div>
-                                                <p className="font-semibold ml-2">
-                                                  {spa?.currency} {spa?.amount}
-                                                </p>
-                                              </div>
-                                            </div>
-
-                                            <div className="flex gap-2 my-3">
-                                              <p>{t("date")}:</p>
-                                              <div>
-                                                <p className="font-semibold ml-2">
-                                                  {spa?.dealDate}
-                                                </p>
-                                              </div>
-                                            </div>
-
-                                            <div className="flex gap-2 my-3">
-                                              <p>{t("label_added_by")}:</p>
-                                              <div>
-                                                <p className="font-semibold ml-2">
-                                                  {spa?.added_by_name}
-                                                </p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          {spa?.image && (
-                                            <div
-                                              className="rounded-md border cursor-pointer mb-8 "
-                                              onClick={(e) =>
-                                                setOpenImageModal(spa)
+                                        )} */}
+                                        {spa?.temp_file && (
+                                          <div className="flex items-center justify-center">
+                                            {(() => {
+                                              const ext = spa?.image.split('.').pop().toLowerCase();
+                                              if (ext === 'pdf') {
+                                                return (
+                                                  <div className="mb-3">
+                                                    <BsFileEarmarkMedical
+                                                      size={100}
+                                                      color={"#AAAAAA"}
+                                                      // onClick={() => handlePdfClick(`data:application/pdf;base64,${spa?.temp_file}`)}
+                                                      onClick={() => handlePdfClick(spa?.temp_file)}
+                                                    />
+                                                  </div>
+                                                );
+                                              } else {
+                                                return (
+                                                  <img
+                                                    // onClick={(e) => setOpenImageModal(spa)}
+                                                    className="mb-3"
+                                                    src={`data:image/${ext};base64, ${spa?.temp_file}`}
+                                                    width="150px"
+                                                    height="150px"
+                                                    onClick={() => handleImageClick(`data:image/${ext};base64,${spa?.temp_file}`)}
+                                                  />
+                                                );
                                               }
-                                            >
-                                              <img
-                                                src={spa?.image}
-                                                width="100px"
-                                                height="100px"
-                                                className="object-fill"
-                                              />
-                                            </div>
-                                          )}
-                                        </div>
-                                      </>
+                                            })()}
+                                          </div>
+                                        )}
+                                      </div>
                                     </div>
-                                  ))}
-                                </>
-                              )}
+                                  </div>
+                                ))}
+                              </>
+                              {/* )} */}
                             </>
                           )}
                         </div>
@@ -508,11 +546,10 @@ const DealHistory = ({
                                   return (
                                     <>
                                       <div
-                                        className={`${
-                                          isLangRTL(i18n.language)
-                                            ? "ml-3"
-                                            : "mr-3"
-                                        } col-start-1 col-end-3 md:mx-auto relative`}
+                                        className={`${isLangRTL(i18n.language)
+                                          ? "ml-3"
+                                          : "mr-3"
+                                          } col-start-1 col-end-3 md:mx-auto relative`}
                                       >
                                         <div className="h-full w-6 flex items-center justify-center">
                                           <div
@@ -537,21 +574,19 @@ const DealHistory = ({
                                               {timeline.note ? (
                                                 <>
                                                   <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "ml-3"
-                                                        : "mr-3"
-                                                    } col-start-1 col-end-3 md:mx-auto relative`}
+                                                    className={`${isLangRTL(i18n.language)
+                                                      ? "ml-3"
+                                                      : "mr-3"
+                                                      } col-start-1 col-end-3 md:mx-auto relative`}
                                                   >
                                                     <div className="h-full w-6 flex items-center justify-center">
                                                       <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
                                                     </div>
                                                     <div
-                                                      className={`${
-                                                        isLangRTL(i18n.language)
-                                                          ? "-mr-2"
-                                                          : "-ml-2"
-                                                      } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                                      className={`${isLangRTL(i18n.language)
+                                                        ? "-mr-2"
+                                                        : "-ml-2"
+                                                        } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
                                                     >
                                                       <MdNoteAlt
                                                         className="text-white"
@@ -560,11 +595,10 @@ const DealHistory = ({
                                                     </div>
                                                   </div>
                                                   <div
-                                                    className={`${
-                                                      currentMode === "dark"
-                                                        ? "bg-[#1C1C1C]"
-                                                        : "bg-[#EEEEEE]"
-                                                    } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                    className={`${currentMode === "dark"
+                                                      ? "bg-[#1C1C1C]"
+                                                      : "bg-[#EEEEEE]"
+                                                      } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                   >
                                                     {/* ADDED BY  */}
                                                     <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
@@ -594,320 +628,305 @@ const DealHistory = ({
                                                   </div>
                                                 </>
                                               ) : // MANAGER
-                                              timeline.manager &&
-                                                timeline.manager !== "0" ? (
-                                                <>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
+                                                timeline.manager &&
+                                                  timeline.manager !== "0" ? (
+                                                  <>
+                                                    <div
+                                                      className={`${isLangRTL(i18n.language)
                                                         ? "ml-3"
                                                         : "mr-3"
-                                                    } col-start-1 col-end-3 md:mx-auto relative`}
-                                                  >
-                                                    <div className="h-full w-6 flex items-center justify-center">
-                                                      <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                    </div>
-                                                    <div
-                                                      className={`${
-                                                        isLangRTL(i18n.language)
+                                                        } col-start-1 col-end-3 md:mx-auto relative`}
+                                                    >
+                                                      <div className="h-full w-6 flex items-center justify-center">
+                                                        <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                      </div>
+                                                      <div
+                                                        className={`${isLangRTL(i18n.language)
                                                           ? "-mr-2"
                                                           : "-ml-2"
-                                                      } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                    >
-                                                      <FaUserCheck
-                                                        className="text-white"
-                                                        size={16}
-                                                      />
+                                                          } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                                      >
+                                                        <FaUserCheck
+                                                          className="text-white"
+                                                          size={16}
+                                                        />
+                                                      </div>
                                                     </div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      currentMode === "dark"
+                                                    <div
+                                                      className={`${currentMode === "dark"
                                                         ? "bg-[#1C1C1C]"
                                                         : "bg-[#EEEEEE]"
-                                                    } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                        } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                     // style={{
                                                     //   transform:
                                                     //     "translateX(-30px)",
                                                     // }}
-                                                  >
-                                                    {/* ADDED BY  */}
-                                                    <p className="text-sm tracking-wide text-[#AAAAAA] font-italic justify-end flex items-center gap-2">
-                                                      <HiUser size={12} />
-                                                      {timeline.addedBy}
-                                                    </p>
-                                                    {/* AGENT  */}
-                                                    <p className="font-semibold tracking-wide">
-                                                      {t(
-                                                        "salesmanager_updated_to"
-                                                      )}{" "}
-                                                      <span className="font-bold text-primary">
-                                                        {timeline.manager}
-                                                      </span>
-                                                      .
-                                                    </p>
-                                                    {/* CREATION DATE  */}
-                                                    <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                      {datetimeLong(
-                                                        timeline.created_at
-                                                      )}
-                                                    </p>
-                                                  </div>
-                                                </>
-                                              ) : // SALESPERSON
-                                              timeline.agent &&
-                                                timeline.agent !== "0" ? (
-                                                <>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "ml-2"
-                                                        : "mr-2"
-                                                    } col-start-1 col-end-3 md:mx-auto relative`}
-                                                  >
-                                                    <div className="h-full w-6 flex items-center justify-center">
-                                                      <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                    </div>
-                                                    <div
-                                                      className={`${
-                                                        isLangRTL(i18n.language)
-                                                          ? "-mr-2"
-                                                          : "-ml-2"
-                                                      } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
                                                     >
-                                                      <FaUserCheck
-                                                        className="text-white"
-                                                        size={16}
-                                                      />
+                                                      {/* ADDED BY  */}
+                                                      <p className="text-sm tracking-wide text-[#AAAAAA] font-italic justify-end flex items-center gap-2">
+                                                        <HiUser size={12} />
+                                                        {timeline.addedBy}
+                                                      </p>
+                                                      {/* AGENT  */}
+                                                      <p className="font-semibold tracking-wide">
+                                                        {t(
+                                                          "salesmanager_updated_to"
+                                                        )}{" "}
+                                                        <span className="font-bold text-primary">
+                                                          {timeline.manager}
+                                                        </span>
+                                                        .
+                                                      </p>
+                                                      {/* CREATION DATE  */}
+                                                      <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                        {datetimeLong(
+                                                          timeline.created_at
+                                                        )}
+                                                      </p>
                                                     </div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      currentMode === "dark"
-                                                        ? "bg-[#1C1C1C]"
-                                                        : "bg-[#EEEEEE]"
-                                                    } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                    // style={{
-                                                    //   transform:
-                                                    //     "translateX(-30px)",
-                                                    // }}
-                                                  >
-                                                    {/* ADDED BY  */}
-                                                    <p className="text-sm tracking-wide font-italic gap-2 text-[#AAAAAA] justify-end flex items-center">
-                                                      <HiUser size={12} />
-                                                      {timeline.addedBy}
-                                                    </p>
-                                                    {/* AGENT  */}
-                                                    <p className="font-semibold tracking-wide">
-                                                      {t(
-                                                        "salesagent_updated_to"
-                                                      )}{" "}
-                                                      <span className="font-bold text-primary">
-                                                        {timeline.agent}
-                                                      </span>
-                                                      .
-                                                    </p>
-                                                    {/* CREATION DATE  */}
-                                                    <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                      {datetimeLong(
-                                                        timeline.created_at
-                                                      )}
-                                                    </p>
-                                                  </div>
-                                                </>
-                                              ) : // FEEDBACK
-                                              timeline.feedback &&
-                                                timeline.feedback !== "0" ? (
-                                                <>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "ml-3"
-                                                        : "mr-3"
-                                                    } col-start-1 col-end-3 md:mx-auto relative`}
-                                                  >
-                                                    <div className="h-full w-6 flex items-center justify-center">
-                                                      <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                    </div>
-                                                    <div
-                                                      className={`${
-                                                        isLangRTL(i18n.language)
-                                                          ? "-mr-2"
-                                                          : "-ml-2"
-                                                      } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                    >
-                                                      <BsBookmarkCheckFill
-                                                        className="text-white"
-                                                        size={16}
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      currentMode === "dark"
-                                                        ? "bg-[#1C1C1C]"
-                                                        : "bg-[#EEEEEE]"
-                                                    } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                    // style={{
-                                                    //   transform:
-                                                    //     "translateX(-30px)",
-                                                    // }}
-                                                  >
-                                                    {/* ADDED BY  */}
-                                                    <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
-                                                      <HiUser size={12} />
-                                                      {timeline.addedBy}
-                                                    </p>
-                                                    {/* FEEDBACK  */}
-                                                    <p className="font-semibold tracking-wide">
-                                                      {t("feedback_updated_to")}{" "}
-                                                      <span className="font-bold text-primary">
-                                                        {timeline.feedback}
-                                                      </span>
-                                                      .
-                                                    </p>
-                                                    {/* CREATION DATE  */}
-                                                    <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                      {datetimeLong(
-                                                        timeline.created_at
-                                                      )}
-                                                    </p>
-                                                  </div>
-                                                </>
-                                              ) : // MEETING STATUS
-                                              timeline.meetingStatus &&
-                                                timeline.meetingStatus !==
-                                                  "0" ? (
-                                                <>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "ml-3"
-                                                        : "mr-3"
-                                                    } col-start-1 col-end-3 md:mx-auto relative`}
-                                                  >
-                                                    <div className="h-full w-6 flex items-center justify-center">
-                                                      <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                    </div>
-                                                    <div
-                                                      className={`${
-                                                        isLangRTL(i18n.language)
-                                                          ? "-mr-2"
-                                                          : "-ml-2"
-                                                      } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                    >
-                                                      <BiCalendarExclamation
-                                                        className="text-white"
-                                                        size={16}
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      currentMode === "dark"
-                                                        ? "bg-[#1C1C1C]"
-                                                        : "bg-[#EEEEEE]"
-                                                    } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                    // style={{
-                                                    //   transform:
-                                                    //     "translateX(-30px)",
-                                                    // }}
-                                                  >
-                                                    {/* ADDED BY  */}
-                                                    <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
-                                                      <HiUser size={12} />
-                                                      {timeline.addedBy}
-                                                    </p>
-                                                    {/* FEEDBACK  */}
-                                                    <p className="font-semibold tracking-wide">
-                                                      {t(
-                                                        "meeting_status_updated_to"
-                                                      )}{" "}
-                                                      <span className="font-bold text-primary">
-                                                        {timeline.meetingStatus}
-                                                      </span>
-                                                      .
-                                                    </p>
-                                                    {/* CREATION DATE  */}
-                                                    <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                      {datetimeLong(
-                                                        timeline.created_at
-                                                      )}
-                                                    </p>
-                                                  </div>
-                                                </>
-                                              ) : // MEETING DATE TIME
-                                              timeline.meetingDate &&
-                                                timeline.meetingDate !== "0" ? (
-                                                <>
-                                                  <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "ml-3"
-                                                        : "mr-3"
-                                                    } col-start-1 col-end-3 md:mx-auto relative`}
-                                                  >
-                                                    <div className="h-full w-6 flex items-center justify-center">
-                                                      <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                    </div>
-                                                    <div
-                                                      className={`${
-                                                        isLangRTL(i18n.language)
-                                                          ? "-mr-2"
-                                                          : "-ml-2"
-                                                      } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                    >
-                                                      <BsClockFill
-                                                        className="text-white"
-                                                        size={16}
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                  <div
-                                                    className={`${
-                                                      currentMode === "dark"
-                                                        ? "bg-[#1C1C1C]"
-                                                        : "bg-[#EEEEEE]"
-                                                    } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                    // style={{
-                                                    //   transform:
-                                                    //     "translateX(-30px)",
-                                                    // }}
-                                                  >
-                                                    {/* ADDED BY  */}
-                                                    <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
-                                                      <HiUser size={12} />
-                                                      {timeline.addedBy}
-                                                    </p>
-                                                    {/* FEEDBACK  */}
-                                                    <p className="font-semibold tracking-wide">
-                                                      {t("meeting_set_to")}{" "}
-                                                      <span className="font-bold text-primary">
-                                                        {!timeline.meetingTime ||
-                                                        timeline.meetingTime ===
-                                                          ""
-                                                          ? ""
-                                                          : `${timeline.meetingTime}, `}{" "}
-                                                        {(timeline.meetingDate ||
-                                                          timeline.meetingDate !==
-                                                            "") &&
-                                                          moment(
-                                                            timeline.meetingDate
-                                                          ).format("MMMM D, Y")}
-                                                      </span>
-                                                      .
-                                                    </p>
-                                                    {/* CREATION DATE  */}
-                                                    <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                      {datetimeLong(
-                                                        timeline.created_at
-                                                      )}
-                                                    </p>
-                                                  </div>
-                                                </>
-                                              ) : (
-                                                <></>
-                                              )}
+                                                  </>
+                                                ) : // SALESPERSON
+                                                  timeline.agent &&
+                                                    timeline.agent !== "0" ? (
+                                                    <>
+                                                      <div
+                                                        className={`${isLangRTL(i18n.language)
+                                                          ? "ml-2"
+                                                          : "mr-2"
+                                                          } col-start-1 col-end-3 md:mx-auto relative`}
+                                                      >
+                                                        <div className="h-full w-6 flex items-center justify-center">
+                                                          <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                        </div>
+                                                        <div
+                                                          className={`${isLangRTL(i18n.language)
+                                                            ? "-mr-2"
+                                                            : "-ml-2"
+                                                            } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                                        >
+                                                          <FaUserCheck
+                                                            className="text-white"
+                                                            size={16}
+                                                          />
+                                                        </div>
+                                                      </div>
+                                                      <div
+                                                        className={`${currentMode === "dark"
+                                                          ? "bg-[#1C1C1C]"
+                                                          : "bg-[#EEEEEE]"
+                                                          } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                      // style={{
+                                                      //   transform:
+                                                      //     "translateX(-30px)",
+                                                      // }}
+                                                      >
+                                                        {/* ADDED BY  */}
+                                                        <p className="text-sm tracking-wide font-italic gap-2 text-[#AAAAAA] justify-end flex items-center">
+                                                          <HiUser size={12} />
+                                                          {timeline.addedBy}
+                                                        </p>
+                                                        {/* AGENT  */}
+                                                        <p className="font-semibold tracking-wide">
+                                                          {t(
+                                                            "salesagent_updated_to"
+                                                          )}{" "}
+                                                          <span className="font-bold text-primary">
+                                                            {timeline.agent}
+                                                          </span>
+                                                          .
+                                                        </p>
+                                                        {/* CREATION DATE  */}
+                                                        <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                          {datetimeLong(
+                                                            timeline.created_at
+                                                          )}
+                                                        </p>
+                                                      </div>
+                                                    </>
+                                                  ) : // FEEDBACK
+                                                    timeline.feedback &&
+                                                      timeline.feedback !== "0" ? (
+                                                      <>
+                                                        <div
+                                                          className={`${isLangRTL(i18n.language)
+                                                            ? "ml-3"
+                                                            : "mr-3"
+                                                            } col-start-1 col-end-3 md:mx-auto relative`}
+                                                        >
+                                                          <div className="h-full w-6 flex items-center justify-center">
+                                                            <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                          </div>
+                                                          <div
+                                                            className={`${isLangRTL(i18n.language)
+                                                              ? "-mr-2"
+                                                              : "-ml-2"
+                                                              } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                                          >
+                                                            <BsBookmarkCheckFill
+                                                              className="text-white"
+                                                              size={16}
+                                                            />
+                                                          </div>
+                                                        </div>
+                                                        <div
+                                                          className={`${currentMode === "dark"
+                                                            ? "bg-[#1C1C1C]"
+                                                            : "bg-[#EEEEEE]"
+                                                            } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                        // style={{
+                                                        //   transform:
+                                                        //     "translateX(-30px)",
+                                                        // }}
+                                                        >
+                                                          {/* ADDED BY  */}
+                                                          <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
+                                                            <HiUser size={12} />
+                                                            {timeline.addedBy}
+                                                          </p>
+                                                          {/* FEEDBACK  */}
+                                                          <p className="font-semibold tracking-wide">
+                                                            {t("feedback_updated_to")}{" "}
+                                                            <span className="font-bold text-primary">
+                                                              {timeline.feedback}
+                                                            </span>
+                                                            .
+                                                          </p>
+                                                          {/* CREATION DATE  */}
+                                                          <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                            {datetimeLong(
+                                                              timeline.created_at
+                                                            )}
+                                                          </p>
+                                                        </div>
+                                                      </>
+                                                    ) : // MEETING STATUS
+                                                      timeline.meetingStatus &&
+                                                        timeline.meetingStatus !==
+                                                        "0" ? (
+                                                        <>
+                                                          <div
+                                                            className={`${isLangRTL(i18n.language)
+                                                              ? "ml-3"
+                                                              : "mr-3"
+                                                              } col-start-1 col-end-3 md:mx-auto relative`}
+                                                          >
+                                                            <div className="h-full w-6 flex items-center justify-center">
+                                                              <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                            </div>
+                                                            <div
+                                                              className={`${isLangRTL(i18n.language)
+                                                                ? "-mr-2"
+                                                                : "-ml-2"
+                                                                } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                                            >
+                                                              <BiCalendarExclamation
+                                                                className="text-white"
+                                                                size={16}
+                                                              />
+                                                            </div>
+                                                          </div>
+                                                          <div
+                                                            className={`${currentMode === "dark"
+                                                              ? "bg-[#1C1C1C]"
+                                                              : "bg-[#EEEEEE]"
+                                                              } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                          // style={{
+                                                          //   transform:
+                                                          //     "translateX(-30px)",
+                                                          // }}
+                                                          >
+                                                            {/* ADDED BY  */}
+                                                            <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
+                                                              <HiUser size={12} />
+                                                              {timeline.addedBy}
+                                                            </p>
+                                                            {/* FEEDBACK  */}
+                                                            <p className="font-semibold tracking-wide">
+                                                              {t(
+                                                                "meeting_status_updated_to"
+                                                              )}{" "}
+                                                              <span className="font-bold text-primary">
+                                                                {timeline.meetingStatus}
+                                                              </span>
+                                                              .
+                                                            </p>
+                                                            {/* CREATION DATE  */}
+                                                            <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                              {datetimeLong(
+                                                                timeline.created_at
+                                                              )}
+                                                            </p>
+                                                          </div>
+                                                        </>
+                                                      ) : // MEETING DATE TIME
+                                                        timeline.meetingDate &&
+                                                          timeline.meetingDate !== "0" ? (
+                                                          <>
+                                                            <div
+                                                              className={`${isLangRTL(i18n.language)
+                                                                ? "ml-3"
+                                                                : "mr-3"
+                                                                } col-start-1 col-end-3 md:mx-auto relative`}
+                                                            >
+                                                              <div className="h-full w-6 flex items-center justify-center">
+                                                                <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                              </div>
+                                                              <div
+                                                                className={`${isLangRTL(i18n.language)
+                                                                  ? "-mr-2"
+                                                                  : "-ml-2"
+                                                                  } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                                              >
+                                                                <BsClockFill
+                                                                  className="text-white"
+                                                                  size={16}
+                                                                />
+                                                              </div>
+                                                            </div>
+                                                            <div
+                                                              className={`${currentMode === "dark"
+                                                                ? "bg-[#1C1C1C]"
+                                                                : "bg-[#EEEEEE]"
+                                                                } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                            // style={{
+                                                            //   transform:
+                                                            //     "translateX(-30px)",
+                                                            // }}
+                                                            >
+                                                              {/* ADDED BY  */}
+                                                              <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
+                                                                <HiUser size={12} />
+                                                                {timeline.addedBy}
+                                                              </p>
+                                                              {/* FEEDBACK  */}
+                                                              <p className="font-semibold tracking-wide">
+                                                                {t("meeting_set_to")}{" "}
+                                                                <span className="font-bold text-primary">
+                                                                  {!timeline.meetingTime ||
+                                                                    timeline.meetingTime ===
+                                                                    ""
+                                                                    ? ""
+                                                                    : `${timeline.meetingTime}, `}{" "}
+                                                                  {(timeline.meetingDate ||
+                                                                    timeline.meetingDate !==
+                                                                    "") &&
+                                                                    moment(
+                                                                      timeline.meetingDate
+                                                                    ).format("MMMM D, Y")}
+                                                                </span>
+                                                                .
+                                                              </p>
+                                                              {/* CREATION DATE  */}
+                                                              <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                                {datetimeLong(
+                                                                  timeline.created_at
+                                                                )}
+                                                              </p>
+                                                            </div>
+                                                          </>
+                                                        ) : (
+                                                          <></>
+                                                        )}
                                             </div>
                                           );
                                         }
@@ -973,15 +992,43 @@ const DealHistory = ({
                 fetchLeadsData={fetchLeadsData}
               />
             )}
-            {imageModal && (
+            {/* {imageModal && (
               <SingleTransImage
                 imageModal={imageModal}
                 setOpenImageModal={setOpenImageModal}
                 handleCloseTransactionModal={() => setOpenImageModal(false)}
               />
-            )}
+            )} */}
           </div>
+          
+        {showOverlayPdf && (
+              <>
+                <OverlayFile
+                  type={"pdf"}
+                  content={overlayContent}
+                  onClose={() => {
+                    setShowOverlayPdf(false);
+                    setShowOverlayImage(false);
+                    setOverlayContent(null)
+                  }}
+                />
+              </>
+            )}
+            {showOverlayImage && (
+              <>
+                <OverlayFile
+                  type={"image"}
+                  content={overlayContent}
+                  onClose={() => {
+                    setShowOverlayImage(false);
+                    setShowOverlayPdf(false);
+                    setOverlayContent(null)
+                  }}
+                />
+              </>
+            )}
         </div>
+        
       </Modal>
     </>
   );

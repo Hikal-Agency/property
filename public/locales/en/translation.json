@@ -1064,10 +1064,8 @@
     "invoices":"invoices",
 
 
-
-    "btn_commission_request":"Commission Request"
-
-
+    "btn_commission_request":"Commission Request",
+    "mark_all_commission_received": "Mark all Commission received"
 
     
 

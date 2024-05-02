@@ -10,9 +10,6 @@ import {
 import Select from "react-select";
 // import { Select as libSelect } from "@mui/material";
 import { FaHome, FaUser } from "react-icons/fa";
-
-import { FaLinkedin } from "react-icons/fa";
-
 import { useStateContext } from "../../context/ContextProvider";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -22,13 +19,7 @@ import moment from "moment";
 
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
-import { ImFacebook2 } from "react-icons/im";
-import { FaInstagramSquare, FaTiktok, FaSnapchat } from "react-icons/fa";
-import { IoLogoYoutube } from "react-icons/io";
-import { CountryDropdown } from "react-country-region-selector";
-import { FaStripe, FaPaypal, FaUniversity, FaCreditCard } from "react-icons/fa";
 import { useRef } from "react";
-import { FaWallet } from "react-icons/fa";
 import {
   commission_type,
   countries_list,
@@ -41,6 +32,13 @@ import {
 import { selectStyles } from "../_elements/SelectStyles";
 import { MdFileUpload } from "react-icons/md";
 import SingleTransactionModal from "./SingleTransactionModal";
+
+import {
+  BsBuildings,
+  BsQuestionLg,
+  BsCart4,
+  BsCalendarCheck
+} from "react-icons/bs";
 
 const Transactions = () => {
   const {
@@ -453,33 +451,31 @@ const Transactions = () => {
 
   return (
     <div
-      className={`p-3 rounded-lg ${
-        themeBgImg &&
+      className={` ${themeBgImg &&
         (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-      }`}
+        }`}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-5 py-5">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4">
+        {/* NEW Transaction */}
         <Box
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
           }}
-          className={`p-4 ${
-            !themeBgImg &&
+          className={`p-4 rounded-xl shadow-sm ${!themeBgImg &&
             (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-          }`}
+            }`}
         >
-          <h3 className="text-primary text-center font-semibold text-lg">{` ${t(
+          <h3 className="text-primary mb-5 text-center font-semibold">{` ${t(
             "new_transaction"
           )}`}</h3>
-          <br></br>
           <Select
             id="category"
             options={invoice_category(t)?.map((trans) => ({
@@ -496,7 +492,7 @@ const Transactions = () => {
               });
             }}
             placeholder={t("label_category")}
-            className={`mb-5`}
+            // className={`mb-4`}
             menuPortalTarget={document.body}
             // styles={selectStyles(currentMode, primaryColor)}
             styles={getMergedStyles(
@@ -521,7 +517,7 @@ const Transactions = () => {
               });
             }}
             placeholder={t("type")}
-            className={`mb-5`}
+            // className={`mb-5`}
             menuPortalTarget={document.body}
             // styles={selectStyles(currentMode, primaryColor)}
             styles={getMergedStyles(
@@ -546,7 +542,7 @@ const Transactions = () => {
               });
             }}
             placeholder={t("label_country")}
-            className={`mb-5`}
+            // className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
@@ -578,7 +574,7 @@ const Transactions = () => {
                       borderColor:
                         fieldErrors?.date === true && "#DA1F26 !important",
                     },
-                    marginBottom: "15px",
+                    marginBottom: "20px",
                   }}
                   fullWidth
                   size="small"
@@ -606,7 +602,7 @@ const Transactions = () => {
               });
             }}
             placeholder={t("status")}
-            className={`mb-5`}
+            // className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
@@ -626,7 +622,7 @@ const Transactions = () => {
               });
             }}
             placeholder={t("payment_source")}
-            className={`mb-5`}
+            // className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
@@ -657,7 +653,7 @@ const Transactions = () => {
               }}
               isLoading={loading}
               placeholder={t("user")}
-              className={`mb-5`}
+              // className={`mb-5`}
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
             />
@@ -685,7 +681,7 @@ const Transactions = () => {
               }}
               isLoading={loading}
               placeholder={t("vendor")}
-              className={`mb-5`}
+              // className={`mb-5`}
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
             />
@@ -707,7 +703,7 @@ const Transactions = () => {
               });
             }}
             placeholder={t("label_currency")}
-            className={`mb-5`}
+            // className={`mb-5`}
             menuPortalTarget={document.body}
             // styles={selectStyles(currentMode, primaryColor)}
             styles={getMergedStyles(
@@ -719,7 +715,7 @@ const Transactions = () => {
             id="comm_percent"
             type={"text"}
             label={t("percent")}
-            className="w-full mt-3"
+            className="w-full"
             style={{
               marginBottom: "20px",
             }}
@@ -733,7 +729,7 @@ const Transactions = () => {
             id="amount"
             type={"text"}
             label={t("amount")}
-            className={`w-full mt-3 `}
+            className={`w-full `}
             sx={{
               marginBottom: "20px",
               "& .MuiOutlinedInput-notchedOutline": {
@@ -761,12 +757,13 @@ const Transactions = () => {
             <Button
               variant="contained"
               size="medium"
-              className="bg-btn-primary w-max text-white rounded-lg py-3 font-semibold my-3"
+              className="bg-btn-primary w-max text-white rounded-lg py-3 font-semibold my-3 w-full"
               style={{
                 color: "#ffffff",
                 border: "1px solid white",
                 fontFamily: fontFam,
-                marginBottom: "3px",
+                marginBottom: "20px",
+                width: "100%"
               }}
               component="span" // Required so the button doesn't automatically submit form
               disabled={loading ? true : false}
@@ -797,223 +794,225 @@ const Transactions = () => {
           </Button>
         </Box>
         {/* transactions list */}
-        <div>
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            }}
-            className="p-2"
-          >
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <CircularProgress />
-              </div>
-            ) : (
-              <div className="h-[600px] overflow-y-scroll ">
-                {transactionsData && transactionsData?.length > 0 ? (
-                  transactionsData?.map((trans) => {
-                    let user;
-                    if (trans?.invoice?.category?.toLowerCase() === "salary") {
-                      user = true;
-                    } else {
-                      user = false;
-                    }
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+          className="p-4 h-[700px] overflow-y-scroll"
+        >
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <CircularProgress />
+            </div>
+          ) : (
+            <div className="">
+              {transactionsData && transactionsData?.length > 0 ? (
+                transactionsData?.map((trans) => {
+                  let user;
+                  // if (trans?.invoice?.category?.toLowerCase() === "salary") {
+                  if (trans?.invoice?.user_id) {
+                    user = true;
+                  } else {
+                    user = false;
+                  }
 
-                    return (
-                      <>
-                        <div
-                          className="mb-9 mx-3 cursor-pointer"
-                          onClick={() => setSingleTransModal(trans)}
-                        >
-                          <p>{trans?.invoice?.date}</p>
-                          <div className="flex items-center justify-between my-3">
-                            <div>
-                              <div className="flex flex-col">
-                                <div className="flex items-center mb-1">
-                                  <span className="border rounded-md p-3 mr-3">
-                                    {user ? <FaUser /> : <FaHome size={20} />}
-                                  </span>
-                                  <p>
-                                    {user
-                                      ? trans?.user?.userName
-                                      : trans?.vendor?.vendor_name}
-                                  </p>
-                                </div>
-                                <p className="text-sm self-start pl-[calc(20px+2rem)]">
-                                  {trans?.invoice?.category}
+                  return (
+                    <>
+                      <div
+                        className="mb-4 cursor-pointer"
+                        onClick={() => setSingleTransModal(trans)}
+                      >
+                        <p className="mb-3 font-semibold text-sm">
+                          {/* {new Date(trans?.invoice?.date).toISOString().split('T')[0]} */}
+                          {/* {new Date(new Date(trans?.invoice?.date).getTime() - (new Date(trans?.invoice?.date).getTimezoneOffset() * 60000)).toISOString().split('T')[0]} */}
+                          {moment(trans?.invoice?.date).format('YYYY-MM-DD')}
+                        </p>
+                        <div className="flex justify-between gap-4 mb-4">
+                          <div className="flex gap-4">
+                            <div className="border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3">
+                              {trans?.invoice?.category === "Commission" ? (
+                                <BsBuildings size={16} color={"#AAAAAA"} />
+                              ) : trans?.invoice?.category === "Salary" ? (
+                                <BsCalendarCheck size={16} color={"#AAAAAA"} />
+                              ) : trans?.invoice?.category === "Purchase" ? (
+                                <BsCart4 size={16} color={"#AAAAAA"} />
+                              ) : (
+                                <BsQuestionLg size={16} color={"#AAAAAA"} />
+                              )}
+                            </div>
+                            <div className="flex flex-col">
+                              <p >
+                                {user
+                                  ? trans?.user?.userName
+                                  : trans?.vendor?.vendor_name}
+                              </p>
+                              <div className="flex gap-1 text-sm">
+                                <p className={trans?.invoice?.status === "Paid" ? "text-green-600" : "text-red-600"}>
+                                  {trans?.invoice?.status}
                                 </p>
+                                <p> - {trans?.invoice?.category}</p>
                               </div>
                             </div>
-                            <div>
-                              <p
-                                className={`font-semibold ${
-                                  trans?.invoice?.invoice_type == "Income"
-                                    ? "text-green-600"
-                                    : "text-red-600"
+                          </div>
+                          <div>
+                            <p
+                              className={`font-semibold text-sm ${trans?.invoice?.invoice_type == "Income"
+                                ? "text-green-600"
+                                : "text-red-600"
                                 } `}
-                              >
-                                {trans?.invoice?.invoice_type === "Income"
-                                  ? "+"
-                                  : "-"}{" "}
-                                {trans?.invoice?.currency}{" "}
-                                {trans?.invoice?.amount}
-                              </p>
-                            </div>
+                            >
+                              {trans?.invoice?.invoice_type === "Income"
+                                ? "+"
+                                : "-"}{" "}
+                              {trans?.invoice?.currency}{" "}
+                              {trans?.invoice?.amount}
+                            </p>
                           </div>
                         </div>
-                      </>
-                    );
-                  })
-                ) : (
-                  <div>
-                    <h1>{t("no_data_found")}</h1>
-                  </div>
-                )}
-              </div>
-            )}
-          </Box>
-        </div>
+                      </div>
+                    </>
+                  );
+                })
+              ) : (
+                <div>
+                  <h1>{t("no_data_found")}</h1>
+                </div>
+              )}
+            </div>
+          )}
+        </Box>
 
         {/* filters form */}
-        <div
-          className={`${
-            !themeBgImg &&
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+          className={`p-4 rounded-xl shadow-sm ${!themeBgImg &&
             (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-          }
-              } rounded-lg p-5`}
-        >
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            }}
-            className={`p-4 ${
-              !themeBgImg &&
-              (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
             }`}
-          >
-            <h3 className="text-primary text-center font-semibold text-lg">{` ${t(
-              "btn_filters"
-            )}`}</h3>
-            <br></br>
-            <Select
-              id="category"
-              options={invoice_category(t)?.map((trans) => ({
-                value: trans.value,
-                label: trans.label,
-              }))}
-              value={invoice_category(t)?.filter(
-                (trans) => trans?.value === filtersData?.category
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  category: e.value,
-                });
-              }}
-              placeholder={t("label_category")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <Select
-              id="invoice_type"
-              options={commission_type(t)?.map((trans) => ({
-                value: trans.value,
-                label: trans.value,
-              }))}
-              value={commission_type(t)?.filter(
-                (comm) => comm?.value === filtersData?.invoice_type
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  invoice_type: e.value,
-                });
-              }}
-              placeholder={t("type")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
+        >
+          <h3 className="text-primary text-center font-semibold mb-5">{` ${t(
+            "btn_filters"
+          )}`}</h3>
+          <Select
+            id="category"
+            options={invoice_category(t)?.map((trans) => ({
+              value: trans.value,
+              label: trans.label,
+            }))}
+            value={invoice_category(t)?.filter(
+              (trans) => trans?.value === filtersData?.category
+            )}
+            onChange={(e) => {
+              setFilterData({
+                ...filtersData,
+                category: e.value,
+              });
+            }}
+            placeholder={t("label_category")}
+            // className={`mb-5`}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          <Select
+            id="invoice_type"
+            options={commission_type(t)?.map((trans) => ({
+              value: trans.value,
+              label: trans.value,
+            }))}
+            value={commission_type(t)?.filter(
+              (comm) => comm?.value === filtersData?.invoice_type
+            )}
+            onChange={(e) => {
+              setFilterData({
+                ...filtersData,
+                invoice_type: e.value,
+              });
+            }}
+            placeholder={t("type")}
+            // className={`mb-5`}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
 
-            <Select
-              id="country"
-              options={countries_list(t)?.map((country) => ({
-                value: country.value,
-                label: country.label,
-              }))}
-              value={countries_list(t)?.filter(
-                (country) => country?.value === filtersData?.country
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  country: e.value,
-                });
-              }}
-              placeholder={t("label_country")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
+          <Select
+            id="country"
+            options={countries_list(t)?.map((country) => ({
+              value: country.value,
+              label: country.label,
+            }))}
+            value={countries_list(t)?.filter(
+              (country) => country?.value === filtersData?.country
+            )}
+            onChange={(e) => {
+              setFilterData({
+                ...filtersData,
+                country: e.value,
+              });
+            }}
+            placeholder={t("label_country")}
+            // className={`mb-5`}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
 
-            <Select
-              id="status"
-              options={payment_status(t)?.map((pay_status) => ({
-                value: pay_status?.value,
-                label: pay_status?.label,
-              }))}
-              value={payment_status(t)?.filter(
-                (pay_status) => pay_status?.value === filtersData?.status
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  status: e.value,
-                });
-              }}
-              placeholder={t("status")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <Select
-              id="paid_by"
-              options={payment_source(t)?.map((payment) => ({
-                value: payment.value,
-                label: payment.label,
-              }))}
-              value={payment_source(t)?.filter(
-                (payment) => payment?.value === filtersData?.paid_by
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  paid_by: e.value,
-                });
-              }}
-              placeholder={t("payment_source")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            {/* <Select
+          <Select
+            id="status"
+            options={payment_status(t)?.map((pay_status) => ({
+              value: pay_status?.value,
+              label: pay_status?.label,
+            }))}
+            value={payment_status(t)?.filter(
+              (pay_status) => pay_status?.value === filtersData?.status
+            )}
+            onChange={(e) => {
+              setFilterData({
+                ...filtersData,
+                status: e.value,
+              });
+            }}
+            placeholder={t("status")}
+            // className={`mb-5`}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          <Select
+            id="paid_by"
+            options={payment_source(t)?.map((payment) => ({
+              value: payment.value,
+              label: payment.label,
+            }))}
+            value={payment_source(t)?.filter(
+              (payment) => payment?.value === filtersData?.paid_by
+            )}
+            onChange={(e) => {
+              setFilterData({
+                ...filtersData,
+                paid_by: e.value,
+              });
+            }}
+            placeholder={t("payment_source")}
+            // className={`mb-5`}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          {/* <Select
               id="vendor_id"
               options={
                 vendors &&
@@ -1056,128 +1055,127 @@ const Transactions = () => {
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
             /> */}
-            {filtersData?.category.toLowerCase() === "salary" ? (
-              <Select
-                id="user_id"
-                options={
-                  vendors &&
-                  vendors?.map((ven) => ({
-                    value: ven.id,
-                    label: ven.userName,
-                  }))
-                }
-                value={
-                  vendors?.filter((ven) => ven?.id === filtersData?.user_id)
-                    ?.userName
-                }
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    vendor_id: null,
-                    user_id: e.value,
-                  });
-                }}
-                isLoading={loading}
-                placeholder={t("user")}
-                className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
-            ) : (
-              <Select
-                id="vendor_id"
-                options={
-                  vendors &&
-                  vendors?.map((ven) => ({
-                    value: ven.id,
-                    label: ven.vendor_name,
-                  }))
-                }
-                value={
-                  vendors?.filter((ven) => ven?.id === filtersData?.vendor_id)
-                    ?.vendor_name
-                }
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    vendor_id: e.value,
-                    user_id: null,
-                  });
-                }}
-                isLoading={loading}
-                placeholder={t("vendor")}
-                className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
-            )}
-
+          {filtersData?.category.toLowerCase() === "salary" ? (
             <Select
-              id="currency"
-              options={currencies(t)?.map((curr) => ({
-                value: curr.value,
-                label: curr.label,
-              }))}
-              value={currencies(t)?.filter(
-                (curr) => curr?.value === filtersData?.currency
-              )}
+              id="user_id"
+              options={
+                vendors &&
+                vendors?.map((ven) => ({
+                  value: ven.id,
+                  label: ven.userName,
+                }))
+              }
+              value={
+                vendors?.filter((ven) => ven?.id === filtersData?.user_id)
+                  ?.userName
+              }
               onChange={(e) => {
                 setFilterData({
                   ...filtersData,
-                  currency: e.value,
+                  vendor_id: null,
+                  user_id: e.value,
                 });
               }}
-              placeholder={t("label_currency")}
-              className={`mb-5`}
+              isLoading={loading}
+              placeholder={t("user")}
+              // className={`mb-5`}
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
             />
-            <TextField
-              id="comm_percent"
-              type={"text"}
-              label={t("percent")}
-              className="w-full mt-3"
-              style={{
-                marginBottom: "20px",
+          ) : (
+            <Select
+              id="vendor_id"
+              options={
+                vendors &&
+                vendors?.map((ven) => ({
+                  value: ven.id,
+                  label: ven.vendor_name,
+                }))
+              }
+              value={
+                vendors?.filter((ven) => ven?.id === filtersData?.vendor_id)
+                  ?.vendor_name
+              }
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  vendor_id: e.value,
+                  user_id: null,
+                });
               }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={filtersData.comm_percent}
-              onChange={(e) => handleChange(e, "filter")}
+              isLoading={loading}
+              placeholder={t("vendor")}
+              // className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
             />
-            <TextField
-              id="amount"
-              type={"text"}
-              label={t("amount")}
-              className="w-full mt-3"
-              style={{
-                marginBottom: "20px",
-              }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={filtersData.amount}
-              onChange={(e) => handleChange(e, "filter")}
-            />
+          )}
 
-            <Button
-              variant="contained"
-              size="lg"
-              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-              style={{
-                // backgroundColor: "#111827",
-                color: "#ffffff",
-                // border: "1px solid #DA1F26",
-              }}
-              // component="span"
-              // disabled={setBtnLoading ? true : false}
-              onClick={clearFilter}
-            >
-              <span>{t("clear_all")}</span>
-            </Button>
-          </Box>
-        </div>
+          <Select
+            id="currency"
+            options={currencies(t)?.map((curr) => ({
+              value: curr.value,
+              label: curr.label,
+            }))}
+            value={currencies(t)?.filter(
+              (curr) => curr?.value === filtersData?.currency
+            )}
+            onChange={(e) => {
+              setFilterData({
+                ...filtersData,
+                currency: e.value,
+              });
+            }}
+            placeholder={t("label_currency")}
+            // className={`mb-5`}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          <TextField
+            id="comm_percent"
+            type={"text"}
+            label={t("percent")}
+            className="w-full"
+            style={{
+              marginBottom: "20px",
+            }}
+            variant="outlined"
+            name="bussiness_name"
+            size="small"
+            value={filtersData.comm_percent}
+            onChange={(e) => handleChange(e, "filter")}
+          />
+          <TextField
+            id="amount"
+            type={"text"}
+            label={t("amount")}
+            className="w-full"
+            style={{
+              marginBottom: "20px",
+            }}
+            variant="outlined"
+            name="bussiness_name"
+            size="small"
+            value={filtersData.amount}
+            onChange={(e) => handleChange(e, "filter")}
+          />
+
+          <Button
+            variant="contained"
+            size="lg"
+            className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+            style={{
+              // backgroundColor: "#111827",
+              color: "#ffffff",
+              // border: "1px solid #DA1F26",
+            }}
+            // component="span"
+            // disabled={setBtnLoading ? true : false}
+            onClick={clearFilter}
+          >
+            <span>{t("clear_all")}</span>
+          </Button>
+        </Box>
       </div>
       {singleTransModal && (
         <SingleTransactionModal
