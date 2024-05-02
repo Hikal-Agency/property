@@ -357,6 +357,7 @@ const StatmentsList = () => {
           setSingleTransModal={setSingleTransModal}
         />
       )}
+      
       {transactionsListModal && (
         <TransactionsListModal
           transactionsListModal={transactionsListModal}
