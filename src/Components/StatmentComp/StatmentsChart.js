@@ -60,7 +60,7 @@ const StatmentsCharts = ({ stats }) => {
       //   currentMode === "dark"
       //     ? [primaryColor, "#ffffff"]
       //     : [primaryColor, "#000000"],
-      colors: ['#127339', '#DA1F26'],
+      colors: ['#269144', '#DA1F26'],
       stroke: {
         width: [2, 2],
       },
@@ -128,7 +128,7 @@ const StatmentsCharts = ({ stats }) => {
         data: incomeData,
         markers: {
           size: 6, 
-          colors: "#127339",
+          colors: "#269144",
           strokeWidth: 0,
         },
       },

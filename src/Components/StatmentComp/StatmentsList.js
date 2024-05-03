@@ -282,7 +282,8 @@ const StatmentsList = () => {
               }
               return (
                 <div className="w-full grid grid-cols-1 lg: grid-cols-2 gap-4">
-                  <div className={`p-4 pb-5 h-fit rounded-xl shadow-sm ${currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#EEEEEE] text-black"}`}>
+                  <div className={`p-4 pb-5 h-fit rounded-xl shadow-sm ${
+                    themeBgImg ? currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black" : currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#EEEEEE] text-black"}`}>
                     <div className="flex justify-between items-center gap-4 pb-5">
                       {/* CURRENCY */}
                       <div className="flex gap-2 items-center">
@@ -301,7 +302,9 @@ const StatmentsList = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-5 mb-2">
                       {/* INCOME */}
-                      <div className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${currentMode === "dark" ? "bg-black" : "bg-white"}`}>
+                      <div className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${
+                        themeBgImg ? currentMode === "dark" ? "blur-bg-dark" : "blur-bg-white" : currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                        }`}>
                         <p className="text-center">
                           {t("income_amount")}
                         </p>
@@ -310,7 +313,9 @@ const StatmentsList = () => {
                         </p>
                       </div>
                       {/* EXPENSE */}
-                      <div className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${currentMode === "dark" ? "bg-black" : "bg-white"}`}>
+                      <div className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${
+                        themeBgImg ? currentMode === "dark" ? "blur-bg-dark" : "blur-bg-white" : currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                        }`}>
                         <p className="text-center">
                           {t("expense_amount")}
                         </p>
@@ -319,12 +324,12 @@ const StatmentsList = () => {
                         </p>
                       </div>
                     </div>
-                    <div className={`rounded-xl shadow-sm ${currentMode === "dark" ? loss ? "bg-red-900" : "bg-green-900" : loss ? "bg-[#E8C4C4]" : "bg-[#D3E6D5]"
+                    <div className={`rounded-xl shadow-sm ${currentMode === "dark" ? loss ? "bg-[#DA1F26]" : "bg-[#269144]" : loss ? "bg-[#E8C4C4]" : "bg-[#D3E6D5]"
                       } w-full p-5 flex flex-col items-center justify-center gap-4 relative`} >
                       <p className="text-center">
                         {stats?.output}
                       </p>
-                      <p className={`text-center text-xl font-bold ${currentMode === "dark" ? loss ? "text-[#E8C4C4]" : "text-[#D3E6D5]" : loss ? "text-[#DA1F26]" : "text-[#127339]"}`}>
+                      <p className={`text-center text-xl font-bold ${currentMode === "dark" ? loss ? "text-[#E8C4C4]" : "text-[#D3E6D5]" : loss ? "text-[#DA1F26]" : "text-[#269144]"}`}>
                         {stats?.currency} {" "} {stats?.profit_loss}
                       </p>
                       <div className={`absolute text-sm top-0 p-2 ${isLangRTL(i18n.langguage) ? "left-0 rounded-tl-xl" : "right-0 rounded-tr-xl"
@@ -337,7 +342,7 @@ const StatmentsList = () => {
                     </div>
                   </div>
                   {/* CHART */}
-                  <div className="">
+                  <div className={`${themeBgImg && currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light" }`}>
                     <StatmentsCharts stats={stats} />
                   </div>
                 </div>
