@@ -3,11 +3,7 @@ import {
   Box,
   TextField,
   CircularProgress,
-  Stack,
-  Pagination,
 } from "@mui/material";
-// import { Select as libSelect } from "@mui/material";
-import { FaHome, FaUser, FaBan } from "react-icons/fa";
 
 import { useStateContext } from "../../context/ContextProvider";
 import dayjs from "dayjs";
@@ -20,11 +16,17 @@ import Select from "react-select";
 
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
-import { useRef } from "react";
 import { BsDownload } from "react-icons/bs";
 import { countries_list, currencies } from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
 import TransactionsListModal from "../TransactionComp/TransactionsListModal";
+
+import {
+  BsBuildings,
+  BsCalendarCheck,
+  BsCart4,
+  BsQuestionLg
+} from "react-icons/bs";
 
 const Commission_VAT_List = () => {
   const {
@@ -132,14 +134,9 @@ const Commission_VAT_List = () => {
 
   return (
     <div
-      className={`p-3 rounded-lg ${
-        themeBgImg &&
-        (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-      }`}
+      className={`pb-4 px-4`}
     >
-      <div className="flex items-center justify-between space-x-3">
-        <div></div>
-
+      <div className="flex items-center justify-end gap-4">
         {/* <Box
           sx={{
             ...darkModeColors,
@@ -154,218 +151,197 @@ const Commission_VAT_List = () => {
           }}
           className={`p-4 `}
         > */}
-        <div className="flex items-center justify-between space-x-3">
-          <div className="mb-5">
-            <button
-              className="bg-btn-primary py-2 px-4 text-white  rounded-sm"
-              onClick={clearFilters}
-            >
-              {t("clear_all")}
-            </button>
-          </div>
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            }}
+        <div className="mb-5">
+          <button
+            className="bg-btn-primary py-2 px-4 text-white rounded-md"
+            onClick={clearFilters}
           >
-            <Select
-              options={currencies(t)?.map((curr) => ({
-                value: curr?.value,
-                label: curr?.label,
-              }))}
-              value={currencies(t)?.filter(
-                (curr) => curr?.value === filters?.currency
-              )}
-              onChange={(e) => {
-                setFilters({
-                  ...filters,
-                  currency: e.value,
-                });
-              }}
-              placeholder={t("label_currency")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-              required
-            />
-          </Box>
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
+            {t("clear_all")}
+          </button>
+        </div>
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+        >
+          <Select
+            options={currencies(t)?.map((curr) => ({
+              value: curr?.value,
+              label: curr?.label,
+            }))}
+            value={currencies(t)?.filter(
+              (curr) => curr?.value === filters?.currency
+            )}
+            onChange={(e) => {
+              setFilters({
+                ...filters,
+                currency: e.value,
+              });
             }}
-          >
-            <Select
-              options={countries_list(t)?.map((country) => ({
-                value: country?.value,
-                label: country?.label,
-              }))}
-              value={countries_list(t)?.filter(
-                (country) => country?.value === filters?.country
-              )}
-              onChange={(e) => {
-                setFilters({
-                  ...filters,
-                  country: e.value,
-                });
-              }}
-              placeholder={t("label_country")}
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-              required
-            />
-          </Box>
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
+            placeholder={t("label_currency")}
+            className={`mb-5`}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+            required
+          />
+        </Box>
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+        >
+          <Select
+            options={countries_list(t)?.map((country) => ({
+              value: country?.value,
+              label: country?.label,
+            }))}
+            value={countries_list(t)?.filter(
+              (country) => country?.value === filters?.country
+            )}
+            onChange={(e) => {
+              setFilters({
+                ...filters,
+                country: e.value,
+              });
             }}
-          >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                value={dayjs(`${filters?.year}-${filters?.month}-01`)}
-                label={t("select_year")}
-                views={["year"]}
-                onChange={(newValue) => {
-                  const year = newValue ? newValue.$d.getFullYear() : "";
+            placeholder={t("label_country")}
+            className={`mb-5`}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+            required
+          />
+        </Box>
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              value={dayjs(`${filters?.year}-${filters?.month}-01`)}
+              label={t("select_year")}
+              views={["year"]}
+              onChange={(newValue) => {
+                const year = newValue ? newValue.$d.getFullYear() : "";
 
-                  setFilters((prev) => ({
-                    ...prev,
-                    year: year.toString(),
-                  }));
-                }}
-                format="YYYY"
-                renderInput={(params) => (
-                  <TextField
-                    sx={{
-                      "& input": {
-                        color: currentMode === "dark" ? "white" : "black",
-                      },
-                      "& .MuiSvgIcon-root": {
-                        color: currentMode === "dark" ? "white" : "black",
-                      },
-                      marginBottom: "20px",
-                    }}
-                    fullWidth
-                    size="small"
-                    {...params}
-                    onKeyDown={(e) => e.preventDefault()}
-                    readOnly={true}
-                  />
-                )}
-                maxDate={dayjs().startOf("day").toDate()}
-              />
-            </LocalizationProvider>
-          </Box>
+                setFilters((prev) => ({
+                  ...prev,
+                  year: year.toString(),
+                }));
+              }}
+              format="YYYY"
+              renderInput={(params) => (
+                <TextField
+                  sx={{
+                    "& input": {
+                      color: currentMode === "dark" ? "white" : "black",
+                    },
+                    "& .MuiSvgIcon-root": {
+                      color: currentMode === "dark" ? "white" : "black",
+                    },
+                    marginBottom: "20px",
+                  }}
+                  fullWidth
+                  size="small"
+                  {...params}
+                  onKeyDown={(e) => e.preventDefault()}
+                  readOnly={true}
+                />
+              )}
+              maxDate={dayjs().startOf("day").toDate()}
+            />
+          </LocalizationProvider>
+        </Box>
 
-          <div className="mb-4">
-            <button className="bg-btn-primary p-4 mt-0 rounded-full">
-              {" "}
-              <BsDownload size={16} color={"#FFFFFF"} />
-            </button>
-          </div>
+        <div className="mb-4">
+          <button className="bg-btn-primary p-4 mt-0 rounded-full">
+            {" "}
+            <BsDownload size={16} color={"#FFFFFF"} />
+          </button>
         </div>
         {/* </Box> */}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-5 py-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         {loading ? (
           <div className="flex items-center justify-center">
             <CircularProgress />
           </div>
         ) : (
-          <div className="flex flex-col h-[600px] overflow-y-scroll">
+          <div className="flex flex-col">
             {comm_vat_data && comm_vat_data?.length > 0 ? (
               comm_vat_data?.map((comm_vat) => {
-                let loss;
-                if (comm_vat?.output?.toLowerCase() === "loss") {
-                  loss = true;
-                } else {
-                  loss = false;
-                }
                 return (
-                  <>
-                    <div>
-                      <h1
-                        className={`text-2xl font-bold mx-2 uppercase text-primary text-center my-3 `}
-                      >
-                        {comm_vat?.year}
-                      </h1>
-                      <hr className="border-primary h-3" />
-                    </div>
-                    {comm_vat?.vat && comm_vat?.vat?.length > 0 ? (
-                      comm_vat?.vat?.map((vat) => (
-                        <div
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-[#1c1c1c]"
-                              : "bg-[#eeeeee]"
-                          } p-5 mb-3`}
-                        >
-                          <div className="w-full ">
-                            <h1
-                              className={`text-xl font-bold mx-2 uppercase text-primary text-center `}
-                            >
+                  <div className="bg-primary p-4 rounded-xl shadow-sm mb-5">
+                    <h1 className={`text-2xl font-bold mx-2 uppercase text-white text-center mb-4`} >
+                      {comm_vat?.year}
+                    </h1>
+                    <div className="flex flex-col gap-4">
+                      {comm_vat?.vat && comm_vat?.vat?.length > 0 ? (
+                        comm_vat?.vat?.map((vat) => (
+                          <div
+                            className={`${currentMode === "dark"
+                              ? "bg-[#1c1c1c] text-white"
+                              : "bg-[#eeeeee] text-black"
+                              } p-5 rounded-xl flex flex-col items-center justify-center gap-4`}
+                          >
+                            <div className="w-full text-xl font-bold mx-2 uppercase text-center">
                               {vat?.currency}
-                            </h1>
-                          </div>
-                          <br></br>
-
-                          <div>
-                            <div className=" mt-2 w-full">
-                              <div className={`rounded-md bg-white w-full p-5`}>
-                                <h1
-                                  className={`text-center text-lg font-bold text-black mb-3`}
-                                >
-                                  {vat?.vat}
-                                </h1>
-
-                                <p className={`text-center text-sm text-black`}>
-                                  {t("vat_amount")}
-                                </p>
+                            </div>
+                            <div className={`w-full rounded-xl shadow-sm p-5 ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
+                              <div className={`w-full text-center text-primary text-2xl font-bold mb-3`}>
+                                {vat?.currency} {" "} {vat?.vat}
                               </div>
-                              <p className={`text-center text-sm my-3`}>
-                                {t("vat_calculated_for") +
-                                  " " +
-                                  vat?.amount +
-                                  " " +
-                                  t("from") +
-                                  " " +
-                                  vat?.count +
-                                  " " +
-                                  t("invoices")}
+                              <p className={`text-center text-sm`}>
+                                {t("vat_amount")}
                               </p>
                             </div>
+                            <p className={`text-center text-sm my-3`}>
+                              {t("vat_calculated_for") +
+                                " " +
+                                vat?.currency +
+                                " " +
+                                vat?.amount +
+                                " " +
+                                t("from") +
+                                " " +
+                                vat?.count +
+                                " " +
+                                (vat?.count === 1 ? t("invoice") : t("invoices")) +
+                                "."}
+                              {/* t("invoices")} */}
+                            </p>
                           </div>
-                        </div>
-                      ))
-                    ) : (
-                      <h1>{t("no_data_year")}</h1>
-                    )}
-                  </>
+                        ))
+                      ) : (
+                        <h1>{t("no_data_year")}</h1>
+                      )}
+                    </div>
+                  </div>
                 );
               })
             ) : (
@@ -382,10 +358,10 @@ const Commission_VAT_List = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -397,11 +373,17 @@ const Commission_VAT_List = () => {
                 <CircularProgress />
               </div>
             ) : (
-              <div className="h-[600px] overflow-y-scroll ">
+              <div className="flex flex-col gap-4">
                 {transactionsData && transactionsData?.length > 0 ? (
                   transactionsData?.map((trans) => {
+                    // let user;
+                    // if (trans?.invoice?.category?.toLowerCase() === "salary") {
+                    //   user = true;
+                    // } else {
+                    //   user = false;
+                    // }
                     let user;
-                    if (trans?.invoice?.category?.toLowerCase() === "salary") {
+                    if (trans?.invoice?.user_id) {
                       user = true;
                     } else {
                       user = false;
@@ -410,11 +392,63 @@ const Commission_VAT_List = () => {
                     return (
                       <>
                         <div
-                          className="mb-9 mx-3 cursor-pointer"
+                          className={`cursor-pointer rounded-xl p-4 ${
+                            themeBgImg && currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
+                          }`}
                           onClick={() => setSingleTransModal(trans)}
                         >
-                          <p>{trans?.invoice?.date}</p>
-                          <div className="flex items-center justify-between my-3">
+                          <p className="mb-3 font-semibold text-sm">
+                            {moment(trans?.invoice?.date).format("YYYY-MM-DD")}
+                          </p>
+                          <div className="flex justify-between gap-4">
+                            <div className="flex gap-4">
+                              <div className="border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3">
+                                {trans?.invoice?.category === "Commission" ? (
+                                  <BsBuildings size={16} color={"#AAAAAA"} />
+                                ) : trans?.invoice?.category === "Salary" ? (
+                                  <BsCalendarCheck size={16} color={"#AAAAAA"} />
+                                ) : trans?.invoice?.category === "Purchase" ? (
+                                  <BsCart4 size={16} color={"#AAAAAA"} />
+                                ) : (
+                                  <BsQuestionLg size={16} color={"#AAAAAA"} />
+                                )}
+                              </div>
+                              <div className="flex flex-col">
+                                <p>
+                                  {user
+                                    ? trans?.user?.userName
+                                    : trans?.vendor?.vendor_name}
+                                </p>
+                                <div className="flex gap-1 text-sm">
+                                  <p
+                                    className={
+                                      trans?.invoice?.status === "Paid"
+                                        ? "text-green-600"
+                                        : "text-red-600"
+                                    }
+                                  >
+                                    {trans?.invoice?.status}
+                                  </p>
+                                  <p> - {trans?.invoice?.category}</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div>
+                              <p
+                                className={`font-semibold text-lg ${trans?.invoice?.invoice_type == "Income"
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                  } `}
+                              >
+                                {trans?.invoice?.invoice_type === "Income"
+                                  ? "+"
+                                  : "-"}{" "}
+                                {trans?.invoice?.currency}{" "}
+                                {trans?.invoice?.amount}
+                              </p>
+                            </div>
+                          </div>
+                          {/* <div className="flex items-center justify-between my-3">
                             <div>
                               <div className="flex flex-col">
                                 <div className="flex items-center mb-1">
@@ -434,11 +468,10 @@ const Commission_VAT_List = () => {
                             </div>
                             <div>
                               <p
-                                className={`font-semibold ${
-                                  trans?.invoice?.invoice_type == "Income"
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                } `}
+                                className={`font-semibold ${trans?.invoice?.invoice_type == "Income"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                                  } `}
                               >
                                 {trans?.invoice?.invoice_type === "Income"
                                   ? "+"
@@ -447,7 +480,7 @@ const Commission_VAT_List = () => {
                                 {trans?.invoice?.amount}
                               </p>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </>
                     );
@@ -462,13 +495,15 @@ const Commission_VAT_List = () => {
           </Box>
         </div>
       </div>
-      {singleTransModal && (
-        <SingleTransactionModal
-          singleTransModal={singleTransModal}
-          setSingleTransModal={setSingleTransModal}
-        />
-      )}
-    </div>
+      {
+        singleTransModal && (
+          <SingleTransactionModal
+            singleTransModal={singleTransModal}
+            setSingleTransModal={setSingleTransModal}
+          />
+        )
+      }
+    </div >
   );
 };
 

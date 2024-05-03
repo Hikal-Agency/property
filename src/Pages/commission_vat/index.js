@@ -39,8 +39,7 @@ const Commission_VAT = ({ isLoading }) => {
           <div
             className={`w-full p-4 ${
               !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
-            }
-                ${currentMode === "dark" ? "text-white" : "text-black"}`}
+            } ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
             <div className="w-full flex justify-between items-center">
               <div className="w-full flex items-center pb-3">

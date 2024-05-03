@@ -265,7 +265,7 @@
     background: rgba(238,238,238,0.5);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    /* border-radius: 0.75rem; */
+    border-radius: 10px;
 }
 
 .blur-bg-dark {
@@ -286,6 +286,7 @@
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     /* border-radius: 0.75rem; */
+    border-radius: 10px;
 }
 
 .blur-bg-white {
@@ -307,6 +308,7 @@
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     /* border-radius: 0.75rem; */
+    border-radius: 10px;
 }
 
 /* booked deals slide */

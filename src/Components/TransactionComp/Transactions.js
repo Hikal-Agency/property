@@ -881,7 +881,7 @@ const Transactions = () => {
                           </div>
                           <div>
                             <p
-                              className={`font-semibold text-sm ${
+                              className={`font-semibold text-lg ${
                                 trans?.invoice?.invoice_type == "Income"
                                   ? "text-green-600"
                                   : "text-red-600"
