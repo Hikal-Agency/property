@@ -357,7 +357,7 @@ const UpdateLead = ({
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5 p-5">
+                <div className="grid md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 p-6">
                   {/* Project DETAILS  */}
                   <div
                     className={`p-4 rounded-xl shadow-sm card-hover
@@ -719,6 +719,8 @@ const UpdateLead = ({
                 </div>
               </>
             )}
+
+            <div className="p-6">
             <Button
               type="submit"
               size="medium"
@@ -726,7 +728,7 @@ const UpdateLead = ({
                 color: "white",
                 fontFamily: fontFam,
               }}
-              className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
+              className="bg-btn-primary w-full text-white rounded-lg p-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
               onClick={UpdateLeadFunc}
               disabled={btnloading ? true : false}
             >
@@ -740,6 +742,7 @@ const UpdateLead = ({
                 <span>{t("update")}</span>
               )}
             </Button>
+            </div>
           </div>
         </div>
       </Modal>

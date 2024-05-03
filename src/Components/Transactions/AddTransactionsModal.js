@@ -170,16 +170,21 @@ const AddTransactionsModal = ({
         );
 
         if (transactionData.type === "PDC" || transactionData.type === "SPA") {
-          let updatedData;
-          if (transactionData.type === "PDC") {
-            updatedData = { pdc_status: 1 };
-          }
-          else {
-            updatedData = { spa_status: 1 };
-          }
-          console.log("updated data ====== ", updatedData);
-          // const markCommission = () => {
-          const token = localStorage.getItem("auth-token");
+          // let updatedData;
+
+          const updatedData = {
+            [transactionData.type.toLowerCase() + "_status"]: 1,
+          };
+
+          // if (transactionData.type === "PDC") {
+          //   updatedData = { pdc_status: 1 };
+          // }
+          // else {
+          //   updatedData = { spa_status: 1 };
+          // }
+          // console.log("updated data ====== ", updatedData);
+
+          // const token = localStorage.getItem("auth-token");
           axios.post(`${BACKEND_URL}/editdeal/${transactionData.deal_id}`,
             updatedData, {
             headers: {
