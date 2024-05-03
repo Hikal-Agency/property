@@ -56,12 +56,13 @@ const StatmentsCharts = ({ stats }) => {
           enabled: false,
         },
       },
-      colors:
-        currentMode === "dark"
-          ? [primaryColor, "#ffffff"]
-          : [primaryColor, "#000000"],
+      // colors:
+      //   currentMode === "dark"
+      //     ? [primaryColor, "#ffffff"]
+      //     : [primaryColor, "#000000"],
+      colors: ['#127339', '#DA1F26'],
       stroke: {
-        width: [5, 1],
+        width: [2, 2],
       },
       dataLabels: {
         enabled: false,
@@ -125,12 +126,22 @@ const StatmentsCharts = ({ stats }) => {
         type: "line",
         // data: performanceChartData.map((member) => member.total_sales),
         data: incomeData,
+        markers: {
+          size: 6, 
+          colors: "#127339",
+          strokeWidth: 0,
+        },
       },
       {
         name: "Expense",
-        type: "column",
+        type: "line",
         // data: performanceChartData.map((member) => member.total_meetings),
         data: expenseData,
+        markers: {
+          size: 6, 
+          colors: "#DA1F26",
+          strokeWidth: 0,
+        },
       },
     ],
   };

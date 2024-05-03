@@ -248,7 +248,7 @@
 }
 
 /* BLUR BACKGROUND */
-.blur-bg-light {
+.blur-bg-light, .blur-bg-light-nr {
     position: relative;
     /* background: rgba(238,238,238,0.5); */
     /* -webkit-backdrop-filter: blur(10px); */
@@ -267,8 +267,20 @@
     backdrop-filter: blur(10px);
     border-radius: 10px;
 }
+.blur-bg-light-nr::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1; 
+    background: rgba(238,238,238,0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
 
-.blur-bg-dark {
+.blur-bg-dark, .blur-bg-dark-nr {
     position: relative;
     /* background: rgba(28,28,28,0.5); */
     /* -webkit-backdrop-filter: blur(10px); */
@@ -288,8 +300,20 @@
     /* border-radius: 0.75rem; */
     border-radius: 10px;
 }
+.blur-bg-dark-nr::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1; 
+    background: rgba(28, 28, 28, 0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
 
-.blur-bg-white {
+.blur-bg-white, .blur-bg-white-nr {
     position: relative;
     /* background: rgba(255,255,255,0.5); */
     /* -webkit-backdrop-filter: blur(10px); */
@@ -309,6 +333,18 @@
     backdrop-filter: blur(10px);
     /* border-radius: 0.75rem; */
     border-radius: 10px;
+}
+.blur-bg-white-nr::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1; 
+    background: rgba(255,255,255,0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 /* booked deals slide */

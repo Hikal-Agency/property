@@ -320,8 +320,8 @@ const Navbar = () => {
         className={` ${
           themeBgImg
             ? currentMode === "dark"
-              ? "blur-bg-dark"
-              : "blur-bg-light"
+              ? "blur-bg-dark-nr"
+              : "blur-bg-light-nr"
             : currentMode === "dark"
             ? "bg-black"
             : "bg-white"

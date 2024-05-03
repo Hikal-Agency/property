@@ -762,6 +762,10 @@ export const invoice_category = (t) => [
     value: "Salary",
     label: t("label_salary"),
   },
+  {
+    value: "Maintenance",
+    label: t("maintenance"),
+  }
 ];
 
 //  VENDOR TYPES
