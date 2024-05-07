@@ -56,6 +56,7 @@ const RenderFeedback = ({ cellValues }) => {
   const [newFeedback, setnewFeedback] = useState("");
   const [DialogueVal, setDialogue] = useState(false);
   const [booked_amount, setBookedAmount] = useState();
+  const [booked_date, setBookedDate] = useState("");
   const [meetingData, setMeetingData] = useState({
     meetingDate: null,
     meetingTime: null,
@@ -77,12 +78,12 @@ const RenderFeedback = ({ cellValues }) => {
 
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
-      {
-        color: currentMode === "dark" ? "white" : "black",
-        fontSize: "12px",
-        fontWeight: "400",
-        border: "none",
-      },
+    {
+      color: currentMode === "dark" ? "white" : "black",
+      fontSize: "12px",
+      fontWeight: "400",
+      border: "none",
+    },
     "& .MuiOutlinedInput-notchedOutline": {
       border: "none",
     },
@@ -132,8 +133,8 @@ const RenderFeedback = ({ cellValues }) => {
     }
 
     if (newFeedback === "Booked") {
-      if (!booked_amount) {
-        toast.error("Booked amount required.", {
+      if (!booked_amount && !booked_date) {
+        toast.error("Booked amount and date required.", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -147,6 +148,7 @@ const RenderFeedback = ({ cellValues }) => {
       }
 
       UpdateLeadData.append("booked_amount", booked_amount);
+      UpdateLeadData.append("booked_date", booked_date);
     }
 
     await axios
@@ -254,16 +256,16 @@ const RenderFeedback = ({ cellValues }) => {
       sx={SelectStyles}
     >
       {feedbackTheme === "renderStyles" ? (
-      <Select
-        id="feedback"
-        options={feedback_options(t)}
-        value={feedback_options(t).find((option) => option.value === Feedback)}
-        onChange={ChangeFeedback}
-        placeholder={t("label_feedback")}
-        className={`w-full`}
-        menuPortalTarget={document.body}
-        styles={renderStyles(currentMode, primaryColor)}
-      />
+        <Select
+          id="feedback"
+          options={feedback_options(t)}
+          value={feedback_options(t).find((option) => option.value === Feedback)}
+          onChange={ChangeFeedback}
+          placeholder={t("label_feedback")}
+          className={`w-full`}
+          menuPortalTarget={document.body}
+          styles={renderStyles(currentMode, primaryColor)}
+        />
       ) : (
         <Select
           id="feedback"
@@ -340,9 +342,9 @@ const RenderFeedback = ({ cellValues }) => {
                 boxShadow: "none !important",
               },
               "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                {
-                  // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
-                },
+              {
+                // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+              },
             }}
             open={DialogueVal}
             onClose={(e) => setDialogue(false)}
@@ -362,32 +364,31 @@ const RenderFeedback = ({ cellValues }) => {
               <IoMdClose size={18} />
             </IconButton>
             <div
-              className={`px-10 py-5 ${
-                currentMode === "dark"
+              className={`px-10 py-5 ${currentMode === "dark"
                   ? "bg-[#1C1C1C] text-white"
                   : "bg-white text-black"
-              }`}
+                }`}
             >
               {/* FEEDBACK  */}
               <div className="flex flex-col justify-center items-center">
                 <BsBookmarkCheck size={50} className="text-primary text-2xl" />
                 <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
                   {t("want_to_change_feedback")} {t("from")}{" "}
-                  <span className="text-sm bg-gray-500 px-2 py-1 rounded-md font-bold">
+                  <span className="text-sm bg-gray-600 text-white px-2 py-1 rounded-md font-bold">
                     {Feedback
                       ? t(
-                          "feedback_" +
-                            Feedback?.toLowerCase()?.replaceAll(" ", "_")
-                        )
+                        "feedback_" +
+                        Feedback?.toLowerCase()?.replaceAll(" ", "_")
+                      )
                       : t("no_feedback")}
                   </span>{" "}
                   {t("to")}{" "}
-                  <span className="text-sm bg-primary px-2 py-1 rounded-md font-bold">
+                  <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
                     {newFeedback
                       ? t(
-                          "feedback_" +
-                            newFeedback?.toLowerCase()?.replaceAll(" ", "_")
-                        )
+                        "feedback_" +
+                        newFeedback?.toLowerCase()?.replaceAll(" ", "_")
+                      )
                       : t("no_feedback")}
                   </span>{" "}
                   ?
@@ -520,44 +521,99 @@ const RenderFeedback = ({ cellValues }) => {
                       onClick={() => setDialogue(false)}
                       ripple={true}
                       variant="outlined"
-                      className={`shadow-none px-2 rounded-md text-sm  ${
-                        currentMode === "dark"
+                      className={`shadow-none px-2 rounded-md text-sm  ${currentMode === "dark"
                           ? "text-white border-white"
                           : "text-primary border-primary"
-                      }`}
+                        }`}
                     >
                       Cancel
                     </Button>
                   </div>
                 </form>
               ) : // BOKKED
-              newFeedback === "Booked" ? (
-                <>
-                  <Box sx={darkModeColors}>
-                    <TextField
-                      id="booked_amount"
-                      type={"number"}
-                      sx={{
-                        "& input": {
-                          fontFamily: "Noto Kufi Arabic",
-                        },
-                      }}
-                      label="Booked Amount "
-                      className="w-full"
-                      style={{
-                        marginBottom: "20px",
-                        marginTop: "10px",
-                      }}
-                      variant="outlined"
-                      name="booked_amount"
-                      size="small"
-                      value={booked_amount}
-                      onChange={(e) => {
-                        setBookedAmount(e.target.value);
-                      }}
-                      required
-                    />
-                  </Box>
+                newFeedback === "Booked" ? (
+                  <>
+                    <Box sx={darkModeColors} className="my-5">
+                      {/* DATE  */}
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          label={t("booking_date")}
+                          value={booked_date}
+                          views={["year", "month", "day"]}
+                          onChange={(selectedDate) => {
+                            const formattedDate = moment(selectedDate).format(
+                              "YYYY-MM-DD"
+                            );
+                            setBookedDate(formattedDate);
+                          }}
+                          format="yyyy-MM-dd"
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              // onKeyDown={(e) => e.preventDefault()}
+                              readOnly={true}
+                              fullWidth
+                              size="small"
+                              style={{
+                                marginBottom: "10px",
+                              }}
+                            />
+                          )}
+                          minDate={dayjs().startOf("day").toDate()}
+                          InputProps={{ required: true }}
+                        />
+                      </LocalizationProvider>
+                      {/* AMOUNT  */}
+                      <TextField
+                        id="booked_amount"
+                        type={"number"}
+                        sx={{
+                          "& input": {
+                            fontFamily: "Noto Kufi Arabic",
+                          },
+                        }}
+                        label="Booked Amount "
+                        className="w-full"
+                        style={{
+                          marginBottom: "20px",
+                          marginTop: "10px",
+                        }}
+                        variant="outlined"
+                        name="booked_amount"
+                        size="small"
+                        value={booked_amount}
+                        onChange={(e) => {
+                          setBookedAmount(e.target.value);
+                        }}
+                        required
+                      />
+                    </Box>
+                    <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                      <Button
+                        className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                        ripple={true}
+                        size="lg"
+                        onClick={() => UpdateFeedback(cellValues)}
+                      >
+                        {btnloading ? (
+                          <CircularProgress size={16} sx={{ color: "white" }} />
+                        ) : (
+                          <span>Confirm</span>
+                        )}
+                      </Button>
+
+                      <Button
+                        onClick={() => setDialogue(false)}
+                        ripple={true}
+                        variant="outlined"
+                        className={`shadow-none p-3 rounded-md text-sm text-[#da1f26]  border-[#da1f26]   py-3                       
+                      `}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </>
+                ) : (
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button
                       className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
@@ -576,42 +632,15 @@ const RenderFeedback = ({ cellValues }) => {
                       onClick={() => setDialogue(false)}
                       ripple={true}
                       variant="outlined"
-                      className={`shadow-none p-3 rounded-md text-sm text-[#da1f26]  border-[#da1f26]   py-3                       
-                      `}
+                      className={`shadow-none p-3 rounded-md text-sm  ${currentMode === "dark"
+                          ? "text-white border-white"
+                          : "text-primary border-primary"
+                        }`}
                     >
                       Cancel
                     </Button>
                   </div>
-                </>
-              ) : (
-                <div className="action buttons mt-5 flex items-center justify-center space-x-2">
-                  <Button
-                    className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
-                    ripple={true}
-                    size="lg"
-                    onClick={() => UpdateFeedback(cellValues)}
-                  >
-                    {btnloading ? (
-                      <CircularProgress size={16} sx={{ color: "white" }} />
-                    ) : (
-                      <span>Confirm</span>
-                    )}
-                  </Button>
-
-                  <Button
-                    onClick={() => setDialogue(false)}
-                    ripple={true}
-                    variant="outlined"
-                    className={`shadow-none p-3 rounded-md text-sm  ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-primary border-primary"
-                    }`}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              )}
+                )}
             </div>
           </Dialog>
         </>

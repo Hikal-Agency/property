@@ -730,6 +730,26 @@ const BookedDeals = ({
       renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
     {
+      field: "booked_date",
+      headerAlign: "center",
+      headerName: t("booking_date"),
+      minWidth: 90,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="flex items-center justify-center">
+            {cellValues.row.booked_amount === null ||
+            cellValues.row.booked_amount === "null" ||
+            cellValues.row.booked_amount === "" ? (
+              <>-</>
+            ) : (
+              <>{cellValues.row.booked_date}</>
+            )}
+          </div>
+        );
+      },
+    },
+    {
       field: "booked_amount",
       headerAlign: "center",
       headerName: t("label_amount_aed"),
@@ -880,6 +900,7 @@ const BookedDeals = ({
           language: getLangCode(row?.language) || "-",
           leadSource: row?.leadSource || "-",
           booked_amount: row?.booked_amount || "",
+          booked_date: row?.booked_date || "-",
           lid: row?.lid,
           firstAssigned: row?.firstAssigned || "",
           leadId: row?.id,

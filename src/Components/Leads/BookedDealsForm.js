@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import moment from "moment";
 import {
@@ -10,7 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import Select from "react-select";
-import { currencies } from "../_elements/SelectOptions";
+import { currencies, enquiry_options, feedback_options } from "../_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
@@ -50,17 +50,22 @@ const BookedDealsForm = ({
   const [btnloading, setbtnloading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
+  const [updatedField, setUpdatedField] = useState("");
+
   const [closedDealData, setClosedDealsData] = useState({
     leadId: Feedback?.leadId,
     unit: null,
     dealDate: moment(Feedback?.creationDate).format("YYYY-MM-DD"),
     currency: "AED",
-    booking_percent: null,
+    booking_percent: 0,
     booking_amount: Feedback?.booked_amount,
+    booking_date: Feedback?.booked_date,
     passport: null,
     project: Feedback?.project,
     enquiryType: Feedback?.enquiryType,
     amount: null,
+    paid_amount: 0,
+    paid_percent: null,
   });
 
   console.log("closed deal data:: ", closedDealData);
@@ -94,6 +99,77 @@ const BookedDealsForm = ({
       ...prev,
       [id]: value,
     }));
+    setUpdatedField(id);
+  };
+
+  useEffect(() => {
+    const {
+      amount,
+      paid_percent,
+      booking_amount,
+      paid_amount
+    } = closedDealData;
+
+    if (updatedField === "amount" || updatedField === "paid_percent") {
+      autoCalculate("paid_amount", amount, paid_percent);
+    }
+    if (updatedField === "amount" || updatedField === "booking_amount") {
+      autoCalculate("booking_percent", amount, booking_amount);
+    }
+    if (updatedField === "amount" || updatedField === "paid_amount") {
+      autoCalculate("paid_percent", amount, paid_amount);
+    }
+  }, [closedDealData.amount, closedDealData.paid_percent, closedDealData.booking_amount, closedDealData.paid_amount, updatedField]);
+
+  const autoCalculate = (value, amount, percentOrAmount) => {
+    const sellingAmount = parseFloat(amount);
+    console.log("SELLING AMOUNT = ", sellingAmount);
+
+    if (value === "paid_amount") {
+      const paidPercent = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(paidPercent)) {
+        let paidAmount = (sellingAmount * paidPercent) / 100;
+        paidAmount = paidAmount % 1 === 0 ? paidAmount.toFixed(0) : paidAmount.toFixed(2);
+
+        console.log("PAID PERCENT = ", paidPercent);
+        console.log("PAID AMOUNT = ", paidAmount);
+
+        setClosedDealsData((prevData) => ({
+          ...prevData,
+          paid_amount: paidAmount,
+        }));
+      }
+    }
+    if (value === "paid_percent") {
+      const paidAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(paidAmount)) {
+        let paidPercent = (paidAmount / sellingAmount) * 100 || 0;
+        paidPercent = paidPercent % 1 === 0 ? paidPercent.toFixed(0) : paidPercent.toFixed(2);
+
+        console.log("PAID AMOUNT = ", paidAmount);
+        console.log("PAID PERCENT = ", paidPercent);
+
+        setClosedDealsData((prevData) => ({
+          ...prevData,
+          paid_percent: paidPercent,
+        }));
+      }
+    }
+    if (value === "booking_percent") {
+      const bookingAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(bookingAmount)) {
+        let bookingPercent = (bookingAmount / sellingAmount) * 100 || 0;
+        bookingPercent = bookingPercent % 1 === 0 ? bookingPercent.toFixed(0) : bookingPercent.toFixed(2);
+
+        console.log("BOOKING AMOUNT = ", bookingAmount);
+        console.log("BOOKING PERCENT = ", bookingPercent);
+
+        setClosedDealsData((prevData) => ({
+          ...prevData,
+          booking_percent: bookingPercent,
+        }));
+      }
+    }
   };
 
   const handleClose = () => {
@@ -198,22 +274,18 @@ const BookedDealsForm = ({
       }}
     >
       <div
-        className={`${
-          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-        } ${
-          isClosing
+        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-        }
-      w-[100vw] h-[100vh] flex items-start justify-end`}
+          } w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${
-            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-          }
+          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -224,15 +296,13 @@ const BookedDealsForm = ({
         </button>
         <div
           style={style}
-          className={` ${
-            currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-          } ${
-            isLangRTL(i18n.language)
+          className={` ${currentMode === "dark"
+            ? "bg-[#000000] text-white"
+            : "bg-[#FFFFFF] text-black"
+            } ${isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-          }
+            }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
         >
@@ -242,55 +312,50 @@ const BookedDealsForm = ({
             </div>
           ) : (
             <>
-              <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5">
-                <div className="w-full flex items-center pb-3 ">
-                  <div
-                    className={`${
-                      isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+              <div className="w-full flex items-center pb-5">
+                <div
+                  className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
                     } bg-primary h-10 w-1 rounded-full my-1`}
-                  ></div>
-                  <h1
-                    className={`text-lg font-semibold ${
-                      currentMode === "dark" ? "text-white" : "text-black"
+                ></div>
+                <h1
+                  className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
                     }`}
-                    style={{
-                      fontFamily: isArabic(Feedback?.feedback)
-                        ? "Noto Kufi Arabic"
-                        : "inherit",
-                    }}
-                  >
-                    <h1 className="font-semibold pt-3 text-lg text-center">
-                      {t("want_to_change_feedback")} {t("from")}
-                      <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                        {t(
-                          "feedback_" +
-                            Feedback?.feedback
-                              ?.toLowerCase()
-                              ?.replaceAll(" ", "_")
-                        )}
-                      </span>{" "}
-                      {t("to")}{" "}
-                      <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
-                        {t(
-                          "feedback_" +
-                            newFeedback?.toLowerCase()?.replaceAll(" ", "_")
-                        )}
-                      </span>{" "}
-                      ?
-                    </h1>
+                  style={{
+                    fontFamily: isArabic(Feedback?.feedback)
+                      ? "Noto Kufi Arabic"
+                      : "inherit",
+                  }}
+                >
+                  <h1 className="font-semibold pt-3 text-lg text-center">
+                    {t("want_to_change_feedback")} {t("from")} {" "}
+                    <span className="text-sm bg-gray-500 text-white px-2 py-1 rounded-md font-bold">
+                      {t(
+                        "feedback_" +
+                        Feedback?.feedback
+                          ?.toLowerCase()
+                          ?.replaceAll(" ", "_")
+                      )}
+                    </span>
+                    {" "}{t("to")}{" "}
+                    <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
+                      {t(
+                        "feedback_" +
+                        newFeedback?.toLowerCase()?.replaceAll(" ", "_")
+                      )}
+                    </span>{" "}
+                    ?
                   </h1>
-                </div>
+                </h1>
               </div>
 
               <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5 p-5">
-                {/* Project DETAILS  */}
+                {/* PROJECT DETAILS  */}
                 <div
-                  className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
+                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
+                  ${currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
-                  }`}
+                    }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("project_details")?.toUpperCase()}
@@ -301,14 +366,14 @@ const BookedDealsForm = ({
                       sx={{
                         ...darkModeColors,
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
                         "& legend": {
                           textAlign: isLangRTL(i18n.language)
                             ? "right"
@@ -316,6 +381,7 @@ const BookedDealsForm = ({
                         },
                       }}
                     >
+                      {/* PROJECT */}
                       <TextField
                         id="project"
                         type={"text"}
@@ -333,7 +399,8 @@ const BookedDealsForm = ({
                         onChange={(e) => handleChange(e)}
                         required
                       />
-                      <TextField
+                      {/* ENQUIRY  */}
+                      {/* <TextField
                         id="enquiryType"
                         type={"text"}
                         label={t("label_enquiry_for")}
@@ -349,24 +416,26 @@ const BookedDealsForm = ({
                         value={closedDealData.enquiryType}
                         onChange={(e) => handleChange(e)}
                         required
-                      />
-                      <TextField
-                        id="amount"
-                        type={"text"}
-                        label={t("selling_amount")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
+                      /> */}
+                      <Select
+                        id="enquiryType"
+                        options={enquiry_options(t)}
+                        // value={closedDealData.enquiryType}
+                        value={enquiry_options(t)?.find(
+                          (fb) => fb.value === closedDealData?.enquiryType
+                        )}
+                        onChange={(e) => {
+                          setClosedDealsData({
+                            ...closedDealData,
+                            enquiryType: e.value,
+                          });
                         }}
-                        variant="outlined"
-                        size="small"
-                        value={closedDealData?.amount}
-                        onChange={(e) => handleChange(e)}
-                        required
+                        placeholder={t("label_enquiry_for")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
                       />
+                      {/* UNIT */}
                       <TextField
                         id="unit"
                         type={"text"}
@@ -384,21 +453,58 @@ const BookedDealsForm = ({
                         onChange={(e) => handleChange(e)}
                         required
                       />
+
+                      <div className="grid grid-cols-3">
+                        {/* CURRENCY */}
+                        <Select
+                          id="currency"
+                          options={currencies(t)}
+                          value={currencies(t)?.find(
+                            (curr) => curr.value === closedDealData?.currency
+                          )}
+                          onChange={(e) => {
+                            setClosedDealsData({
+                              ...closedDealData,
+                              currency: e.value,
+                            });
+                          }}
+                          placeholder={t("label_select_currency")}
+                          className={`mb-5`}
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                        {/* SELLING AMOUNT */}
+                        <TextField
+                          id="amount"
+                          type={"number"}
+                          label={t("selling_amount")}
+                          className="w-full col-span-2"
+                          sx={{
+                            "&": {
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={closedDealData?.amount}
+                          onChange={(e) => handleChange(e)}
+                          required
+                        />
+                      </div>
                     </Box>
                   </div>
                 </div>
 
-                {/* Booked DETAILS  */}
+                {/* PAYMENT DETAILS  */}
                 <div
-                  className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
+                  className={`px-5 pt-5 \ rounded-xl shadow-sm card-hover
+                  ${currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
-                  }`}
+                    }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
-                    {t("booking_details")?.toUpperCase()}
+                    {t("payment_details")?.toUpperCase()}
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
@@ -408,10 +514,11 @@ const BookedDealsForm = ({
                         // marginTop:"20p"
                       }}
                     >
+                      {/* DEAL DATE */}
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           value={closedDealData?.dealDate}
-                          label={t("booking_date")}
+                          label={t("label_deal_date")}
                           views={["day", "month", "year"]}
                           onChange={(newValue) => {
                             const formattedDate = moment(newValue?.$d).format(
@@ -447,9 +554,129 @@ const BookedDealsForm = ({
                           maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
+
+                      {/* PAID PERCENTAGE */}
+                      <TextField
+                        id="paid_percent"
+                        type={"number"}
+                        label={t("paid_percent")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={closedDealData?.paid_percent}
+                        onChange={(e) => handleChange(e)}
+                        required
+                      />
+                      <div className="grid grid-cols-3">
+                        {/* CURRENCY */}
+                        <Select
+                          id="currency"
+                          options={currencies(t)}
+                          value={currencies(t)?.find(
+                            (curr) => curr.value === closedDealData?.currency
+                          )}
+                          onChange={(e) => {
+                            setClosedDealsData({
+                              ...closedDealData,
+                              currency: e.value,
+                            });
+                          }}
+                          placeholder={t("label_select_currency")}
+                          className={`mb-5`}
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                        {/* PAID AMOUNT */}
+                        <TextField
+                          id="paid_amount"
+                          type={"number"}
+                          label={t("paid_amount")}
+                          className="w-full col-span-2"
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={closedDealData?.paid_amount}
+                          onChange={(e) => handleChange(e)}
+                          required
+                        />
+                      </div>
+                    </Box>
+                  </div>
+                </div>
+
+                {/* BOOKING DETAILS */}
+                <div
+                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
+                  ${currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-[#EEEEEE] text-black"
+                    }`}
+                >
+                  <h1 className="text-center uppercase font-semibold">
+                    {t("booking_details")?.toUpperCase()}
+                  </h1>
+                  <hr className="my-4" />
+                  <div className="w-full">
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                      }}
+                    >
+                      {/* BOOKING DATE  */}
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          value={closedDealData?.booking_date}
+                          label={t("booking_date")}
+                          views={["day", "month", "year"]}
+                          onChange={(newValue) => {
+                            const formattedDate = moment(newValue?.$d).format(
+                              "YYYY-MM-DD"
+                            );
+
+                            setClosedDealsData((prev) => ({
+                              ...prev,
+                              booking_date: formattedDate,
+                            }));
+                          }}
+                          format="DD-MM-YYYY"
+                          renderInput={(params) => (
+                            <TextField
+                              sx={{
+                                "& input": {
+                                  color:
+                                    currentMode === "dark" ? "white" : "black",
+                                },
+                                "& .MuiSvgIcon-root": {
+                                  color:
+                                    currentMode === "dark" ? "white" : "black",
+                                },
+                                marginBottom: "15px",
+                              }}
+                              fullWidth
+                              size="small"
+                              {...params}
+                              onKeyDown={(e) => e.preventDefault()}
+                              readOnly={true}
+                            />
+                          )}
+                          maxDate={dayjs().startOf("day").toDate()}
+                        />
+                      </LocalizationProvider>
+                      {/* BOOKING PERCENT */}
                       <TextField
                         id="booking_percent"
-                        type={"text"}
+                        type={"number"}
                         label={t("booked_perc")}
                         className="w-full"
                         sx={{
@@ -462,45 +689,53 @@ const BookedDealsForm = ({
                         size="small"
                         value={closedDealData?.booking_percent}
                         onChange={(e) => handleChange(e)}
-                        required
-                      />
-                      <Select
-                        id="currency"
-                        options={currencies(t)}
-                        value={currencies(t)?.find(
-                          (curr) => curr.value === closedDealData?.currency
-                        )}
-                        onChange={(e) => {
-                          setClosedDealsData({
-                            ...closedDealData,
-                            currency: e.value,
-                          });
+                        // readOnly={true}
+                        InputProps={{
+                          readOnly: true, // Set readonly to true
                         }}
-                        placeholder={t("label_select_currency")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
                       />
-                      <TextField
-                        id="booking_amount"
-                        type={"text"}
-                        label={t("booking_amount")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={closedDealData?.booking_amount}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
+                      <div className="grid grid-cols-3">
+                        {/* CURRENCY  */}
+                        <Select
+                          id="currency"
+                          options={currencies(t)}
+                          value={currencies(t)?.find(
+                            (curr) => curr.value === closedDealData?.currency
+                          )}
+                          onChange={(e) => {
+                            setClosedDealsData({
+                              ...closedDealData,
+                              currency: e.value,
+                            });
+                          }}
+                          placeholder={t("label_select_currency")}
+                          className={`mb-5`}
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                        {/* BOOKING AMOUNT  */}
+                        <TextField
+                          id="booking_amount"
+                          type={"number"}
+                          label={t("booking_amount")}
+                          className="w-full col-span-2"
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={closedDealData?.booking_amount}
+                          onChange={(e) => handleChange(e)}
+                          required
+                        />
+                      </div>
                     </Box>
                   </div>
                 </div>
+
 
                 {/* CLIENT  DETAILS  */}
                 {/* <div
@@ -562,27 +797,29 @@ const BookedDealsForm = ({
               </div>
             </>
           )}
-          <Button
-            type="submit"
-            size="medium"
-            style={{
-              color: "white",
-              fontFamily: fontFam,
-            }}
-            className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-            onClick={AddClosedDeal}
-            disabled={btnloading ? true : false}
-          >
-            {btnloading ? (
-              <CircularProgress
-                size={23}
-                sx={{ color: "white" }}
-                className="text-white"
-              />
-            ) : (
-              <span>{t("create")}</span>
-            )}
-          </Button>
+          <div className="px-4">
+            <Button
+              type="submit"
+              size="medium"
+              style={{
+                color: "white",
+                fontFamily: fontFam,
+              }}
+              className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
+              onClick={AddClosedDeal}
+              disabled={btnloading ? true : false}
+            >
+              {btnloading ? (
+                <CircularProgress
+                  size={23}
+                  sx={{ color: "white" }}
+                  className="text-white"
+                />
+              ) : (
+                <span>{t("create")}</span>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
     </Modal>

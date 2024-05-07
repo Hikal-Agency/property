@@ -18,7 +18,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import { MdClose, MdFileUpload } from "react-icons/md";
 import { selectStyles } from "../_elements/SelectStyles";
 import Select from "react-select";
-import { currencies } from "../_elements/SelectOptions";
+import { currencies, enquiry_options } from "../_elements/SelectOptions";
 import usePermission from "../../utils/usePermission";
 import moment from "moment";
 
@@ -290,23 +290,20 @@ const UpdateLead = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -317,15 +314,13 @@ const UpdateLead = ({
           </button>
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+            className={` ${currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-            }
+              }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
           >
@@ -335,37 +330,32 @@ const UpdateLead = ({
               </div>
             ) : (
               <>
-                <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5">
-                  <div className="w-full flex items-center pb-3 ">
-                    <div
-                      className={`${
-                        isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                <div className="w-full flex items-center pb-3 ">
+                  <div
+                    className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
                       } bg-primary h-10 w-1 rounded-full my-1`}
-                    ></div>
-                    <h1
-                      className={`text-lg font-semibold ${
-                        currentMode === "dark" ? "text-white" : "text-black"
+                  ></div>
+                  <h1
+                    className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
                       }`}
-                      style={{
-                        fontFamily: isArabic(Feedback?.feedback)
-                          ? "Noto Kufi Arabic"
-                          : "inherit",
-                      }}
-                    >
-                      {t("update_closed_details")}
-                    </h1>
-                  </div>
+                    style={{
+                      fontFamily: isArabic(Feedback?.feedback)
+                        ? "Noto Kufi Arabic"
+                        : "inherit",
+                    }}
+                  >
+                    {t("update_closed_details")}
+                  </h1>
                 </div>
 
-                <div className="grid md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+                <div className="grid md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 p-6 justify-center">
                   {/* Project DETAILS  */}
                   <div
                     className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                  ${currentMode === "dark"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black"
+                      }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
                       {t("project_details")?.toUpperCase()}
@@ -376,14 +366,14 @@ const UpdateLead = ({
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
                           "& legend": {
                             textAlign: isLangRTL(i18n.language)
                               ? "right"
@@ -391,6 +381,7 @@ const UpdateLead = ({
                           },
                         }}
                       >
+                        {/* PROJECT */}
                         <TextField
                           id="project"
                           type={"text"}
@@ -408,7 +399,7 @@ const UpdateLead = ({
                           onChange={(e) => handleChange(e)}
                           required
                         />
-                        <TextField
+                        {/* <TextField
                           id="enquiryType"
                           type={"text"}
                           label={t("label_enquiry_for")}
@@ -424,24 +415,27 @@ const UpdateLead = ({
                           value={updateLeadData?.enquiryType}
                           onChange={(e) => handleChange(e)}
                           required
-                        />
-                        <TextField
-                          id="amount"
-                          type={"text"}
-                          label={t("selling_amount")}
-                          className="w-full"
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                              zIndex: 1,
-                            },
+                        /> */}
+                        {/* ENQUIRY TYPE */}
+                        <Select
+                          id="enquiryType"
+                          options={enquiry_options(t)}
+                          // value={closedDealData.enquiryType}
+                          value={enquiry_options(t)?.find(
+                            (fb) => fb.value === updateLeadData?.enquiryType
+                          )}
+                          onChange={(e) => {
+                            setUpdateLeadData({
+                              ...updateLeadData,
+                              enquiryType: e.value,
+                            });
                           }}
-                          variant="outlined"
-                          size="small"
-                          value={updateLeadData?.amount}
-                          onChange={(e) => handleChange(e)}
-                          required
+                          placeholder={t("label_enquiry_for")}
+                          className={`mb-5`}
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
                         />
+                        {/* UNIT */}
                         <TextField
                           id="unit"
                           type={"text"}
@@ -459,26 +453,7 @@ const UpdateLead = ({
                           onChange={(e) => handleChange(e)}
                           required
                         />
-                        <Select
-                          id="currency"
-                          options={currencies(t)?.map((curr) => ({
-                            value: curr.value,
-                            label: curr.label,
-                          }))}
-                          value={currencies(t)?.find(
-                            (curr) => curr.value === updateLeadData?.currency
-                          )}
-                          onChange={(e) => {
-                            setUpdateLeadData({
-                              ...updateLeadData,
-                              currency: e.value,
-                            });
-                          }}
-                          placeholder={t("label_select_currency")}
-                          className={`mb-5`}
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
+                        {/* DEAL DATE */}
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             value={
@@ -524,6 +499,47 @@ const UpdateLead = ({
                             maxDate={dayjs().startOf("day").toDate()}
                           />
                         </LocalizationProvider>
+                        <div className="grid grid-cols-3">
+                          {/* CURRENCY */}
+                          <Select
+                            id="currency"
+                            options={currencies(t)?.map((curr) => ({
+                              value: curr.value,
+                              label: curr.label,
+                            }))}
+                            value={currencies(t)?.find(
+                              (curr) => curr.value === updateLeadData?.currency
+                            )}
+                            onChange={(e) => {
+                              setUpdateLeadData({
+                                ...updateLeadData,
+                                currency: e.value,
+                              });
+                            }}
+                            placeholder={t("label_select_currency")}
+                            // className={`mb-5`}
+                            menuPortalTarget={document.body}
+                            styles={selectStyles(currentMode, primaryColor)}
+                          />
+                          {/* SELLING AMOUNT */}
+                          <TextField
+                            id="amount"
+                            type={"text"}
+                            label={t("selling_amount")}
+                            className="w-full col-span-2"
+                            sx={{
+                              "&": {
+                                marginBottom: "1.25rem !important",
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={updateLeadData?.amount}
+                            onChange={(e) => handleChange(e)}
+                            required
+                          />
+                        </div>
                       </Box>
                     </div>
                   </div>
@@ -531,12 +547,11 @@ const UpdateLead = ({
                   {/* COMMISSION DETAILS  */}
                   {hasPermission("deal_commission") && (
                     <div
-                      className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                      className={`p-4 rounded-xl shadow-sm card-hover ${currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                        }
+                      `}
                     >
                       <h1 className="text-center uppercase font-semibold">
                         {t("commission_details")?.toUpperCase()}
@@ -721,27 +736,27 @@ const UpdateLead = ({
             )}
 
             <div className="p-6">
-            <Button
-              type="submit"
-              size="medium"
-              style={{
-                color: "white",
-                fontFamily: fontFam,
-              }}
-              className="bg-btn-primary w-full text-white rounded-lg p-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-              onClick={UpdateLeadFunc}
-              disabled={btnloading ? true : false}
-            >
-              {btnloading ? (
-                <CircularProgress
-                  size={23}
-                  sx={{ color: "white" }}
-                  className="text-white"
-                />
-              ) : (
-                <span>{t("update")}</span>
-              )}
-            </Button>
+              <Button
+                type="submit"
+                size="medium"
+                style={{
+                  color: "white",
+                  fontFamily: fontFam,
+                }}
+                className="bg-btn-primary w-full text-white rounded-lg p-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
+                onClick={UpdateLeadFunc}
+                disabled={btnloading ? true : false}
+              >
+                {btnloading ? (
+                  <CircularProgress
+                    size={23}
+                    sx={{ color: "white" }}
+                    className="text-white"
+                  />
+                ) : (
+                  <span>{t("update")}</span>
+                )}
+              </Button>
             </div>
           </div>
         </div>

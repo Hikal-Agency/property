@@ -221,41 +221,41 @@ const Closedeals = ({ pageState, setpageState }) => {
       renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
     },
     // SPA
-    {
-      field: "spa_status",
-      headerName: t("spa"),
-      minWidth: 30,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        const value = cellValues?.row;
-        return (
-          <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
-          >
-            {value?.spa_status === 1 ? (
-              <p
-                className={`
-                   text-[#1C1C1C] bg-green-600
-                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <FaCheck size={14} color="white" />
-              </p>
-            ) : (
-              <p
-                className={` text-[#1C1C1C] bg-red-600
-              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <RxCross2 size={14} color="#ffffff" />
-              </p>
-            )}
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "spa_status",
+    //   headerName: t("spa"),
+    //   minWidth: 30,
+    //   headerAlign: "center",
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     const value = cellValues?.row;
+    //     return (
+    //       <div
+    //         className={`w-full h-full px-1 flex items-center justify-center`}
+    //       >
+    //         {value?.spa_status === 1 ? (
+    //           <p
+    //             className={`
+    //                text-[#1C1C1C] bg-green-600
+    //             rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+    //           >
+    //             <FaCheck size={14} color="white" />
+    //           </p>
+    //         ) : (
+    //           <p
+    //             className={` text-[#1C1C1C] bg-red-600
+    //           rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+    //           >
+    //             <RxCross2 size={14} color="#ffffff" />
+    //           </p>
+    //         )}
+    //       </div>
+    //     );
+    //   },
+    // },
     // COMMISSION
     {
-      field: "commission",
+      field: "comm_status",
       headerName: t("commission"),
       minWidth: 30,
       headerAlign: "center",
@@ -267,20 +267,57 @@ const Closedeals = ({ pageState, setpageState }) => {
             className={`w-full h-full px-1 flex items-center justify-center`}
           >
             {value?.comm_status === 1 ? (
-              <p
-                className={`
+              <Tooltip title="Received from Developer" arrow>
+                <p
+                  className={`
+                   text-[#1C1C1C] bg-green-600 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                >
+                  <FaCheck size={14} color="white" />
+                </p>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Pending from Developer" arrow>
+                <p className={` text-[#1C1C1C] bg-red-600 rounded-full shadow-none p-1.5 mr-1 flex items-center`}>
+                  <RxCross2 size={14} color="#ffffff" />
+                </p>
+              </Tooltip>
+            )}
+          </div>
+        );
+      },
+    },
+    // AGENT COMMISSION
+    {
+      field: "agent_comm_status",
+      headerName: t("agent_comm"),
+      minWidth: 30,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        const value = cellValues?.row;
+        return (
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {value?.agent_comm_status === 1 ? (
+              <Tooltip title="Sent to Agent" arrow>
+                <p
+                  className={`
                    text-[#1C1C1C] bg-green-600
                 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <FaCheck size={14} color="white" />
-              </p>
+                >
+                  <FaCheck size={14} color="white" />
+                </p>
+              </Tooltip>
             ) : (
-              <p
-                className={` text-[#1C1C1C] bg-red-600
+              <Tooltip title="Pending Commission for Agent" arrow>
+                <p
+                  className={` text-[#1C1C1C] bg-red-600
               rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
+                >
                   <RxCross2 size={14} color="#ffffff" />
-              </p>
+                </p>
+              </Tooltip>
             )}
           </div>
         );
@@ -306,8 +343,8 @@ const Closedeals = ({ pageState, setpageState }) => {
             <p
               style={{ cursor: "pointer" }}
               className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+                ? "text-[#FFFFFF] bg-[#262626]"
+                : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
@@ -320,8 +357,8 @@ const Closedeals = ({ pageState, setpageState }) => {
             <p
               style={{ cursor: "pointer" }}
               className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+                ? "text-[#FFFFFF] bg-[#262626]"
+                : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
@@ -335,8 +372,8 @@ const Closedeals = ({ pageState, setpageState }) => {
               <p
                 style={{ cursor: "pointer" }}
                 className={`${currentMode === "dark"
-                    ? "text-[#FFFFFF] bg-[#262626]"
-                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
                   } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Deal History" arrow>
@@ -544,7 +581,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                 className={` text-[#1C1C1C] bg-red-600
               rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
-                  <RxCross2 size={14} color="#ffffff" />
+                <RxCross2 size={14} color="#ffffff" />
               </p>
             )}
           </div>
@@ -567,8 +604,8 @@ const Closedeals = ({ pageState, setpageState }) => {
             <p
               style={{ cursor: "pointer" }}
               className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+                ? "text-[#FFFFFF] bg-[#262626]"
+                : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
@@ -581,8 +618,8 @@ const Closedeals = ({ pageState, setpageState }) => {
             <p
               style={{ cursor: "pointer" }}
               className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+                ? "text-[#FFFFFF] bg-[#262626]"
+                : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
@@ -595,8 +632,8 @@ const Closedeals = ({ pageState, setpageState }) => {
               <p
                 style={{ cursor: "pointer" }}
                 className={`${currentMode === "dark"
-                    ? "text-[#FFFFFF] bg-[#262626]"
-                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
                   } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Deal History" arrow>
@@ -670,9 +707,11 @@ const Closedeals = ({ pageState, setpageState }) => {
           leadId: row?.leadId,
           unit: row?.unit,
           currency: row?.currency,
-
+          booking_date: row?.booking_date,
+          booking_amount: row?.booking_amount,
           spa_status: row?.spa_status,
           comm_status: row?.comm_status,
+          agent_comm_status: row?.agent_comm_status,
           pdc_status: row?.pdc_status,
         }));
 
