@@ -221,38 +221,38 @@ const Closedeals = ({ pageState, setpageState }) => {
       renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
     },
     // SPA
-    // {
-    //   field: "spa_status",
-    //   headerName: t("spa"),
-    //   minWidth: 30,
-    //   headerAlign: "center",
-    //   flex: 1,
-    //   renderCell: (cellValues) => {
-    //     const value = cellValues?.row;
-    //     return (
-    //       <div
-    //         className={`w-full h-full px-1 flex items-center justify-center`}
-    //       >
-    //         {value?.spa_status === 1 ? (
-    //           <p
-    //             className={`
-    //                text-[#1C1C1C] bg-green-600
-    //             rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-    //           >
-    //             <FaCheck size={14} color="white" />
-    //           </p>
-    //         ) : (
-    //           <p
-    //             className={` text-[#1C1C1C] bg-red-600
-    //           rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-    //           >
-    //             <RxCross2 size={14} color="#ffffff" />
-    //           </p>
-    //         )}
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      field: "spa_status",
+      headerName: t("spa"),
+      minWidth: 30,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        const value = cellValues?.row;
+        return (
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {value?.spa_status === 1 ? (
+              <p
+                className={`
+                   text-[#1C1C1C] bg-green-600
+                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <FaCheck size={14} color="white" />
+              </p>
+            ) : (
+              <p
+                className={` text-[#1C1C1C] bg-red-600
+              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <RxCross2 size={14} color="#ffffff" />
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
     // COMMISSION
     {
       field: "comm_status",
@@ -664,8 +664,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     }));
 
     axios
-      .get(
-        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${pageState.perpage || 14
+      .get(`${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${pageState.perpage || 14
         }`,
         {
           headers: {
@@ -713,6 +712,11 @@ const Closedeals = ({ pageState, setpageState }) => {
           comm_status: row?.comm_status,
           agent_comm_status: row?.agent_comm_status,
           pdc_status: row?.pdc_status,
+          comm_percent: row?.comm_percent,
+          comm_amount: row?.comm_amount,
+          vat: row?.vat,
+          agent_comm_percent: row?.agent_comm_percent,
+          agent_comm_amount: row?.agent_comm_amount
         }));
 
         setpageState((old) => ({
@@ -910,6 +914,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           dealHistoryModel={dealHisotryModel}
           handleCloseDealHistory={() => setDealHistoryModel(false)}
           LeadData={singleLeadData}
+          FetchLeads={FetchLeads}
         />
       )}
     </div>

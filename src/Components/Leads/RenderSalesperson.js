@@ -131,6 +131,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
       }
       console.log("assigned ===================================> ", assigned);
       UpdateLeadData.append("firstAssigned", assigned);
+      UpdateLeadData.append("feedback", "New");
 
       if (SalesPerson3 === undefined) {
         UpdateLeadData.append("assignedToSales", newSalesPerson?.id);
@@ -143,7 +144,6 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
         //   "transferredDate",
         //   moment().format("YYYY-MM-DD HH:mm:ss")
         // );
-        UpdateLeadData.append("feedback", "New");
       }
     }
 
@@ -151,6 +151,7 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
     if (cellValues?.row?.transferRequest === 1) {
       UpdateLeadData.append("leadStatus", "Transferred");
       UpdateLeadData.append("transferRequest", 2);
+      UpdateLeadData.append("feedback", "New");
     }
 
     await axios

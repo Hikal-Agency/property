@@ -46,8 +46,6 @@ const CommissionModal = ({
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
 
-  const [commissionMarked, setCommissionMarked] = useState(false);
-
   const [showOverlayPdf, setShowOverlayPdf] = useState(false);
   const [showOverlayImage, setShowOverlayImage] = useState(false);
   const [overlayContent, setOverlayContent] = useState(null);
@@ -64,53 +62,6 @@ const CommissionModal = ({
     console.log("OVERLAY PDF ========= ", overlayContent);
     setShowOverlayImage(false);
     setShowOverlayPdf(true);
-  };
-
-  useEffect(() => {
-    if (commissionModal && commissionModal.comm_status === 1) {
-      setCommissionMarked(true);
-    }
-  }, [commissionModal]);
-
-  const markCommission = () => {
-    const token = localStorage.getItem("auth-token");
-    const updatedData = { comm_status: 1 };
-
-    axios
-      .post(`${BACKEND_URL}/editdeal/${commissionModal.lid}`, updatedData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Deal updated successfully.");
-        console.log(result);
-        toast.success("Commission marked successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        setCommissionMarked(true);
-        handleClose();
-        // fetchLeadsData();
-      })
-      .catch((err) => {
-        toast.error("Error in Marking the commission.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
   };
 
   console.log("data fetched:: ", data);
@@ -268,24 +219,6 @@ const CommissionModal = ({
                       </h1>
                     </div>
                     <div>
-                      {/* CHECK COMM_STATUS, THEN DISPLAY IF 0, MARK COMMISSION RECEIVED AS PAID */}
-                      {!commissionMarked && (
-                        <button
-                          onClick={(e) => markCommission(e)}
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-[#666666] text-white"
-                              : "bg-[#DDDDDD] text-black"
-                          } 
-                          rounded-md shadow-sm card-hover mx-3 py-2 px-4`}
-                        >
-                          <div className="flex gap-2">
-                            <BsCheck2All size={16} />
-                            <div>{t("mark_all_commission_received")}</div>
-                          </div>
-                        </button>
-                      )}
-
                       {!invoiceModal && (
                         <>
                           {/* <button
@@ -296,7 +229,7 @@ const CommissionModal = ({
                           </button> */}
                           <button
                             onClick={(e) => handleOpenModal(e)}
-                            className="bg-btn-primary rounded-md py-2 px-4"
+                            className="bg-btn-primary rounded-md text-white font-semibold py-2 px-4"
                           >
                             {t("btn_add_commission")}
                           </button>

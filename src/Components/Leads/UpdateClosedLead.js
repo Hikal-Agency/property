@@ -55,6 +55,7 @@ const UpdateLead = ({
   const [Feedback, setFeedback] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [leadDate, setLeadDate] = useState("");
+  const [updatedField, setUpdatedField] = useState("");
 
   // const style = {
   //   transform: "translate(-50%, -50%)",
@@ -103,7 +104,114 @@ const UpdateLead = ({
       ...prev,
       [id]: value,
     }));
+    setUpdatedField(id);
   };
+
+  useEffect(() => {
+    const {
+      amount,
+      comm_percent,
+      comm_amount,
+      agent_comm_percent,
+      agent_comm_amount
+    } = updateLeadData;
+
+    // COMMISSION AMOUNT 
+    if (updatedField === "amount" || updatedField === "comm_percent") {
+      autoCalculate("comm_amount", amount, comm_percent);
+      // autoCalculate("vat", comm_amount, 5);
+    }
+    // COMMISSION PERCENT
+    if (updatedField === "amount" || updatedField === "comm_amount") {
+      autoCalculate("comm_percent", amount, comm_amount);
+    }
+    // AGENT COMM AMOUNT
+    if (updatedField === "amount" || updatedField === "agent_comm_percent") {
+      autoCalculate("agent_comm_amount", comm_amount, agent_comm_percent);
+    }
+    // AGENT COMMISSION PERCENT
+    if (updatedField === "amount" || updatedField === "agent_comm_amount") {
+      autoCalculate("agent_comm_percent", comm_amount, agent_comm_amount);
+    }
+  }, [updateLeadData.amount, updateLeadData.comm_percent, updateLeadData.comm_amount, updateLeadData.agent_comm_percent, updateLeadData.agent_comm_amount, updatedField]);
+
+  const autoCalculate = (value, amount, percentOrAmount) => {
+    const sellingAmount = parseFloat(amount);
+    console.log("SELLING AMOUNT = ", sellingAmount);
+    // COMM AMOUNT 
+    if (value === "comm_amount") {
+      const commPercent = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(commPercent)) {
+        let commAmount = (sellingAmount * commPercent) / 100;
+        commAmount = commAmount % 1 === 0 ? commAmount.toFixed(0) : commAmount.toFixed(2);
+        let vat = commAmount * 5 / 100;
+        vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
+
+        console.log("COMM PERCENT = ", commPercent);
+        console.log("COMM AMOUNT = ", commAmount);
+        console.log("VAT = ", vat);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          comm_amount: commAmount,
+          vat: vat,
+        }));
+      }
+    }
+    // COMM PERCENT 
+    if (value === "comm_percent") {
+      const commAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(commAmount)) {
+        let commPercent = (commAmount / sellingAmount) * 100 || 0;
+        commPercent = commPercent % 1 === 0 ? commPercent.toFixed(0) : commPercent.toFixed(2);
+        let vat = commAmount * 5 / 100;
+        vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
+
+        console.log("COMM AMOUNT = ", commAmount);
+        console.log("COMM PERCENT = ", commPercent);
+        console.log("VAT = ", vat);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          comm_percent: commPercent,
+          vat: vat,
+        }));
+      }
+    }
+    // AGENT COMM AMOUNT 
+    if (value === "agent_comm_amount") {
+      const agentCommPercent = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(agentCommPercent)) {
+        let agentCommAmount = (sellingAmount * agentCommPercent) / 100;
+        agentCommAmount = agentCommAmount % 1 === 0 ? agentCommAmount.toFixed(0) : agentCommAmount.toFixed(2);
+
+        console.log("AGENT COMM PERCENT = ", agentCommPercent);
+        console.log("AGENT COMM AMOUNT = ", agentCommAmount);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          agent_comm_amount: agentCommAmount,
+        }));
+      }
+    }
+    // AGENT COMM PERCENT 
+    if (value === "agent_comm_percent") {
+      const agentCommAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(agentCommAmount)) {
+        let agentCommPercent = (agentCommAmount / sellingAmount) * 100 || 0;
+        agentCommPercent = agentCommPercent % 1 === 0 ? agentCommPercent.toFixed(0) : agentCommPercent.toFixed(2);
+
+        console.log("AGENT COMM AMOUNT = ", agentCommAmount);
+        console.log("AGENT COMM PERCENT = ", agentCommPercent);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          agent_comm_percent: agentCommPercent,
+        }));
+      }
+    }
+  };
+  // ----------------------
 
   useEffect(() => {
     console.log("lead data is ");
@@ -548,8 +656,8 @@ const UpdateLead = ({
                   {hasPermission("deal_commission") && (
                     <div
                       className={`p-4 rounded-xl shadow-sm card-hover ${currentMode === "dark"
-                          ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EEEEEE] text-black"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black"
                         }
                       `}
                     >
@@ -564,6 +672,7 @@ const UpdateLead = ({
                             // marginTop:"20p"
                           }}
                         >
+                          {/* COMM PERCENT */}
                           <TextField
                             id="comm_percent"
                             type={"text"}
@@ -581,24 +690,88 @@ const UpdateLead = ({
                             onChange={(e) => handleChange(e)}
                             required
                           />
-
-                          <TextField
-                            id="comm_amount"
-                            type={"text"}
-                            label={t("total_commission_amount")}
-                            className="w-full"
-                            sx={{
-                              "&": {
-                                marginBottom: "1.25rem !important",
-                                zIndex: 1,
-                              },
-                            }}
-                            variant="outlined"
-                            size="small"
-                            value={updateLeadData?.comm_amount}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
+                          <div className="grid grid-cols-3">
+                            {/* CURRENCY */}
+                            <Select
+                              id="currency"
+                              options={currencies(t)?.map((curr) => ({
+                                value: curr.value,
+                                label: curr.label,
+                              }))}
+                              value={currencies(t)?.find(
+                                (curr) => curr.value === updateLeadData?.currency
+                              )}
+                              onChange={(e) => {
+                                setUpdateLeadData({
+                                  ...updateLeadData,
+                                  currency: e.value,
+                                });
+                              }}
+                              placeholder={t("label_select_currency")}
+                              // className={`mb-5`}
+                              menuPortalTarget={document.body}
+                              styles={selectStyles(currentMode, primaryColor)}
+                            />
+                            {/* COMM AMOUNT */}
+                            <TextField
+                              id="comm_amount"
+                              type={"text"}
+                              label={t("total_commission_amount")}
+                              className="w-full col-span-2"
+                              sx={{
+                                "&": {
+                                  marginBottom: "1.25rem !important",
+                                  zIndex: 1,
+                                },
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={updateLeadData?.comm_amount}
+                              onChange={(e) => handleChange(e)}
+                              required
+                            />
+                          </div>
+                          <div className="grid grid-cols-3">
+                            {/* CURRENCY */}
+                            <Select
+                              id="currency"
+                              options={currencies(t)?.map((curr) => ({
+                                value: curr.value,
+                                label: curr.label,
+                              }))}
+                              value={currencies(t)?.find(
+                                (curr) => curr.value === updateLeadData?.currency
+                              )}
+                              onChange={(e) => {
+                                setUpdateLeadData({
+                                  ...updateLeadData,
+                                  currency: e.value,
+                                });
+                              }}
+                              placeholder={t("label_select_currency")}
+                              // className={`mb-5`}
+                              menuPortalTarget={document.body}
+                              styles={selectStyles(currentMode, primaryColor)}
+                            />
+                            {/* VAT AMOUNT */}
+                            <TextField
+                              id="vat"
+                              type={"text"}
+                              label={t("vat_amount")}
+                              className="w-full col-span-2"
+                              sx={{
+                                "&": {
+                                  marginBottom: "1.25rem !important",
+                                  zIndex: 1,
+                                },
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={updateLeadData?.vat}
+                              onChange={(e) => handleChange(e)}
+                              required
+                            />
+                          </div>
 
                           {/* <TextField
                             id="vat"
@@ -618,24 +791,7 @@ const UpdateLead = ({
                             required
                           /> */}
 
-                          <TextField
-                            id="vat"
-                            type={"text"}
-                            label={t("vat_amount")}
-                            className="w-full"
-                            sx={{
-                              "&": {
-                                marginBottom: "1.25rem !important",
-                                zIndex: 1,
-                              },
-                            }}
-                            variant="outlined"
-                            size="small"
-                            value={updateLeadData?.vat}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
-
+                          {/* AGENT PERCENT */}
                           <TextField
                             id="agent_comm_percent"
                             type={"text"}
@@ -653,24 +809,47 @@ const UpdateLead = ({
                             onChange={(e) => handleChange(e)}
                             required
                           />
-
-                          <TextField
-                            id="agent_comm_amount"
-                            type={"text"}
-                            label={t("agent_comm_amount")}
-                            className="w-full"
-                            sx={{
-                              "&": {
-                                marginBottom: "1.25rem !important",
-                                zIndex: 1,
-                              },
-                            }}
-                            variant="outlined"
-                            size="small"
-                            value={updateLeadData?.agent_comm_amount}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
+                          <div className="grid grid-cols-3">
+                            {/* CURRENCY */}
+                            <Select
+                              id="currency"
+                              options={currencies(t)?.map((curr) => ({
+                                value: curr.value,
+                                label: curr.label,
+                              }))}
+                              value={currencies(t)?.find(
+                                (curr) => curr.value === updateLeadData?.currency
+                              )}
+                              onChange={(e) => {
+                                setUpdateLeadData({
+                                  ...updateLeadData,
+                                  currency: e.value,
+                                });
+                              }}
+                              placeholder={t("label_select_currency")}
+                              // className={`mb-5`}
+                              menuPortalTarget={document.body}
+                              styles={selectStyles(currentMode, primaryColor)}
+                            />
+                            {/* AGENT COMM */}
+                            <TextField
+                              id="agent_comm_amount"
+                              type={"text"}
+                              label={t("agent_comm_amount")}
+                              className="w-full col-span-2"
+                              sx={{
+                                "&": {
+                                  marginBottom: "1.25rem !important",
+                                  zIndex: 1,
+                                },
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={updateLeadData?.agent_comm_amount}
+                              onChange={(e) => handleChange(e)}
+                              required
+                            />
+                          </div>
                         </Box>
                       </div>
                     </div>
