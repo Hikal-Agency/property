@@ -73,7 +73,7 @@ const DealHistory = ({
   const [showOverlayImage, setShowOverlayImage] = useState(false);
   const [overlayContent, setOverlayContent] = useState(null);
 
-  const [dealNote, setDealNote] = useState(null);
+  const [dealNote, setDealNote] = useState("");
 
   const handleImageClick = (image) => {
     setOverlayContent(image);
@@ -165,6 +165,71 @@ const DealHistory = ({
       setIsClosing(false);
       handleCloseDealHistory();
     }, 1000);
+  };
+
+  const addDealNote = async () => {
+    if (dealNote === null || dealNote === "") {
+      toast.error("Empty note field!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      try {
+        const token = localStorage.getItem("auth-token");
+        const noteData = {
+          deal_id: LeadData?.lid,
+          about: "Note",
+          note: dealNote
+        };
+
+        const response = await axios.post(`${BACKEND_URL}/deal-history`, noteData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        if (response.status === 200) {
+          toast.success("Note added successfully.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setDealNote("");
+          await fetchLeadsData(LeadData?.lid);
+        } else {
+          toast.error("Error in Adding the Note.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      } catch (error) {
+        console.error("Error adding note:", error);
+        toast.error("Error in Adding the Note.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    }
   };
 
   const updateStatus = (toUpdate) => {
@@ -652,13 +717,13 @@ const DealHistory = ({
                                 variant="outlined"
                                 size="small"
                                 value={dealNote}
-                                // onChange={(e) => handleChange(e)}
+                                onChange={(e) => setDealNote(e.target.value)}
                                 required
                               />
                             </Box>
                             <button
                               className="bg-primary text-white uppercase rounded-sm px-4 py-2 shadow-sm"
-                            // onClick={() => addDealNote()}
+                              onClick={() => addDealNote()}
                             >
                               {t("ticket_add_note_label")}
                             </button>
