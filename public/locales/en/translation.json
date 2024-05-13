@@ -1071,7 +1071,11 @@
     "payment_details": "Payment Details",
     "paid_amount": "Paid Amount",
     "paid_percent": "Paid Percentage",
-    "agent_comm": "Agent Comm"
+    "agent_comm": "Agent Comm",
+    "history": "History",
+    "quantity": "Quantity",
+    "spoon_of_sugar": "Spoon(s) of Suagr",
+    "sugar": "Sugar"
 
     
 }

@@ -377,39 +377,58 @@ const DealHistory = ({
     //eslint-disable-next-line
   }, []);
 
-  function groupLeadsByDate(leads) {
-    console.log("leads in groupbydate: ", leads);
-    const groups = {};
-    leads?.forEach((lead) => {
-      let date;
-      if (lead.created_at) date = (lead.created_at + " ").split(" ")[0];
-      else date = (lead.created_at + " ").split(" ")[0];
+  // function groupHistoryByDate(history) {
+  //   const groups = {};
+  //   history?.forEach((lead) => {
+  //     let date;
+  //     if (lead.created_at) date = (lead.created_at + " ").split(" ")[0];
+  //     else date = (lead.created_at + " ").split(" ")[0];
 
+  //     if (groups[date]) {
+  //       groups[date].push(lead);
+  //     } else {
+  //       groups[date] = [lead];
+  //     }
+  //   });
+
+  //   let grouped = Object.keys(groups).map((date) => {
+  //     return {
+  //       date: date,
+  //       history: groups[date],
+  //     };
+  //   });
+
+  //   grouped = grouped.sort((a, b) => {
+  //     return new Date(b.date) - new Date(a.date);
+  //   });
+
+  //   grouped = grouped.map((obj) => {
+  //     const sortedHistory = obj.leads.sort((a, b) => {
+  //       return new Date(b.created_at) - new Date(a.created_at);
+  //     });
+  //     // return the sorted leads array as part of a new object with the same date
+  //     return { date: obj.date, leads: sortedHistory };
+  //   });
+
+  //   console.log("Grouped::: ", grouped);
+  //   return grouped;
+  // }
+
+  function groupHistoryByDate(history) {
+    const groups = {};
+    history?.forEach((item) => {
+      const date = item.created_at.split('T')[0];
       if (groups[date]) {
-        groups[date].push(lead);
+        groups[date].push(item);
       } else {
-        groups[date] = [lead];
+        groups[date] = [item];
       }
     });
 
-    let grouped = Object.keys(groups).map((date) => {
-      return {
-        date: date,
-        leads: groups[date],
-      };
-    });
-
-    grouped = grouped.sort((a, b) => {
-      return new Date(b.date) - new Date(a.date);
-    });
-
-    grouped = grouped.map((obj) => {
-      const sortedLeads = obj.leads.sort((a, b) => {
-        return new Date(b.created_at) - new Date(a.created_at);
-      });
-      // return the sorted leads array as part of a new object with the same date
-      return { date: obj.date, leads: sortedLeads };
-    });
+    const grouped = Object.keys(groups).map((date) => ({
+      date,
+      items: groups[date],
+    }));
 
     console.log("Grouped::: ", grouped);
     return grouped;
@@ -493,20 +512,19 @@ const DealHistory = ({
                   </div>
                   <div>
                     <div className={`${currentMode === "dark" ? "text-white" : "text-black"} p-4`}>
-                      <div className="grid sm:grid-cols-12 gap-5">
+                      <div className="grid grid-cols-12 gap-5">
                         {/* STATUS */}
-                        <div className="col-span-12 md:col-span-4 w-full">
+                        <div className="col-span-12 lg:col-span-4 w-full mb-5">
                           {loading ? (
                             <div className="flex items-center justify-center w-full">
                               <h1 className="font-semibold text-lg">Loading</h1>
                             </div>
                           ) : (
                             <>
-                              <h3 className="text-sm text-center font-semibold uppercase mb-5">
+                              <h3 className="text-center font-semibold uppercase mb-5">
                                 {t("status")}
                               </h3>
-                              {/* <div className="w-full flex items-center justify-center  space-x-2 mb-4"> */}
-                              <div className="w-full grid grid-cols-2 gap-5 mb-4">
+                              <div className="w-full grid grid-cols-4 lg:grid-cols-2 gap-5 mb-4">
                                 {statuses?.map((status) => {
                                   return (
                                     <div
@@ -562,11 +580,10 @@ const DealHistory = ({
                                 })}
                               </div>
 
-                              <div className="flex items-center justify-between  flex-row">
-                                <h3 className="text-sm  font-semibold uppercase mb-5 mt-3">
-                                  {t("transactions")}
+                              <div className="flex items-center justify-between flex-row">
+                                <h3 className="font-semibold uppercase mb-5 mt-3">
+                                  {t("payments")}
                                 </h3>
-
                                 {hasPermission("add_deal_spa") && (
                                   <>
                                     <div>
@@ -580,9 +597,7 @@ const DealHistory = ({
                                   </>
                                 )}
                               </div>
-
-                              {/* {hasPermission("deal_spa") && ( */}
-                              <>
+                              <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
                                 {transactions?.map((spa) => (
                                   <div
                                     className={`${currentMode === "dark"
@@ -608,62 +623,44 @@ const DealHistory = ({
                                       <div>{spa?.type}</div>
                                     </div>
                                     {/* DETAILS */}
-                                    <div className="p-4 grid grid-cols-2 justify-between gap-4">
+                                    <div className={`p-4 grid ${spa?.temp_file === null ? "grid-cols-1" : "grid-cols-2"} justify-between gap-4`}>
                                       {/* TEXT */}
                                       <div className="flex flex-col gap-4">
-                                        <div className="flex gap-2">
-                                          <p>{t("percentage")}:</p>
-                                          <div>
-                                            <p className="font-semibold">
-                                              {spa?.percent}%
-                                            </p>
-                                          </div>
-                                        </div>
-
-                                        <div className="flex gap-2">
-                                          <p>{t("label_amount")}:</p>
-                                          <div>
-                                            <p className="font-semibold">
-                                              {spa?.currency} {spa?.amount}
-                                            </p>
-                                          </div>
-                                        </div>
-
-                                        <div className="flex gap-2">
-                                          <p>{t("date")}:</p>
-                                          <div>
-                                            <p className="font-semibold">
-                                              {spa?.dealDate}
-                                            </p>
-                                          </div>
-                                        </div>
-
-                                        <div className="flex gap-2">
-                                          <p>{t("label_added_by")}:</p>
-                                          <div>
-                                            <p className="font-semibold">
-                                              {spa?.added_by_name}
-                                            </p>
-                                          </div>
-                                        </div>
+                                        {/* DATE */}
+                                        <p>
+                                          {t("date")}:
+                                          {" "}
+                                          <span className="font-semibold">
+                                            {spa?.dealDate}
+                                          </span>
+                                        </p>
+                                        {/* PERCENTAGE */}
+                                        <p>
+                                          {t("percentage")}:
+                                          {" "}
+                                          <span className="font-semibold">
+                                            {spa?.percent}%
+                                          </span>
+                                        </p>
+                                        {/* AMOUNT */}
+                                        <p>
+                                          {t("label_amount")}:
+                                          {" "}
+                                          <span className="font-semibold">
+                                            {spa?.currency} {spa?.amount}
+                                          </span>
+                                        </p>
+                                        {/* ADDED BY */}
+                                        <p>
+                                          {t("label_added_by")}:
+                                          {" "}
+                                          <span className="font-semibold">
+                                            {spa?.added_by_name}
+                                          </span>
+                                        </p>
                                       </div>
                                       {/* FILE */}
                                       <div className="w-full flex items-center justify-center">
-                                        {/* {spa?.temp_file && (
-                                          <div
-                                            className="rounded-md border cursor-pointer mb-8 "
-                                            onClick={(e) =>
-                                              setOpenImageModal(spa)
-                                            }
-                                          >
-                                            <img
-                                              src={spa?.temp_file}
-                                              width="100px"
-                                              height="100px"
-                                              className="object-fill"
-                                            />
-                                          </div>
-                                        )} */}
                                         {spa?.temp_file && (
                                           <div className="flex items-center justify-center">
                                             {(() => {
@@ -698,14 +695,16 @@ const DealHistory = ({
                                     </div>
                                   </div>
                                 ))}
-                              </>
-                              {/* )} */}
+                              </div>
                             </>
                           )}
                         </div>
 
                         {/* HISTORY */}
-                        <div className="col-span-12 md:col-span-8 w-full">
+                        <div className="col-span-12 lg:col-span-8 w-full mb-5">
+                          <h3 className="text-center font-semibold uppercase mb-5">
+                            {t("history")}
+                          </h3>
                           {/* ADD NOTE */}
                           <div className={`flex items-center justify-end gap-4`}>
                             <Box sx={{ minWidth: "300px" }}>
@@ -738,105 +737,85 @@ const DealHistory = ({
                                   </h1>
                                 </div>
                               ) : (
-                                groupLeadsByDate(leadsCycle)?.map(
-                                  (timeline, index) => {
-                                    console.log("timeline:: ", timeline);
-                                    return (
-                                      <>
+                                groupHistoryByDate(leadsCycle)?.map((timeline, index) => (
+                                  <React.Fragment key={index}>
+                                    <div
+                                      className={`${isLangRTL(i18n.language)
+                                        ? "ml-3"
+                                        : "mr-3"
+                                        } col-start-1 col-end-3 md:mx-auto relative`}
+                                    >
+                                      <div className="h-full w-6 flex items-center justify-center">
                                         <div
-                                          className={`${isLangRTL(i18n.language)
-                                            ? "ml-3"
-                                            : "mr-3"
-                                            } col-start-1 col-end-3 md:mx-auto relative`}
+                                          className={`h-full border-[${primaryColor}] border-b-2 rounded-md shadow-sm px-2 py-1 text-sm`}
+                                          style={{
+                                            width: "min-content",
+                                            whiteSpace: "nowrap",
+                                          }}
                                         >
-                                          <div className="h-full w-6 flex items-center justify-center">
-                                            <div
-                                              className={`h-full border-[${primaryColor}] border-b-2 rounded-md shadow-sm px-2 py-1 text-sm`}
-                                              style={{
-                                                width: "min-content",
-                                                whiteSpace: "nowrap",
-                                              }}
-                                            >
-                                              {/* {timeline.date} */}
-                                              {moment(timeline.date).format("YYYY-MM-DD")}
-                                            </div>
-                                          </div>
+                                          {moment(timeline.date).format("YYYY-MM-DD")}
                                         </div>
-                                        {timeline?.leads.map(
-                                          (timeline, index) => {
-                                            return (
-                                              <div
-                                                key={index}
-                                                className="flex md:contents"
-                                              >
-                                                {/* LEAD NOTE  */}
-                                                {timeline.note ? (
-                                                  <>
-                                                    <div
-                                                      className={`${isLangRTL(i18n.language)
-                                                        ? "ml-3"
-                                                        : "mr-3"
-                                                        } col-start-1 col-end-3 md:mx-auto relative`}
-                                                    >
-                                                      <div className="h-full w-6 flex items-center justify-center">
-                                                        <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
-                                                      </div>
-                                                      <div
-                                                        className={`${isLangRTL(i18n.language)
-                                                          ? "-mr-2"
-                                                          : "-ml-2"
-                                                          } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                                      >
-                                                        <MdNoteAlt
-                                                          className="text-white"
-                                                          size={16}
-                                                        />
-                                                      </div>
-                                                    </div>
-                                                    <div
-                                                      className={`${currentMode === "dark"
-                                                        ? "bg-[#1C1C1C]"
-                                                        : "bg-[#EEEEEE]"
-                                                        } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                    >
-                                                      {/* ADDED BY  */}
-                                                      <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
-                                                        <HiUser size={12} />
-                                                        {timeline?.added_by_name}
-                                                      </p>
-                                                      {/* LEAD NOTE  */}
-                                                      <p
-                                                        className="tracking-wide mb-2"
-                                                        style={{
-                                                          fontFamily: isArabic(
-                                                            timeline?.note
-                                                          )
-                                                            ? "Noto Kufi Arabic"
-                                                            : "inherit",
-                                                        }}
-                                                      >
-                                                        {timeline?.note}
-                                                      </p>
-
-                                                      {/* CREATION DATE  */}
-                                                      <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                        {datetimeLong(
-                                                          timeline.created_at
-                                                        )}
-                                                      </p>
-                                                    </div>
-                                                  </>
-                                                ) : (
-                                                  <></>
-                                                )}
+                                      </div>
+                                    </div>
+                                    {timeline?.items.map((item, itemIndex) => (
+                                      <div key={itemIndex} className="flex md:contents">
+                                        {item.note && (
+                                          <>
+                                            <div
+                                              className={`${isLangRTL(i18n.language)
+                                                ? "ml-3"
+                                                : "mr-3"
+                                                } col-start-1 col-end-3 md:mx-auto relative`}
+                                            >
+                                              <div className="h-full w-6 flex items-center justify-center">
+                                                <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
                                               </div>
-                                            );
-                                          }
+                                              <div
+                                                className={`${isLangRTL(i18n.language)
+                                                  ? "-mr-2"
+                                                  : "-ml-2"
+                                                  } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                              >
+                                                <MdNoteAlt
+                                                  className="text-white"
+                                                  size={16}
+                                                />
+                                              </div>
+                                            </div>
+                                            <div
+                                              className={`${currentMode === "dark"
+                                                ? "bg-[#1C1C1C]"
+                                                : "bg-[#EEEEEE]"
+                                                } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                            >
+                                              {/* ADDED BY  */}
+                                              <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
+                                                <HiUser size={12} />
+                                                {item?.added_by_name}
+                                              </p>
+                                              {/* LEAD NOTE  */}
+                                              <p
+                                                className="tracking-wide mb-2"
+                                                style={{
+                                                  fontFamily: isArabic(item?.note)
+                                                    ? "Noto Kufi Arabic"
+                                                    : "inherit",
+                                                }}
+                                              >
+                                                {item?.note}
+                                              </p>
+                                              {/* CREATION DATE  */}
+                                              <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                {datetimeLong(item.created_at)}
+                                              </p>
+                                            </div>
+                                          </>
                                         )}
-                                      </>
-                                    );
-                                  }
-                                )
+                                      </div>
+                                    ))}
+
+                                  </React.Fragment>
+                                ))
                               )}
                             </div>
                             <Stack spacing={2} marginTop={2}>
