@@ -74,7 +74,9 @@ const Transaction = ({ isLoading }) => {
                   currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
-                {t("transaction")}
+                {pathname === "/transactions"
+                  ? t("transaction")
+                  : t("menu_new_transactions")}
               </h1>
             </div>
 

@@ -1600,6 +1600,12 @@ const Sidebarmui = () => {
               link: "/transactions",
             },
             {
+              name: t("menu_new_transactions"),
+              // icon: <BsArrowLeftRight size={16} />,
+              // pro: true,
+              link: "/new-transactions",
+            },
+            {
               name: t("menu_statements"),
               // icon: <FaHome size={16} />,
               // pro: true,

@@ -527,6 +527,11 @@ const routes = [
     pageName: "Transaction",
   },
   {
+    path: "/new-transactions",
+    element: <Transaction />,
+    pageName: "New Transaction",
+  },
+  {
     path: "/vendors",
     element: <Vendors />,
     pageName: "Transaction",

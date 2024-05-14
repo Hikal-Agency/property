@@ -895,6 +895,7 @@ const Transactions = ({ pathname }) => {
         <SingleTransactionModal
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
+          isUrl={isUrl}
         />
       )}
     </div>
