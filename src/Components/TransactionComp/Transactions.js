@@ -427,15 +427,19 @@ const Transactions = ({ pathname }) => {
       console.log("activeFilters:: ", activeFilters);
       console.log("queryParams:: ", queryParams);
 
-      const response = await axios.get(
-        `${BACKEND_URL}/invoices${queryParams}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      let url;
+      if (isUrl) {
+        url = `${BACKEND_URL}/invoices${queryParams}`;
+      } else {
+        url = `${BACKEND_URL}/invoices?added_by=${User?.id}`;
+      }
+
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
       console.log("transactions list:: ", response);
       setTransactionsData(response?.data?.data);
