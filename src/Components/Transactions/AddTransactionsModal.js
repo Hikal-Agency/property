@@ -286,26 +286,23 @@ const AddTransactionsModal = ({
                     className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                   >
-                    {transData
-                      ? t("edit_transaction_details")
-                      : t("transactions_details")}
+                    {t("payment_details")}
                   </h1>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5 p-10">
+              <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-5 p-4">
                 {/* Transaction DETAILS  */}
                 <div
-                  className={`p-4 rounded-xl shadow-sm card-hover
+                  className={`p-5 rounded-xl shadow-sm card-hover
                   ${currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
                     }`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center uppercase font-semibold mb-5">
                     {t("transactions_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
                   <div className="w-full">
                     <Box
                       sx={{

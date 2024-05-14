@@ -1079,7 +1079,10 @@
     "history": "History",
     "quantity": "Quantity",
     "spoon_of_sugar": "Spoon(s) of Suagr",
-    "sugar": "Sugar"
+    "sugar": "Sugar",
+    "borrow": "Borrow",
+    "visa": "Visa",
+    "payment": "Payment"
 
     
 }
