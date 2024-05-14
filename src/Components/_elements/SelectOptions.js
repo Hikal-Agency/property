@@ -714,10 +714,13 @@ export const transaction_type = (t) => [
     label: t("booking"),
   },
   {
-    value: "PDC",
-    label: t("pdc"),
+    value: "Payment",
+    label: t("payment"),
   },
-
+  // {
+  //   value: "PDC",
+  //   label: t("pdc"),
+  // },
   {
     value: "SPA",
     label: t("spa"),
@@ -769,15 +772,45 @@ export const invoice_category = (t) => [
   {
     value: "Purchase",
     label: t("purchase"),
+    income: false,
+    expense: true,
+  },
+  {
+    value: "Commission",
+    label: t("commission"),
+    income: true,
+    expense: true,
   },
   {
     value: "Salary",
     label: t("label_salary"),
+    income: false,
+    expense: true,
   },
   {
     value: "Maintenance",
     label: t("maintenance"),
-  }
+    income: false,
+    expense: true,
+  },
+  {
+    value: "Borrow",
+    label: t("borrow"),
+    income: true,
+    expense: true,
+  },
+  {
+    value: "Campaigns",
+    label: t("menu_campaigns"),
+    income: true,
+    expense: true,
+  },
+  {
+    value: "Visa",
+    label: t("visa"),
+    income: false,
+    expense: true,
+  },
 ];
 
 //  VENDOR TYPES
