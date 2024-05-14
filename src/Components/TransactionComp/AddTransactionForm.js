@@ -254,10 +254,12 @@ const AddTransactionForm = ({
         )}`}</h3>
         <Select
           id="category"
-          options={invoice_category(t)?.map((trans) => ({
-            value: trans.value,
-            label: trans.label,
-          }))}
+          options={invoice_category(t)
+            ?.filter((trans) => trans.value !== "Commission")
+            .map((trans) => ({
+              value: trans.value,
+              label: trans.label,
+            }))}
           value={invoice_category(t)?.filter(
             (trans) => trans?.value === addTransactionData?.category
           )}

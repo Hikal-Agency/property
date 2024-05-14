@@ -110,14 +110,6 @@ const Transactions = ({ pathname }) => {
     category: "",
   });
 
-  // console.log("filter data:: ", addTransactionData);
-  // console.log(
-  //   "commission type filter: ",
-  //   commission_type(t)?.filter(
-  //     (comm) => comm?.value === addTransactionData?.invoice_type
-  //   )
-  // );
-
   const handleChange = (e, filter) => {
     console.log("filter: ", filter);
     const id = e.target.id;
@@ -178,24 +170,6 @@ const Transactions = ({ pathname }) => {
     });
   };
 
-  // const handleImgUpload = (e) => {
-  //   const file = e.target.files[0];
-
-  //   console.log("files:: ", file);
-
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     // setImagePreview(reader.result);
-
-  //     const base64Image = reader.result;
-  //     setAddTransactionData({
-  //       ...addTransactionData,
-  //       image: file,
-  //     });
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
-
   // Define an error state object
   const [fieldErrors, setFieldErrors] = useState({
     invoice_type: false,
@@ -206,122 +180,6 @@ const Transactions = ({ pathname }) => {
   });
 
   console.log("field errors:: ", fieldErrors);
-
-  // Function to parse the error message and update the error state
-  const handleApiErrors = (message) => {
-    const requiredFields = [
-      "Invoice Type",
-      "Category",
-      "Date",
-      "Amount",
-      "Currency",
-    ];
-    const errors = {
-      invoice_type: false,
-      amount: false,
-      date: false,
-      currency: false,
-      category: false,
-    };
-
-    requiredFields.forEach((field) => {
-      if (message.includes(field)) {
-        const fieldKey = field.toLowerCase().replace(/ /g, "_"); // Convert field name to match state keys
-        errors[fieldKey] = true;
-      }
-    });
-
-    setFieldErrors(errors);
-  };
-
-  // const handleTransaction = async (e) => {
-  //   e.preventDefault();
-
-  //   setFieldErrors({
-  //     invoice_type: false,
-  //     amount: false,
-  //     date: false,
-  //     currency: false,
-  //     category: false,
-  //   });
-
-  //   setBtnLoading(true);
-
-  //   try {
-  //     const submitTransaction = await axios.post(
-  //       `${BACKEND_URL}/invoices`,
-  //       addTransactionData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("transaction submited ", submitTransaction);
-
-  //     if (submitTransaction?.data?.status === false) {
-  //       toast.error(`${submitTransaction?.data?.message}`, {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //       setBtnLoading(false);
-  //       handleApiErrors(submitTransaction?.data?.message);
-
-  //       return;
-  //     }
-
-  //     toast.success("Transaction Added.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-
-  //     fetchTransactions();
-
-  //     setAddTransactionData({
-  //       user_id: "",
-  //       invoice_type: "",
-  //       amount: "",
-  //       date: "",
-  //       currency: "",
-  //       comm_percent: "",
-  //       country: "",
-  //       status: "",
-  //       paid_by: "",
-  //       vendor_id: "",
-  //       category: "",
-  //       image: "",
-  //     });
-
-  //     setBtnLoading(false);
-  //   } catch (error) {
-  //     console.log("Error: ", error);
-  //     setBtnLoading(false);
-  //     toast.error("Something went wrong! Please Try Again", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   }
-  // };
 
   const fetchVendor = async () => {
     if (isUrl) {
