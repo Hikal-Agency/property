@@ -868,7 +868,7 @@
     "order_status_delivered": "Delivered",
     "order_status_out_of_stock": "Out Of Stock",
     "order_cancel": "Cancelled",
-    "order_pending":"Pending",
+    "order_pending": "Pending",
     "color": "Color",
     "background": "Background",
     "menu_twillio_integration": "Twillio Integration",
@@ -878,35 +878,27 @@
     "menu_integration": "Integration",
     "sms_service": "SMS Service",
     "select_sms_service": "Select SMS Service",
-
-
-    "menu_editor":"Create Landing Page",
-    "menu_page_builder":"Page Builder",
-    "page_builder":"Page Builder",
-    "templates_list":"All Templates",
-    "menu_template_list":"Templates",
-    "btn_add_template":"Design Landing Page",
-    "edit_landing_page":"Edit Landing Page",
-    "landing_page_settings":"Settings",
-    "funnel_settings":"Funnel Settings",
-    "funnel_form_name":"Name",
-    "funnel_form_path":"Path Head",
-    "funnel_form_tracking_code":"Tracking Code",
-    "funnel_form_domain":"Domain (without https:// or http://)",
-    "funnel_form_favicon_url":"Favicon Url",
-    "funnel_form_body_tracking_code":"Body tracking code",
-    "funnel_form_save":"Save",
-
-
-
-    "landing_page_name":"Enter page name",
-    "scratch_landing_page":"Create from Scratch",
-    "no_landing_pages":"No templates available",
-    "funnel_footer_code":"Footer tracking code",
-    "funnel_header_code":"Header tracking code",
-
-
-
+    "menu_editor": "Create Landing Page",
+    "menu_page_builder": "Page Builder",
+    "page_builder": "Page Builder",
+    "templates_list": "All Templates",
+    "menu_template_list": "Templates",
+    "btn_add_template": "Design Landing Page",
+    "edit_landing_page": "Edit Landing Page",
+    "landing_page_settings": "Settings",
+    "funnel_settings": "Funnel Settings",
+    "funnel_form_name": "Name",
+    "funnel_form_path": "Path Head",
+    "funnel_form_tracking_code": "Tracking Code",
+    "funnel_form_domain": "Domain (without https:// or http://)",
+    "funnel_form_favicon_url": "Favicon Url",
+    "funnel_form_body_tracking_code": "Body tracking code",
+    "funnel_form_save": "Save",
+    "landing_page_name": "Enter page name",
+    "scratch_landing_page": "Create from Scratch",
+    "no_landing_pages": "No templates available",
+    "funnel_footer_code": "Footer tracking code",
+    "funnel_header_code": "Header tracking code",
     "ticket_source_label": "What is your preffered medium to be contacted?",
     "status_initiated": "Initiated",
     "status_transferred": "Transferred",
@@ -915,8 +907,6 @@
     "ticket_label_assign": "Assigned To",
     "label_select_support": "Select Support Assisstant",
     "want_to_assign_ticket": "Do you really want to assign ticket from",
-
-    
     "ticket_filter_user": "User",
     "ticket_filter_status": "Status",
     "ticket_filter_source": "Source",
@@ -931,21 +921,17 @@
     "edit_cat_label": "Category Name",
     "edit_category": "Edit Category",
     "show_category_form": "Add Category",
-
-
     "copy_script": "Copy the following script and paste in your html file to get the template.",
     "close": "Close.",
     "copy": "Copy.",
-
-    "booking_details":"Booking Details",
-    "booked_perc":"Booking %",
-    "booking_date":"Booking Date",
-    "client_details":"Client Details",
-    "selling_amount":"Selling Amount",
-    "unit":"Unit",
-    "booking_amount":"Booking amount",
-    "label_passport_image":"Upload passport image",
-
+    "booking_details": "Booking Details",
+    "booked_perc": "Booking %",
+    "booking_date": "Booking Date",
+    "client_details": "Client Details",
+    "selling_amount": "Selling Amount",
+    "unit": "Unit",
+    "booking_amount": "Booking amount",
+    "label_passport_image": "Upload passport image",
     "label_select_currency": "Currency",
     "pak_currency": "PKR",
     "uae_currency": "AED",
@@ -958,8 +944,6 @@
     "australia_currency": "AUD",
     "canada_currency": "CAD",
     "egp_currency": "EGP",
-
-
     "spa": "SPA",
     "commission": "Commission",
     "btn_add_commission": "Add Commission",
@@ -988,12 +972,12 @@
     "total_amount": "Total Amount",
     "upload_invoice": "Upload Invoice",
     "evidence": "Evidence",
-    "vendor": "Vendor"   ,
-    "invoice": "Invoice"   ,
-    "transactions_details": "Transactions Details"   ,
-    "receipt": "Receipt" ,  
-    "booking": "Booking" ,
-    "menu_transaction": "Transactions" ,
+    "vendor": "Vendor",
+    "invoice": "Invoice",
+    "transactions_details": "Transactions Details",
+    "receipt": "Receipt",
+    "booking": "Booking",
+    "menu_transaction": "Transactions",
     "new_transaction": "New Transaction",
     "btn_new_transaction": "Add New Transaction",
     "percent": "Percent",
@@ -1010,72 +994,49 @@
     "country_eqypt": "Egypt",
     "po_box": "PO Box",
     "trn": "TRN",
-
-
-
     "menu_finance": "Finance",
     "menu_vendors": "Vendors",
     "add_vendor": "Add Vendor",
     "person_to_contact": "Person To Contact",
     "form_vendor_name": "Vendor Name",
-    "form_vendor_link": "Link",   
-
-  
-
+    "form_vendor_link": "Link",
     "vendor_type_market": "Supermarket",
     "vendor_type_agency": "Agency",
     "vendor_type_supplier": "Supplier",
     "vendor_type_car_wash": "Car Wash",
     "vendor_type_fuel": "Fuel Station",
-
-
     "edit_transaction_details": "Edit Transaction Details",
     "btn_edit_transaction": "Edit Transaction",
     "edit_commission": "Edit Commission",
-
-
-    
     "invoice_type": "Invoice Type",
     "transaction_details": "Transaction Details",
     "username": "Transaction Details",
     "invoice_receipt": "Invoice Receipt",
-
-
-    "menu_statements":"Statements",
-    "monthly_statement":"Monthly Statement",
-    "total_income":"Total Income",
-    "total_expense":"Total Expense",
-    "profit_loss_perc":"Profit/Loss %",
-    "profit_loss":"Profit/Loss",
-    "month_year":"Select month and year",
-
-
-
-    "btn_view_transactions":"View Transactions",
-    "income_amount":"Income",
-    "expense_amount":"Expense",
-
-
-    "menu_new_transaction":"Add New Transaction",
-    "menu_commission_vat":"Commission VAT",
-    "title_commission_vat":"Incoming Commission VAT",
-    "no_data_year":"No Data For This Year",
-    "select_year":"Select Year",
-    "vat_calculated_for":"VAT calculated for amount of ",
-    "invoices":"invoices",
-
-
-    "btn_commission_request":"Commission Request",
+    "menu_statements": "Statements",
+    "monthly_statement": "Monthly Statement",
+    "total_income": "Total Income",
+    "total_expense": "Total Expense",
+    "profit_loss_perc": "Profit/Loss %",
+    "profit_loss": "Profit/Loss",
+    "month_year": "Select month and year",
+    "btn_view_transactions": "View Transactions",
+    "income_amount": "Income",
+    "expense_amount": "Expense",
+    "menu_new_transaction": "Add New Transaction",
+    "menu_commission_vat": "Commission VAT",
+    "title_commission_vat": "Incoming Commission VAT",
+    "no_data_year": "No Data For This Year",
+    "select_year": "Select Year",
+    "vat_calculated_for": "VAT calculated for amount of ",
+    "invoices": "invoices",
+    "btn_commission_request": "Commission Request",
     "mark_all_commission_received": "Mark all Commission received",
     "maintenance": "Maintenance",
     "payment_details": "Payment Details",
     "paid_amount": "Paid Amount",
     "paid_percent": "Paid Percentage",
     "agent_comm": "Agent Comm",
-
-
-
-"menu_new_transactions":"New Transactions",
+    "menu_new_transactions": "New Transactions",
     "history": "History",
     "quantity": "Quantity",
     "spoon_of_sugar": "Spoon(s) of Suagr",
@@ -1083,10 +1044,6 @@
     "borrow": "Borrow",
     "visa": "Visa",
     "payment": "Payment",
-
-
-
-    "vat": "VAT"
-
-    
+    "vat": "VAT",
+    "details": "Details"
 }
