@@ -31,6 +31,7 @@ import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
 import { FaWallet } from "react-icons/fa";
 import Loader from "../../Components/Loader";
 import Transactions from "../../Components/TransactionComp/Transactions";
+import { useLocation } from "react-router-dom";
 
 const currentDate = dayjs();
 
@@ -45,6 +46,9 @@ const Transaction = ({ isLoading }) => {
   } = useStateContext();
 
   const [loading, setLoading] = useState(false);
+  const { pathname } = useLocation();
+
+  console.log("pathname: ", pathname);
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -75,7 +79,7 @@ const Transaction = ({ isLoading }) => {
             </div>
 
             <div className="mt-3 pb-3">
-              <Transactions isLoading={loading} />
+              <Transactions isLoading={loading} pathname={pathname} />
             </div>
           </div>
         )}
