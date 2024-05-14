@@ -554,7 +554,7 @@ const AddTransactionForm = ({
         <TextField
           id="comm_percent"
           type={"text"}
-          label={t("percent")}
+          label={t("vat")}
           className="w-full"
           style={{
             marginBottom: "20px",

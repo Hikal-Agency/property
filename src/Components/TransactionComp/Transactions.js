@@ -77,10 +77,10 @@ const Transactions = ({ pathname }) => {
     invoice_type: "",
     amount: "",
     date: "",
-    currency: "",
+    currency: "AED",
     comm_percent: "",
     country: "",
-    status: "",
+    status: "Paid",
     paid_by: "",
     vendor_id: "",
     category: "",
@@ -91,11 +91,6 @@ const Transactions = ({ pathname }) => {
   const [user, setUser] = useState([]);
 
   console.log("user array: ", user);
-
-  // console.log(
-  //   "find find vendor: ",
-  //   vendors?.filter((ven) => ven?.id === addTransactionData?.user_id)
-  // );
 
   const [filtersData, setFilterData] = useState({
     user_id: "",

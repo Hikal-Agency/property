@@ -1082,7 +1082,11 @@
     "sugar": "Sugar",
     "borrow": "Borrow",
     "visa": "Visa",
-    "payment": "Payment"
+    "payment": "Payment",
+
+
+
+    "vat": "VAT"
 
     
 }
