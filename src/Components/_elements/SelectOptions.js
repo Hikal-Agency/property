@@ -541,24 +541,36 @@ export const inventory_status = (t) => [
 // ORDER STATUS
 export const order_status = (t) => [
   {
+    value: "pending",
+    label: t("order_pending"),
+    // bgColor: "#b3b27d"
+    bgColor: "#bfb202",
+    color: "#ffffff"
+  },
+  {
     value: "preparing",
     label: t("order_status_preparing"),
+    bgColor: "#bf6702",
+    color: "#ffffff"
   },
   {
     value: "delivered",
     label: t("order_status_delivered"),
+    // bgColor: "#75a99c"
+    bgColor: "#28855a",
+    color: "#ffffff"
   },
   {
     value: "out of stock",
     label: t("order_status_out_of_stock"),
+    bgColor: "#852828",
+    color: "#ffffff"
   },
   {
     value: "cancelled",
     label: t("order_cancel"),
-  },
-  {
-    value: "pending",
-    label: t("order_pending"),
+    bgColor: "#852829",
+    color: "#ffffff"
   },
 ];
 

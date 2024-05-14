@@ -250,7 +250,7 @@ const Timeline = ({
                                 </div>
                                 {/* EMAIL ADDRESS  */}
                                 {leadDetails.leadEmail !== "" &&
-                                leadDetails.leadEmail != "null" ? (
+                                leadDetails.leadEmail !== "null" ? (
                                   <div className="grid grid-cols-8 gap-3 my-3">
                                     <GoMail size={16} />
                                     <div className="col-span-7">
