@@ -389,8 +389,12 @@ const Transactions = ({ pathname }) => {
         console.log("vendors list:: ", vendorResponse);
         console.log("users list:: ", userResponse);
 
+        let usersList = userResponse?.data?.managers?.data;
+
+        usersList?.filter((user) => user?.status === 1);
+
+        setUser(usersList);
         setVendors(vendorResponse?.data?.data?.data);
-        setUser(userResponse?.data?.managers?.data);
       } catch (error) {
         setloading(false);
         console.error("Error fetching data:", error);
