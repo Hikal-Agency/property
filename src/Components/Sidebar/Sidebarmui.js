@@ -1589,7 +1589,6 @@ const Sidebarmui = () => {
         },
         {
           name: t("menu_new_transactions"),
-          // icon: <BsArrowLeftRight size={16} />,
           // pro: true,
           link: "/new-transactions",
         },
