@@ -63,7 +63,6 @@ const Transactions = ({ pathname }) => {
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [error, setError] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
-  const [page, setPage] = useState(1);
 
   const token = localStorage.getItem("auth-token");
   const [vendors, setVendors] = useState([]);
@@ -91,6 +90,10 @@ const Transactions = ({ pathname }) => {
   const [user, setUser] = useState([]);
 
   console.log("user array: ", user);
+
+  const [page, setPage] = useState(1);
+
+  console.log("page ", page);
 
   const [filtersData, setFilterData] = useState({
     user_id: "",
@@ -278,7 +281,7 @@ const Transactions = ({ pathname }) => {
       );
       const queryParams =
         Object.keys(activeFilters).length > 0
-          ? `?${new URLSearchParams(activeFilters).toString()}`
+          ? `&${new URLSearchParams(activeFilters).toString()}`
           : "";
 
       console.log("activeFilters:: ", activeFilters);
@@ -286,9 +289,9 @@ const Transactions = ({ pathname }) => {
 
       let url;
       if (isUrl) {
-        url = `${BACKEND_URL}/invoices${queryParams}`;
+        url = `${BACKEND_URL}/invoices?page=${page}${queryParams}`;
       } else {
-        url = `${BACKEND_URL}/invoices?added_by=${User?.id}`;
+        url = `${BACKEND_URL}/invoices?page=${page}&added_by=${User?.id}`;
       }
 
       const response = await axios.get(url, {
@@ -299,7 +302,9 @@ const Transactions = ({ pathname }) => {
       });
 
       console.log("transactions list:: ", response);
-      setTransactionsData(response?.data?.data);
+
+      setMaxPage(response?.data?.data?.last_page);
+      setTransactionsData(response?.data?.data?.data);
 
       if (vendors?.length == 0) {
         await fetchVendor();
@@ -325,12 +330,7 @@ const Transactions = ({ pathname }) => {
   useEffect(() => {
     console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchTransactions();
-  }, [filtersData]);
-
-  // useEffect(() => {
-  //   console.log("hhhhhiiiiiiiiihhhhhhhhhi");
-  //   fetchVendor();
-  // }, [addTransactionData?.category, filtersData?.category]);
+  }, [filtersData, page]);
 
   return (
     <div
@@ -427,7 +427,7 @@ const Transactions = ({ pathname }) => {
                                       : "text-red-600"
                                   }
                                 >
-                                  {trans?.invoice?.status}
+                                  {trans?.status}
                                 </p>
                                 <p> - {trans?.invoice?.category}</p>
                               </div>
@@ -458,6 +458,32 @@ const Transactions = ({ pathname }) => {
                   <h1>{t("no_data_found")}</h1>
                 </div>
               )}
+
+              <Stack spacing={2} marginTop={2}>
+                <Pagination
+                  count={maxPage}
+                  color={currentMode === "dark" ? "primary" : "secondary"}
+                  onChange={(e, value) => {
+                    console.log("page vaule", value);
+                    setPage(value);
+                  }}
+                  style={{ margin: "auto" }}
+                  page={page}
+                  sx={{
+                    "& .Mui-selected": {
+                      color: "white !important",
+                      backgroundColor: `${primaryColor} !important`,
+                      "&:hover": {
+                        backgroundColor:
+                          currentMode === "dark" ? "black" : "white",
+                      },
+                    },
+                    "& .MuiPaginationItem-root": {
+                      color: currentMode === "dark" ? "white" : "black",
+                    },
+                  }}
+                />
+              </Stack>
             </div>
           )}
         </Box>
@@ -586,49 +612,7 @@ const Transactions = ({ pathname }) => {
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
             />
-            {/* <Select
-              id="vendor_id"
-              options={
-                vendors &&
-                vendors?.map((ven) => ({
-                  value: ven.id,
-                  label:
-                    filtersData?.category.toLowerCase() === "salary"
-                      ? ven?.userName
-                      : ven.vendor_name,
-                }))
-              }
-              value={
-                vendors?.find((ven) =>
-                  filtersData?.category.toLowerCase() === "salary"
-                    ? ven?.id === filtersData?.user_id
-                    : ven?.id === filtersData?.vendor_id
-                )?.vendor_name
-              }
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
 
-                  vendor_id:
-                    filtersData?.category.toLowerCase() === "salary"
-                      ? null
-                      : e.value,
-                  user_id:
-                    filtersData?.category.toLowerCase() === "salary"
-                      ? e.value
-                      : null,
-                });
-              }}
-              isLoading={loading}
-              placeholder={
-                filtersData?.category.toLowerCase() === "salary"
-                  ? t("user")
-                  : t("vendor")
-              }
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            /> */}
             {filtersData?.category.toLowerCase() === "salary" ? (
               <Select
                 id="user_id"
