@@ -382,8 +382,8 @@ const Transactions = ({ pathname }) => {
               {transactionsData && transactionsData?.length > 0 ? (
                 transactionsData?.map((trans) => {
                   let user;
-                  // if (trans?.invoice?.category?.toLowerCase() === "salary") {
-                  if (trans?.invoice?.user_id) {
+
+                  if (trans?.user_id) {
                     user = true;
                   } else {
                     user = false;
@@ -396,18 +396,16 @@ const Transactions = ({ pathname }) => {
                         onClick={() => setSingleTransModal(trans)}
                       >
                         <p className="mb-3 font-semibold text-sm">
-                          {/* {new Date(trans?.invoice?.date).toISOString().split('T')[0]} */}
-                          {/* {new Date(new Date(trans?.invoice?.date).getTime() - (new Date(trans?.invoice?.date).getTimezoneOffset() * 60000)).toISOString().split('T')[0]} */}
-                          {moment(trans?.invoice?.date).format("YYYY-MM-DD")}
+                          {moment(trans?.date).format("YYYY-MM-DD")}
                         </p>
                         <div className="flex justify-between gap-4 mb-4">
                           <div className="flex gap-4">
                             <div className="border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3">
-                              {trans?.invoice?.category === "Commission" ? (
+                              {trans?.category === "Commission" ? (
                                 <BsBuildings size={16} color={"#AAAAAA"} />
-                              ) : trans?.invoice?.category === "Salary" ? (
+                              ) : trans?.category === "Salary" ? (
                                 <BsCalendarCheck size={16} color={"#AAAAAA"} />
-                              ) : trans?.invoice?.category === "Purchase" ? (
+                              ) : trans?.category === "Purchase" ? (
                                 <BsCart4 size={16} color={"#AAAAAA"} />
                               ) : (
                                 <BsQuestionLg size={16} color={"#AAAAAA"} />
@@ -422,30 +420,27 @@ const Transactions = ({ pathname }) => {
                               <div className="flex gap-1 text-sm">
                                 <p
                                   className={
-                                    trans?.invoice?.status === "Paid"
+                                    trans?.status === "Paid"
                                       ? "text-green-600"
                                       : "text-red-600"
                                   }
                                 >
                                   {trans?.status}
                                 </p>
-                                <p> - {trans?.invoice?.category}</p>
+                                <p> - {trans?.category}</p>
                               </div>
                             </div>
                           </div>
                           <div>
                             <p
                               className={`font-semibold text-lg ${
-                                trans?.invoice?.invoice_type == "Income"
+                                trans?.invoice_type == "Income"
                                   ? "text-green-600"
                                   : "text-red-600"
                               } `}
                             >
-                              {trans?.invoice?.invoice_type === "Income"
-                                ? "+"
-                                : "-"}{" "}
-                              {trans?.invoice?.currency}{" "}
-                              {trans?.invoice?.amount}
+                              {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                              {trans?.currency} {trans?.amount}
                             </p>
                           </div>
                         </div>
