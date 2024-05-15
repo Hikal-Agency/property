@@ -334,17 +334,15 @@ const Transactions = ({ pathname }) => {
 
   return (
     <div
-      className={` ${
-        themeBgImg &&
+      className={` ${themeBgImg &&
         (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-      }`}
+        }`}
     >
       <div
-        className={`grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 ${
-          isUrl
+        className={`grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 ${isUrl
             ? "lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3"
             : "lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2"
-        } gap-4`}
+          } gap-4`}
       >
         {/* NEW Transaction */}
         <AddTransactionForm
@@ -363,10 +361,10 @@ const Transactions = ({ pathname }) => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
@@ -414,11 +412,15 @@ const Transactions = ({ pathname }) => {
                               )}
                             </div>
                             <div className="flex flex-col">
-                              <p>
-                                {user
-                                  ? trans?.user?.userName
-                                  : trans?.vendor?.vendor_name}
-                              </p>
+                              {user ? (
+                                <p>
+                                  {trans?.user?.userName}
+                                </p>
+                              ) : (
+                                <p>
+                                  {trans?.vendor?.type} - {trans?.vendor?.vendor_name}
+                                </p>
+                              )}
                               <div className="flex gap-1 text-sm">
                                 <p
                                   className={
@@ -435,11 +437,10 @@ const Transactions = ({ pathname }) => {
                           </div>
                           <div>
                             <p
-                              className={`font-semibold text-lg ${
-                                trans?.invoice?.invoice_type == "Income"
+                              className={`font-semibold text-lg ${trans?.invoice?.invoice_type == "Income"
                                   ? "text-green-600"
                                   : "text-red-600"
-                              } `}
+                                } `}
                             >
                               {trans?.invoice?.invoice_type === "Income"
                                 ? "+"
@@ -468,18 +469,17 @@ const Transactions = ({ pathname }) => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
             }}
-            className={`p-4 rounded-xl shadow-sm ${
-              !themeBgImg &&
+            className={`p-4 rounded-xl shadow-sm ${!themeBgImg &&
               (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-            }`}
+              }`}
           >
             <h3 className="text-primary text-center font-semibold mb-5">{` ${t(
               "btn_filters"
