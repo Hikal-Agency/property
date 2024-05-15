@@ -207,18 +207,6 @@ const Listings = () => {
       console.log("all listings: ", all_listings);
       let filteredListings = all_listings?.data?.data?.data || [];
 
-      // // sort by sold status
-      // if (filters?.sold) {
-      //   filteredListings = filteredListings?.filter((listing) => {
-      //     return listing?.listing_status.toLowerCase() === "sold";
-      //   });
-      // } else {
-      //   // default sorting listing status = New
-      //   filteredListings = filteredListings?.filter((listing) => {
-      //     return listing?.listing_status.toLowerCase() === "new";
-      //   });
-      // }
-
       console.log("sold: ", filters?.sold);
 
       // sort by price

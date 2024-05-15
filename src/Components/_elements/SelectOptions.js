@@ -545,32 +545,32 @@ export const order_status = (t) => [
     label: t("order_pending"),
     // bgColor: "#b3b27d"
     bgColor: "#bfb202",
-    color: "#ffffff"
+    color: "#ffffff",
   },
   {
     value: "preparing",
     label: t("order_status_preparing"),
     bgColor: "#bf6702",
-    color: "#ffffff"
+    color: "#ffffff",
   },
   {
     value: "delivered",
     label: t("order_status_delivered"),
     // bgColor: "#75a99c"
     bgColor: "#28855a",
-    color: "#ffffff"
+    color: "#ffffff",
   },
   {
     value: "out of stock",
     label: t("order_status_out_of_stock"),
     bgColor: "#852828",
-    color: "#ffffff"
+    color: "#ffffff",
   },
   {
     value: "cancelled",
     label: t("order_cancel"),
     bgColor: "#852829",
-    color: "#ffffff"
+    color: "#ffffff",
   },
 ];
 
@@ -839,4 +839,13 @@ export const vendor_type = (t) => [
     value: "Fuel Station",
     label: t("vendor_type_fuel"),
   },
+];
+
+// VENDORS SEARCH FILTERS
+
+export const vendors_search_filter = (t) => [
+  { value: "vendor_name", label: t("form_vendor_name") },
+  { value: "person_to_contact", label: t("person_to_contact") },
+  { value: "email", label: t("label_email") },
+  { value: "contact", label: t("label_contact") },
 ];
