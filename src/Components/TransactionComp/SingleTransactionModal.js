@@ -43,6 +43,8 @@ const SingleTransactionModal = ({
   console.log("single trans data ::: ", singleTransModal);
   const [singleTrans, setSingleClient] = useState(singleTransModal);
 
+  const transData = singleTransModal?.invoice || singleTransModal;
+
   let user = singleTrans?.user ? singleTrans?.user : false;
 
   console.log("user: ", user);
@@ -150,10 +152,10 @@ const SingleTransactionModal = ({
                         <h1
                           className={`font-semibold text-white bg-primary py-2 px-3 rounded-md`}
                         >
-                          {singleTrans?.invoice?.id}
+                          {transData?.id}
                         </h1>
                         <h1 className={`text-lg font-semibold capitalize`}>
-                          {singleTrans?.invoice?.country || "---"}
+                          {transData?.country || "---"}
                         </h1>
                       </div>
                     </div>
@@ -176,9 +178,7 @@ const SingleTransactionModal = ({
                             <p className="font-bold capitalize">{t("date")}:</p>
                             <p>
                               {/* {new Date(?.invoice?.date).toISOString().split('T')[0]} */}
-                              {moment(singleTrans?.invoice?.date).format(
-                                "YYYY-MM-DD"
-                              )}
+                              {moment(transData?.date).format("YYYY-MM-DD")}
                             </p>
                           </div>
                           {/* invoice type  */}
@@ -186,14 +186,14 @@ const SingleTransactionModal = ({
                             <p className="font-bold capitalize">
                               {t("invoice_type")}:
                             </p>
-                            <p>{singleTrans?.invoice?.invoice_type} </p>
+                            <p>{transData?.invoice_type} </p>
                           </div>
                           {/* category  */}
                           <div className="flex gap-3">
                             <p className="font-bold capitalize">
                               {t("label_category")}:
                             </p>
-                            <p>{singleTrans?.invoice?.category}</p>
+                            <p>{transData?.category}</p>
                           </div>
                           {/* amount  */}
                           <div className="flex gap-3">
@@ -201,33 +201,32 @@ const SingleTransactionModal = ({
                               {t("label_amount")}:
                             </p>
                             <p>
-                              {singleTrans?.invoice?.currency}{" "}
-                              {singleTrans?.invoice?.amount}
+                              {transData?.currency} {transData?.amount}
                             </p>
                           </div>
                           {/* commission percent  */}
-                          {singleTrans?.invoice?.category?.toLowerCase() ===
+                          {transData?.category?.toLowerCase() ===
                           "commission" ? (
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
                                 {t("percentage")}:
                               </p>
                               <p>
-                                {singleTrans?.invoice?.comm_percent}
+                                {transData?.comm_percent}
                                 {"%"}
                               </p>
                             </div>
                           ) : null}
                           {/* claim  */}
-                          {singleTrans?.invoice?.category?.toLowerCase() ===
+                          {transData?.category?.toLowerCase() ===
                             "commission" &&
-                          singleTrans?.invoice?.invioce_type?.toLowerCase() ===
+                          transData?.invioce_type?.toLowerCase() ===
                             "income" ? (
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
                                 {t("claim")}:
                               </p>
-                              <p>{singleTrans?.invoice?.amount}</p>
+                              <p>{transData?.amount}</p>
                             </div>
                           ) : null}
                           {/* payment source  */}
@@ -235,14 +234,14 @@ const SingleTransactionModal = ({
                             <p className="font-bold capitalize">
                               {t("payment_source")}:
                             </p>
-                            <p>{singleTrans?.invoice?.paid_by}</p>
+                            <p>{transData?.paid_by}</p>
                           </div>
                           {/* payment status  */}
                           <div className="flex gap-3">
                             <p className="font-bold capitalize">
                               {t("status")}:
                             </p>
-                            <p>{singleTrans?.invoice?.status}</p>
+                            <p>{transData?.status}</p>
                           </div>
                         </div>
                       </div>
