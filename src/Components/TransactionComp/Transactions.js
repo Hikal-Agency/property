@@ -60,10 +60,10 @@ const Transactions = ({ pathname }) => {
   const [loading, setloading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
   const [transactionsData, setTransactionsData] = useState([]);
+  const [vatData, setVAT] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [error, setError] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
-  const [page, setPage] = useState(1);
 
   const token = localStorage.getItem("auth-token");
   const [vendors, setVendors] = useState([]);
@@ -91,6 +91,10 @@ const Transactions = ({ pathname }) => {
   const [user, setUser] = useState([]);
 
   console.log("user array: ", user);
+
+  const [page, setPage] = useState(1);
+
+  console.log("page ", page);
 
   const [filtersData, setFilterData] = useState({
     user_id: "",
@@ -278,7 +282,7 @@ const Transactions = ({ pathname }) => {
       );
       const queryParams =
         Object.keys(activeFilters).length > 0
-          ? `?${new URLSearchParams(activeFilters).toString()}`
+          ? `&${new URLSearchParams(activeFilters).toString()}`
           : "";
 
       console.log("activeFilters:: ", activeFilters);
@@ -286,9 +290,9 @@ const Transactions = ({ pathname }) => {
 
       let url;
       if (isUrl) {
-        url = `${BACKEND_URL}/invoices${queryParams}`;
+        url = `${BACKEND_URL}/invoices?page=${page}${queryParams}`;
       } else {
-        url = `${BACKEND_URL}/invoices?added_by=${User?.id}`;
+        url = `${BACKEND_URL}/invoices?page=${page}&added_by=${User?.id}`;
       }
 
       const response = await axios.get(url, {
@@ -299,7 +303,10 @@ const Transactions = ({ pathname }) => {
       });
 
       console.log("transactions list:: ", response);
-      setTransactionsData(response?.data?.data);
+
+      setVAT(response?.data?.data?.vat);
+      setMaxPage(response?.data?.data?.last_page);
+      setTransactionsData(response?.data?.data?.data);
 
       if (vendors?.length == 0) {
         await fetchVendor();
@@ -325,24 +332,21 @@ const Transactions = ({ pathname }) => {
   useEffect(() => {
     console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchTransactions();
-  }, [filtersData]);
-
-  // useEffect(() => {
-  //   console.log("hhhhhiiiiiiiiihhhhhhhhhi");
-  //   fetchVendor();
-  // }, [addTransactionData?.category, filtersData?.category]);
+  }, [filtersData, page]);
 
   return (
     <div
-      className={` ${themeBgImg &&
+      className={` ${
+        themeBgImg &&
         (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-        }`}
+      }`}
     >
       <div
-        className={`grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 ${isUrl
+        className={`grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 ${
+          isUrl
             ? "lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3"
             : "lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2"
-          } gap-4`}
+        } gap-4`}
       >
         {/* NEW Transaction */}
         <AddTransactionForm
@@ -361,10 +365,10 @@ const Transactions = ({ pathname }) => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
@@ -380,8 +384,8 @@ const Transactions = ({ pathname }) => {
               {transactionsData && transactionsData?.length > 0 ? (
                 transactionsData?.map((trans) => {
                   let user;
-                  // if (trans?.invoice?.category?.toLowerCase() === "salary") {
-                  if (trans?.invoice?.user_id) {
+
+                  if (trans?.user_id) {
                     user = true;
                   } else {
                     user = false;
@@ -394,18 +398,16 @@ const Transactions = ({ pathname }) => {
                         onClick={() => setSingleTransModal(trans)}
                       >
                         <p className="mb-3 font-semibold text-sm">
-                          {/* {new Date(trans?.invoice?.date).toISOString().split('T')[0]} */}
-                          {/* {new Date(new Date(trans?.invoice?.date).getTime() - (new Date(trans?.invoice?.date).getTimezoneOffset() * 60000)).toISOString().split('T')[0]} */}
-                          {moment(trans?.invoice?.date).format("YYYY-MM-DD")}
+                          {moment(trans?.date).format("YYYY-MM-DD")}
                         </p>
                         <div className="flex justify-between gap-4 mb-4">
                           <div className="flex gap-4">
                             <div className="border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3">
-                              {trans?.invoice?.category === "Commission" ? (
+                              {trans?.category === "Commission" ? (
                                 <BsBuildings size={16} color={"#AAAAAA"} />
-                              ) : trans?.invoice?.category === "Salary" ? (
+                              ) : trans?.category === "Salary" ? (
                                 <BsCalendarCheck size={16} color={"#AAAAAA"} />
-                              ) : trans?.invoice?.category === "Purchase" ? (
+                              ) : trans?.category === "Purchase" ? (
                                 <BsCart4 size={16} color={"#AAAAAA"} />
                               ) : (
                                 <BsQuestionLg size={16} color={"#AAAAAA"} />
@@ -413,40 +415,37 @@ const Transactions = ({ pathname }) => {
                             </div>
                             <div className="flex flex-col">
                               {user ? (
-                                <p>
-                                  {trans?.user?.userName}
-                                </p>
+                                <p>{trans?.user?.userName}</p>
                               ) : (
                                 <p>
-                                  {trans?.vendor?.type} - {trans?.vendor?.vendor_name}
+                                  {trans?.vendor?.type} -{" "}
+                                  {trans?.vendor?.vendor_name}
                                 </p>
                               )}
                               <div className="flex gap-1 text-sm">
                                 <p
                                   className={
-                                    trans?.invoice?.status === "Paid"
+                                    trans?.status === "Paid"
                                       ? "text-green-600"
                                       : "text-red-600"
                                   }
                                 >
-                                  {trans?.invoice?.status}
+                                  {trans?.status}
                                 </p>
-                                <p> - {trans?.invoice?.category}</p>
+                                <p> - {trans?.category}</p>
                               </div>
                             </div>
                           </div>
                           <div>
                             <p
-                              className={`font-semibold text-lg ${trans?.invoice?.invoice_type == "Income"
+                              className={`font-semibold text-lg ${
+                                trans?.invoice_type == "Income"
                                   ? "text-green-600"
                                   : "text-red-600"
-                                } `}
+                              } `}
                             >
-                              {trans?.invoice?.invoice_type === "Income"
-                                ? "+"
-                                : "-"}{" "}
-                              {trans?.invoice?.currency}{" "}
-                              {trans?.invoice?.amount}
+                              {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                              {trans?.currency} {trans?.amount}
                             </p>
                           </div>
                         </div>
@@ -459,6 +458,32 @@ const Transactions = ({ pathname }) => {
                   <h1>{t("no_data_found")}</h1>
                 </div>
               )}
+
+              <Stack spacing={2} marginTop={2}>
+                <Pagination
+                  count={maxPage}
+                  color={currentMode === "dark" ? "primary" : "secondary"}
+                  onChange={(e, value) => {
+                    console.log("page vaule", value);
+                    setPage(value);
+                  }}
+                  style={{ margin: "auto" }}
+                  page={page}
+                  sx={{
+                    "& .Mui-selected": {
+                      color: "white !important",
+                      backgroundColor: `${primaryColor} !important`,
+                      "&:hover": {
+                        backgroundColor:
+                          currentMode === "dark" ? "black" : "white",
+                      },
+                    },
+                    "& .MuiPaginationItem-root": {
+                      color: currentMode === "dark" ? "white" : "black",
+                    },
+                  }}
+                />
+              </Stack>
             </div>
           )}
         </Box>
@@ -469,17 +494,18 @@ const Transactions = ({ pathname }) => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
             }}
-            className={`p-4 rounded-xl shadow-sm ${!themeBgImg &&
+            className={`p-4 rounded-xl shadow-sm ${
+              !themeBgImg &&
               (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-              }`}
+            }`}
           >
             <h3 className="text-primary text-center font-semibold mb-5">{` ${t(
               "btn_filters"
@@ -586,49 +612,7 @@ const Transactions = ({ pathname }) => {
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
             />
-            {/* <Select
-              id="vendor_id"
-              options={
-                vendors &&
-                vendors?.map((ven) => ({
-                  value: ven.id,
-                  label:
-                    filtersData?.category.toLowerCase() === "salary"
-                      ? ven?.userName
-                      : ven.vendor_name,
-                }))
-              }
-              value={
-                vendors?.find((ven) =>
-                  filtersData?.category.toLowerCase() === "salary"
-                    ? ven?.id === filtersData?.user_id
-                    : ven?.id === filtersData?.vendor_id
-                )?.vendor_name
-              }
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
 
-                  vendor_id:
-                    filtersData?.category.toLowerCase() === "salary"
-                      ? null
-                      : e.value,
-                  user_id:
-                    filtersData?.category.toLowerCase() === "salary"
-                      ? e.value
-                      : null,
-                });
-              }}
-              isLoading={loading}
-              placeholder={
-                filtersData?.category.toLowerCase() === "salary"
-                  ? t("user")
-                  : t("vendor")
-              }
-              className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            /> */}
             {filtersData?.category.toLowerCase() === "salary" ? (
               <Select
                 id="user_id"
