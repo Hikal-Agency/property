@@ -60,6 +60,7 @@ const Transactions = ({ pathname }) => {
   const [loading, setloading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
   const [transactionsData, setTransactionsData] = useState([]);
+  const [vatData, setVAT] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [error, setError] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
@@ -303,6 +304,7 @@ const Transactions = ({ pathname }) => {
 
       console.log("transactions list:: ", response);
 
+      setVAT(response?.data?.data?.vat);
       setMaxPage(response?.data?.data?.last_page);
       setTransactionsData(response?.data?.data?.data);
 
