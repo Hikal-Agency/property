@@ -377,9 +377,9 @@ const VendorsList = ({}) => {
                       {(isFilterApplied || searchCriteria || searchQuery) && (
                         <Button
                           onClick={clearFilter}
-                          className="w-max btn py-2 px-3 bg-btn-primary"
+                          className="w-max btn py-2 px-3 bg-btn-primary text-white"
                         >
-                          {t("clear")}
+                          <p className="text-white">{t("clear")}</p>
                         </Button>
                       )}
                     </Box>
