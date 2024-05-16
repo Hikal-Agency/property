@@ -310,9 +310,9 @@ const Transactions = ({ pathname }) => {
       setMaxPage(response?.data?.data?.last_page);
       setTransactionsData(response?.data?.data?.data);
 
-      if (vendors?.length == 0) {
-        await fetchVendor();
-      }
+      // if (vendors?.length == 0) {
+      await fetchVendor();
+      // }
     } catch (error) {
       setloading(false);
       console.error("Error fetching transactions:", error);
@@ -335,6 +335,17 @@ const Transactions = ({ pathname }) => {
     console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchTransactions();
   }, [filtersData, page, pathname]);
+
+  useEffect(() => {
+    if (
+      addTransactionData?.category.toLowerCase() === "salary" ||
+      filtersData?.category.toLowerCase() === "salary" ||
+      addTransactionData?.category.toLowerCase() === "purchase" ||
+      filtersData?.category.toLowerCase() === "purchase"
+    ) {
+      fetchVendor();
+    }
+  }, [filtersData, addTransactionData]);
 
   return (
     <div
