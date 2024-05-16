@@ -377,9 +377,9 @@ const VendorsList = ({}) => {
                       {(isFilterApplied || searchCriteria || searchQuery) && (
                         <Button
                           onClick={clearFilter}
-                          className="w-max btn py-2 px-3 bg-btn-primary"
+                          className="w-max btn py-2 px-3 bg-btn-primary text-white"
                         >
-                          {t("clear")}
+                          <p className="text-white">{t("clear")}</p>
                         </Button>
                       )}
                     </Box>
@@ -432,36 +432,40 @@ const VendorsList = ({}) => {
                             {/* ADDRESS  */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsPinMap size={16} />
-                              <p className="col-span-6">{item?.address}</p>
+                              <p className="col-span-6 break-all">{item?.address}</p>
                             </div>
                             {/* POBOX */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsMailbox size={16} />
-                              <p className="col-span-6">{item?.pobox}</p>
+                              <p className="col-span-6 break-all">{item?.pobox}</p>
                             </div>
                             {/* TRN */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsShieldCheck size={16} />
-                              <p className="col-span-6">{item?.trn}</p>
+                              <p className="col-span-6 break-all">{item?.trn}</p>
                             </div>
                           </div>
                           <div className="p-4 flex flex-col gap-4">
                             {/* USER  */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsPerson size={16} />
-                              <p className="col-span-6">
+                              <p className="col-span-6 break-all">
                                 {item?.person_to_contact}
                               </p>
                             </div>
                             {/* CONTACT */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsTelephone size={16} />
-                              <p className="col-span-6">{item?.contact}</p>
+                              <p className="col-span-6 break-all">
+                                {item?.contact}
+                              </p>
                             </div>
                             {/* EMAIL */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsEnvelope size={16} />
-                              <p className="col-span-6">{item?.email}</p>
+                              <p className="col-span-6 break-all">
+                                {item?.email}
+                              </p>
                             </div>
                           </div>
                         </div>

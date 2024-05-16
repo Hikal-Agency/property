@@ -56,28 +56,33 @@ const AddCommissionModal = ({
   const [vendor, setVendor] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
   const [btnLoading, setBtnLoading] = useState(false);
+  const [updatedField, setUpdatedField] = useState("");
+  const [totalAmount, setTotalAmount] = useState("");
+  const [amountToCalculate, setAmountToCalculate] = useState("");
 
   const commData = addCommissionModal?.data?.invoice;
+  const newCommData = addCommissionModal?.commissionModal;
 
   console.log("vendors or users:: ", vendor);
   const [commissionData, setCommissionData] = useState({
     user_id: commData?.user_id || null,
-    deal_id: addCommissionModal?.commissionModal?.lid,
+    deal_id: newCommData?.lid,
     vendor_id: commData?.vendor_id || null,
     invoice_type: commData?.invoice_type || null,
     date: commData?.date || null,
-    amount: commData?.amount || null,
-    vat: commData?.vat || null,
+    amount: commData?.amount || 0,
+    vat: commData?.vat || 0,
     status: commData?.status || null,
-    comm_percent: commData?.comm_percent || null,
+    comm_percent: commData?.comm_percent || 0,
     claim: commData?.claim || null,
-    comm_amount: commData?.comm_amount || null,
+    // comm_amount: commData?.comm_amount || null,
     paid_by: commData?.paid_by || null,
     // file: commData?.image || null,
     file: addCommissionModal?.image || null,
-    currency: commData?.currency || null,
+    currency: commData?.currency || newCommData?.currency,
     category: commData?.category || "Commission",
   });
+
 
   // Function to find the username of selected user or vendor
   const getSelectedOption = () => {
@@ -128,6 +133,7 @@ const AddCommissionModal = ({
       ...commissionData,
       [id]: value,
     });
+    setUpdatedField(id);
   };
 
   const handleClose = () => {
@@ -136,6 +142,153 @@ const AddCommissionModal = ({
       setIsClosing(false);
       handleCloseAddCommission();
     }, 1000);
+  };
+
+  useEffect(() => {
+    const { invoice_type } = commissionData;
+    if (invoice_type === "Income") {
+      setAmountToCalculate(newCommData?.amount);
+      setCommissionData((prevData) => ({
+        ...prevData,
+        comm_percent: newCommData?.comm_percent || 0,
+        amount: newCommData?.comm_amount || 0,
+      }))
+    }else {
+      setAmountToCalculate(newCommData?.comm_amount);
+      setCommissionData((prevData) => ({
+        ...prevData,
+        comm_percent: newCommData?.agent_comm_percent,
+        amount: newCommData?.agent_comm_amount,
+      }));
+    }
+  }, [commissionData.invoice_type]);
+
+  useEffect(() => {
+    autoCalculate("comm_amount", amountToCalculate, commissionData.comm_percent);
+  }, [commissionData.comm_percent, amountToCalculate]);
+
+  useEffect(() => {
+    autoCalculate("comm_percent", amountToCalculate, commissionData.amount);
+  }, [commissionData.amount, amountToCalculate]);
+
+  // useEffect(() => {
+  //   const {
+  //     comm_percent,
+  //     amount,
+  //     invoice_type
+  //   } = commissionData;
+
+  //   if (updatedField === "comm_percent" || updatedField === "invoice_type") {
+  //     if (invoice_type === "Income") {
+  //       setAmountToCalculate(newCommData?.comm_amount);
+  //       setCommissionData((prevData) => ({
+  //         ...prevData,
+  //         comm_percent: newCommData?.comm_percent,
+  //         amount: newCommData?.comm_amount,
+  //       }), () => {
+  //         autoCalculate("comm_amount", amountToCalculate, comm_percent);
+  //       });
+  //     } else {
+  //       setAmountToCalculate(newCommData?.amount);
+  //       setCommissionData((prevData) => ({
+  //         ...prevData,
+  //         comm_percent: newCommData?.agent_comm_percent,
+  //         amount: newCommData?.agent_comm_amount,
+  //       }), () => {
+  //         autoCalculate("comm_amount", amountToCalculate, comm_percent);
+  //       });
+  //     }
+  //     // console.log("UPDATED");
+  //     // autoCalculate("comm_amount", amountToCalculate, comm_percent);
+  //   }
+  //   // COMMISSION PERCENT
+  //   if (updatedField === "amount" || updatedField === "invoice_type") {
+  //     if (invoice_type === "Income") {
+  //       setAmountToCalculate(newCommData?.comm_amount);
+  //       setCommissionData((prevData) => ({
+  //         ...prevData,
+  //         comm_percent: newCommData?.comm_percent,
+  //         amount: newCommData?.comm_amount,
+  //       }), () => {
+  //         autoCalculate("comm_percent", amountToCalculate, amount);
+  //       });
+  //     } else {
+  //       setAmountToCalculate(newCommData?.amount);
+  //       setCommissionData((prevData) => ({
+  //         ...prevData,
+  //         comm_percent: newCommData?.agent_comm_percent,
+  //         amount: newCommData?.agent_comm_amount,
+  //       }), () => {
+  //         autoCalculate("comm_percent", amountToCalculate, amount);
+  //       });
+  //     }
+  //     // autoCalculate("comm_percent", amountToCalculate, amount);
+  //   }
+  // }, [commissionData.invoice_type, commissionData.amount, commissionData.comm_percent, updatedField]);
+
+  const autoCalculate = (value, amount, percentOrAmount) => {
+    const sellingAmount = parseFloat(amount);
+
+    // COMM AMOUNT 
+    if (value === "comm_amount") {
+      const commPercent = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(commPercent)) {
+        let commAmount = (sellingAmount * commPercent) / 100;
+        commAmount = commAmount % 1 === 0 ? commAmount.toFixed(0) : commAmount.toFixed(2);
+
+        let vat = 0;
+        if (commissionData?.invoice_type === "Income") {
+          vat = commAmount * 5 / 100;
+          vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
+        }
+
+        let total = parseFloat(commAmount) + parseFloat(vat);
+        total = total % 1 === 0 ? total.toFixed(0) : total.toFixed(2);
+
+        console.log("COMM PERCENT = ", commPercent);
+        console.log("COMM AMOUNT = ", commAmount);
+        console.log("VAT = ", vat);
+        console.log("TOTAL AMOUNT = ", total);
+
+        setCommissionData((prevData) => ({
+          ...prevData,
+          comm_percent: commPercent,
+          amount: commAmount,
+          vat: vat
+        }));
+        setTotalAmount(total);
+      }
+    }
+    // COMM PERCENT 
+    if (value === "comm_percent") {
+      const commAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(commAmount)) {
+        let commPercent = (commAmount / sellingAmount) * 100 || 0;
+        commPercent = commPercent % 1 === 0 ? commPercent.toFixed(0) : commPercent.toFixed(2);
+        let vat = 0;
+        if (commissionData?.invoice_type === "Income") {
+          vat = commAmount * 5 / 100;
+          vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
+        }
+        // let vat = commAmount * 5 / 100;
+        // vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
+        let total = parseFloat(commAmount) + parseFloat(vat);
+        total = total % 1 === 0 ? total.toFixed(0) : total.toFixed(2);
+
+        console.log("COMM AMOUNT = ", commAmount);
+        console.log("COMM PERCENT = ", commPercent);
+        console.log("VAT = ", vat);
+        console.log("TOTAL AMOUNT = ", total);
+
+        setCommissionData((prevData) => ({
+          ...prevData,
+          comm_percent: commPercent,
+          amount: commAmount,
+          vat: vat
+        }));
+        setTotalAmount(total);
+      }
+    }
   };
 
   const style = {
@@ -282,22 +435,19 @@ const AddCommissionModal = ({
       }}
     >
       <div
-        className={`${
-          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-        } ${
-          isClosing
+        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-        }
+          }
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${
-            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-          }
+          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -308,15 +458,13 @@ const AddCommissionModal = ({
         </button>
         <div
           style={style}
-          className={` ${
-            currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-          } ${
-            isLangRTL(i18n.language)
+          className={` ${currentMode === "dark"
+            ? "bg-[#000000] text-white"
+            : "bg-[#FFFFFF] text-black"
+            } ${isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-          }
+            }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
         >
@@ -324,14 +472,12 @@ const AddCommissionModal = ({
             <div className={`w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5`}>
               <div className="w-full flex items-center pb-3 ">
                 <div
-                  className={`${
-                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                  } bg-primary h-10 w-1 rounded-full my-1`}
+                  className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                    } bg-primary h-10 w-1 rounded-full my-1`}
                 ></div>
                 <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
+                  className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                 >
                   <h1 className="font-semibold pt-3 text-lg text-center">
                     {commData ? t("edit_commission") : t("commission_details")}
@@ -344,10 +490,9 @@ const AddCommissionModal = ({
               {/* Commission DETAILS  */}
               <div
                 className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
+                  ${currentMode === "dark"
+                    ? "bg-[#1C1C1C] text-white"
+                    : "bg-[#EEEEEE] text-black"
                   }`}
               >
                 <h1 className="text-center uppercase font-semibold">
@@ -359,14 +504,14 @@ const AddCommissionModal = ({
                     sx={{
                       ...darkModeColors,
                       "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                      {
+                        right: isLangRTL(i18n.language)
+                          ? "2.5rem"
+                          : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                       "& legend": {
                         textAlign: isLangRTL(i18n.language) ? "right" : "left",
                       },
@@ -385,6 +530,7 @@ const AddCommissionModal = ({
                           ...commissionData,
                           invoice_type: e.value,
                         });
+                        setUpdatedField("invoice_type");
                       }}
                       placeholder={t("commission_type")}
                       className={`mb-5`}
@@ -467,23 +613,42 @@ const AddCommissionModal = ({
                       onChange={handleChange}
                       required
                     />
-                    <TextField
-                      id="comm_amount"
-                      type={"text"}
-                      label={t("commission_amount")}
-                      className="w-full"
-                      sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                          zIndex: 1,
-                        },
-                      }}
-                      variant="outlined"
-                      size="small"
-                      value={commissionData?.comm_amount}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div className="grid grid-cols-3">
+                      <Select
+                        id="currency"
+                        options={currencies(t)}
+                        value={currencies(t)?.find(
+                          (curr) => curr.value === commissionData?.currency
+                        )}
+                        onChange={(e) => {
+                          setCommissionData({
+                            ...commissionData,
+                            currency: e.value,
+                          });
+                        }}
+                        placeholder={t("label_select_currency")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      <TextField
+                        id="amount"
+                        type={"text"}
+                        label={t("commission_amount")}
+                        className="w-full col-span-2"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commissionData?.amount}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </Box>
                 </div>
               </div>
@@ -491,10 +656,9 @@ const AddCommissionModal = ({
               {/* Payment DETAILS  */}
               <div
                 className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
+                  ${currentMode === "dark"
+                    ? "bg-[#1C1C1C] text-white"
+                    : "bg-[#EEEEEE] text-black"
                   }`}
               >
                 <h1 className="text-center uppercase font-semibold">
@@ -567,12 +731,12 @@ const AddCommissionModal = ({
                       value={
                         getSelectedOption()
                           ? {
-                              value: getSelectedOption()?.id,
-                              label:
-                                commissionData?.invoice_type === "Income"
-                                  ? getSelectedOption()?.vendor_name
-                                  : getSelectedOption()?.userName,
-                            }
+                            value: getSelectedOption()?.id,
+                            label:
+                              commissionData?.invoice_type === "Income"
+                                ? getSelectedOption()?.vendor_name
+                                : getSelectedOption()?.userName,
+                          }
                           : null
                       }
                       onChange={(e) => {
@@ -599,58 +763,86 @@ const AddCommissionModal = ({
                       menuPortalTarget={document.body}
                       styles={selectStyles(currentMode, primaryColor)}
                     />
-                    <TextField
-                      id="vat"
-                      type={"text"}
-                      label={t("vat_amount")}
-                      className="w-full"
-                      sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                          zIndex: 1,
-                        },
-                      }}
-                      variant="outlined"
-                      size="small"
-                      value={commissionData?.vat}
-                      onChange={handleChange}
-                      required
-                    />
-                    <TextField
-                      id="amount"
-                      type={"text"}
-                      label={t("total_amount")}
-                      className="w-full"
-                      sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                          zIndex: 1,
-                        },
-                      }}
-                      variant="outlined"
-                      size="small"
-                      value={commissionData?.amount}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div className="grid grid-cols-3">
+                      <Select
+                        id="currency"
+                        options={currencies(t)}
+                        value={currencies(t)?.find(
+                          (curr) => curr.value === commissionData?.currency
+                        )}
+                        onChange={(e) => {
+                          setCommissionData({
+                            ...commissionData,
+                            currency: e.value,
+                          });
+                        }}
+                        placeholder={t("label_select_currency")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      <TextField
+                        id="vat"
+                        type={"text"}
+                        label={t("vat_amount")}
+                        className="w-full col-span-2"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commissionData?.vat}
+                        onChange={handleChange}
+                        required
+                        InputProps={{
+                          readOnly: true, // Set readonly to true
+                        }}
+                      />
+                    </div>
+                    <div className="grid grid-cols-3">
+                      <Select
+                        id="currency"
+                        options={currencies(t)}
+                        value={currencies(t)?.find(
+                          (curr) => curr.value === commissionData?.currency
+                        )}
+                        onChange={(e) => {
+                          setCommissionData({
+                            ...commissionData,
+                            currency: e.value,
+                          });
+                        }}
+                        placeholder={t("label_select_currency")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      <TextField
+                        id="total_amount"
+                        type={"text"}
+                        label={t("total_amount")}
+                        className="w-full col-span-2"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={totalAmount}
+                        onChange={handleChange}
+                        required
+                        InputProps={{
+                          readOnly: true, // Set readonly to true
+                        }}
+                      />
+                    </div>
 
-                    <Select
-                      id="currency"
-                      options={currencies(t)}
-                      value={currencies(t)?.find(
-                        (curr) => curr.value === commissionData?.currency
-                      )}
-                      onChange={(e) => {
-                        setCommissionData({
-                          ...commissionData,
-                          currency: e.value,
-                        });
-                      }}
-                      placeholder={t("label_select_currency")}
-                      className={`mb-5`}
-                      menuPortalTarget={document.body}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
+
                   </Box>
                 </div>
               </div>
@@ -659,11 +851,10 @@ const AddCommissionModal = ({
               {!commData && (
                 <div
                   className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
+                  ${currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
-                  }`}
+                    }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("evidence")?.toUpperCase()}

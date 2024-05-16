@@ -92,7 +92,7 @@ const Transactions = ({ pathname }) => {
     paid_by: "",
     vendor_id: "",
     category: "",
-    image: "",
+    image: null,
   });
 
   console.log("addtransaction:: ", addTransactionData);
@@ -316,9 +316,9 @@ const Transactions = ({ pathname }) => {
       setMaxPage(response?.data?.data?.last_page);
       setTransactionsData(response?.data?.data?.data);
 
-      if (vendors?.length == 0) {
-        await fetchVendor();
-      }
+      // if (vendors?.length == 0) {
+      await fetchVendor();
+      // }
     } catch (error) {
       setloading(false);
       console.error("Error fetching transactions:", error);
@@ -340,7 +340,18 @@ const Transactions = ({ pathname }) => {
   useEffect(() => {
     console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchTransactions();
-  }, [filtersData, page]);
+  }, [filtersData, page, pathname]);
+
+  useEffect(() => {
+    if (
+      addTransactionData?.category.toLowerCase() === "salary" ||
+      filtersData?.category.toLowerCase() === "salary" ||
+      addTransactionData?.category.toLowerCase() === "purchase" ||
+      filtersData?.category.toLowerCase() === "purchase"
+    ) {
+      fetchVendor();
+    }
+  }, [filtersData, addTransactionData]);
 
   return (
     <div
@@ -422,11 +433,14 @@ const Transactions = ({ pathname }) => {
                               )}
                             </div>
                             <div className="flex flex-col">
-                              <p>
-                                {user
-                                  ? trans?.user?.userName
-                                  : trans?.vendor?.vendor_name}
-                              </p>
+                              {user ? (
+                                <p>{trans?.user?.userName}</p>
+                              ) : (
+                                <p>
+                                  {trans?.vendor?.type} -{" "}
+                                  {trans?.vendor?.vendor_name}
+                                </p>
+                              )}
                               <div className="flex gap-1 text-sm">
                                 <p
                                   className={
@@ -833,81 +847,81 @@ const Transactions = ({ pathname }) => {
             >
               <span>{t("clear_all")}</span>
             </Button>
+
+            <div className="grid grid-cols-2 gap-5 mb-2  p-4 h-[200px] overflow-y-auto mt-4">
+              {vatData && vatData?.length > 0
+                ? vatData?.map((vat) => (
+                    <>
+                      {/* INCOME */}
+                      <div
+                        className={`rounded-xl shadow-sm w-full  flex flex-col justify-center gap-4 ${
+                          themeBgImg
+                            ? currentMode === "dark"
+                              ? "blur-bg-dark"
+                              : "blur-bg-white"
+                            : currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        }`}
+                      >
+                        <p className="text-center bg-primary m-0 p-3 text-white">
+                          {t("income_amount")} - {vat?.year}
+                        </p>
+                        <div className="flex space-x-3 px-5">
+                          <p className={`text-center text-xl font-semibold`}>
+                            {t("vat")} :
+                          </p>
+                          <p className={`text-center text-xl  ml-3`}>
+                            {vat?.currency} {vat?.income_vat}
+                          </p>
+                        </div>
+                        <div className="flex space-x-3 px-5 mb-2">
+                          <p className={`text-center text-xl font-semibold`}>
+                            {t("amount")} :
+                          </p>
+                          <p className={`text-center text-xl  ml-3`}>
+                            {vat?.currency} {vat?.income_amount}
+                          </p>
+                        </div>
+                      </div>
+                      {/* EXPENSE */}
+                      <div
+                        className={`rounded-xl shadow-sm w-full  flex flex-col justify-center gap-4 ${
+                          themeBgImg
+                            ? currentMode === "dark"
+                              ? "blur-bg-dark"
+                              : "blur-bg-white"
+                            : currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        }`}
+                      >
+                        <p className="text-center bg-primary m-0 p-3 text-white">
+                          {t("expense_amount")} - {vat?.year}
+                        </p>
+                        <div className="flex space-x-3 px-5">
+                          <p className={`text-center text-xl font-semibold`}>
+                            {t("vat")} :
+                          </p>
+                          <p className={`text-center text-xl  ml-3`}>
+                            {vat?.currency} {vat?.expense_vat}
+                          </p>
+                        </div>
+                        <div className="flex space-x-3 px-5 mb-2">
+                          <p className={`text-center text-xl font-semibold`}>
+                            {t("amount")} :
+                          </p>
+                          <p className={`text-center text-xl  ml-3`}>
+                            {vat?.currency} {vat?.expense_amount}
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  ))
+                : null}
+            </div>
           </Box>
         )}
-
-        <div className="grid grid-cols-2 gap-5 mb-2  p-4 h-[200px] overflow-y-auto">
-          {vatData && vatData?.length > 0
-            ? vatData?.map((vat) => (
-                <>
-                  {/* INCOME */}
-                  <div
-                    className={`rounded-xl shadow-sm w-full  flex flex-col justify-center gap-4 ${
-                      themeBgImg
-                        ? currentMode === "dark"
-                          ? "blur-bg-dark"
-                          : "blur-bg-white"
-                        : currentMode === "dark"
-                        ? "bg-[#1C1C1C]"
-                        : "bg-[#EEEEEE]"
-                    }`}
-                  >
-                    <p className="text-center bg-primary m-0 p-3">
-                      {t("income_amount")} - {vat?.year}
-                    </p>
-                    <div className="flex space-x-3 px-5">
-                      <p className={`text-center text-xl font-semibold`}>
-                        {t("vat")} :
-                      </p>
-                      <p className={`text-center text-xl  ml-3`}>
-                        {vat?.currency} {vat?.income_vat}
-                      </p>
-                    </div>
-                    <div className="flex space-x-3 px-5 mb-2">
-                      <p className={`text-center text-xl font-semibold`}>
-                        {t("amount")} :
-                      </p>
-                      <p className={`text-center text-xl  ml-3`}>
-                        {vat?.currency} {vat?.income_amount}
-                      </p>
-                    </div>
-                  </div>
-                  {/* EXPENSE */}
-                  <div
-                    className={`rounded-xl shadow-sm w-full  flex flex-col justify-center gap-4 ${
-                      themeBgImg
-                        ? currentMode === "dark"
-                          ? "blur-bg-dark"
-                          : "blur-bg-white"
-                        : currentMode === "dark"
-                        ? "bg-[#1C1C1C]"
-                        : "bg-[#EEEEEE]"
-                    }`}
-                  >
-                    <p className="text-center bg-primary m-0 p-3">
-                      {t("expense_amount")} - {vat?.year}
-                    </p>
-                    <div className="flex space-x-3 px-5">
-                      <p className={`text-center text-xl font-semibold`}>
-                        {t("vat")} :
-                      </p>
-                      <p className={`text-center text-xl  ml-3`}>
-                        {vat?.currency} {vat?.expense_vat}
-                      </p>
-                    </div>
-                    <div className="flex space-x-3 px-5 mb-2">
-                      <p className={`text-center text-xl font-semibold`}>
-                        {t("amount")} :
-                      </p>
-                      <p className={`text-center text-xl  ml-3`}>
-                        {vat?.currency} {vat?.expense_amount}
-                      </p>
-                    </div>
-                  </div>
-                </>
-              ))
-            : null}
-        </div>
       </div>
       {singleTransModal && (
         <SingleTransactionModal

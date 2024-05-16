@@ -109,20 +109,20 @@ const AddTransactionsModal = ({
     setBtnLoading(true);
     const token = localStorage.getItem("auth-token");
 
-    if (!transactionData?.image) {
-      toast.error("Image required.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setBtnLoading(false);
-      return;
-    }
+    // if (!transactionData?.image) {
+    //   toast.error("Image required.", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //     theme: "light",
+    //   });
+    //   setBtnLoading(false);
+    //   return;
+    // }
 
     let url;
     if (transData) {
@@ -301,7 +301,7 @@ const AddTransactionsModal = ({
                     }`}
                 >
                   <h1 className="text-center uppercase font-semibold mb-5">
-                    {t("transactions_details")?.toUpperCase()}
+                    {t("details")?.toUpperCase()}
                   </h1>
                   <div className="w-full">
                     <Box
@@ -369,23 +369,6 @@ const AddTransactionsModal = ({
                           maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
-                      <TextField
-                        id="percent"
-                        type={"text"}
-                        label={t("percentage")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={transactionData?.percent}
-                        onChange={handleChange}
-                        required
-                      />
 
                       <Select
                         id="currency"
@@ -420,7 +403,25 @@ const AddTransactionsModal = ({
                         size="small"
                         value={transactionData?.amount}
                         onChange={handleChange}
-                        required
+                        // required
+                      />
+                      
+                      <TextField
+                        id="percent"
+                        type={"text"}
+                        label={t("percentage")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={transactionData?.percent}
+                        onChange={handleChange}
+                        // required
                       />
                     </Box>
                   </div>
