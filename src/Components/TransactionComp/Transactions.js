@@ -771,7 +771,7 @@ const Transactions = ({ pathname }) => {
                             {t("vat")} :
                           </p>
                           <p className={`text-center text-xl  ml-3`}>
-                            {vat?.currency} {vat?.income_vat}
+                            {vat?.currency} {vat?.income_vat.toFixed(2)}
                           </p>
                         </div>
                         <div className="flex space-x-3 px-5 mb-2">
@@ -779,7 +779,7 @@ const Transactions = ({ pathname }) => {
                             {t("amount")} :
                           </p>
                           <p className={`text-center text-xl  ml-3`}>
-                            {vat?.currency} {vat?.income_amount}
+                            {vat?.currency} {vat?.income_amount.toFixed(2)}
                           </p>
                         </div>
                       </div>
@@ -803,7 +803,7 @@ const Transactions = ({ pathname }) => {
                             {t("vat")} :
                           </p>
                           <p className={`text-center text-xl  ml-3`}>
-                            {vat?.currency} {vat?.expense_vat}
+                            {vat?.currency} {vat?.expense_vat.toFixed(2)}
                           </p>
                         </div>
                         <div className="flex space-x-3 px-5 mb-2">
@@ -811,7 +811,7 @@ const Transactions = ({ pathname }) => {
                             {t("amount")} :
                           </p>
                           <p className={`text-center text-xl  ml-3`}>
-                            {vat?.currency} {vat?.expense_amount}
+                            {vat?.currency} {vat?.expense_amount.toFixed(2)}
                           </p>
                         </div>
                       </div>
