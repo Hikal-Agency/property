@@ -6,6 +6,10 @@ import {
   CircularProgress,
   Stack,
   Pagination,
+  FormControl,
+  MenuItem,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import Select from "react-select";
 // import { Select as libSelect } from "@mui/material";
@@ -16,6 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
+import { BsSearch } from "react-icons/bs";
 
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
@@ -64,6 +69,7 @@ const Transactions = ({ pathname }) => {
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [error, setError] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
+  const searchRef = useRef("");
 
   console.log("vat data:", vatData);
 
@@ -613,32 +619,127 @@ const Transactions = ({ pathname }) => {
             />
 
             {filtersData?.category.toLowerCase() === "salary" ? (
-              <Select
-                id="user_id"
-                options={
-                  vendors &&
-                  vendors?.map((ven) => ({
-                    value: ven.id,
-                    label: ven.userName,
-                  }))
-                }
-                value={
-                  vendors?.filter((ven) => ven?.id === filtersData?.user_id)
-                    ?.userName
-                }
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    vendor_id: null,
-                    user_id: e.value,
-                  });
+              // <Select
+              //   id="user_id"
+              //   options={
+              //     vendors &&
+              //     vendors?.map((ven) => ({
+              //       value: ven.id,
+              //       label: ven.userName,
+              //     }))
+              //   }
+              //   value={
+              //     vendors?.filter((ven) => ven?.id === filtersData?.user_id)
+              //       ?.userName
+              //   }
+              //   onChange={(e) => {
+              //     setFilterData({
+              //       ...filtersData,
+              //       vendor_id: null,
+              //       user_id: e.value,
+              //     });
+              //   }}
+              //   isLoading={loading}
+              //   placeholder={t("user")}
+              //   // className={`mb-5`}
+              //   menuPortalTarget={document.body}
+              //   styles={selectStyles(currentMode, primaryColor)}
+              // />
+              <FormControl
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+                sx={{
+                  minWidth: "100%",
+                  // border: 1,
+                  borderRadius: 1,
+                  marginBottom: "10px",
                 }}
-                isLoading={loading}
-                placeholder={t("user")}
-                // className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
+              >
+                <TextField
+                  id="feedback"
+                  select
+                  value={
+                    vendors?.filter((ven) => ven?.id === filtersData?.user_id)
+                      ?.userName || "selected"
+                  }
+                  label={t("filter_by_user")}
+                  // onChange={(e) => {
+                  //   setSelectedUSer(e.target.value);
+                  //   setFetch(true);
+                  // }}
+                  size="medium"
+                  className="w-full border border-gray-300 rounded "
+                  displayEmpty
+                  required
+                  sx={{
+                    border: "1px solid #000000",
+                    height: "40px",
+
+                    "& .MuiSelect-select": {
+                      fontSize: 11,
+                    },
+                  }}
+                >
+                  <MenuItem selected value="selected">
+                    ---{t("select_user")}----
+                  </MenuItem>
+                  <MenuItem
+                    onKeyDown={(e) => {
+                      e.stopPropagation();
+                      // e.preventDefault();
+                    }}
+                  >
+                    <TextField
+                      placeholder={t("search_users")}
+                      ref={searchRef}
+                      sx={{
+                        "& input": {
+                          border: "0",
+                        },
+                      }}
+                      variant="standard"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <IconButton
+                              sx={{ padding: 1 }}
+                              // onClick={(e) => {
+                              //   e.preventDefault();
+                              //   const inputValue =
+                              //     searchRef.current.querySelector(
+                              //       "input"
+                              //     ).value;
+                              //   if (inputValue) {
+                              //     fetchUsers(inputValue);
+                              //   }
+                              // }}
+                            >
+                              <BsSearch
+                                className={`text-[#AAAAAA]`}
+                                size={18}
+                              />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                      // onClick={(event) => {
+                      //   event.stopPropagation();
+                      // }}
+                    />
+                  </MenuItem>
+
+                  {
+                    // vendors?.length > 0 ? (
+                    vendors?.map((user) => (
+                      <MenuItem value={user?.id}>{user?.userName}</MenuItem>
+                    ))
+                    // ) : (
+                    //   <h2 className="text-center">{t("no_users")}</h2>
+                    // )
+                  }
+                </TextField>
+              </FormControl>
             ) : (
               <Select
                 id="vendor_id"
