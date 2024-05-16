@@ -97,6 +97,7 @@ const Transactions = ({ pathname }) => {
 
   console.log("addtransaction:: ", addTransactionData);
   const [user, setUser] = useState([]);
+  const [userLoading, setUserLoading] = useState(false);
 
   console.log("user array: ", user);
 
@@ -274,6 +275,43 @@ const Transactions = ({ pathname }) => {
           theme: "light",
         });
       }
+    }
+  };
+
+  const fetchUsers = async (title) => {
+    try {
+      let url = "";
+
+      url = `${BACKEND_URL}/users?title=${title}`;
+
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Users: ", response);
+
+      if (isUrl) {
+        setVendors(response?.data?.managers?.data);
+      } else {
+        setUser(response?.data?.managers?.data);
+      }
+
+      setUserLoading(false);
+    } catch (error) {
+      setUserLoading(false);
+      console.log(error);
+      toast.error("Unable to fetch users.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -718,16 +756,16 @@ const Transactions = ({ pathname }) => {
                           <InputAdornment position="start">
                             <IconButton
                               sx={{ padding: 1 }}
-                              // onClick={(e) => {
-                              //   e.preventDefault();
-                              //   const inputValue =
-                              //     searchRef.current.querySelector(
-                              //       "input"
-                              //     ).value;
-                              //   if (inputValue) {
-                              //     fetchUsers(inputValue);
-                              //   }
-                              // }}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                const inputValue =
+                                  searchRef.current.querySelector(
+                                    "input"
+                                  ).value;
+                                if (inputValue) {
+                                  fetchUsers(inputValue);
+                                }
+                              }}
                             >
                               <BsSearch
                                 className={`text-[#AAAAAA]`}
@@ -737,9 +775,9 @@ const Transactions = ({ pathname }) => {
                           </InputAdornment>
                         ),
                       }}
-                      // onClick={(event) => {
-                      //   event.stopPropagation();
-                      // }}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
                     />
                   </MenuItem>
 
