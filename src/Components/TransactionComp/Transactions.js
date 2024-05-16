@@ -334,7 +334,7 @@ const Transactions = ({ pathname }) => {
   useEffect(() => {
     console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchTransactions();
-  }, [filtersData, page]);
+  }, [filtersData, page, pathname]);
 
   return (
     <div
