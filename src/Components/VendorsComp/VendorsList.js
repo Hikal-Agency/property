@@ -461,7 +461,9 @@ const VendorsList = ({}) => {
                             {/* EMAIL */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsEnvelope size={16} />
-                              <p className="col-span-6">{item?.email}</p>
+                              <p className="col-span-6 break-all">
+                                {item?.email}
+                              </p>
                             </div>
                           </div>
                         </div>
