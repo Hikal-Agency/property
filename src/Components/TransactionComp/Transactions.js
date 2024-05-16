@@ -86,7 +86,7 @@ const Transactions = ({ pathname }) => {
     paid_by: "",
     vendor_id: "",
     category: "",
-    image: "",
+    image: null,
   });
 
   console.log("addtransaction:: ", addTransactionData);

@@ -185,7 +185,7 @@ const AddTransactionForm = ({
         paid_by: "",
         vendor_id: "",
         category: "",
-        image: "",
+        image: null,
       });
 
       setBtnLoading(false);
