@@ -902,23 +902,24 @@ const Transactions = ({ pathname }) => {
                             : "bg-[#EEEEEE]"
                         }`}
                       >
-                        <p className="text-center bg-primary m-0 p-3 text-white">
+                        <p className="text-center bg-primary m-0 p-3 text-white top-0">
                           {t("income_amount")} - {vat?.year}
                         </p>
-                        <div className="flex space-x-3 px-5">
-                          <p className={`text-center text-xl font-semibold`}>
+                        <div className="ml-4 mb-3">
+                          <p
+                            className={`text-start text-xl font-semibold mb-3`}
+                          >
                             {t("vat")} :
+                            <span className="ml-3 font-normal">
+                              {vat?.currency} {vat?.income_vat.toFixed(2)}
+                            </span>
                           </p>
-                          <p className={`text-center text-xl  ml-3`}>
-                            {vat?.currency} {vat?.income_vat}
-                          </p>
-                        </div>
-                        <div className="flex space-x-3 px-5 mb-2">
-                          <p className={`text-center text-xl font-semibold`}>
+
+                          <p className={`text-start text-xl font-semibold`}>
                             {t("amount")} :
-                          </p>
-                          <p className={`text-center text-xl  ml-3`}>
-                            {vat?.currency} {vat?.income_amount}
+                            <span className="ml-3 font-normal">
+                              {vat?.currency} {vat?.income_amount.toFixed(2)}
+                            </span>
                           </p>
                         </div>
                       </div>
@@ -934,23 +935,24 @@ const Transactions = ({ pathname }) => {
                             : "bg-[#EEEEEE]"
                         }`}
                       >
-                        <p className="text-center bg-primary m-0 p-3 text-white">
+                        <p className="text-center bg-primary m-0 p-3 top-0 text-white">
                           {t("expense_amount")} - {vat?.year}
                         </p>
-                        <div className="flex space-x-3 px-5">
-                          <p className={`text-center text-xl font-semibold`}>
+                        <div className="ml-4 mb-3">
+                          <p
+                            className={`text-start text-xl font-semibold mb-3`}
+                          >
                             {t("vat")} :
+                            <span className="ml-3 font-normal">
+                              {vat?.currency} {vat?.expense_vat.toFixed(2)}
+                            </span>
                           </p>
-                          <p className={`text-center text-xl  ml-3`}>
-                            {vat?.currency} {vat?.expense_vat}
-                          </p>
-                        </div>
-                        <div className="flex space-x-3 px-5 mb-2">
-                          <p className={`text-center text-xl font-semibold`}>
+
+                          <p className={`text-start text-xl font-semibold`}>
                             {t("amount")} :
-                          </p>
-                          <p className={`text-center text-xl  ml-3`}>
-                            {vat?.currency} {vat?.expense_amount}
+                            <span className="ml-3 font-normal">
+                              {vat?.currency} {vat?.expense_amount.toFixed(2)}
+                            </span>
                           </p>
                         </div>
                       </div>
