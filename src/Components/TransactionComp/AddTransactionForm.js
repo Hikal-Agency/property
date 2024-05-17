@@ -423,35 +423,6 @@ const AddTransactionForm = ({
 
         {isUrl ? (
           addTransactionData?.category.toLowerCase() === "salary" ? (
-            // <Select
-            //   id="user_id"
-            //   options={
-            //     vendors &&
-            //     vendors?.map((ven) => ({
-            //       value: ven.id,
-            //       label: ven.userName,
-            //     }))
-            //   }
-            //   // value={addTransactionData?.user_id}
-            //   value={
-            //     vendors?.filter(
-            //       (ven) => ven?.id === addTransactionData?.user_id
-            //     )?.userName
-            //   }
-            //   onChange={(e) => {
-            //     console.log("e value: ", e);
-            //     setAddTransactionData({
-            //       ...addTransactionData,
-            //       vendor_id: null,
-            //       user_id: e.value,
-            //     });
-            //   }}
-            //   isLoading={loading}
-            //   placeholder={t("user")}
-            //   // className={`mb-5`}
-            //   menuPortalTarget={document.body}
-            //   styles={selectStyles(currentMode, primaryColor)}
-            // />
             <FormControl
               className={`${
                 currentMode === "dark" ? "text-white" : "text-black"
@@ -623,60 +594,172 @@ const AddTransactionForm = ({
           )
         ) : (
           <>
-            <Select
-              id="user_id"
-              options={
-                user &&
-                user?.map((user) => ({
-                  value: user.id,
-                  label: user.userName,
-                }))
-              }
-              // value={addTransactionData?.user_id}
-              value={
-                user?.filter((user) => user?.id === addTransactionData?.user_id)
-                  ?.userName
-              }
-              onChange={(e) => {
-                console.log("e value: ", e);
-                setAddTransactionData({
-                  ...addTransactionData,
-                  user_id: e.value,
-                });
+            <FormControl
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
+              sx={{
+                minWidth: "100%",
+                // border: 1,
+                borderRadius: 1,
+                marginBottom: "10px",
               }}
-              isLoading={loading}
-              placeholder={t("user")}
-              // className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
+            >
+              <TextField
+                id="user_id"
+                select
+                value={addTransactionData?.user_id || "selected"}
+                label={t("select_user")}
+                onChange={(e) => {
+                  setAddTransactionData({
+                    ...addTransactionData,
+                    user_id: e.target.value,
+                  });
+                }}
+                size="small"
+                className="w-full border border-gray-300 rounded "
+                displayEmpty
+                required
+                sx={{
+                  border: "1px solid #000000",
+                  height: "40px",
 
-            <Select
-              id="vendor_id"
-              options={
-                vendors &&
-                vendors?.map((ven) => ({
-                  value: ven.id,
-                  label: ven.vendor_name,
-                }))
-              }
-              value={
-                vendors?.filter(
-                  (ven) => ven?.id === addTransactionData?.vendor_id
-                )?.vendor_name
-              }
-              onChange={(e) => {
-                setAddTransactionData({
-                  ...addTransactionData,
-                  vendor_id: e.value,
-                });
+                  "& .MuiSelect-select": {
+                    fontSize: 11,
+                  },
+                }}
+              >
+                <MenuItem selected value="selected">
+                  ---{t("select_user")}----
+                </MenuItem>
+                <MenuItem
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
+                    // e.preventDefault();
+                  }}
+                >
+                  <TextField
+                    placeholder={t("search_users")}
+                    ref={searchRef}
+                    sx={{
+                      "& input": {
+                        border: "0",
+                      },
+                    }}
+                    variant="standard"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton
+                            sx={{ padding: 1 }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const inputValue =
+                                searchRef.current.querySelector("input").value;
+                              if (inputValue) {
+                                fetchUsers(inputValue, "user");
+                              }
+                            }}
+                          >
+                            <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                  />
+                </MenuItem>
+
+                {user?.map((user) => (
+                  <MenuItem value={user?.id}>{user?.userName}</MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
+
+            <FormControl
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
+              sx={{
+                minWidth: "100%",
+                // border: 1,
+                borderRadius: 1,
+                marginBottom: "10px",
               }}
-              isLoading={loading}
-              placeholder={t("vendor")}
-              // className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
+            >
+              <TextField
+                id="vendor_id"
+                select
+                value={addTransactionData?.vendor_id || "selected"}
+                label={t("vendor")}
+                onChange={(e) => {
+                  setAddTransactionData({
+                    ...addTransactionData,
+                    vendor_id: e.target.value,
+                  });
+                }}
+                size="small"
+                className="w-full border border-gray-300 rounded "
+                displayEmpty
+                required
+                sx={{
+                  border: "1px solid #000000",
+                  height: "40px",
+
+                  "& .MuiSelect-select": {
+                    fontSize: 11,
+                  },
+                }}
+              >
+                <MenuItem selected value="selected">
+                  ---{t("select_vendor")}----
+                </MenuItem>
+                <MenuItem
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <TextField
+                    placeholder={t("search_vendors")}
+                    ref={searchRef}
+                    sx={{
+                      "& input": {
+                        border: "0",
+                      },
+                    }}
+                    variant="standard"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton
+                            sx={{ padding: 1 }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const inputValue =
+                                searchRef.current.querySelector("input").value;
+                              if (inputValue) {
+                                fetchUsers(inputValue);
+                              }
+                            }}
+                          >
+                            <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                  />
+                </MenuItem>
+
+                {vendors?.map((user) => (
+                  <MenuItem value={user?.id}>{user?.vendor_name}</MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
           </>
         )}
 

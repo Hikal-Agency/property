@@ -303,8 +303,11 @@ const Transactions = ({ pathname }) => {
           setVendors(response?.data?.data?.data);
         }
       } else {
-        setUser(response?.data?.managers?.data);
-        setVendors(response?.data?.data?.data);
+        if (type === "user") {
+          setUser(response?.data?.managers?.data);
+        } else {
+          setVendors(response?.data?.data?.data);
+        }
       }
 
       setUserLoading(false);
