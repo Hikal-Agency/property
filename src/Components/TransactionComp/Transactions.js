@@ -712,7 +712,7 @@ const Transactions = ({ pathname }) => {
                   displayEmpty
                   required
                   sx={{
-                    border: "1px solid #000000",
+                    // border: "1px solid #000000",
                     height: "40px",
 
                     "& .MuiSelect-select": {
@@ -802,7 +802,7 @@ const Transactions = ({ pathname }) => {
                   displayEmpty
                   required
                   sx={{
-                    border: "1px solid #000000",
+                    // border: "1px solid #000000",
                     height: "40px",
 
                     "& .MuiSelect-select": {
