@@ -1045,5 +1045,10 @@
     "visa": "Visa",
     "payment": "Payment",
     "vat": "VAT",
-    "details": "Details"
+    "details": "Details",
+
+
+
+    "search_vendors":"Search Vendors",
+    "select_vendor":"Select Vendor"
 }

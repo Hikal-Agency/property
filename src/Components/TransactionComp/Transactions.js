@@ -278,11 +278,15 @@ const Transactions = ({ pathname }) => {
     }
   };
 
-  const fetchUsers = async (title) => {
+  const fetchUsers = async (title, type) => {
     try {
       let url = "";
 
-      url = `${BACKEND_URL}/users?title=${title}`;
+      if (type === "user") {
+        url = `${BACKEND_URL}/users?title=${title}`;
+      } else {
+        url = `${BACKEND_URL}/vendors?vendor_name=${title}`;
+      }
 
       const response = await axios.get(url, {
         headers: {
@@ -293,9 +297,14 @@ const Transactions = ({ pathname }) => {
       console.log("Users: ", response);
 
       if (isUrl) {
-        setVendors(response?.data?.managers?.data);
+        if (type === "user") {
+          setVendors(response?.data?.managers?.data);
+        } else {
+          setVendors(response?.data?.data?.data);
+        }
       } else {
         setUser(response?.data?.managers?.data);
+        setVendors(response?.data?.data?.data);
       }
 
       setUserLoading(false);
@@ -671,32 +680,6 @@ const Transactions = ({ pathname }) => {
             />
 
             {filtersData?.category.toLowerCase() === "salary" ? (
-              // <Select
-              //   id="user_id"
-              //   options={
-              //     vendors &&
-              //     vendors?.map((ven) => ({
-              //       value: ven.id,
-              //       label: ven.userName,
-              //     }))
-              //   }
-              //   value={
-              //     vendors?.filter((ven) => ven?.id === filtersData?.user_id)
-              //       ?.userName
-              //   }
-              //   onChange={(e) => {
-              //     setFilterData({
-              //       ...filtersData,
-              //       vendor_id: null,
-              //       user_id: e.value,
-              //     });
-              //   }}
-              //   isLoading={loading}
-              //   placeholder={t("user")}
-              //   // className={`mb-5`}
-              //   menuPortalTarget={document.body}
-              //   styles={selectStyles(currentMode, primaryColor)}
-              // />
               <FormControl
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-black"
@@ -711,16 +694,16 @@ const Transactions = ({ pathname }) => {
                 <TextField
                   id="feedback"
                   select
-                  value={
-                    vendors?.filter((ven) => ven?.id === filtersData?.user_id)
-                      ?.userName || "selected"
-                  }
+                  value={filtersData?.user_id || "selected"}
                   label={t("filter_by_user")}
-                  // onChange={(e) => {
-                  //   setSelectedUSer(e.target.value);
-                  //   setFetch(true);
-                  // }}
-                  size="medium"
+                  onChange={(e) => {
+                    setFilterData({
+                      ...filtersData,
+                      vendor_id: null,
+                      user_id: e.target.value,
+                    });
+                  }}
+                  size="small"
                   className="w-full border border-gray-300 rounded "
                   displayEmpty
                   required
@@ -763,6 +746,121 @@ const Transactions = ({ pathname }) => {
                                     "input"
                                   ).value;
                                 if (inputValue) {
+                                  fetchUsers(inputValue, "user");
+                                }
+                              }}
+                            >
+                              <BsSearch
+                                className={`text-[#AAAAAA]`}
+                                size={18}
+                              />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                    />
+                  </MenuItem>
+
+                  {vendors?.map((user) => (
+                    <MenuItem value={user?.id}>{user?.userName}</MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+            ) : (
+              // <Select
+              //   id="vendor_id"
+              //   options={
+              //     vendors &&
+              //     vendors?.map((ven) => ({
+              //       value: ven.id,
+              //       label: ven.vendor_name,
+              //     }))
+              //   }
+              //   value={
+              //     vendors?.filter((ven) => ven?.id === filtersData?.vendor_id)
+              //       ?.vendor_name
+              //   }
+              //   onChange={(e) => {
+              //     setFilterData({
+              //       ...filtersData,
+              //       vendor_id: e.value,
+              //       user_id: null,
+              //     });
+              //   }}
+              //   isLoading={loading}
+              //   placeholder={t("vendor")}
+              //   // className={`mb-5`}
+              //   menuPortalTarget={document.body}
+              //   styles={selectStyles(currentMode, primaryColor)}
+              // />
+              <FormControl
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+                sx={{
+                  minWidth: "100%",
+                  // border: 1,
+                  borderRadius: 1,
+                  marginBottom: "10px",
+                }}
+              >
+                <TextField
+                  id="vendor_id"
+                  select
+                  value={filtersData?.vendor_id || "selected"}
+                  label={t("vendor")}
+                  onChange={(e) => {
+                    setFilterData({
+                      ...filtersData,
+                      vendor_id: e.target.value,
+                      user_id: null,
+                    });
+                  }}
+                  size="small"
+                  className="w-full border border-gray-300 rounded "
+                  displayEmpty
+                  required
+                  sx={{
+                    border: "1px solid #000000",
+                    height: "40px",
+
+                    "& .MuiSelect-select": {
+                      fontSize: 11,
+                    },
+                  }}
+                >
+                  <MenuItem selected value="selected">
+                    ---{t("select_vendor")}----
+                  </MenuItem>
+                  <MenuItem
+                    onKeyDown={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <TextField
+                      placeholder={t("search_vendors")}
+                      ref={searchRef}
+                      sx={{
+                        "& input": {
+                          border: "0",
+                        },
+                      }}
+                      variant="standard"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <IconButton
+                              sx={{ padding: 1 }}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                const inputValue =
+                                  searchRef.current.querySelector(
+                                    "input"
+                                  ).value;
+                                if (inputValue) {
                                   fetchUsers(inputValue);
                                 }
                               }}
@@ -781,44 +879,11 @@ const Transactions = ({ pathname }) => {
                     />
                   </MenuItem>
 
-                  {
-                    // vendors?.length > 0 ? (
-                    vendors?.map((user) => (
-                      <MenuItem value={user?.id}>{user?.userName}</MenuItem>
-                    ))
-                    // ) : (
-                    //   <h2 className="text-center">{t("no_users")}</h2>
-                    // )
-                  }
+                  {vendors?.map((user) => (
+                    <MenuItem value={user?.id}>{user?.vendor_name}</MenuItem>
+                  ))}
                 </TextField>
               </FormControl>
-            ) : (
-              <Select
-                id="vendor_id"
-                options={
-                  vendors &&
-                  vendors?.map((ven) => ({
-                    value: ven.id,
-                    label: ven.vendor_name,
-                  }))
-                }
-                value={
-                  vendors?.filter((ven) => ven?.id === filtersData?.vendor_id)
-                    ?.vendor_name
-                }
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    vendor_id: e.value,
-                    user_id: null,
-                  });
-                }}
-                isLoading={loading}
-                placeholder={t("vendor")}
-                // className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
             )}
 
             <Select
