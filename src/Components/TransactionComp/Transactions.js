@@ -424,6 +424,7 @@ const Transactions = ({ pathname }) => {
           user={user}
           vendors={vendors}
           loading={loading}
+          fetchUsers={fetchUsers}
         />
 
         {/* transactions list */}
@@ -692,7 +693,7 @@ const Transactions = ({ pathname }) => {
                 }}
               >
                 <TextField
-                  id="feedback"
+                  id="user_id"
                   select
                   value={filtersData?.user_id || "selected"}
                   label={t("filter_by_user")}
@@ -770,32 +771,6 @@ const Transactions = ({ pathname }) => {
                 </TextField>
               </FormControl>
             ) : (
-              // <Select
-              //   id="vendor_id"
-              //   options={
-              //     vendors &&
-              //     vendors?.map((ven) => ({
-              //       value: ven.id,
-              //       label: ven.vendor_name,
-              //     }))
-              //   }
-              //   value={
-              //     vendors?.filter((ven) => ven?.id === filtersData?.vendor_id)
-              //       ?.vendor_name
-              //   }
-              //   onChange={(e) => {
-              //     setFilterData({
-              //       ...filtersData,
-              //       vendor_id: e.value,
-              //       user_id: null,
-              //     });
-              //   }}
-              //   isLoading={loading}
-              //   placeholder={t("vendor")}
-              //   // className={`mb-5`}
-              //   menuPortalTarget={document.body}
-              //   styles={selectStyles(currentMode, primaryColor)}
-              // />
               <FormControl
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-black"
