@@ -10,7 +10,11 @@ import {
   Box,
 } from "@mui/material";
 import Select from "react-select";
-import { currencies, enquiry_options, feedback_options } from "../_elements/SelectOptions";
+import {
+  currencies,
+  enquiry_options,
+  feedback_options,
+} from "../_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
@@ -103,12 +107,8 @@ const BookedDealsForm = ({
   };
 
   useEffect(() => {
-    const {
-      amount,
-      paid_percent,
-      booking_amount,
-      paid_amount
-    } = closedDealData;
+    const { amount, paid_percent, booking_amount, paid_amount } =
+      closedDealData;
 
     if (updatedField === "amount" || updatedField === "paid_percent") {
       autoCalculate("paid_amount", amount, paid_percent);
@@ -119,7 +119,13 @@ const BookedDealsForm = ({
     if (updatedField === "amount" || updatedField === "paid_amount") {
       autoCalculate("paid_percent", amount, paid_amount);
     }
-  }, [closedDealData.amount, closedDealData.paid_percent, closedDealData.booking_amount, closedDealData.paid_amount, updatedField]);
+  }, [
+    closedDealData.amount,
+    closedDealData.paid_percent,
+    closedDealData.booking_amount,
+    closedDealData.paid_amount,
+    updatedField,
+  ]);
 
   const autoCalculate = (value, amount, percentOrAmount) => {
     const sellingAmount = parseFloat(amount);
@@ -129,7 +135,8 @@ const BookedDealsForm = ({
       const paidPercent = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(paidPercent)) {
         let paidAmount = (sellingAmount * paidPercent) / 100;
-        paidAmount = paidAmount % 1 === 0 ? paidAmount.toFixed(0) : paidAmount.toFixed(2);
+        paidAmount =
+          paidAmount % 1 === 0 ? paidAmount.toFixed(0) : paidAmount.toFixed(2);
 
         console.log("PAID PERCENT = ", paidPercent);
         console.log("PAID AMOUNT = ", paidAmount);
@@ -144,7 +151,10 @@ const BookedDealsForm = ({
       const paidAmount = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(paidAmount)) {
         let paidPercent = (paidAmount / sellingAmount) * 100 || 0;
-        paidPercent = paidPercent % 1 === 0 ? paidPercent.toFixed(0) : paidPercent.toFixed(2);
+        paidPercent =
+          paidPercent % 1 === 0
+            ? paidPercent.toFixed(0)
+            : paidPercent.toFixed(2);
 
         console.log("PAID AMOUNT = ", paidAmount);
         console.log("PAID PERCENT = ", paidPercent);
@@ -159,7 +169,10 @@ const BookedDealsForm = ({
       const bookingAmount = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(bookingAmount)) {
         let bookingPercent = (bookingAmount / sellingAmount) * 100 || 0;
-        bookingPercent = bookingPercent % 1 === 0 ? bookingPercent.toFixed(0) : bookingPercent.toFixed(2);
+        bookingPercent =
+          bookingPercent % 1 === 0
+            ? bookingPercent.toFixed(0)
+            : bookingPercent.toFixed(2);
 
         console.log("BOOKING AMOUNT = ", bookingAmount);
         console.log("BOOKING PERCENT = ", bookingPercent);
@@ -274,18 +287,21 @@ const BookedDealsForm = ({
       }}
     >
       <div
-        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${isClosing
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-          } w-[100vw] h-[100vh] flex items-start justify-end`}
+        } w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -296,13 +312,15 @@ const BookedDealsForm = ({
         </button>
         <div
           style={style}
-          className={` ${currentMode === "dark"
-            ? "bg-[#000000] text-white"
-            : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language)
+          className={` ${
+            currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+          } ${
+            isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-            }
+          }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
         >
@@ -314,12 +332,14 @@ const BookedDealsForm = ({
             <>
               <div className="w-full flex items-center pb-5">
                 <div
-                  className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                    } bg-primary h-10 w-1 rounded-full my-1`}
+                  className={`${
+                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                  } bg-primary h-10 w-1 rounded-full my-1`}
                 ></div>
                 <h1
-                  className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
+                  className={`text-lg font-semibold ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
                   style={{
                     fontFamily: isArabic(Feedback?.feedback)
                       ? "Noto Kufi Arabic"
@@ -327,20 +347,20 @@ const BookedDealsForm = ({
                   }}
                 >
                   <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("want_to_change_feedback")} {t("from")} {" "}
+                    {t("want_to_change_feedback")} {t("from")}{" "}
                     <span className="text-sm bg-gray-500 text-white px-2 py-1 rounded-md font-bold">
                       {t(
                         "feedback_" +
-                        Feedback?.feedback
-                          ?.toLowerCase()
-                          ?.replaceAll(" ", "_")
+                          Feedback?.feedback
+                            ?.toLowerCase()
+                            ?.replaceAll(" ", "_")
                       )}
-                    </span>
-                    {" "}{t("to")}{" "}
+                    </span>{" "}
+                    {t("to")}{" "}
                     <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
                       {t(
                         "feedback_" +
-                        newFeedback?.toLowerCase()?.replaceAll(" ", "_")
+                          newFeedback?.toLowerCase()?.replaceAll(" ", "_")
                       )}
                     </span>{" "}
                     ?
@@ -352,10 +372,11 @@ const BookedDealsForm = ({
                 {/* PROJECT DETAILS  */}
                 <div
                   className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("project_details")?.toUpperCase()}
@@ -366,14 +387,14 @@ const BookedDealsForm = ({
                       sx={{
                         ...darkModeColors,
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
                         "& legend": {
                           textAlign: isLangRTL(i18n.language)
                             ? "right"
@@ -498,10 +519,11 @@ const BookedDealsForm = ({
                 {/* PAYMENT DETAILS  */}
                 <div
                   className={`px-5 pt-5 \ rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("payment_details")?.toUpperCase()}
@@ -618,10 +640,11 @@ const BookedDealsForm = ({
                 {/* BOOKING DETAILS */}
                 <div
                   className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("booking_details")?.toUpperCase()}
@@ -735,7 +758,6 @@ const BookedDealsForm = ({
                     </Box>
                   </div>
                 </div>
-
 
                 {/* CLIENT  DETAILS  */}
                 {/* <div
