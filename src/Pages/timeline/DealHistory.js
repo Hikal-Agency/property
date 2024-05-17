@@ -11,7 +11,7 @@ import {
   Modal,
   Pagination,
   Stack,
-  Box
+  Box,
 } from "@mui/material";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
 
@@ -21,7 +21,7 @@ import {
   BsClockFill,
   BsFileEarmarkMedical,
   BsCheck2All,
-  BsPencil
+  BsPencil,
 } from "react-icons/bs";
 import { FaCheck, FaPlus, FaUserCheck } from "react-icons/fa";
 import { HiUser } from "react-icons/hi";
@@ -44,7 +44,7 @@ const DealHistory = ({
   LeadData,
   handleCloseDealHistory,
   dealHistoryModel,
-  FetchLeads
+  FetchLeads,
 }) => {
   const {
     currentMode,
@@ -54,6 +54,7 @@ const DealHistory = ({
     t,
     isLangRTL,
     i18n,
+    darkModeColors,
   } = useStateContext();
   const { hasPermission } = usePermission();
   const [leadsCycle, setLeadsCycle] = useState(null);
@@ -184,15 +185,19 @@ const DealHistory = ({
         const noteData = {
           deal_id: LeadData?.lid,
           about: "Note",
-          note: dealNote
+          note: dealNote,
         };
 
-        const response = await axios.post(`${BACKEND_URL}/deal-history`, noteData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + token,
-          },
-        });
+        const response = await axios.post(
+          `${BACKEND_URL}/deal-history`,
+          noteData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
 
         if (response.status === 200) {
           toast.success("Note added successfully.", {
@@ -283,7 +288,7 @@ const DealHistory = ({
             theme: "light",
           });
         }
-      })
+      });
   };
 
   // const ribbonStyles = {
@@ -417,7 +422,7 @@ const DealHistory = ({
   function groupHistoryByDate(history) {
     const groups = {};
     history?.forEach((item) => {
-      const date = item.created_at.split('T')[0];
+      const date = item.created_at.split("T")[0];
       if (groups[date]) {
         groups[date].push(item);
       } else {
@@ -450,19 +455,22 @@ const DealHistory = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            } w-[100vw] h-[100vh] flex items-start justify-end `}
+          } w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseDealHistory}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-              }
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -474,13 +482,15 @@ const DealHistory = ({
 
           <div
             style={style}
-            className={` ${currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-              } ${isLangRTL(i18n.language)
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-              } 
+            } 
              p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
@@ -493,8 +503,9 @@ const DealHistory = ({
                     <div className="flex items-center ">
                       <div className="bg-primary h-10 w-1 rounded-full"></div>
                       <h1
-                        className={`text-lg font-semibold mx-2 uppercase ${currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                        className={`text-lg font-semibold mx-2 uppercase ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
                       >
                         {t("deal_history")}
                       </h1>
@@ -511,7 +522,11 @@ const DealHistory = ({
                     </div>
                   </div>
                   <div>
-                    <div className={`${currentMode === "dark" ? "text-white" : "text-black"} p-4`}>
+                    <div
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } p-4`}
+                    >
                       <div className="grid grid-cols-12 gap-5">
                         {/* STATUS */}
                         <div className="col-span-12 lg:col-span-4 w-full mb-5">
@@ -528,39 +543,45 @@ const DealHistory = ({
                                 {statuses?.map((status) => {
                                   return (
                                     <div
-                                      className={`${currentMode === "dark"
-                                        ? "bg-[#1C1C1C]"
-                                        : "bg-[#EEEEEE]"
-                                        } items-center justify-center flex flex-col rounded-xl shadow-sm`}
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-[#1C1C1C]"
+                                          : "bg-[#EEEEEE]"
+                                      } items-center justify-center flex flex-col rounded-xl shadow-sm`}
                                     >
-                                      <div className={`p-5 flex flex-col w-full items-center justify-center ${status?.type === "commission" &&
-                                        hasPermission("add_commission")
-                                        ? "cursor-pointer"
-                                        : null
+                                      <div
+                                        className={`p-5 flex flex-col w-full items-center justify-center ${
+                                          status?.type === "commission" &&
+                                          hasPermission("add_commission")
+                                            ? "cursor-pointer"
+                                            : null
                                         } `}
                                         onClick={
                                           status?.type === "commission" &&
-                                            hasPermission("add_commission")
+                                          hasPermission("add_commission")
                                             ? () => handleCommissionModalOpen()
                                             : undefined
                                         }
                                       >
-                                        <p className={`flex items-center mb-2`} >
+                                        <p className={`flex items-center mb-2`}>
                                           {status?.icon}
                                         </p>
-                                        <p>
-                                          {status?.text}
-                                        </p>
+                                        <p>{status?.text}</p>
                                       </div>
-                                      {status?.value === false && (
+                                      {status?.value === false &&
                                         (status?.perm === true ? (
-                                          (hasPermission("add_commission")) && (
+                                          hasPermission("add_commission") && (
                                             <Tooltip title="Mark">
                                               <button
                                                 className={`p-2 w-full rounded-b-xl flex items-center justify-center bg-green-600`}
-                                                onClick={() => updateStatus(status?.field)}
+                                                onClick={() =>
+                                                  updateStatus(status?.field)
+                                                }
                                               >
-                                                <BsCheck2All size={16} color={"white"} />
+                                                <BsCheck2All
+                                                  size={16}
+                                                  color={"white"}
+                                                />
                                               </button>
                                             </Tooltip>
                                           )
@@ -568,13 +589,17 @@ const DealHistory = ({
                                           <Tooltip title="Mark">
                                             <button
                                               className={`p-2 w-full rounded-b-xl flex items-center justify-center bg-green-600`}
-                                              onClick={() => updateStatus(status?.field)}
+                                              onClick={() =>
+                                                updateStatus(status?.field)
+                                              }
                                             >
-                                              <BsCheck2All size={16} color={"white"} />
+                                              <BsCheck2All
+                                                size={16}
+                                                color={"white"}
+                                              />
                                             </button>
                                           </Tooltip>
-                                        ))
-                                      )}
+                                        ))}
                                     </div>
                                   );
                                 })}
@@ -600,10 +625,11 @@ const DealHistory = ({
                               <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
                                 {transactions?.map((spa) => (
                                   <div
-                                    className={`${currentMode === "dark"
-                                      ? "bg-[#1C1C1C]"
-                                      : "bg-[#EEEEEE]"
-                                      } rounded-xl shadow-sm card-hover w-full relative mb-4`}
+                                    className={`${
+                                      currentMode === "dark"
+                                        ? "bg-[#1C1C1C]"
+                                        : "bg-[#EEEEEE]"
+                                    } rounded-xl shadow-sm card-hover w-full relative mb-4`}
                                   >
                                     {/* EDIT BUTTON */}
                                     {hasPermission("deal_spa") && (
@@ -623,37 +649,39 @@ const DealHistory = ({
                                       <div>{spa?.type}</div>
                                     </div>
                                     {/* DETAILS */}
-                                    <div className={`p-4 grid ${spa?.temp_file === null ? "grid-cols-1" : "grid-cols-2"} justify-between gap-4`}>
+                                    <div
+                                      className={`p-4 grid ${
+                                        spa?.temp_file === null
+                                          ? "grid-cols-1"
+                                          : "grid-cols-2"
+                                      } justify-between gap-4`}
+                                    >
                                       {/* TEXT */}
                                       <div className="flex flex-col gap-4">
                                         {/* DATE */}
                                         <p>
-                                          {t("date")}:
-                                          {" "}
+                                          {t("date")}:{" "}
                                           <span className="font-semibold">
                                             {spa?.dealDate}
                                           </span>
                                         </p>
                                         {/* PERCENTAGE */}
                                         <p>
-                                          {t("percentage")}:
-                                          {" "}
+                                          {t("percentage")}:{" "}
                                           <span className="font-semibold">
                                             {spa?.percent}%
                                           </span>
                                         </p>
                                         {/* AMOUNT */}
                                         <p>
-                                          {t("label_amount")}:
-                                          {" "}
+                                          {t("label_amount")}:{" "}
                                           <span className="font-semibold">
                                             {spa?.currency} {spa?.amount}
                                           </span>
                                         </p>
                                         {/* ADDED BY */}
                                         <p>
-                                          {t("label_added_by")}:
-                                          {" "}
+                                          {t("label_added_by")}:{" "}
                                           <span className="font-semibold">
                                             {spa?.added_by_name}
                                           </span>
@@ -664,15 +692,22 @@ const DealHistory = ({
                                         {spa?.temp_file && (
                                           <div className="flex items-center justify-center">
                                             {(() => {
-                                              const ext = spa?.image.split('.').pop().toLowerCase();
-                                              if (ext === 'pdf') {
+                                              const ext = spa?.image
+                                                .split(".")
+                                                .pop()
+                                                .toLowerCase();
+                                              if (ext === "pdf") {
                                                 return (
                                                   <div className="mb-3">
                                                     <BsFileEarmarkMedical
                                                       size={100}
                                                       color={"#AAAAAA"}
                                                       // onClick={() => handlePdfClick(`data:application/pdf;base64,${spa?.temp_file}`)}
-                                                      onClick={() => handlePdfClick(spa?.temp_file)}
+                                                      onClick={() =>
+                                                        handlePdfClick(
+                                                          spa?.temp_file
+                                                        )
+                                                      }
                                                     />
                                                   </div>
                                                 );
@@ -684,7 +719,11 @@ const DealHistory = ({
                                                     src={`data:image/${ext};base64, ${spa?.temp_file}`}
                                                     width="150px"
                                                     height="150px"
-                                                    onClick={() => handleImageClick(`data:image/${ext};base64,${spa?.temp_file}`)}
+                                                    onClick={() =>
+                                                      handleImageClick(
+                                                        `data:image/${ext};base64,${spa?.temp_file}`
+                                                      )
+                                                    }
                                                   />
                                                 );
                                               }
@@ -706,8 +745,10 @@ const DealHistory = ({
                             {t("history")}
                           </h3>
                           {/* ADD NOTE */}
-                          <div className={`flex items-center justify-end gap-4`}>
-                            <Box sx={{ minWidth: "300px" }}>
+                          <div
+                            className={`flex items-center justify-end gap-4`}
+                          >
+                            <Box sx={{ ...darkModeColors, minWidth: "300px" }}>
                               <TextField
                                 id="note"
                                 type={"text"}
@@ -737,92 +778,110 @@ const DealHistory = ({
                                   </h1>
                                 </div>
                               ) : (
-                                groupHistoryByDate(leadsCycle)?.map((timeline, index) => (
-                                  <React.Fragment key={index}>
-                                    <div
-                                      className={`${isLangRTL(i18n.language)
-                                        ? "ml-3"
-                                        : "mr-3"
+                                groupHistoryByDate(leadsCycle)?.map(
+                                  (timeline, index) => (
+                                    <React.Fragment key={index}>
+                                      <div
+                                        className={`${
+                                          isLangRTL(i18n.language)
+                                            ? "ml-3"
+                                            : "mr-3"
                                         } col-start-1 col-end-3 md:mx-auto relative`}
-                                    >
-                                      <div className="h-full w-6 flex items-center justify-center">
-                                        <div
-                                          className={`h-full border-[${primaryColor}] border-b-2 rounded-md shadow-sm px-2 py-1 text-sm`}
-                                          style={{
-                                            width: "min-content",
-                                            whiteSpace: "nowrap",
-                                          }}
-                                        >
-                                          {moment(timeline.date).format("YYYY-MM-DD")}
+                                      >
+                                        <div className="h-full w-6 flex items-center justify-center">
+                                          <div
+                                            className={`h-full border-[${primaryColor}] border-b-2 rounded-md shadow-sm px-2 py-1 text-sm`}
+                                            style={{
+                                              width: "min-content",
+                                              whiteSpace: "nowrap",
+                                            }}
+                                          >
+                                            {moment(timeline.date).format(
+                                              "YYYY-MM-DD"
+                                            )}
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    {timeline?.items.map((item, itemIndex) => (
-                                      <div key={itemIndex} className="flex md:contents">
-                                        {item.note && (
-                                          <>
-                                            <div
-                                              className={`${isLangRTL(i18n.language)
-                                                ? "ml-3"
-                                                : "mr-3"
-                                                } col-start-1 col-end-3 md:mx-auto relative`}
-                                            >
-                                              <div className="h-full w-6 flex items-center justify-center">
-                                                <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
-                                              </div>
-                                              <div
-                                                className={`${isLangRTL(i18n.language)
-                                                  ? "-mr-2"
-                                                  : "-ml-2"
-                                                  } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
-                                              >
-                                                <MdNoteAlt
-                                                  className="text-white"
-                                                  size={16}
-                                                />
-                                              </div>
-                                            </div>
-                                            <div
-                                              className={`${currentMode === "dark"
-                                                ? "bg-[#1C1C1C]"
-                                                : "bg-[#EEEEEE]"
-                                                } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                            >
-                                              {/* ADDED BY  */}
-                                              <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
-                                                <HiUser size={12} />
-                                                {item?.added_by_name}
-                                              </p>
-                                              {/* LEAD NOTE  */}
-                                              <p
-                                                className="tracking-wide mb-2"
-                                                style={{
-                                                  fontFamily: isArabic(item?.note)
-                                                    ? "Noto Kufi Arabic"
-                                                    : "inherit",
-                                                }}
-                                              >
-                                                {item?.note}
-                                              </p>
-                                              {/* CREATION DATE  */}
-                                              <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                {datetimeLong(item.created_at)}
-                                              </p>
-                                            </div>
-                                          </>
-                                        )}
-                                      </div>
-                                    ))}
-
-                                  </React.Fragment>
-                                ))
+                                      {timeline?.items.map(
+                                        (item, itemIndex) => (
+                                          <div
+                                            key={itemIndex}
+                                            className="flex md:contents"
+                                          >
+                                            {item.note && (
+                                              <>
+                                                <div
+                                                  className={`${
+                                                    isLangRTL(i18n.language)
+                                                      ? "ml-3"
+                                                      : "mr-3"
+                                                  } col-start-1 col-end-3 md:mx-auto relative`}
+                                                >
+                                                  <div className="h-full w-6 flex items-center justify-center">
+                                                    <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
+                                                  </div>
+                                                  <div
+                                                    className={`${
+                                                      isLangRTL(i18n.language)
+                                                        ? "-mr-2"
+                                                        : "-ml-2"
+                                                    } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                                  >
+                                                    <MdNoteAlt
+                                                      className="text-white"
+                                                      size={16}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "bg-[#1C1C1C]"
+                                                      : "bg-[#EEEEEE]"
+                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                >
+                                                  {/* ADDED BY  */}
+                                                  <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
+                                                    <HiUser size={12} />
+                                                    {item?.added_by_name}
+                                                  </p>
+                                                  {/* LEAD NOTE  */}
+                                                  <p
+                                                    className="tracking-wide mb-2"
+                                                    style={{
+                                                      fontFamily: isArabic(
+                                                        item?.note
+                                                      )
+                                                        ? "Noto Kufi Arabic"
+                                                        : "inherit",
+                                                    }}
+                                                  >
+                                                    {item?.note}
+                                                  </p>
+                                                  {/* CREATION DATE  */}
+                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                    {datetimeLong(
+                                                      item.created_at
+                                                    )}
+                                                  </p>
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        )
+                                      )}
+                                    </React.Fragment>
+                                  )
+                                )
                               )}
                             </div>
                             <Stack spacing={2} marginTop={2}>
                               <Pagination
                                 count={maxPage}
                                 color={
-                                  currentMode === "dark" ? "primary" : "secondary"
+                                  currentMode === "dark"
+                                    ? "primary"
+                                    : "secondary"
                                 }
                                 onChange={(value) => setPage(value)}
                                 style={{ margin: "auto" }}
@@ -840,14 +899,15 @@ const DealHistory = ({
                                   },
                                   "& .MuiPaginationItem-root": {
                                     color:
-                                      currentMode === "dark" ? "white" : "black",
+                                      currentMode === "dark"
+                                        ? "white"
+                                        : "black",
                                   },
                                 }}
                               />
                             </Stack>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -892,7 +952,7 @@ const DealHistory = ({
                 onClose={() => {
                   setShowOverlayPdf(false);
                   setShowOverlayImage(false);
-                  setOverlayContent(null)
+                  setOverlayContent(null);
                 }}
               />
             </>
@@ -905,14 +965,13 @@ const DealHistory = ({
                 onClose={() => {
                   setShowOverlayImage(false);
                   setShowOverlayPdf(false);
-                  setOverlayContent(null)
+                  setOverlayContent(null);
                 }}
               />
             </>
           )}
-        </div >
-
-      </Modal >
+        </div>
+      </Modal>
     </>
   );
 };
