@@ -83,7 +83,6 @@ const AddCommissionModal = ({
     category: commData?.category || "Commission",
   });
 
-
   // Function to find the username of selected user or vendor
   const getSelectedOption = () => {
     // Find the selected option based on the condition
@@ -152,8 +151,8 @@ const AddCommissionModal = ({
         ...prevData,
         comm_percent: newCommData?.comm_percent || 0,
         amount: newCommData?.comm_amount || 0,
-      }))
-    }else {
+      }));
+    } else {
       setAmountToCalculate(newCommData?.comm_amount);
       setCommissionData((prevData) => ({
         ...prevData,
@@ -164,7 +163,11 @@ const AddCommissionModal = ({
   }, [commissionData.invoice_type]);
 
   useEffect(() => {
-    autoCalculate("comm_amount", amountToCalculate, commissionData.comm_percent);
+    autoCalculate(
+      "comm_amount",
+      amountToCalculate,
+      commissionData.comm_percent
+    );
   }, [commissionData.comm_percent, amountToCalculate]);
 
   useEffect(() => {
@@ -229,16 +232,17 @@ const AddCommissionModal = ({
   const autoCalculate = (value, amount, percentOrAmount) => {
     const sellingAmount = parseFloat(amount);
 
-    // COMM AMOUNT 
+    // COMM AMOUNT
     if (value === "comm_amount") {
       const commPercent = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(commPercent)) {
         let commAmount = (sellingAmount * commPercent) / 100;
-        commAmount = commAmount % 1 === 0 ? commAmount.toFixed(0) : commAmount.toFixed(2);
+        commAmount =
+          commAmount % 1 === 0 ? commAmount.toFixed(0) : commAmount.toFixed(2);
 
         let vat = 0;
         if (commissionData?.invoice_type === "Income") {
-          vat = commAmount * 5 / 100;
+          vat = (commAmount * 5) / 100;
           vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
         }
 
@@ -254,20 +258,23 @@ const AddCommissionModal = ({
           ...prevData,
           comm_percent: commPercent,
           amount: commAmount,
-          vat: vat
+          vat: vat,
         }));
         setTotalAmount(total);
       }
     }
-    // COMM PERCENT 
+    // COMM PERCENT
     if (value === "comm_percent") {
       const commAmount = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(commAmount)) {
         let commPercent = (commAmount / sellingAmount) * 100 || 0;
-        commPercent = commPercent % 1 === 0 ? commPercent.toFixed(0) : commPercent.toFixed(2);
+        commPercent =
+          commPercent % 1 === 0
+            ? commPercent.toFixed(0)
+            : commPercent.toFixed(2);
         let vat = 0;
         if (commissionData?.invoice_type === "Income") {
-          vat = commAmount * 5 / 100;
+          vat = (commAmount * 5) / 100;
           vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
         }
         // let vat = commAmount * 5 / 100;
@@ -284,7 +291,7 @@ const AddCommissionModal = ({
           ...prevData,
           comm_percent: commPercent,
           amount: commAmount,
-          vat: vat
+          vat: vat,
         }));
         setTotalAmount(total);
       }
@@ -435,19 +442,22 @@ const AddCommissionModal = ({
       }}
     >
       <div
-        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${isClosing
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-          }
+        }
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -458,26 +468,32 @@ const AddCommissionModal = ({
         </button>
         <div
           style={style}
-          className={` ${currentMode === "dark"
-            ? "bg-[#000000] text-white"
-            : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language)
+          className={` ${
+            currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+          } ${
+            isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-            }
+          }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
         >
           <>
-            <div className={`w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5`}>
+            <div
+              className={`w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5`}
+            >
               <div className="w-full flex items-center pb-3 ">
                 <div
-                  className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                    } bg-primary h-10 w-1 rounded-full my-1`}
+                  className={`${
+                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                  } bg-primary h-10 w-1 rounded-full my-1`}
                 ></div>
                 <h1
-                  className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
+                  className={`text-lg font-semibold ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
                 >
                   <h1 className="font-semibold pt-3 text-lg text-center">
                     {commData ? t("edit_commission") : t("commission_details")}
@@ -486,13 +502,18 @@ const AddCommissionModal = ({
               </div>
             </div>
 
-            <div className={`grid md:grid-cols-2 sm:grid-cols-1 ${commData ? "lg:grid-cols-2" : "lg:grid-cols-3"} gap-5 p-5`}>
+            <div
+              className={`grid md:grid-cols-2 sm:grid-cols-1 ${
+                commData ? "lg:grid-cols-2" : "lg:grid-cols-3"
+              } gap-5 p-5`}
+            >
               {/* Commission DETAILS  */}
               <div
                 className={`p-4 rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
-                    ? "bg-[#1C1C1C] text-white"
-                    : "bg-[#EEEEEE] text-black"
+                  ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-[#EEEEEE] text-black"
                   }`}
               >
                 <h1 className="text-center uppercase font-semibold">
@@ -504,14 +525,14 @@ const AddCommissionModal = ({
                     sx={{
                       ...darkModeColors,
                       "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                      {
-                        right: isLangRTL(i18n.language)
-                          ? "2.5rem"
-                          : "inherit",
-                        transformOrigin: isLangRTL(i18n.language)
-                          ? "right"
-                          : "left",
-                      },
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
                       "& legend": {
                         textAlign: isLangRTL(i18n.language) ? "right" : "left",
                       },
@@ -574,7 +595,7 @@ const AddCommissionModal = ({
                             readOnly={true}
                           />
                         )}
-                        maxDate={dayjs().startOf("day").toDate()}
+                        // maxDate={dayjs().startOf("day").toDate()}
                       />
                     </LocalizationProvider>
                     <Select
@@ -656,9 +677,10 @@ const AddCommissionModal = ({
               {/* Payment DETAILS  */}
               <div
                 className={`p-4 rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
-                    ? "bg-[#1C1C1C] text-white"
-                    : "bg-[#EEEEEE] text-black"
+                  ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-[#EEEEEE] text-black"
                   }`}
               >
                 <h1 className="text-center uppercase font-semibold">
@@ -731,12 +753,12 @@ const AddCommissionModal = ({
                       value={
                         getSelectedOption()
                           ? {
-                            value: getSelectedOption()?.id,
-                            label:
-                              commissionData?.invoice_type === "Income"
-                                ? getSelectedOption()?.vendor_name
-                                : getSelectedOption()?.userName,
-                          }
+                              value: getSelectedOption()?.id,
+                              label:
+                                commissionData?.invoice_type === "Income"
+                                  ? getSelectedOption()?.vendor_name
+                                  : getSelectedOption()?.userName,
+                            }
                           : null
                       }
                       onChange={(e) => {
@@ -841,8 +863,6 @@ const AddCommissionModal = ({
                         }}
                       />
                     </div>
-
-
                   </Box>
                 </div>
               </div>
@@ -851,10 +871,11 @@ const AddCommissionModal = ({
               {!commData && (
                 <div
                   className={`p-4 rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("evidence")?.toUpperCase()}

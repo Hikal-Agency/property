@@ -131,12 +131,13 @@ const AddTransactionsModal = ({
       url = `${BACKEND_URL}/deal-spa`;
     }
 
-    axios.post(url, transactionData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + token,
-      },
-    })
+    axios
+      .post(url, transactionData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
       .then((result) => {
         console.log("Result: ");
         console.log("Result: ", result);
@@ -185,13 +186,17 @@ const AddTransactionsModal = ({
           // console.log("updated data ====== ", updatedData);
 
           // const token = localStorage.getItem("auth-token");
-          axios.post(`${BACKEND_URL}/editdeal/${transactionData.deal_id}`,
-            updatedData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: "Bearer " + token,
-            },
-          })
+          axios
+            .post(
+              `${BACKEND_URL}/editdeal/${transactionData.deal_id}`,
+              updatedData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  Authorization: "Bearer " + token,
+                },
+              }
+            )
             .then((result) => {
               console.log("Deal updated successfully.");
               console.log(result);
@@ -237,19 +242,22 @@ const AddTransactionsModal = ({
       }}
     >
       <div
-        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${isClosing
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-          }
+        }
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -260,13 +268,15 @@ const AddTransactionsModal = ({
         </button>
         <div
           style={style}
-          className={` ${currentMode === "dark"
-            ? "bg-[#000000] text-white"
-            : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language)
+          className={` ${
+            currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+          } ${
+            isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-            }
+          }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
         >
@@ -279,12 +289,14 @@ const AddTransactionsModal = ({
               <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5">
                 <div className="w-full flex items-center pb-3 ">
                   <div
-                    className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                      } bg-primary h-10 w-1 rounded-full my-1`}
+                    className={`${
+                      isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                    } bg-primary h-10 w-1 rounded-full my-1`}
                   ></div>
                   <h1
-                    className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                    className={`text-lg font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                   >
                     {t("payment_details")}
                   </h1>
@@ -295,10 +307,11 @@ const AddTransactionsModal = ({
                 {/* Transaction DETAILS  */}
                 <div
                   className={`p-5 rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold mb-5">
                     {t("details")?.toUpperCase()}
@@ -366,7 +379,7 @@ const AddTransactionsModal = ({
                               readOnly={true}
                             />
                           )}
-                          maxDate={dayjs().startOf("day").toDate()}
+                          // maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
 
@@ -405,7 +418,7 @@ const AddTransactionsModal = ({
                         onChange={handleChange}
                         // required
                       />
-                      
+
                       <TextField
                         id="percent"
                         type={"text"}
@@ -430,10 +443,11 @@ const AddTransactionsModal = ({
                 {/* receipt  */}
                 <div
                   className={`p-4 rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
                       : "bg-[#EEEEEE] text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("receipt")?.toUpperCase()}
