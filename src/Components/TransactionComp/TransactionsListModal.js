@@ -95,7 +95,7 @@ const TransactionsListModal = ({
       });
 
       console.log("transactions list:: ", response);
-      setTransactionsData(response?.data?.data);
+      setTransactionsData(response?.data?.data?.data);
     } catch (error) {
       setloading(false);
       console.error("Error fetching statements:", error);
@@ -152,20 +152,23 @@ const TransactionsListModal = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            }
+          }
           w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseTimelineModel}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-              }
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -177,13 +180,15 @@ const TransactionsListModal = ({
 
           <div
             style={style}
-            className={` ${currentMode === "dark"
-              ? "bg-[#1C1C1C] text-white"
-              : "bg-[#FFFFFF] text-black"
-              } ${isLangRTL(i18n.language)
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#1C1C1C] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-              } p-4 h-[100vh] w-[80vw] overflow-y-scroll `}
+            } p-4 h-[100vh] w-[80vw] overflow-y-scroll `}
           >
             {loading ? (
               <Loader />
@@ -205,21 +210,22 @@ const TransactionsListModal = ({
 
                     <div className="">
                       <div
-                        className={`rounded-xl w-full my-3  shadow-sm ${currentMode === "dark" ? "bg-black" : "bg-[#EEEEEE]"
-                          } p-4`}
+                        className={`rounded-xl w-full my-3  shadow-sm ${
+                          currentMode === "dark" ? "bg-black" : "bg-[#EEEEEE]"
+                        } p-4`}
                       >
                         <Box
                           sx={{
                             ...darkModeColors,
                             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
+                              {
+                                right: isLangRTL(i18n.language)
+                                  ? "2.5rem"
+                                  : "inherit",
+                                transformOrigin: isLangRTL(i18n.language)
+                                  ? "right"
+                                  : "left",
+                              },
                             "& legend": {
                               textAlign: isLangRTL(i18n.language)
                                 ? "right"
@@ -235,12 +241,11 @@ const TransactionsListModal = ({
                           ) : (
                             <div className="h-[600px] overflow-y-scroll ">
                               {transactionsData &&
-                                transactionsData?.length > 0 ? (
+                              transactionsData?.length > 0 ? (
                                 transactionsData?.map((trans) => {
                                   let user;
                                   if (
-                                    trans?.invoice?.category?.toLowerCase() ===
-                                    "salary"
+                                    trans?.category?.toLowerCase() === "salary"
                                   ) {
                                     user = true;
                                   } else {
@@ -251,11 +256,11 @@ const TransactionsListModal = ({
                                     <>
                                       <div
                                         className="mb-9 mx-3 cursor-pointer"
-                                      // onClick={() =>
-                                      //   setSingleTransModal(trans)
-                                      // }
+                                        // onClick={() =>
+                                        //   setSingleTransModal(trans)
+                                        // }
                                       >
-                                        <p>{trans?.invoice?.date}</p>
+                                        <p>{trans?.date}</p>
                                         <div className="flex items-center justify-between my-3">
                                           <div>
                                             <div className="flex flex-col">
@@ -268,37 +273,32 @@ const TransactionsListModal = ({
                                                   )}
                                                 </span>
                                                 {user ? (
-                                                  <p>
-                                                    {trans?.user?.userName}
-                                                  </p>
+                                                  <p>{trans?.user?.userName}</p>
                                                 ) : (
                                                   <p>
-                                                    {trans?.vendor?.type} - {trans?.vendor?.vendor_name}
+                                                    {trans?.vendor?.type} -{" "}
+                                                    {trans?.vendor?.vendor_name}
                                                   </p>
                                                 )}
-                                                <p>
-
-                                                </p>
+                                                <p></p>
                                               </div>
                                               <p className="text-sm self-start pl-[calc(20px+2rem)]">
-                                                {trans?.invoice?.category}
+                                                {trans?.category}
                                               </p>
                                             </div>
                                           </div>
                                           <div>
                                             <p
-                                              className={`font-semibold ${trans?.invoice?.invoice_type ==
-                                                "Income"
-                                                ? "text-green-600"
-                                                : "text-red-600"
-                                                } `}
+                                              className={`font-semibold ${
+                                                trans?.invoice_type == "Income"
+                                                  ? "text-green-600"
+                                                  : "text-red-600"
+                                              } `}
                                             >
-                                              {trans?.invoice?.invoice_type ===
-                                                "Income"
+                                              {trans?.invoice_type === "Income"
                                                 ? "+"
                                                 : "-"}{" "}
-                                              {trans?.invoice?.currency}{" "}
-                                              {trans?.invoice?.amount}
+                                              {trans?.currency} {trans?.amount}
                                             </p>
                                           </div>
                                         </div>
