@@ -235,6 +235,7 @@ const AddCommissionModal = ({
     // COMM AMOUNT
     if (value === "comm_amount") {
       const commPercent = parseFloat(percentOrAmount);
+      // const commPercent = percentOrAmount;
       if (!isNaN(sellingAmount) && !isNaN(commPercent)) {
         let commAmount = (sellingAmount * commPercent) / 100;
         commAmount =
@@ -619,7 +620,7 @@ const AddCommissionModal = ({
                     />
                     <TextField
                       id="comm_percent"
-                      type={"text"}
+                      type={"number"}
                       label={t("commission_perc")}
                       className="w-full"
                       sx={{
