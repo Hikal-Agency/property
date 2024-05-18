@@ -58,6 +58,7 @@ const DealHistory = ({
   } = useStateContext();
   const { hasPermission } = usePermission();
   const [leadsCycle, setLeadsCycle] = useState(null);
+  const [statusData, setStatusData] = useState(null);
   const [commissionModal, setCommissionModal] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [imageModal, setOpenImageModal] = useState(false);
@@ -109,10 +110,10 @@ const DealHistory = ({
     {
       field: "pdc_status",
       text: t("pdc"),
-      value: LeadData?.pdc_status === 1 ? true : false,
+      value: statusData?.pdc_status === 1 ? true : false,
       perm: false,
       icon:
-        LeadData?.pdc_status === 1 ? (
+        statusData?.pdc_status === 1 ? (
           <FaCheck size={20} color="#1b8755" />
         ) : (
           <RxCross2 size={20} color="#DA1F26" />
@@ -121,10 +122,10 @@ const DealHistory = ({
     {
       field: "spa_status",
       text: t("spa"),
-      value: LeadData?.spa_status === 1 ? true : false,
+      value: statusData?.spa_status === 1 ? true : false,
       perm: false,
       icon:
-        LeadData?.spa_status === 1 ? (
+        statusData?.spa_status === 1 ? (
           <FaCheck size={20} color="#1b8755" />
         ) : (
           <RxCross2 size={20} color="#DA1F26" />
@@ -133,10 +134,10 @@ const DealHistory = ({
     {
       field: "comm_status",
       text: t("commission"),
-      value: LeadData?.comm_status === 1 ? true : false,
+      value: statusData?.comm_status === 1 ? true : false,
       perm: true,
       icon:
-        LeadData?.comm_status === 1 ? (
+        statusData?.comm_status === 1 ? (
           <FaCheck size={20} color="#1b8755" />
         ) : (
           <RxCross2 size={20} color="#DA1F26" />
@@ -146,10 +147,10 @@ const DealHistory = ({
     {
       field: "agent_comm_status",
       text: t("agent_comm"),
-      value: LeadData?.agent_comm_status === 1 ? true : false,
+      value: statusData?.agent_comm_status === 1 ? true : false,
       perm: true,
       icon:
-        LeadData?.agent_comm_status === 1 ? (
+        statusData?.agent_comm_status === 1 ? (
           <FaCheck size={20} color="#1b8755" />
         ) : (
           <RxCross2 size={20} color="#DA1F26" />
@@ -351,6 +352,8 @@ const DealHistory = ({
 
       console.log("deal history::: ", leadsCycleResult);
       setLeadsCycle(leadsCycleResult?.data?.data?.history?.data);
+      setStatusData(leadsCycleResult?.data?.data?.deal);
+
       setMaxPage(leadsCycleResult?.data?.data?.history?.last_page);
       setTransactions(leadsCycleResult?.data?.data?.spa);
       setLoading(false);
