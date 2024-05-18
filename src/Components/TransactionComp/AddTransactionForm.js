@@ -421,347 +421,168 @@ const AddTransactionForm = ({
           styles={selectStyles(currentMode, primaryColor)}
         />
 
-        {isUrl ? (
-          addTransactionData?.category.toLowerCase() === "salary" ? (
-            <FormControl
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-              sx={{
-                minWidth: "100%",
-                // border: 1,
-                borderRadius: 1,
-                marginBottom: "10px",
+        <FormControl
+          className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
+          sx={{
+            minWidth: "100%",
+            // border: 1,
+            borderRadius: 1,
+            marginBottom: "10px",
+          }}
+        >
+          <TextField
+            id="user_id"
+            select
+            value={addTransactionData?.user_id || "selected"}
+            label={t("select_user")}
+            onChange={(e) => {
+              setAddTransactionData({
+                ...addTransactionData,
+                user_id: e.target.value,
+              });
+            }}
+            size="small"
+            className="w-full border border-gray-300 rounded "
+            displayEmpty
+            required
+            sx={{
+              // border: "1px solid #000000",
+              height: "40px",
+
+              "& .MuiSelect-select": {
+                fontSize: 11,
+              },
+            }}
+          >
+            <MenuItem selected value="selected">
+              ---{t("select_user")}----
+            </MenuItem>
+            <MenuItem
+              onKeyDown={(e) => {
+                e.stopPropagation();
+                // e.preventDefault();
               }}
             >
               <TextField
-                id="user_id"
-                select
-                value={addTransactionData?.user_id || "selected"}
-                label={t("select_user")}
-                onChange={(e) => {
-                  setAddTransactionData({
-                    ...addTransactionData,
-                    vendor_id: null,
-                    user_id: e.target.value,
-                  });
-                }}
-                size="small"
-                className="w-full border border-gray-300 rounded "
-                displayEmpty
-                required
+                placeholder={t("search_users")}
+                ref={searchRef}
                 sx={{
-                  // border: "1px solid #000000",
-                  height: "40px",
-
-                  "& .MuiSelect-select": {
-                    fontSize: 11,
+                  "& input": {
+                    border: "0",
                   },
                 }}
-              >
-                <MenuItem selected value="selected">
-                  ---{t("select_user")}----
-                </MenuItem>
-                <MenuItem
-                  onKeyDown={(e) => {
-                    e.stopPropagation();
-                    // e.preventDefault();
-                  }}
-                >
-                  <TextField
-                    placeholder={t("search_users")}
-                    ref={searchRef}
-                    sx={{
-                      "& input": {
-                        border: "0",
-                      },
-                    }}
-                    variant="standard"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <IconButton
-                            sx={{ padding: 1 }}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              const inputValue =
-                                searchRef.current.querySelector("input").value;
-                              if (inputValue) {
-                                fetchUsers(inputValue, "user");
-                              }
-                            }}
-                          >
-                            <BsSearch className={`text-[#AAAAAA]`} size={18} />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  />
-                </MenuItem>
+                variant="standard"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <IconButton
+                        sx={{ padding: 1 }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const inputValue =
+                            searchRef.current.querySelector("input").value;
+                          if (inputValue) {
+                            fetchUsers(inputValue, "user");
+                          }
+                        }}
+                      >
+                        <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                }}
+              />
+            </MenuItem>
 
-                {vendors?.map((user) => (
-                  <MenuItem value={user?.id}>{user?.userName}</MenuItem>
-                ))}
-              </TextField>
-            </FormControl>
-          ) : (
-            <FormControl
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-              sx={{
-                minWidth: "100%",
-                // border: 1,
-                borderRadius: 1,
-                marginBottom: "10px",
+            {user?.map((user) => (
+              <MenuItem value={user?.id}>{user?.userName}</MenuItem>
+            ))}
+          </TextField>
+        </FormControl>
+
+        <FormControl
+          className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
+          sx={{
+            minWidth: "100%",
+            // border: 1,
+            borderRadius: 1,
+            marginBottom: "10px",
+          }}
+        >
+          <TextField
+            id="vendor_id"
+            select
+            value={addTransactionData?.vendor_id || "selected"}
+            label={t("vendor")}
+            onChange={(e) => {
+              setAddTransactionData({
+                ...addTransactionData,
+                vendor_id: e.target.value,
+              });
+            }}
+            size="small"
+            className="w-full border border-gray-300 rounded "
+            displayEmpty
+            required
+            sx={{
+              // border: "1px solid #000000",
+              height: "40px",
+
+              "& .MuiSelect-select": {
+                fontSize: 11,
+              },
+            }}
+          >
+            <MenuItem selected value="selected">
+              ---{t("select_vendor")}----
+            </MenuItem>
+            <MenuItem
+              onKeyDown={(e) => {
+                e.stopPropagation();
               }}
             >
               <TextField
-                id="vendor_id"
-                select
-                value={addTransactionData?.vendor_id || "selected"}
-                label={t("vendor")}
-                onChange={(e) => {
-                  setAddTransactionData({
-                    ...addTransactionData,
-                    vendor_id: e.target.value,
-                    user_id: null,
-                  });
-                }}
-                size="small"
-                className="w-full border border-gray-300 rounded "
-                displayEmpty
-                required
+                placeholder={t("search_vendors")}
+                ref={searchRef}
                 sx={{
-                  // border: "1px solid #000000",
-                  height: "40px",
-
-                  "& .MuiSelect-select": {
-                    fontSize: 11,
+                  "& input": {
+                    border: "0",
                   },
                 }}
-              >
-                <MenuItem selected value="selected">
-                  ---{t("select_vendor")}----
-                </MenuItem>
-                <MenuItem
-                  onKeyDown={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <TextField
-                    placeholder={t("search_vendors")}
-                    ref={searchRef}
-                    sx={{
-                      "& input": {
-                        border: "0",
-                      },
-                    }}
-                    variant="standard"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <IconButton
-                            sx={{ padding: 1 }}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              const inputValue =
-                                searchRef.current.querySelector("input").value;
-                              if (inputValue) {
-                                fetchUsers(inputValue);
-                              }
-                            }}
-                          >
-                            <BsSearch className={`text-[#AAAAAA]`} size={18} />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  />
-                </MenuItem>
-
-                {vendors?.map((user) => (
-                  <MenuItem value={user?.id}>{user?.vendor_name}</MenuItem>
-                ))}
-              </TextField>
-            </FormControl>
-          )
-        ) : (
-          <>
-            <FormControl
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-              sx={{
-                minWidth: "100%",
-                // border: 1,
-                borderRadius: 1,
-                marginBottom: "10px",
-              }}
-            >
-              <TextField
-                id="user_id"
-                select
-                value={addTransactionData?.user_id || "selected"}
-                label={t("select_user")}
-                onChange={(e) => {
-                  setAddTransactionData({
-                    ...addTransactionData,
-                    user_id: e.target.value,
-                  });
+                variant="standard"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <IconButton
+                        sx={{ padding: 1 }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const inputValue =
+                            searchRef.current.querySelector("input").value;
+                          if (inputValue) {
+                            fetchUsers(inputValue);
+                          }
+                        }}
+                      >
+                        <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
-                size="small"
-                className="w-full border border-gray-300 rounded "
-                displayEmpty
-                required
-                sx={{
-                  // border: "1px solid #000000",
-                  height: "40px",
-
-                  "& .MuiSelect-select": {
-                    fontSize: 11,
-                  },
+                onClick={(event) => {
+                  event.stopPropagation();
                 }}
-              >
-                <MenuItem selected value="selected">
-                  ---{t("select_user")}----
-                </MenuItem>
-                <MenuItem
-                  onKeyDown={(e) => {
-                    e.stopPropagation();
-                    // e.preventDefault();
-                  }}
-                >
-                  <TextField
-                    placeholder={t("search_users")}
-                    ref={searchRef}
-                    sx={{
-                      "& input": {
-                        border: "0",
-                      },
-                    }}
-                    variant="standard"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <IconButton
-                            sx={{ padding: 1 }}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              const inputValue =
-                                searchRef.current.querySelector("input").value;
-                              if (inputValue) {
-                                fetchUsers(inputValue, "user");
-                              }
-                            }}
-                          >
-                            <BsSearch className={`text-[#AAAAAA]`} size={18} />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  />
-                </MenuItem>
+              />
+            </MenuItem>
 
-                {user?.map((user) => (
-                  <MenuItem value={user?.id}>{user?.userName}</MenuItem>
-                ))}
-              </TextField>
-            </FormControl>
-
-            <FormControl
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-              sx={{
-                minWidth: "100%",
-                // border: 1,
-                borderRadius: 1,
-                marginBottom: "10px",
-              }}
-            >
-              <TextField
-                id="vendor_id"
-                select
-                value={addTransactionData?.vendor_id || "selected"}
-                label={t("vendor")}
-                onChange={(e) => {
-                  setAddTransactionData({
-                    ...addTransactionData,
-                    vendor_id: e.target.value,
-                  });
-                }}
-                size="small"
-                className="w-full border border-gray-300 rounded "
-                displayEmpty
-                required
-                sx={{
-                  // border: "1px solid #000000",
-                  height: "40px",
-
-                  "& .MuiSelect-select": {
-                    fontSize: 11,
-                  },
-                }}
-              >
-                <MenuItem selected value="selected">
-                  ---{t("select_vendor")}----
-                </MenuItem>
-                <MenuItem
-                  onKeyDown={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <TextField
-                    placeholder={t("search_vendors")}
-                    ref={searchRef}
-                    sx={{
-                      "& input": {
-                        border: "0",
-                      },
-                    }}
-                    variant="standard"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <IconButton
-                            sx={{ padding: 1 }}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              const inputValue =
-                                searchRef.current.querySelector("input").value;
-                              if (inputValue) {
-                                fetchUsers(inputValue);
-                              }
-                            }}
-                          >
-                            <BsSearch className={`text-[#AAAAAA]`} size={18} />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  />
-                </MenuItem>
-
-                {vendors?.map((user) => (
-                  <MenuItem value={user?.id}>{user?.vendor_name}</MenuItem>
-                ))}
-              </TextField>
-            </FormControl>
-          </>
-        )}
+            {vendors?.map((user) => (
+              <MenuItem value={user?.id}>{user?.vendor_name}</MenuItem>
+            ))}
+          </TextField>
+        </FormControl>
 
         <Select
           id="currency"

@@ -190,91 +190,47 @@ const Transactions = ({ pathname }) => {
   console.log("field errors:: ", fieldErrors);
 
   const fetchVendor = async () => {
-    if (isUrl) {
-      let url;
+    const vendorUrl = `${BACKEND_URL}/vendors`;
+    const userUrl = `${BACKEND_URL}/users`;
 
-      if (
-        addTransactionData?.category.toLowerCase() === "salary" ||
-        filtersData?.category.toLowerCase() === "salary"
-      ) {
-        url = `${BACKEND_URL}/users`;
-      } else {
-        url = `${BACKEND_URL}/vendors`;
-      }
-      try {
-        const response = await axios.get(url, {
+    try {
+      const [vendorResponse, userResponse] = await Promise.all([
+        axios.get(vendorUrl, {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
-        });
-        console.log("vendors list:: ", response);
+        }),
+        axios.get(userUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+      ]);
 
-        if (
-          addTransactionData?.category.toLowerCase() === "salary" ||
-          filtersData?.category.toLowerCase() === "salary"
-        ) {
-          setVendors(response?.data?.managers?.data);
-        } else {
-          setVendors(response?.data?.data?.data);
-        }
-      } catch (error) {
-        setloading(false);
-        console.error("Error fetching transactions:", error);
-        toast.error("Unable to fetch vendors", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-    } else {
-      const vendorUrl = `${BACKEND_URL}/vendors`;
-      const userUrl = `${BACKEND_URL}/users`;
+      console.log("vendors list:: ", vendorResponse);
+      console.log("users list:: ", userResponse);
 
-      try {
-        const [vendorResponse, userResponse] = await Promise.all([
-          axios.get(vendorUrl, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }),
-          axios.get(userUrl, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-          }),
-        ]);
+      let usersList = userResponse?.data?.managers?.data;
 
-        console.log("vendors list:: ", vendorResponse);
-        console.log("users list:: ", userResponse);
+      usersList?.filter((user) => user?.status === 1);
 
-        let usersList = userResponse?.data?.managers?.data;
-
-        usersList?.filter((user) => user?.status === 1);
-
-        setUser(usersList);
-        setVendors(vendorResponse?.data?.data?.data);
-      } catch (error) {
-        setloading(false);
-        console.error("Error fetching data:", error);
-        toast.error("Unable to fetch data", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+      setUser(usersList);
+      setVendors(vendorResponse?.data?.data?.data);
+    } catch (error) {
+      setloading(false);
+      console.error("Error fetching data:", error);
+      toast.error("Unable to fetch data", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -391,17 +347,6 @@ const Transactions = ({ pathname }) => {
     console.log("hhhhhiiiiiiiiihhhhhhhhhi");
     fetchTransactions();
   }, [filtersData, page, pathname]);
-
-  useEffect(() => {
-    if (
-      addTransactionData?.category.toLowerCase() === "salary" ||
-      filtersData?.category.toLowerCase() === "salary" ||
-      addTransactionData?.category.toLowerCase() === "purchase" ||
-      filtersData?.category.toLowerCase() === "purchase"
-    ) {
-      fetchVendor();
-    }
-  }, [filtersData, addTransactionData]);
 
   return (
     <div
@@ -683,186 +628,172 @@ const Transactions = ({ pathname }) => {
               styles={selectStyles(currentMode, primaryColor)}
             />
 
-            {filtersData?.category.toLowerCase() === "salary" ? (
-              <FormControl
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
+            <FormControl
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
+              sx={{
+                minWidth: "100%",
+                // border: 1,
+                borderRadius: 1,
+                marginBottom: "10px",
+              }}
+            >
+              <TextField
+                id="user_id"
+                select
+                value={filtersData?.user_id || "selected"}
+                label={t("filter_by_user")}
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    user_id: e.target.value,
+                  });
+                }}
+                size="small"
+                className="w-full border border-gray-300 rounded "
+                displayEmpty
+                required
                 sx={{
-                  minWidth: "100%",
-                  // border: 1,
-                  borderRadius: 1,
-                  marginBottom: "10px",
+                  // border: "1px solid #000000",
+                  height: "40px",
+
+                  "& .MuiSelect-select": {
+                    fontSize: 11,
+                  },
                 }}
               >
-                <TextField
-                  id="user_id"
-                  select
-                  value={filtersData?.user_id || "selected"}
-                  label={t("filter_by_user")}
-                  onChange={(e) => {
-                    setFilterData({
-                      ...filtersData,
-                      vendor_id: null,
-                      user_id: e.target.value,
-                    });
-                  }}
-                  size="small"
-                  className="w-full border border-gray-300 rounded "
-                  displayEmpty
-                  required
-                  sx={{
-                    // border: "1px solid #000000",
-                    height: "40px",
-
-                    "& .MuiSelect-select": {
-                      fontSize: 11,
-                    },
+                <MenuItem selected value="selected">
+                  ---{t("select_user")}----
+                </MenuItem>
+                <MenuItem
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
+                    // e.preventDefault();
                   }}
                 >
-                  <MenuItem selected value="selected">
-                    ---{t("select_user")}----
-                  </MenuItem>
-                  <MenuItem
-                    onKeyDown={(e) => {
-                      e.stopPropagation();
-                      // e.preventDefault();
+                  <TextField
+                    placeholder={t("search_users")}
+                    ref={searchRef}
+                    sx={{
+                      "& input": {
+                        border: "0",
+                      },
                     }}
-                  >
-                    <TextField
-                      placeholder={t("search_users")}
-                      ref={searchRef}
-                      sx={{
-                        "& input": {
-                          border: "0",
-                        },
-                      }}
-                      variant="standard"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <IconButton
-                              sx={{ padding: 1 }}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                const inputValue =
-                                  searchRef.current.querySelector(
-                                    "input"
-                                  ).value;
-                                if (inputValue) {
-                                  fetchUsers(inputValue, "user");
-                                }
-                              }}
-                            >
-                              <BsSearch
-                                className={`text-[#AAAAAA]`}
-                                size={18}
-                              />
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                      }}
-                    />
-                  </MenuItem>
+                    variant="standard"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton
+                            sx={{ padding: 1 }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const inputValue =
+                                searchRef.current.querySelector("input").value;
+                              if (inputValue) {
+                                fetchUsers(inputValue, "user");
+                              }
+                            }}
+                          >
+                            <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                  />
+                </MenuItem>
 
-                  {vendors?.map((user) => (
-                    <MenuItem value={user?.id}>{user?.userName}</MenuItem>
-                  ))}
-                </TextField>
-              </FormControl>
-            ) : (
-              <FormControl
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
+                {user?.map((user) => (
+                  <MenuItem value={user?.id}>{user?.userName}</MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
+
+            <FormControl
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
+              sx={{
+                minWidth: "100%",
+                // border: 1,
+                borderRadius: 1,
+                marginBottom: "10px",
+              }}
+            >
+              <TextField
+                id="vendor_id"
+                select
+                value={filtersData?.vendor_id || "selected"}
+                label={t("vendor")}
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    vendor_id: e.target.value,
+                  });
+                }}
+                size="small"
+                className="w-full border border-gray-300 rounded "
+                displayEmpty
+                required
                 sx={{
-                  minWidth: "100%",
-                  // border: 1,
-                  borderRadius: 1,
-                  marginBottom: "10px",
+                  // border: "1px solid #000000",
+                  height: "40px",
+
+                  "& .MuiSelect-select": {
+                    fontSize: 11,
+                  },
                 }}
               >
-                <TextField
-                  id="vendor_id"
-                  select
-                  value={filtersData?.vendor_id || "selected"}
-                  label={t("vendor")}
-                  onChange={(e) => {
-                    setFilterData({
-                      ...filtersData,
-                      vendor_id: e.target.value,
-                      user_id: null,
-                    });
-                  }}
-                  size="small"
-                  className="w-full border border-gray-300 rounded "
-                  displayEmpty
-                  required
-                  sx={{
-                    // border: "1px solid #000000",
-                    height: "40px",
-
-                    "& .MuiSelect-select": {
-                      fontSize: 11,
-                    },
+                <MenuItem selected value="selected">
+                  ---{t("select_vendor")}----
+                </MenuItem>
+                <MenuItem
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
                   }}
                 >
-                  <MenuItem selected value="selected">
-                    ---{t("select_vendor")}----
-                  </MenuItem>
-                  <MenuItem
-                    onKeyDown={(e) => {
-                      e.stopPropagation();
+                  <TextField
+                    placeholder={t("search_vendors")}
+                    ref={searchRef}
+                    sx={{
+                      "& input": {
+                        border: "0",
+                      },
                     }}
-                  >
-                    <TextField
-                      placeholder={t("search_vendors")}
-                      ref={searchRef}
-                      sx={{
-                        "& input": {
-                          border: "0",
-                        },
-                      }}
-                      variant="standard"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <IconButton
-                              sx={{ padding: 1 }}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                const inputValue =
-                                  searchRef.current.querySelector(
-                                    "input"
-                                  ).value;
-                                if (inputValue) {
-                                  fetchUsers(inputValue);
-                                }
-                              }}
-                            >
-                              <BsSearch
-                                className={`text-[#AAAAAA]`}
-                                size={18}
-                              />
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                      }}
-                    />
-                  </MenuItem>
+                    variant="standard"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconButton
+                            sx={{ padding: 1 }}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const inputValue =
+                                searchRef.current.querySelector("input").value;
+                              if (inputValue) {
+                                fetchUsers(inputValue);
+                              }
+                            }}
+                          >
+                            <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                    }}
+                  />
+                </MenuItem>
 
-                  {vendors?.map((user) => (
-                    <MenuItem value={user?.id}>{user?.vendor_name}</MenuItem>
-                  ))}
-                </TextField>
-              </FormControl>
-            )}
+                {vendors?.map((vendor) => (
+                  <MenuItem value={vendor?.id}>{vendor?.vendor_name}</MenuItem>
+                ))}
+              </TextField>
+            </FormControl>
 
             <Select
               id="currency"
