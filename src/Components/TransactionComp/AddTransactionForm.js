@@ -377,7 +377,6 @@ const AddTransactionForm = ({
                 readOnly={true}
               />
             )}
-            // maxDate={dayjs().startOf("day").toDate()}
           />
         </LocalizationProvider>
         <Select
