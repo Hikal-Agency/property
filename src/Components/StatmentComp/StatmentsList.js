@@ -140,10 +140,10 @@ const StatmentsList = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -174,10 +174,10 @@ const StatmentsList = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -208,10 +208,10 @@ const StatmentsList = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -282,13 +282,24 @@ const StatmentsList = () => {
               }
               return (
                 <div className="w-full grid grid-cols-1 lg: grid-cols-2 gap-4">
-                  <div className={`p-4 pb-5 h-fit rounded-xl shadow-sm ${
-                    themeBgImg ? currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black" : currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#EEEEEE] text-black"}`}>
+                  <div
+                    className={`p-4 pb-5 h-fit rounded-xl shadow-sm ${
+                      themeBgImg
+                        ? currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black"
+                        : currentMode === "dark"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black"
+                    }`}
+                  >
                     <div className="flex justify-between items-center gap-4 pb-5">
                       {/* CURRENCY */}
                       <div className="flex gap-2 items-center">
                         <div className="bg-primary h-10 w-1 rounded-full"></div>
-                        <h1 className={`text-lg font-semibold uppercase text-primary`} >
+                        <h1
+                          className={`text-lg font-semibold uppercase text-primary`}
+                        >
                           {stats?.currency}
                         </h1>
                       </div>
@@ -302,39 +313,76 @@ const StatmentsList = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-5 mb-2">
                       {/* INCOME */}
-                      <div className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${
-                        themeBgImg ? currentMode === "dark" ? "blur-bg-dark" : "blur-bg-white" : currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-                        }`}>
-                        <p className="text-center">
-                          {t("income_amount")}
-                        </p>
-                        <p className={`text-center text-xl font-semibold`} >
-                          {stats?.currency} {" "} {stats?.total_income}
+                      <div
+                        className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${
+                          themeBgImg
+                            ? currentMode === "dark"
+                              ? "blur-bg-dark"
+                              : "blur-bg-white"
+                            : currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        }`}
+                      >
+                        <p className="text-center">{t("income_amount")}</p>
+                        <p className={`text-center text-xl font-semibold`}>
+                          {stats?.currency} {stats?.total_income?.toFixed(2)}
                         </p>
                       </div>
                       {/* EXPENSE */}
-                      <div className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${
-                        themeBgImg ? currentMode === "dark" ? "blur-bg-dark" : "blur-bg-white" : currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
-                        }`}>
-                        <p className="text-center">
-                          {t("expense_amount")}
-                        </p>
-                        <p className={`text-center text-xl font-semibold`} >
-                          {stats?.currency} {" "} {stats?.total_expense}
+                      <div
+                        className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${
+                          themeBgImg
+                            ? currentMode === "dark"
+                              ? "blur-bg-dark"
+                              : "blur-bg-white"
+                            : currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        }`}
+                      >
+                        <p className="text-center">{t("expense_amount")}</p>
+                        <p className={`text-center text-xl font-semibold`}>
+                          {stats?.currency} {stats?.total_expense?.toFixed(2)}
                         </p>
                       </div>
                     </div>
-                    <div className={`rounded-xl shadow-sm ${currentMode === "dark" ? loss ? "bg-[#DA1F26]" : "bg-[#269144]" : loss ? "bg-[#E8C4C4]" : "bg-[#D3E6D5]"
-                      } w-full p-5 flex flex-col items-center justify-center gap-4 relative`} >
-                      <p className="text-center">
-                        {stats?.output}
+                    <div
+                      className={`rounded-xl shadow-sm ${
+                        currentMode === "dark"
+                          ? loss
+                            ? "bg-[#DA1F26]"
+                            : "bg-[#269144]"
+                          : loss
+                          ? "bg-[#E8C4C4]"
+                          : "bg-[#D3E6D5]"
+                      } w-full p-5 flex flex-col items-center justify-center gap-4 relative`}
+                    >
+                      <p className="text-center">{stats?.output}</p>
+                      <p
+                        className={`text-center text-xl font-bold ${
+                          currentMode === "dark"
+                            ? loss
+                              ? "text-[#E8C4C4]"
+                              : "text-[#D3E6D5]"
+                            : loss
+                            ? "text-[#DA1F26]"
+                            : "text-[#269144]"
+                        }`}
+                      >
+                        {stats?.currency} {stats?.profit_loss?.toFixed(2)}
                       </p>
-                      <p className={`text-center text-xl font-bold ${currentMode === "dark" ? loss ? "text-[#E8C4C4]" : "text-[#D3E6D5]" : loss ? "text-[#DA1F26]" : "text-[#269144]"}`}>
-                        {stats?.currency} {" "} {stats?.profit_loss}
-                      </p>
-                      <div className={`absolute text-sm top-0 p-2 ${isLangRTL(i18n.langguage) ? "left-0 rounded-tl-xl" : "right-0 rounded-tr-xl"
-                        } ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
-                        } bg-black`}>
+                      <div
+                        className={`absolute text-sm top-0 p-2 ${
+                          isLangRTL(i18n.langguage)
+                            ? "left-0 rounded-tl-xl"
+                            : "right-0 rounded-tr-xl"
+                        } ${
+                          currentMode === "dark"
+                            ? "bg-black text-white"
+                            : "bg-white text-black"
+                        } bg-black`}
+                      >
                         {stats?.percent
                           ? parseFloat(stats?.percent).toFixed(1) + " " + "%"
                           : ""}
@@ -342,7 +390,13 @@ const StatmentsList = () => {
                     </div>
                   </div>
                   {/* CHART */}
-                  <div className={`${themeBgImg && currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light" }`}>
+                  <div
+                    className={`${
+                      themeBgImg && currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
+                    }`}
+                  >
                     <StatmentsCharts stats={stats} />
                   </div>
                 </div>
@@ -355,14 +409,14 @@ const StatmentsList = () => {
           )}
         </div>
       )}
-      
+
       {singleTransModal && (
         <SingleTransactionModal
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
         />
       )}
-      
+
       {transactionsListModal && (
         <TransactionsListModal
           transactionsListModal={transactionsListModal}
