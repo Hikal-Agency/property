@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Backdrop,
   CircularProgress,
@@ -6,6 +6,8 @@ import {
   TextField,
   Button,
   Box,
+  MenuItem,
+  FormControl,
 } from "@mui/material";
 import Select from "react-select";
 import {
@@ -51,9 +53,11 @@ const AddCommissionModal = ({
 
   const { hasPermission } = usePermission();
 
+  const searchRef = useRef();
   const [loading, setLoading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [vendor, setVendor] = useState([]);
+  const [user, setUser] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
   const [btnLoading, setBtnLoading] = useState(false);
   const [updatedField, setUpdatedField] = useState("");
@@ -143,6 +147,44 @@ const AddCommissionModal = ({
       setIsClosing(false);
       handleCloseAddCommission();
     }, 1000);
+  };
+
+  const fetchUsers = async (title, type) => {
+    try {
+      let url = "";
+
+      if (type === "user") {
+        url = `${BACKEND_URL}/users?title=${title}`;
+      } else {
+        url = `${BACKEND_URL}/vendors?vendor_name=${title}`;
+      }
+
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Users: ", response);
+
+      if (type === "user") {
+        setUser(response?.data?.managers?.data);
+      } else {
+        setVendor(response?.data?.data?.data);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to fetch users.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   useEffect(() => {
@@ -330,7 +372,7 @@ const AddCommissionModal = ({
       if (commissionData?.invoice_type === "Income") {
         setVendor(vendorsList?.data?.data?.data);
       } else {
-        setVendor(vendorsList?.data?.managers?.data);
+        setUser(vendorsList?.data?.managers?.data);
       }
 
       setLoading(false);
@@ -737,7 +779,7 @@ const AddCommissionModal = ({
                       menuPortalTarget={document.body}
                       styles={selectStyles(currentMode, primaryColor)}
                     />
-                    <Select
+                    {/* <Select
                       id="Manager"
                       options={vendor?.map((vendor) => ({
                         value: vendor.id,
@@ -746,13 +788,6 @@ const AddCommissionModal = ({
                             ? vendor.vendor_name
                             : vendor.userName,
                       }))}
-                      // value={{
-                      //   value: getSelectedOption()?.id,
-                      //   label:
-                      //     commissionData?.invoice_type === "Income"
-                      //       ? getSelectedOption()?.vendor_name
-                      //       : getSelectedOption()?.userName,
-                      // }}
                       value={
                         getSelectedOption()
                           ? {
@@ -787,7 +822,135 @@ const AddCommissionModal = ({
                       className={`mb-5`}
                       menuPortalTarget={document.body}
                       styles={selectStyles(currentMode, primaryColor)}
-                    />
+                    /> */}
+                    {commissionData?.invoice_type === "Income" ? (
+                      <FormControl
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                        sx={{
+                          minWidth: "100%",
+                          borderRadius: 1,
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <TextField
+                          id="vendor_id"
+                          select
+                          value={commissionData?.vendor_id || "selected"}
+                          label={t("vendor")}
+                          onChange={(e) => {
+                            setCommissionData({
+                              ...commissionData,
+
+                              vendor_id: e.target.value,
+                            });
+                          }}
+                          size="small"
+                          className="w-full border border-gray-300 rounded"
+                          displayEmpty
+                          required
+                          sx={{
+                            border: "1px solid #000000",
+                            height: "40px",
+                            "& .MuiSelect-select": {
+                              fontSize: 11,
+                            },
+                          }}
+                        >
+                          <MenuItem selected value="selected">
+                            ---{t("select_vendor")}----
+                          </MenuItem>
+                          <MenuItem onKeyDown={(e) => e.stopPropagation()}>
+                            <TextField
+                              placeholder={t("search_vendors")}
+                              ref={searchRef}
+                              sx={{ "& input": { border: "0" } }}
+                              variant="standard"
+                              onChange={(e) => {
+                                e.preventDefault();
+                                const inputValue =
+                                  searchRef.current.querySelector(
+                                    "input"
+                                  ).value;
+                                if (inputValue) {
+                                  fetchUsers(inputValue, "user");
+                                }
+                              }}
+                              onClick={(event) => event.stopPropagation()}
+                            />
+                          </MenuItem>
+                          {vendor?.map((vendor) => (
+                            <MenuItem key={vendor?.id} value={vendor?.id}>
+                              {vendor?.vendor_name}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </FormControl>
+                    ) : (
+                      <FormControl
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                        sx={{
+                          minWidth: "100%",
+                          borderRadius: 1,
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <TextField
+                          id="user_id"
+                          select
+                          value={commissionData?.user_id || "selected"}
+                          label={t("select_user")}
+                          onChange={(e) => {
+                            setCommissionData({
+                              ...commissionData,
+
+                              user_id: e.target.value,
+                            });
+                          }}
+                          size="small"
+                          className="w-full border border-gray-300 rounded"
+                          displayEmpty
+                          required
+                          sx={{
+                            height: "40px",
+                            "& .MuiSelect-select": {
+                              fontSize: 11,
+                            },
+                          }}
+                        >
+                          <MenuItem selected value="selected">
+                            ---{t("select_user")}----
+                          </MenuItem>
+                          <MenuItem onKeyDown={(e) => e.stopPropagation()}>
+                            <TextField
+                              placeholder={t("search_users")}
+                              ref={searchRef}
+                              sx={{ "& input": { border: "0" } }}
+                              variant="standard"
+                              onChange={(e) => {
+                                e.preventDefault();
+                                const inputValue =
+                                  searchRef.current.querySelector(
+                                    "input"
+                                  ).value;
+                                if (inputValue) {
+                                  fetchUsers(inputValue, "user");
+                                }
+                              }}
+                              onClick={(event) => event.stopPropagation()}
+                            />
+                          </MenuItem>
+                          {user?.map((user) => (
+                            <MenuItem key={user?.id} value={user?.id}>
+                              {user?.userName}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </FormControl>
+                    )}
                     <div className="grid grid-cols-3">
                       <Select
                         id="currency"

@@ -743,25 +743,6 @@ const Transactions = ({ pathname }) => {
                       },
                     }}
                     variant="standard"
-                    // InputProps={{
-                    //   startAdornment: (
-                    //     <InputAdornment position="start">
-                    //       <IconButton
-                    //         sx={{ padding: 1 }}
-                    //         onClick={(e) => {
-                    //           e.preventDefault();
-                    //           const inputValue =
-                    //             searchRef.current.querySelector("input").value;
-                    //           if (inputValue) {
-                    //             fetchUsers(inputValue);
-                    //           }
-                    //         }}
-                    //       >
-                    //         <BsSearch className={`text-[#AAAAAA]`} size={18} />
-                    //       </IconButton>
-                    //     </InputAdornment>
-                    //   ),
-                    // }}
                     onClick={(event) => {
                       event.stopPropagation();
                     }}
