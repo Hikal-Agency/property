@@ -1050,5 +1050,9 @@
 
 
     "search_vendors":"Search Vendors",
-    "select_vendor":"Select Vendor"
+    "select_vendor":"Select Vendor",
+
+
+
+    "update_vendor":"Update Vendor"
 }

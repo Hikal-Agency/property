@@ -254,7 +254,7 @@ const AddVendor = ({
                       currentMode === "dark" ? "text-white" : "text-black"
                     }`}
                   >
-                    {t("add_vendor")}
+                    {edit ? t("update_vendor") : t("add_vendor")}
                   </h1>
                 </div>
               </div>
@@ -498,7 +498,7 @@ const AddVendor = ({
                 className="text-white"
               />
             ) : (
-              <span>{t("btn_add")}</span>
+              <span>{edit ? t("update_vendor") : t("btn_add")}</span>
             )}
           </Button>
         </div>
