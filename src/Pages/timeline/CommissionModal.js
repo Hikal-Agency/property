@@ -255,8 +255,8 @@ const CommissionModal = ({
                               data?.map((data) => {
                                 let user;
                                 if (
-                                  (data?.invoice?.invoice_type ===
-                                    data?.invoice?.invoice_type.toLowerCase()) ===
+                                  (data?.invoice_type ===
+                                    data?.invoice_type.toLowerCase()) ===
                                   "expense"
                                 ) {
                                   user = true;
@@ -280,23 +280,21 @@ const CommissionModal = ({
                                           ? "left-4"
                                           : "right-4"
                                       } ${
-                                        data?.invoice?.invoice_type.toLowerCase() ===
+                                        data?.invoice_type.toLowerCase() ===
                                         "income"
                                           ? "bg-green-600"
                                           : "bg-red-600"
                                       }
                                     `}
                                     >
-                                      {data?.invoice?.invoice_type.toLowerCase() ===
+                                      {data?.invoice_type.toLowerCase() ===
                                       "income" ? (
                                         <>
-                                          {data?.invoice?.currency}{" "}
-                                          {data?.invoice?.amount}
+                                          {data?.currency} {data?.amount}
                                         </>
                                       ) : (
                                         <>
-                                          - {data?.invoice?.currency}{" "}
-                                          {data?.invoice?.amount}
+                                          - {data?.currency} {data?.amount}
                                         </>
                                       )}
                                     </div>
@@ -340,9 +338,7 @@ const CommissionModal = ({
                                         <div className="flex justify-between my-3">
                                           <p>{t("date")}:</p>
                                           <p className="font-semibold ml-2">
-                                            {/* {data?.invoice?.date} */}
-                                            {/* {new Date(data?.invoice?.date).toISOString().split('T')[0]} */}
-                                            {moment(data?.invoice?.date).format(
+                                            {moment(data?.date).format(
                                               "YYYY-MM-DD"
                                             )}
                                           </p>
@@ -351,35 +347,35 @@ const CommissionModal = ({
                                         <div className="flex justify-between  my-3">
                                           <p>{t("claim")}:</p>
                                           <p className="font-semibold ml-2">
-                                            {data?.invoice?.claim}
+                                            {data?.claim}
                                           </p>
                                         </div>
 
                                         <div className="flex justify-between  my-3">
                                           <p>{t("commission_perc")}:</p>
                                           <p className="font-semibold ml-2">
-                                            {data?.invoice?.comm_percent}
+                                            {data?.comm_percent}
                                           </p>
                                         </div>
 
                                         <div className="flex justify-between  my-3">
                                           <p>{t("vat_amount")}:</p>
                                           <p className="font-semibold ml-2">
-                                            {data?.invoice?.vat}
+                                            {data?.vat}
                                           </p>
                                         </div>
 
                                         <div className="flex justify-between  my-3">
                                           <p>{t("status")}:</p>
                                           <p className="font-semibold ml-2">
-                                            {data?.invoice?.status}
+                                            {data?.status}
                                           </p>
                                         </div>
 
                                         <div className="flex justify-between  my-3">
                                           <p>{t("payment_source")}:</p>
                                           <p className="font-semibold ml-2">
-                                            {data?.invoice?.paid_by}
+                                            {data?.paid_by}
                                           </p>
                                         </div>
                                       </div>
@@ -393,7 +389,7 @@ const CommissionModal = ({
                                         } rounded-md p-5 w-full`}
                                       >
                                         <h3 className="text-sm font-semibold uppercase mb-6 mt-3 text-center">
-                                          {data?.invoice?.invoice_type.toLowerCase() ===
+                                          {data?.invoice_type.toLowerCase() ===
                                           "expense"
                                             ? t("user_details")
                                             : t("vendor_details")}
@@ -500,11 +496,9 @@ const CommissionModal = ({
                                         <p className="flex items-center justify-center gap-4 w-full">
                                           <IoMdPerson size={14} />
                                           <div>
-                                            {data?.invoice?.added_by_name}
+                                            {data?.added_by_name}
                                             {"-"}
-                                            {datetimeLong(
-                                              data?.invoice?.created_at
-                                            )}
+                                            {datetimeLong(data?.created_at)}
                                           </div>
                                         </p>
                                       </div>
