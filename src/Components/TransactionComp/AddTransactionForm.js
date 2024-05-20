@@ -192,7 +192,7 @@ const AddTransactionForm = ({
         amount: "",
         date: "",
         currency: "",
-        comm_percent: "",
+        vat: "",
         country: "",
         status: "",
         paid_by: "",
@@ -601,7 +601,7 @@ const AddTransactionForm = ({
           )}
         />
         <TextField
-          id="comm_percent"
+          id="vat"
           type={"text"}
           label={t("vat")}
           className="w-full"
@@ -611,7 +611,7 @@ const AddTransactionForm = ({
           variant="outlined"
           name="bussiness_name"
           size="small"
-          value={addTransactionData.comm_percent}
+          value={addTransactionData.vat}
           onChange={handleChange}
         />
         <TextField
