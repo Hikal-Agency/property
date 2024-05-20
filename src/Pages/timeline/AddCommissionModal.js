@@ -60,8 +60,10 @@ const AddCommissionModal = ({
   const [totalAmount, setTotalAmount] = useState("");
   const [amountToCalculate, setAmountToCalculate] = useState("");
 
-  const commData = addCommissionModal?.data?.invoice;
+  const commData = addCommissionModal?.data;
   const newCommData = addCommissionModal?.commissionModal;
+
+  console.log("com data: ", commData);
 
   console.log("vendors or users:: ", vendor);
   const [commissionData, setCommissionData] = useState({
