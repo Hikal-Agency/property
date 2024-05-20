@@ -115,7 +115,7 @@ const CommissionModal = ({
 
       console.log("invoice history::: ", leadsCycleResult);
       setMaxPage(leadsCycleResult?.data?.data?.last_page);
-      setData(leadsCycleResult?.data?.data);
+      setData(leadsCycleResult?.data?.data?.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
