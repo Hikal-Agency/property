@@ -471,27 +471,14 @@ const AddTransactionForm = ({
                   },
                 }}
                 variant="standard"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <IconButton
-                        sx={{ padding: 1 }}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          const inputValue =
-                            searchRef.current.querySelector("input").value;
-                          if (inputValue) {
-                            fetchUsers(inputValue, "user");
-                          }
-                        }}
-                      >
-                        <BsSearch className={`text-[#AAAAAA]`} size={18} />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
                 onClick={(event) => {
                   event.stopPropagation();
+                }}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.length >= 3) {
+                    fetchUsers(value, "user");
+                  }
                 }}
               />
             </MenuItem>
@@ -552,27 +539,33 @@ const AddTransactionForm = ({
                   },
                 }}
                 variant="standard"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <IconButton
-                        sx={{ padding: 1 }}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          const inputValue =
-                            searchRef.current.querySelector("input").value;
-                          if (inputValue) {
-                            fetchUsers(inputValue);
-                          }
-                        }}
-                      >
-                        <BsSearch className={`text-[#AAAAAA]`} size={18} />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
+                // InputProps={{
+                //   startAdornment: (
+                //     <InputAdornment position="start">
+                //       <IconButton
+                //         sx={{ padding: 1 }}
+                //         onClick={(e) => {
+                //           e.preventDefault();
+                //           const inputValue =
+                //             searchRef.current.querySelector("input").value;
+                //           if (inputValue) {
+                //             fetchUsers(inputValue);
+                //           }
+                //         }}
+                //       >
+                //         <BsSearch className={`text-[#AAAAAA]`} size={18} />
+                //       </IconButton>
+                //     </InputAdornment>
+                //   ),
+                // }}
                 onClick={(event) => {
                   event.stopPropagation();
+                }}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value.length >= 3) {
+                    fetchUsers(value);
+                  }
                 }}
               />
             </MenuItem>
