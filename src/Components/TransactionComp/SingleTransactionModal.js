@@ -19,7 +19,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import Loader from "../../Components/Loader";
 import { load } from "../../Pages/App";
 
-import { MdClose } from "react-icons/md";
+import { MdClose, MdFileUpload } from "react-icons/md";
 import { BsFileEarmarkMedical } from "react-icons/bs";
 
 import usePermission from "../../utils/usePermission";
@@ -27,8 +27,8 @@ import usePermission from "../../utils/usePermission";
 const SingleTransactionModal = ({
   setSingleTransModal,
   singleTransModal,
-  fetchCrmClients,
   isUrl,
+  fetchTransactions,
 }) => {
   const {
     currentMode,
@@ -55,8 +55,8 @@ const SingleTransactionModal = ({
 
   // const [loading, setloading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
-  const [listData, setListingData] = useState({});
-  const [openEdit, setOpenEdit] = useState(false);
+  const [image, setImage] = useState(null);
+
   const [leadNotFound, setLeadNotFound] = useState(false);
   const { hasPermission } = usePermission();
   const [singleImageModal, setSingleImageModal] = useState({
@@ -67,6 +67,76 @@ const SingleTransactionModal = ({
 
   const [allDocs, setAllDocs] = useState([]);
   const [allImages, setAllImages] = useState([]);
+
+  const UploadImage = (e) => {
+    setBtnLoading(true);
+    const token = localStorage.getItem("auth-token");
+
+    const file = e.target.files[0];
+
+    console.log("files:: ", file);
+
+    const invoiceReceipt = {
+      invoice_id: transData?.id,
+      image: file,
+    };
+
+    axios
+      .post(`${BACKEND_URL}/invoice-receipts`, invoiceReceipt, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Result: ");
+        console.log("Result: ", result);
+
+        if (result?.data?.status === false) {
+          toast.error(result?.data?.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setBtnLoading(false);
+          return;
+        }
+
+        toast.success(`Invoice receipt uploaded successfully.`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setBtnLoading(false);
+        handleClose();
+        fetchTransactions();
+      })
+      .catch((err) => {
+        setBtnLoading(false);
+
+        console.log(err);
+        toast.error("Error in uploading image.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
 
   const [isClosing, setIsClosing] = useState(false);
   const handleClose = () => {
@@ -81,6 +151,19 @@ const SingleTransactionModal = ({
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
+
+  const handleImgUpload = (e) => {
+    console.log("EE:", e);
+    setImage(e.target.files[0]);
+  };
+
+  console.log("image : ", image);
+
+  useEffect(() => {
+    if (image != null) {
+      UploadImage();
+    }
+  }, [image]);
 
   return (
     <>
@@ -162,31 +245,31 @@ const SingleTransactionModal = ({
                               style={{ display: "none" }}
                               id="contained-button-file"
                               type="file"
-                              // onChange={handleImgUpload}
+                              onChange={handleImgUpload}
                             />
                             <label htmlFor="contained-button-file">
                               <Button
                                 variant="contained"
                                 size="medium"
-                                className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3 "
+                                className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
                                 style={{
                                   color: "#ffffff",
                                   border: "1px solid white",
                                   fontFamily: fontFam,
                                 }}
                                 component="span" // Required so the button doesn't automatically submit form
-                                // disabled={loading ? true : false}
-                                // startIcon={
-                                //   loading ? null : (
-                                //     <MdFileUpload className="mx-2" size={16} />
-                                //   )
-                                // }
+                                disabled={btnLoading}
+                                startIcon={
+                                  btnLoading ? null : (
+                                    <MdFileUpload className="mx-2" size={16} />
+                                  )
+                                }
                               >
                                 <span>{t("upload_invoice")}</span>
                               </Button>
                             </label>
                           </div>
-                          <button className="bg-primary rounded rounded-full p-4">
+                          <button className="bg-primary  rounded-full p-4">
                             <FaPencilAlt />
                           </button>
                         </div>

@@ -908,6 +908,7 @@ const Transactions = ({ pathname }) => {
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
           isUrl={isUrl}
+          fetchTransactions={fetchTransactions}
         />
       )}
     </div>
