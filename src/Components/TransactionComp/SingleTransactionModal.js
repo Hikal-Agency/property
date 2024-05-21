@@ -72,13 +72,9 @@ const SingleTransactionModal = ({
     setBtnLoading(true);
     const token = localStorage.getItem("auth-token");
 
-    const file = e.target.files[0];
-
-    console.log("files:: ", file);
-
     const invoiceReceipt = {
       invoice_id: transData?.id,
-      image: file,
+      file: image,
     };
 
     axios
@@ -243,11 +239,11 @@ const SingleTransactionModal = ({
                             <input
                               accept="image/*"
                               style={{ display: "none" }}
-                              id="contained-button-file"
+                              id="invoice-file"
                               type="file"
                               onChange={handleImgUpload}
                             />
-                            <label htmlFor="contained-button-file">
+                            <label htmlFor="invoice-file">
                               <Button
                                 variant="contained"
                                 size="medium"
