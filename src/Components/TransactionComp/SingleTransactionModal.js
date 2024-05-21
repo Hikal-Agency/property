@@ -11,6 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import { GoogleMap, Marker } from "@react-google-maps/api";
+import { FaPencilAlt } from "react-icons/fa";
 
 import axios from "../../axoisConfig";
 import Error404 from "../../Pages/Error";
@@ -38,6 +39,7 @@ const SingleTransactionModal = ({
     i18n,
     User,
     t,
+    fontFam,
   } = useStateContext();
 
   console.log("single trans data ::: ", singleTransModal);
@@ -82,15 +84,9 @@ const SingleTransactionModal = ({
 
   return (
     <>
-      {/* <div
-        className={`flex min-h-screen w-full p-4 ${
-          !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-        } ${currentMode === "dark" ? "text-white" : "text-black"}`}
-      > */}
       <Modal
         keepMounted
         open={singleTransModal}
-        // onClose={handleCloseTimelineModel}
         onClose={handleClose}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
@@ -113,7 +109,6 @@ const SingleTransactionModal = ({
           w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
-            // onClick={handleCloseTimelineModel}
             onClick={handleClose}
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
@@ -148,15 +143,53 @@ const SingleTransactionModal = ({
                 ) : (
                   <div className="w-full">
                     <div className="w-full flex justify-between items-center pb-3">
-                      <div className="flex items-center gap-3">
-                        <h1
-                          className={`font-semibold text-white bg-primary py-2 px-3 rounded-md`}
-                        >
-                          {transData?.id}
-                        </h1>
-                        <h1 className={`text-lg font-semibold capitalize`}>
-                          {transData?.country || "---"}
-                        </h1>
+                      <div className="w-full flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                          <h1
+                            className={`font-semibold text-white bg-primary py-2 px-3 rounded-md`}
+                          >
+                            {transData?.id}
+                          </h1>
+                          <h1 className={`text-lg font-semibold capitalize`}>
+                            {transData?.country || "---"}
+                          </h1>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <div>
+                            <input
+                              accept="image/*"
+                              style={{ display: "none" }}
+                              id="contained-button-file"
+                              type="file"
+                              // onChange={handleImgUpload}
+                            />
+                            <label htmlFor="contained-button-file">
+                              <Button
+                                variant="contained"
+                                size="medium"
+                                className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3 "
+                                style={{
+                                  color: "#ffffff",
+                                  border: "1px solid white",
+                                  fontFamily: fontFam,
+                                }}
+                                component="span" // Required so the button doesn't automatically submit form
+                                // disabled={loading ? true : false}
+                                // startIcon={
+                                //   loading ? null : (
+                                //     <MdFileUpload className="mx-2" size={16} />
+                                //   )
+                                // }
+                              >
+                                <span>{t("upload_invoice")}</span>
+                              </Button>
+                            </label>
+                          </div>
+                          <button className="bg-primary rounded rounded-full p-4">
+                            <FaPencilAlt />
+                          </button>
+                        </div>
                       </div>
                     </div>
 
