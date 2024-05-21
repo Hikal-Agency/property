@@ -23,12 +23,15 @@ import { MdClose, MdFileUpload } from "react-icons/md";
 import { BsFileEarmarkMedical } from "react-icons/bs";
 
 import usePermission from "../../utils/usePermission";
+import EditTransactionForm from "./EditTransactionForm";
 
 const SingleTransactionModal = ({
   setSingleTransModal,
   singleTransModal,
   isUrl,
   fetchTransactions,
+  user,
+  vendors,
 }) => {
   const {
     currentMode,
@@ -44,12 +47,13 @@ const SingleTransactionModal = ({
 
   console.log("single trans data ::: ", singleTransModal);
   const [singleTrans, setSingleClient] = useState(singleTransModal);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
   const transData = singleTransModal?.invoice || singleTransModal;
 
-  let user = singleTrans?.user ? singleTrans?.user : false;
+  let userData = singleTrans?.user ? singleTrans?.user : false;
 
-  console.log("user: ", user);
+  console.log("user: ", userData);
 
   const [loading, setloading] = useState(false);
 
@@ -265,7 +269,10 @@ const SingleTransactionModal = ({
                               </Button>
                             </label>
                           </div>
-                          <button className="bg-primary  rounded-full p-4">
+                          <button
+                            className="bg-primary  rounded-full p-4"
+                            onClick={() => setOpenEditModal(true)}
+                          >
                             <FaPencilAlt />
                           </button>
                         </div>
@@ -289,7 +296,6 @@ const SingleTransactionModal = ({
                           <div className="flex gap-3">
                             <p className="font-bold capitalize">{t("date")}:</p>
                             <p>
-                              {/* {new Date(?.invoice?.date).toISOString().split('T')[0]} */}
                               {moment(transData?.date).format("YYYY-MM-DD")}
                             </p>
                           </div>
@@ -368,32 +374,32 @@ const SingleTransactionModal = ({
                           <div
                             className={`rounded-t-xl text-white flex justify-center font-semibold bg-primary p-2 px-4`}
                           >
-                            {user ? t("user_details") : t("vendor_details")}
+                            {userData ? t("user_details") : t("vendor_details")}
                           </div>
 
                           <div className="p-4 flex flex-col gap-4">
-                            {user ? (
+                            {userData ? (
                               <>
                                 {/* username  */}
                                 <div className="flex gap-3">
                                   <p className="font-bold capitalize">
                                     {t("username")}:
                                   </p>
-                                  <p>{user?.userName} </p>
+                                  <p>{userData?.userName} </p>
                                 </div>
                                 {/* contact */}
                                 <div className="flex gap-3">
                                   <p className="font-bold capitalize">
                                     {t("label_contact")}:
                                   </p>
-                                  <p>{user?.userContact} </p>
+                                  <p>{userData?.userContact} </p>
                                 </div>
                                 {/* email  */}
                                 <div className="flex gap-3">
                                   <p className="font-bold capitalize">
                                     {t("label_email")}:
                                   </p>
-                                  <p>{user?.userEmail}</p>
+                                  <p>{userData?.userEmail}</p>
                                 </div>
                               </>
                             ) : (
@@ -449,21 +455,21 @@ const SingleTransactionModal = ({
                                   <p className="font-bold capitalize">
                                     {t("username")}:
                                   </p>
-                                  <p>{user?.userName} </p>
+                                  <p>{userData?.userName} </p>
                                 </div>
                                 {/* contact */}
                                 <div className="flex gap-3">
                                   <p className="font-bold capitalize">
                                     {t("label_contact")}:
                                   </p>
-                                  <p>{user?.userContact} </p>
+                                  <p>{userData?.userContact} </p>
                                 </div>
                                 {/* email  */}
                                 <div className="flex gap-3">
                                   <p className="font-bold capitalize">
                                     {t("label_email")}:
                                   </p>
-                                  <p>{user?.userEmail}</p>
+                                  <p>{userData?.userEmail}</p>
                                 </div>
                               </>
                             </div>
@@ -600,6 +606,16 @@ const SingleTransactionModal = ({
                             })}
                         </div>
                       </div>
+                      {openEditModal && (
+                        <EditTransactionForm
+                          openEditModal={openEditModal}
+                          setOpenEditModal={setOpenEditModal}
+                          transData={transData}
+                          fetchTransactions={fetchTransactions}
+                          user={user}
+                          vendors={vendors}
+                        />
+                      )}
                     </div>
                   </div>
                 )}

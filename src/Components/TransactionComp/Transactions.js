@@ -908,6 +908,8 @@ const Transactions = ({ pathname }) => {
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
           isUrl={isUrl}
+          user={user}
+          vendors={vendors}
           fetchTransactions={fetchTransactions}
         />
       )}

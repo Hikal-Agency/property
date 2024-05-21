@@ -34,14 +34,15 @@ import { toast } from "react-toastify";
 
 const AddTransactionForm = ({
   fetchTransactions,
-  pathname,
-  isUrl,
   setAddTransactionData,
   addTransactionData,
   user,
   vendors,
   loading,
   fetchUsers,
+  edit,
+  transData,
+  handleClose,
 }) => {
   console.log("user list: ", user);
   const {
@@ -142,17 +143,20 @@ const AddTransactionForm = ({
 
     setBtnLoading(true);
 
+    let url;
+    if (edit) {
+      url = `${BACKEND_URL}/invoices/${transData?.id}`;
+    } else {
+      url = `${BACKEND_URL}/invoices`;
+    }
+
     try {
-      const submitTransaction = await axios.post(
-        `${BACKEND_URL}/invoices`,
-        addTransactionData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const submitTransaction = await axios.post(url, addTransactionData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      });
 
       console.log("transaction submited ", submitTransaction);
 
@@ -173,7 +177,7 @@ const AddTransactionForm = ({
         return;
       }
 
-      toast.success("Transaction Added.", {
+      toast.success(`Transaction ${edit ? "Updated" : "Added"} `, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -184,22 +188,28 @@ const AddTransactionForm = ({
         theme: "light",
       });
 
+      if (edit) {
+        handleClose();
+      }
+
       fetchTransactions();
 
-      setAddTransactionData({
-        user_id: "",
-        invoice_type: "",
-        amount: "",
-        date: "",
-        currency: "",
-        vat: "",
-        country: "",
-        status: "",
-        paid_by: "",
-        vendor_id: "",
-        category: "",
-        image: null,
-      });
+      if (!edit) {
+        setAddTransactionData({
+          user_id: "",
+          invoice_type: "",
+          amount: "",
+          date: "",
+          currency: "",
+          vat: "",
+          country: "",
+          status: "",
+          paid_by: "",
+          vendor_id: "",
+          category: "",
+          image: null,
+        });
+      }
 
       setBtnLoading(false);
     } catch (error) {
