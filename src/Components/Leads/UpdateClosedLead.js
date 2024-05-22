@@ -51,11 +51,32 @@ const UpdateLead = ({
   const [btnloading, setbtnloading] = useState(false);
 
   const inputFileRef = useRef(null);
-  const [updateLeadData, setUpdateLeadData] = useState({});
   const [Feedback, setFeedback] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [leadDate, setLeadDate] = useState("");
   const [updatedField, setUpdatedField] = useState("");
+  // const [updateLeadData, setUpdateLeadData] = useState({});
+  const [updateLeadData, setUpdateLeadData] = useState({
+    agent_comm_amount: '',
+    agent_comm_percent: '',
+    amount: '',
+    comm_amount: '',
+    comm_percent: '',
+    comm_status: '',
+    currency: '',
+    dealDate: '',
+    id: '',
+    leadId: '',
+    managerId: '',
+    passport: '',
+    unit: '',
+    updated_at: '',
+    updated_by: '',
+    updated_by_name: '',
+    vat: '',
+    project: '',
+    enquiryType: '',
+  });
 
   // const style = {
   //   transform: "translate(-50%, -50%)",
