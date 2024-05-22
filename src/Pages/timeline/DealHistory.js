@@ -111,6 +111,7 @@ const DealHistory = ({
       field: "pdc_status",
       text: t("pdc"),
       value: statusData?.pdc_status === 1 ? true : false,
+      status: statusData?.pdc_status === 1 ? t("received") : t("not_received"),
       perm: false,
       icon:
         statusData?.pdc_status === 1 ? (
@@ -118,11 +119,13 @@ const DealHistory = ({
         ) : (
           <RxCross2 size={20} color="#DA1F26" />
         ),
+
     },
     {
       field: "spa_status",
       text: t("spa"),
       value: statusData?.spa_status === 1 ? true : false,
+      status: statusData?.spa_status === 1 ? t("received") : t("not_received"),
       perm: false,
       icon:
         statusData?.spa_status === 1 ? (
@@ -135,6 +138,7 @@ const DealHistory = ({
       field: "comm_status",
       text: t("commission"),
       value: statusData?.comm_status === 1 ? true : false,
+      status: statusData?.comm_status === 1 ? t("received") : t("not_received"),
       perm: true,
       icon:
         statusData?.comm_status === 1 ? (
@@ -148,6 +152,7 @@ const DealHistory = ({
       field: "agent_comm_status",
       text: t("agent_comm"),
       value: statusData?.agent_comm_status === 1 ? true : false,
+      status: statusData?.agent_comm_status === 1 ? t("sent") : t("hold"),
       perm: true,
       icon:
         statusData?.agent_comm_status === 1 ? (
@@ -458,22 +463,19 @@ const DealHistory = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          } w-[100vw] h-[100vh] flex items-start justify-end `}
+            } w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseDealHistory}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -485,15 +487,13 @@ const DealHistory = ({
 
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+            className={` ${currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-            } 
+              } 
              p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
@@ -506,9 +506,8 @@ const DealHistory = ({
                     <div className="flex items-center ">
                       <div className="bg-primary h-10 w-1 rounded-full"></div>
                       <h1
-                        className={`text-lg font-semibold mx-2 uppercase ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                        className={`text-lg font-semibold mx-2 uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
                       >
                         {t("deal_history")}
                       </h1>
@@ -526,9 +525,8 @@ const DealHistory = ({
                   </div>
                   <div>
                     <div
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      } p-4`}
+                      className={`${currentMode === "dark" ? "text-white" : "text-black"
+                        } p-4`}
                     >
                       <div className="grid grid-cols-12 gap-5">
                         {/* STATUS */}
@@ -546,37 +544,55 @@ const DealHistory = ({
                                 {statuses?.map((status) => {
                                   return (
                                     <div
-                                      className={`${
-                                        currentMode === "dark"
-                                          ? "bg-[#1C1C1C]"
-                                          : "bg-[#EEEEEE]"
-                                      } items-center justify-center flex flex-col rounded-xl shadow-sm`}
+                                      className={`${currentMode === "dark"
+                                        ? "bg-[#1C1C1C]"
+                                        : "bg-[#EEEEEE]"
+                                        } items-center justify-center flex flex-col rounded-xl shadow-sm h-fit relative`}
                                     >
                                       <div
-                                        className={`p-5 flex flex-col w-full items-center justify-center ${
-                                          status?.type === "commission" &&
+                                        className={`p-8 flex flex-col w-full items-center justify-center ${status?.type === "commission" &&
                                           hasPermission("add_commission")
-                                            ? "cursor-pointer"
-                                            : null
-                                        } `}
+                                          ? "cursor-pointer"
+                                          : null
+                                          } `}
                                         onClick={
                                           status?.type === "commission" &&
-                                          hasPermission("add_commission")
+                                            hasPermission("add_commission")
                                             ? () => handleCommissionModalOpen()
                                             : undefined
                                         }
                                       >
-                                        <p className={`flex items-center mb-2`}>
+                                        {/* <p className={`flex items-center mb-2`}>
                                           {status?.icon}
-                                        </p>
-                                        <p>{status?.text}</p>
+                                        </p> */}
+                                        <p className="text-lg font-semibold mt-4">{status?.text}</p>
                                       </div>
+                                      <div className={`p-2 w-full rounded-b-xl shadow-sm text-white text-center uppercase ${status?.value ? "bg-green-600" : "bg-red-600"}`}>
+                                        {status?.status}
+                                      </div>
+
                                       {status?.value === false &&
                                         (status?.perm === true ? (
                                           hasPermission("add_commission") && (
+                                            <div className="p-2 rounded-full flex items-center justify-center bg-green-600 absolute top-2 right-2">
+                                              <Tooltip title="Mark">
+                                                <button
+                                                  onClick={() =>
+                                                    updateStatus(status?.field)
+                                                  }
+                                                >
+                                                  <BsCheck2All
+                                                    size={16}
+                                                    color={"white"}
+                                                  />
+                                                </button>
+                                              </Tooltip>
+                                            </div>
+                                          )
+                                        ) : (
+                                          <div className="p-2 rounded-full flex items-center justify-center bg-green-600 absolute top-2 right-2">
                                             <Tooltip title="Mark">
                                               <button
-                                                className={`p-2 w-full rounded-b-xl flex items-center justify-center bg-green-600`}
                                                 onClick={() =>
                                                   updateStatus(status?.field)
                                                 }
@@ -587,21 +603,7 @@ const DealHistory = ({
                                                 />
                                               </button>
                                             </Tooltip>
-                                          )
-                                        ) : (
-                                          <Tooltip title="Mark">
-                                            <button
-                                              className={`p-2 w-full rounded-b-xl flex items-center justify-center bg-green-600`}
-                                              onClick={() =>
-                                                updateStatus(status?.field)
-                                              }
-                                            >
-                                              <BsCheck2All
-                                                size={16}
-                                                color={"white"}
-                                              />
-                                            </button>
-                                          </Tooltip>
+                                          </div>
                                         ))}
                                     </div>
                                   );
@@ -628,11 +630,10 @@ const DealHistory = ({
                               <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
                                 {transactions?.map((spa) => (
                                   <div
-                                    className={`${
-                                      currentMode === "dark"
-                                        ? "bg-[#1C1C1C]"
-                                        : "bg-[#EEEEEE]"
-                                    } rounded-xl shadow-sm card-hover w-full relative mb-4`}
+                                    className={`${currentMode === "dark"
+                                      ? "bg-[#1C1C1C]"
+                                      : "bg-[#EEEEEE]"
+                                      } rounded-xl shadow-sm card-hover w-full relative mb-4`}
                                   >
                                     {/* EDIT BUTTON */}
                                     {hasPermission("deal_spa") && (
@@ -653,11 +654,10 @@ const DealHistory = ({
                                     </div>
                                     {/* DETAILS */}
                                     <div
-                                      className={`p-4 grid ${
-                                        spa?.temp_file === null
-                                          ? "grid-cols-1"
-                                          : "grid-cols-2"
-                                      } justify-between gap-4`}
+                                      className={`p-4 grid ${spa?.temp_file === null
+                                        ? "grid-cols-1"
+                                        : "grid-cols-2"
+                                        } justify-between gap-4`}
                                     >
                                       {/* TEXT */}
                                       <div className="flex flex-col gap-4">
@@ -785,11 +785,10 @@ const DealHistory = ({
                                   (timeline, index) => (
                                     <React.Fragment key={index}>
                                       <div
-                                        className={`${
-                                          isLangRTL(i18n.language)
-                                            ? "ml-3"
-                                            : "mr-3"
-                                        } col-start-1 col-end-3 md:mx-auto relative`}
+                                        className={`${isLangRTL(i18n.language)
+                                          ? "ml-3"
+                                          : "mr-3"
+                                          } col-start-1 col-end-3 md:mx-auto relative`}
                                       >
                                         <div className="h-full w-6 flex items-center justify-center">
                                           <div
@@ -814,21 +813,19 @@ const DealHistory = ({
                                             {item.note && (
                                               <>
                                                 <div
-                                                  className={`${
-                                                    isLangRTL(i18n.language)
-                                                      ? "ml-3"
-                                                      : "mr-3"
-                                                  } col-start-1 col-end-3 md:mx-auto relative`}
+                                                  className={`${isLangRTL(i18n.language)
+                                                    ? "ml-3"
+                                                    : "mr-3"
+                                                    } col-start-1 col-end-3 md:mx-auto relative`}
                                                 >
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
                                                   </div>
                                                   <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
-                                                    } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                                    className={`${isLangRTL(i18n.language)
+                                                      ? "-mr-2"
+                                                      : "-ml-2"
+                                                      } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
                                                   >
                                                     <MdNoteAlt
                                                       className="text-white"
@@ -837,11 +834,10 @@ const DealHistory = ({
                                                   </div>
                                                 </div>
                                                 <div
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "bg-[#1C1C1C]"
-                                                      : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  className={`${currentMode === "dark"
+                                                    ? "bg-[#1C1C1C]"
+                                                    : "bg-[#EEEEEE]"
+                                                    } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                 >
                                                   {/* ADDED BY  */}
                                                   <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">

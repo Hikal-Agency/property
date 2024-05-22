@@ -655,4 +655,36 @@
 .react-select__menu {
     z-index: 100000;
 }
+
+
+
+/* GLASSMORPHISM CARDS */
+.green-card {
+    background-color: rgba(0, 255, 0, 0.13);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(8, 7, 16, 0.6);
+    text-align: center;
+}
+.red-card {
+    background-color: rgba(255, 0, 0, 0.13);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(8, 7, 16, 0.6);
+    text-align: center;
+}
+.black-card {
+    background-color: rgba(0, 0, 0, 0.13);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(8, 7, 16, 0.6);
+    text-align: center;
+}
+.white-card {
+    background-color: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(8, 7, 16, 0.6);
+    text-align: center;
+}
   

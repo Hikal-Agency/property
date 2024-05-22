@@ -1054,5 +1054,8 @@
 
 
 
-    "update_vendor":"Update Vendor"
+    "update_vendor":"Update Vendor",
+    "not_received": "Not received",
+    "sent": "Sent",
+    "hold": "Hold"
 }
