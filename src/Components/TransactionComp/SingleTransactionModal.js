@@ -44,12 +44,25 @@ const SingleTransactionModal = ({
     t,
     fontFam,
   } = useStateContext();
+  const hikalrewhite = "fullLogoREWhite.png";
 
   console.log("single trans data ::: ", singleTransModal);
-  const [singleTrans, setSingleClient] = useState(singleTransModal);
-  const [openEditModal, setOpenEditModal] = useState(false);
 
+  const [singleTrans, setSingleClient] = useState(singleTransModal);
   const transData = singleTransModal?.invoice || singleTransModal;
+
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [activeImage, setActiveImage] = useState(null);
+
+  const handleCloseOverlay = () => {
+    setShowOverlay(false);
+  };
+
+  const handleImageClick = (imageUrl) => {
+    setActiveImage(imageUrl);
+    setShowOverlay(true);
+  };
 
   let userData = singleTrans?.user ? singleTrans?.user : false;
 
@@ -241,7 +254,7 @@ const SingleTransactionModal = ({
                         <div className="flex items-center gap-3">
                           <div>
                             <input
-                              accept="image/*"
+                              accept="image/jpeg, image/png, image/jpg, image/gif, application/pdf"
                               style={{ display: "none" }}
                               id="invoice-file"
                               type="file"
@@ -589,7 +602,11 @@ const SingleTransactionModal = ({
                                                   src={`data:image/${ext};base64, ${l?.temp_file}`}
                                                   width="150px"
                                                   height="150px"
-                                                  // onClick={() => handleImageClick(`data:image/${ext};base64, ${data?.receipt[0]?.temp_file}`)}
+                                                  onClick={() =>
+                                                    handleImageClick(
+                                                      `data:image/${ext};base64, ${l?.temp_file}`
+                                                    )
+                                                  }
                                                 />
                                                 <p class="text-sm break-all">
                                                   {l.image}
@@ -623,6 +640,25 @@ const SingleTransactionModal = ({
               </>
             )}
           </div>
+          {showOverlay && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div className="fixed inset-0 bg-black opacity-75"></div>
+              <div className="relative z-10 bg-white">
+                <img src={activeImage} alt="overlay" className="h-[90vh]" />
+                <button
+                  onClick={handleCloseOverlay}
+                  className="absolute top-4 right-4 text-2xl text-white bg-primary p-2 rounded-full m-0"
+                >
+                  <MdClose />
+                </button>
+                <img
+                  src={hikalrewhite}
+                  alt="hikal real estate"
+                  className="absolute right-4 bottom-4 w-[100px] p-2 bg-[#000000] bg-opacity-70"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </Modal>
       {/* </div> */}
