@@ -556,28 +556,6 @@ const UpdateBookedDeal = ({
                             )}
                           />
                         </LocalizationProvider>
-                        {/* <FormControl fullWidth variant="outlined" size="medium">
-                          <InputLabel id="">Purpose of enquiry</InputLabel>
-                          <Select
-                            id="for"
-                            value={ForType}
-                            label="Purpose of enquiry"
-                            onChange={ChangeForType}
-                            className="w-full"
-                            displayEmpty
-                            required
-                            size="small"
-                            sx={{
-                              marginBottom: "1.35rem !important",
-                            }}
-                          >
-                            <MenuItem value="" disabled>
-                              ---NONE---
-                            </MenuItem>
-                            <MenuItem value={"Investment"}>Investment</MenuItem>
-                            <MenuItem value={"End-user"}>End-User</MenuItem>
-                          </Select>
-                        </FormControl> */}
                       </Box>
                     </div>
                   </div>
