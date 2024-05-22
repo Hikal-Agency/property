@@ -24,6 +24,8 @@ import {
   purpose_options,
 } from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const UpdateBookedDeal = ({
   LeadModelOpen,
@@ -74,6 +76,7 @@ const UpdateBookedDeal = ({
   const [LeadEmail, setLeadEmail] = useState("");
   const [LeadProject, setLeadProject] = useState("");
   const [booked_amount, setBookedAmount] = useState("");
+  const [booked_date, setBookedDate] = useState("");
   //eslint-disable-next-line
   const [LeadNotes, setLeadNotes] = useState("");
 
@@ -172,6 +175,7 @@ const UpdateBookedDeal = ({
         setLeadNotes(result?.data?.data?.notes);
         setManager(result?.data?.data?.assignedToManager);
         setSalesPerson2(result?.data?.data?.assignedToSales);
+        setBookedDate(result?.data?.data?.booked_date);
         setloading(false);
       })
       .catch((err) => {
@@ -218,6 +222,7 @@ const UpdateBookedDeal = ({
     UpdateLeadData.append("project", LeadProject);
     UpdateLeadData.append("booked_amount", booked_amount);
     UpdateLeadData.append("leadFor", ForType);
+    UpdateLeadData.append("booked_date", booked_date);
     // UpdateLeadData.append("language", LanguagePrefered);
     // UpdateLeadData.append("feedback", Feedback);
     // UpdateLeadData.append("leadStatus", LeadStatus);
@@ -511,6 +516,46 @@ const UpdateBookedDeal = ({
                           menuPortalTarget={document.body}
                           styles={selectStyles(currentMode, primaryColor)}
                         />
+
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            value={booked_date}
+                            label={t("date")}
+                            views={["day", "month", "year"]}
+                            onChange={(newValue) => {
+                              const formattedDate = moment(newValue?.$d).format(
+                                "YYYY-MM-DD"
+                              );
+
+                              setBookedDate(formattedDate);
+                            }}
+                            format="DD-MM-YYYY"
+                            renderInput={(params) => (
+                              <TextField
+                                sx={{
+                                  "& input": {
+                                    color:
+                                      currentMode === "dark"
+                                        ? "white"
+                                        : "black",
+                                  },
+                                  "& .MuiSvgIcon-root": {
+                                    color:
+                                      currentMode === "dark"
+                                        ? "white"
+                                        : "black",
+                                  },
+                                  marginBottom: "15px",
+                                }}
+                                fullWidth
+                                size="small"
+                                {...params}
+                                onKeyDown={(e) => e.preventDefault()}
+                                readOnly={true}
+                              />
+                            )}
+                          />
+                        </LocalizationProvider>
                         {/* <FormControl fullWidth variant="outlined" size="medium">
                           <InputLabel id="">Purpose of enquiry</InputLabel>
                           <Select
