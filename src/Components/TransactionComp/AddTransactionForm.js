@@ -272,9 +272,9 @@ const AddTransactionForm = ({
           (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
         }`}
       >
-        <h3 className="text-primary mb-5 text-center font-semibold">{` ${t(
-          "new_transaction"
-        )}`}</h3>
+        <h3 className="text-primary mb-5 text-center font-semibold">{` ${
+          edit ? t("edit_transaction_details") : t("new_transaction")
+        }`}</h3>
         <Select
           id="category"
           options={invoice_category(t)
@@ -308,11 +308,9 @@ const AddTransactionForm = ({
             value: trans.value,
             label: trans.value,
           }))}
-          value={
-            commission_type(t)?.filter(
-              (comm) => comm?.value === addTransactionData?.invoice_type
-            )?.value
-          }
+          value={commission_type(t)?.filter(
+            (comm) => comm?.value === addTransactionData?.invoice_type
+          )}
           onChange={(e) => {
             console.log("commission type e: ", e);
             setAddTransactionData({
@@ -549,25 +547,6 @@ const AddTransactionForm = ({
                   },
                 }}
                 variant="standard"
-                // InputProps={{
-                //   startAdornment: (
-                //     <InputAdornment position="start">
-                //       <IconButton
-                //         sx={{ padding: 1 }}
-                //         onClick={(e) => {
-                //           e.preventDefault();
-                //           const inputValue =
-                //             searchRef.current.querySelector("input").value;
-                //           if (inputValue) {
-                //             fetchUsers(inputValue);
-                //           }
-                //         }}
-                //       >
-                //         <BsSearch className={`text-[#AAAAAA]`} size={18} />
-                //       </IconButton>
-                //     </InputAdornment>
-                //   ),
-                // }}
                 onClick={(event) => {
                   event.stopPropagation();
                 }}
@@ -643,33 +622,37 @@ const AddTransactionForm = ({
           error={fieldErrors.amount}
         />
 
-        <input
-          accept="image/*"
-          style={{ display: "none" }}
-          id="contained-button-file"
-          type="file"
-          onChange={handleImgUpload}
-        />
+        {!edit && (
+          <>
+            <input
+              accept="image/*"
+              style={{ display: "none" }}
+              id="contained-button-file"
+              type="file"
+              onChange={handleImgUpload}
+            />
 
-        <label htmlFor="contained-button-file">
-          <Button
-            variant="contained"
-            size="medium"
-            className="bg-btn-primary w-max text-white rounded-lg py-3 font-semibold my-3 w-full"
-            style={{
-              color: "#ffffff",
-              border: "1px solid white",
-              fontFamily: fontFam,
-              marginBottom: "20px",
-              width: "100%",
-            }}
-            component="span" // Required so the button doesn't automatically submit form
-            disabled={loading ? true : false}
-            startIcon={<MdFileUpload className="mx-2" size={16} />}
-          >
-            <span>{t("upload_invoice")}</span>
-          </Button>
-        </label>
+            <label htmlFor="contained-button-file">
+              <Button
+                variant="contained"
+                size="medium"
+                className="bg-btn-primary w-max text-white rounded-lg py-3 font-semibold my-3 w-full"
+                style={{
+                  color: "#ffffff",
+                  border: "1px solid white",
+                  fontFamily: fontFam,
+                  marginBottom: "20px",
+                  width: "100%",
+                }}
+                component="span" // Required so the button doesn't automatically submit form
+                disabled={loading ? true : false}
+                startIcon={<MdFileUpload className="mx-2" size={16} />}
+              >
+                <span>{t("upload_invoice")}</span>
+              </Button>
+            </label>
+          </>
+        )}
 
         <Button
           variant="contained"
@@ -687,7 +670,9 @@ const AddTransactionForm = ({
           {btnLoading ? (
             <CircularProgress />
           ) : (
-            <span>{t("btn_new_transaction")}</span>
+            <span>
+              {edit ? t("btn_edit_transaction") : t("btn_new_transaction")}
+            </span>
           )}
         </Button>
       </Box>

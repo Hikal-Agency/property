@@ -55,81 +55,15 @@ const EditTransactionForm = ({
     invoice_type: transData?.invoice_type || null,
     amount: transData?.amount || null,
     date: transData?.date || null,
-    currency: transData?.user_id || "AED",
+    currency: transData?.currency || "AED",
     comm_percent: transData?.comm_percent || null,
     country: transData?.country || null,
-    status: transData?.user_id || "Paid",
+    status: transData?.status || "Paid",
     paid_by: transData?.paid_by || null,
     vendor_id: transData?.vendor_id || null,
     category: transData?.category || null,
     image: null,
   });
-
-  //   const UploadImage = (e) => {
-  //     setBtnLoading(true);
-  //     const token = localStorage.getItem("auth-token");
-
-  //     const invoiceReceipt = {
-  //       invoice_id: transData?.id,
-  //       file: image,
-  //     };
-
-  //     axios
-  //       .post(`${BACKEND_URL}/invoice-receipts`, invoiceReceipt, {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //           Authorization: "Bearer " + token,
-  //         },
-  //       })
-  //       .then((result) => {
-  //         console.log("Result: ");
-  //         console.log("Result: ", result);
-
-  //         if (result?.data?.status === false) {
-  //           toast.error(result?.data?.message, {
-  //             position: "top-right",
-  //             autoClose: 3000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           });
-  //           setBtnLoading(false);
-  //           return;
-  //         }
-
-  //         toast.success(`Invoice receipt uploaded successfully.`, {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //         setBtnLoading(false);
-  //         handleClose();
-  //         fetchTransactions();
-  //       })
-  //       .catch((err) => {
-  //         setBtnLoading(false);
-
-  //         console.log(err);
-  //         toast.error("Error in uploading image.", {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       });
-  //   };
 
   const [isClosing, setIsClosing] = useState(false);
   const handleClose = () => {
@@ -144,17 +78,6 @@ const EditTransactionForm = ({
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
-
-  const handleImgUpload = (e) => {
-    console.log("EE:", e);
-    setImage(e.target.files[0]);
-  };
-
-  //   useEffect(() => {
-  //     if (image != null) {
-  //       UploadImage();
-  //     }
-  //   }, [image]);
 
   return (
     <>
