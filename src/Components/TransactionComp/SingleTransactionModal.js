@@ -54,6 +54,7 @@ const SingleTransactionModal = ({
   const [openEditModal, setOpenEditModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState(null);
 
   const handleCloseOverlay = () => {
     setShowOverlay(false);
@@ -82,8 +83,9 @@ const SingleTransactionModal = ({
     id: null,
   });
 
-  const [allDocs, setAllDocs] = useState([]);
-  const [allImages, setAllImages] = useState([]);
+  const handlePdfClick = (pdfUrl) => {
+    setPdfUrl(pdfUrl);
+  };
 
   const UploadImage = (e) => {
     setBtnLoading(true);
@@ -585,8 +587,16 @@ const SingleTransactionModal = ({
                                                   <BsFileEarmarkMedical
                                                     size={100}
                                                     color={"#AAAAAA"}
-                                                    // onClick={() => handlePdfClick(`data:application/pdf;base64, ${data?.receipt[0]?.temp_file}`)}
-                                                    // onClick={() => handlePdfClick(data?.receipt[0]?.temp_file)}
+                                                    onClick={() =>
+                                                      handlePdfClick(
+                                                        `data:application/pdf;base64, ${l?.temp_file}`
+                                                      )
+                                                    }
+                                                    // onClick={() =>
+                                                    //   handlePdfClick(
+                                                    //     data?.temp_file
+                                                    //   )
+                                                    // }
                                                   />
                                                 </div>
                                                 <p class="text-sm break-all">
@@ -647,6 +657,30 @@ const SingleTransactionModal = ({
                 <img src={activeImage} alt="overlay" className="h-[90vh]" />
                 <button
                   onClick={handleCloseOverlay}
+                  className="absolute top-4 right-4 text-2xl text-white bg-primary p-2 rounded-full m-0"
+                >
+                  <MdClose />
+                </button>
+                <img
+                  src={hikalrewhite}
+                  alt="hikal real estate"
+                  className="absolute right-4 bottom-4 w-[100px] p-2 bg-[#000000] bg-opacity-70"
+                />
+              </div>
+            </div>
+          )}
+
+          {pdfUrl && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div className="fixed inset-0 bg-black opacity-75"></div>
+              <div className="relative z-10 bg-white">
+                <iframe
+                  title="PDF Viewer"
+                  src={pdfUrl}
+                  style={{ width: "70vw", height: "90vh", border: "none" }}
+                />{" "}
+                <button
+                  onClick={() => setPdfUrl(null)}
                   className="absolute top-4 right-4 text-2xl text-white bg-primary p-2 rounded-full m-0"
                 >
                   <MdClose />
