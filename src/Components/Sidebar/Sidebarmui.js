@@ -89,6 +89,7 @@ import { GiQueenCrown } from "react-icons/gi";
 
 const Sidebarmui = () => {
   const {
+    deviceType,
     currentMode,
     User,
     isCollapsed,

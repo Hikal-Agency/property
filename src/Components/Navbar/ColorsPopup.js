@@ -7,127 +7,96 @@ import { toast } from "react-toastify";
 import {BiBlock} from "react-icons/bi";
 
 const colors = [
-  "rgb(218,31,38)", // Main color
-  "rgb(20, 77, 186)", // Dark blue
-  "rgb(38, 145, 68)", // Green
-  "rgb(128, 61, 191)", // Purple
-  "rgb(233, 65, 150)", // Hotpink
-  "rgb(101, 176, 207)", // Light blue
-  "rgb(51, 196, 160)", // Greenish Blue
-  "rgb(229, 124, 0)", // Orange
+  "rgb(203, 42, 42)", // #CB2A2A // RED
+  "rgb(238, 182, 29)", // #EEB51D // GOLD
+  "rgb(117, 159, 130)", // #759F82 // GREEN
+  "rgb(190, 20, 82)", // #BE1452 // PINK
+  "rgb(86, 141, 221)", // #568DDD // BLUE
+  "rgb(255, 144, 18)", // #FF9012 // ORANGE
+  "rgb(152, 93, 255)", // #985DFF // PURPLE
+  // OLD 
+  // "rgb(218,31,38)", // Main color
+  // "rgb(20, 77, 186)", // Dark blue
+  // "rgb(38, 145, 68)", // Green
+  // "rgb(128, 61, 191)", // Purple
+  // "rgb(233, 65, 150)", // Hotpink
+  // "rgb(101, 176, 207)", // Light blue
+  // "rgb(51, 196, 160)", // Greenish Blue
+  // "rgb(229, 124, 0)", // Orange
 ];
 
 const solidColors = [
   { //red
     "#F3D5DD": {
       theme: "light",
-      primary: "rgb(218,31,38)",
+      // primary: "rgb(218,31,38)",
+      primary: "rgb(203, 42, 42)",
     }
   },
   { //cool-skyblue
     "#94BFD0": {
       theme: "light",
-      primary: "rgb(20, 77, 186)",
+      // primary: "rgb(20, 77, 186)",
+      primary: "rgb(86, 141, 221)"
     }
   },
   { //earth-pale-green
     "#BFD3C1": {
       theme: "light",
-      primary: "rgb(38, 145, 68)",
+      // primary: "rgb(38, 145, 68)",
+      primary: "rgb(117, 159, 130)"
     }
   },
   { //pastel-lavender
     "#D5DDF3": {
       theme: "light",
-      primary: "rgb(128, 61, 191)",
+      // primary: "rgb(128, 61, 191)",
+      primary: "rgb(152, 93, 255)"
     }
   },
   { //earth-beige
     "#F4E1C1": {
       theme: "light",
-      primary: "rgb(229, 124, 0)",
+      // primary: "rgb(229, 124, 0)",
+      primary: "rgb(238, 182, 29)",
     }
   },
 
   { //red
     "#4d0b0e": {
       theme: "dark",
-      primary: "rgb(218,31,38)",
+      // primary: "rgb(218,31,38)",
+      primary: "rgb(203, 42, 42)",
     }
   },
   { //blue
     "#001F3F": {
       theme: "dark",
-      primary: "rgb(20, 77, 186)",
+      // primary: "rgb(20, 77, 186)",
+      primary: "rgb(86, 141, 221)"
     }
   },
   { //green
     "#003300": {
       theme: "dark",
-      primary: "rgb(38, 145, 68)"
+      // primary: "rgb(38, 145, 68)"
+      primary: "rgb(117, 159, 130)"
     }
   },
   { //purple
     "#2E0854": {
       theme: "dark",
-      primary: "rgb(128, 61, 191)",
+      // primary: "rgb(128, 61, 191)",
+      primary: "rgb(152, 93, 255)"
     }
   },
   { //pink
     "#4d1532": {
       theme: "dark",
-      primary: "rgb(233, 65, 150)",
+      // primary: "rgb(233, 65, 150)",
+      primary: "rgb(190, 20, 82)"
     }
   },
-
-  // { //red
-  //   "#ffbaba": {
-  //     theme: "light",
-  //     primary: "rgb(218,31,38)",
-  //   }
-  // },
-  // { //blue
-  //   "#849DD2": {
-  //     theme: "light",
-  //     primary: "rgb(20, 77, 186)",
-  //   }
-  // },
-  // { //green
-  //   "#A4D3B4": {
-  //     theme: "light",
-  //     primary: "rgb(38, 145, 68)",
-  //   }
-  // },
-  // { //purple
-  //   "#D7A1F9": {
-  //     theme: "light",
-  //     primary: "rgb(128, 61, 191)",
-  //   }
-  // },
-  // { //pink
-  //   "#F996C5": {
-  //     theme: "light",
-  //     primary: "rgb(233, 65, 150)",
-  //   }
-  // },
-  // { //sky blue
-  //   "#BCDAE8": {
-  //     theme: "light",
-  //     primary: "rgb(101, 176, 207)",
-  //   }
-  // },
-  // { //mint
-  //   "#A3E2CE": {
-  //     theme: "light",
-  //     primary: "rgb(51, 196, 160)",
-  //   }
-  // },
-  // { //orange
-  //   "#FFD08C": {
-  //     theme: "light",
-  //     primary: "rgb(229, 124, 0)",
-  //   }
-  // },
 ]; 
 
 const images = [
@@ -135,56 +104,64 @@ const images = [
     "pink_pink": {
       bg: "https://images.unsplash.com/photo-1503455637927-730bce8583c0?auto=format&fit=crop&q=60&w=600&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29saWQlMjBiYWNrZ3JvdW5kfGVufDB8MHwwfHx8MA%3D%3D",
       theme: "light",
-      primary: "rgb(218,31,38)",
+      // primary: "rgb(218,31,38)",
+      primary: "rgb(203, 42, 42)",
     }
   },
   { //blue
     "blue_ocean": {
       bg: "https://images.unsplash.com/photo-1501696461415-6bd6660c6742?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
       theme: "light",
-      primary: "rgb(20, 77, 186)",
+      // primary: "rgb(20, 77, 186)",
+      primary: "rgb(86, 141, 221)"
     }
   },
   { //green
     "green_black_code": {
       bg: "https://images.unsplash.com/photo-1538438253612-287c9fc9217e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       theme: "light",
-      primary: "rgb(38, 145, 68)",
+      // primary: "rgb(38, 145, 68)",
+      primary: "rgb(117, 159, 130)"
     }
   },
   { //purple
     "orange_black_bridge": {
       bg: "https://images.unsplash.com/photo-1464692805480-a69dfaafdb0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       theme: "light",
-      primary: "rgb(128, 61, 191)",
+      // primary: "rgb(128, 61, 191)",
+      primary: "rgb(152, 93, 255)"
     }
   },
   { //pink
     "pink_black": {
       bg: "https://images.unsplash.com/photo-1520052205864-92d242b3a76b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHdhbGxwYXBlciUyMGxhbmRzY2FwZSUyMGNhdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
       theme: "light",
-      primary: "rgb(233, 65, 150)",
+      // primary: "rgb(233, 65, 150)",
+      primary: "rgb(190, 20, 82)"
     }
   },
   { //skyblue
     "blue_teal": {
       bg: "https://images.unsplash.com/photo-1508108712903-49b7ef9b1df8?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       theme: "light",
-      primary: "rgb(101, 176, 207)",
+      // primary: "rgb(101, 176, 207)",
+      primary: "rgb(86, 141, 221)"
     }
   },
   { //mint
     "black_aurora": {
       bg: "https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?auto=format&fit=crop&q=60&w=600&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8",
       theme: "dark",
-      primary: "rgb(51, 196, 160)",
+      // primary: "rgb(51, 196, 160)",
+      primary: "rgb(117, 159, 130)"
     }
   },
   { //orange
     "mint_orange": {
       bg: "https://images.unsplash.com/photo-1620503374956-c942862f0372?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       theme: "light",
-      primary: "rgb(229, 124, 0)",
+      // primary: "rgb(229, 124, 0)",
+      primary: "rgb(255, 144, 18)"
     }
   },
 ];
