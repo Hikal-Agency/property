@@ -48,7 +48,7 @@ const SingleTransactionModal = ({
 
   console.log("single trans data ::: ", singleTransModal);
 
-  const [singleTrans, setSingleClient] = useState(singleTransModal);
+  const [singleTrans, setSingleTransactions] = useState();
   const transData = singleTransModal?.invoice || singleTransModal;
 
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -71,7 +71,6 @@ const SingleTransactionModal = ({
 
   const [loading, setloading] = useState(false);
 
-  // const [loading, setloading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [image, setImage] = useState(null);
 
@@ -85,6 +84,57 @@ const SingleTransactionModal = ({
 
   const handlePdfClick = (pdfUrl) => {
     setPdfUrl(pdfUrl);
+  };
+
+  const FetchSingleTransaction = (e) => {
+    setloading(true);
+    const token = localStorage.getItem("auth-token");
+
+    axios
+      .get(`${BACKEND_URL}/invoices/${transData?.id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Result: ");
+        console.log("Result: ", result);
+
+        if (result?.data?.status === false) {
+          toast.error(result?.data?.message, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+
+          setloading(false);
+          return;
+        }
+
+        setSingleTransactions(result?.data?.data);
+        setloading(false);
+      })
+      .catch((err) => {
+        setloading(false);
+
+        console.log(err);
+        toast.error("Error in fetching single transaction.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
   };
 
   const UploadImage = (e) => {
@@ -180,6 +230,10 @@ const SingleTransactionModal = ({
     }
   }, [image]);
 
+  useEffect(() => {
+    FetchSingleTransaction();
+  }, []);
+
   return (
     <>
       <Modal
@@ -246,10 +300,10 @@ const SingleTransactionModal = ({
                           <h1
                             className={`font-semibold text-white bg-primary py-2 px-3 rounded-md`}
                           >
-                            {transData?.id}
+                            {singleTrans?.id}
                           </h1>
                           <h1 className={`text-lg font-semibold capitalize`}>
-                            {transData?.country || "---"}
+                            {singleTrans?.country || "---"}
                           </h1>
                         </div>
 
@@ -318,7 +372,7 @@ const SingleTransactionModal = ({
                           <div className="flex gap-3">
                             <p className="font-bold capitalize">{t("date")}:</p>
                             <p>
-                              {moment(transData?.date).format("YYYY-MM-DD")}
+                              {moment(singleTrans?.date).format("YYYY-MM-DD")}
                             </p>
                           </div>
                           {/* invoice type  */}
@@ -326,14 +380,14 @@ const SingleTransactionModal = ({
                             <p className="font-bold capitalize">
                               {t("invoice_type")}:
                             </p>
-                            <p>{transData?.invoice_type} </p>
+                            <p>{singleTrans?.invoice_type} </p>
                           </div>
                           {/* category  */}
                           <div className="flex gap-3">
                             <p className="font-bold capitalize">
                               {t("label_category")}:
                             </p>
-                            <p>{transData?.category}</p>
+                            <p>{singleTrans?.category}</p>
                           </div>
                           {/* amount  */}
                           <div className="flex gap-3">
@@ -341,32 +395,32 @@ const SingleTransactionModal = ({
                               {t("label_amount")}:
                             </p>
                             <p>
-                              {transData?.currency} {transData?.amount}
+                              {singleTrans?.currency} {singleTrans?.amount}
                             </p>
                           </div>
                           {/* commission percent  */}
-                          {transData?.category?.toLowerCase() ===
+                          {singleTrans?.category?.toLowerCase() ===
                           "commission" ? (
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
                                 {t("percentage")}:
                               </p>
                               <p>
-                                {transData?.comm_percent}
+                                {singleTrans?.comm_percent}
                                 {"%"}
                               </p>
                             </div>
                           ) : null}
                           {/* claim  */}
-                          {transData?.category?.toLowerCase() ===
+                          {singleTrans?.category?.toLowerCase() ===
                             "commission" &&
-                          transData?.invioce_type?.toLowerCase() ===
+                          singleTrans?.invioce_type?.toLowerCase() ===
                             "income" ? (
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
                                 {t("claim")}:
                               </p>
-                              <p>{transData?.amount}</p>
+                              <p>{singleTrans?.amount}</p>
                             </div>
                           ) : null}
                           {/* payment source  */}
@@ -374,14 +428,14 @@ const SingleTransactionModal = ({
                             <p className="font-bold capitalize">
                               {t("payment_source")}:
                             </p>
-                            <p>{transData?.paid_by}</p>
+                            <p>{singleTrans?.paid_by}</p>
                           </div>
                           {/* payment status  */}
                           <div className="flex gap-3">
                             <p className="font-bold capitalize">
                               {t("status")}:
                             </p>
-                            <p>{transData?.status}</p>
+                            <p>{singleTrans?.status}</p>
                           </div>
                         </div>
                       </div>
@@ -644,7 +698,7 @@ const SingleTransactionModal = ({
                         <EditTransactionForm
                           openEditModal={openEditModal}
                           setOpenEditModal={setOpenEditModal}
-                          transData={transData}
+                          transData={singleTrans}
                           fetchTransactions={fetchTransactions}
                           user={user}
                           vendors={vendors}
