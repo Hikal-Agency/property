@@ -1059,7 +1059,7 @@ const AddCommissionModal = ({
                         </div>
                       </div>
                       <input
-                        accept="image/*"
+                        accept="image/jpeg, image/png, image/jpg, image/gif, application/pdf"
                         style={{ display: "none" }}
                         id="contained-button-file"
                         type="file"
