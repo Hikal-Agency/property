@@ -561,7 +561,6 @@ const UpdateBookedDeal = ({
                   </div>
 
                   <Button
-                    className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
                     ripple={true}
                     size="lg"
                     type="submit"

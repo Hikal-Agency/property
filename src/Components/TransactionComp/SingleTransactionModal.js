@@ -681,7 +681,7 @@ const SingleTransactionModal = ({
                 />{" "}
                 <button
                   onClick={() => setPdfUrl(null)}
-                  className="absolute top-4 right-4 text-2xl text-white bg-primary p-2 rounded-full m-0"
+                  className="absolute -top-3 right-0 text-2xl text-white bg-primary p-2 rounded-full m-0"
                 >
                   <MdClose />
                 </button>
