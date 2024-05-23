@@ -52,14 +52,14 @@ const RenderFeedback = ({ cellValues }) => {
   // const dynamicStyleFn = new Function('currentMode', 'primaryColor', `return ${feedbackTheme};`);
 
   // const dynamicStyle = dynamicStyleFn(currentMode, primaryColor);
-  const currentDate = moment().format("YYYY-MM-DD");
+  const currentDate = moment().format("yyyy-MM-dd");
 
   const [btnloading, setbtnloading] = useState(false);
   const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
   const [newFeedback, setnewFeedback] = useState("");
   const [DialogueVal, setDialogue] = useState(false);
   const [booked_amount, setBookedAmount] = useState();
-  const [booked_date, setBookedDate] = useState("");
+  const [booked_date, setBookedDate] = useState(currentDate);
   const [meetingData, setMeetingData] = useState({
     meetingDate: null,
     meetingTime: null,
