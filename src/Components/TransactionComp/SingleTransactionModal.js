@@ -254,42 +254,49 @@ const SingleTransactionModal = ({
                         </div>
 
                         <div className="flex items-center gap-3">
-                          <div>
-                            <input
-                              accept="image/jpeg, image/png, image/jpg, image/gif, application/pdf"
-                              style={{ display: "none" }}
-                              id="invoice-file"
-                              type="file"
-                              onChange={handleImgUpload}
-                            />
-                            <label htmlFor="invoice-file">
-                              <Button
-                                variant="contained"
-                                size="medium"
-                                className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
-                                style={{
-                                  color: "#ffffff",
-                                  border: "1px solid white",
-                                  fontFamily: fontFam,
-                                }}
-                                component="span" // Required so the button doesn't automatically submit form
-                                disabled={btnLoading}
-                                startIcon={
-                                  btnLoading ? null : (
-                                    <MdFileUpload className="mx-2" size={16} />
-                                  )
-                                }
-                              >
-                                <span>{t("upload_invoice")}</span>
-                              </Button>
-                            </label>
-                          </div>
-                          <button
-                            className="bg-primary  rounded-full p-4"
-                            onClick={() => setOpenEditModal(true)}
-                          >
-                            <FaPencilAlt />
-                          </button>
+                          {hasPermission("upload_receipt") && (
+                            <div>
+                              <input
+                                accept="image/jpeg, image/png, image/jpg, image/gif, application/pdf"
+                                style={{ display: "none" }}
+                                id="invoice-file"
+                                type="file"
+                                onChange={handleImgUpload}
+                              />
+                              <label htmlFor="invoice-file">
+                                <Button
+                                  variant="contained"
+                                  size="medium"
+                                  className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+                                  style={{
+                                    color: "#ffffff",
+                                    border: "1px solid white",
+                                    fontFamily: fontFam,
+                                  }}
+                                  component="span" // Required so the button doesn't automatically submit form
+                                  disabled={btnLoading}
+                                  startIcon={
+                                    btnLoading ? null : (
+                                      <MdFileUpload
+                                        className="mx-2"
+                                        size={16}
+                                      />
+                                    )
+                                  }
+                                >
+                                  <span>{t("upload_invoice")}</span>
+                                </Button>
+                              </label>
+                            </div>
+                          )}
+                          {hasPermission("edit_transaction") && (
+                            <button
+                              className="bg-primary  rounded-full p-4"
+                              onClick={() => setOpenEditModal(true)}
+                            >
+                              <FaPencilAlt />
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
