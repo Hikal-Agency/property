@@ -27,7 +27,7 @@ import LocationPicker from "../meetings/LocationPicker";
 import dayjs from "dayjs";
 import moment from "moment";
 import { renderStyles, renderStyles2 } from "../_elements/SelectStyles.jsx";
-import { feedback_options } from "../_elements/SelectOptions.js";
+import { currencies, feedback_options } from "../_elements/SelectOptions.js";
 
 import { BsBookmarkCheck } from "react-icons/bs";
 
@@ -47,16 +47,19 @@ const RenderFeedback = ({ cellValues }) => {
 
   console.log("DT FEEDBACK THEME =========== ", feedbackTheme);
 
+  console.log("cellVAlues:::::::::::::::::::: ", cellValues);
+
   // const dynamicStyleFn = new Function('currentMode', 'primaryColor', `return ${feedbackTheme};`);
 
   // const dynamicStyle = dynamicStyleFn(currentMode, primaryColor);
+  const currentDate = moment().format("YYYY-MM-DD");
 
   const [btnloading, setbtnloading] = useState(false);
   const [Feedback, setFeedback] = useState(cellValues?.row?.feedback);
   const [newFeedback, setnewFeedback] = useState("");
   const [DialogueVal, setDialogue] = useState(false);
   const [booked_amount, setBookedAmount] = useState();
-  const [booked_date, setBookedDate] = useState("");
+  const [booked_date, setBookedDate] = useState(currentDate);
   const [meetingData, setMeetingData] = useState({
     meetingDate: null,
     meetingTime: null,
@@ -65,6 +68,11 @@ const RenderFeedback = ({ cellValues }) => {
     lat: 0,
     lng: 0,
     addressText: "",
+  });
+  const [otherBookedData, setOtherBookedData] = useState({
+    unit: "",
+    amount: "",
+    currency: "AED",
   });
   const ChangeFeedback = (e) => {
     // setnewFeedback(e.target.value);
@@ -149,6 +157,13 @@ const RenderFeedback = ({ cellValues }) => {
 
       UpdateLeadData.append("booked_amount", booked_amount);
       UpdateLeadData.append("booked_date", booked_date);
+      UpdateLeadData.append("project", cellValues?.row?.project);
+      UpdateLeadData.append("enquiryType", cellValues?.row?.enquiryType);
+      UpdateLeadData.append("leadFor", cellValues?.row?.leadFor);
+      UpdateLeadData.append("leadType", cellValues?.row?.leadType);
+      UpdateLeadData.append("unit", otherBookedData?.unit);
+      UpdateLeadData.append("amount", otherBookedData?.amount);
+      UpdateLeadData.append("currency", otherBookedData?.currency);
     }
 
     await axios
@@ -568,7 +583,7 @@ const RenderFeedback = ({ cellValues }) => {
                         InputProps={{ required: true }}
                       />
                     </LocalizationProvider>
-                    {/* AMOUNT  */}
+                    {/* BOOKED AMOUNT  */}
                     <TextField
                       id="booked_amount"
                       type={"number"}
@@ -580,7 +595,7 @@ const RenderFeedback = ({ cellValues }) => {
                       label="Booked Amount "
                       className="w-full"
                       style={{
-                        marginBottom: "20px",
+                        marginBottom: "10px",
                         marginTop: "10px",
                       }}
                       variant="outlined"
@@ -591,6 +606,78 @@ const RenderFeedback = ({ cellValues }) => {
                         setBookedAmount(e.target.value);
                       }}
                       required
+                    />
+                    {/* UNIT  */}
+                    <TextField
+                      id="unit"
+                      type={"number"}
+                      sx={{
+                        "& input": {
+                          fontFamily: "Noto Kufi Arabic",
+                        },
+                      }}
+                      label="Unit "
+                      className="w-full"
+                      style={{
+                        marginBottom: "10px",
+                        marginTop: "10px",
+                      }}
+                      variant="outlined"
+                      name="unit"
+                      size="small"
+                      value={otherBookedData?.unit}
+                      onChange={(e) => {
+                        setOtherBookedData({
+                          ...otherBookedData,
+                          unit: e.target.value,
+                        });
+                      }}
+                      required
+                    />
+                    {/* AMOUNT  */}
+                    <TextField
+                      id="amount"
+                      type={"number"}
+                      sx={{
+                        "& input": {
+                          fontFamily: "Noto Kufi Arabic",
+                        },
+                      }}
+                      label="Selling Amount "
+                      className="w-full"
+                      style={{
+                        marginBottom: "10px",
+                        marginTop: "10px",
+                      }}
+                      variant="outlined"
+                      name="amount"
+                      size="small"
+                      value={otherBookedData?.amount}
+                      onChange={(e) => {
+                        setOtherBookedData({
+                          ...otherBookedData,
+                          amount: e.target.value,
+                        });
+                      }}
+                      required
+                    />
+                    {/* CURRENCY  */}
+                    <Select
+                      id="currency"
+                      options={currencies(t)}
+                      value={currencies(t).find(
+                        (option) => option.value === otherBookedData?.currency
+                      )}
+                      onChange={(e) => {
+                        setOtherBookedData({
+                          ...otherBookedData,
+                          currency: e.value,
+                        });
+                      }}
+                      placeholder={t("label_currency")}
+                      className={`w-full`}
+                      menuPortalTarget={document.body}
+                      styles={renderStyles2(currentMode, primaryColor)}
                     />
                   </Box>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
