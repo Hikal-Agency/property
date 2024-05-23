@@ -256,7 +256,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     // COMMISSION
     {
       field: "comm_status",
-      headerName: t("commission"),
+      headerName: t("short_commission"),
       minWidth: 30,
       headerAlign: "center",
       flex: 1,

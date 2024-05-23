@@ -1057,5 +1057,8 @@
     "update_vendor":"Update Vendor",
     "not_received": "Not received",
     "sent": "Sent",
-    "hold": "Hold"
+    "hold": "Hold",
+
+
+    "short_commission":"Comm"
 }
