@@ -59,7 +59,7 @@ const RenderFeedback = ({ cellValues }) => {
   const [newFeedback, setnewFeedback] = useState("");
   const [DialogueVal, setDialogue] = useState(false);
   const [booked_amount, setBookedAmount] = useState();
-  const [booked_date, setBookedDate] = useState(currentDate);
+  const [booked_date, setBookedDate] = useState("");
   const [meetingData, setMeetingData] = useState({
     meetingDate: null,
     meetingTime: null,
@@ -156,7 +156,7 @@ const RenderFeedback = ({ cellValues }) => {
       }
 
       UpdateLeadData.append("booked_amount", booked_amount);
-      UpdateLeadData.append("booked_date", booked_date);
+      UpdateLeadData.append("booked_date", booked_date || currentDate);
       UpdateLeadData.append("project", cellValues?.row?.project);
       UpdateLeadData.append("enquiryType", cellValues?.row?.enquiryType);
       UpdateLeadData.append("leadFor", cellValues?.row?.leadFor);
@@ -610,7 +610,7 @@ const RenderFeedback = ({ cellValues }) => {
                     {/* UNIT  */}
                     <TextField
                       id="unit"
-                      type={"number"}
+                      type={"text"}
                       sx={{
                         "& input": {
                           fontFamily: "Noto Kufi Arabic",
@@ -677,7 +677,7 @@ const RenderFeedback = ({ cellValues }) => {
                       placeholder={t("label_currency")}
                       className={`w-full`}
                       menuPortalTarget={document.body}
-                      styles={renderStyles2(currentMode, primaryColor)}
+                      styles={renderStyles(currentMode, primaryColor)}
                     />
                   </Box>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
