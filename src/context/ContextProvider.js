@@ -68,6 +68,25 @@ export const ContextProvider = ({ children }) => {
   const [blurLightColor, setBlurLightColor] = useState("rgba(238,238,238,0.5)");
   const [blurWhiteColor, setBlurWhiteColor] = useState("rgba(255,255,255,0.5)");
 
+  const [deviceType, setDeviceType] = useState("desktop");
+  const handleResize = () => {
+    const width = window.innerWidth;
+    if (width < 768) {
+      setDeviceType("mobile");
+    } else if (width >= 768 && width < 1024) {
+      setDeviceType("tablet");
+    } else {
+      setDeviceType("desktop");
+    }
+  };
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const [session, setSession] = useState({
     expiresIn: localStorage.getItem("expires_in"),
     accessToken: localStorage.getItem("access_token"),
@@ -726,6 +745,8 @@ export const ContextProvider = ({ children }) => {
         setSettings,
         value,
         setValue,
+        deviceType,
+        setDeviceType
       }}
     >
       {children}

@@ -220,6 +220,39 @@ const Closedeals = ({ pageState, setpageState }) => {
       flex: 1,
       renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
     },
+    //PDC
+    {
+      field: "pdc_status",
+      headerName: t("pdc"),
+      minWidth: 30,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        const value = cellValues?.row;
+        return (
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {value?.pdc_status === 1 ? (
+              <p
+                className={`
+                   text-[#1C1C1C] bg-green-600
+                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <FaCheck size={14} color="white" />
+              </p>
+            ) : (
+              <p
+                className={` text-[#1C1C1C] bg-red-600
+              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <RxCross2 size={14} color="#ffffff" />
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
     // SPA
     {
       field: "spa_status",
@@ -344,11 +377,10 @@ const Closedeals = ({ pageState, setpageState }) => {
           >
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
+              className={`${currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
                 <button onClick={() => HandleEditFunc(cellValues)}>
@@ -359,11 +391,10 @@ const Closedeals = ({ pageState, setpageState }) => {
 
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
+              className={`${currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
@@ -375,11 +406,10 @@ const Closedeals = ({ pageState, setpageState }) => {
             {hasPermission("deal_history") && (
               <p
                 style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
+                className={`${currentMode === "dark"
                     ? "text-[#FFFFFF] bg-[#262626]"
                     : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                  } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Deal History" arrow>
                   <button onClick={() => HandleViewDealHistory(cellValues)}>
@@ -527,6 +557,39 @@ const Closedeals = ({ pageState, setpageState }) => {
       flex: 1,
       renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
     },
+    //PDC
+    {
+      field: "pdc_status",
+      headerName: t("pdc"),
+      minWidth: 30,
+      headerAlign: "center",
+      flex: 1,
+      renderCell: (cellValues) => {
+        const value = cellValues?.row;
+        return (
+          <div
+            className={`w-full h-full px-1 flex items-center justify-center`}
+          >
+            {value?.pdc_status === 1 ? (
+              <p
+                className={`
+                   text-[#1C1C1C] bg-green-600
+                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <FaCheck size={14} color="white" />
+              </p>
+            ) : (
+              <p
+                className={` text-[#1C1C1C] bg-red-600
+              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              >
+                <RxCross2 size={14} color="#ffffff" />
+              </p>
+            )}
+          </div>
+        );
+      },
+    },
     // SPA
     {
       field: "spa_status",
@@ -562,7 +625,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     },
     // COMMISSION
     {
-      field: "commission",
+      field: "comm_status",
       headerName: t("commission"),
       minWidth: 30,
       headerAlign: "center",
@@ -574,20 +637,22 @@ const Closedeals = ({ pageState, setpageState }) => {
             className={`w-full h-full px-1 flex items-center justify-center`}
           >
             {value?.comm_status === 1 ? (
-              <p
-                className={`
-                   text-[#1C1C1C] bg-green-600
-                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <FaCheck size={14} color="white" />
-              </p>
+              <Tooltip title="Received from Developer" arrow>
+                <p
+                  className={`
+                   text-[#1C1C1C] bg-green-600 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                >
+                  <FaCheck size={14} color="white" />
+                </p>
+              </Tooltip>
             ) : (
-              <p
-                className={` text-[#1C1C1C] bg-red-600
-              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <RxCross2 size={14} color="#ffffff" />
-              </p>
+              <Tooltip title="Pending from Developer" arrow>
+                <p
+                  className={` text-[#1C1C1C] bg-red-600 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                >
+                  <RxCross2 size={14} color="#ffffff" />
+                </p>
+              </Tooltip>
             )}
           </div>
         );
@@ -645,11 +710,10 @@ const Closedeals = ({ pageState, setpageState }) => {
           >
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
+              className={`${currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
                 <button onClick={() => HandleEditFunc(cellValues)}>
@@ -660,11 +724,10 @@ const Closedeals = ({ pageState, setpageState }) => {
 
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
+              className={`${currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
@@ -675,11 +738,10 @@ const Closedeals = ({ pageState, setpageState }) => {
             {hasPermission("deal_history") && (
               <p
                 style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
+                className={`${currentMode === "dark"
                     ? "text-[#FFFFFF] bg-[#262626]"
                     : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                  } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Deal History" arrow>
                   <button onClick={() => HandleViewDealHistory(cellValues)}>
@@ -710,8 +772,7 @@ const Closedeals = ({ pageState, setpageState }) => {
 
     axios
       .get(
-        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${
-          pageState.perpage || 14
+        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${pageState.perpage || 14
         }`,
         {
           headers: {
@@ -735,8 +796,8 @@ const Closedeals = ({ pageState, setpageState }) => {
           id:
             pageState.page > 1
               ? pageState.page * pageState.pageSize -
-                (pageState.pageSize - 1) +
-                index
+              (pageState.pageSize - 1) +
+              index
               : index + 1,
           dealDate: row?.dealDate || "-",
           leadName: row?.leadName || "-",
