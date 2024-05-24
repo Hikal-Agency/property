@@ -849,16 +849,16 @@ const Transactions = ({ pathname }) => {
                           <p
                             className={`text-start text-xl font-semibold mb-3`}
                           >
-                            {t("vat")} :
-                            <span className="ml-3 font-normal">
-                              {vat?.currency} {vat?.income_vat.toFixed(2)}
-                            </span>
-                          </p>
-
-                          <p className={`text-start text-xl font-semibold`}>
                             {t("amount")} :
                             <span className="ml-3 font-normal">
                               {vat?.currency} {vat?.income_amount.toFixed(2)}
+                            </span>
+                          </p>
+
+                          <p className={`text-start text-xl font-semibold `}>
+                            {t("vat")} :
+                            <span className="ml-3 font-normal">
+                              {vat?.currency} {vat?.income_vat.toFixed(2)}
                             </span>
                           </p>
                         </div>
@@ -882,16 +882,16 @@ const Transactions = ({ pathname }) => {
                           <p
                             className={`text-start text-xl font-semibold mb-3`}
                           >
-                            {t("vat")} :
-                            <span className="ml-3 font-normal">
-                              {vat?.currency} {vat?.expense_vat.toFixed(2)}
-                            </span>
-                          </p>
-
-                          <p className={`text-start text-xl font-semibold`}>
                             {t("amount")} :
                             <span className="ml-3 font-normal">
                               {vat?.currency} {vat?.expense_amount.toFixed(2)}
+                            </span>
+                          </p>
+
+                          <p className={`text-start text-xl font-semibold `}>
+                            {t("vat")} :
+                            <span className="ml-3 font-normal">
+                              {vat?.currency} {vat?.expense_vat.toFixed(2)}
                             </span>
                           </p>
                         </div>
