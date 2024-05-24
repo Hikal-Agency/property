@@ -57,25 +57,25 @@ const UpdateLead = ({
   const [updatedField, setUpdatedField] = useState("");
   // const [updateLeadData, setUpdateLeadData] = useState({});
   const [updateLeadData, setUpdateLeadData] = useState({
-    agent_comm_amount: '',
-    agent_comm_percent: '',
-    amount: '',
-    comm_amount: '',
-    comm_percent: '',
-    comm_status: '',
-    currency: '',
-    dealDate: '',
-    id: '',
-    leadId: '',
-    managerId: '',
-    passport: '',
-    unit: '',
-    updated_at: '',
-    updated_by: '',
-    updated_by_name: '',
-    vat: '',
-    project: '',
-    enquiryType: '',
+    agent_comm_amount: "",
+    agent_comm_percent: "",
+    amount: "",
+    comm_amount: "",
+    comm_percent: "",
+    comm_status: "",
+    currency: "",
+    dealDate: "",
+    id: "",
+    leadId: "",
+    managerId: "",
+    passport: "",
+    unit: "",
+    updated_at: "",
+    updated_by: "",
+    updated_by_name: "",
+    vat: "",
+    project: "",
+    enquiryType: "",
   });
 
   // const style = {
@@ -134,10 +134,10 @@ const UpdateLead = ({
       comm_percent,
       comm_amount,
       agent_comm_percent,
-      agent_comm_amount
+      agent_comm_amount,
     } = updateLeadData;
 
-    // COMMISSION AMOUNT 
+    // COMMISSION AMOUNT
     if (updatedField === "amount" || updatedField === "comm_percent") {
       autoCalculate("comm_amount", amount, comm_percent);
       // autoCalculate("vat", comm_amount, 5);
@@ -154,18 +154,26 @@ const UpdateLead = ({
     if (updatedField === "amount" || updatedField === "agent_comm_amount") {
       autoCalculate("agent_comm_percent", comm_amount, agent_comm_amount);
     }
-  }, [updateLeadData.amount, updateLeadData.comm_percent, updateLeadData.comm_amount, updateLeadData.agent_comm_percent, updateLeadData.agent_comm_amount, updatedField]);
+  }, [
+    updateLeadData.amount,
+    updateLeadData.comm_percent,
+    updateLeadData.comm_amount,
+    updateLeadData.agent_comm_percent,
+    updateLeadData.agent_comm_amount,
+    updatedField,
+  ]);
 
   const autoCalculate = (value, amount, percentOrAmount) => {
     const sellingAmount = parseFloat(amount);
     console.log("SELLING AMOUNT = ", sellingAmount);
-    // COMM AMOUNT 
+    // COMM AMOUNT
     if (value === "comm_amount") {
       const commPercent = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(commPercent)) {
         let commAmount = (sellingAmount * commPercent) / 100;
-        commAmount = commAmount % 1 === 0 ? commAmount.toFixed(0) : commAmount.toFixed(2);
-        let vat = commAmount * 5 / 100;
+        commAmount =
+          commAmount % 1 === 0 ? commAmount.toFixed(0) : commAmount.toFixed(2);
+        let vat = (commAmount * 5) / 100;
         vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
 
         console.log("COMM PERCENT = ", commPercent);
@@ -179,13 +187,16 @@ const UpdateLead = ({
         }));
       }
     }
-    // COMM PERCENT 
+    // COMM PERCENT
     if (value === "comm_percent") {
       const commAmount = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(commAmount)) {
         let commPercent = (commAmount / sellingAmount) * 100 || 0;
-        commPercent = commPercent % 1 === 0 ? commPercent.toFixed(0) : commPercent.toFixed(2);
-        let vat = commAmount * 5 / 100;
+        commPercent =
+          commPercent % 1 === 0
+            ? commPercent.toFixed(0)
+            : commPercent.toFixed(2);
+        let vat = (commAmount * 5) / 100;
         vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
 
         console.log("COMM AMOUNT = ", commAmount);
@@ -199,12 +210,15 @@ const UpdateLead = ({
         }));
       }
     }
-    // AGENT COMM AMOUNT 
+    // AGENT COMM AMOUNT
     if (value === "agent_comm_amount") {
       const agentCommPercent = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(agentCommPercent)) {
         let agentCommAmount = (sellingAmount * agentCommPercent) / 100;
-        agentCommAmount = agentCommAmount % 1 === 0 ? agentCommAmount.toFixed(0) : agentCommAmount.toFixed(2);
+        agentCommAmount =
+          agentCommAmount % 1 === 0
+            ? agentCommAmount.toFixed(0)
+            : agentCommAmount.toFixed(2);
 
         console.log("AGENT COMM PERCENT = ", agentCommPercent);
         console.log("AGENT COMM AMOUNT = ", agentCommAmount);
@@ -215,12 +229,15 @@ const UpdateLead = ({
         }));
       }
     }
-    // AGENT COMM PERCENT 
+    // AGENT COMM PERCENT
     if (value === "agent_comm_percent") {
       const agentCommAmount = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(agentCommAmount)) {
         let agentCommPercent = (agentCommAmount / sellingAmount) * 100 || 0;
-        agentCommPercent = agentCommPercent % 1 === 0 ? agentCommPercent.toFixed(0) : agentCommPercent.toFixed(2);
+        agentCommPercent =
+          agentCommPercent % 1 === 0
+            ? agentCommPercent.toFixed(0)
+            : agentCommPercent.toFixed(2);
 
         console.log("AGENT COMM AMOUNT = ", agentCommAmount);
         console.log("AGENT COMM PERCENT = ", agentCommPercent);
@@ -419,20 +436,23 @@ const UpdateLead = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            }
+          }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-              }
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -443,13 +463,15 @@ const UpdateLead = ({
           </button>
           <div
             style={style}
-            className={` ${currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-              } ${isLangRTL(i18n.language)
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-              }
+            }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
           >
@@ -461,12 +483,14 @@ const UpdateLead = ({
               <>
                 <div className="w-full flex items-center pb-3 ">
                   <div
-                    className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                      } bg-primary h-10 w-1 rounded-full my-1`}
+                    className={`${
+                      isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                    } bg-primary h-10 w-1 rounded-full my-1`}
                   ></div>
                   <h1
-                    className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                    className={`text-lg font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                     style={{
                       fontFamily: isArabic(Feedback?.feedback)
                         ? "Noto Kufi Arabic"
@@ -481,10 +505,11 @@ const UpdateLead = ({
                   {/* Project DETAILS  */}
                   <div
                     className={`p-4 rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                      }`}
+                  ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-[#EEEEEE] text-black"
+                  }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
                       {t("project_details")?.toUpperCase()}
@@ -495,14 +520,14 @@ const UpdateLead = ({
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
                           "& legend": {
                             textAlign: isLangRTL(i18n.language)
                               ? "right"
@@ -676,10 +701,11 @@ const UpdateLead = ({
                   {/* COMMISSION DETAILS  */}
                   {hasPermission("deal_commission") && (
                     <div
-                      className={`p-4 rounded-xl shadow-sm card-hover ${currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                        }
+                      className={`p-4 rounded-xl shadow-sm card-hover ${
+                        currentMode === "dark"
+                          ? "bg-[#1C1C1C] text-white"
+                          : "bg-[#EEEEEE] text-black"
+                      }
                       `}
                     >
                       <h1 className="text-center uppercase font-semibold">
@@ -690,7 +716,6 @@ const UpdateLead = ({
                         <Box
                           sx={{
                             ...darkModeColors,
-                            // marginTop:"20p"
                           }}
                         >
                           {/* COMM PERCENT */}
@@ -720,7 +745,8 @@ const UpdateLead = ({
                                 label: curr.label,
                               }))}
                               value={currencies(t)?.find(
-                                (curr) => curr.value === updateLeadData?.currency
+                                (curr) =>
+                                  curr.value === updateLeadData?.currency
                               )}
                               onChange={(e) => {
                                 setUpdateLeadData({
@@ -761,7 +787,8 @@ const UpdateLead = ({
                                 label: curr.label,
                               }))}
                               value={currencies(t)?.find(
-                                (curr) => curr.value === updateLeadData?.currency
+                                (curr) =>
+                                  curr.value === updateLeadData?.currency
                               )}
                               onChange={(e) => {
                                 setUpdateLeadData({
@@ -839,7 +866,8 @@ const UpdateLead = ({
                                 label: curr.label,
                               }))}
                               value={currencies(t)?.find(
-                                (curr) => curr.value === updateLeadData?.currency
+                                (curr) =>
+                                  curr.value === updateLeadData?.currency
                               )}
                               onChange={(e) => {
                                 setUpdateLeadData({
