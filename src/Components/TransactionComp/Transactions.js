@@ -430,9 +430,9 @@ const Transactions = ({ pathname }) => {
                 "& .MuiMenu-paper": {
                   padding: "10px",
                 },
-                //  height: "auto",
-                overflow: "visible",
-                //  overflowY: "scroll",
+                height: "auto",
+                // overflow: "visible",
+                overflowY: "scroll",
                 mt: 0.5,
                 filter:
                   currentMode === "dark"
@@ -444,7 +444,7 @@ const Transactions = ({ pathname }) => {
                     ? "rgb(28 28 28 / 0.9)"
                     : "rgb(238 238 238 / 0.9)",
                 color: currentMode === "dark" ? "#FFFFFF" : "#000000",
-                minWidth: 300,
+                minWidth: 270,
                 padding: 0,
                 "& .MuiAvatar-root": {
                   width: 32,
@@ -464,6 +464,133 @@ const Transactions = ({ pathname }) => {
             transformOrigin={{ horizontal: "center", vertical: "top" }}
             anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
           >
+            <h3 className="text-primary text-center font-semibold mb-5">{` ${t(
+              "btn_filters"
+            )}`}</h3>
+            <Select
+              id="category"
+              options={invoice_category(t)?.map((trans) => ({
+                value: trans.value,
+                label: trans.label,
+              }))}
+              value={invoice_category(t)?.filter(
+                (trans) => trans?.value === filtersData?.category
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  category: e.value,
+                });
+              }}
+              placeholder={t("label_category")}
+              // className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+            <Select
+              id="invoice_type"
+              options={commission_type(t)?.map((trans) => ({
+                value: trans.value,
+                label: trans.value,
+              }))}
+              value={commission_type(t)?.filter(
+                (comm) => comm?.value === filtersData?.invoice_type
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  invoice_type: e.value,
+                });
+              }}
+              placeholder={t("type")}
+              // className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+
+            <Select
+              id="country"
+              options={countries_list(t)?.map((country) => ({
+                value: country.value,
+                label: country.label,
+              }))}
+              value={countries_list(t)?.filter(
+                (country) => country?.value === filtersData?.country
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  country: e.value,
+                });
+              }}
+              placeholder={t("label_country")}
+              // className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+
+            <Select
+              id="status"
+              options={payment_status(t)?.map((pay_status) => ({
+                value: pay_status?.value,
+                label: pay_status?.label,
+              }))}
+              value={payment_status(t)?.filter(
+                (pay_status) => pay_status?.value === filtersData?.status
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  status: e.value,
+                });
+              }}
+              placeholder={t("status")}
+              // className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+            <Select
+              id="paid_by"
+              options={payment_source(t)?.map((payment) => ({
+                value: payment.value,
+                label: payment.label,
+              }))}
+              value={payment_source(t)?.filter(
+                (payment) => payment?.value === filtersData?.paid_by
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  paid_by: e.value,
+                });
+              }}
+              placeholder={t("payment_source")}
+              // className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+
+            <Select
+              id="currency"
+              options={currencies(t)?.map((curr) => ({
+                value: curr.value,
+                label: curr.label,
+              }))}
+              value={currencies(t)?.filter(
+                (curr) => curr?.value === filtersData?.currency
+              )}
+              onChange={(e) => {
+                setFilterData({
+                  ...filtersData,
+                  currency: e.value,
+                });
+              }}
+              placeholder={t("label_currency")}
+              // className={`mb-5`}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+
             <Box
               sx={{
                 ...darkModeColors,
@@ -478,117 +605,7 @@ const Transactions = ({ pathname }) => {
                   textAlign: isLangRTL(i18n.language) ? "right" : "left",
                 },
               }}
-              className={`p-4 rounded-xl shadow-sm ${
-                !themeBgImg &&
-                (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
-              }`}
             >
-              <h3 className="text-primary text-center font-semibold mb-5">{` ${t(
-                "btn_filters"
-              )}`}</h3>
-              <Select
-                id="category"
-                options={invoice_category(t)?.map((trans) => ({
-                  value: trans.value,
-                  label: trans.label,
-                }))}
-                value={invoice_category(t)?.filter(
-                  (trans) => trans?.value === filtersData?.category
-                )}
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    category: e.value,
-                  });
-                }}
-                placeholder={t("label_category")}
-                // className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
-              <Select
-                id="invoice_type"
-                options={commission_type(t)?.map((trans) => ({
-                  value: trans.value,
-                  label: trans.value,
-                }))}
-                value={commission_type(t)?.filter(
-                  (comm) => comm?.value === filtersData?.invoice_type
-                )}
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    invoice_type: e.value,
-                  });
-                }}
-                placeholder={t("type")}
-                // className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
-
-              <Select
-                id="country"
-                options={countries_list(t)?.map((country) => ({
-                  value: country.value,
-                  label: country.label,
-                }))}
-                value={countries_list(t)?.filter(
-                  (country) => country?.value === filtersData?.country
-                )}
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    country: e.value,
-                  });
-                }}
-                placeholder={t("label_country")}
-                // className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
-
-              <Select
-                id="status"
-                options={payment_status(t)?.map((pay_status) => ({
-                  value: pay_status?.value,
-                  label: pay_status?.label,
-                }))}
-                value={payment_status(t)?.filter(
-                  (pay_status) => pay_status?.value === filtersData?.status
-                )}
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    status: e.value,
-                  });
-                }}
-                placeholder={t("status")}
-                // className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
-              <Select
-                id="paid_by"
-                options={payment_source(t)?.map((payment) => ({
-                  value: payment.value,
-                  label: payment.label,
-                }))}
-                value={payment_source(t)?.filter(
-                  (payment) => payment?.value === filtersData?.paid_by
-                )}
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    paid_by: e.value,
-                  });
-                }}
-                placeholder={t("payment_source")}
-                // className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
-
               <FormControl
                 className={`${
                   currentMode === "dark" ? "text-white" : "text-black"
@@ -732,26 +749,6 @@ const Transactions = ({ pathname }) => {
                 </TextField>
               </FormControl>
 
-              <Select
-                id="currency"
-                options={currencies(t)?.map((curr) => ({
-                  value: curr.value,
-                  label: curr.label,
-                }))}
-                value={currencies(t)?.filter(
-                  (curr) => curr?.value === filtersData?.currency
-                )}
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    currency: e.value,
-                  });
-                }}
-                placeholder={t("label_currency")}
-                // className={`mb-5`}
-                menuPortalTarget={document.body}
-                styles={selectStyles(currentMode, primaryColor)}
-              />
               <TextField
                 id="comm_percent"
                 type={"text"}
@@ -849,23 +846,23 @@ const Transactions = ({ pathname }) => {
                   />
                 </LocalizationProvider>
               </div>
-
-              <Button
-                variant="contained"
-                size="lg"
-                className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-                style={{
-                  // backgroundColor: "#111827",
-                  color: "#ffffff",
-                  // border: "1px solid #DA1F26",
-                }}
-                // component="span"
-                // disabled={setBtnLoading ? true : false}
-                onClick={clearFilter}
-              >
-                <span>{t("clear_all")}</span>
-              </Button>
             </Box>
+
+            <Button
+              variant="contained"
+              size="lg"
+              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+              style={{
+                // backgroundColor: "#111827",
+                color: "#ffffff",
+                // border: "1px solid #DA1F26",
+              }}
+              // component="span"
+              // disabled={setBtnLoading ? true : false}
+              onClick={clearFilter}
+            >
+              <span>{t("clear_all")}</span>
+            </Button>
           </Menu>
         </>
       )}

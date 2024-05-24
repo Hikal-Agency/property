@@ -63,7 +63,7 @@ const RenderFeedback = ({ cellValues }) => {
   const [newFeedback, setnewFeedback] = useState("");
   const [DialogueVal, setDialogue] = useState(false);
   const [booked_amount, setBookedAmount] = useState();
-  const [booked_date, setBookedDate] = useState(currentDate);
+  const [booked_date, setBookedDate] = useState(null);
   const [meetingData, setMeetingData] = useState({
     meetingDate: null,
     meetingTime: null,
