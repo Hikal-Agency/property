@@ -402,6 +402,7 @@ const Transactions = ({ pathname }) => {
                   stroke: "white !important",
                 },
                 color: "white",
+                marginBottom: "10px",
               }}
               className="bg-btn-primary"
             >
