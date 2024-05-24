@@ -8,19 +8,12 @@ import {
   Pagination,
   FormControl,
   MenuItem,
-  InputAdornment,
-  IconButton,
 } from "@mui/material";
 import Select from "react-select";
-// import { Select as libSelect } from "@mui/material";
-import { FaHome, FaUser } from "react-icons/fa";
 import { useStateContext } from "../../context/ContextProvider";
-import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
-import { BsSearch } from "react-icons/bs";
 
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
@@ -32,10 +25,8 @@ import {
   invoice_category,
   payment_source,
   payment_status,
-  transaction_type,
 } from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
-import { MdFileUpload } from "react-icons/md";
 import SingleTransactionModal from "./SingleTransactionModal";
 
 import {
@@ -45,6 +36,7 @@ import {
   BsCalendarCheck,
 } from "react-icons/bs";
 import AddTransactionForm from "./AddTransactionForm";
+import { DatePicker } from "@mui/x-date-pickers";
 
 const Transactions = ({ pathname }) => {
   const isUrl = pathname === "/transactions" ? true : false;
@@ -98,6 +90,8 @@ const Transactions = ({ pathname }) => {
   console.log("addtransaction:: ", addTransactionData);
   const [user, setUser] = useState([]);
   const [userLoading, setUserLoading] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   console.log("user array: ", user);
 
@@ -116,7 +110,46 @@ const Transactions = ({ pathname }) => {
     paid_by: "",
     vendor_id: "",
     category: "",
+    date_range: "",
   });
+
+  const handleDateRange = (newValue, type) => {
+    const formattedDate = moment(newValue?.$d).format("YYYY-MM-DD");
+
+    if (type === "start") {
+      setStartDate(newValue);
+
+      if (newValue && endDate) {
+        setAddTransactionData((prev) => ({
+          ...prev,
+          date_range: `${formattedDate},${moment(endDate.$d).format(
+            "YYYY-MM-DD"
+          )}`,
+        }));
+      } else if (newValue) {
+        setAddTransactionData((prev) => ({
+          ...prev,
+          date_range: formattedDate,
+        }));
+      }
+    } else {
+      setEndDate(newValue);
+
+      if (startDate && newValue) {
+        setAddTransactionData((prev) => ({
+          ...prev,
+          date_range: `${moment(startDate.$d).format(
+            "YYYY-MM-DD"
+          )},${formattedDate}`,
+        }));
+      } else if (newValue) {
+        setAddTransactionData((prev) => ({
+          ...prev,
+          date_range: formattedDate,
+        }));
+      }
+    }
+  };
 
   const handleChange = (e, filter) => {
     console.log("filter: ", filter);
@@ -810,6 +843,72 @@ const Transactions = ({ pathname }) => {
               onChange={(e) => handleChange(e, "filter")}
             />
 
+            <div className="flex justify-between space-x-2 items-center">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  value={filtersData?.date_range}
+                  label={t("start_date")}
+                  views={["day", "month", "year"]}
+                  onChange={(val) => handleDateRange(val, "start")}
+                  format="DD-MM-YYYY"
+                  renderInput={(params) => (
+                    <TextField
+                      sx={{
+                        "& input": {
+                          color: currentMode === "dark" ? "white" : "black",
+                        },
+                        "& .MuiSvgIcon-root": {
+                          color: currentMode === "dark" ? "white" : "black",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor:
+                            fieldErrors?.date === true && "#DA1F26 !important",
+                        },
+                        marginBottom: "20px",
+                      }}
+                      fullWidth
+                      size="small"
+                      {...params}
+                      onKeyDown={(e) => e.preventDefault()}
+                      readOnly={true}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  value={filtersData?.date_range}
+                  label={t("end_date")}
+                  views={["day", "month", "year"]}
+                  onChange={(val) => handleDateRange(val)}
+                  format="DD-MM-YYYY"
+                  renderInput={(params) => (
+                    <TextField
+                      sx={{
+                        "& input": {
+                          color: currentMode === "dark" ? "white" : "black",
+                        },
+                        "& .MuiSvgIcon-root": {
+                          color: currentMode === "dark" ? "white" : "black",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor:
+                            fieldErrors?.date === true && "#DA1F26 !important",
+                        },
+                        marginBottom: "20px",
+                      }}
+                      fullWidth
+                      size="small"
+                      {...params}
+                      onKeyDown={(e) => e.preventDefault()}
+                      readOnly={true}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            </div>
+
             <Button
               variant="contained"
               size="lg"
@@ -826,6 +925,7 @@ const Transactions = ({ pathname }) => {
               <span>{t("clear_all")}</span>
             </Button>
 
+            {/* VAT LIST */}
             <div className="grid grid-cols-2 gap-5 mb-2  p-4 h-[200px] overflow-y-auto mt-4">
               {vatData && vatData?.length > 0
                 ? vatData?.map((vat) => (
