@@ -120,32 +120,22 @@ const Transactions = ({ pathname }) => {
       setStartDate(newValue);
 
       if (newValue && endDate) {
-        setAddTransactionData((prev) => ({
+        setFilterData((prev) => ({
           ...prev,
           date_range: `${formattedDate},${moment(endDate.$d).format(
             "YYYY-MM-DD"
           )}`,
-        }));
-      } else if (newValue) {
-        setAddTransactionData((prev) => ({
-          ...prev,
-          date_range: formattedDate,
         }));
       }
     } else {
       setEndDate(newValue);
 
       if (startDate && newValue) {
-        setAddTransactionData((prev) => ({
+        setFilterData((prev) => ({
           ...prev,
           date_range: `${moment(startDate.$d).format(
             "YYYY-MM-DD"
           )},${formattedDate}`,
-        }));
-      } else if (newValue) {
-        setAddTransactionData((prev) => ({
-          ...prev,
-          date_range: formattedDate,
         }));
       }
     }
@@ -209,6 +199,8 @@ const Transactions = ({ pathname }) => {
       vendor_id: "",
       category: "",
     });
+    setStartDate(null);
+    setEndDate(null);
   };
 
   // Define an error state object
@@ -846,7 +838,7 @@ const Transactions = ({ pathname }) => {
             <div className="flex justify-between space-x-2 items-center">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  value={filtersData?.date_range}
+                  value={startDate}
                   label={t("start_date")}
                   views={["day", "month", "year"]}
                   onChange={(val) => handleDateRange(val, "start")}
@@ -878,9 +870,10 @@ const Transactions = ({ pathname }) => {
 
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  value={filtersData?.date_range}
+                  value={endDate}
                   label={t("end_date")}
                   views={["day", "month", "year"]}
+                  minDate={startDate && startDate}
                   onChange={(val) => handleDateRange(val)}
                   format="DD-MM-YYYY"
                   renderInput={(params) => (
