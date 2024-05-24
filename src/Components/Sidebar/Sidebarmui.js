@@ -2013,9 +2013,6 @@ const Sidebarmui = () => {
       <Box
         sx={{
           "& .ps-sidebar-container": {
-            // backgroundColor: !themeBgImg
-            //   ? "rgb(249, 249, 249, 0.7)"
-            //   : "rgb(249, 249, 249, 0.5)",
             backgroundColor: !themeBgImg
               ? currentMode === "dark"
                 ? "rgb(249, 249, 249, 0.7)"
