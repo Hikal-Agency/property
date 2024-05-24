@@ -907,7 +907,6 @@ const Transactions = ({ pathname }) => {
               size="lg"
               className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
               style={{
-                // backgroundColor: "#111827",
                 color: "#ffffff",
                 // border: "1px solid #DA1F26",
               }}
