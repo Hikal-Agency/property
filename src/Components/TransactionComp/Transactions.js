@@ -8,7 +8,10 @@ import {
   Pagination,
   FormControl,
   MenuItem,
+  Menu,
 } from "@mui/material";
+import { GrFormClose } from "react-icons/gr";
+import { BiFilter } from "react-icons/bi";
 import Select from "react-select";
 import { useStateContext } from "../../context/ContextProvider";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -61,6 +64,19 @@ const Transactions = ({ pathname }) => {
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [error, setError] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setOpen(!open);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setAnchorEl(null);
+  };
+
   const searchRef = useRef("");
 
   console.log("vat data:", vatData);
@@ -372,6 +388,488 @@ const Transactions = ({ pathname }) => {
         (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
       }`}
     >
+      {/* filters form */}
+      {isUrl && (
+        <>
+          <div className={`flex justify-end relative`}>
+            <Button
+              onClick={(e) => {
+                handleClick(e);
+              }}
+              sx={{
+                zIndex: "40",
+                "& svg path": {
+                  stroke: "white !important",
+                },
+                color: "white",
+                marginBottom: "10px",
+              }}
+              className="bg-btn-primary"
+            >
+              {open ? (
+                <div className="flex items-center">
+                  <span>Close</span> <GrFormClose size={19} />
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <span>{t("btn_filters")}</span> <BiFilter size={19} />
+                </div>
+              )}
+            </Button>
+          </div>
+
+          <Menu
+            open={open}
+            // disableScrollLock={true}
+            hideBackdrop={true}
+            anchorEl={anchorEl}
+            className="filters-menu"
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                "& .MuiMenu-paper": {
+                  padding: "10px",
+                },
+                //  height: "auto",
+                overflow: "visible",
+                //  overflowY: "scroll",
+                mt: 0.5,
+                filter:
+                  currentMode === "dark"
+                    ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
+                    : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+                // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+                background:
+                  currentMode === "dark"
+                    ? "rgb(28 28 28 / 0.9)"
+                    : "rgb(238 238 238 / 0.9)",
+                color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+                minWidth: 300,
+                padding: 0,
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "& .MuiList-root": {
+                  padding: "3px",
+                },
+                "& .MuiList-root .clock-div": {
+                  background: "transparent !important",
+                  border: "none !important",
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: "center", vertical: "top" }}
+            anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+          >
+            <Box
+              sx={{
+                ...darkModeColors,
+                "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                  {
+                    right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                    transformOrigin: isLangRTL(i18n.language)
+                      ? "right"
+                      : "left",
+                  },
+                "& legend": {
+                  textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                },
+              }}
+              className={`p-4 rounded-xl shadow-sm ${
+                !themeBgImg &&
+                (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
+              }`}
+            >
+              <h3 className="text-primary text-center font-semibold mb-5">{` ${t(
+                "btn_filters"
+              )}`}</h3>
+              <Select
+                id="category"
+                options={invoice_category(t)?.map((trans) => ({
+                  value: trans.value,
+                  label: trans.label,
+                }))}
+                value={invoice_category(t)?.filter(
+                  (trans) => trans?.value === filtersData?.category
+                )}
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    category: e.value,
+                  });
+                }}
+                placeholder={t("label_category")}
+                // className={`mb-5`}
+                menuPortalTarget={document.body}
+                styles={selectStyles(currentMode, primaryColor)}
+              />
+              <Select
+                id="invoice_type"
+                options={commission_type(t)?.map((trans) => ({
+                  value: trans.value,
+                  label: trans.value,
+                }))}
+                value={commission_type(t)?.filter(
+                  (comm) => comm?.value === filtersData?.invoice_type
+                )}
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    invoice_type: e.value,
+                  });
+                }}
+                placeholder={t("type")}
+                // className={`mb-5`}
+                menuPortalTarget={document.body}
+                styles={selectStyles(currentMode, primaryColor)}
+              />
+
+              <Select
+                id="country"
+                options={countries_list(t)?.map((country) => ({
+                  value: country.value,
+                  label: country.label,
+                }))}
+                value={countries_list(t)?.filter(
+                  (country) => country?.value === filtersData?.country
+                )}
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    country: e.value,
+                  });
+                }}
+                placeholder={t("label_country")}
+                // className={`mb-5`}
+                menuPortalTarget={document.body}
+                styles={selectStyles(currentMode, primaryColor)}
+              />
+
+              <Select
+                id="status"
+                options={payment_status(t)?.map((pay_status) => ({
+                  value: pay_status?.value,
+                  label: pay_status?.label,
+                }))}
+                value={payment_status(t)?.filter(
+                  (pay_status) => pay_status?.value === filtersData?.status
+                )}
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    status: e.value,
+                  });
+                }}
+                placeholder={t("status")}
+                // className={`mb-5`}
+                menuPortalTarget={document.body}
+                styles={selectStyles(currentMode, primaryColor)}
+              />
+              <Select
+                id="paid_by"
+                options={payment_source(t)?.map((payment) => ({
+                  value: payment.value,
+                  label: payment.label,
+                }))}
+                value={payment_source(t)?.filter(
+                  (payment) => payment?.value === filtersData?.paid_by
+                )}
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    paid_by: e.value,
+                  });
+                }}
+                placeholder={t("payment_source")}
+                // className={`mb-5`}
+                menuPortalTarget={document.body}
+                styles={selectStyles(currentMode, primaryColor)}
+              />
+
+              <FormControl
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+                sx={{
+                  minWidth: "100%",
+                  // border: 1,
+                  borderRadius: 1,
+                  marginBottom: "10px",
+                }}
+              >
+                <TextField
+                  id="user_id"
+                  select
+                  value={filtersData?.user_id || "selected"}
+                  label={t("filter_by_user")}
+                  onChange={(e) => {
+                    setFilterData({
+                      ...filtersData,
+                      user_id: e.target.value,
+                    });
+                  }}
+                  size="small"
+                  className="w-full border border-gray-300 rounded "
+                  displayEmpty
+                  required
+                  sx={{
+                    // border: "1px solid #000000",
+                    height: "40px",
+
+                    "& .MuiSelect-select": {
+                      fontSize: 11,
+                    },
+                  }}
+                >
+                  <MenuItem selected value="selected">
+                    ---{t("select_user")}----
+                  </MenuItem>
+                  <MenuItem
+                    onKeyDown={(e) => {
+                      e.stopPropagation();
+                      // e.preventDefault();
+                    }}
+                  >
+                    <TextField
+                      placeholder={t("search_users")}
+                      ref={searchRef}
+                      sx={{
+                        "& input": {
+                          border: "0",
+                        },
+                      }}
+                      variant="standard"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value.length >= 3) {
+                          fetchUsers(value, "user");
+                        }
+                      }}
+                    />
+                  </MenuItem>
+
+                  {user?.map((user) => (
+                    <MenuItem value={user?.id}>{user?.userName}</MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+
+              <FormControl
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+                sx={{
+                  minWidth: "100%",
+                  // border: 1,
+                  borderRadius: 1,
+                  marginBottom: "10px",
+                }}
+              >
+                <TextField
+                  id="vendor_id"
+                  select
+                  value={filtersData?.vendor_id || "selected"}
+                  label={t("vendor")}
+                  onChange={(e) => {
+                    setFilterData({
+                      ...filtersData,
+                      vendor_id: e.target.value,
+                    });
+                  }}
+                  size="small"
+                  className="w-full border border-gray-300 rounded "
+                  displayEmpty
+                  required
+                  sx={{
+                    // border: "1px solid #000000",
+                    height: "40px",
+
+                    "& .MuiSelect-select": {
+                      fontSize: 11,
+                    },
+                  }}
+                >
+                  <MenuItem selected value="selected">
+                    ---{t("select_vendor")}----
+                  </MenuItem>
+                  <MenuItem
+                    onKeyDown={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <TextField
+                      placeholder={t("search_vendors")}
+                      ref={searchRef}
+                      sx={{
+                        "& input": {
+                          border: "0",
+                        },
+                      }}
+                      variant="standard"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value.length >= 3) {
+                          fetchUsers(value);
+                        }
+                      }}
+                    />
+                  </MenuItem>
+
+                  {vendors?.map((vendor) => (
+                    <MenuItem value={vendor?.id}>
+                      {vendor?.vendor_name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+
+              <Select
+                id="currency"
+                options={currencies(t)?.map((curr) => ({
+                  value: curr.value,
+                  label: curr.label,
+                }))}
+                value={currencies(t)?.filter(
+                  (curr) => curr?.value === filtersData?.currency
+                )}
+                onChange={(e) => {
+                  setFilterData({
+                    ...filtersData,
+                    currency: e.value,
+                  });
+                }}
+                placeholder={t("label_currency")}
+                // className={`mb-5`}
+                menuPortalTarget={document.body}
+                styles={selectStyles(currentMode, primaryColor)}
+              />
+              <TextField
+                id="comm_percent"
+                type={"text"}
+                label={t("percent")}
+                className="w-full"
+                style={{
+                  marginBottom: "20px",
+                }}
+                variant="outlined"
+                name="bussiness_name"
+                size="small"
+                value={filtersData.comm_percent}
+                onChange={(e) => handleChange(e, "filter")}
+              />
+              <TextField
+                id="amount"
+                type={"text"}
+                label={t("amount")}
+                className="w-full"
+                style={{
+                  marginBottom: "20px",
+                }}
+                variant="outlined"
+                name="bussiness_name"
+                size="small"
+                value={filtersData.amount}
+                onChange={(e) => handleChange(e, "filter")}
+              />
+
+              <div className="flex justify-between space-x-2 items-center">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    value={startDate}
+                    label={t("start_date")}
+                    views={["day", "month", "year"]}
+                    onChange={(val) => handleDateRange(val, "start")}
+                    format="DD-MM-YYYY"
+                    renderInput={(params) => (
+                      <TextField
+                        sx={{
+                          "& input": {
+                            color: currentMode === "dark" ? "white" : "black",
+                          },
+                          "& .MuiSvgIcon-root": {
+                            color: currentMode === "dark" ? "white" : "black",
+                          },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor:
+                              fieldErrors?.date === true &&
+                              "#DA1F26 !important",
+                          },
+                          marginBottom: "20px",
+                        }}
+                        fullWidth
+                        size="small"
+                        {...params}
+                        onKeyDown={(e) => e.preventDefault()}
+                        readOnly={true}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    value={endDate}
+                    label={t("end_date")}
+                    views={["day", "month", "year"]}
+                    minDate={startDate && startDate}
+                    onChange={(val) => handleDateRange(val)}
+                    format="DD-MM-YYYY"
+                    renderInput={(params) => (
+                      <TextField
+                        sx={{
+                          "& input": {
+                            color: currentMode === "dark" ? "white" : "black",
+                          },
+                          "& .MuiSvgIcon-root": {
+                            color: currentMode === "dark" ? "white" : "black",
+                          },
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor:
+                              fieldErrors?.date === true &&
+                              "#DA1F26 !important",
+                          },
+                          marginBottom: "20px",
+                        }}
+                        fullWidth
+                        size="small"
+                        {...params}
+                        onKeyDown={(e) => e.preventDefault()}
+                        readOnly={true}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </div>
+
+              <Button
+                variant="contained"
+                size="lg"
+                className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                style={{
+                  // backgroundColor: "#111827",
+                  color: "#ffffff",
+                  // border: "1px solid #DA1F26",
+                }}
+                // component="span"
+                // disabled={setBtnLoading ? true : false}
+                onClick={clearFilter}
+              >
+                <span>{t("clear_all")}</span>
+              </Button>
+            </Box>
+          </Menu>
+        </>
+      )}
+
       <div
         className={`grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 ${
           isUrl
@@ -539,386 +1037,8 @@ const Transactions = ({ pathname }) => {
               (currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-[#EEEEEE]")
             }`}
           >
-            <h3 className="text-primary text-center font-semibold mb-5">{` ${t(
-              "btn_filters"
-            )}`}</h3>
-            <Select
-              id="category"
-              options={invoice_category(t)?.map((trans) => ({
-                value: trans.value,
-                label: trans.label,
-              }))}
-              value={invoice_category(t)?.filter(
-                (trans) => trans?.value === filtersData?.category
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  category: e.value,
-                });
-              }}
-              placeholder={t("label_category")}
-              // className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <Select
-              id="invoice_type"
-              options={commission_type(t)?.map((trans) => ({
-                value: trans.value,
-                label: trans.value,
-              }))}
-              value={commission_type(t)?.filter(
-                (comm) => comm?.value === filtersData?.invoice_type
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  invoice_type: e.value,
-                });
-              }}
-              placeholder={t("type")}
-              // className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-
-            <Select
-              id="country"
-              options={countries_list(t)?.map((country) => ({
-                value: country.value,
-                label: country.label,
-              }))}
-              value={countries_list(t)?.filter(
-                (country) => country?.value === filtersData?.country
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  country: e.value,
-                });
-              }}
-              placeholder={t("label_country")}
-              // className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-
-            <Select
-              id="status"
-              options={payment_status(t)?.map((pay_status) => ({
-                value: pay_status?.value,
-                label: pay_status?.label,
-              }))}
-              value={payment_status(t)?.filter(
-                (pay_status) => pay_status?.value === filtersData?.status
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  status: e.value,
-                });
-              }}
-              placeholder={t("status")}
-              // className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <Select
-              id="paid_by"
-              options={payment_source(t)?.map((payment) => ({
-                value: payment.value,
-                label: payment.label,
-              }))}
-              value={payment_source(t)?.filter(
-                (payment) => payment?.value === filtersData?.paid_by
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  paid_by: e.value,
-                });
-              }}
-              placeholder={t("payment_source")}
-              // className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-
-            <FormControl
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-              sx={{
-                minWidth: "100%",
-                // border: 1,
-                borderRadius: 1,
-                marginBottom: "10px",
-              }}
-            >
-              <TextField
-                id="user_id"
-                select
-                value={filtersData?.user_id || "selected"}
-                label={t("filter_by_user")}
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    user_id: e.target.value,
-                  });
-                }}
-                size="small"
-                className="w-full border border-gray-300 rounded "
-                displayEmpty
-                required
-                sx={{
-                  // border: "1px solid #000000",
-                  height: "40px",
-
-                  "& .MuiSelect-select": {
-                    fontSize: 11,
-                  },
-                }}
-              >
-                <MenuItem selected value="selected">
-                  ---{t("select_user")}----
-                </MenuItem>
-                <MenuItem
-                  onKeyDown={(e) => {
-                    e.stopPropagation();
-                    // e.preventDefault();
-                  }}
-                >
-                  <TextField
-                    placeholder={t("search_users")}
-                    ref={searchRef}
-                    sx={{
-                      "& input": {
-                        border: "0",
-                      },
-                    }}
-                    variant="standard"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length >= 3) {
-                        fetchUsers(value, "user");
-                      }
-                    }}
-                  />
-                </MenuItem>
-
-                {user?.map((user) => (
-                  <MenuItem value={user?.id}>{user?.userName}</MenuItem>
-                ))}
-              </TextField>
-            </FormControl>
-
-            <FormControl
-              className={`${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-              sx={{
-                minWidth: "100%",
-                // border: 1,
-                borderRadius: 1,
-                marginBottom: "10px",
-              }}
-            >
-              <TextField
-                id="vendor_id"
-                select
-                value={filtersData?.vendor_id || "selected"}
-                label={t("vendor")}
-                onChange={(e) => {
-                  setFilterData({
-                    ...filtersData,
-                    vendor_id: e.target.value,
-                  });
-                }}
-                size="small"
-                className="w-full border border-gray-300 rounded "
-                displayEmpty
-                required
-                sx={{
-                  // border: "1px solid #000000",
-                  height: "40px",
-
-                  "& .MuiSelect-select": {
-                    fontSize: 11,
-                  },
-                }}
-              >
-                <MenuItem selected value="selected">
-                  ---{t("select_vendor")}----
-                </MenuItem>
-                <MenuItem
-                  onKeyDown={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <TextField
-                    placeholder={t("search_vendors")}
-                    ref={searchRef}
-                    sx={{
-                      "& input": {
-                        border: "0",
-                      },
-                    }}
-                    variant="standard"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length >= 3) {
-                        fetchUsers(value);
-                      }
-                    }}
-                  />
-                </MenuItem>
-
-                {vendors?.map((vendor) => (
-                  <MenuItem value={vendor?.id}>{vendor?.vendor_name}</MenuItem>
-                ))}
-              </TextField>
-            </FormControl>
-
-            <Select
-              id="currency"
-              options={currencies(t)?.map((curr) => ({
-                value: curr.value,
-                label: curr.label,
-              }))}
-              value={currencies(t)?.filter(
-                (curr) => curr?.value === filtersData?.currency
-              )}
-              onChange={(e) => {
-                setFilterData({
-                  ...filtersData,
-                  currency: e.value,
-                });
-              }}
-              placeholder={t("label_currency")}
-              // className={`mb-5`}
-              menuPortalTarget={document.body}
-              styles={selectStyles(currentMode, primaryColor)}
-            />
-            <TextField
-              id="comm_percent"
-              type={"text"}
-              label={t("percent")}
-              className="w-full"
-              style={{
-                marginBottom: "20px",
-              }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={filtersData.comm_percent}
-              onChange={(e) => handleChange(e, "filter")}
-            />
-            <TextField
-              id="amount"
-              type={"text"}
-              label={t("amount")}
-              className="w-full"
-              style={{
-                marginBottom: "20px",
-              }}
-              variant="outlined"
-              name="bussiness_name"
-              size="small"
-              value={filtersData.amount}
-              onChange={(e) => handleChange(e, "filter")}
-            />
-
-            <div className="flex justify-between space-x-2 items-center">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  value={startDate}
-                  label={t("start_date")}
-                  views={["day", "month", "year"]}
-                  onChange={(val) => handleDateRange(val, "start")}
-                  format="DD-MM-YYYY"
-                  renderInput={(params) => (
-                    <TextField
-                      sx={{
-                        "& input": {
-                          color: currentMode === "dark" ? "white" : "black",
-                        },
-                        "& .MuiSvgIcon-root": {
-                          color: currentMode === "dark" ? "white" : "black",
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor:
-                            fieldErrors?.date === true && "#DA1F26 !important",
-                        },
-                        marginBottom: "20px",
-                      }}
-                      fullWidth
-                      size="small"
-                      {...params}
-                      onKeyDown={(e) => e.preventDefault()}
-                      readOnly={true}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  value={endDate}
-                  label={t("end_date")}
-                  views={["day", "month", "year"]}
-                  minDate={startDate && startDate}
-                  onChange={(val) => handleDateRange(val)}
-                  format="DD-MM-YYYY"
-                  renderInput={(params) => (
-                    <TextField
-                      sx={{
-                        "& input": {
-                          color: currentMode === "dark" ? "white" : "black",
-                        },
-                        "& .MuiSvgIcon-root": {
-                          color: currentMode === "dark" ? "white" : "black",
-                        },
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor:
-                            fieldErrors?.date === true && "#DA1F26 !important",
-                        },
-                        marginBottom: "20px",
-                      }}
-                      fullWidth
-                      size="small"
-                      {...params}
-                      onKeyDown={(e) => e.preventDefault()}
-                      readOnly={true}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-            </div>
-
-            <Button
-              variant="contained"
-              size="lg"
-              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-              style={{
-                color: "#ffffff",
-                // border: "1px solid #DA1F26",
-              }}
-              // component="span"
-              // disabled={setBtnLoading ? true : false}
-              onClick={clearFilter}
-            >
-              <span>{t("clear_all")}</span>
-            </Button>
-
             {/* VAT LIST */}
-            <div className="grid grid-cols-2 gap-5 mb-2  p-4 h-[200px] overflow-y-auto mt-4">
+            <div className="grid grid-cols-2 gap-5 mb-2  p-4 h-[700px] overflow-y-scroll mt-4">
               {vatData && vatData?.length > 0
                 ? vatData?.map((vat) => (
                     <>
