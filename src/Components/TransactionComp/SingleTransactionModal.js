@@ -707,7 +707,6 @@ const SingleTransactionModal = ({
                     </div>
                   </div>
                 )}
-                {/* <Footer /> */}
               </>
             )}
           </div>
