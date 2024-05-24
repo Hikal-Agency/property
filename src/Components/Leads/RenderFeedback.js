@@ -26,7 +26,11 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LocationPicker from "../meetings/LocationPicker";
 import dayjs from "dayjs";
 import moment from "moment";
-import { renderStyles, renderStyles2 } from "../_elements/SelectStyles.jsx";
+import {
+  renderStyles,
+  renderStyles2,
+  selectStyles,
+} from "../_elements/SelectStyles.jsx";
 import { currencies, feedback_options } from "../_elements/SelectOptions.js";
 
 import { BsBookmarkCheck } from "react-icons/bs";
@@ -677,7 +681,7 @@ const RenderFeedback = ({ cellValues }) => {
                       placeholder={t("label_currency")}
                       className={`w-full`}
                       menuPortalTarget={document.body}
-                      styles={renderStyles(currentMode, primaryColor)}
+                      styles={selectStyles(currentMode, primaryColor)}
                     />
                   </Box>
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
