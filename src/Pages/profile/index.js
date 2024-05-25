@@ -18,11 +18,9 @@ import {
   BsTelephone,
   BsEnvelopeAt,
   BsFillPlusCircleFill,
-  BsPersonPlus
+  BsPersonPlus,
 } from "react-icons/bs";
-import { 
-  MdEmail 
-} from "react-icons/md";
+import { MdEmail } from "react-icons/md";
 
 const ProfilePage = () => {
   const [loading, setloading] = useState(true);
@@ -32,10 +30,10 @@ const ProfilePage = () => {
     darkModeColors,
     setopenBackDrop,
     BACKEND_URL,
-    setUser, 
+    setUser,
     t,
     themeBgImg,
-    primaryColor
+    primaryColor,
   } = useStateContext();
   const [GeneralInfoData, setGeneralInfo] = useState({
     userAltContact: "",
@@ -81,6 +79,50 @@ const ProfilePage = () => {
       })
       .then((result) => {
         console.log("fetched profile ", result.data);
+
+        const user = {
+          permissions: result.data.roles.permissions,
+          addedBy: result.data.user[0].addedBy,
+          addedFor: result.data.user[0].addedFor,
+          agency: result.data.user[0].agency,
+          created_at: result.data.user[0].created_at,
+          creationDate: result.data.user[0].creationDate,
+          displayImg: result.data.user[0].profile_picture,
+          expiry_date: result.data.user[0].expiry_date,
+          credits: result.data.user[0].credits,
+          gender: result.data.user[0].gender,
+          id: result.data.user[0].id,
+          idExpiryDate: result.data.user[0].idExpiryDate,
+          isParent: result.data.user[0].isParent,
+          is_online: result.data.user[0].is_online,
+          joiningDate: result.data.user[0].joiningDate,
+          loginId: result.data.user[0].loginId,
+          loginStatus: result.data.user[0].loginStatus,
+          master: result.data.user[0].master,
+          nationality: result.data.user[0].nationality,
+          notes: result.data.user[0].notes,
+          old_password: result.data.user[0].old_password,
+
+          package_name: result.data.user[0].package_name,
+          plusSales: result.data.user[0].plusSales,
+          position: result.data.user[0].position,
+          profile_picture: result.data.user[0].profile_picture,
+          role: result.data.user[0].role,
+          status: result.data.user[0].status,
+          target: result.data.user[0].target,
+          uid: result.data.user[0].uid,
+          updated_at: result.data.user[0].updated_at,
+          userEmail: result.data.user[0].userEmail,
+          userContact: result.data.user[0].userContact,
+          userName: result.data.user[0].userName,
+          userType: result.data.user[0].userType,
+          is_alert: result.data.user[0].is_alert,
+          timezone: result.data.user[0].timezone,
+          pinned: result.data.user[0].pinned,
+        };
+
+        setUser(user);
+
         setGeneralInfo({
           userContact: result.data.user[0].userContact,
           userAltContact: result.data.user[0].userAltContact,
@@ -262,16 +304,25 @@ const ProfilePage = () => {
               !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
             }`}
           >
-            <div className={`w-full p-4 ${
-              currentMode === "dark" ? "text-white" : "text-black"
-            }`}>
+            <div
+              className={`w-full p-4 ${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
+            >
               <div className="grid grid-cols-4 gap-5">
                 {/* PROFILE  */}
                 <div className="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-1">
-                  <div className={`${
-                    themeBgImg ? (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-                    : (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]")
-                  } rounded-xl shadow-sm p-4 min-w-[200px] min-h-[200px]`}>
+                  <div
+                    className={`${
+                      themeBgImg
+                        ? currentMode === "dark"
+                          ? "blur-bg-dark"
+                          : "blur-bg-light"
+                        : currentMode === "dark"
+                        ? "bg-[#1C1C1C]"
+                        : "bg-[#EEEEEE]"
+                    } rounded-xl shadow-sm p-4 min-w-[200px] min-h-[200px]`}
+                  >
                     <h1 className="text-lg font-semibold text-center">
                       {t("user_account")}
                     </h1>
@@ -313,18 +364,14 @@ const ProfilePage = () => {
                             <BsTelephone size={16} className="block" />
                             {t("label_contact_number")}
                           </div>
-                          <div className="my-2">
-                            {User?.userContact}
-                          </div>
+                          <div className="my-2">{User?.userContact}</div>
                         </div>
                         <div className="text-center w-full my-1">
                           <div className="flex items-center justify-center font-semibold gap-3 my-2">
                             <BsEnvelopeAt size={16} className="block" />
                             {t("label_email_address")}
                           </div>
-                          <div className="my-2">
-                            {User?.userEmail}
-                          </div>
+                          <div className="my-2">{User?.userEmail}</div>
                         </div>
                         <div className="text-center w-full my-1">
                           <div className="flex items-center justify-center font-semibold gap-3 my-2">
@@ -337,7 +384,7 @@ const ProfilePage = () => {
                         </div>
                       </div>
                     </div>
-                    <div 
+                    <div
                       className={`bg-green-600 text-white rounded-md text-center shadow-sm text-sm font-semibold uppercase p-2`}
                     >
                       {t("status_active")}
@@ -347,13 +394,15 @@ const ProfilePage = () => {
 
                 {/* UPDATE  */}
                 <div className="col-span-4 sm:col-span-4 md:col-span-2 lg:col-span-3">
-                  <div className={`${
-                    themeBgImg && (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
-                  } rounded-xl shadow-sm p-4`}>
-                    <Box
-                      sx={darkModeColors}
-                      className="pt-2 pb-4 mb-4"
-                    >
+                  <div
+                    className={`${
+                      themeBgImg &&
+                      (currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light")
+                    } rounded-xl shadow-sm p-4`}
+                  >
+                    <Box sx={darkModeColors} className="pt-2 pb-4 mb-4">
                       <Tabs
                         sx={darkModeColors}
                         value={value}
@@ -361,7 +410,7 @@ const ProfilePage = () => {
                         variant="standard"
                       >
                         <Tab label={t("general_info")?.toUpperCase()} />
-                        <Tab label={t("personal_info")?.toUpperCase()}/>
+                        <Tab label={t("personal_info")?.toUpperCase()} />
                         <Tab label={t("change_password")?.toUpperCase()} />
                       </Tabs>
                     </Box>
@@ -389,7 +438,6 @@ const ProfilePage = () => {
                   </div>
                 </div>
               </div>
-              
             </div>
           </div>
         )}
