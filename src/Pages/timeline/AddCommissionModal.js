@@ -874,7 +874,7 @@ const AddCommissionModal = ({
                                     "input"
                                   ).value;
                                 if (inputValue) {
-                                  fetchUsers(inputValue, "user");
+                                  fetchUsers(inputValue);
                                 }
                               }}
                               onClick={(event) => event.stopPropagation()}
