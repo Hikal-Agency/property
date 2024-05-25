@@ -85,8 +85,11 @@ const VendorsList = ({}) => {
     setSearchCriteria(event.value);
   };
 
+  console.log("search query: ", searchQuery);
   const handleSearchQueryChange = (event) => {
-    setSearchQuery(event.target.value);
+    const value = event.target.value;
+
+    setSearchQuery(value);
   };
 
   const clearFilter = (e) => {
@@ -166,7 +169,12 @@ const VendorsList = ({}) => {
 
   useEffect(() => {
     fetchVendors();
-  }, [pageState.page, filters, searchQuery]);
+  }, [pageState.page, filters]);
+  useEffect(() => {
+    if (searchQuery.length >= 3) {
+      fetchVendors();
+    }
+  }, [searchQuery]);
 
   return (
     <>
@@ -432,17 +440,23 @@ const VendorsList = ({}) => {
                             {/* ADDRESS  */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsPinMap size={16} />
-                              <p className="col-span-6 break-all">{item?.address}</p>
+                              <p className="col-span-6 break-all">
+                                {item?.address}
+                              </p>
                             </div>
                             {/* POBOX */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsMailbox size={16} />
-                              <p className="col-span-6 break-all">{item?.pobox}</p>
+                              <p className="col-span-6 break-all">
+                                {item?.pobox}
+                              </p>
                             </div>
                             {/* TRN */}
                             <div className="grid grid-cols-7 gap-2">
                               <BsShieldCheck size={16} />
-                              <p className="col-span-6 break-all">{item?.trn}</p>
+                              <p className="col-span-6 break-all">
+                                {item?.trn}
+                              </p>
                             </div>
                           </div>
                           <div className="p-4 flex flex-col gap-4">
