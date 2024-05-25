@@ -16,6 +16,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import OverlayFile from "../../Components/_elements/OverlayFile";
 import { over } from "lodash";
 import moment from "moment";
+import CommissionReqModal from "./ComissionReqModal";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -583,6 +584,13 @@ const CommissionModal = ({
                 }}
               />
             </>
+          )}
+
+          {commReqModal && (
+            <CommissionReqModal
+              commReqModal={commReqModal}
+              setCommReqModal={setCommReqModal}
+            />
           )}
         </div>
       </Modal>
