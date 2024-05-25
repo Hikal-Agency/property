@@ -1119,6 +1119,7 @@ const Transactions = ({ pathname }) => {
           isUrl={isUrl}
           user={user}
           vendors={vendors}
+          fetchUsers={fetchUsers}
           fetchTransactions={fetchTransactions}
         />
       )}

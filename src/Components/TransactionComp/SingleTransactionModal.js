@@ -32,6 +32,7 @@ const SingleTransactionModal = ({
   fetchTransactions,
   user,
   vendors,
+  fetchUsers,
 }) => {
   const {
     currentMode,
@@ -701,6 +702,7 @@ const SingleTransactionModal = ({
                           transData={singleTrans}
                           fetchTransactions={fetchTransactions}
                           user={user}
+                          fetchUsers={fetchUsers}
                           vendors={vendors}
                         />
                       )}
