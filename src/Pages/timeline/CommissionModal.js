@@ -42,6 +42,7 @@ const CommissionModal = ({
   const [error404, setError404] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addCommissionModal, setOpenAddCommissionModal] = useState(false);
+  const [commReqModal, setCommReqModal] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
@@ -221,12 +222,12 @@ const CommissionModal = ({
                     <div>
                       {!invoiceModal && (
                         <>
-                          {/* <button
-                            onClick={(e) => handleOpenModal(e)}
+                          <button
+                            onClick={(e) => setCommReqModal(invoiceModal)}
                             className="bg-btn-primary rounded-md py-2 px-4 mr-2"
                           >
                             {t("btn_commission_request")}
-                          </button> */}
+                          </button>
                           <button
                             onClick={(e) => handleOpenModal(e)}
                             className="bg-btn-primary rounded-md text-white font-semibold py-2 px-4"
