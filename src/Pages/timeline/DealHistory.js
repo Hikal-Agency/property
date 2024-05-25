@@ -577,7 +577,7 @@ const DealHistory = ({
                                             <Tooltip title="Mark">
                                               <button
                                                 onClick={() =>
-                                                  updateStatus(status?.field)
+                                                  setDialogue(status)
                                                 }
                                               >
                                                 <BsCheck2All
