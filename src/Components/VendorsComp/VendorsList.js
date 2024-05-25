@@ -179,23 +179,6 @@ const VendorsList = ({}) => {
   return (
     <>
       <div className="min-h-screen">
-        {/* {openModel && (
-          <SingleUser
-            UserModelOpen={handleModel}
-            handleUserModelClose={handleModelClose}
-            vendorsData={singleUser}
-          />
-        )}
-        {openDeleteModel && (
-          <DeleteUser
-            UserModelOpen={handleDelete}
-            handleUserModelClose={handleDeleteModelClose}
-            vendorsData={userID}
-            UserStatus={status}
-            UserName={username}
-            fetchUser={fetchVendors}
-          />
-        )}*/}
         {openVendorModal && (
           <AddVendor
             handleCloseEditModal={handleCloseEditModal}
@@ -206,194 +189,188 @@ const VendorsList = ({}) => {
           />
         )}
 
+        {/* filters */}
+        <div className={`flex items-center justify-between`}>
+          <Box className={`pt-3 border-t-1 overflow-hidden`}>
+            <Box
+              className="flex flex-wrap gap-3 items-center mb-5"
+              sx={darkModeColors}
+            >
+              {" "}
+              <TextField
+                className={`min-w-[200px]`}
+                size="small"
+                placeholder={t("search")}
+                sx={{
+                  ".css-2ehmn7-MuiInputBase-root-MuiOutlinedInput-root": {
+                    paddingLeft: isLangRTL(i18n.language)
+                      ? "10px !important"
+                      : "0px !important",
+                    paddingRight: isLangRTL(i18n.language)
+                      ? "0px !important"
+                      : "10px !important",
+                  },
+                  "& .MuiInputBase-root": {
+                    backgroundColor:
+                      themeBgImg &&
+                      (currentMode === "dark" ? blurDarkColor : blurLightColor),
+                  },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <BsSearch
+                        color={currentMode === "dark" ? "#EEEEEE" : "#333333"}
+                      />
+                    </InputAdornment>
+                  ),
+                  startAdornment: (
+                    <Box
+                      sx={{
+                        minWidth: "90px",
+                        padding: 0,
+                        marginLeft: isLangRTL(i18n.language) ? "10px" : "0px",
+                        marginRight: isLangRTL(i18n.language) ? "0px" : "10px",
+                      }}
+                    >
+                      <Select
+                        value={vendors_search_filter(t).find(
+                          (option) => option.value === searchCriteria
+                        )}
+                        onChange={handleSearchCriteriaChange}
+                        options={vendors_search_filter(t)}
+                        placeholder={t("label_select")}
+                        className={`w-full p-0 ${
+                          !themeBgImg
+                            ? currentMode === "dark"
+                              ? "bg-[#333333]"
+                              : "bg-[#DDDDDD]"
+                            : currentMode === "dark"
+                            ? "blur-bg-dark"
+                            : "blur-bg-light"
+                        } `}
+                        menuPortalTarget={document.body}
+                        styles={selectBgStyles(
+                          currentMode,
+                          primaryColor,
+                          blurDarkColor,
+                          blurLightColor
+                        )}
+                      />
+                    </Box>
+                  ),
+                }}
+                variant="outlined"
+                onChange={handleSearchQueryChange}
+                value={searchQuery}
+              />
+              {/* VENDOR TYPE  */}
+              <Box sx={{ minWidth: "120px" }}>
+                <Select
+                  id="type"
+                  value={
+                    filters?.type
+                      ? vendor_type(t).find(
+                          (option) => option.value === filters?.type
+                        )
+                      : null
+                  }
+                  onChange={(selectedOption) =>
+                    setFilters({
+                      ...filters,
+                      type: selectedOption?.value || null,
+                    })
+                  }
+                  options={vendor_type(t)?.map((ven) => ({
+                    value: ven.value,
+                    label: ven.label,
+                  }))}
+                  placeholder={t("type")}
+                  className={`w-full`}
+                  isClearable
+                  menuPortalTarget={document.body}
+                  styles={{
+                    ...selectBgStyles(
+                      currentMode,
+                      primaryColor,
+                      blurDarkColor,
+                      blurLightColor
+                    ),
+                    dropdownIndicator: (provided) => ({
+                      ...provided,
+                      display: filters?.type ? "none" : "block",
+                    }),
+                    clearIndicator: (provided) => ({
+                      ...provided,
+                      display: filters?.type ? "block" : "none",
+                    }),
+                  }}
+                />
+              </Box>
+              {/* COUNTRY */}
+              <Box sx={{ minWidth: "120px" }}>
+                <Select
+                  id="country"
+                  value={
+                    filters?.country
+                      ? countries_list(t).find(
+                          (option) => option.value === filters?.country
+                        )
+                      : null
+                  }
+                  onChange={(selectedOption) =>
+                    setFilters({
+                      ...filters,
+                      country: selectedOption?.value || null,
+                    })
+                  }
+                  options={countries_list(t)?.map((con) => ({
+                    value: con.value,
+                    label: con.label,
+                  }))}
+                  placeholder={t("label_country")}
+                  className={`w-full`}
+                  isClearable
+                  menuPortalTarget={document.body}
+                  styles={{
+                    ...selectBgStyles(
+                      currentMode,
+                      primaryColor,
+                      blurDarkColor,
+                      blurLightColor
+                    ),
+                    dropdownIndicator: (provided) => ({
+                      ...provided,
+                      display: filters?.country ? "none" : "block",
+                    }),
+                    clearIndicator: (provided) => ({
+                      ...provided,
+                      display: filters?.country ? "block" : "none",
+                    }),
+                  }}
+                />
+              </Box>
+              {(isFilterApplied || searchCriteria || searchQuery) && (
+                <Button
+                  onClick={clearFilter}
+                  className="w-max btn py-2 px-3 bg-btn-primary text-white"
+                >
+                  <p className="text-white">{t("clear")}</p>
+                </Button>
+              )}
+            </Box>
+          </Box>
+        </div>
+        {/* filters end */}
+
         {loading ? (
-          <Loader />
+          <>
+            <Loader />
+          </>
         ) : (
           <div className={`w-full`}>
             <div className="px-5">
               <div className="mt-5 md:mt-2">
-                {/* filters */}
-                <div className={`flex items-center justify-between`}>
-                  <Box className={`pt-3 border-t-1 overflow-hidden`}>
-                    <Box
-                      className="flex flex-wrap gap-3 items-center mb-5"
-                      sx={darkModeColors}
-                    >
-                      {" "}
-                      <TextField
-                        className={`min-w-[200px]`}
-                        size="small"
-                        placeholder={t("search")}
-                        sx={{
-                          ".css-2ehmn7-MuiInputBase-root-MuiOutlinedInput-root":
-                            {
-                              paddingLeft: isLangRTL(i18n.language)
-                                ? "10px !important"
-                                : "0px !important",
-                              paddingRight: isLangRTL(i18n.language)
-                                ? "0px !important"
-                                : "10px !important",
-                            },
-                          "& .MuiInputBase-root": {
-                            backgroundColor:
-                              themeBgImg &&
-                              (currentMode === "dark"
-                                ? blurDarkColor
-                                : blurLightColor),
-                          },
-                        }}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <BsSearch
-                                color={
-                                  currentMode === "dark" ? "#EEEEEE" : "#333333"
-                                }
-                              />
-                            </InputAdornment>
-                          ),
-                          startAdornment: (
-                            <Box
-                              sx={{
-                                minWidth: "90px",
-                                padding: 0,
-                                marginLeft: isLangRTL(i18n.language)
-                                  ? "10px"
-                                  : "0px",
-                                marginRight: isLangRTL(i18n.language)
-                                  ? "0px"
-                                  : "10px",
-                              }}
-                            >
-                              <Select
-                                value={vendors_search_filter(t).find(
-                                  (option) => option.value === searchCriteria
-                                )}
-                                onChange={handleSearchCriteriaChange}
-                                options={vendors_search_filter(t)}
-                                placeholder={t("label_select")}
-                                className={`w-full p-0 ${
-                                  !themeBgImg
-                                    ? currentMode === "dark"
-                                      ? "bg-[#333333]"
-                                      : "bg-[#DDDDDD]"
-                                    : currentMode === "dark"
-                                    ? "blur-bg-dark"
-                                    : "blur-bg-light"
-                                } `}
-                                menuPortalTarget={document.body}
-                                styles={selectBgStyles(
-                                  currentMode,
-                                  primaryColor,
-                                  blurDarkColor,
-                                  blurLightColor
-                                )}
-                              />
-                            </Box>
-                          ),
-                        }}
-                        variant="outlined"
-                        onChange={handleSearchQueryChange}
-                        value={searchQuery}
-                      />
-                      {/* VENDOR TYPE  */}
-                      <Box sx={{ minWidth: "120px" }}>
-                        <Select
-                          id="type"
-                          value={
-                            filters?.type
-                              ? vendor_type(t).find(
-                                  (option) => option.value === filters?.type
-                                )
-                              : null
-                          }
-                          onChange={(selectedOption) =>
-                            setFilters({
-                              ...filters,
-                              type: selectedOption?.value || null,
-                            })
-                          }
-                          options={vendor_type(t)?.map((ven) => ({
-                            value: ven.value,
-                            label: ven.label,
-                          }))}
-                          placeholder={t("type")}
-                          className={`w-full`}
-                          isClearable
-                          menuPortalTarget={document.body}
-                          styles={{
-                            ...selectBgStyles(
-                              currentMode,
-                              primaryColor,
-                              blurDarkColor,
-                              blurLightColor
-                            ),
-                            dropdownIndicator: (provided) => ({
-                              ...provided,
-                              display: filters?.type ? "none" : "block",
-                            }),
-                            clearIndicator: (provided) => ({
-                              ...provided,
-                              display: filters?.type ? "block" : "none",
-                            }),
-                          }}
-                        />
-                      </Box>
-                      {/* COUNTRY */}
-                      <Box sx={{ minWidth: "120px" }}>
-                        <Select
-                          id="country"
-                          value={
-                            filters?.country
-                              ? countries_list(t).find(
-                                  (option) => option.value === filters?.country
-                                )
-                              : null
-                          }
-                          onChange={(selectedOption) =>
-                            setFilters({
-                              ...filters,
-                              country: selectedOption?.value || null,
-                            })
-                          }
-                          options={countries_list(t)?.map((con) => ({
-                            value: con.value,
-                            label: con.label,
-                          }))}
-                          placeholder={t("label_country")}
-                          className={`w-full`}
-                          isClearable
-                          menuPortalTarget={document.body}
-                          styles={{
-                            ...selectBgStyles(
-                              currentMode,
-                              primaryColor,
-                              blurDarkColor,
-                              blurLightColor
-                            ),
-                            dropdownIndicator: (provided) => ({
-                              ...provided,
-                              display: filters?.country ? "none" : "block",
-                            }),
-                            clearIndicator: (provided) => ({
-                              ...provided,
-                              display: filters?.country ? "block" : "none",
-                            }),
-                          }}
-                        />
-                      </Box>
-                      {(isFilterApplied || searchCriteria || searchQuery) && (
-                        <Button
-                          onClick={clearFilter}
-                          className="w-max btn py-2 px-3 bg-btn-primary text-white"
-                        >
-                          <p className="text-white">{t("clear")}</p>
-                        </Button>
-                      )}
-                    </Box>
-                  </Box>
-                </div>
-                {/* filters end */}
                 <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-5">
                   {vendorsData?.map((item, index) => {
                     return (
