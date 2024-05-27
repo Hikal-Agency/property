@@ -223,12 +223,12 @@ const CommissionModal = ({
                     <div>
                       {!invoiceModal && (
                         <>
-                          {/* <button
-                            onClick={(e) => setCommReqModal(invoiceModal)}
+                          <button
+                            onClick={(e) => setCommReqModal(commissionModal)}
                             className="bg-btn-primary rounded-md py-2 px-4 mr-2"
                           >
                             {t("btn_commission_request")}
-                          </button> */}
+                          </button>
                           <button
                             onClick={(e) => handleOpenModal(e)}
                             className="bg-btn-primary rounded-md text-white font-semibold py-2 px-4"

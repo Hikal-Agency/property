@@ -1062,5 +1062,12 @@
 
     "short_commission":"Comm",
 
-    "do_you_really_Want":"Do you really want to mark the"
+    "do_you_really_Want":"Do you really want to mark the",
+
+
+
+
+    "generate_comm_req":"Generate Commission Request",
+    "comm_perc":" Commission Percentage",
+    "comm_amount":" Commission Amount"
 }

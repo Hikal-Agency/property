@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import moment from "moment";
 import {
@@ -8,6 +8,8 @@ import {
   TextField,
   Button,
   Box,
+  FormControl,
+  MenuItem,
 } from "@mui/material";
 import Select from "react-select";
 
@@ -49,48 +51,94 @@ const CommissionReqModal = ({
 
   const { hasPermission } = usePermission();
 
+  const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
   const [updatedField, setUpdatedField] = useState("");
 
-  const [closedDealData, setClosedDealsData] = useState({
-    leadId: Feedback?.leadId,
-    unit: null,
-    dealDate: moment(Feedback?.creationDate).format("YYYY-MM-DD"),
-    currency: "AED",
-    booking_percent: 0,
-    booking_amount: Feedback?.booked_amount,
-    booking_date: Feedback?.booked_date,
-    passport: null,
-    project: Feedback?.project,
-    enquiryType: Feedback?.enquiryType,
-    amount: null,
-    paid_amount: 0,
-    paid_percent: null,
+  const searchRef = useRef();
+
+  const [commReqData, setCommReqData] = useState({
+    vendor_id: null,
+    vendor_name: null,
+    address: null,
+    trn: null,
+    unit: commReqModal?.unit || null,
+    date: moment(Feedback?.creationDate).format("YYYY-MM-DD"),
+    currency: commReqModal?.currency || "AED",
+    comm_amount: commReqModal?.comm_amount || null,
+    comm_percent: commReqModal?.comm_percent || null,
+    project: commReqModal?.unit || null,
+    leadName: commReqModal?.leadName || null,
+    amount: commReqModal?.amount || null,
+    vat: commReqModal?.vat || null,
+    total: null,
   });
 
-  console.log("closed deal data:: ", closedDealData);
+  console.log("comm req data:: ", commReqData);
 
-  const [imagePreview, setImagePreview] = useState(null);
+  const fetchVendors = async () => {
+    setLoading(true);
+    const vendorUrl = `${BACKEND_URL}/vendors`;
 
-  const handleImgUpload = (e) => {
-    const file = e.target.files[0];
-
-    console.log("files:: ", file);
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImagePreview(reader.result);
-
-      const base64Image = reader.result;
-      setClosedDealsData({
-        ...closedDealData,
-        passport: file,
+    try {
+      const vendorsList = await axios.get(vendorUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
       });
-    };
-    reader.readAsDataURL(file);
+
+      console.log("vendors list:: ", vendorsList);
+
+      setVendors(vendorsList?.data?.data?.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching data:", error);
+      toast.error("Unable to fetch data", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const fetchUsers = async (title) => {
+    try {
+      let url = "";
+
+      url = `${BACKEND_URL}/vendors?vendor_name=${title}`;
+
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("vendors: ", response);
+
+      setVendors(response?.data?.data?.data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to fetch vendors.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -98,7 +146,7 @@ const CommissionReqModal = ({
     const value = e.target.value;
     const id = e.target.id;
 
-    setClosedDealsData((prev) => ({
+    setCommReqData((prev) => ({
       ...prev,
       [id]: value,
     }));
@@ -106,8 +154,7 @@ const CommissionReqModal = ({
   };
 
   useEffect(() => {
-    const { amount, paid_percent, booking_amount, paid_amount } =
-      closedDealData;
+    const { amount, paid_percent, booking_amount, paid_amount } = commReqData;
 
     if (updatedField === "amount" || updatedField === "paid_percent") {
       autoCalculate("paid_amount", amount, paid_percent);
@@ -119,10 +166,10 @@ const CommissionReqModal = ({
       autoCalculate("paid_percent", amount, paid_amount);
     }
   }, [
-    closedDealData.amount,
-    closedDealData.paid_percent,
-    closedDealData.booking_amount,
-    closedDealData.paid_amount,
+    commReqData.amount,
+    commReqData.paid_percent,
+    commReqData.booking_amount,
+    commReqData.paid_amount,
     updatedField,
   ]);
 
@@ -200,7 +247,7 @@ const CommissionReqModal = ({
   const token = localStorage.getItem("auth-token");
   const AddClosedDeal = () => {
     setbtnloading(true);
-    // if (!closedDealData?.passport) {
+    // if (!commReqData?.passport) {
     //   toast.error("Passport image is required", {
     //     position: "top-right",
     //     autoClose: 3000,
@@ -217,7 +264,7 @@ const CommissionReqModal = ({
     // }
 
     axios
-      .post(`${BACKEND_URL}/closedDeals`, closedDealData, {
+      .post(`${BACKEND_URL}/closedDeals`, commReqData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -268,6 +315,10 @@ const CommissionReqModal = ({
         });
       });
   };
+
+  useEffect(() => {
+    fetchVendors();
+  }, []);
 
   return (
     <Modal
@@ -344,23 +395,7 @@ const CommissionReqModal = ({
                   }}
                 >
                   <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("want_to_change_feedback")} {t("from")}{" "}
-                    <span className="text-sm bg-gray-500 text-white px-2 py-1 rounded-md font-bold">
-                      {t(
-                        "feedback_" +
-                          Feedback?.feedback
-                            ?.toLowerCase()
-                            ?.replaceAll(" ", "_")
-                      )}
-                    </span>{" "}
-                    {t("to")}{" "}
-                    <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
-                      {t(
-                        "feedback_" +
-                          newFeedback?.toLowerCase()?.replaceAll(" ", "_")
-                      )}
-                    </span>{" "}
-                    ?
+                    {t("generate_comm_req")}
                   </h1>
                 </h1>
               </div>
@@ -413,7 +448,7 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={closedDealData?.project}
+                        value={commReqData?.project}
                         onChange={(e) => handleChange(e)}
                         required
                       />
@@ -431,28 +466,30 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={closedDealData.enquiryType}
+                        value={commReqData.enquiryType}
                         onChange={(e) => handleChange(e)}
                         required
                       /> */}
-                      <Select
-                        id="enquiryType"
-                        options={enquiry_options(t)}
-                        // value={closedDealData.enquiryType}
-                        value={enquiry_options(t)?.find(
-                          (fb) => fb.value === closedDealData?.enquiryType
-                        )}
-                        onChange={(e) => {
-                          setClosedDealsData({
-                            ...closedDealData,
-                            enquiryType: e.value,
-                          });
+
+                      {/* CLIENT NAME */}
+                      <TextField
+                        id="leadName"
+                        type={"text"}
+                        label={t("label_lead_name")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
                         }}
-                        placeholder={t("label_enquiry_for")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.leadName}
+                        onChange={(e) => handleChange(e)}
+                        required
                       />
+
                       {/* UNIT */}
                       <TextField
                         id="unit"
@@ -467,7 +504,7 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={closedDealData?.unit}
+                        value={commReqData?.unit}
                         onChange={(e) => handleChange(e)}
                         required
                       />
@@ -478,11 +515,11 @@ const CommissionReqModal = ({
                           id="currency"
                           options={currencies(t)}
                           value={currencies(t)?.find(
-                            (curr) => curr.value === closedDealData?.currency
+                            (curr) => curr.value === commReqData?.currency
                           )}
                           onChange={(e) => {
                             setClosedDealsData({
-                              ...closedDealData,
+                              ...commReqData,
                               currency: e.value,
                             });
                           }}
@@ -504,7 +541,7 @@ const CommissionReqModal = ({
                           }}
                           variant="outlined"
                           size="small"
-                          value={closedDealData?.amount}
+                          value={commReqData?.amount}
                           onChange={(e) => handleChange(e)}
                           required
                         />
@@ -513,7 +550,7 @@ const CommissionReqModal = ({
                   </div>
                 </div>
 
-                {/* PAYMENT DETAILS  */}
+                {/* DEVELOPER DETAILS  */}
                 <div
                   className={`px-5 pt-5 \ rounded-xl shadow-sm card-hover
                   ${
@@ -523,7 +560,7 @@ const CommissionReqModal = ({
                   }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
-                    {t("payment_details")?.toUpperCase()}
+                    {t("developer_detail")?.toUpperCase()}
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
@@ -533,52 +570,91 @@ const CommissionReqModal = ({
                         // marginTop:"20p"
                       }}
                     >
-                      {/* DEAL DATE */}
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={closedDealData?.dealDate}
-                          label={t("label_deal_date")}
-                          views={["day", "month", "year"]}
-                          onChange={(newValue) => {
-                            const formattedDate = moment(newValue?.$d).format(
-                              "YYYY-MM-DD"
+                      {/* VENDORS LIST */}
+                      <FormControl
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                        sx={{
+                          minWidth: "100%",
+                          // border: 1,
+                          borderRadius: 1,
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <TextField
+                          id="vendor_id"
+                          select
+                          value={commReqData?.vendor_id || "selected"}
+                          label={t("vendor")}
+                          onChange={(e) => {
+                            const singleVendor = vendors?.find(
+                              (ven) => ven?.id === e.target.value
                             );
-
-                            setClosedDealsData((prev) => ({
-                              ...prev,
-                              dealDate: formattedDate,
-                            }));
+                            console.log("singlevendor: ", singleVendor);
+                            setCommReqData({
+                              ...commReqData,
+                              vendor_id: e.target.value,
+                              vendor_name: singleVendor?.vendor_name,
+                              address: singleVendor?.address,
+                              trn: singleVendor?.trn,
+                            });
                           }}
-                          format="DD-MM-YYYY"
-                          renderInput={(params) => (
+                          size="small"
+                          className="w-full border border-gray-300 rounded "
+                          displayEmpty
+                          required
+                          sx={{
+                            // border: "1px solid #000000",
+                            height: "40px",
+
+                            "& .MuiSelect-select": {
+                              fontSize: 11,
+                            },
+                          }}
+                        >
+                          <MenuItem selected value="selected">
+                            ---{t("select_vendor")}----
+                          </MenuItem>
+                          <MenuItem
+                            onKeyDown={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
                             <TextField
+                              placeholder={t("search_vendors")}
+                              ref={searchRef}
                               sx={{
                                 "& input": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
+                                  border: "0",
                                 },
-                                "& .MuiSvgIcon-root": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                },
-                                marginBottom: "15px",
                               }}
-                              fullWidth
-                              size="small"
-                              {...params}
-                              onKeyDown={(e) => e.preventDefault()}
-                              readOnly={true}
+                              variant="standard"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                              }}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (value.length >= 3) {
+                                  fetchUsers(value);
+                                }
+                              }}
                             />
-                          )}
-                          maxDate={dayjs().startOf("day").toDate()}
-                        />
-                      </LocalizationProvider>
+                          </MenuItem>
 
-                      {/* PAID PERCENTAGE */}
+                          {vendors?.map((vendor) => (
+                            <MenuItem value={vendor?.id}>
+                              {vendor?.vendor_name}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </FormControl>
+
+                      {/* VENDOR NAME */}
                       <TextField
-                        id="paid_percent"
-                        type={"number"}
-                        label={t("paid_percent")}
+                        id="vendor_name"
+                        type={"text"}
+                        label={t("form_vendor_name")}
                         className="w-full"
                         sx={{
                           "&": {
@@ -588,53 +664,53 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={closedDealData?.paid_percent}
+                        value={commReqData?.vendor_name}
                         onChange={(e) => handleChange(e)}
                         required
                       />
-                      <div className="grid grid-cols-3">
-                        {/* CURRENCY */}
-                        <Select
-                          id="currency"
-                          options={currencies(t)}
-                          value={currencies(t)?.find(
-                            (curr) => curr.value === closedDealData?.currency
-                          )}
-                          onChange={(e) => {
-                            setClosedDealsData({
-                              ...closedDealData,
-                              currency: e.value,
-                            });
-                          }}
-                          placeholder={t("label_select_currency")}
-                          className={`mb-5`}
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                        {/* PAID AMOUNT */}
-                        <TextField
-                          id="paid_amount"
-                          type={"number"}
-                          label={t("paid_amount")}
-                          className="w-full col-span-2"
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                              zIndex: 1,
-                            },
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={closedDealData?.paid_amount}
-                          onChange={(e) => handleChange(e)}
-                          required
-                        />
-                      </div>
+
+                      {/* VENDOR ADDRESS */}
+                      <TextField
+                        id="address"
+                        type={"text"}
+                        label={t("label_address")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.address}
+                        onChange={(e) => handleChange(e)}
+                        required
+                      />
+
+                      {/* TRN */}
+                      <TextField
+                        id="trn"
+                        type={"text"}
+                        label={t("trn")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.trn}
+                        onChange={(e) => handleChange(e)}
+                        required
+                      />
                     </Box>
                   </div>
                 </div>
 
-                {/* BOOKING DETAILS */}
+                {/* COMMISSION DETAILS */}
                 <div
                   className={`px-5 pt-5 rounded-xl shadow-sm card-hover
                   ${
@@ -656,8 +732,8 @@ const CommissionReqModal = ({
                       {/* BOOKING DATE  */}
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          value={closedDealData?.booking_date}
-                          label={t("booking_date")}
+                          value={commReqData?.date}
+                          label={t("date")}
                           views={["day", "month", "year"]}
                           onChange={(newValue) => {
                             const formattedDate = moment(newValue?.$d).format(
@@ -666,7 +742,7 @@ const CommissionReqModal = ({
 
                             setClosedDealsData((prev) => ({
                               ...prev,
-                              booking_date: formattedDate,
+                              date: formattedDate,
                             }));
                           }}
                           format="DD-MM-YYYY"
@@ -693,11 +769,12 @@ const CommissionReqModal = ({
                           maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
-                      {/* BOOKING PERCENT */}
+
+                      {/* COMMISSION AMOUNT */}
                       <TextField
-                        id="booking_percent"
+                        id="comm_amount"
                         type={"number"}
-                        label={t("booked_perc")}
+                        label={t("comm_amount")}
                         className="w-full"
                         sx={{
                           "&": {
@@ -707,51 +784,63 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={closedDealData?.booking_percent}
+                        value={commReqData?.comm_amount}
                         onChange={(e) => handleChange(e)}
-                        // readOnly={true}
-                        InputProps={{
-                          readOnly: true, // Set readonly to true
-                        }}
                       />
-                      <div className="grid grid-cols-3">
-                        {/* CURRENCY  */}
-                        <Select
-                          id="currency"
-                          options={currencies(t)}
-                          value={currencies(t)?.find(
-                            (curr) => curr.value === closedDealData?.currency
-                          )}
-                          onChange={(e) => {
-                            setClosedDealsData({
-                              ...closedDealData,
-                              currency: e.value,
-                            });
-                          }}
-                          placeholder={t("label_select_currency")}
-                          className={`mb-5`}
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                        {/* BOOKING AMOUNT  */}
-                        <TextField
-                          id="booking_amount"
-                          type={"number"}
-                          label={t("booking_amount")}
-                          className="w-full col-span-2"
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                              zIndex: 1,
-                            },
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={closedDealData?.booking_amount}
-                          onChange={(e) => handleChange(e)}
-                          required
-                        />
-                      </div>
+
+                      {/* COMMISSION PERCENT */}
+                      <TextField
+                        id="comm_percent"
+                        type={"number"}
+                        label={t("comm_perc")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.comm_percent}
+                        onChange={(e) => handleChange(e)}
+                      />
+
+                      {/* VAT AMOUNT*/}
+                      <TextField
+                        id="vat"
+                        type={"number"}
+                        label={t("vat")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.vat}
+                        onChange={(e) => handleChange(e)}
+                      />
+
+                      {/* TOTAL AMOUNT*/}
+                      <TextField
+                        id="total"
+                        type={"number"}
+                        label={t("total")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.total}
+                        onChange={(e) => handleChange(e)}
+                      />
                     </Box>
                   </div>
                 </div>
