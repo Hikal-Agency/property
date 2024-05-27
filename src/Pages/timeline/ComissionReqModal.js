@@ -839,7 +839,12 @@ const CommissionReqModal = ({
                         variant="outlined"
                         size="small"
                         value={commReqData?.total}
-                        onChange={(e) => handleChange(e)}
+                        onChange={(e) =>
+                          setCommReqData({
+                            ...commReqData,
+                            total: commReqData?.comm_amount + commReqData?.vat,
+                          })
+                        }
                       />
                     </Box>
                   </div>
