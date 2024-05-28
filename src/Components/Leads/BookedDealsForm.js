@@ -573,7 +573,8 @@ const BookedDealsForm = ({
                               readOnly={true}
                             />
                           )}
-                          maxDate={dayjs().startOf("day").toDate()}
+                          minDate={closedDealData?.booking_date}
+                          // maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
 
