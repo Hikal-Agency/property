@@ -180,6 +180,8 @@ const CommissionReqModal = ({
 
   const token = localStorage.getItem("auth-token");
   const GenerateRequest = () => {
+    setOpenPDF(commReqData);
+    return;
     setbtnloading(true);
 
     const data = {
