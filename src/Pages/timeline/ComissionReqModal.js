@@ -75,6 +75,10 @@ const CommissionReqModal = ({
     amount: commReqModal?.amount || null,
     vat: commReqModal?.vat || null,
     total: null,
+    company: "HIKAL REAL STATE LLC" || null,
+    company_trn: "100587185800003" || null,
+    company_email: "info@hikalagency.ae" || null,
+    company_tele: "+97142722249" || null,
   });
 
   console.log("comm req data:: ", commReqData);
@@ -720,7 +724,7 @@ const CommissionReqModal = ({
                   }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
-                    {t("booking_details")?.toUpperCase()}
+                    {t("commission_details")?.toUpperCase()}
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
@@ -850,9 +854,9 @@ const CommissionReqModal = ({
                   </div>
                 </div>
 
-                {/* CLIENT  DETAILS  */}
-                {/* <div
-                  className={`p-4 rounded-xl shadow-sm card-hover
+                {/* COMPANY DETAILS */}
+                <div
+                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
                   ${
                     currentMode === "dark"
                       ? "bg-[#1C1C1C] text-white"
@@ -860,53 +864,89 @@ const CommissionReqModal = ({
                   }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
-                    {t("client_details")?.toUpperCase()}
+                    {t("company_details")?.toUpperCase()}
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
-                    <Box sx={darkModeColors} className="p-2">
-                     
-
-                      <div className="  mb-5 flex items-center justify-center ">
-                        <div className=" rounded-lg border">
-                          <img
-                            src={imagePreview}
-                            width="100px"
-                            height="100px"
-                          />
-                        </div>
-                      </div>
-                      <input
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        id="contained-button-file"
-                        type="file"
-                        onChange={handleImgUpload}
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                      }}
+                    >
+                      {/* COMPANY NAME  */}
+                      <TextField
+                        id="company"
+                        type={"text"}
+                        label={t("company_name")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.company}
+                        onChange={(e) => handleChange(e)}
                       />
-                      <label htmlFor="contained-button-file">
-                        <Button
-                          variant="contained"
-                          size="medium"
-                          className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
-                          style={{
-                            color: "#ffffff",
-                            border: "1px solid white",
-                            fontFamily: fontFam,
-                          }}
-                          component="span" // Required so the button doesn't automatically submit form
-                          disabled={loading ? true : false}
-                          startIcon={
-                            loading ? null : (
-                              <MdFileUpload className="mx-2" size={16} />
-                            )
-                          }
-                        >
-                          <span>{t("label_passport_image")}</span>
-                        </Button>
-                      </label>
+
+                      {/* COMPANY TRN */}
+                      <TextField
+                        id="company_trn"
+                        type={"number"}
+                        label={t("trn")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.company_trn}
+                        onChange={(e) => handleChange(e)}
+                      />
+
+                      {/* COMPANY EMAIL */}
+                      <TextField
+                        id="company_email"
+                        type={"text"}
+                        label={t("label_email")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.company_email}
+                        onChange={(e) => handleChange(e)}
+                      />
+
+                      {/* COMPANY TELEPHONE */}
+                      <TextField
+                        id="company_tele"
+                        type={"text"}
+                        label={t("company_tele")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.company_tele}
+                        onChange={(e) => handleChange(e)}
+                      />
                     </Box>
                   </div>
-                </div> */}
+                </div>
               </div>
             </>
           )}

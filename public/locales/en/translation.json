@@ -1069,5 +1069,8 @@
 
     "generate_comm_req":"Generate Commission Request",
     "comm_perc":" Commission Percentage",
-    "comm_amount":" Commission Amount"
+    "comm_amount":" Commission Amount",
+    "company_details":" Company Details",
+    "company_name":" Company Name",
+    "company_tele":" Telephone"
 }
