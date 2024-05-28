@@ -197,7 +197,7 @@ const CommissionReqModal = ({
         console.log("PAID PERCENT = ", paidPercent);
         console.log("PAID AMOUNT = ", paidAmount);
 
-        setClosedDealsData((prevData) => ({
+        commReqData((prevData) => ({
           ...prevData,
           paid_amount: paidAmount,
         }));
@@ -215,7 +215,7 @@ const CommissionReqModal = ({
         console.log("PAID AMOUNT = ", paidAmount);
         console.log("PAID PERCENT = ", paidPercent);
 
-        setClosedDealsData((prevData) => ({
+        commReqData((prevData) => ({
           ...prevData,
           paid_percent: paidPercent,
         }));
@@ -233,7 +233,7 @@ const CommissionReqModal = ({
         console.log("BOOKING AMOUNT = ", bookingAmount);
         console.log("BOOKING PERCENT = ", bookingPercent);
 
-        setClosedDealsData((prevData) => ({
+        commReqData((prevData) => ({
           ...prevData,
           booking_percent: bookingPercent,
         }));
@@ -257,21 +257,6 @@ const CommissionReqModal = ({
   const token = localStorage.getItem("auth-token");
   const AddClosedDeal = () => {
     setbtnloading(true);
-    // if (!commReqData?.passport) {
-    //   toast.error("Passport image is required", {
-    //     position: "top-right",
-    //     autoClose: 3000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //     theme: "light",
-    //   });
-    //   setbtnloading(false);
-
-    //   return;
-    // }
 
     axios
       .post(`${BACKEND_URL}/closedDeals`, commReqData, {
@@ -528,7 +513,7 @@ const CommissionReqModal = ({
                             (curr) => curr.value === commReqData?.currency
                           )}
                           onChange={(e) => {
-                            setClosedDealsData({
+                            commReqData({
                               ...commReqData,
                               currency: e.value,
                             });
@@ -750,7 +735,7 @@ const CommissionReqModal = ({
                               "YYYY-MM-DD"
                             );
 
-                            setClosedDealsData((prev) => ({
+                            commReqData((prev) => ({
                               ...prev,
                               date: formattedDate,
                             }));
