@@ -947,6 +947,101 @@ const CommissionReqModal = ({
                     </Box>
                   </div>
                 </div>
+
+                {/* BANK DETAILS */}
+                {/* COMPANY DETAILS */}
+                <div
+                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
+                  ${
+                    currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-[#EEEEEE] text-black"
+                  }`}
+                >
+                  <h1 className="text-center uppercase font-semibold">
+                    {t("company_details")?.toUpperCase()}
+                  </h1>
+                  <hr className="my-4" />
+                  <div className="w-full">
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                      }}
+                    >
+                      {/* COMPANY NAME  */}
+                      <TextField
+                        id="company"
+                        type={"text"}
+                        label={t("company_name")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.company}
+                        onChange={(e) => handleChange(e)}
+                      />
+
+                      {/* COMPANY TRN */}
+                      <TextField
+                        id="company_trn"
+                        type={"number"}
+                        label={t("trn")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.company_trn}
+                        onChange={(e) => handleChange(e)}
+                      />
+
+                      {/* COMPANY EMAIL */}
+                      <TextField
+                        id="company_email"
+                        type={"text"}
+                        label={t("label_email")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.company_email}
+                        onChange={(e) => handleChange(e)}
+                      />
+
+                      {/* COMPANY TELEPHONE */}
+                      <TextField
+                        id="company_tele"
+                        type={"text"}
+                        label={t("company_tele")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.company_tele}
+                        onChange={(e) => handleChange(e)}
+                      />
+                    </Box>
+                  </div>
+                </div>
               </div>
             </>
           )}
