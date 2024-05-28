@@ -79,6 +79,12 @@ const CommissionReqModal = ({
     company_trn: "100587185800003" || null,
     company_email: "info@hikalagency.ae" || null,
     company_tele: "+97142722249" || null,
+    bank_name: "EMIRATES ISLAMIC" || null,
+    bank_address: "EI SHK ZAYED RD AL WASL TOWER" || null,
+    bank_acc_name: "HIKAL REAL STATE L.L.C." || null,
+    bank_acc_no: "3708453323701" || null,
+    bank_iban: "AE810340003708453323701" || null,
+    bank_swift_code: "MEBLAEAD" || null,
   });
 
   console.log("comm req data:: ", commReqData);
@@ -949,7 +955,6 @@ const CommissionReqModal = ({
                 </div>
 
                 {/* BANK DETAILS */}
-                {/* COMPANY DETAILS */}
                 <div
                   className={`px-5 pt-5 rounded-xl shadow-sm card-hover
                   ${
@@ -959,7 +964,7 @@ const CommissionReqModal = ({
                   }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
-                    {t("company_details")?.toUpperCase()}
+                    {t("bank_details")?.toUpperCase()}
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
@@ -968,11 +973,11 @@ const CommissionReqModal = ({
                         ...darkModeColors,
                       }}
                     >
-                      {/* COMPANY NAME  */}
+                      {/* BANK NAME  */}
                       <TextField
-                        id="company"
+                        id="bank_name"
                         type={"text"}
-                        label={t("company_name")}
+                        label={t("bank_name")}
                         className="w-full"
                         sx={{
                           "&": {
@@ -982,15 +987,51 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={commReqData?.company}
+                        value={commReqData?.bank_name}
                         onChange={(e) => handleChange(e)}
                       />
 
-                      {/* COMPANY TRN */}
+                      {/* BANK ADDRESS */}
                       <TextField
-                        id="company_trn"
+                        id="bank_address"
+                        type={"text"}
+                        label={t("bank_address")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.bank_address}
+                        onChange={(e) => handleChange(e)}
+                      />
+
+                      {/* BANK ACC NAME */}
+                      <TextField
+                        id="bank_acc_name"
+                        type={"text"}
+                        label={t("bank_acc_name")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.bank_acc_name}
+                        onChange={(e) => handleChange(e)}
+                      />
+
+                      {/* BANK ACC NO */}
+                      <TextField
+                        id="bank_acc_no"
                         type={"number"}
-                        label={t("trn")}
+                        label={t("bank_acc_no")}
                         className="w-full"
                         sx={{
                           "&": {
@@ -1000,15 +1041,15 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={commReqData?.company_trn}
+                        value={commReqData?.bank_acc_no}
                         onChange={(e) => handleChange(e)}
                       />
 
-                      {/* COMPANY EMAIL */}
+                      {/* BANK IBAN */}
                       <TextField
-                        id="company_email"
+                        id="bank_iban"
                         type={"text"}
-                        label={t("label_email")}
+                        label={t("bank_iban")}
                         className="w-full"
                         sx={{
                           "&": {
@@ -1018,15 +1059,15 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={commReqData?.company_email}
+                        value={commReqData?.bank_iban}
                         onChange={(e) => handleChange(e)}
                       />
 
-                      {/* COMPANY TELEPHONE */}
+                      {/* SWIFT CODE */}
                       <TextField
-                        id="company_tele"
+                        id="bank_swift_code"
                         type={"text"}
-                        label={t("company_tele")}
+                        label={t("bank_swift_code")}
                         className="w-full"
                         sx={{
                           "&": {
@@ -1036,7 +1077,7 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={commReqData?.company_tele}
+                        value={commReqData?.bank_swift_code}
                         onChange={(e) => handleChange(e)}
                       />
                     </Box>
