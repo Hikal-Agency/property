@@ -1070,5 +1070,19 @@
     "manager_comm_amount": "Manager Commission Amount",
     "company_details":" Company Details",
     "company_name":" Company Name",
-    "company_tele":" Telephone"
+    "company_tele":" Telephone",
+
+
+
+    "bank_details":" Bank Details",
+    "bank_name":" Bank Name",
+    "bank_address":" Bank Address",
+    "bank_acc_name":" Bank Account Name",
+    "bank_acc_no":" Bank Account Number",
+    "bank_iban":"  IBAN",
+    "bank_swift_code":"  Swift Code"
+
+
+
+
 }
