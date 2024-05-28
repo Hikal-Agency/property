@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import moment from "moment";
 import axios from "../axoisConfig";
 import { toast } from "react-toastify";
+import { positions } from "@mui/system";
 
 const StateContext = createContext();
 
@@ -95,6 +96,20 @@ export const ContextProvider = ({ children }) => {
 
   const { t, i18n } = useTranslation();
 
+  // RGB TO RGBA 
+  const primaryToRgba = () => {
+    if (!primaryColor) {
+      return "";
+    }
+    let primary = primaryColor;
+    if (primaryColor === "default") {
+      primary = "rgb(218, 31, 38)";
+    }
+    const alpha = 0.25;
+    const rgbValues = primary.match(/\d+/g);
+    return `rgba(${rgbValues[0]}, ${rgbValues[1]}, ${rgbValues[2]}, ${alpha})`
+  };
+
   // DATA GRID
   const [pageState, setpageState] = useState({
     isLoading: false,
@@ -113,12 +128,26 @@ export const ContextProvider = ({ children }) => {
     },
     // TOOLBAR COLORS
     "& .MuiDataGrid-toolbarContainer": {
-      // backgroundColor: currentMode === "dark" ? "#212121" : "#000000",
-      backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+      // backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
       padding: "10px 5px",
       gap: "15px",
       color: currentMode === "dark" ? "white" : "black",
       fontFamily: fontFam,
+      position: "relative",
+      border: "none",
+    },
+    "& .MuiDataGrid-toolbarContainer::before": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      backgroundColor: currentMode === "dark" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+      backdropFilter: "blur(10px)",
+      webkitBackdropFilter: "blur(10px)",
+      boxShadow: currentMode === "dark" ? "0 0 10px rgba(238, 238, 238, 0.1)" : "0 0 10px rgba(38, 38, 38, 0.1)",
+      border: "none"
     },
     // TOOLBAR BUTTON
     "& .MuiInputBase-root": {
@@ -133,7 +162,6 @@ export const ContextProvider = ({ children }) => {
       color: currentMode === "dark" ? "white" : "black",
       fontFamily: fontFam,
     },
-
     // Background color of header of data grid
     "& .MuiDataGrid-columnHeaders": {
       // css-s3ulew-
@@ -143,11 +171,12 @@ export const ContextProvider = ({ children }) => {
       borderRadius: "0",
       width: "100%",
       fontFamily: fontFam,
+      position: "relative",
     },
-    "& .MuiDataGrid-root .MuiDataGrid-main": {
-      height: "auto",
-      overflowY: "inherit !important",
-    },
+    // "& .MuiDataGrid-root .MuiDataGrid-main": {
+    // height: "auto",
+    // overflowY: "inherit !important",
+    // },
     // DATATABLE BORDER - DARK
     "& .MuiDataGrid-root": {
       //css-h0wcjk-
@@ -166,14 +195,29 @@ export const ContextProvider = ({ children }) => {
     },
     // background color of main table content
     "& .MuiDataGrid-virtualScroller": {
-      backgroundColor: currentMode === "dark" ? "black" : "white",
+      // backgroundColor: currentMode === "dark" ? "black" : "white",
       color: currentMode === "dark" ? "white" : "black",
       fontFamily: fontFam,
+      position: "relative",
+    },
+    "& .MuiDataGrid-virtualScroller::before": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      backgroundColor: currentMode === "dark" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+      backdropFilter: "blur(10px)",
+      webkitBackdropFilter: "blur(10px)",
+      boxShadow: currentMode === "dark" ? "0 0 10px rgba(238, 238, 238, 0.1)" : "0 0 10px rgba(38, 38, 38, 0.1)",
+      border: "none"
     },
     // changing rows hover color
     "& .MuiDataGrid-row:hover": {
       //css-1uhmucx-
-      backgroundColor: currentMode === "dark" && "#1C1C1C",
+      // backgroundColor: currentMode === "dark" && "#1C1C1C",
+      backgroundColor: primaryToRgba,
       border: "none !important",
       boxShadow: "none !important",
     },
@@ -188,9 +232,9 @@ export const ContextProvider = ({ children }) => {
       boxShadow: "none !important",
     },
     // changing row colors
-    "& .even": {
-      backgroundColor: currentMode === "dark" ? "black" : "white",
-    },
+    // "& .even": {
+    //   // backgroundColor: currentMode === "dark" ? "black" : "white",
+    // },
     // changing rows right border
     // "& .MuiDataGrid-cell": {
     // borderRight: "1px solid rgb(240, 240, 240)",
@@ -198,11 +242,23 @@ export const ContextProvider = ({ children }) => {
 
     // BACKGROUND COLOR OF FOOTER
     "& .MuiDataGrid-footerContainer": {
-      // border: "none",
+      position: "relative",
       borderTop: `2px solid ${primaryColor}`,
-      backgroundColor: currentMode === "dark" ? "black" : "white",
       color: currentMode === "dark" ? "white" : "black",
       fontFamily: fontFam,
+    },
+    "& .MuiDataGrid-footerContainer::before": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      backgroundColor: currentMode === "dark" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+      backdropFilter: "blur(10px)",
+      webkitBackdropFilter: "blur(10px)",
+      boxShadow: currentMode === "dark" ? "0 0 10px rgba(238, 238, 238, 0.1)" : "0 0 10px rgba(38, 38, 38, 0.1)",
+      border: "none"
     },
     "& .MuiTablePagination-selectLabel": {
       color: currentMode === "dark" ? "white" : "black",
@@ -239,10 +295,10 @@ export const ContextProvider = ({ children }) => {
 
     // TEXT FIELDS LABEL COLOR
     "& .MuiFormLabel-root, & .MuiInputLabel-root, & .MuiInputLabel-formControl":
-      {
-        color: currentMode === "dark" && "white !important",
-        fontFamily: fontFam,
-      },
+    {
+      color: currentMode === "dark" && "white !important",
+      fontFamily: fontFam,
+    },
 
     // border color of text fields and select fields
     "& .MuiOutlinedInput-notchedOutline": {
@@ -251,10 +307,10 @@ export const ContextProvider = ({ children }) => {
 
     // color of dropdown button
     "& .MuiSvgIcon-root, & .MuiSvgIcon-fontSizeMedium, & .MuiSelect-icon,& .MuiSelect-iconOutlined":
-      {
-        color: currentMode === "dark" && "white",
-        fontFamily: fontFam,
-      },
+    {
+      color: currentMode === "dark" && "white",
+      fontFamily: fontFam,
+    },
     // text color for textfields
     // "& .MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl":
     //   {
@@ -424,18 +480,18 @@ export const ContextProvider = ({ children }) => {
   useEffect(() => {
     if (!themeBgImg?.startsWith("#")) {
       document.body.style.backgroundColor = "transparent";
-      document.body.style.backgroundImage = `url(${themeBgImg})`;
+      document.body.style.backgroundImage = currentMode === "dark" ? `linear-gradient(to bottom right, rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url(${themeBgImg})` : `linear-gradient(to bottom right, rgba(255,255,255,0.3), rgba(255,255,255,0.4)), url(${themeBgImg})`;
       document.body.style.backgroundRepeat = "no-repeat";
       document.body.style.backgroundSize = "cover";
       document.body.style.backgroundPosition = "center";
       document.body.style.backgroundAttachment = "fixed";
       // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
-      document.body.style.backgroundBlendMode = "overlay";
+      // document.body.style.backgroundBlendMode = "overlay";
     } else {
       document.body.style.backgroundImage = "none";
       document.body.style.backgroundColor = themeBgImg;
     }
-  }, [themeBgImg]);
+  }, [themeBgImg], [currentMode]);
 
   const withOpacity = (rgb, opacity) => {
     return rgb.replace("rgb", "rgba").replace(")", `, ${opacity})`);
