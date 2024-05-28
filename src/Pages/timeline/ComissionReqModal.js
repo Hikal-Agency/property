@@ -66,15 +66,15 @@ const CommissionReqModal = ({
     address: null,
     trn: null,
     unit: commReqModal?.unit || null,
-    date: moment(Feedback?.creationDate).format("YYYY-MM-DD"),
+    date: moment().format("YYYY-MM-DD"),
     currency: commReqModal?.currency || "AED",
     comm_amount: commReqModal?.comm_amount || null,
     comm_percent: commReqModal?.comm_percent || null,
     project: commReqModal?.unit || null,
     leadName: commReqModal?.leadName || null,
     amount: commReqModal?.amount || null,
-    vat: commReqModal?.vat || null,
-    total: null,
+    vat: commReqModal?.vat || 0,
+    total_amount: null,
     company: "HIKAL REAL STATE LLC" || null,
     company_trn: "100587185800003" || null,
     company_email: "info@hikalagency.ae" || null,
@@ -177,11 +177,26 @@ const CommissionReqModal = ({
   };
 
   const token = localStorage.getItem("auth-token");
-  const AddClosedDeal = () => {
+  const GenerateRequest = () => {
     setbtnloading(true);
 
+    const data = {
+      deal_id: commReqModal?.id,
+      invoice_type: "Income",
+      category: "Commission",
+      country: "UAE",
+      status: "Unpaid",
+      vendor_id: commReqData?.vendor_id,
+      currency: commReqData?.currency,
+      percent: commReqData?.comm_percent,
+      vat: commReqData?.vat,
+      amount: commReqData?.amount,
+      total_amount: commReqData?.total_amount,
+      date: commReqData?.date,
+    };
+
     axios
-      .post(`${BACKEND_URL}/closedDeals`, commReqData, {
+      .post(`${BACKEND_URL}/invoices`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -205,8 +220,15 @@ const CommissionReqModal = ({
           return;
         }
 
-        handleClose();
-        toast.success("Closed deal added successfully", {
+        setCommReqData({
+          ...commReqData,
+          vendor_id: null,
+          vendor_name: null,
+          address: null,
+          trn: null,
+        });
+
+        toast.success("Commission Request Generated Successfully.", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -233,6 +255,12 @@ const CommissionReqModal = ({
       });
   };
 
+  useEffect(() => {
+    setCommReqData({
+      ...commReqData,
+      total_amount: commReqData?.comm_amount + commReqData?.vat,
+    });
+  }, [commReqData?.comm_amount, commReqData?.vat]);
   useEffect(() => {
     fetchVendors();
   }, []);
@@ -657,7 +685,7 @@ const CommissionReqModal = ({
                               "YYYY-MM-DD"
                             );
 
-                            commReqData((prev) => ({
+                            setCommReqData((prev) => ({
                               ...prev,
                               date: formattedDate,
                             }));
@@ -743,7 +771,7 @@ const CommissionReqModal = ({
 
                       {/* TOTAL AMOUNT*/}
                       <TextField
-                        id="total"
+                        id="total_amount"
                         type={"number"}
                         label={t("total")}
                         className="w-full"
@@ -755,11 +783,12 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={commReqData?.total}
+                        value={commReqData?.total_amount}
                         onChange={(e) =>
                           setCommReqData({
                             ...commReqData,
-                            total: commReqData?.comm_amount + commReqData?.vat,
+                            total_amount:
+                              commReqData?.comm_amount + commReqData?.vat,
                           })
                         }
                       />
@@ -1002,7 +1031,7 @@ const CommissionReqModal = ({
                 fontFamily: fontFam,
               }}
               className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-              onClick={AddClosedDeal}
+              onClick={GenerateRequest}
               disabled={btnloading ? true : false}
             >
               {btnloading ? (
