@@ -28,6 +28,7 @@ import { selectStyles } from "../../Components/_elements/SelectStyles";
 import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { CommissionRequestPDF } from "./CommissionRequestPDF";
 
 const CommissionReqModal = ({
   commReqModal,
@@ -57,6 +58,7 @@ const CommissionReqModal = ({
   const [isClosing, setIsClosing] = useState(false);
 
   const [updatedField, setUpdatedField] = useState("");
+  const [openPDF, setOpenPDF] = useState(false);
 
   const searchRef = useRef();
 
@@ -219,6 +221,8 @@ const CommissionReqModal = ({
           });
           return;
         }
+
+        setOpenPDF(commReqData);
 
         setCommReqData({
           ...commReqData,
@@ -1045,6 +1049,9 @@ const CommissionReqModal = ({
               )}
             </Button>
           </div>
+          {openPDF && (
+            <CommissionRequestPDF data={openPDF} setOpenPDF={setOpenPDF} />
+          )}
         </div>
       </div>
     </Modal>
