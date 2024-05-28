@@ -463,7 +463,7 @@ const CommissionReqModal = ({
                             (curr) => curr.value === commReqData?.currency
                           )}
                           onChange={(e) => {
-                            commReqData({
+                            setCommReqData({
                               ...commReqData,
                               currency: e.value,
                             });
