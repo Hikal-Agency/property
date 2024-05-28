@@ -1061,15 +1061,13 @@
 
 
     "short_commission":"Comm",
-
     "do_you_really_Want":"Do you really want to mark the",
-
-
-
 
     "generate_comm_req":"Generate Commission Request",
     "comm_perc":" Commission Percentage",
     "comm_amount":" Commission Amount",
+    "manager_comm_perc": "Manager Commission %",
+    "manager_comm_amount": "Manager Commission Amount",
     "company_details":" Company Details",
     "company_name":" Company Name",
     "company_tele":" Telephone",

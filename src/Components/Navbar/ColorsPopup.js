@@ -100,6 +100,13 @@ const solidColors = [
 ]; 
 
 const images = [
+  {
+    "abstract_purplish": {
+      bg: "https://cdn.pixabay.com/photo/2022/06/12/22/48/gradient-7258997_1280.png",
+      theme: "light",
+      primary: "rgb(152, 93, 255)"
+    }
+  },
   { //red
     "pink_pink": {
       bg: "https://images.unsplash.com/photo-1503455637927-730bce8583c0?auto=format&fit=crop&q=60&w=600&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29saWQlMjBiYWNrZ3JvdW5kfGVufDB8MHwwfHx8MA%3D%3D",

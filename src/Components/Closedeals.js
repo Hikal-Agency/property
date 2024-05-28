@@ -820,12 +820,18 @@ const Closedeals = ({ pageState, setpageState }) => {
           spa_status: row?.spa_status,
           comm_status: row?.comm_status,
           agent_comm_status: row?.agent_comm_status,
+          manager_comm_status: row?.manager_comm_status,
           pdc_status: row?.pdc_status,
-          comm_percent: row?.comm_percent,
-          comm_amount: row?.comm_amount,
-          vat: row?.vat,
-          agent_comm_percent: row?.agent_comm_percent,
-          agent_comm_amount: row?.agent_comm_amount,
+          comm_percent: row?.comm_percent || 0,
+          comm_amount: row?.comm_amount || 0,
+          vat: row?.vat || 0,
+          agent_comm_percent: row?.agent_comm_percent || 0,
+          agent_comm_amount: row?.agent_comm_amount || 0,
+          manager_comm_percent: row?.manager_comm_percent || 5,
+          manager_comm_amount: row?.manager_comm_amount || 0,
+          managerId: row?.managerId,
+          salesId: row?.salesId,
+          closedBy: row?.closedBy,
         }));
 
         setpageState((old) => ({

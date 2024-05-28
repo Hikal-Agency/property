@@ -8,7 +8,7 @@ const Footer = () => {
     <div
       className={`border-t border-t-1 text-sm border-primary flex justify-between items-center px-5 py-3 ${
         !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
-        : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+        : (currentMode === "dark" ? "blur-bg-dark-nr" : "blur-bg-light-nr")
       }`}
       style={{
         bottom: 0,
