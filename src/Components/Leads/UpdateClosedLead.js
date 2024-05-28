@@ -57,25 +57,27 @@ const UpdateLead = ({
   const [updatedField, setUpdatedField] = useState("");
   // const [updateLeadData, setUpdateLeadData] = useState({});
   const [updateLeadData, setUpdateLeadData] = useState({
-    agent_comm_amount: "",
-    agent_comm_percent: "",
-    amount: "",
-    comm_amount: "",
-    comm_percent: "",
-    comm_status: "",
-    currency: "",
-    dealDate: "",
-    id: "",
-    leadId: "",
-    managerId: "",
-    passport: "",
-    unit: "",
-    updated_at: "",
-    updated_by: "",
-    updated_by_name: "",
-    vat: "",
-    project: "",
-    enquiryType: "",
+    agent_comm_amount: 0,
+    agent_comm_percent: 0,
+    manager_comm_amount: 0,
+    manager_comm_percent: 5,
+    amount: 0,
+    comm_amount: 0,
+    comm_percent: 0,
+    comm_status: '',
+    currency: '',
+    dealDate: '',
+    id: '',
+    leadId: '',
+    managerId: '',
+    passport: '',
+    unit: '',
+    updated_at: '',
+    updated_by: '',
+    updated_by_name: '',
+    vat: '',
+    project: '',
+    enquiryType: '',
   });
 
   // const style = {
@@ -135,6 +137,8 @@ const UpdateLead = ({
       comm_amount,
       agent_comm_percent,
       agent_comm_amount,
+      manager_comm_percent,
+      manager_comm_amount
     } = updateLeadData;
 
     // COMMISSION AMOUNT
@@ -154,14 +158,16 @@ const UpdateLead = ({
     if (updatedField === "amount" || updatedField === "agent_comm_amount") {
       autoCalculate("agent_comm_percent", comm_amount, agent_comm_amount);
     }
-  }, [
-    updateLeadData.amount,
-    updateLeadData.comm_percent,
-    updateLeadData.comm_amount,
-    updateLeadData.agent_comm_percent,
-    updateLeadData.agent_comm_amount,
-    updatedField,
-  ]);
+    // MANAGER COMMISSION AMOUNT
+    if (updatedField === "amount" || updatedField === "manager_comm_percent") {
+      autoCalculate("manager_comm_amount", comm_amount, manager_comm_percent);
+    }
+    // AGENT COMMISSION PERCENT
+    if (updatedField === "amount" || updatedField === "manager_comm_amount") {
+      autoCalculate("manager_comm_percent", comm_amount, manager_comm_amount);
+    }
+  }, [updateLeadData.amount, updateLeadData.comm_percent, updateLeadData.comm_amount, updateLeadData.agent_comm_percent, updateLeadData.agent_comm_amount, updateLeadData.manager_comm_percent, updateLeadData.manager_comm_amount, updatedField]);
+
 
   const autoCalculate = (value, amount, percentOrAmount) => {
     const sellingAmount = parseFloat(amount);
@@ -169,12 +175,28 @@ const UpdateLead = ({
     // COMM AMOUNT
     if (value === "comm_amount") {
       const commPercent = parseFloat(percentOrAmount);
+      const managerCommPercent = parseFloat(updateLeadData?.manager_comm_percent);
+
       if (!isNaN(sellingAmount) && !isNaN(commPercent)) {
         let commAmount = (sellingAmount * commPercent) / 100;
         commAmount =
           commAmount % 1 === 0 ? commAmount.toFixed(0) : commAmount.toFixed(2);
         let vat = (commAmount * 5) / 100;
         vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
+
+        // MANAGER 
+        let managerCommAmount = 0;
+        if (updateLeadData?.salesId === updateLeadData?.closedBy) {
+          managerCommAmount = (managerCommPercent * commAmount) / 100;
+          managerCommAmount = managerCommAmount % 1 === 0 ? managerCommAmount.toFixed(0) : managerCommAmount.toFixed(2);
+        }
+        // AGENT
+        let agentCommAmount = 0;
+        if (updateLeadData.agent_comm_percent !== 0) {
+          const agentCommPercent = updateLeadData.agent_comm_percent;
+          agentCommAmount = (agentCommPercent * commAmount) / 100;
+          agentCommAmount = agentCommAmount % 1 === 0 ? agentCommAmount.toFixed(0) : agentCommAmount.toFixed(2);
+        }
 
         console.log("COMM PERCENT = ", commPercent);
         console.log("COMM AMOUNT = ", commAmount);
@@ -184,12 +206,16 @@ const UpdateLead = ({
           ...prevData,
           comm_amount: commAmount,
           vat: vat,
+          manager_comm_amount: managerCommAmount,
+          agent_comm_amount: agentCommAmount,
         }));
       }
     }
     // COMM PERCENT
     if (value === "comm_percent") {
       const commAmount = parseFloat(percentOrAmount);
+      const managerCommPercent = parseFloat(updateLeadData?.manager_comm_percent);
+
       if (!isNaN(sellingAmount) && !isNaN(commAmount)) {
         let commPercent = (commAmount / sellingAmount) * 100 || 0;
         commPercent =
@@ -199,6 +225,19 @@ const UpdateLead = ({
         let vat = (commAmount * 5) / 100;
         vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
 
+        let managerCommAmount = 0;
+        if (updateLeadData?.salesId === updateLeadData?.closedBy) {
+          managerCommAmount = (managerCommPercent * commAmount) / 100;
+          managerCommAmount = managerCommAmount % 1 === 0 ? managerCommAmount.toFixed(0) : managerCommAmount.toFixed(2);
+        }
+        // AGENT
+        let agentCommAmount = 0;
+        if (updateLeadData.agent_comm_percent !== 0) {
+          const agentCommPercent = updateLeadData.agent_comm_percent;
+          agentCommAmount = (agentCommPercent * commAmount) / 100;
+          agentCommAmount = agentCommAmount % 1 === 0 ? agentCommAmount.toFixed(0) : agentCommAmount.toFixed(2);
+        }
+
         console.log("COMM AMOUNT = ", commAmount);
         console.log("COMM PERCENT = ", commPercent);
         console.log("VAT = ", vat);
@@ -207,6 +246,8 @@ const UpdateLead = ({
           ...prevData,
           comm_percent: commPercent,
           vat: vat,
+          manager_comm_amount: managerCommAmount,
+          agent_comm_amount: agentCommAmount,
         }));
       }
     }
@@ -248,6 +289,38 @@ const UpdateLead = ({
         }));
       }
     }
+    // MANAGER COMM AMOUNT 
+    if (value === "manager_comm_amount") {
+      const managerCommPercent = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(managerCommPercent)) {
+        let managerCommAmount = (sellingAmount * managerCommPercent) / 100;
+        managerCommAmount = managerCommAmount % 1 === 0 ? managerCommAmount.toFixed(0) : managerCommAmount.toFixed(2);
+
+        console.log("MANAGER COMM PERCENT = ", managerCommPercent);
+        console.log("MANAGER COMM AMOUNT = ", managerCommAmount);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          manager_comm_amount: managerCommAmount,
+        }));
+      }
+    }
+    // MANAGER COMM PERCENT 
+    if (value === "manager_comm_percent") {
+      const managerCommAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(managerCommAmount)) {
+        let managerCommPercent = (managerCommAmount / sellingAmount) * 100 || 0;
+        managerCommPercent = managerCommPercent % 1 === 0 ? managerCommPercent.toFixed(0) : managerCommPercent.toFixed(2);
+
+        console.log("MANAGER COMM AMOUNT = ", managerCommAmount);
+        console.log("MANAGER COMM PERCENT = ", managerCommPercent);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          manager_comm_percent: managerCommPercent,
+        }));
+      }
+    }
   };
   // ----------------------
 
@@ -261,6 +334,8 @@ const UpdateLead = ({
       setUpdateLeadData({
         agent_comm_amount: LeadData.agent_comm_amount,
         agent_comm_percent: LeadData.agent_comm_percent,
+        manager_comm_amount: LeadData.manager_comm_amount,
+        manager_comm_percent: LeadData.manager_comm_percent,
         amount: LeadData.amount,
 
         comm_amount: LeadData.comm_amount,
@@ -271,10 +346,8 @@ const UpdateLead = ({
         dealDate: LeadData.dealDate,
         id: LeadData.id,
         leadId: LeadData.leadId,
-        managerId: LeadData.managerId,
         passport: LeadData.passport,
         // pdc_status: newData.pdc_status,
-        // salesId: newData.salesId,
         // spa_status: newData.spa_status,
         unit: LeadData.unit,
         updated_at: LeadData.updated_at,
@@ -283,6 +356,10 @@ const UpdateLead = ({
         vat: LeadData.vat,
         project: LeadData?.project,
         enquiryType: LeadData?.enquiryType,
+
+        managerId: LeadData?.managerId,
+        salesId: LeadData?.salesId,
+        closedBy: LeadData?.closedBy,
       });
     }
     // axios
@@ -463,12 +540,12 @@ const UpdateLead = ({
           </button>
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+            className={` ${currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+              // ? "blur-bg-dark-nr text-white"
+              // : "blur-bg-white-nr text-black"
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
             }
@@ -501,7 +578,7 @@ const UpdateLead = ({
                   </h1>
                 </div>
 
-                <div className="grid md:grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 p-6 justify-center">
+                <div className={`grid md:grid-cols-1 sm:grid-cols-1 gap-6 p-6 justify-center ${hasPermission("deal_commission") ? "lg:grid-cols-3" :"lg:grid-cols-2"}`}>
                   {/* Project DETAILS  */}
                   <div
                     className={`p-4 rounded-xl shadow-sm card-hover
@@ -899,19 +976,83 @@ const UpdateLead = ({
                               required
                             />
                           </div>
+
+                          {/* MANAGER COMM PERCENT */}
+                          {updateLeadData?.salesId === updateLeadData?.closedBy && (
+                            <>
+                              <TextField
+                                id="manager_comm_percent"
+                                type={"text"}
+                                label={t("manager_comm_perc")}
+                                className="w-full"
+                                sx={{
+                                  "&": {
+                                    marginBottom: "1.25rem !important",
+                                    zIndex: 1,
+                                  },
+                                }}
+                                variant="outlined"
+                                size="small"
+                                value={updateLeadData?.manager_comm_percent}
+                                onChange={(e) => handleChange(e)}
+                                required
+                              />
+                              <div className="grid grid-cols-3">
+                                {/* CURRENCY */}
+                                <Select
+                                  id="currency"
+                                  options={currencies(t)?.map((curr) => ({
+                                    value: curr.value,
+                                    label: curr.label,
+                                  }))}
+                                  value={currencies(t)?.find(
+                                    (curr) => curr.value === updateLeadData?.currency
+                                  )}
+                                  onChange={(e) => {
+                                    setUpdateLeadData({
+                                      ...updateLeadData,
+                                      currency: e.value,
+                                    });
+                                  }}
+                                  placeholder={t("label_select_currency")}
+                                  // className={`mb-5`}
+                                  menuPortalTarget={document.body}
+                                  styles={selectStyles(currentMode, primaryColor)}
+                                />
+                                {/* MANAGER COMM */}
+                                <TextField
+                                  id="manager_comm_amount"
+                                  type={"text"}
+                                  label={t("manager_comm_amount")}
+                                  className="w-full col-span-2"
+                                  sx={{
+                                    "&": {
+                                      marginBottom: "1.25rem !important",
+                                      zIndex: 1,
+                                    },
+                                  }}
+                                  variant="outlined"
+                                  size="small"
+                                  value={updateLeadData?.manager_comm_amount}
+                                  onChange={(e) => handleChange(e)}
+                                  required
+                                />
+                              </div>
+                            </>
+                          )}
+
                         </Box>
                       </div>
                     </div>
                   )}
 
                   {/* CLIENT  DETAILS  */}
-                  {/* <div
+                  <div
                     className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                  ${currentMode === "dark"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black"
+                      }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
                       {t("client_details")?.toUpperCase()}
@@ -958,7 +1099,7 @@ const UpdateLead = ({
                         </label>
                       </Box>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
               </>
             )}

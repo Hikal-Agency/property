@@ -69,7 +69,7 @@ import {
   BsPerson,
   BsCalendarCheck,
   BsClockHistory,
-  BsCashCoin,
+  BsList,
   BsHeadset,
   BsQuestionOctagon,
   BsTicketPerforated,
@@ -156,6 +156,31 @@ const Sidebarmui = () => {
   });
 
   const [animateProfilePic, setAnimateProfilePic] = useState(false);
+
+  const [showSidebar, setShowSidebar] = useState(false);
+  const sidebarRef = useRef(null);
+  const toggleSidebar = (value) => {
+    setShowSidebar(value);
+  }
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        toggleSidebar(false);
+      }
+    };
+
+    if (showSidebar) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);;
+    };
+  }, [showSidebar]);
+
+  console.log("DEVICE TYPE ===== ", deviceType);
 
   const startDealCloseAnimation = (data) => {
     setConfetti(true);
@@ -2010,114 +2035,992 @@ const Sidebarmui = () => {
         />
       )}
 
-      <Box
-        sx={{
-          "& .ps-sidebar-container": {
-            backgroundColor: !themeBgImg
-              ? currentMode === "dark"
-                ? "rgb(249, 249, 249, 0.7)"
-                : "rgb(249, 249, 249, 0.7)"
-              : currentMode === "dark"
-              ? blurDarkColor
-              : blurLightColor,
-          },
-        }}
-        style={{ display: "flex", height: "100%" }}
-        className={`max-w-[200px] sticky top-0 ${
-          isLangRTL(i18n.language) ? "right-0" : "left-0"
-        }`}
-      >
-        <Sidebar
-          rootStyles={{
-            [`.${sidebarClasses.container}`]: {
-              backgroundColor:
-                !themeBgImg && (currentMode === "dark" ? "#000000" : "#ffffff"),
-            },
-          }}
-          className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
-        >
-          <div className="">
+      {(deviceType === "mobile" || deviceType === "tablet") && (
+        <>
+          {!showSidebar && (
             <div
-              className="sidebar-top"
+              className={`fixed top-10 shadow-xl bg-primary text-white py-2 px-4 ${isLangRTL(i18n.language) ? "right-0 rounded-l-full" : "left-0 rounded-r-full"
+                }`}
               style={{
-                position: !themeBgImg && "sticky",
-                top: !themeBgImg && 0,
-                background:
-                  !themeBgImg && (currentMode === "dark" ? "black" : "white"),
-                zIndex: 1000,
+                zIndex: 101,
               }}
+              onClick={(e) => toggleSidebar(true)}
             >
-              {/* HIKAL CRM  */}
+              <BsList size={20} />
+            </div>
+          )}
+          {showSidebar && (
+            <>
               <div
-                className={`flex ${
-                  isCollapsed ? "justify-between" : "justify-center"
-                } w-full items-center h-[50px]`}
+                ref={sidebarRef}
+                className={`fixed top-5 bottom-5 rounded-xl ${isLangRTL(i18n.language) ? "right-5" : "left-5"
+                  }`}
+                style={{
+                  zIndex: 101,
+                }}
               >
-                <Link
-                  to={
-                    User?.role !== 5
-                      ? "/dashboard"
-                      : "/attendance/officeSettings"
-                  }
-                  className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
-                  onClick={() => {
-                    setSelected({
-                      name: User?.role !== 5 ? "Dashboard" : "Office Settings",
-                      index: 0,
-                    });
-                  }}
-                >
-                  <div className="w-full flex items-center gap-2 p-2">
-                    <img
-                      height={40}
-                      width={40}
-                      className="h-[40px] w-[40px] p-1"
-                      src="/favicon.png"
-                      alt=""
-                    />
-                    {isCollapsed && (
-                      <h1
-                        className={`font-bold overflow-hidden uppercase ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
-                      >
-                        HIKAL CRM
-                      </h1>
-                    )}
-                  </div>
-                </Link>
-              </div>
-              {/* PROFILE  */}
-              <div className="profile-section border-b-2 border-primary px-2 pb-5 mb-2">
-                {isCollapsed ? (
-                  <>
-                    <div
-                      // to={"/profile"}
-                      onClick={handleClickProfile}
-                      className="flex cursor-pointer flex-col items-center justify-center"
-                    >
-                      <Box
-                        className="relative"
-                        sx={{
-                          "&:hover .absolute": {
-                            display: "flex",
-                            background:
-                              currentMode === "dark" ? "white" : "black",
-                          },
+                <div className="relative flex">
+                  <div className={`h-[95vh] w-[200px] ${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"
+                    }`}>
+                    {/* SIDEBAR */}
+                    <div>
+                      <div
+                        className="w-full h-[250px] flex flex-col items-center gap-4 border-b-2 border-primary"
+                        style={{
+                          zIndex: 1000,
                         }}
                       >
-                        <img
-                          src={
-                            User?.displayImg
-                              ? User?.displayImg
-                              : "/assets/user.png"
-                          }
-                          height={60}
-                          width={60}
-                          className={`rounded-md object-cover relative`}
-                          alt=""
-                        />
-                        {/* 
+                        {/* BRAND */}
+                        <div
+                          className={`flex w-full items-center h-[50px]`}
+                        >
+                          <Link
+                            to={
+                              // User?.role !== 5 ? 
+                              "/dashboard"
+                              // : "/attendance/officeSettings"
+                            }
+                            className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                            onClick={() => {
+                              setSelected({
+                                name:
+                                  // User?.role !== 5 ? 
+                                  "Dashboard",
+                                // : "Office Settings",
+                                index: 0,
+                              });
+                            }}
+                          >
+                            <div className="w-full flex items-center gap-2 p-2">
+                              <img
+                                height={40}
+                                width={40}
+                                className="h-[40px] w-[40px] p-1"
+                                src="/favicon.png"
+                                alt=""
+                              />
+                              <h1
+                                className={`font-bold overflow-hidden uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                                  }`}
+                              >
+                                HIKAL CRM
+                              </h1>
+                            </div>
+                          </Link>
+                        </div>
+
+                        {/* PROFILE  */}
+                        <div className="profile-section border-b-2 border-primary px-2 pb-5 mb-2">
+                          <div
+                            onClick={handleClickProfile}
+                            className="flex cursor-pointer flex-col items-center justify-center"
+                          >
+                            <Box
+                              className="relative"
+                              sx={{
+                                "&:hover .absolute": {
+                                  display: "flex",
+                                  background:
+                                    currentMode === "dark" ? "white" : "black",
+                                },
+                              }}
+                            >
+                              <img
+                                src={
+                                  User?.displayImg
+                                    ? User?.displayImg
+                                    : "/assets/user.png"
+                                }
+                                height={90}
+                                width={90}
+                                className={`rounded-md object-cover relative`}
+                                alt=""
+                              />
+                            </Box>
+                            <h1
+                              className={`my-2 font-bold text-lg text-center capitalize multiline-ellipsis line-clamp-2 ${currentMode === "dark"
+                                ? "text-white"
+                                : "text-main-dark-bg"
+                                }`}
+                            >
+                              {User?.userName ? User?.userName : "-"}
+                            </h1>
+                            <span
+                              style={{
+                                background: primaryColor,
+                              }}
+                              className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
+                            >
+                              {User?.position || "-"}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* <div
+                      className={`${animateProfilePic ? "animate-profile-pic" : ""
+                        } fixed hidden top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"
+                        } w-screen h-screen`}
+                      style={{
+                        backgroundColor: "rgba(0, 0, 0, 0.85)",
+                      }}
+                    >
+                      <IconButton
+                        sx={{
+                          position: "absolute",
+                          right: !isLangRTL(i18n.language) && "8%",
+                          left: isLangRTL(i18n.language) && "8%",
+                          top: "8%",
+                          color: "white",
+                        }}
+                        onClick={() => setAnimateProfilePic(false)}
+                      >
+                        <IoMdClose size={22} />
+                      </IconButton>
+                      <img
+                        src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
+                        height={60}
+                        width={60}
+                        className={`rounded-md pointer-events-none object-cover relative z-[10000] `}
+                        alt=""
+                      />
+                    </div> */}
+                      </div>
+
+                      {/* MODULES  */}
+                      <div className="sidebar-root mt-4 mb-4 text-base"
+                        style={{
+                          overflowY: "auto",
+                          height: "calc(95vh - 250px)",
+                        }}
+                      >
+                        <Menu
+                          menuItemStyles={{
+                            button: ({ level, active, disabled }) => {
+                              // only apply styles on first level elements of the tree
+                              if (level === 0) {
+                                return {
+                                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                                };
+                              }
+                            },
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              // FOR DARK MODE MENU SETTINGS
+                              "& .css-1mfnem1": {
+                                borderRadius: "0px",
+                              },
+                              "& .css-1mfnem1:hover": {
+                                backgroundColor: primaryColor,
+                                color: "white",
+                              },
+                              // submenu containerr color
+                              "& .css-z5rm24": {
+                                backgroundColor: currentMode === "dark" && "#1C1C1C",
+                                borderRadius: "0px",
+                              },
+                              // Submenu count color
+                              "& .css-1rnkhs0": {
+                                color: currentMode === "dark" && "white",
+                              },
+                              // LIGHT MODE SETTINGS
+                              "& .css-1ohfb25:hover": {
+                                backgroundColor: primaryColor,
+                                color: "white",
+                                borderRadius: "0px",
+                              },
+                              "& .css-wx7wi4": {
+                                width: "18px",
+                                minWidth: "18px",
+                              },
+                              "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
+                              {
+                                display: "flex",
+                                gap: "5px",
+                                paddingRight: !isLangRTL(i18n?.language) && "10px",
+                                paddingLeft: isLangRTL(i18n?.language) && "10px",
+                                // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                                // color: !themeBgImg
+                                //   ? primaryColor
+                                //   : currentMode === "dark"
+                                //   ? "#FFFFFF"
+                                //   : "#000000",
+                              },
+                              "& .ps-menu-button": {
+                                fontWeight: "medium",
+                                color: !themeBgImg
+                                  ? primaryColor
+                                  : currentMode === "dark"
+                                    ? "#FFFFFF"
+                                    : "#000000",
+                                gap: "5px",
+                              },
+                              "& .ps-menu-button:hover": {
+                                fontWeight: "medium",
+                                color: !themeBgImg
+                                  ? primaryColor
+                                  : currentMode === "dark"
+                                    ? "#000000"
+                                    : "#FFFFFF",
+                              },
+                              "& .ps-menu-icon": {
+                                marginRight: !isLangRTL(i18n.language) && "10px",
+                                marginLeft: isLangRTL(i18n.language) && "10px",
+                                // color:
+                                //   currentMode === "dark"
+                                //     ? "white"
+                                //     : "black",
+                              },
+                            }}
+                            className="my-1"
+                          >
+                            {links?.map((link, linkIndex) => {
+                              let permittedLinksMoreThan0 = false;
+                              for (let i = 0; i < link?.links.length; i++) {
+                                const subMenu = link?.links[i]?.submenu;
+                                if (subMenu) {
+                                  for (let k = 0; k < subMenu.length; k++) {
+                                    const anotherSubMenu = subMenu[k]?.submenu;
+                                    if (anotherSubMenu) {
+                                      for (let l = 0; l < anotherSubMenu?.length; l++) {
+                                        if (
+                                          hasPermission(anotherSubMenu[l]?.link, true)
+                                            ?.isPermitted
+                                        ) {
+                                          permittedLinksMoreThan0 = true;
+                                          break;
+                                        }
+                                      }
+                                    } else {
+                                      if (
+                                        hasPermission(subMenu[k]?.link, true).isPermitted
+                                      ) {
+                                        permittedLinksMoreThan0 = true;
+                                        break;
+                                      }
+                                    }
+                                  }
+                                } else {
+                                  if (
+                                    hasPermission(link?.links[i]?.link, true)?.isPermitted
+                                  ) {
+                                    permittedLinksMoreThan0 = true;
+                                    break;
+                                  }
+                                }
+                              }
+
+                              if (
+                                link?.links[0]?.link === "/dashboard" &&
+                                User?.role !== 5 &&
+                                hasPermission(link?.links[0]?.link, true)?.isPermitted
+                              ) {
+                                return (
+                                  <Link
+                                    key={linkIndex}
+                                    to={`${link?.links[0]?.link}`}
+                                    onClick={() => {
+                                      setopenBackDrop(true);
+                                      setOpenSubMenu(0);
+                                      setActiveSidebarHeading("");
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{
+                                        // STYLING FOR LIGHT MODE
+                                        "& .css-1mfnem1": {
+                                          borderRadius: "0px",
+                                        },
+                                        "& .css-1mfnem1:hover": {
+                                          backgroundColor: primaryColor,
+                                          color: "white",
+                                        },
+                                        "& .css-1ogoo8i": {
+                                          backgroundColor: primaryColor,
+                                          color: "white",
+                                        },
+                                        // STYLING FOR DARK MODE
+                                        "& .css-yktbuo": {
+                                          backgroundColor: primaryColor,
+                                          color: "white",
+                                        },
+                                        "& .css-yktbuo:hover": {
+                                          backgroundColor: primaryColor,
+                                          color: "white",
+                                        },
+                                        "& .css-1v6ithu": {
+                                          // color: "white",
+                                        },
+                                      }}
+                                      className="relative my-1"
+                                    >
+                                      <MenuItem
+                                        active={
+                                          link?.links[0]?.link ===
+                                          window.location.pathname.replaceAll("%20", " ")
+                                        }
+                                      >
+                                        <div
+                                          className={`flex items-center ${isCollapsed ? "gap-4" : ""
+                                            } rounded-lg text-base ${!isCollapsed ? "justify-center" : ""
+                                            } `}
+                                        >
+                                          <span
+                                            className={`${!isCollapsed && "text-xl"}`}
+                                          >
+                                            {link?.links[0]?.icon}
+                                          </span>
+                                          {isCollapsed && (
+                                            <span
+                                              className={`capitalize flex items-center gap-2`}
+                                            >
+                                              {link?.links[0]?.name}
+                                              {link?.links[0].pro && (
+                                                <div
+                                                  className={`${themeBgImg
+                                                    ? currentMode === "dark"
+                                                      ? "bg-black"
+                                                      : "bg-white"
+                                                    : "bg-transparent"
+                                                    } p-1 rounded-full`}
+                                                >
+                                                  <GiQueenCrown
+                                                    size={16}
+                                                    className="gold-grad"
+                                                  />
+                                                </div>
+                                              )}
+                                            </span>
+                                          )}
+                                        </div>
+                                      </MenuItem>
+                                    </Box>
+                                  </Link>
+                                );
+                              }
+
+                              if (permittedLinksMoreThan0) {
+                                return (
+                                  <Box
+                                    key={linkIndex}
+                                    onClick={(e) => handleExpandHeading(e, linkIndex)}
+                                    sx={{
+                                      // icons css
+                                      "& .css-wx7wi4": {
+                                        opacity: "0.7",
+                                      },
+                                      "& .css-wx7wi4:hover": {
+                                        transform: "rotate(20deg)",
+                                        transition: "all 0.6s ease",
+                                        opacity: "1",
+                                      },
+                                    }}
+                                  >
+                                    {!isCollapsed ? (
+                                      <Tooltip title={link?.title} placement="right">
+                                        <Link
+                                          key={linkIndex}
+                                          onClick={() => {
+                                            setopenBackDrop(true);
+                                            setOpenSubMenu(0);
+                                            setActiveSidebarHeading(linkIndex);
+                                            collapseSidebar();
+                                            setIsCollapsed(true);
+                                          }}
+                                        >
+                                          <Box
+                                            sx={{
+                                              // STYLING FOR LIGHT MODE
+                                              "& .css-1mfnem1": {
+                                                borderRadius: "0px",
+                                              },
+                                              "& .css-1mfnem1:hover": {
+                                                backgroundColor: primaryColor,
+                                                color: "white",
+                                              },
+                                              "& .css-1ogoo8i": {
+                                                backgroundColor: primaryColor,
+                                                color: "white",
+                                              },
+                                              // STYLING FOR DARK MODE
+                                              "& .css-yktbuo": {
+                                                backgroundColor: primaryColor,
+                                                color: "white",
+                                              },
+                                              "& .css-yktbuo:hover": {
+                                                backgroundColor: primaryColor,
+                                                color: "white",
+                                              },
+                                              "& .css-1v6ithu": {
+                                                // color: "white",
+                                              },
+                                            }}
+                                            className="relative my-1"
+                                          >
+                                            <MenuItem
+                                              active={
+                                                link?.links[0]?.link ===
+                                                window.location.pathname.replaceAll(
+                                                  "%20",
+                                                  " "
+                                                )
+                                              }
+                                            >
+                                              <div className="flex my-1 h-[38px] items-center justify-center text-xl">
+                                                {link?.icon}
+                                              </div>
+                                            </MenuItem>
+                                          </Box>
+                                        </Link>
+                                      </Tooltip>
+                                    ) : (
+                                      <SubMenu
+                                        icon={link?.icon}
+                                        open={activeSidebarHeading === linkIndex}
+                                        // label={link?.title?.toUpperCase()}
+                                        label={
+                                          <span
+                                            className={`
+                                  uppercase capitalize flex items-center gap-2`}
+                                          >
+                                            {link.title}
+                                            {link.pro && (
+                                              <div
+                                                className={`${themeBgImg
+                                                  ? currentMode === "dark"
+                                                    ? "bg-black"
+                                                    : "bg-white"
+                                                  : "bg-transparent"
+                                                  } p-1 rounded-full`}
+                                              >
+                                                <GiQueenCrown
+                                                  size={16}
+                                                  className="gold-grad"
+                                                />
+                                              </div>
+                                            )}
+                                          </span>
+                                        }
+                                        className="top-level-dropdown"
+                                      >
+                                        {link.links.map((menu, index) => {
+                                          if (
+                                            hasPermission(menu?.link, true)
+                                              ?.isPermitted ||
+                                            (menu?.submenu &&
+                                              hasPermission(menu?.submenu[0]?.link, true)
+                                                ?.isPermitted) ||
+                                            (menu?.link === "/dashboard" &&
+                                              User?.role !== 5)
+                                          ) {
+                                            if (menu?.submenu) {
+                                              return (
+                                                <Box
+                                                  key={index}
+                                                  onClick={(e) => {
+                                                    handleExpand(
+                                                      e,
+                                                      {
+                                                        menuIndex: index + 1,
+                                                        linkIndex,
+                                                      },
+                                                      true
+                                                    );
+                                                  }}
+                                                  sx={{
+                                                    // icons css
+                                                    "&  .css-wx7wi4": {
+                                                      opacity: "0.7",
+                                                    },
+                                                    "&  .css-wx7wi4:hover": {
+                                                      transform: "rotate(20deg)",
+                                                      transition: "all 0.6s ease",
+                                                      opacity: "1",
+                                                    },
+                                                    // FOR DARK MODE MENU SETTINGS
+                                                    "& .css-1mfnem1": {
+                                                      borderRadius: "0px",
+                                                    },
+                                                    "& .css-1mfnem1:hover": {
+                                                      backgroundColor: primaryColor,
+                                                      color: "white",
+                                                    },
+                                                    // submenu containerr color
+                                                    "& .css-z5rm24": {
+                                                      backgroundColor:
+                                                        currentMode === "dark" &&
+                                                        "#1C1C1C",
+                                                      borderRadius: "0px",
+                                                    },
+                                                    // Submenu count color
+                                                    "& .css-1rnkhs0": {
+                                                      color:
+                                                        currentMode === "dark" && "white",
+                                                    },
+                                                    // LIGHT MODE SETTINGS
+                                                    "& .css-1ohfb25:hover": {
+                                                      backgroundColor: primaryColor,
+                                                      color: "white",
+                                                      borderRadius: "0px",
+                                                    },
+                                                    "& .css-wx7wi4": {
+                                                      width: "18px",
+                                                      minWidth: "18px",
+                                                    },
+                                                    "& .ps-menu-label": {
+                                                      color:
+                                                        currentMode === "dark"
+                                                          ? "white"
+                                                          : "black",
+                                                    },
+                                                    "& .ps-menu-icon": {
+                                                      marginRight:
+                                                        !isLangRTL(i18n.language) &&
+                                                        "10px",
+                                                      marginLeft:
+                                                        isLangRTL(i18n.language) &&
+                                                        "10px",
+                                                      // color:
+                                                      //   currentMode === "dark"
+                                                      //     ? "white"
+                                                      //     : "black",
+                                                    },
+                                                  }}
+                                                  className="my-1 sub"
+                                                >
+                                                  <SubMenu
+                                                    // label={menu.name}
+                                                    label={
+                                                      <span
+                                                        className={`capitalize flex items-center gap-2`}
+                                                      >
+                                                        {menu.name}
+                                                        {menu.pro && (
+                                                          <div
+                                                            className={`${themeBgImg
+                                                              ? currentMode === "dark"
+                                                                ? "bg-black"
+                                                                : "bg-white"
+                                                              : "bg-transparent"
+                                                              } p-1 rounded-full`}
+                                                          >
+                                                            <GiQueenCrown
+                                                              size={16}
+                                                              className="gold-grad"
+                                                            />
+                                                          </div>
+                                                        )}
+                                                      </span>
+                                                    }
+                                                    icon={menu.icon}
+                                                    open={
+                                                      openedSubMenu.menuIndex ===
+                                                      index + 1 &&
+                                                      openedSubMenu.linkIndex ===
+                                                      linkIndex
+                                                    }
+                                                  >
+                                                    {menu?.submenu.map((m, index) => {
+                                                      return (
+                                                        <Link
+                                                          key={index}
+                                                          to={`${m.link}`}
+                                                        >
+                                                          <Box
+                                                            sx={{
+                                                              // STYLING FOR LIGHT MODE
+                                                              "& .css-1mfnem1": {
+                                                                borderRadius: "0px",
+                                                              },
+                                                              "& .css-1mfnem1:hover": {
+                                                                backgroundColor:
+                                                                  primaryColor,
+                                                                color: "white",
+                                                              },
+                                                              "& .css-1ogoo8i": {
+                                                                backgroundColor:
+                                                                  primaryColor,
+                                                                color: "white",
+                                                              },
+                                                              // STYLING FOR DARK MODE
+                                                              "& .css-yktbuo": {
+                                                                backgroundColor:
+                                                                  primaryColor,
+                                                                color: "white",
+                                                              },
+                                                              "& .css-1f8bwsm": {
+                                                                minWidth:
+                                                                  "10px !important",
+                                                              },
+                                                              "& .css-yktbuo:hover": {
+                                                                backgroundColor:
+                                                                  primaryColor,
+                                                                color: "white",
+                                                              },
+                                                              "& .css-1v6ithu": {
+                                                                color: "white",
+                                                              },
+                                                              "& .leads_counter": {
+                                                                color: m?.countColor
+                                                                  ? m?.countColor
+                                                                  : currentMode === "dark"
+                                                                    ? "white"
+                                                                    : "black",
+                                                                right:
+                                                                  !isLangRTL(
+                                                                    i18n.language
+                                                                  ) && "3px",
+                                                                left:
+                                                                  isLangRTL(
+                                                                    i18n.language
+                                                                  ) && "3px",
+                                                              },
+                                                              "& .css-cveggr-MuiListItemIcon-root":
+                                                              {
+                                                                minWidth:
+                                                                  "10px !important",
+                                                              },
+                                                            }}
+                                                            className=" relative my-1"
+                                                          >
+                                                            <MenuItem
+                                                              active={
+                                                                m.link ===
+                                                                window.location.pathname.replaceAll(
+                                                                  "%20",
+                                                                  " "
+                                                                )
+                                                              }
+                                                              className="flex"
+                                                            >
+                                                              {m?.icon && (
+                                                                <ListItemIcon
+                                                                  style={{
+                                                                    minWidth:
+                                                                      "23px !important",
+                                                                    color:
+                                                                      currentMode ===
+                                                                        "dark"
+                                                                        ? "white !important"
+                                                                        : "black !important",
+                                                                  }}
+                                                                >
+                                                                  {m?.icon}
+                                                                </ListItemIcon>
+                                                              )}{" "}
+                                                              <span
+                                                                className={`flex items-center gap-2`}
+                                                              >
+                                                                {m?.name || ""}
+                                                                {m.pro && (
+                                                                  <div
+                                                                    className={`${themeBgImg
+                                                                      ? currentMode ===
+                                                                        "dark"
+                                                                        ? "bg-black"
+                                                                        : "bg-white"
+                                                                      : "bg-transparent"
+                                                                      } p-1 rounded-full`}
+                                                                  >
+                                                                    <GiQueenCrown
+                                                                      size={16}
+                                                                      className="gold-grad"
+                                                                    />
+                                                                  </div>
+                                                                )}
+                                                              </span>
+                                                            </MenuItem>
+                                                            {m?.count != null && (
+                                                              <span
+                                                                className={`leads_counter block absolute ${isLangRTL(i18n.language)
+                                                                  ? "left-5"
+                                                                  : "right-5"
+                                                                  }`}
+                                                                style={{
+                                                                  top: "50%",
+                                                                  transform:
+                                                                    "translateY(-50%)",
+                                                                }}
+                                                              >
+                                                                {m?.count !== null &&
+                                                                  m?.count !== undefined
+                                                                  ? m?.count
+                                                                  : ""}
+                                                              </span>
+                                                            )}
+                                                          </Box>
+                                                        </Link>
+                                                      );
+                                                    })}
+                                                  </SubMenu>
+                                                </Box>
+                                              );
+                                            } else {
+                                              return (
+                                                <Link
+                                                  key={index}
+                                                  to={`${menu.link}`}
+                                                  onClick={() => setopenBackDrop(true)}
+                                                >
+                                                  <Box
+                                                    sx={{
+                                                      // STYLING FOR LIGHT MODE
+                                                      "& .css-1mfnem1": {
+                                                        borderRadius: "0px",
+                                                      },
+                                                      "& .css-1mfnem1:hover": {
+                                                        backgroundColor: primaryColor,
+                                                        color: "white",
+                                                      },
+                                                      "& .css-1ogoo8i": {
+                                                        backgroundColor: primaryColor,
+                                                        color: "white",
+                                                      },
+                                                      // STYLING FOR DARK MODE
+                                                      "& .css-yktbuo": {
+                                                        backgroundColor: primaryColor,
+                                                        color: "white",
+                                                      },
+                                                      "& .css-yktbuo:hover": {
+                                                        backgroundColor: primaryColor,
+                                                        color: "white",
+                                                      },
+                                                      "& .css-1v6ithu": {
+                                                        color: "white",
+                                                      },
+                                                      "& .leads_counter": {
+                                                        color:
+                                                          currentMode === "dark"
+                                                            ? menu?.countColor
+                                                            : "black",
+                                                        right:
+                                                          !isLangRTL(i18n.language) &&
+                                                          "3px",
+                                                        left:
+                                                          isLangRTL(i18n.language) &&
+                                                          "3px",
+                                                      },
+                                                    }}
+                                                    className="relative my-1"
+                                                  >
+                                                    <MenuItem
+                                                      active={
+                                                        menu.link ===
+                                                        window.location.pathname.replaceAll(
+                                                          "%20",
+                                                          " "
+                                                        )
+                                                      }
+                                                    >
+                                                      <div className="flex items-center gap-4 text-base">
+                                                        <span
+                                                          className={`${!isCollapsed && "text-xl"
+                                                            }`}
+                                                          style={{
+                                                            // icons css
+                                                            "& .css-wx7wi4": {
+                                                              display: "none !important",
+                                                              opacity: "0.7",
+                                                            },
+                                                            "& .css-wx7wi4:hover": {
+                                                              transform: "rotate(20deg)",
+                                                              transition: "all 0.6s ease",
+                                                              opacity: "1",
+                                                            },
+                                                          }}
+                                                        >
+                                                          {menu.icon}
+                                                        </span>
+                                                        {isCollapsed && (
+                                                          <span
+                                                            className={` capitalize flex items-center gap-2`}
+                                                          >
+                                                            {menu.name}
+                                                            {menu.pro && (
+                                                              <div
+                                                                className={`${themeBgImg
+                                                                  ? currentMode ===
+                                                                    "dark"
+                                                                    ? "bg-black"
+                                                                    : "bg-white"
+                                                                  : "bg-transparent"
+                                                                  } p-1 rounded-full`}
+                                                              >
+                                                                <GiQueenCrown
+                                                                  size={16}
+                                                                  className="gold-grad"
+                                                                />
+                                                              </div>
+                                                            )}
+                                                          </span>
+                                                        )}
+                                                      </div>
+                                                    </MenuItem>
+                                                    {menu?.count !== null &&
+                                                      menu?.count !== undefined && (
+                                                        <span
+                                                          className={`leads_counter block absolute ${isLangRTL(i18n.language)
+                                                            ? "left-5"
+                                                            : "right-5"
+                                                            }`}
+                                                          style={{
+                                                            top: "50%",
+                                                            transform: "translateY(-50%)",
+                                                          }}
+                                                        >
+                                                          {menu?.count !== null &&
+                                                            menu?.count !== undefined
+                                                            ? menu?.count
+                                                            : ""}
+                                                        </span>
+                                                      )}
+                                                  </Box>
+                                                </Link>
+                                              );
+                                            }
+                                          }
+                                        })}
+                                      </SubMenu>
+                                    )}
+                                  </Box>
+                                );
+                              }
+                            })}
+                          </Box>
+                        </Menu>
+                      </div>
+                    </div>
+                    {/* SIDEBAR */}
+                  </div>
+                  <div
+                    className={`my-5 shadow-xl h-fit bg-primary text-white py-2 px-3 ${isLangRTL(i18n.language) ? "right-0 rounded-l-full" : "left-0 rounded-r-full"
+                      }`}
+                    style={{
+                      zIndex: 101,
+                    }}
+                    onClick={(e) => toggleSidebar(false)}
+                  >
+                    <BsList size={20} />
+                  </div>
+                </div>
+
+              </div>
+            </>
+          )}
+        </>
+      )}
+
+
+      {deviceType === "desktop" && (
+        <Box
+          sx={{
+            "& .ps-sidebar-container": {
+              // backgroundColor: !themeBgImg
+              //   ? "rgb(249, 249, 249, 0.7)"
+              //   : "rgb(249, 249, 249, 0.5)",
+              backgroundColor: !themeBgImg
+                ? currentMode === "dark"
+                  ? "rgb(249, 249, 249, 0.7)"
+                  : "rgb(249, 249, 249, 0.7)"
+                : currentMode === "dark"
+                  ? blurDarkColor
+                  : blurLightColor,
+            },
+          }}
+          style={{ display: "flex", height: "100%" }}
+          className={`max-w-[200px] sticky top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"
+            }`}
+        >
+          <Sidebar
+            rootStyles={{
+              [`.${sidebarClasses.container}`]: {
+                backgroundColor:
+                  !themeBgImg && (currentMode === "dark" ? "#000000" : "#ffffff"),
+              },
+            }}
+            className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
+          >
+            <div className="">
+              <div
+                className="sidebar-top"
+                style={{
+                  position: !themeBgImg && "sticky",
+                  top: !themeBgImg && 0,
+                  background:
+                    !themeBgImg && (currentMode === "dark" ? "black" : "white"),
+                  zIndex: 1000,
+                }}
+              >
+                {/* HIKAL CRM  */}
+                <div
+                  className={`flex ${isCollapsed ? "justify-between" : "justify-center"
+                    } w-full items-center h-[50px]`}
+                >
+                  <Link
+                    to={
+                      User?.role !== 5
+                        ? "/dashboard"
+                        : "/attendance/officeSettings"
+                    }
+                    className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                    onClick={() => {
+                      setSelected({
+                        name: User?.role !== 5 ? "Dashboard" : "Office Settings",
+                        index: 0,
+                      });
+                    }}
+                  >
+                    <div className="w-full flex items-center gap-2 p-2">
+                      <img
+                        height={40}
+                        width={40}
+                        className="h-[40px] w-[40px] p-1"
+                        src="/favicon.png"
+                        alt=""
+                      />
+                      {isCollapsed && (
+                        <h1
+                          className={`font-bold overflow-hidden uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                            }`}
+                        >
+                          HIKAL CRM
+                        </h1>
+                      )}
+                    </div>
+                  </Link>
+                </div>
+                {/* PROFILE  */}
+                <div className="profile-section border-b-2 border-primary px-2 pb-5 mb-2">
+                  {isCollapsed ? (
+                    <>
+                      <div
+                        // to={"/profile"}
+                        onClick={handleClickProfile}
+                        className="flex cursor-pointer flex-col items-center justify-center"
+                      >
+                        <Box
+                          className="relative"
+                          sx={{
+                            "&:hover .absolute": {
+                              display: "flex",
+                              background:
+                                currentMode === "dark" ? "white" : "black",
+                            },
+                          }}
+                        >
+                          <img
+                            src={
+                              User?.displayImg
+                                ? User?.displayImg
+                                : "/assets/user.png"
+                            }
+                            height={60}
+                            width={60}
+                            className={`rounded-md object-cover relative`}
+                            alt=""
+                          />
+                          {/* 
                         <div
                           onClick={() =>
                             setAnimateProfilePic(!animateProfilePic)
@@ -2134,120 +3037,117 @@ const Sidebarmui = () => {
                             View
                           </p>
                         </div> */}
-                      </Box>
+                        </Box>
 
-                      <h1
-                        className={`my-2 font-bold text-lg text-center capitalize ${
-                          currentMode === "dark"
+                        <h1
+                          className={`my-2 font-bold text-lg text-center capitalize ${currentMode === "dark"
                             ? "text-white"
                             : "text-main-dark-bg"
-                        }`}
-                      >
-                        {User?.userName ? User?.userName : "No username"}
-                      </h1>
-                      <span
-                        style={{
-                          background: primaryColor,
-                        }}
-                        className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
-                      >
-                        {User?.position || ""}
-                      </span>
+                            }`}
+                        >
+                          {User?.userName ? User?.userName : "No username"}
+                        </h1>
+                        <span
+                          style={{
+                            background: primaryColor,
+                          }}
+                          className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
+                        >
+                          {User?.position || ""}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                      // to={"/profile"}
+                      onClick={handleClickProfile}
+                      className="flex justify-center"
+                    >
+                      <Avatar
+                        src={User?.displayImg}
+                        height={50}
+                        width={50}
+                        className="rounded-sm cursor-pointer"
+                        alt=""
+                      />
                     </div>
-                  </>
-                ) : (
-                  <div
-                    // to={"/profile"}
-                    onClick={handleClickProfile}
-                    className="flex justify-center"
-                  >
-                    <Avatar
-                      src={User?.displayImg}
-                      height={50}
-                      width={50}
-                      className="rounded-sm cursor-pointer"
-                      alt=""
-                    />
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
 
-              <div
-                className={`${
-                  animateProfilePic ? "animate-profile-pic" : ""
-                } fixed hidden top-0 ${
-                  isLangRTL(i18n.language) ? "right-0" : "left-0"
-                } w-screen h-screen`}
-                style={{
-                  backgroundColor: "rgba(0, 0, 0, 0.85)",
-                }}
-              >
-                <IconButton
-                  sx={{
-                    position: "absolute",
-                    right: !isLangRTL(i18n.language) && "8%",
-                    left: isLangRTL(i18n.language) && "8%",
-                    top: "8%",
-                    color: "white",
+                <div
+                  className={`${animateProfilePic ? "animate-profile-pic" : ""
+                    } fixed hidden top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"
+                    } w-screen h-screen`}
+                  style={{
+                    backgroundColor: "rgba(0, 0, 0, 0.85)",
                   }}
-                  onClick={() => setAnimateProfilePic(false)}
                 >
-                  <IoMdClose size={22} />
-                </IconButton>
-                <img
-                  src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
-                  height={60}
-                  width={60}
-                  className={`rounded-md pointer-events-none object-cover relative z-[10000] `}
-                  alt=""
-                />
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      right: !isLangRTL(i18n.language) && "8%",
+                      left: isLangRTL(i18n.language) && "8%",
+                      top: "8%",
+                      color: "white",
+                    }}
+                    onClick={() => setAnimateProfilePic(false)}
+                  >
+                    <IoMdClose size={22} />
+                  </IconButton>
+                  <img
+                    src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
+                    height={60}
+                    width={60}
+                    className={`rounded-md pointer-events-none object-cover relative z-[10000] `}
+                    alt=""
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* MODULES  */}
-            <div className="sidebar-root mt-4 mb-4 text-base">
-              <Menu
-                menuItemStyles={{
-                  button: ({ level, active, disabled }) => {
-                    // only apply styles on first level elements of the tree
-                    if (level === 0) {
-                      return {
-                        color: currentMode === "dark" ? "#ffffff" : "#000000",
-                      };
-                    }
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    // FOR DARK MODE MENU SETTINGS
-                    "& .css-1mfnem1": {
-                      borderRadius: "0px",
+              {/* MODULES  */}
+              <div className="sidebar-root mt-4 mb-4 text-base">
+                <Menu
+                  menuItemStyles={{
+                    button: ({ level, active, disabled }) => {
+                      // only apply styles on first level elements of the tree
+                      if (level === 0) {
+                        return {
+                          color: currentMode === "dark" ? "#ffffff" : "#000000",
+                        };
+                      }
                     },
-                    "& .css-1mfnem1:hover": {
-                      backgroundColor: primaryColor,
-                      color: "white",
-                    },
-                    // submenu containerr color
-                    "& .css-z5rm24": {
-                      backgroundColor: currentMode === "dark" && "#1C1C1C",
-                      borderRadius: "0px",
-                    },
-                    // Submenu count color
-                    "& .css-1rnkhs0": {
-                      color: currentMode === "dark" && "white",
-                    },
-                    // LIGHT MODE SETTINGS
-                    "& .css-1ohfb25:hover": {
-                      backgroundColor: primaryColor,
-                      color: "white",
-                      borderRadius: "0px",
-                    },
-                    "& .css-wx7wi4": {
-                      width: "18px",
-                      minWidth: "18px",
-                    },
-                    "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
+                  }}
+                >
+                  <Box
+                    sx={{
+                      // FOR DARK MODE MENU SETTINGS
+                      "& .css-1mfnem1": {
+                        borderRadius: "0px",
+                      },
+                      "& .css-1mfnem1:hover": {
+                        backgroundColor: primaryColor,
+                        color: "white",
+                      },
+                      // submenu containerr color
+                      "& .css-z5rm24": {
+                        backgroundColor: currentMode === "dark" && "#1C1C1C",
+                        borderRadius: "0px",
+                      },
+                      // Submenu count color
+                      "& .css-1rnkhs0": {
+                        color: currentMode === "dark" && "white",
+                      },
+                      // LIGHT MODE SETTINGS
+                      "& .css-1ohfb25:hover": {
+                        backgroundColor: primaryColor,
+                        color: "white",
+                        borderRadius: "0px",
+                      },
+                      "& .css-wx7wi4": {
+                        width: "18px",
+                        minWidth: "18px",
+                      },
+                      "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
                       {
                         display: "flex",
                         gap: "5px",
@@ -2260,146 +3160,252 @@ const Sidebarmui = () => {
                         //   ? "#FFFFFF"
                         //   : "#000000",
                       },
-                    "& .ps-menu-button": {
-                      fontWeight: "medium",
-                      color: !themeBgImg
-                        ? primaryColor
-                        : currentMode === "dark"
-                        ? "#FFFFFF"
-                        : "#000000",
-                      gap: "5px",
-                    },
-                    "& .ps-menu-button:hover": {
-                      fontWeight: "medium",
-                      color: !themeBgImg
-                        ? primaryColor
-                        : currentMode === "dark"
-                        ? "#000000"
-                        : "#FFFFFF",
-                    },
-                    "& .ps-menu-icon": {
-                      marginRight: !isLangRTL(i18n.language) && "10px",
-                      marginLeft: isLangRTL(i18n.language) && "10px",
-                      // color:
-                      //   currentMode === "dark"
-                      //     ? "white"
-                      //     : "black",
-                    },
-                  }}
-                  className="my-1"
-                >
-                  {links?.map((link, linkIndex) => {
-                    let permittedLinksMoreThan0 = false;
-                    for (let i = 0; i < link?.links.length; i++) {
-                      const subMenu = link?.links[i]?.submenu;
-                      if (subMenu) {
-                        for (let k = 0; k < subMenu.length; k++) {
-                          const anotherSubMenu = subMenu[k]?.submenu;
-                          if (anotherSubMenu) {
-                            for (let l = 0; l < anotherSubMenu?.length; l++) {
+                      "& .ps-menu-button": {
+                        fontWeight: "medium",
+                        color: !themeBgImg
+                          ? primaryColor
+                          : currentMode === "dark"
+                            ? "#FFFFFF"
+                            : "#000000",
+                        gap: "5px",
+                      },
+                      "& .ps-menu-button:hover": {
+                        fontWeight: "medium",
+                        color: !themeBgImg
+                          ? primaryColor
+                          : currentMode === "dark"
+                            ? "#000000"
+                            : "#FFFFFF",
+                      },
+                      "& .ps-menu-icon": {
+                        marginRight: !isLangRTL(i18n.language) && "10px",
+                        marginLeft: isLangRTL(i18n.language) && "10px",
+                        // color:
+                        //   currentMode === "dark"
+                        //     ? "white"
+                        //     : "black",
+                      },
+                    }}
+                    className="my-1"
+                  >
+                    {links?.map((link, linkIndex) => {
+                      let permittedLinksMoreThan0 = false;
+                      for (let i = 0; i < link?.links.length; i++) {
+                        const subMenu = link?.links[i]?.submenu;
+                        if (subMenu) {
+                          for (let k = 0; k < subMenu.length; k++) {
+                            const anotherSubMenu = subMenu[k]?.submenu;
+                            if (anotherSubMenu) {
+                              for (let l = 0; l < anotherSubMenu?.length; l++) {
+                                if (
+                                  hasPermission(anotherSubMenu[l]?.link, true)
+                                    ?.isPermitted
+                                ) {
+                                  permittedLinksMoreThan0 = true;
+                                  break;
+                                }
+                              }
+                            } else {
                               if (
-                                hasPermission(anotherSubMenu[l]?.link, true)
-                                  ?.isPermitted
+                                hasPermission(subMenu[k]?.link, true).isPermitted
                               ) {
                                 permittedLinksMoreThan0 = true;
                                 break;
                               }
                             }
-                          } else {
-                            if (
-                              hasPermission(subMenu[k]?.link, true).isPermitted
-                            ) {
-                              permittedLinksMoreThan0 = true;
-                              break;
-                            }
+                          }
+                        } else {
+                          if (
+                            hasPermission(link?.links[i]?.link, true)?.isPermitted
+                          ) {
+                            permittedLinksMoreThan0 = true;
+                            break;
                           }
                         }
-                      } else {
-                        if (
-                          hasPermission(link?.links[i]?.link, true)?.isPermitted
-                        ) {
-                          permittedLinksMoreThan0 = true;
-                          break;
-                        }
                       }
-                    }
 
-                    if (
-                      link?.links[0]?.link === "/dashboard" &&
-                      User?.role !== 5 &&
-                      hasPermission(link?.links[0]?.link, true)?.isPermitted
-                    ) {
-                      return (
-                        <Link
-                          key={linkIndex}
-                          to={`${link?.links[0]?.link}`}
-                          onClick={() => {
-                            setopenBackDrop(true);
-                            setOpenSubMenu(0);
-                            setActiveSidebarHeading("");
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              // STYLING FOR LIGHT MODE
-                              "& .css-1mfnem1": {
-                                borderRadius: "0px",
-                              },
-                              "& .css-1mfnem1:hover": {
-                                backgroundColor: primaryColor,
-                                color: "white",
-                              },
-                              "& .css-1ogoo8i": {
-                                backgroundColor: primaryColor,
-                                color: "white",
-                              },
-                              // STYLING FOR DARK MODE
-                              "& .css-yktbuo": {
-                                backgroundColor: primaryColor,
-                                color: "white",
-                              },
-                              "& .css-yktbuo:hover": {
-                                backgroundColor: primaryColor,
-                                color: "white",
-                              },
-                              "& .css-1v6ithu": {
-                                // color: "white",
-                              },
+                      if (
+                        link?.links[0]?.link === "/dashboard" &&
+                        User?.role !== 5 &&
+                        hasPermission(link?.links[0]?.link, true)?.isPermitted
+                      ) {
+                        return (
+                          <Link
+                            key={linkIndex}
+                            to={`${link?.links[0]?.link}`}
+                            onClick={() => {
+                              setopenBackDrop(true);
+                              setOpenSubMenu(0);
+                              setActiveSidebarHeading("");
                             }}
-                            className="relative my-1"
                           >
-                            <MenuItem
-                              active={
-                                link?.links[0]?.link ===
-                                window.location.pathname.replaceAll("%20", " ")
-                              }
+                            <Box
+                              sx={{
+                                // STYLING FOR LIGHT MODE
+                                "& .css-1mfnem1": {
+                                  borderRadius: "0px",
+                                },
+                                "& .css-1mfnem1:hover": {
+                                  backgroundColor: primaryColor,
+                                  color: "white",
+                                },
+                                "& .css-1ogoo8i": {
+                                  backgroundColor: primaryColor,
+                                  color: "white",
+                                },
+                                // STYLING FOR DARK MODE
+                                "& .css-yktbuo": {
+                                  backgroundColor: primaryColor,
+                                  color: "white",
+                                },
+                                "& .css-yktbuo:hover": {
+                                  backgroundColor: primaryColor,
+                                  color: "white",
+                                },
+                                "& .css-1v6ithu": {
+                                  // color: "white",
+                                },
+                              }}
+                              className="relative my-1"
                             >
-                              <div
-                                className={`flex items-center ${
-                                  isCollapsed ? "gap-4" : ""
-                                } rounded-lg text-base ${
-                                  !isCollapsed ? "justify-center" : ""
-                                } `}
+                              <MenuItem
+                                active={
+                                  link?.links[0]?.link ===
+                                  window.location.pathname.replaceAll("%20", " ")
+                                }
                               >
-                                <span
-                                  className={`${!isCollapsed && "text-xl"}`}
+                                <div
+                                  className={`flex items-center ${isCollapsed ? "gap-4" : ""
+                                    } rounded-lg text-base ${!isCollapsed ? "justify-center" : ""
+                                    } `}
                                 >
-                                  {link?.links[0]?.icon}
-                                </span>
-                                {isCollapsed && (
                                   <span
-                                    className={`capitalize flex items-center gap-2`}
+                                    className={`${!isCollapsed && "text-xl"}`}
                                   >
-                                    {link?.links[0]?.name}
-                                    {link?.links[0].pro && (
-                                      <div
-                                        className={`${
-                                          themeBgImg
+                                    {link?.links[0]?.icon}
+                                  </span>
+                                  {isCollapsed && (
+                                    <span
+                                      className={`capitalize flex items-center gap-2`}
+                                    >
+                                      {link?.links[0]?.name}
+                                      {link?.links[0].pro && (
+                                        <div
+                                          className={`${themeBgImg
                                             ? currentMode === "dark"
                                               ? "bg-black"
                                               : "bg-white"
                                             : "bg-transparent"
-                                        } p-1 rounded-full`}
+                                            } p-1 rounded-full`}
+                                        >
+                                          <GiQueenCrown
+                                            size={16}
+                                            className="gold-grad"
+                                          />
+                                        </div>
+                                      )}
+                                    </span>
+                                  )}
+                                </div>
+                              </MenuItem>
+                            </Box>
+                          </Link>
+                        );
+                      }
+
+                      if (permittedLinksMoreThan0) {
+                        return (
+                          <Box
+                            key={linkIndex}
+                            onClick={(e) => handleExpandHeading(e, linkIndex)}
+                            sx={{
+                              // icons css
+                              "& .css-wx7wi4": {
+                                opacity: "0.7",
+                              },
+                              "& .css-wx7wi4:hover": {
+                                transform: "rotate(20deg)",
+                                transition: "all 0.6s ease",
+                                opacity: "1",
+                              },
+                            }}
+                          >
+                            {!isCollapsed ? (
+                              <Tooltip title={link?.title} placement="right">
+                                <Link
+                                  key={linkIndex}
+                                  onClick={() => {
+                                    setopenBackDrop(true);
+                                    setOpenSubMenu(0);
+                                    setActiveSidebarHeading(linkIndex);
+                                    collapseSidebar();
+                                    setIsCollapsed(true);
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      // STYLING FOR LIGHT MODE
+                                      "& .css-1mfnem1": {
+                                        borderRadius: "0px",
+                                      },
+                                      "& .css-1mfnem1:hover": {
+                                        backgroundColor: primaryColor,
+                                        color: "white",
+                                      },
+                                      "& .css-1ogoo8i": {
+                                        backgroundColor: primaryColor,
+                                        color: "white",
+                                      },
+                                      // STYLING FOR DARK MODE
+                                      "& .css-yktbuo": {
+                                        backgroundColor: primaryColor,
+                                        color: "white",
+                                      },
+                                      "& .css-yktbuo:hover": {
+                                        backgroundColor: primaryColor,
+                                        color: "white",
+                                      },
+                                      "& .css-1v6ithu": {
+                                        // color: "white",
+                                      },
+                                    }}
+                                    className="relative my-1"
+                                  >
+                                    <MenuItem
+                                      active={
+                                        link?.links[0]?.link ===
+                                        window.location.pathname.replaceAll(
+                                          "%20",
+                                          " "
+                                        )
+                                      }
+                                    >
+                                      <div className="flex my-1 h-[38px] items-center justify-center text-xl">
+                                        {link?.icon}
+                                      </div>
+                                    </MenuItem>
+                                  </Box>
+                                </Link>
+                              </Tooltip>
+                            ) : (
+                              <SubMenu
+                                icon={link?.icon}
+                                open={activeSidebarHeading === linkIndex}
+                                // label={link?.title?.toUpperCase()}
+                                label={
+                                  <span
+                                    className={`
+                                  uppercase capitalize flex items-center gap-2`}
+                                  >
+                                    {link.title}
+                                    {link.pro && (
+                                      <div
+                                        className={`${themeBgImg
+                                          ? currentMode === "dark"
+                                            ? "bg-black"
+                                            : "bg-white"
+                                          : "bg-transparent"
+                                          } p-1 rounded-full`}
                                       >
                                         <GiQueenCrown
                                           size={16}
@@ -2408,384 +3414,44 @@ const Sidebarmui = () => {
                                       </div>
                                     )}
                                   </span>
-                                )}
-                              </div>
-                            </MenuItem>
-                          </Box>
-                        </Link>
-                      );
-                    }
-
-                    if (permittedLinksMoreThan0) {
-                      return (
-                        <Box
-                          key={linkIndex}
-                          onClick={(e) => handleExpandHeading(e, linkIndex)}
-                          sx={{
-                            // icons css
-                            "& .css-wx7wi4": {
-                              opacity: "0.7",
-                            },
-                            "& .css-wx7wi4:hover": {
-                              transform: "rotate(20deg)",
-                              transition: "all 0.6s ease",
-                              opacity: "1",
-                            },
-                          }}
-                        >
-                          {!isCollapsed ? (
-                            <Tooltip title={link?.title} placement="right">
-                              <Link
-                                key={linkIndex}
-                                onClick={() => {
-                                  setopenBackDrop(true);
-                                  setOpenSubMenu(0);
-                                  setActiveSidebarHeading(linkIndex);
-                                  collapseSidebar();
-                                  setIsCollapsed(true);
-                                }}
+                                }
+                                className="top-level-dropdown"
                               >
-                                <Box
-                                  sx={{
-                                    // STYLING FOR LIGHT MODE
-                                    "& .css-1mfnem1": {
-                                      borderRadius: "0px",
-                                    },
-                                    "& .css-1mfnem1:hover": {
-                                      backgroundColor: primaryColor,
-                                      color: "white",
-                                    },
-                                    "& .css-1ogoo8i": {
-                                      backgroundColor: primaryColor,
-                                      color: "white",
-                                    },
-                                    // STYLING FOR DARK MODE
-                                    "& .css-yktbuo": {
-                                      backgroundColor: primaryColor,
-                                      color: "white",
-                                    },
-                                    "& .css-yktbuo:hover": {
-                                      backgroundColor: primaryColor,
-                                      color: "white",
-                                    },
-                                    "& .css-1v6ithu": {
-                                      // color: "white",
-                                    },
-                                  }}
-                                  className="relative my-1"
-                                >
-                                  <MenuItem
-                                    active={
-                                      link?.links[0]?.link ===
-                                      window.location.pathname.replaceAll(
-                                        "%20",
-                                        " "
-                                      )
-                                    }
-                                  >
-                                    <div className="flex my-1 h-[38px] items-center justify-center text-xl">
-                                      {link?.icon}
-                                    </div>
-                                  </MenuItem>
-                                </Box>
-                              </Link>
-                            </Tooltip>
-                          ) : (
-                            <SubMenu
-                              icon={link?.icon}
-                              open={activeSidebarHeading === linkIndex}
-                              // label={link?.title?.toUpperCase()}
-                              label={
-                                <span
-                                  className={`
-                                  uppercase capitalize flex items-center gap-2`}
-                                >
-                                  {link.title}
-                                  {link.pro && (
-                                    <div
-                                      className={`${
-                                        themeBgImg
-                                          ? currentMode === "dark"
-                                            ? "bg-black"
-                                            : "bg-white"
-                                          : "bg-transparent"
-                                      } p-1 rounded-full`}
-                                    >
-                                      <GiQueenCrown
-                                        size={16}
-                                        className="gold-grad"
-                                      />
-                                    </div>
-                                  )}
-                                </span>
-                              }
-                              className="top-level-dropdown"
-                            >
-                              {link.links.map((menu, index) => {
-                                if (
-                                  hasPermission(menu?.link, true)
-                                    ?.isPermitted ||
-                                  (menu?.submenu &&
-                                    hasPermission(menu?.submenu[0]?.link, true)
-                                      ?.isPermitted) ||
-                                  (menu?.link === "/dashboard" &&
-                                    User?.role !== 5)
-                                ) {
-                                  if (menu?.submenu) {
-                                    return (
-                                      <Box
-                                        key={index}
-                                        onClick={(e) => {
-                                          handleExpand(
-                                            e,
-                                            {
-                                              menuIndex: index + 1,
-                                              linkIndex,
-                                            },
-                                            true
-                                          );
-                                        }}
-                                        sx={{
-                                          // icons css
-                                          "&  .css-wx7wi4": {
-                                            opacity: "0.7",
-                                          },
-                                          "&  .css-wx7wi4:hover": {
-                                            transform: "rotate(20deg)",
-                                            transition: "all 0.6s ease",
-                                            opacity: "1",
-                                          },
-                                          // FOR DARK MODE MENU SETTINGS
-                                          "& .css-1mfnem1": {
-                                            borderRadius: "0px",
-                                          },
-                                          "& .css-1mfnem1:hover": {
-                                            backgroundColor: primaryColor,
-                                            color: "white",
-                                          },
-                                          // submenu containerr color
-                                          "& .css-z5rm24": {
-                                            backgroundColor:
-                                              currentMode === "dark" &&
-                                              "#1C1C1C",
-                                            borderRadius: "0px",
-                                          },
-                                          // Submenu count color
-                                          "& .css-1rnkhs0": {
-                                            color:
-                                              currentMode === "dark" && "white",
-                                          },
-                                          // LIGHT MODE SETTINGS
-                                          "& .css-1ohfb25:hover": {
-                                            backgroundColor: primaryColor,
-                                            color: "white",
-                                            borderRadius: "0px",
-                                          },
-                                          "& .css-wx7wi4": {
-                                            width: "18px",
-                                            minWidth: "18px",
-                                          },
-                                          "& .ps-menu-label": {
-                                            color:
-                                              currentMode === "dark"
-                                                ? "white"
-                                                : "black",
-                                          },
-                                          "& .ps-menu-icon": {
-                                            marginRight:
-                                              !isLangRTL(i18n.language) &&
-                                              "10px",
-                                            marginLeft:
-                                              isLangRTL(i18n.language) &&
-                                              "10px",
-                                            // color:
-                                            //   currentMode === "dark"
-                                            //     ? "white"
-                                            //     : "black",
-                                          },
-                                        }}
-                                        className="my-1 sub"
-                                      >
-                                        <SubMenu
-                                          // label={menu.name}
-                                          label={
-                                            <span
-                                              className={`capitalize flex items-center gap-2`}
-                                            >
-                                              {menu.name}
-                                              {menu.pro && (
-                                                <div
-                                                  className={`${
-                                                    themeBgImg
-                                                      ? currentMode === "dark"
-                                                        ? "bg-black"
-                                                        : "bg-white"
-                                                      : "bg-transparent"
-                                                  } p-1 rounded-full`}
-                                                >
-                                                  <GiQueenCrown
-                                                    size={16}
-                                                    className="gold-grad"
-                                                  />
-                                                </div>
-                                              )}
-                                            </span>
-                                          }
-                                          icon={menu.icon}
-                                          open={
-                                            openedSubMenu.menuIndex ===
-                                              index + 1 &&
-                                            openedSubMenu.linkIndex ===
-                                              linkIndex
-                                          }
-                                        >
-                                          {menu?.submenu.map((m, index) => {
-                                            return (
-                                              <Link
-                                                key={index}
-                                                to={`${m.link}`}
-                                              >
-                                                <Box
-                                                  sx={{
-                                                    // STYLING FOR LIGHT MODE
-                                                    "& .css-1mfnem1": {
-                                                      borderRadius: "0px",
-                                                    },
-                                                    "& .css-1mfnem1:hover": {
-                                                      backgroundColor:
-                                                        primaryColor,
-                                                      color: "white",
-                                                    },
-                                                    "& .css-1ogoo8i": {
-                                                      backgroundColor:
-                                                        primaryColor,
-                                                      color: "white",
-                                                    },
-                                                    // STYLING FOR DARK MODE
-                                                    "& .css-yktbuo": {
-                                                      backgroundColor:
-                                                        primaryColor,
-                                                      color: "white",
-                                                    },
-                                                    "& .css-1f8bwsm": {
-                                                      minWidth:
-                                                        "10px !important",
-                                                    },
-                                                    "& .css-yktbuo:hover": {
-                                                      backgroundColor:
-                                                        primaryColor,
-                                                      color: "white",
-                                                    },
-                                                    "& .css-1v6ithu": {
-                                                      color: "white",
-                                                    },
-                                                    "& .leads_counter": {
-                                                      color: m?.countColor
-                                                        ? m?.countColor
-                                                        : currentMode === "dark"
-                                                        ? "white"
-                                                        : "black",
-                                                      right:
-                                                        !isLangRTL(
-                                                          i18n.language
-                                                        ) && "3px",
-                                                      left:
-                                                        isLangRTL(
-                                                          i18n.language
-                                                        ) && "3px",
-                                                    },
-                                                    "& .css-cveggr-MuiListItemIcon-root":
-                                                      {
-                                                        minWidth:
-                                                          "10px !important",
-                                                      },
-                                                  }}
-                                                  className=" relative my-1"
-                                                >
-                                                  <MenuItem
-                                                    active={
-                                                      m.link ===
-                                                      window.location.pathname.replaceAll(
-                                                        "%20",
-                                                        " "
-                                                      )
-                                                    }
-                                                    className="flex"
-                                                  >
-                                                    {m?.icon && (
-                                                      <ListItemIcon
-                                                        style={{
-                                                          minWidth:
-                                                            "23px !important",
-                                                          color:
-                                                            currentMode ===
-                                                            "dark"
-                                                              ? "white !important"
-                                                              : "black !important",
-                                                        }}
-                                                      >
-                                                        {m?.icon}
-                                                      </ListItemIcon>
-                                                    )}{" "}
-                                                    <span
-                                                      className={`flex items-center gap-2`}
-                                                    >
-                                                      {m?.name || ""}
-                                                      {m.pro && (
-                                                        <div
-                                                          className={`${
-                                                            themeBgImg
-                                                              ? currentMode ===
-                                                                "dark"
-                                                                ? "bg-black"
-                                                                : "bg-white"
-                                                              : "bg-transparent"
-                                                          } p-1 rounded-full`}
-                                                        >
-                                                          <GiQueenCrown
-                                                            size={16}
-                                                            className="gold-grad"
-                                                          />
-                                                        </div>
-                                                      )}
-                                                    </span>
-                                                  </MenuItem>
-                                                  {m?.count != null && (
-                                                    <span
-                                                      className={`leads_counter block absolute ${
-                                                        isLangRTL(i18n.language)
-                                                          ? "left-5"
-                                                          : "right-5"
-                                                      }`}
-                                                      style={{
-                                                        top: "50%",
-                                                        transform:
-                                                          "translateY(-50%)",
-                                                      }}
-                                                    >
-                                                      {m?.count !== null &&
-                                                      m?.count !== undefined
-                                                        ? m?.count
-                                                        : ""}
-                                                    </span>
-                                                  )}
-                                                </Box>
-                                              </Link>
-                                            );
-                                          })}
-                                        </SubMenu>
-                                      </Box>
-                                    );
-                                  } else {
-                                    return (
-                                      <Link
-                                        key={index}
-                                        to={`${menu.link}`}
-                                        onClick={() => setopenBackDrop(true)}
-                                      >
+                                {link.links.map((menu, index) => {
+                                  if (
+                                    hasPermission(menu?.link, true)
+                                      ?.isPermitted ||
+                                    (menu?.submenu &&
+                                      hasPermission(menu?.submenu[0]?.link, true)
+                                        ?.isPermitted) ||
+                                    (menu?.link === "/dashboard" &&
+                                      User?.role !== 5)
+                                  ) {
+                                    if (menu?.submenu) {
+                                      return (
                                         <Box
+                                          key={index}
+                                          onClick={(e) => {
+                                            handleExpand(
+                                              e,
+                                              {
+                                                menuIndex: index + 1,
+                                                linkIndex,
+                                              },
+                                              true
+                                            );
+                                          }}
                                           sx={{
-                                            // STYLING FOR LIGHT MODE
+                                            // icons css
+                                            "&  .css-wx7wi4": {
+                                              opacity: "0.7",
+                                            },
+                                            "&  .css-wx7wi4:hover": {
+                                              transform: "rotate(20deg)",
+                                              transition: "all 0.6s ease",
+                                              opacity: "1",
+                                            },
+                                            // FOR DARK MODE MENU SETTINGS
                                             "& .css-1mfnem1": {
                                               borderRadius: "0px",
                                             },
@@ -2793,129 +3459,353 @@ const Sidebarmui = () => {
                                               backgroundColor: primaryColor,
                                               color: "white",
                                             },
-                                            "& .css-1ogoo8i": {
+                                            // submenu containerr color
+                                            "& .css-z5rm24": {
+                                              backgroundColor:
+                                                currentMode === "dark" &&
+                                                "#1C1C1C",
+                                              borderRadius: "0px",
+                                            },
+                                            // Submenu count color
+                                            "& .css-1rnkhs0": {
+                                              color:
+                                                currentMode === "dark" && "white",
+                                            },
+                                            // LIGHT MODE SETTINGS
+                                            "& .css-1ohfb25:hover": {
                                               backgroundColor: primaryColor,
                                               color: "white",
+                                              borderRadius: "0px",
                                             },
-                                            // STYLING FOR DARK MODE
-                                            "& .css-yktbuo": {
-                                              backgroundColor: primaryColor,
-                                              color: "white",
+                                            "& .css-wx7wi4": {
+                                              width: "18px",
+                                              minWidth: "18px",
                                             },
-                                            "& .css-yktbuo:hover": {
-                                              backgroundColor: primaryColor,
-                                              color: "white",
-                                            },
-                                            "& .css-1v6ithu": {
-                                              color: "white",
-                                            },
-                                            "& .leads_counter": {
+                                            "& .ps-menu-label": {
                                               color:
                                                 currentMode === "dark"
-                                                  ? menu?.countColor
+                                                  ? "white"
                                                   : "black",
-                                              right:
+                                            },
+                                            "& .ps-menu-icon": {
+                                              marginRight:
                                                 !isLangRTL(i18n.language) &&
-                                                "3px",
-                                              left:
+                                                "10px",
+                                              marginLeft:
                                                 isLangRTL(i18n.language) &&
-                                                "3px",
+                                                "10px",
+                                              // color:
+                                              //   currentMode === "dark"
+                                              //     ? "white"
+                                              //     : "black",
                                             },
                                           }}
-                                          className="relative my-1"
+                                          className="my-1 sub"
                                         >
-                                          <MenuItem
-                                            active={
-                                              menu.link ===
-                                              window.location.pathname.replaceAll(
-                                                "%20",
-                                                " "
-                                              )
+                                          <SubMenu
+                                            // label={menu.name}
+                                            label={
+                                              <span
+                                                className={`capitalize flex items-center gap-2`}
+                                              >
+                                                {menu.name}
+                                                {menu.pro && (
+                                                  <div
+                                                    className={`${themeBgImg
+                                                      ? currentMode === "dark"
+                                                        ? "bg-black"
+                                                        : "bg-white"
+                                                      : "bg-transparent"
+                                                      } p-1 rounded-full`}
+                                                  >
+                                                    <GiQueenCrown
+                                                      size={16}
+                                                      className="gold-grad"
+                                                    />
+                                                  </div>
+                                                )}
+                                              </span>
+                                            }
+                                            icon={menu.icon}
+                                            open={
+                                              openedSubMenu.menuIndex ===
+                                              index + 1 &&
+                                              openedSubMenu.linkIndex ===
+                                              linkIndex
                                             }
                                           >
-                                            <div className="flex items-center gap-4 text-base">
-                                              <span
-                                                className={`${
-                                                  !isCollapsed && "text-xl"
-                                                }`}
-                                                style={{
-                                                  // icons css
-                                                  "& .css-wx7wi4": {
-                                                    display: "none !important",
-                                                    opacity: "0.7",
-                                                  },
-                                                  "& .css-wx7wi4:hover": {
-                                                    transform: "rotate(20deg)",
-                                                    transition: "all 0.6s ease",
-                                                    opacity: "1",
-                                                  },
-                                                }}
-                                              >
-                                                {menu.icon}
-                                              </span>
-                                              {isCollapsed && (
-                                                <span
-                                                  className={` capitalize flex items-center gap-2`}
+                                            {menu?.submenu.map((m, index) => {
+                                              return (
+                                                <Link
+                                                  key={index}
+                                                  to={`${m.link}`}
                                                 >
-                                                  {menu.name}
-                                                  {menu.pro && (
-                                                    <div
-                                                      className={`${
-                                                        themeBgImg
+                                                  <Box
+                                                    sx={{
+                                                      // STYLING FOR LIGHT MODE
+                                                      "& .css-1mfnem1": {
+                                                        borderRadius: "0px",
+                                                      },
+                                                      "& .css-1mfnem1:hover": {
+                                                        backgroundColor:
+                                                          primaryColor,
+                                                        color: "white",
+                                                      },
+                                                      "& .css-1ogoo8i": {
+                                                        backgroundColor:
+                                                          primaryColor,
+                                                        color: "white",
+                                                      },
+                                                      // STYLING FOR DARK MODE
+                                                      "& .css-yktbuo": {
+                                                        backgroundColor:
+                                                          primaryColor,
+                                                        color: "white",
+                                                      },
+                                                      "& .css-1f8bwsm": {
+                                                        minWidth:
+                                                          "10px !important",
+                                                      },
+                                                      "& .css-yktbuo:hover": {
+                                                        backgroundColor:
+                                                          primaryColor,
+                                                        color: "white",
+                                                      },
+                                                      "& .css-1v6ithu": {
+                                                        color: "white",
+                                                      },
+                                                      "& .leads_counter": {
+                                                        color: m?.countColor
+                                                          ? m?.countColor
+                                                          : currentMode === "dark"
+                                                            ? "white"
+                                                            : "black",
+                                                        right:
+                                                          !isLangRTL(
+                                                            i18n.language
+                                                          ) && "3px",
+                                                        left:
+                                                          isLangRTL(
+                                                            i18n.language
+                                                          ) && "3px",
+                                                      },
+                                                      "& .css-cveggr-MuiListItemIcon-root":
+                                                      {
+                                                        minWidth:
+                                                          "10px !important",
+                                                      },
+                                                    }}
+                                                    className=" relative my-1"
+                                                  >
+                                                    <MenuItem
+                                                      active={
+                                                        m.link ===
+                                                        window.location.pathname.replaceAll(
+                                                          "%20",
+                                                          " "
+                                                        )
+                                                      }
+                                                      className="flex"
+                                                    >
+                                                      {m?.icon && (
+                                                        <ListItemIcon
+                                                          style={{
+                                                            minWidth:
+                                                              "23px !important",
+                                                            color:
+                                                              currentMode ===
+                                                                "dark"
+                                                                ? "white !important"
+                                                                : "black !important",
+                                                          }}
+                                                        >
+                                                          {m?.icon}
+                                                        </ListItemIcon>
+                                                      )}{" "}
+                                                      <span
+                                                        className={`flex items-center gap-2`}
+                                                      >
+                                                        {m?.name || ""}
+                                                        {m.pro && (
+                                                          <div
+                                                            className={`${themeBgImg
+                                                              ? currentMode ===
+                                                                "dark"
+                                                                ? "bg-black"
+                                                                : "bg-white"
+                                                              : "bg-transparent"
+                                                              } p-1 rounded-full`}
+                                                          >
+                                                            <GiQueenCrown
+                                                              size={16}
+                                                              className="gold-grad"
+                                                            />
+                                                          </div>
+                                                        )}
+                                                      </span>
+                                                    </MenuItem>
+                                                    {m?.count != null && (
+                                                      <span
+                                                        className={`leads_counter block absolute ${isLangRTL(i18n.language)
+                                                          ? "left-5"
+                                                          : "right-5"
+                                                          }`}
+                                                        style={{
+                                                          top: "50%",
+                                                          transform:
+                                                            "translateY(-50%)",
+                                                        }}
+                                                      >
+                                                        {m?.count !== null &&
+                                                          m?.count !== undefined
+                                                          ? m?.count
+                                                          : ""}
+                                                      </span>
+                                                    )}
+                                                  </Box>
+                                                </Link>
+                                              );
+                                            })}
+                                          </SubMenu>
+                                        </Box>
+                                      );
+                                    } else {
+                                      return (
+                                        <Link
+                                          key={index}
+                                          to={`${menu.link}`}
+                                          onClick={() => setopenBackDrop(true)}
+                                        >
+                                          <Box
+                                            sx={{
+                                              // STYLING FOR LIGHT MODE
+                                              "& .css-1mfnem1": {
+                                                borderRadius: "0px",
+                                              },
+                                              "& .css-1mfnem1:hover": {
+                                                backgroundColor: primaryColor,
+                                                color: "white",
+                                              },
+                                              "& .css-1ogoo8i": {
+                                                backgroundColor: primaryColor,
+                                                color: "white",
+                                              },
+                                              // STYLING FOR DARK MODE
+                                              "& .css-yktbuo": {
+                                                backgroundColor: primaryColor,
+                                                color: "white",
+                                              },
+                                              "& .css-yktbuo:hover": {
+                                                backgroundColor: primaryColor,
+                                                color: "white",
+                                              },
+                                              "& .css-1v6ithu": {
+                                                color: "white",
+                                              },
+                                              "& .leads_counter": {
+                                                color:
+                                                  currentMode === "dark"
+                                                    ? menu?.countColor
+                                                    : "black",
+                                                right:
+                                                  !isLangRTL(i18n.language) &&
+                                                  "3px",
+                                                left:
+                                                  isLangRTL(i18n.language) &&
+                                                  "3px",
+                                              },
+                                            }}
+                                            className="relative my-1"
+                                          >
+                                            <MenuItem
+                                              active={
+                                                menu.link ===
+                                                window.location.pathname.replaceAll(
+                                                  "%20",
+                                                  " "
+                                                )
+                                              }
+                                            >
+                                              <div className="flex items-center gap-4 text-base">
+                                                <span
+                                                  className={`${!isCollapsed && "text-xl"
+                                                    }`}
+                                                  style={{
+                                                    // icons css
+                                                    "& .css-wx7wi4": {
+                                                      display: "none !important",
+                                                      opacity: "0.7",
+                                                    },
+                                                    "& .css-wx7wi4:hover": {
+                                                      transform: "rotate(20deg)",
+                                                      transition: "all 0.6s ease",
+                                                      opacity: "1",
+                                                    },
+                                                  }}
+                                                >
+                                                  {menu.icon}
+                                                </span>
+                                                {isCollapsed && (
+                                                  <span
+                                                    className={` capitalize flex items-center gap-2`}
+                                                  >
+                                                    {menu.name}
+                                                    {menu.pro && (
+                                                      <div
+                                                        className={`${themeBgImg
                                                           ? currentMode ===
                                                             "dark"
                                                             ? "bg-black"
                                                             : "bg-white"
                                                           : "bg-transparent"
-                                                      } p-1 rounded-full`}
-                                                    >
-                                                      <GiQueenCrown
-                                                        size={16}
-                                                        className="gold-grad"
-                                                      />
-                                                    </div>
-                                                  )}
-                                                </span>
-                                              )}
-                                            </div>
-                                          </MenuItem>
-                                          {menu?.count !== null &&
-                                            menu?.count !== undefined && (
-                                              <span
-                                                className={`leads_counter block absolute ${
-                                                  isLangRTL(i18n.language)
+                                                          } p-1 rounded-full`}
+                                                      >
+                                                        <GiQueenCrown
+                                                          size={16}
+                                                          className="gold-grad"
+                                                        />
+                                                      </div>
+                                                    )}
+                                                  </span>
+                                                )}
+                                              </div>
+                                            </MenuItem>
+                                            {menu?.count !== null &&
+                                              menu?.count !== undefined && (
+                                                <span
+                                                  className={`leads_counter block absolute ${isLangRTL(i18n.language)
                                                     ? "left-5"
                                                     : "right-5"
-                                                }`}
-                                                style={{
-                                                  top: "50%",
-                                                  transform: "translateY(-50%)",
-                                                }}
-                                              >
-                                                {menu?.count !== null &&
-                                                menu?.count !== undefined
-                                                  ? menu?.count
-                                                  : ""}
-                                              </span>
-                                            )}
-                                        </Box>
-                                      </Link>
-                                    );
+                                                    }`}
+                                                  style={{
+                                                    top: "50%",
+                                                    transform: "translateY(-50%)",
+                                                  }}
+                                                >
+                                                  {menu?.count !== null &&
+                                                    menu?.count !== undefined
+                                                    ? menu?.count
+                                                    : ""}
+                                                </span>
+                                              )}
+                                          </Box>
+                                        </Link>
+                                      );
+                                    }
                                   }
-                                }
-                              })}
-                            </SubMenu>
-                          )}
-                        </Box>
-                      );
-                    }
-                  })}
-                </Box>
-              </Menu>
+                                })}
+                              </SubMenu>
+                            )}
+                          </Box>
+                        );
+                      }
+                    })}
+                  </Box>
+                </Menu>
+              </div>
             </div>
-          </div>
 
-          {/* {animateProfile ? (
+            {/* {animateProfile ? (
             <div
               className={`profile-pic-popout ${
                 animateProfile ? "animate-profile-pic" : ""
@@ -2932,8 +3822,9 @@ const Sidebarmui = () => {
           ) : (
             <></>
           )} */}
-        </Sidebar>
-      </Box>
+          </Sidebar>
+        </Box>
+      )}
 
       {dealClosedAnimation?.isOpen && (
         <DealClosedAlert
