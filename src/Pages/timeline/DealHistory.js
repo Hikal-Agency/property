@@ -484,7 +484,7 @@ const DealHistory = ({
                         {t("deal_history")}
                       </h1>
                     </div>
-                    <div className="px-4">
+                    {/* <div className="px-4">
                       {hasPermission("view_invoice") && (
                         <button
                           onClick={() => handleCommissionModalOpen("invoice")}
@@ -493,7 +493,7 @@ const DealHistory = ({
                           {t("btn_view_invoice")}
                         </button>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                   <div>
                     <div

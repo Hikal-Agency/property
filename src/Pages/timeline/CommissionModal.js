@@ -225,7 +225,7 @@ const CommissionModal = ({
                         <>
                           <button
                             onClick={(e) => setCommReqModal(commissionModal)}
-                            className="bg-btn-primary rounded-md py-2 px-4 mr-2"
+                            className="bg-btn-primary rounded-md py-2 px-4 mr-2 text-white"
                           >
                             {t("btn_commission_request")}
                           </button>
