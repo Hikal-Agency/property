@@ -52,6 +52,7 @@ const CommissionReqModal = ({
   const { hasPermission } = usePermission();
 
   const [vendors, setVendors] = useState([]);
+  const [singleVendor, setSingleVendor] = useState(null);
   const [loading, setLoading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -256,11 +257,29 @@ const CommissionReqModal = ({
   };
 
   useEffect(() => {
-    setCommReqData({
-      ...commReqData,
-      total_amount: commReqData?.comm_amount + commReqData?.vat,
-    });
+    const handleChange = () => {
+      setCommReqData({
+        ...commReqData,
+        total_amount: commReqData?.comm_amount + commReqData?.vat,
+      });
+    };
+
+    handleChange();
   }, [commReqData?.comm_amount, commReqData?.vat]);
+
+  useEffect(() => {
+    const handleChange = () => {
+      setCommReqData({
+        ...commReqData,
+        vendor_name: singleVendor?.vendor_name,
+        address: singleVendor?.address,
+        trn: singleVendor?.trn,
+      });
+    };
+
+    handleChange();
+  }, [commReqData?.vendor_id]);
+
   useEffect(() => {
     fetchVendors();
   }, []);
@@ -537,12 +556,13 @@ const CommissionReqModal = ({
                               (ven) => ven?.id === e.target.value
                             );
                             console.log("singlevendor: ", singleVendor);
+                            setSingleVendor(singleVendor);
                             setCommReqData({
                               ...commReqData,
                               vendor_id: e.target.value,
-                              vendor_name: singleVendor?.vendor_name,
-                              address: singleVendor?.address,
-                              trn: singleVendor?.trn,
+                              // vendor_name: singleVendor?.vendor_name,
+                              // address: singleVendor?.address,
+                              // trn: singleVendor?.trn,
                             });
                           }}
                           size="small"
@@ -784,13 +804,7 @@ const CommissionReqModal = ({
                         variant="outlined"
                         size="small"
                         value={commReqData?.total_amount}
-                        onChange={(e) =>
-                          setCommReqData({
-                            ...commReqData,
-                            total_amount:
-                              commReqData?.comm_amount + commReqData?.vat,
-                          })
-                        }
+                        onChange={(e) => handleChange()}
                       />
                     </Box>
                   </div>
