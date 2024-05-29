@@ -75,7 +75,7 @@ const CommissionReqModal = ({
     leadName: commReqModal?.leadName || null,
     amount: commReqModal?.amount || null,
     vat: commReqModal?.vat || 0,
-    total_amount: null,
+    total_amount: commReqModal?.vat + commReqModal?.comm_amount || null,
     company: "HIKAL REAL STATE LLC" || null,
     company_trn: "100587185800003" || null,
     company_email: "info@hikalagency.ae" || null,
@@ -257,15 +257,17 @@ const CommissionReqModal = ({
   };
 
   useEffect(() => {
-    const handleChange = () => {
-      setCommReqData({
-        ...commReqData,
-        total_amount: commReqData?.comm_amount + commReqData?.vat,
-      });
-    };
+    // const handleChange = () => {
+    console.log("total changed: ");
+    setCommReqData({
+      ...commReqData,
+      total_amount: commReqData?.comm_amount + commReqData?.vat,
+    });
+    // };
 
-    handleChange();
+    // handleChange();
   }, [commReqData?.comm_amount, commReqData?.vat]);
+  console.log("TOTAL:: ", commReqData?.total_amount);
 
   useEffect(() => {
     const handleChange = () => {
@@ -792,7 +794,7 @@ const CommissionReqModal = ({
                       {/* TOTAL AMOUNT*/}
                       <TextField
                         id="total_amount"
-                        type={"number"}
+                        type={"text"}
                         label={t("total")}
                         className="w-full"
                         sx={{
@@ -804,7 +806,10 @@ const CommissionReqModal = ({
                         variant="outlined"
                         size="small"
                         value={commReqData?.total_amount}
-                        onChange={(e) => handleChange()}
+                        onChange={(e) => e.preventDefault()}
+                        InputProps={{
+                          readOnly: true,
+                        }}
                       />
                     </Box>
                   </div>
