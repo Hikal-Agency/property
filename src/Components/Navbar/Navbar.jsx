@@ -237,15 +237,41 @@ const Navbar = () => {
   // eslint-disable-next-line
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
-  const changeMode = () => {
+  const changeMode = async () => {
     handleClose();
     colorMode.toggleColorMode();
+
+    let newMode;
+    const bgColor = currentMode === "dark" ? "#EEEEEE" : "#282B30";
+    const token = localStorage.getItem("auth-token");
+
     if (currentMode === "dark") {
-      setCurrentMode("light");
-      localStorage.setItem("currentMode", "light");
+      newMode = "light";
     } else {
-      setCurrentMode("dark");
-      localStorage.setItem("currentMode", "dark");
+      newMode = "dark";
+    }
+    setCurrentMode(newMode);
+    localStorage.setItem("currentMode", newMode);
+
+    document.body.style.backgroundImage = "none";
+    document.body.style.backgroundColor = bgColor;
+
+    try {
+      await axios.post(
+        `${BACKEND_URL}/updateuser/${User.id}`,
+        JSON.stringify({
+          backgroundImg: "default"
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      console.log('Background image updated in database successfully');
+    } catch (error) {
+      console.error('Error updating background image in database:', error);
     }
   };
 
