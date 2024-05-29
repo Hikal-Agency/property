@@ -63,7 +63,7 @@ const CommissionReqModal = ({
 
   const [commReqData, setCommReqData] = useState({
     vendor_id: null,
-    vendor_name: null,
+    vendor_name: "",
     address: null,
     trn: null,
     unit: commReqModal?.unit || null,
@@ -280,7 +280,7 @@ const CommissionReqModal = ({
     };
 
     handleChange();
-  }, [commReqData?.vendor_id]);
+  }, [singleVendor]);
 
   useEffect(() => {
     fetchVendors();
@@ -629,6 +629,7 @@ const CommissionReqModal = ({
                             zIndex: 1,
                           },
                         }}
+                        InputLabelProps={{ shrink: !!commReqData?.vendor_name }}
                         variant="outlined"
                         size="small"
                         value={commReqData?.vendor_name}
@@ -651,6 +652,7 @@ const CommissionReqModal = ({
                         variant="outlined"
                         size="small"
                         value={commReqData?.address}
+                        InputLabelProps={{ shrink: !!commReqData?.address }}
                         onChange={(e) => handleChange(e)}
                         required
                       />
@@ -670,6 +672,7 @@ const CommissionReqModal = ({
                         variant="outlined"
                         size="small"
                         value={commReqData?.trn}
+                        InputLabelProps={{ shrink: !!commReqData?.trn }}
                         onChange={(e) => handleChange(e)}
                         required
                       />
