@@ -14,7 +14,12 @@ body {
   overflow-x: hidden;
 }
 
-
+.bg-dark {
+  background-color: #282B30;
+}
+.bg-light {
+  background-color: #EEEEEE;
+}
 
 
 
@@ -804,28 +809,28 @@ label[for="bulkImport"] .MuiButtonBase-root {
 .closed-datatable
   .MuiDataGrid-columnHeadersInner
   .MuiDataGrid-columnHeader:last-child {
-  min-width: revert !important;
-  max-width: revert !important;
+  /* min-width: revert !important; */
+  /* max-width: revert !important; */
   width: 100% !important;
 }
 
 .closed-datatable .MuiDataGrid-row .MuiDataGrid-cell:last-child {
-  min-width: revert !important;
-  max-width: revert !important;
+  /* min-width: revert !important; */
+  /* max-width: revert !important; */
   width: 100% !important;
 }
 
 .single-emp
   .MuiDataGrid-columnHeadersInner
   .MuiDataGrid-columnHeader:last-child {
-  min-width: revert !important;
-  max-width: revert !important;
+  /* min-width: revert !important; */
+  /* max-width: revert !important; */
   width: 100% !important;
 }
 
 .single-emp .MuiDataGrid-row .MuiDataGrid-cell:last-child {
-  min-width: revert !important;
-  max-width: revert !important;
+  /* min-width: revert !important; */
+  /* max-width: revert !important; */
   width: 100% !important;
 }
 

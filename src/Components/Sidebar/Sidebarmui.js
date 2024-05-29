@@ -2911,26 +2911,22 @@ const Sidebarmui = () => {
         </>
       )}
 
-
       {deviceType === "desktop" && (
         <Box
           sx={{
             "& .ps-sidebar-container": {
-              // backgroundColor: !themeBgImg
-              //   ? "rgb(249, 249, 249, 0.7)"
-              //   : "rgb(249, 249, 249, 0.5)",
-              backgroundColor: !themeBgImg
+              backgroundColor: themeBgImg
                 ? currentMode === "dark"
-                  ? "rgb(249, 249, 249, 0.7)"
-                  : "rgb(249, 249, 249, 0.7)"
-                : currentMode === "dark"
                   ? blurDarkColor
-                  : blurLightColor,
+                  : blurLightColor
+                : currentMode === "dark"
+                  ? "#000000"
+                  : "#FFFFFF",
             },
           }}
           style={{ display: "flex", height: "100%" }}
           className={`max-w-[200px] sticky top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"
-            }`}
+            }  `}
         >
           <Sidebar
             rootStyles={{
@@ -2941,6 +2937,7 @@ const Sidebarmui = () => {
             }}
             className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
           >
+            {/* ${currentMode}-mode-sidebar */}
             <div className="">
               <div
                 className="sidebar-top"

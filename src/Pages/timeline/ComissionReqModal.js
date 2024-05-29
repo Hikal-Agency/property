@@ -53,6 +53,7 @@ const CommissionReqModal = ({
   const { hasPermission } = usePermission();
 
   const [vendors, setVendors] = useState([]);
+  const [singleVendor, setSingleVendor] = useState(null);
   const [loading, setLoading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -64,7 +65,7 @@ const CommissionReqModal = ({
 
   const [commReqData, setCommReqData] = useState({
     vendor_id: null,
-    vendor_name: null,
+    vendor_name: "",
     address: null,
     trn: null,
     unit: commReqModal?.unit || null,
@@ -76,7 +77,7 @@ const CommissionReqModal = ({
     leadName: commReqModal?.leadName || null,
     amount: commReqModal?.amount || null,
     vat: commReqModal?.vat || 0,
-    total_amount: null,
+    total_amount: commReqModal?.vat + commReqModal?.comm_amount || null,
     company: "HIKAL REAL STATE LLC" || null,
     company_trn: "100587185800003" || null,
     company_email: "info@hikalagency.ae" || null,
@@ -262,11 +263,31 @@ const CommissionReqModal = ({
   };
 
   useEffect(() => {
+    // const handleChange = () => {
+    console.log("total changed: ");
     setCommReqData({
       ...commReqData,
       total_amount: commReqData?.comm_amount + commReqData?.vat,
     });
+    // };
+
+    // handleChange();
   }, [commReqData?.comm_amount, commReqData?.vat]);
+  console.log("TOTAL:: ", commReqData?.total_amount);
+
+  useEffect(() => {
+    const handleChange = () => {
+      setCommReqData({
+        ...commReqData,
+        vendor_name: singleVendor?.vendor_name,
+        address: singleVendor?.address,
+        trn: singleVendor?.trn,
+      });
+    };
+
+    handleChange();
+  }, [singleVendor]);
+
   useEffect(() => {
     fetchVendors();
   }, []);
@@ -543,12 +564,13 @@ const CommissionReqModal = ({
                               (ven) => ven?.id === e.target.value
                             );
                             console.log("singlevendor: ", singleVendor);
+                            setSingleVendor(singleVendor);
                             setCommReqData({
                               ...commReqData,
                               vendor_id: e.target.value,
-                              vendor_name: singleVendor?.vendor_name,
-                              address: singleVendor?.address,
-                              trn: singleVendor?.trn,
+                              // vendor_name: singleVendor?.vendor_name,
+                              // address: singleVendor?.address,
+                              // trn: singleVendor?.trn,
                             });
                           }}
                           size="small"
@@ -613,6 +635,7 @@ const CommissionReqModal = ({
                             zIndex: 1,
                           },
                         }}
+                        InputLabelProps={{ shrink: !!commReqData?.vendor_name }}
                         variant="outlined"
                         size="small"
                         value={commReqData?.vendor_name}
@@ -635,6 +658,7 @@ const CommissionReqModal = ({
                         variant="outlined"
                         size="small"
                         value={commReqData?.address}
+                        InputLabelProps={{ shrink: !!commReqData?.address }}
                         onChange={(e) => handleChange(e)}
                         required
                       />
@@ -654,6 +678,7 @@ const CommissionReqModal = ({
                         variant="outlined"
                         size="small"
                         value={commReqData?.trn}
+                        InputLabelProps={{ shrink: !!commReqData?.trn }}
                         onChange={(e) => handleChange(e)}
                         required
                       />
@@ -778,7 +803,7 @@ const CommissionReqModal = ({
                       {/* TOTAL AMOUNT*/}
                       <TextField
                         id="total_amount"
-                        type={"number"}
+                        type={"text"}
                         label={t("total")}
                         className="w-full"
                         sx={{
@@ -790,13 +815,10 @@ const CommissionReqModal = ({
                         variant="outlined"
                         size="small"
                         value={commReqData?.total_amount}
-                        onChange={(e) =>
-                          setCommReqData({
-                            ...commReqData,
-                            total_amount:
-                              commReqData?.comm_amount + commReqData?.vat,
-                          })
-                        }
+                        onChange={(e) => e.preventDefault()}
+                        InputProps={{
+                          readOnly: true,
+                        }}
                       />
                     </Box>
                   </div>

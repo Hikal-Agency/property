@@ -27,6 +27,11 @@ import { renderOTPIcons } from "./_elements/OTPIconsDataGrid";
 import DealHistory from "../Pages/timeline/DealHistory";
 import usePermission from "../utils/usePermission";
 
+import {
+  BsCheck2,
+  BsX
+} from "react-icons/bs";
+
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
@@ -78,6 +83,83 @@ const Closedeals = ({ pageState, setpageState }) => {
     console.log(e.target.value);
   };
 
+  // RENDER STATUS ICONS
+  const renderStatusIcons = (cellValues, currentMode) => {
+    const statuses = [
+      { field: 'pdc_status', label: t("pdc"), status: cellValues.row.pdc_status },
+      { field: 'spa_status', label: t("spa"), status: cellValues.row.spa_status },
+      { field: 'invoice_status', label: t("invoice"), status: cellValues.row.invoice_status },
+      { field: 'comm_status', label: t("commission"), status: cellValues.row.comm_status },
+      { field: 'agent_comm_status', label: t("agent_comm"), status: cellValues.row.agent_comm_status },
+      { field: 'manager_comm_status', label: t("manager_comm"), status: cellValues.row.manager_comm_status },
+    ];
+    const other_statuses = [
+      { field: 'pdc_status', label: t("pdc"), status: cellValues.row.pdc_status },
+      { field: 'spa_status', label: t("spa"), status: cellValues.row.spa_status },
+      { field: 'invoice_status', label: t("invoice"), status: cellValues.row.invoice_status },
+      { field: 'comm_status', label: t("commission"), status: cellValues.row.comm_status },
+      { field: 'agent_comm_status', label: t("agent_comm"), status: cellValues.row.agent_comm_status },
+    ];
+
+    return (
+      <Box display="flex" flexDirection="row" gap={0.5}>
+        {(User?.role === 1 || User?.role === 8) ? (
+          statuses.map((status) => (
+            <Tooltip
+              key={status.field}
+              title={
+                <Box>
+                  <strong>{status.label}</strong>
+                  <br />
+                  {status.status === 1 ? 'Completed' : 'Pending'}
+                </Box>
+              }
+              arrow
+            >
+              <div className="flex items-center justify-center">
+                {status.status === 1 ? (
+                  <p className="bg-green-600 rounded-full shadow-none p-1 flex items-center">
+                    <BsCheck2 size={12} color="white" />
+                  </p>
+                ) : (
+                  <p className="bg-red-600 rounded-full shadow-none p-1 flex items-center">
+                    <BsX size={12} color="#ffffff" />
+                  </p>
+                )}
+              </div>
+            </Tooltip>
+          ))
+        ) : (
+          other_statuses.map((status) => (
+            <Tooltip
+              key={status.field}
+              title={
+                <Box>
+                  <strong>{status.label}</strong>
+                  <br />
+                  {status.status === 1 ? 'Completed' : 'Pending'}
+                </Box>
+              }
+              arrow
+            >
+              <div className="flex items-center justify-center">
+                {status.status === 1 ? (
+                  <p className="bg-green-600 rounded-full shadow-none p-1 flex items-center">
+                    <BsCheck2 size={12} color="white" />
+                  </p>
+                ) : (
+                  <p className="bg-red-600 rounded-full shadow-none p-1 flex items-center">
+                    <BsX size={12} color="#ffffff" />
+                  </p>
+                )}
+              </div>
+            </Tooltip>
+          ))
+        )}
+      </Box>
+    );
+  };
+
   const columns = [
     // SOURCE
     {
@@ -85,6 +167,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerName: t("label_source"),
       flex: 1,
       minWidth: 40,
+      // width: 20,
       headerAlign: "center",
       renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode),
     },
@@ -94,6 +177,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerName: t("label_lead_name"),
       minWidth: 100,
       flex: 1,
+      // width: 100,
       headerAlign: "center",
       renderCell: (cellValues) => {
         return (
@@ -118,6 +202,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerAlign: "center",
       minWidth: 80,
       flex: 1,
+      // width: 100,
       renderCell: (cellValues) => {
         return (
           <div
@@ -145,6 +230,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerName: t("label_property"),
       minWidth: 80,
       flex: 1,
+      // width: 100,
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col">
@@ -169,6 +255,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerName: t("label_unit"),
       minWidth: 80,
       flex: 1,
+      // width: 50,
     },
     // AMOUNT
     {
@@ -177,6 +264,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerName: t("label_amount_aed"),
       minWidth: 80,
       flex: 1,
+      // width: 100,
       renderCell: (cellValues) => {
         return (
           <div className="flex flex-col w-full ">
@@ -194,8 +282,9 @@ const Closedeals = ({ pageState, setpageState }) => {
       field: "dealDate",
       headerName: t("label_deal_date"),
       minWidth: 75,
-      headerAlign: "center",
       flex: 1,
+      // width: 80,
+      headerAlign: "center",
       valueFormatter: (params) => moment(params?.value).format("YYYY-MM-DD"),
     },
     // CONSULTANT
@@ -205,6 +294,7 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerName: t("label_consultant"),
       minWidth: 100,
       flex: 1,
+      // width: 100,
       renderCell: (cellValues) => {
         return (
           <div style={{ textWrap: "wrap" }}>{cellValues.formattedValue}</div>
@@ -215,155 +305,30 @@ const Closedeals = ({ pageState, setpageState }) => {
     {
       field: "otp",
       headerName: t("label_otp"),
-      minWidth: 30,
-      headerAlign: "center",
+      minWidth: 20,
       flex: 1,
+      // width: 20,
+      headerAlign: "center",
       renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
     },
-    //PDC
+    // STATUS 
     {
-      field: "pdc_status",
-      headerName: t("pdc"),
-      minWidth: 30,
-      headerAlign: "center",
+      field: 'status',
+      headerName: 'Status',
       flex: 1,
-      renderCell: (cellValues) => {
-        const value = cellValues?.row;
-        return (
-          <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
-          >
-            {value?.pdc_status === 1 ? (
-              <p
-                className={`
-                   text-[#1C1C1C] bg-green-600
-                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <FaCheck size={14} color="white" />
-              </p>
-            ) : (
-              <p
-                className={` text-[#1C1C1C] bg-red-600
-              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <RxCross2 size={14} color="#ffffff" />
-              </p>
-            )}
-          </div>
-        );
-      },
+      minWidth: 160,
+      // width: 150,
+      headerAlign: 'center',
+      renderCell: (cellValues) => renderStatusIcons(cellValues, currentMode),
     },
-    // SPA
-    {
-      field: "spa_status",
-      headerName: t("spa"),
-      minWidth: 30,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        const value = cellValues?.row;
-        return (
-          <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
-          >
-            {value?.spa_status === 1 ? (
-              <p
-                className={`
-                   text-[#1C1C1C] bg-green-600
-                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <FaCheck size={14} color="white" />
-              </p>
-            ) : (
-              <p
-                className={` text-[#1C1C1C] bg-red-600
-              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <RxCross2 size={14} color="#ffffff" />
-              </p>
-            )}
-          </div>
-        );
-      },
-    },
-    // COMMISSION
-    {
-      field: "comm_status",
-      headerName: t("short_commission"),
-      minWidth: 30,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        const value = cellValues?.row;
-        return (
-          <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
-          >
-            {value?.comm_status === 1 ? (
-              <Tooltip title="Received from Developer" arrow>
-                <p
-                  className={`
-                   text-[#1C1C1C] bg-green-600 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <FaCheck size={14} color="white" />
-                </p>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Pending from Developer" arrow>
-                <p
-                  className={` text-[#1C1C1C] bg-red-600 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <RxCross2 size={14} color="#ffffff" />
-                </p>
-              </Tooltip>
-            )}
-          </div>
-        );
-      },
-    },
-    // AGENT COMMISSION
-    {
-      field: "agent_comm_status",
-      headerName: t("agent_comm"),
-      minWidth: 30,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        const value = cellValues?.row;
-        return (
-          <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
-          >
-            {value?.agent_comm_status === 1 ? (
-              <Tooltip title="Sent to Agent" arrow>
-                <p
-                  className={`
-                   text-[#1C1C1C] bg-green-600
-                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <FaCheck size={14} color="white" />
-                </p>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Pending Commission for Agent" arrow>
-                <p
-                  className={` text-[#1C1C1C] bg-red-600
-              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <RxCross2 size={14} color="#ffffff" />
-                </p>
-              </Tooltip>
-            )}
-          </div>
-        );
-      },
-    },
+    // ACTION 
     {
       field: "",
       headerName: t("label_action"),
       minWidth: 100,
-      maxWidth: 200,
+      maxWidth: 250,
       flex: 1,
+      // width: 150,
       sortable: false,
       headerAlign: "center",
       filterable: false,
@@ -378,8 +343,8 @@ const Closedeals = ({ pageState, setpageState }) => {
             <p
               style={{ cursor: "pointer" }}
               className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+                ? "text-[#FFFFFF] bg-[#262626]"
+                : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
@@ -392,8 +357,8 @@ const Closedeals = ({ pageState, setpageState }) => {
             <p
               style={{ cursor: "pointer" }}
               className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+                ? "text-[#FFFFFF] bg-[#262626]"
+                : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
@@ -407,8 +372,8 @@ const Closedeals = ({ pageState, setpageState }) => {
               <p
                 style={{ cursor: "pointer" }}
                 className={`${currentMode === "dark"
-                    ? "text-[#FFFFFF] bg-[#262626]"
-                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
                   } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Deal History" arrow>
@@ -552,153 +517,27 @@ const Closedeals = ({ pageState, setpageState }) => {
     {
       field: "otp",
       headerName: t("label_otp"),
-      minWidth: 30,
+      minWidth: 20,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
     },
-    //PDC
+    // STATUS 
     {
-      field: "pdc_status",
-      headerName: t("pdc"),
-      minWidth: 30,
-      headerAlign: "center",
+      field: 'status',
+      headerName: 'Status',
       flex: 1,
-      renderCell: (cellValues) => {
-        const value = cellValues?.row;
-        return (
-          <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
-          >
-            {value?.pdc_status === 1 ? (
-              <p
-                className={`
-                   text-[#1C1C1C] bg-green-600
-                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <FaCheck size={14} color="white" />
-              </p>
-            ) : (
-              <p
-                className={` text-[#1C1C1C] bg-red-600
-              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <RxCross2 size={14} color="#ffffff" />
-              </p>
-            )}
-          </div>
-        );
-      },
+      minWidth: 160,
+      // width: 150,
+      headerAlign: 'center',
+      renderCell: (cellValues) => renderStatusIcons(cellValues, currentMode),
     },
-    // SPA
-    {
-      field: "spa_status",
-      headerName: t("spa"),
-      minWidth: 30,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        const value = cellValues?.row;
-        return (
-          <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
-          >
-            {value?.spa_status === 1 ? (
-              <p
-                className={`
-                   text-[#1C1C1C] bg-green-600
-                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <FaCheck size={14} color="white" />
-              </p>
-            ) : (
-              <p
-                className={` text-[#1C1C1C] bg-red-600
-              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-              >
-                <RxCross2 size={14} color="#ffffff" />
-              </p>
-            )}
-          </div>
-        );
-      },
-    },
-    // COMMISSION
-    {
-      field: "comm_status",
-      headerName: t("commission"),
-      minWidth: 30,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        const value = cellValues?.row;
-        return (
-          <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
-          >
-            {value?.comm_status === 1 ? (
-              <Tooltip title="Received from Developer" arrow>
-                <p
-                  className={`
-                   text-[#1C1C1C] bg-green-600 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <FaCheck size={14} color="white" />
-                </p>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Pending from Developer" arrow>
-                <p
-                  className={` text-[#1C1C1C] bg-red-600 rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <RxCross2 size={14} color="#ffffff" />
-                </p>
-              </Tooltip>
-            )}
-          </div>
-        );
-      },
-    },
-    // AGENT COMMISSION
-    {
-      field: "agent_comm_status",
-      headerName: t("agent_comm"),
-      minWidth: 30,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        const value = cellValues?.row;
-        return (
-          <div
-            className={`w-full h-full px-1 flex items-center justify-center`}
-          >
-            {value?.agent_comm_status === 1 ? (
-              <Tooltip title="Sent to Agent" arrow>
-                <p
-                  className={`
-                   text-[#1C1C1C] bg-green-600
-                rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <FaCheck size={14} color="white" />
-                </p>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Pending Commission for Agent" arrow>
-                <p
-                  className={` text-[#1C1C1C] bg-red-600
-              rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-                >
-                  <RxCross2 size={14} color="#ffffff" />
-                </p>
-              </Tooltip>
-            )}
-          </div>
-        );
-      },
-    },
+    // ACTION 
     {
       field: "",
       headerName: t("label_action"),
-      minWidth: 80,
+      minWidth: 120,
+      maxWidth: 250,
       flex: 1,
       sortable: false,
       headerAlign: "center",
@@ -711,8 +550,8 @@ const Closedeals = ({ pageState, setpageState }) => {
             <p
               style={{ cursor: "pointer" }}
               className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+                ? "text-[#FFFFFF] bg-[#262626]"
+                : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
@@ -725,8 +564,8 @@ const Closedeals = ({ pageState, setpageState }) => {
             <p
               style={{ cursor: "pointer" }}
               className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+                ? "text-[#FFFFFF] bg-[#262626]"
+                : "text-[#1C1C1C] bg-[#EEEEEE]"
                 } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
@@ -739,8 +578,8 @@ const Closedeals = ({ pageState, setpageState }) => {
               <p
                 style={{ cursor: "pointer" }}
                 className={`${currentMode === "dark"
-                    ? "text-[#FFFFFF] bg-[#262626]"
-                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
                   } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Deal History" arrow>
@@ -940,7 +779,7 @@ const Closedeals = ({ pageState, setpageState }) => {
     <div className="pb-10">
       <Box
         className={`closed-datatable ${currentMode}-mode-datatable`}
-        sx={{ ...DataGridStyles, position: "relative", marginBottom: "50px" }}
+        sx={{ ...DataGridStyles, position: "relative", marginBottom: "50px", width: "100%" }}
       >
         <DataGrid
           disableDensitySelector
@@ -966,7 +805,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={User?.role === 1 ? columns : otherColumns}
+          columns={(User?.role === 1 || User?.role === 8) ? columns : otherColumns}
           // columns={columns?.filter((c) =>
           //   hasPermission("leads_col_" + c?.field)
           // )}
