@@ -369,7 +369,7 @@ const ColorsPopup = ({ handleClose }) => {
         <div className="pb-2">{t("background")}</div>
         <div className="pb-2 mx-auto place-items-center grid grid-cols-5 gap-y-2">
           <div>
-            <IconButton onClick={() => handleSelectBgImg("", "light", "rgb(218,31,38)")}>
+            <IconButton onClick={() => handleSelectBgImg("", "light", "rgb(86, 141, 221)")}>
               <BiBlock size={18} color={currentMode === "dark" ? "#EEEEEE" : "#1C1C1C"} />
             </IconButton>
           </div>

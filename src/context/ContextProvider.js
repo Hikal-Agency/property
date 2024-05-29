@@ -103,7 +103,7 @@ export const ContextProvider = ({ children }) => {
     }
     let primary = primaryColor;
     if (primaryColor === "default") {
-      primary = "rgb(218, 31, 38)";
+      primary = "rgb(86, 141, 221)";
     }
     const alpha = 0.25;
     const rgbValues = primary.match(/\d+/g);
