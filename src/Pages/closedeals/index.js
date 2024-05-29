@@ -23,18 +23,18 @@ const ClosedealsPage = (props) => {
   }, []);
   return (
     <>
- 
 
       <div className="flex min-h-screen">
         {loading ? (
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+            className={`w-full p-4 mt-2 ${
+              // !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
             }`}
           >
-            <div className="w-full flex items-center pb-3">
+            <div className="w-full flex items-center pb-4">
               <div className="bg-primary h-10 w-1 rounded-full"></div>
               <h1
                 className={`text-lg font-semibold mx-2 uppercase ${

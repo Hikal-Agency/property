@@ -1,10 +1,10 @@
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { Box, Container, IconButton } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { BsCheck } from "react-icons/bs";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
-import {BiBlock} from "react-icons/bi";
+import { BiBlock } from "react-icons/bi";
 
 const colors = [
   "rgb(203, 42, 42)", // #CB2A2A // RED
@@ -97,16 +97,59 @@ const solidColors = [
       primary: "rgb(190, 20, 82)"
     }
   },
-]; 
+];
 
 const images = [
-  {
-    "abstract_purplish": {
-      bg: "https://cdn.pixabay.com/photo/2022/06/12/22/48/gradient-7258997_1280.png",
+  { // red -fl
+    "abstract_red": {
+      bg: "https://cdn.pixabay.com/photo/2016/04/06/10/08/background-1311251_1280.jpg",
       theme: "light",
-      primary: "rgb(152, 93, 255)"
+      primary: "rgb(203, 42, 42)"
     }
   },
+  { // yellow -fl
+    "abstract_gold_orange": {
+      bg: "https://cdn.pixabay.com/photo/2016/05/22/19/19/background-1409037_1280.png",
+      theme: "light",
+      primary: "rgb(238, 182, 29)",
+    }
+  },
+  { // green -fd
+    "abstract_green": {
+      bg: "https://cdn.pixabay.com/photo/2015/08/10/21/24/background-883195_1280.jpg",
+      theme: "dark",
+      primary: "rgb(117, 159, 130)",
+    }
+  },
+  { // pink -fl
+    "abstract_rainbow": {
+      bg: "https://cdn.pixabay.com/photo/2017/03/25/17/55/colorful-2174045_1280.png",
+      theme: "light",
+      primary: "rgb(190, 20, 82)",
+    }
+  },
+  { // blue -fl
+    "abstract_purplish": {
+      bg: "https://cdn.pixabay.com/photo/2017/03/25/17/56/color-2174049_1280.png",
+      theme: "light",
+      primary: "rgb(86, 141, 221)"
+    }
+  },
+  { // orange -fl
+    "abstract_yellow": {
+      bg: "https://cdn.pixabay.com/photo/2022/05/02/08/20/artwork-7169186_1280.png",
+      theme: "light",
+      primary: "rgb(255, 144, 18)"
+    }
+  },
+  { // purple -fl
+    "abstract_blue": {
+      bg: "https://cdn.pixabay.com/photo/2022/06/12/22/48/gradient-7258997_1280.png",
+      theme: "light",
+      primary: "rgb(152, 93, 255)",
+    }
+  },
+
   { //red
     "pink_pink": {
       bg: "https://images.unsplash.com/photo-1503455637927-730bce8583c0?auto=format&fit=crop&q=60&w=600&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29saWQlMjBiYWNrZ3JvdW5kfGVufDB8MHwwfHx8MA%3D%3D",
@@ -129,14 +172,6 @@ const images = [
       theme: "light",
       // primary: "rgb(38, 145, 68)",
       primary: "rgb(117, 159, 130)"
-    }
-  },
-  { //purple
-    "orange_black_bridge": {
-      bg: "https://images.unsplash.com/photo-1464692805480-a69dfaafdb0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      theme: "light",
-      // primary: "rgb(128, 61, 191)",
-      primary: "rgb(152, 93, 255)"
     }
   },
   { //pink
@@ -221,14 +256,8 @@ const ColorsPopup = ({ handleClose }) => {
     }
   };
 
-  useEffect(() => {
-    console.log("FEEDBACK THEME CHANGED ========= ", feedbackTheme);
-
-  }, [feedbackTheme]);
-
   const handleSelectFeedbackTheme = async (style) => {
     setFeedbackTheme(style);
-    console.log("FEEDBACK THEME STYLE ========= ", style);
     const token = localStorage.getItem("auth-token");
     try {
       await axios.post(
@@ -323,9 +352,8 @@ const ColorsPopup = ({ handleClose }) => {
                       color: currentMode === "dark" ? "black" : "white",
                     },
                   }}
-                  className={`absolute rounded-full -top-[4px] -right-[4px] ${
-                    currentMode === "dark" ? "bg-white" : "bg-black"
-                  }`}
+                  className={`absolute rounded-full -top-[4px] -right-[4px] ${currentMode === "dark" ? "bg-white" : "bg-black"
+                    }`}
                 >
                   <BsCheck size={18} />
                 </Box>
@@ -361,13 +389,13 @@ const ColorsPopup = ({ handleClose }) => {
             const imagePrimary = image[imagei].primary;
 
             return (
-              <div 
+              <div
                 key={index}
-                onClick={() => handleSelectBgImg(imageLink, imageTheme, imagePrimary)} 
-                className="cursor-pointer rounded-md w-[35px] h-[35px]" 
+                onClick={() => handleSelectBgImg(imageLink, imageTheme, imagePrimary)}
+                className="cursor-pointer rounded-md w-[35px] h-[35px]"
                 style={{
-                  backgroundImage: `url(${imageLink})`, 
-                  backgroundRepeat: "no-repeat", 
+                  backgroundImage: `url(${imageLink})`,
+                  backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                 }}
               >
@@ -413,7 +441,7 @@ const ColorsPopup = ({ handleClose }) => {
             <div className="mx-2 text-black">{t("feedback_booked")}</div>
             
           </div> */}
-          
+
           {feedback_theme.map((fb) => (
             <div
               key={fb.style}
@@ -422,9 +450,8 @@ const ColorsPopup = ({ handleClose }) => {
                 color: fb?.bg && "#000000",
               }}
               onClick={() => handleSelectFeedbackTheme(fb?.style)}
-              className={`relative w-full h-full flex items-center justify-start p-2 rounded-xl border border-2 ${
-                currentMode === "dark" ? "border-[#333333]" : "border-[#CCCCCC]"
-              }`}
+              className={`relative w-full h-full flex items-center justify-start p-2 rounded-xl border border-2 ${currentMode === "dark" ? "border-[#333333]" : "border-[#CCCCCC]"
+                }`}
             >
               {fb.bg ? (
                 <div className="mx-2 text-black">{t("feedback_booked")}</div>
@@ -441,9 +468,8 @@ const ColorsPopup = ({ handleClose }) => {
                       color: currentMode === "dark" ? "black" : "white",
                     },
                   }}
-                  className={`absolute rounded-full -top-[4px] -right-[4px] ${
-                    currentMode === "dark" ? "bg-white" : "bg-black"
-                  }`}
+                  className={`absolute rounded-full -top-[4px] -right-[4px] ${currentMode === "dark" ? "bg-white" : "bg-black"
+                    }`}
                 >
                   <BsCheck size={18} />
                 </Box>
