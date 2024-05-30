@@ -18,6 +18,12 @@ import {
   enquiry_options,
   feedback_options,
 } from "../../Components/_elements/SelectOptions";
+import {
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaGlobe,
+} from "react-icons/fa";
 
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
@@ -184,9 +190,6 @@ const CommissionReqModal = ({
 
   const token = localStorage.getItem("auth-token");
   const GenerateRequest = () => {
-    // setOpenPDF(commReqData);
-    generatePDF(commReqData);
-    return;
     setbtnloading(true);
 
     const data = {
@@ -229,16 +232,21 @@ const CommissionReqModal = ({
           return;
         }
 
-        setOpenPDF(commReqData);
+        // setCommReqData({
+        //   ...commReqData,
+        //   invoice_id: result?.data?.data?.id,
+        //   vendor_id: null,
+        //   vendor_name: null,
+        //   address: null,
+        //   trn: null,
+        // });
 
-        setCommReqData({
+        const pdfData = {
           ...commReqData,
           invoice_id: result?.data?.data?.id,
-          vendor_id: null,
-          vendor_name: null,
-          address: null,
-          trn: null,
-        });
+        };
+
+        generatePDF(pdfData);
 
         toast.success("Commission Request Generated Successfully.", {
           position: "top-right",
@@ -427,6 +435,7 @@ const CommissionReqModal = ({
   // };
 
   const generatePDF = (data) => {
+    console.log("PDF Data:: ", data);
     const doc = new jsPDF({
       format: "a4",
       unit: "mm",
@@ -434,6 +443,10 @@ const CommissionReqModal = ({
 
     // Define the document structure
     const addHeader = () => {
+      // Add the logo
+      const logoUrl = "assets/hikal-real.jpg";
+      doc.addImage(logoUrl, "JPEG", 20, 10, 50, 20);
+
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
       doc.text("TAX INVOICE", 105, 20, null, null, "center");
@@ -444,20 +457,20 @@ const CommissionReqModal = ({
       doc.line(105 - textWidth / 2, 22, 105 + textWidth / 2, 22);
 
       doc.setFontSize(12);
-      doc.text("Company:", 120, 46); // Adjusted x-coordinate for margin
-      doc.text("HIKAL REAL ESTATE L.L.C", 120, 53);
-      doc.text("TRN No: 1005871556000043", 120, 60);
-      doc.text("Email Address: info@hikalagency.ae", 120, 67);
-      doc.text("Telephone: +971 4 272 2249", 120, 74);
+      doc.text("Company:", 120, 46);
+      doc.text(`${data?.company}`, 120, 53);
+      doc.text(`TRN No: ${data?.company_trn}`, 120, 60);
+      doc.text(`Email Address: ${data?.company_email} `, 120, 67);
+      doc.text(`Telephone: ${data?.company_tele}`, 120, 74);
 
       doc.text("Bill to:", 20, 46); // Adjusted y-coordinate for spacing
-      doc.text("<Name of the Developer>", 20, 53);
-      doc.text("<Address of the Developer>", 20, 60);
-      doc.text("TRN No: <TRN of the Developer>", 20, 67);
+      doc.text(`${data?.vendor_name}`, 20, 53);
+      doc.text(`${data?.address}`, 20, 60);
+      doc.text(`TRN No: ${data?.trn}`, 20, 67);
 
       doc.setFont("helvetica", "normal");
       doc.text(`Date: ${currentDate}`, 140, 32); // Adjusted x-coordinate for margin
-      doc.text(`Invoice No: ${data?.id}`, 140, 38); // Adjusted y-coordinate for spacing
+      doc.text(`Invoice No: ${data?.invoice_id}`, 140, 38); // Adjusted y-coordinate for spacing
 
       doc.setDrawColor(0);
       doc.setLineWidth(0.5);
@@ -472,9 +485,9 @@ const CommissionReqModal = ({
       doc.text("PROJECT NAME", 130, 92);
 
       doc.setFont("helvetica", "normal");
-      doc.text("<Client Name>", 20, 100);
-      doc.text("<Unit Number>", 75, 100);
-      doc.text("<Project Name>", 130, 100);
+      doc.text(`${data?.leadName}`, 20, 100);
+      doc.text(`${data?.unit}`, 75, 100);
+      doc.text(`${data?.project}`, 130, 100);
 
       doc.setLineWidth(0.5);
       doc.line(20, 110, 190, 110); // Draw a line below the client details
@@ -485,20 +498,20 @@ const CommissionReqModal = ({
         startY: 120, // Adjusted startY for spacing
         head: [
           [
-            "SALES VALUE (AED)",
+            `SALES VALUE ${data?.currency}`,
             "COMMISSION %",
             "NET VALUE BEFORE VAT",
             "VAT VALUE",
-            "GROSS VALUE (AED)",
+            `GROSS VALUE ${data?.currency}`,
           ],
         ],
         body: [
           [
-            "<Selling amount>",
-            "<Comm Percent>",
-            "<Comm Amount>",
+            `${data?.amount}`,
+            `${data?.comm_percent}`,
+            `${data?.comm_amount}`,
             "<5% of Selling>",
-            "<Gross Value>",
+            `${data?.total_amount}`,
           ],
         ],
         theme: "grid",
@@ -521,7 +534,7 @@ const CommissionReqModal = ({
 
       doc.setFont("helvetica", "bold");
       doc.text("TOTAL", 150, tableHeight + 10);
-      doc.text("<Gross Value>", 170, tableHeight + 10);
+      doc.text(`${data?.total_amount}`, 170, tableHeight + 10);
     };
 
     const addBankDetails = (startY) => {
@@ -533,12 +546,12 @@ const CommissionReqModal = ({
       doc.autoTable({
         startY: startY + 5,
         head: [
-          ["Bank Name", "EMIRATES ISLAMIC"],
-          ["Bank Address", "EI SHK ZAYED RD AL WASL TOWER"],
-          ["Bank Account Name", "HIKAL REAL ESTATE L.L.C."],
-          ["Account Number", "370843323701"],
-          ["IBAN", "AE310340073847453323701"],
-          ["SWIFT Code", "MEBLAEAD"],
+          ["Bank Name", `${data?.bank_name}`],
+          ["Bank Address", `${data?.bank_address}`],
+          ["Bank Account Name", `${data?.bank_acc_name}`],
+          ["Account Number", `${data?.bank_acc_no}`],
+          ["IBAN", `${data?.bank_iban}`],
+          ["SWIFT Code", `${data?.bank_swift_code}`],
         ],
         body: [],
         theme: "grid",
@@ -573,54 +586,69 @@ const CommissionReqModal = ({
       doc.line(150, startY + 15, 190, startY + 15);
     };
 
-    // const addFooter = () => {
-    //   doc.setFont("helvetica", "normal");
-    //   doc.setFontSize(10);
-    //   doc.text(
-    //     "All cheques payable to the following account.",
-    //     20,
-    //     doc.internal.pageSize.getHeight() - 50
-    //   );
+    const addFooter = () => {
+      const pageHeight = doc.internal.pageSize.getHeight();
+      doc.setLineWidth(0.5);
+      doc.line(20, pageHeight - 30, 190, pageHeight - 30);
 
-    //   doc.autoTable({
-    //     startY: doc.internal.pageSize.getHeight() - 45,
-    //     head: [
-    //       [
-    //         "Bank Name",
-    //         "Bank Address",
-    //         "Bank Account Name",
-    //         "Account Number",
-    //         "IBAN",
-    //         "SWIFT Code",
-    //       ],
-    //     ],
-    //     body: [
-    //       [
-    //         "EMIRATES ISLAMIC",
-    //         "EI SHK ZAYED RD AL WASL TOWER",
-    //         "HIKAL REAL ESTATE L.L.C.",
-    //         "370843323701",
-    //         "AE310340073847453323701",
-    //         "MEBLAEAD",
-    //       ],
-    //     ],
-    //     theme: "plain",
-    //     styles: {
-    //       fontSize: 10,
-    //     },
-    //   });
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0);
 
-    //   const footerHeight = doc.lastAutoTable.finalY;
+      const iconOffset = 4;
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(255, 0, 0);
 
-    //   doc.setFont("helvetica", "bold");
-    //   doc.text("Sincerely,", 20, footerHeight + 10);
-    //   doc.text("Mr. MOHAMED MEDHAT FATHY IBRAHIM HIKAL", 20, footerHeight + 15);
-    //   doc.text("CEO", 20, footerHeight + 20);
-    //   doc.text("HIKAL REAL ESTATE L.L.C", 20, footerHeight + 25);
+      // Phone icon
+      doc.setFontSize(12);
+      // doc.text("\u260E", 20, pageHeight - 23); // Use Unicode for phone icon
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0);
+      doc.text("+971 4 272 2249", 20 + iconOffset, pageHeight - 23);
 
-    //   doc.setFont("helvetica", "normal");
-    //   doc.text("Authorized Signature", 150, footerHeight + 10);
-    // };
+      // Email icon
+      doc.setFontSize(12);
+      doc.setTextColor(255, 0, 0);
+      // doc.text("\u2709", 20, pageHeight - 10); // Use Unicode for email icon
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0);
+      doc.text("info@hikalagency.ae", 20 + iconOffset, pageHeight - 10);
+
+      // Office address icon
+      doc.setFontSize(12);
+      doc.setTextColor(255, 0, 0);
+      // doc.text("\u25CF", 130, pageHeight - 23); // Use a dot as an icon
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0);
+      doc.text(
+        "Office No. 2704, API World Tower,",
+        130 + iconOffset,
+        pageHeight - 23
+      );
+      doc.text("Sheikh Zayed Road, Dubai", 130 + iconOffset, pageHeight - 17);
+
+      // Website icon
+      doc.setFontSize(12);
+      doc.setTextColor(255, 0, 0);
+      // doc.text("\u25CF", 130, pageHeight - 10); // Use a dot as an icon
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0);
+      doc.text("www.hikalproperties.com", 130 + iconOffset, pageHeight - 10);
+    };
+
+    const addWatermark = () => {
+      const watermarkUrl = "/assets/hikal-wtermark.png"; // Adjust the path if necessary
+      const pageCount = doc.internal.getNumberOfPages();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setGState(new doc.GState({ opacity: 0.1 })); // Set opacity for watermark
+        doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+        doc.setGState(new doc.GState({ opacity: 1 })); // Reset opacity to default
+      }
+    };
 
     addHeader();
     addClientDetails();
@@ -629,8 +657,8 @@ const CommissionReqModal = ({
     addBankDetails(tableHeight + 30);
     const bankDetailsHeight = doc.lastAutoTable.finalY;
     addSignatureSection(bankDetailsHeight + 15);
-
-    // addFooter();
+    addFooter();
+    addWatermark();
 
     // Save the PDF as Blob
     const pdfBlob = doc.output("blob");
