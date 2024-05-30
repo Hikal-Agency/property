@@ -91,6 +91,7 @@ import Transaction from "./transaction";
 import Vendors from "./vendors";
 import Statements from "./statements";
 import Commission_VAT from "./commission_vat";
+import TransactionsPage from "../Components/TransactionComp/TransactionsPage";
 
 const libraries = ["places"];
 

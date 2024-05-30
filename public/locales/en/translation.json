@@ -893,7 +893,6 @@
     "funnel_form_favicon_url": "Favicon Url",
     "funnel_form_body_tracking_code": "Body tracking code",
     "funnel_form_save": "Save",
-    
     "order_pending": "Pending",
     "landing_page_name": "Enter page name",
     "scratch_landing_page": "Create from Scratch",
@@ -1071,5 +1070,7 @@
     "bank_iban": "  IBAN",
     "bank_swift_code": "  Swift Code",
     "manager_comm": "Manager Commission",
-    "monthly_target": "Monthly Target"
+    "monthly_target": "Monthly Target",
+
+    "including_vat": "Including VAT"
 }
