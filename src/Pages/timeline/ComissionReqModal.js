@@ -669,7 +669,7 @@ const CommissionReqModal = ({
     // Set the PDF URL in the component state
     setPDFUrl(pdfBlobUrl);
 
-    // doc.save("Invoice.pdf");
+    doc.save(`${data?.vendor_name}.pdf`);
   };
 
   useEffect(() => {
