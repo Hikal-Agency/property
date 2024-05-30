@@ -868,7 +868,6 @@
     "order_status_delivered": "Delivered",
     "order_status_out_of_stock": "Out Of Stock",
     "order_cancel": "Cancelled",
-    "order_pending": "Pending",
     "color": "Color",
     "background": "Background",
     "menu_twillio_integration": "Twillio Integration",
@@ -894,6 +893,8 @@
     "funnel_form_favicon_url": "Favicon Url",
     "funnel_form_body_tracking_code": "Body tracking code",
     "funnel_form_save": "Save",
+    
+    "order_pending": "Pending",
     "landing_page_name": "Enter page name",
     "scratch_landing_page": "Create from Scratch",
     "no_landing_pages": "No templates available",
@@ -1069,5 +1070,6 @@
     "bank_acc_no": " Bank Account Number",
     "bank_iban": "  IBAN",
     "bank_swift_code": "  Swift Code",
-    "manager_comm": "Manager Commission"
+    "manager_comm": "Manager Commission",
+    "monthly_target": "Monthly Target"
 }

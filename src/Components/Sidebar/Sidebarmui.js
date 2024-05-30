@@ -335,7 +335,7 @@ const Sidebarmui = () => {
 
           const bgColor = result.data?.user[0]?.theme;
           if (!bgColor || bgColor === "default") {
-            setPrimaryColor("rgb(218,31,38)");
+            setPrimaryColor("rgb(86, 141, 221)");
           } else {
             setPrimaryColor(bgColor);
           }
@@ -2190,7 +2190,7 @@ const Sidebarmui = () => {
                       <div className="sidebar-root mt-4 mb-4 text-base"
                         style={{
                           overflowY: "auto",
-                          height: "calc(95vh - 250px)",
+                          height: "calc(92vh - 250px)",
                         }}
                       >
                         <Menu

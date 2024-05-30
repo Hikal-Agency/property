@@ -80,17 +80,6 @@ const DashboardPanel = ({ setloading }) => {
       link: "/closedeals",
     },
     {
-      icon: <ImUser />,
-      amount: DashboardData?.isAdmin?.managers,
-      title: t("sales_managers"),
-    },
-    {
-      icon: <MdSupportAgent />,
-      amount: DashboardData?.isAdmin?.total_agents,
-      percentage: "+38%",
-      title: t("sales_agents"),
-    },
-    {
       icon: <AiOutlineFire />,
       amount: DashboardData?.newLeads,
       percentage: "-12%",
@@ -118,6 +107,17 @@ const DashboardPanel = ({ setloading }) => {
       percentage: "-12%",
       title: `${t("thirdparty")} ${t("leads")?.toLowerCase()}`,
       link: "/thirdpartyleads/all",
+    },
+    {
+      icon: <ImUser />,
+      amount: DashboardData?.isAdmin?.managers,
+      title: t("sales_managers"),
+    },
+    {
+      icon: <MdSupportAgent />,
+      amount: DashboardData?.isAdmin?.total_agents,
+      percentage: "+38%",
+      title: t("sales_agents"),
     },
   ];
 
@@ -197,13 +197,12 @@ const DashboardPanel = ({ setloading }) => {
       <div className="w-full flex items-center pb-3">
         <div className="bg-primary h-10 w-1 rounded-full"></div>
         <h1
-          className={`text-lg font-semibold mx-2 uppercase ${
-            !themeBgImg
+          className={`text-lg font-semibold mx-2 uppercase ${!themeBgImg
               ? "text-primary"
               : currentMode === "dark"
-              ? "text-white"
-              : "text-black"
-          }`}
+                ? "text-white"
+                : "text-black"
+            }`}
         >
           {t("overview")?.toUpperCase()}
         </h1>
@@ -218,61 +217,57 @@ const DashboardPanel = ({ setloading }) => {
           {/* {DashboardData?.designation === "Head" && ( */}
           <Link
             to={"/freshleads/all"}
-            className={`card-hover  ${
+            className={` ${
               !themeBgImg
                 ? currentMode === "dark"
-                  ? "bg-black text-white "
-                  : "bg-white text-main-dark-bg"
-                : currentMode === "dark"
-                ? "blur-bg-dark text-white "
-                : "blur-bg-light text-main-dark-bg"
-            }  h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
+                  ? "bg-black text-white"
+                  : "bg-white text-black"
+                 : currentMode === "dark"
+                  ? "blur-bg-black text-white"
+                  : "blur-bg-white text-black"
+              }  h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
             onClick={() => setopenBackDrop(true)}
           >
             <div>
               {User?.role === 3 && (
                 <p
-                  className={`text-[16px] break-words font-bold pb-3 ${
-                    !themeBgImg
+                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
                       ? "text-primary"
                       : currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
-                  }`}
+                        ? "text-white"
+                        : "text-black"
+                    }`}
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {User?.role === 7 && (
                 <p
-                  className={`text-[16px] break-words font-bold pb-3 ${
-                    !themeBgImg
+                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
                       ? "text-primary"
                       : currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
-                  }`}
+                        ? "text-white"
+                        : "text-black"
+                    }`}
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
                 <p
-                  className={`text-[16px] break-words font-bold pb-3 ${
-                    !themeBgImg
+                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
                       ? "text-primary"
                       : currentMode === "dark"
-                      ? "text-white"
-                      : "text-black"
-                  }`}
+                        ? "text-white"
+                        : "text-black"
+                    }`}
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
               )}
               <p
-                className={` ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }   `}
+                className={` ${currentMode === "dark" ? "text-white" : "text-black"
+                  }   `}
               >
                 {t("fresh")} {t("leads")}
               </p>
@@ -286,31 +281,28 @@ const DashboardPanel = ({ setloading }) => {
                 <Link
                   key={index}
                   to={item?.link}
-                  className={`card-hover ${
-                    !themeBgImg
+                  className={`card-hover ${!themeBgImg
                       ? currentMode === "dark"
                         ? "bg-black text-white "
                         : "bg-white text-main-dark-bg"
                       : currentMode === "dark"
-                      ? "blur-bg-dark text-white "
-                      : "blur-bg-light text-main-dark-bg"
-                  } h-auto w-full p-5 rounded-xl shadow-sm grid content-center`}
+                        ? "blur-bg-black text-white "
+                        : "blur-bg-white text-main-dark-bg"
+                    } h-auto w-full p-5 rounded-xl shadow-sm grid content-center`}
                 >
                   <p
-                    className={`text-[16px] break-words font-bold pb-3 ${
-                      !themeBgImg
+                    className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
                         ? "text-primary"
                         : currentMode === "dark"
-                        ? "text-white"
-                        : "text-black"
-                    }`}
+                          ? "text-white"
+                          : "text-black"
+                      }`}
                   >
                     <CountUp end={item.amount} duration={3} />
                   </p>
                   <p
-                    className={` ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
+                    className={` ${currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
                   >
                     {item?.title}
                   </p>
@@ -324,34 +316,28 @@ const DashboardPanel = ({ setloading }) => {
                   <Link
                     to={item?.link}
                     key={index}
-                    className={`card-hover ${
-                      !themeBgImg
+                    className={`card-hover ${!themeBgImg
                         ? currentMode === "dark"
-                          ? "bg-black text-white "
-                          : "bg-white text-main-dark-bg"
+                          ? "bg-black"
+                          : "bg-white"
                         : currentMode === "dark"
-                        ? "blur-bg-dark text-white "
-                        : "blur-bg-light text-main-dark-bg"
-                    } h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
+                          ? "blur-bg-black "
+                          : "blur-bg-white"
+                      } h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
                       <p
-                        className={`text-[16px] break-words font-bold pb-3 ${
-                          !themeBgImg
+                        className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
                             ? "text-primary"
                             : currentMode === "dark"
-                            ? "text-white"
-                            : "text-black"
-                        }`}
+                              ? "text-white"
+                              : "text-black"
+                          }`}
                       >
                         <CountUp end={item.amount} duration={3} />
                       </p>
-                      <p
-                        className={` ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
-                      >
+                      <p>
                         {item?.title}
                       </p>
                     </div>
@@ -366,34 +352,28 @@ const DashboardPanel = ({ setloading }) => {
                   <Link
                     to={item.link}
                     key={index}
-                    className={`card-hover ${
-                      !themeBgImg
+                    className={`card-hover ${!themeBgImg
                         ? currentMode === "dark"
-                          ? "bg-black text-white "
-                          : "bg-white text-main-dark-bg"
+                          ? "bg-black"
+                          : "bg-white"
                         : currentMode === "dark"
-                        ? "blur-bg-dark text-white "
-                        : "blur-bg-light text-main-dark-bg"
-                    }  h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
+                          ? "blur-bg-black"
+                          : "blur-bg-white"
+                      }  h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
                       <p
-                        className={`text-[16px] break-words font-bold pb-3 ${
-                          !themeBgImg
+                        className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
                             ? "text-primary"
                             : currentMode === "dark"
-                            ? "text-white"
-                            : "text-black"
-                        }`}
+                              ? "text-white"
+                              : "text-black"
+                          }`}
                       >
                         <CountUp end={item.amount} duration={3} />
                       </p>
-                      <p
-                        className={`${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
-                      >
+                      <p>
                         {item?.title}
                       </p>
                     </div>
@@ -412,15 +392,14 @@ const DashboardPanel = ({ setloading }) => {
                 initial={{ x: 120 }}
                 transition={{ duration: 0.7 }}
                 animate={{ x: [-20, 30, 0] }}
-                className={`card-hover ${
-                  !themeBgImg
+                className={`card-hover ${!themeBgImg
                     ? currentMode === "dark"
-                      ? "bg-black text-white "
-                      : "bg-white text-main-dark-bg"
+                      ? "bg-black"
+                      : "bg-white"
                     : currentMode === "dark"
-                    ? "blur-bg-dark text-white "
-                    : "blur-bg-light text-main-dark-bg"
-                } h-full rounded-xl shadow-sm hover:-mt-1 hover:mb-1 p-5 cursor-pointer w-full`}
+                      ? "blur-bg-black"
+                      : "blur-bg-white"
+                  } h-full rounded-xl shadow-sm p-5 cursor-pointer w-full`}
               >
                 <div className="justify-between items-center w-full">
                   <h6 className="font-semibold">{t("performance")}</h6>
@@ -431,15 +410,14 @@ const DashboardPanel = ({ setloading }) => {
           ) : User?.role === 3 ? (
             <div className="mb-2">
               <div
-                className={`card-hover ${
-                  !themeBgImg
+                className={`card-hover ${!themeBgImg
                     ? currentMode === "dark"
-                      ? "bg-black text-white "
-                      : "bg-white text-main-dark-bg"
+                      ? "bg-black"
+                      : "bg-white"
                     : currentMode === "dark"
-                    ? "blur-bg-dark text-white "
-                    : "blur-bg-light text-main-dark-bg"
-                } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+                      ? "blur-bg-black"
+                      : "blur-bg-white"
+                  } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
               >
                 <div className="justify-between items-center">
                   <h6 className="font-semibold">{t("performance")}</h6>
@@ -451,18 +429,17 @@ const DashboardPanel = ({ setloading }) => {
             <div className="mb-2">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
                 <div
-                  className={`card-hover ${
-                    !themeBgImg
+                  className={`card-hover ${!themeBgImg
                       ? currentMode === "dark"
-                        ? "bg-black text-white "
-                        : "bg-white text-main-dark-bg"
+                        ? "bg-black"
+                        : "bg-white"
                       : currentMode === "dark"
-                      ? "blur-bg-dark text-white "
-                      : "blur-bg-light text-main-dark-bg"
-                  } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+                        ? "blur-bg-black"
+                        : "blur-bg-white"
+                    } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
-                    <h6 className="font-semibold">Target</h6>
+                    <h6 className="font-semibold">{t("label_target")}</h6>
                     <DoughnutChart
                       target_reached={DashboardData?.target_reached}
                       target_remaining={DashboardData?.target_remaining}
@@ -470,18 +447,17 @@ const DashboardPanel = ({ setloading }) => {
                   </div>
                 </div>
                 <div
-                  className={`card-hover ${
-                    !themeBgImg
+                  className={`card-hover ${!themeBgImg
                       ? currentMode === "dark"
-                        ? "bg-black text-white "
-                        : "bg-white text-main-dark-bg"
+                        ? "bg-black"
+                        : "bg-white"
                       : currentMode === "dark"
-                      ? "blur-bg-dark text-white "
-                      : "blur-bg-light text-main-dark-bg"
-                  } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+                        ? "blur-bg-black"
+                        : "blur-bg-white"
+                    } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
                 >
                   <div className="justify-between items-center">
-                    <h6 className="font-semibold">Project</h6>
+                    <h6 className="font-semibold">{t("project")}</h6>
                     <BarChartProject
                       total_projects={DashboardData?.total_projects}
                     />
@@ -498,15 +474,14 @@ const DashboardPanel = ({ setloading }) => {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-5 pb-2">
             <div
-              className={`card-hover ${
-                !themeBgImg
+              className={`card-hover ${!themeBgImg
                   ? currentMode === "dark"
-                    ? "bg-black text-white "
-                    : "bg-white text-main-dark-bg"
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
                   : currentMode === "dark"
-                  ? "blur-bg-dark text-white "
-                  : "blur-bg-light text-main-dark-bg"
-              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+                    ? "blur-bg-black text-white"
+                    : "blur-bg-white text-black"
+                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">{t("sales")}</h6>
@@ -515,15 +490,14 @@ const DashboardPanel = ({ setloading }) => {
             </div>
 
             <div
-              className={`card-hover ${
-                !themeBgImg
+              className={`card-hover ${!themeBgImg
                   ? currentMode === "dark"
-                    ? "bg-black text-white "
-                    : "bg-white text-main-dark-bg"
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
                   : currentMode === "dark"
-                  ? "blur-bg-dark text-white "
-                  : "blur-bg-light text-main-dark-bg"
-              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer `}
+                    ? "blur-bg-black text-white"
+                    : "blur-bg-white text-black"
+                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer `}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">{`${t("closed")} ${t(
@@ -542,15 +516,14 @@ const DashboardPanel = ({ setloading }) => {
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3">
             <div
-              className={`card-hover ${
-                !themeBgImg
+              className={`card-hover ${!themeBgImg
                   ? currentMode === "dark"
-                    ? "bg-black text-white "
-                    : "bg-white text-main-dark-bg"
+                    ? "bg-black"
+                    : "bg-white"
                   : currentMode === "dark"
-                  ? "blur-bg-dark text-white "
-                  : "blur-bg-light text-main-dark-bg"
-              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">{t("sales")}</h6>
@@ -564,18 +537,17 @@ const DashboardPanel = ({ setloading }) => {
               </div>
             </div>
             <div
-              className={`card-hover ${
-                !themeBgImg
+              className={`card-hover ${!themeBgImg
                   ? currentMode === "dark"
-                    ? "bg-black text-white "
-                    : "bg-white text-main-dark-bg"
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
                   : currentMode === "dark"
-                  ? "blur-bg-dark text-white "
-                  : "blur-bg-light text-main-dark-bg"
-              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+                    ? "blur-bg-black text-white"
+                    : "blur-bg-white text-black"
+                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">Monthly Target</h6>
+                <h6 className="font-semibold pb-3">{t("monthly_target")}</h6>
                 <DoughnutChart
                   target={DashboardData?.user?.target}
                   target_reached={DashboardData?.target_reached}
@@ -585,15 +557,14 @@ const DashboardPanel = ({ setloading }) => {
             </div>
 
             <div
-              className={`card-hover ${
-                !themeBgImg
+              className={`card-hover ${!themeBgImg
                   ? currentMode === "dark"
-                    ? "bg-black text-white "
-                    : "bg-white text-main-dark-bg"
+                    ? "bg-black text-white"
+                    : "bg-white text-black"
                   : currentMode === "dark"
-                  ? "blur-bg-dark text-white "
-                  : "blur-bg-light text-main-dark-bg"
-              } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+                    ? "blur-bg-black text-white"
+                    : "blur-bg-white text-black"
+                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold pb-3">{`${t("project")} ${t(
@@ -654,9 +625,8 @@ const DashboardPanel = ({ setloading }) => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ margin: "-70px" }}
-            className={`${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } col-span-1 h-fit py-2`}
+            className={`${currentMode === "dark" ? "text-white" : "text-black"
+              } col-span-1 h-fit py-2`}
           >
             <h4 className="font-semibold p-3">
               {`${t("upcoming")} ${t("meetings")}`?.toUpperCase()}
@@ -675,9 +645,8 @@ const DashboardPanel = ({ setloading }) => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ margin: "-70px" }}
-            className={`${
-              currentMode === "dark" ? "text-white " : "text-black"
-            } col-span-1 h-fit`}
+            className={`${currentMode === "dark" ? "text-white " : "text-black"
+              } col-span-1 h-fit`}
           >
             <h4 id="reminders" className="font-semibold p-3">
               {t("reminders")?.toUpperCase()}
@@ -699,15 +668,14 @@ const DashboardPanel = ({ setloading }) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
-        className={`${
-          !themeBgImg
+        className={`${!themeBgImg
             ? currentMode === "dark"
-              ? "bg-black text-white "
-              : "bg-white text-main-dark-bg"
+              ? "bg-black"
+              : "bg-white"
             : currentMode === "dark"
-            ? "blur-bg-dark text-white "
-            : "blur-bg-light text-main-dark-bg"
-        } grid grid-cols-1 pb-3 my-3 rounded-xl shadow-md`}
+              ? "blur-bg-black"
+              : "blur-bg-white"
+          } grid grid-cols-1 pb-3 my-3 rounded-xl shadow-md`}
       >
         <Task />
       </motion.div>

@@ -57,11 +57,11 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                 className={`card-hover w-[350px] flex flex-col justify-between ${
                   !themeBgImg
                     ? currentMode === "dark"
-                      ? "bg-black text-white "
-                      : "bg-white text-main-dark-bg"
+                      ? "bg-black"
+                      : "bg-white"
                     : currentMode === "dark"
-                    ? "blur-bg-dark text-white "
-                    : "blur-bg-light text-main-dark-bg"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
                 } rounded-xl shadow-sm my-2 `}
               >
                 <div className="px-5 py-5 space-y-3">
@@ -80,11 +80,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                     </h2>
                     <p
                       style={{ cursor: "pointer" }}
-                      className={`${
-                        currentMode === "dark"
-                          ? "text-[#FFFFFF] bg-[#262626]"
-                          : "text-[#1C1C1C] bg-[#EEEEEE]"
-                      } hover:bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
+                      className={`bg-primary text-white rounded-full shadow-none p-2 mr-1 flex items-center timelineBtn`}
                     >
                       <Tooltip title="View Timeline" arrow>
                         <button
@@ -103,9 +99,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                   <div className="grid grid-cols-11">
                     <BsBuildings
                       size={16}
-                      className={`mr-3 ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                      className={`mr-3`}
                     />
                     <p className="text-sm mr-3 col-span-10">
                       {meeting?.project === "null" ? "-" : meeting?.project}{" "}
@@ -120,9 +114,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                   <div className="grid grid-cols-11">
                     <BsClock
                       size={16}
-                      className={`mr-3 ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                      className={`mr-3`}
                     />
                     <p className="text-sm mr-3 col-span-10">
                       {meeting?.meetingTime === ""
@@ -135,9 +127,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                   <div className="grid grid-cols-11">
                     <BsPinMap
                       size={16}
-                      className={`mr-3 ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                      className={`mr-3`}
                     />
                     <p className="text-sm mr-3 col-span-10">
                       {meeting?.meetingLocation || "Not Updated"}
@@ -160,11 +150,11 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
             className={`card-hover w-full flex items-center justify-center ${
               !themeBgImg
                 ? currentMode === "dark"
-                  ? "bg-black text-white "
-                  : "bg-white text-main-dark-bg"
+                  ? "bg-black"
+                  : "bg-white"
                 : currentMode === "dark"
-                ? "blur-bg-dark text-white "
-                : "blur-bg-light text-main-dark-bg"
+                ? "blur-bg-black"
+                : "blur-bg-white"
             } rounded-xl shadow-sm my-2 text-sm p-4`}
           >
             {t("nothing_to_show")}

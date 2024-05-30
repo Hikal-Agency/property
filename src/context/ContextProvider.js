@@ -103,7 +103,7 @@ export const ContextProvider = ({ children }) => {
     }
     let primary = primaryColor;
     if (primaryColor === "default") {
-      primary = "rgb(218, 31, 38)";
+      primary = "rgb(86, 141, 221)";
     }
     const alpha = 0.25;
     const rgbValues = primary.match(/\d+/g);
@@ -139,6 +139,7 @@ export const ContextProvider = ({ children }) => {
     "& .MuiDataGrid-toolbarContainer::before": {
       content: '""',
       position: "absolute",
+      zIndex: -1,
       top: 0,
       left: 0,
       bottom: 0,
@@ -203,6 +204,7 @@ export const ContextProvider = ({ children }) => {
     "& .MuiDataGrid-virtualScroller::before": {
       content: '""',
       position: "absolute",
+      zIndex: -1,
       top: 0,
       left: 0,
       bottom: 0,
@@ -250,6 +252,7 @@ export const ContextProvider = ({ children }) => {
     "& .MuiDataGrid-footerContainer::before": {
       content: '""',
       position: "absolute",
+      zIndex: -1,
       top: 0,
       left: 0,
       bottom: 0,
@@ -336,12 +339,26 @@ export const ContextProvider = ({ children }) => {
       fontFamily: fontFam,
     },
     "& .MuiTabs-indicator": {
-      backgroundColor: `${primaryColor} !important`,
+      backgroundColor: themeBgImg ? `${primaryToRgba} !important` : `${primaryColor} !important`,
     },
 
     // DROPDOWN SELECT
     "& .MuiPaper-root, .MuiPopover-paper, .MuiMenu-paper": {
-      backgroundColor: currentMode === "dark" ? blurDarkColor : blurLightColor,
+      position: "relative",
+    },
+    "& .MuiPaper-root, .MuiPopover-paper, .MuiMenu-paper::before": {
+      content: '""',
+      position: "absolute",
+      zIndex: -1,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      backgroundColor: currentMode === "dark" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+      backdropFilter: "blur(10px)",
+      webkitBackdropFilter: "blur(10px)",
+      boxShadow: currentMode === "dark" ? "0 0 10px rgba(238, 238, 238, 0.1)" : "0 0 10px rgba(38, 38, 38, 0.1)",
+      border: "none"
     },
   };
 

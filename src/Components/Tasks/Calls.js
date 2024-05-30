@@ -24,10 +24,10 @@ const Calls = ({
 
   return (
     <div
-      className={`py-3 w-full rounded-md`}
+      className={`py-3 w-full rounded-md ${currentMode === "dark" ? "text-white" : "text-black"}`}
     >
       <div>
-        <Box sx={darkModeColors} className={`font-semibold ${!themeBgImg ? (currentMode === "dark" ? "bg-[#1C1C1C] text-white" : "bg-[#EEEEEE] text-black") : (currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black")}`}>
+        <Box sx={darkModeColors} className={`font-semibold ${!themeBgImg ? (currentMode === "dark" ? "bg-dark text-white" : "bg-white text-black") : (currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black")}`}>
           <Tabs value={tabValue} onChange={handleChange} variant="standard">
             <Tab label={t("today")} />
             <Tab label={t("yesterday")}/>

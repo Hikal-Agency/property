@@ -112,14 +112,18 @@ const ReminderComponent = ({
           ? "bg-black text-white "
           : "bg-white text-main-dark-bg")
           : (currentMode === "dark"
-            ? "blur-bg-dark text-white "
-            : "blur-bg-light text-main-dark-bg")
+            ? "blur-bg-black"
+            : "blur-bg-white")
         } rounded-xl shadow-sm my-2 cursor-pointer `}
         onClick={() => handleClick(reminder?.lead_id)}
       >
         <div className="p-5 grid grid-cols-9">
           <div className="col-span-8 space-y-3">
-            <h2 className={` ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")} text-md font-semibold`}>
+            <h2 className={` ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")} text-md font-semibold`}
+            style={{
+              fontFamily: isArabic(reminder?.leadName) ? 'Noto Kufi Arabic' : 'inherit',
+            }}
+            >
               {reminder?.leadName || "No Lead Name"}
             </h2>
             

@@ -54,14 +54,7 @@ const Task = () => {
 
   return (
     <>
-      <div
-        className={`${
-          currentMode === "dark"
-            ? "text-white"
-            : "text-black"
-        }`}
-      >
-        {/* <h4 className="font-semibold p-5">SUMMARY</h4> */}
+      <div>
         <Box
           sx={{
             ...darkModeColors,
@@ -70,12 +63,12 @@ const Task = () => {
               borderRadius: "5px",
               backgroundColor: primaryColor,
             },
-            "& .Mui-selected": { 
-              color: "white !important", 
-              zIndex: "1" 
+            "& .Mui-selected": {
+              color: "white !important",
+              zIndex: "1"
             },
           }}
-          className={`w-full overflow-hidden `}
+          className={`w-full overflow-hidden ${currentMode === "dark" ? "text-white" : "text-black"}`}
         >
           <div className="flex justify-between items-center">
             <h4 className="font-semibold p-5">{t("summary")}</h4>
@@ -84,10 +77,10 @@ const Task = () => {
               onChange={handleChange}
               variant="standard"
               // centered
-              className="w-full m-1 px-1"              
+              className="w-full m-1 px-1"
             >
-              <Tab 
-                label={t("calls_count")} 
+              <Tab
+                label={t("calls_count")}
                 style={{
                   fontFamily: fontFam
                 }}
@@ -95,12 +88,6 @@ const Task = () => {
             </Tabs>
           </div>
         </Box>
-        {/* !themeBgImg ? (currentMode === "dark"
-                      ? "bg-black text-white "
-                      : "bg-white text-main-dark-bg")
-                      : (currentMode === "dark"
-                        ? "blur-bg-dark text-white "
-                        : "blur-bg-light text-main-dark-bg") */}
         <div>
           <TabPanel value={value} index={0} >
             <Calls
