@@ -9,9 +9,9 @@ import {
   PDFDownloadLink,
   pdf,
 } from "@react-pdf/renderer";
+import moment from "moment";
 
 // Create styles
-
 const styles = StyleSheet.create({
   page: {
     fontFamily: "Helvetica",
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 10,
     textAlign: "center",
+    fontWeight: "bold",
   },
   table: {
     display: "table",
@@ -85,6 +86,7 @@ const styles = StyleSheet.create({
 // Create Document Component
 export const CommissionRequestPDF = ({ data }) => {
   console.log("data for pdf", data);
+  const currentDate = moment().format("YYYY-MM-DD");
   return (
     // <Document>
     //   <Page size="A4" style={styles.page}>
@@ -169,7 +171,10 @@ export const CommissionRequestPDF = ({ data }) => {
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text>HIKAL REAL ESTATE</Text>
-          <Text>Contact Info: +971 4 272 2249 | info@hikalagency.ae</Text>
+          <Text>
+            Date:{currentDate}
+            <Text>Invoice No:{data?.id} </Text>
+          </Text>
         </View>
 
         <Text style={styles.title}>TAX INVOICE</Text>

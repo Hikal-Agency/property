@@ -229,6 +229,7 @@ const CommissionReqModal = ({
 
         setCommReqData({
           ...commReqData,
+          invoice_id: result?.data?.data?.id,
           vendor_id: null,
           vendor_name: null,
           address: null,
