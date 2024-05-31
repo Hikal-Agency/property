@@ -993,7 +993,7 @@ const CommissionReqModal = ({
                               readOnly={true}
                             />
                           )}
-                          maxDate={dayjs().startOf("day").toDate()}
+                          // maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
 
