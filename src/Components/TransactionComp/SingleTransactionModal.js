@@ -597,6 +597,7 @@ const SingleTransactionModal = ({
                         user={user}
                         fetchUsers={fetchUsers}
                         vendors={vendors}
+                        
                       />
                     )}
                   </div>

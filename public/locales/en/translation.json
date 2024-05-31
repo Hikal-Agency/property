@@ -1073,10 +1073,8 @@
     "monthly_target": "Monthly Target",
 
     "including_vat": "Including VAT",
-
-
-
-
-
-    "menu_visa":"Visa"
-}
+    "menu_visa":"Visa",
+    "discount": "Discount",
+    "cashback": "Cashback",
+    "close_deal": "Close Deal"
+} 

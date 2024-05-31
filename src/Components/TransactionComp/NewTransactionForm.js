@@ -313,12 +313,13 @@ const NewTransactionForm = ({
         setAddTransactionData({
           user_id: "",
           invoice_type: "",
-          amount: "",
+          amount: 0,
+          total_amount: 0,
           date: "",
-          currency: "",
-          vat: "",
+          currency: "AED",
+          vat: 0,
           country: "",
-          status: "",
+          status: "Paid",
           paid_by: "",
           vendor_id: "",
           category: "",
@@ -393,11 +394,11 @@ const NewTransactionForm = ({
         } ${!themeBgImg && "py-0 rounded-xl shadow-sm"}`}
       >
         <h3 className="text-primary mb-5 text-center font-semibold">
-          {visa ? t("visa") : t("new_transaction")}
+          {visa ? t("visa") : edit ? t("edit_transaction_details") : t("new_transaction")}
         </h3>
         <div
           className={`grid grid-cols-1 ${
-            fullRow && "md:grid-cols-2 lg:grid-cols-3 gap-5"
+            fullRow && (edit ? "md:grid-cols-2 lg:grid-cols-2 gap-5" : "md:grid-cols-2 lg:grid-cols-2 gap-5")
           }`}
         >
           {/* INVOICE DETAILS */}
