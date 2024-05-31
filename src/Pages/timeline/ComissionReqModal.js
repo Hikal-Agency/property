@@ -189,33 +189,124 @@ const CommissionReqModal = ({
   };
 
   const token = localStorage.getItem("auth-token");
+  // const GenerateRequest = () => {
+  //   // setbtnloading(true);
+
+  //   generatePDF(commReqData);
+  //   console.log("generatepdf response: ", generatePDF());
+
+  //   const data = {
+  //     deal_id: commReqModal?.id,
+  //     invoice_type: "Income",
+  //     category: "Commission",
+  //     country: "UAE",
+  //     status: "Unpaid",
+  //     vendor_id: commReqData?.vendor_id,
+  //     currency: commReqData?.currency,
+  //     percent: commReqData?.comm_percent,
+  //     vat: commReqData?.vat,
+  //     amount: commReqData?.amount,
+  //     total_amount: commReqData?.total_amount,
+  //     date: commReqData?.date,
+
+  //   };
+
+  //   axios
+  //     .post(`${BACKEND_URL}/invoices`, data, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("Result: ");
+  //       console.log("Result: ", result);
+  //       setbtnloading(false);
+  //       if (result?.data?.status === false || result?.status === false) {
+  //         toast.error(result?.data?.message || result?.message, {
+  //           position: "top-right",
+  //           autoClose: 3000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: "light",
+  //         });
+  //         return;
+  //       }
+
+  //       // setCommReqData({
+  //       //   ...commReqData,
+  //       //   invoice_id: result?.data?.data?.id,
+  //       //   vendor_id: null,
+  //       //   vendor_name: null,
+  //       //   address: null,
+  //       //   trn: null,
+  //       // });
+
+  //       // const pdfData = {
+  //       //   ...commReqData,
+  //       //   invoice_id: result?.data?.data?.id,
+  //       // };
+
+  //       // generatePDF(pdfData);
+
+  //       toast.success("Commission Request Generated Successfully.", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       setbtnloading(false);
+  //       console.log(err);
+  //       toast.error("Soemthing Went Wrong! Please Try Again", {
+  //         position: "top-right",
+  //         autoClose: 3000,
+  //         hideProgressBar: false,
+  //         closeOnClick: true,
+  //         pauseOnHover: true,
+  //         draggable: true,
+  //         progress: undefined,
+  //         theme: "light",
+  //       });
+  //     });
+  // };
+
   const GenerateRequest = () => {
     setbtnloading(true);
 
-    const data = {
-      deal_id: commReqModal?.id,
-      invoice_type: "Income",
-      category: "Commission",
-      country: "UAE",
-      status: "Unpaid",
-      vendor_id: commReqData?.vendor_id,
-      currency: commReqData?.currency,
-      percent: commReqData?.comm_percent,
-      vat: commReqData?.vat,
-      amount: commReqData?.amount,
-      total_amount: commReqData?.total_amount,
-      date: commReqData?.date,
-    };
+    const pdfBlob = generatePDF(commReqData);
+
+    const formData = new FormData();
+    formData.append("pdf", pdfBlob, `Invoice_${commReqData?.id}.pdf`);
+    formData.append("deal_id", commReqModal?.id);
+    formData.append("invoice_type", "Income");
+    formData.append("category", "Commission");
+    formData.append("country", "UAE");
+    formData.append("status", "Unpaid");
+    formData.append("vendor_id", commReqData?.vendor_id);
+    formData.append("currency", commReqData?.currency);
+    formData.append("percent", commReqData?.comm_percent);
+    formData.append("vat", commReqData?.vat);
+    formData.append("amount", commReqData?.amount);
+    formData.append("total_amount", commReqData?.total_amount);
+    formData.append("date", commReqData?.date);
 
     axios
-      .post(`${BACKEND_URL}/invoices`, data, {
+      .post(`${BACKEND_URL}/invoices`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
-        console.log("Result: ");
         console.log("Result: ", result);
         setbtnloading(false);
         if (result?.data?.status === false || result?.status === false) {
@@ -232,22 +323,6 @@ const CommissionReqModal = ({
           return;
         }
 
-        // setCommReqData({
-        //   ...commReqData,
-        //   invoice_id: result?.data?.data?.id,
-        //   vendor_id: null,
-        //   vendor_name: null,
-        //   address: null,
-        //   trn: null,
-        // });
-
-        const pdfData = {
-          ...commReqData,
-          invoice_id: result?.data?.data?.id,
-        };
-
-        generatePDF(pdfData);
-
         toast.success("Commission Request Generated Successfully.", {
           position: "top-right",
           autoClose: 3000,
@@ -262,7 +337,7 @@ const CommissionReqModal = ({
       .catch((err) => {
         setbtnloading(false);
         console.log(err);
-        toast.error("Soemthing Went Wrong! Please Try Again", {
+        toast.error("Something Went Wrong! Please Try Again", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -304,24 +379,25 @@ const CommissionReqModal = ({
       doc.text(`Email Address: ${data?.company_email} `, 120, 67);
       doc.text(`Telephone: ${data?.company_tele}`, 120, 74);
 
-      doc.text("Bill to:", 20, 46); // Adjusted y-coordinate for spacing
+      doc.text("Bill to:", 20, 46);
       doc.text(`${data?.vendor_name}`, 20, 53);
       doc.text(`${data?.address}`, 20, 60);
       doc.text(`TRN No: ${data?.trn}`, 20, 67);
 
       doc.setFont("helvetica", "normal");
-      doc.text(`Date: ${currentDate}`, 140, 32); // Adjusted x-coordinate for margin
-      doc.text(`Invoice No: ${data?.invoice_id}`, 140, 38); // Adjusted y-coordinate for spacing
+      doc.text(`Date: ${currentDate}`, 140, 32);
+      data?.invoice_id &&
+        doc.text(`Invoice No: ${data?.invoice_id || "-"}`, 140, 38);
 
       doc.setDrawColor(0);
       doc.setLineWidth(0.5);
-      doc.line(20, 80, 190, 80); // Adjusted y-coordinate for spacing
+      doc.line(20, 80, 190, 80);
     };
 
     const addClientDetails = () => {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(10);
-      doc.text("CLIENT NAME", 20, 92); // Adjusted y-coordinate for spacing
+      doc.text("CLIENT NAME", 20, 92);
       doc.text("UNIT NO", 75, 92);
       doc.text("PROJECT NAME", 130, 92);
 
@@ -507,10 +583,13 @@ const CommissionReqModal = ({
     // Create a Blob URL
     const pdfBlobUrl = URL.createObjectURL(pdfBlob);
 
+    console.log("PDF Blob URL: ", pdfBlobUrl);
+
     // Set the PDF URL in the component state
     setPDFUrl(pdfBlobUrl);
 
-    doc.save(`${data?.vendor_name}.pdf`);
+    doc.save(`${data?.vendor_name || "Invoice"}.pdf`);
+    return pdfBlob;
   };
 
   useEffect(() => {
