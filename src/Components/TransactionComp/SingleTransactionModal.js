@@ -20,7 +20,7 @@ import Loader from "../../Components/Loader";
 import { load } from "../../Pages/App";
 
 import { MdClose, MdFileUpload } from "react-icons/md";
-import { BsFileEarmarkMedical } from "react-icons/bs";
+import { BsFileEarmarkMedical, BsPen } from "react-icons/bs";
 
 import usePermission from "../../utils/usePermission";
 import EditTransactionForm from "./EditTransactionForm";
@@ -274,8 +274,8 @@ const SingleTransactionModal = ({
           <div
             style={style}
             className={` ${currentMode === "dark"
-                ? "bg-[#1C1C1C] text-white"
-                : "bg-[#FFFFFF] text-black"
+              ? "bg-[#1C1C1C] text-white"
+              : "bg-[#FFFFFF] text-black"
               } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
@@ -288,7 +288,7 @@ const SingleTransactionModal = ({
                 {leadNotFound ? (
                   <Error404 />
                 ) : (
-                  <div className="w-full">
+                  <div className="w-full flex flex-col gap-5">
                     <div className="w-full flex justify-between items-center pb-3">
                       <div className="w-full flex justify-between items-center">
                         <div className="flex items-center gap-3">
@@ -343,237 +343,193 @@ const SingleTransactionModal = ({
                               className="bg-primary  rounded-full p-4"
                               onClick={() => setOpenEditModal(true)}
                             >
-                              <FaPencilAlt />
+                              <BsPen size={18} color={"white"} />
                             </button>
                           )}
                         </div>
                       </div>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-5 p-4">
-                      {/* Transaction details */}
-                      <div
-                        className={`rounded-xl w-full shadow-sm ${currentMode === "dark" ? "bg-black" : "bg-[#EEEEEE]"
-                          }`}
-                      >
-                        <div
-                          className={`rounded-t-xl text-white flex justify-center font-semibold bg-primary p-2 px-4`}
-                        >
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {/* TRANSACTION DETAILS */}
+                      <div className="col-span-1 md:col-span-2 gap-5">
+                        <div className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}>
                           {t("transaction_details")}
                         </div>
-                        <div className="p-4 flex flex-col gap-4">
-                          {/* Date  */}
-                          <div className="flex gap-3">
-                            <p className="font-bold capitalize">{t("date")}:</p>
-                            <p>
-                              {moment(singleTrans?.date).format("YYYY-MM-DD")}
-                            </p>
-                          </div>
-                          {/* invoice type  */}
-                          <div className="flex gap-3">
-                            <p className="font-bold capitalize">
-                              {t("invoice_type")}:
-                            </p>
-                            <p>{singleTrans?.invoice_type} </p>
-                          </div>
-                          {/* category  */}
-                          <div className="flex gap-3">
-                            <p className="font-bold capitalize">
-                              {t("label_category")}:
-                            </p>
-                            <p>{singleTrans?.category}</p>
-                          </div>
-                          {/* amount  */}
-                          <div className="flex gap-3">
-                            <p className="font-bold capitalize">
-                              {t("label_amount")}:
-                            </p>
-                            <p>
-                              {singleTrans?.currency} {singleTrans?.amount}
-                            </p>
-                          </div>
-                          {/* commission percent  */}
-                          {singleTrans?.category?.toLowerCase() ===
-                            "commission" ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                          {/* INVOICE DETAILS */}
+                          <div className="flex flex-col gap-4 p-5">
+                            {/* INVOICE TYPE */}
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
-                                {t("percentage")}:
+                                {t("invoice_type")}:
                               </p>
-                              <p>
-                                {singleTrans?.comm_percent}
-                                {"%"}
-                              </p>
+                              <p>{singleTrans?.invoice_type} </p>
                             </div>
-                          ) : null}
-                          {/* claim  */}
-                          {singleTrans?.category?.toLowerCase() ===
-                            "commission" &&
-                            singleTrans?.invioce_type?.toLowerCase() ===
-                            "income" ? (
+                            {/* CATEGORY */}
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
-                                {t("claim")}:
+                                {t("label_category")}:
                               </p>
-                              <p>{singleTrans?.amount}</p>
+                              <p>{singleTrans?.category}</p>
                             </div>
-                          ) : null}
-                          {/* payment source  */}
-                          <div className="flex gap-3">
-                            <p className="font-bold capitalize">
-                              {t("payment_source")}:
-                            </p>
-                            <p>{singleTrans?.paid_by}</p>
+                            {/* CLAIM */}
+                            {singleTrans?.category?.toLowerCase() ===
+                              "commission" &&
+                              singleTrans?.invoice_type?.toLowerCase() ===
+                              "income" ? (
+                              <div className="flex gap-3">
+                                <p className="font-bold capitalize">
+                                  {t("claim")}:
+                                </p>
+                                <p>{singleTrans?.claim}</p>
+                              </div>
+                            ) : null}
+                            {/* PERCENTAGE */}
+                            {singleTrans?.category?.toLowerCase() ===
+                              "commission" ? (
+                              <div className="flex gap-3">
+                                <p className="font-bold capitalize">
+                                  {t("percentage")}:
+                                </p>
+                                <p>
+                                  {singleTrans?.comm_percent}
+                                  {"%"}
+                                </p>
+                              </div>
+                            ) : null}
+                            {/* DATE OF INVOICE */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("date")}:
+                              </p>
+                              <p>{moment(singleTrans?.date).format("YYYY-MM-DD")}</p>
+                            </div>
                           </div>
-                          {/* payment status  */}
-                          <div className="flex gap-3">
-                            <p className="font-bold capitalize">
-                              {t("status")}:
-                            </p>
-                            <p>{singleTrans?.status}</p>
+                          {/* PAYENT DETAILS */}
+                          <div className="flex flex-col gap-4 p-5">
+                            {/* PAYMENT STATUS */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("status")}:
+                              </p>
+                              <p>{singleTrans?.status}</p>
+                            </div>
+                            {/* PAYMENT SOURCE */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("payment_source")}:
+                              </p>
+                              <p>{singleTrans?.paid_by}</p>
+                            </div>
+                            {/* AMOUNT */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("amount")}:
+                              </p>
+                              <p>{singleTrans?.currency} {singleTrans?.amount}</p>
+                            </div>
+                            {/* VAT */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("vat_amount")}:
+                              </p>
+                              <p>{singleTrans?.currency} {singleTrans?.vat}</p>
+                            </div>
+                            {/* TOTAL AMOUNT */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("total_amount")}:
+                              </p>
+                              <p>{singleTrans?.currency} {singleTrans?.total_amount}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
-
-                      <div
-                        className={`rounded-xl w-full shadow-sm ${currentMode === "dark" ? "bg-black" : "bg-[#EEEEEE]"
-                          }`}
-                      >
-                        <div
-                          className={`rounded-t-xl text-white flex justify-center font-semibold bg-primary p-2 px-4`}
-                        >
-                          {userData ? t("user_details") : t("vendor_details")}
-                        </div>
-
-                        <div className="p-4 flex flex-col gap-4">
-                          {userData ? (
-                            <>
-                              {/* username  */}
-                              <div className="flex gap-3">
-                                <p className="font-bold capitalize">
-                                  {t("username")}:
-                                </p>
-                                <p>{userData?.userName} </p>
-                              </div>
-                              {/* contact */}
-                              <div className="flex gap-3">
-                                <p className="font-bold capitalize">
-                                  {t("label_contact")}:
-                                </p>
-                                <p>{userData?.userContact} </p>
-                              </div>
-                              {/* email  */}
-                              <div className="flex gap-3">
-                                <p className="font-bold capitalize">
-                                  {t("label_email")}:
-                                </p>
-                                <p>{userData?.userEmail}</p>
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                              {/* vendor name  */}
-                              <div className="flex gap-3">
-                                <p className="font-bold capitalize">
-                                  {t("form_vendor_name")}:
-                                </p>
-                                <p>{singleTrans?.vendor?.vendor_name} </p>
-                              </div>
-                              <div className="flex gap-3">
-                                <p className="font-bold capitalize">
-                                  {t("label_address")}:
-                                </p>
-                                <p>{singleTrans?.vendor?.address} </p>
-                              </div>
-                              <div className="flex gap-3">
-                                <p className="font-bold capitalize">
-                                  {t("po_box")}:
-                                </p>
-                                <p>{singleTrans?.vendor?.pobox} </p>
-                              </div>
-                              <div className="flex gap-3">
-                                <p className="font-bold capitalize">
-                                  {t("trn")}:
-                                </p>
-                                <p>{singleTrans?.vendor?.trn} </p>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className={`rounded-xl w-full shadow-sm ${currentMode === "dark"
-                            ? "bg-black"
-                            : "bg-[#EEEEEE]"
-                          }`}
-                      >
-                        <div
-                          className={`rounded-t-xl text-white flex justify-center font-semibold bg-primary p-2 px-4`}
-                        >
-                          {t("user_details")}
-                        </div>
-
-                        <div className="p-4 flex flex-col gap-4">
-                          <>
-                            {/* username  */}
+                      {/* USER DETAILS */}
+                      {singleTrans?.user_id && (
+                        <div className="col-span-1 gap-5">
+                          <div className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}>
+                            {t("user_details")}
+                          </div>
+                          <div className="flex flex-col gap-4 p-5">
+                            {/* USER NAME */}
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
                                 {t("username")}:
                               </p>
                               <p>{userData?.userName} </p>
                             </div>
-                            {/* contact */}
+                            {/* CONTACT */}
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
                                 {t("label_contact")}:
                               </p>
                               <p>{userData?.userContact} </p>
                             </div>
-                            {/* email  */}
+                            {/* EMAIL  */}
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
                                 {t("label_email")}:
                               </p>
                               <p>{userData?.userEmail}</p>
                             </div>
-                          </>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-
-                    {/* invoice receipt */}
-                    <div className="p-4">
-                      <div
-                        className={`rounded-xl w-full ${currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                      >
-                        <div
-                          className={`w-full flex rounded-md bg-primary text-white font-semibold justify-center p-3 px-4`}
-                        >
+                      )}
+                      {/* VENDOR DETAILS */}
+                      {singleTrans?.vendor_id && (
+                        <div className="col-span-1 gap-5">
+                          <div className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}>
+                            {t("vendor_details")}
+                          </div>
+                          <div className="flex flex-col gap-4 p-5">
+                            {/* VENDOR NAME */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("form_vendor_name")}:
+                              </p>
+                              <p>{singleTrans?.vendor?.vendor_name} </p>
+                            </div>
+                            {/* ADDRESS */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("label_address")}:
+                              </p>
+                              <p>{singleTrans?.vendor?.address} </p>
+                            </div>
+                            {/* PO BOX */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("po_box")}:
+                              </p>
+                              <p>{singleTrans?.vendor?.pobox} </p>
+                            </div>
+                            {/* TRN */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("trn")}:
+                              </p>
+                              <p>{singleTrans?.vendor?.trn} </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      {/* INVOICE RECEIPTS */}
+                      <div className={`col-span-1 md:col-span-3 gap-5 ${(singleTrans?.vendor_id && singleTrans?.user_id) ? "lg:col-span-2" : "lg:col-span-3"}`}>
+                        <div className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}>
                           {t("invoice_receipt")}
                         </div>
-
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-4 w-full">
                           {singleTrans?.receipt?.length > 0 &&
                             singleTrans?.receipt?.map((l) => {
                               return (
                                 <>
                                   {l.temp_file && (
-                                    // <div key={l?.id} className="relative mx-3">
-                                    //   <div className="p-2 flex items-center justify-center hover:cursor-pointer space-x-5 ">
-                                    //     <div className="w-[100px] h-[100px] flex justify-center">
-                                    //       <img
-                                    //         src={l?.temp_file}
-                                    //         alt="Invoice Receipt"
-                                    //         className="object-cover"
-                                    //       />
-                                    //     </div>
-                                    //   </div>
-                                    // </div>
                                     <div
                                       key={l?.id}
                                       className={`${currentMode === "dark"
-                                          ? "bg-black"
-                                          : "bg-[#EEEEEE]"
+                                        ? "bg-black"
+                                        : "bg-[#EEEEEE]"
                                         } p-4 rounded-xl shadow-sm card-hover`}
                                     >
                                       <div className="p-2 flex items-center justify-center hover:cursor-pointer space-x-5 ">
@@ -594,11 +550,6 @@ const SingleTransactionModal = ({
                                                         `data:application/pdf;base64, ${l?.temp_file}`
                                                       )
                                                     }
-                                                  // onClick={() =>
-                                                  //   handlePdfClick(
-                                                  //     data?.temp_file
-                                                  //   )
-                                                  // }
                                                   />
                                                 </div>
                                                 <p class="text-sm break-all">
@@ -635,18 +586,19 @@ const SingleTransactionModal = ({
                             })}
                         </div>
                       </div>
-                      {openEditModal && (
-                        <EditTransactionForm
-                          openEditModal={openEditModal}
-                          setOpenEditModal={setOpenEditModal}
-                          transData={singleTrans}
-                          fetchTransactions={fetchTransactions}
-                          user={user}
-                          fetchUsers={fetchUsers}
-                          vendors={vendors}
-                        />
-                      )}
                     </div>
+
+                    {openEditModal && (
+                      <EditTransactionForm
+                        openEditModal={openEditModal}
+                        setOpenEditModal={setOpenEditModal}
+                        transData={singleTrans}
+                        fetchTransactions={fetchTransactions}
+                        user={user}
+                        fetchUsers={fetchUsers}
+                        vendors={vendors}
+                      />
+                    )}
                   </div>
                 )}
               </>
