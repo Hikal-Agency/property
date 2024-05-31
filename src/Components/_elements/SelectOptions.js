@@ -728,14 +728,14 @@ export const transaction_type = (t) => [
 ];
 
 // COMMISSION TYPE
-export const commission_type = (t) => [
+export const commission_type = (t, commission) => [
   {
     value: "Income",
-    label: t("income"),
+    label: commission ? t("income") : t("income_amount"),
   },
   {
     value: "Expense",
-    label: t("expense"),
+    label: commission ? t("expense") : t("expense_amount"),
   },
 ];
 
