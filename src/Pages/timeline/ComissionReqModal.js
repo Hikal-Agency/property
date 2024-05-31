@@ -69,7 +69,7 @@ const CommissionReqModal = ({
     currency: commReqModal?.currency || "AED",
     comm_amount: commReqModal?.comm_amount || null,
     comm_percent: commReqModal?.comm_percent || null,
-    project: commReqModal?.unit || null,
+    project: commReqModal?.project || null,
     leadName: commReqModal?.leadName || null,
     amount: commReqModal?.amount || null,
     vat: commReqModal?.vat || 0,
@@ -185,22 +185,18 @@ const CommissionReqModal = ({
     const pdfBlob = generatePDF(commReqData);
 
     const formData = new FormData();
-    formData.append("tax_invoice", pdfBlob, `Invoice_${commReqData?.id}.pdf`);
-    formData.append("deal_id", commReqModal?.id);
-    formData.append("invoice_type", "Income");
-    formData.append("category", "Commission");
-    formData.append("country", "UAE");
-    formData.append("status", "Unpaid");
-    formData.append("vendor_id", commReqData?.vendor_id);
+    formData.append("tax_invoice", pdfBlob, `Invoice_${commReqData?.lid}.pdf`);
     formData.append("currency", commReqData?.currency);
-    formData.append("percent", commReqData?.comm_percent);
+    formData.append("comm_amount", commReqData?.comm_amount);
+    formData.append("comm_percent", commReqData?.comm_percent);
     formData.append("vat", commReqData?.vat);
     formData.append("amount", commReqData?.amount);
-    formData.append("total_amount", commReqData?.total_amount);
-    formData.append("date", commReqData?.date);
+    formData.append("project", commReqData?.project);
+    formData.append("unit", commReqData?.unit);
+    formData.append("enquiryType", commReqModal?.enquiryType);
 
     axios
-      .post(`${BACKEND_URL}/editdeal/${commReqModal?.id}`, formData, {
+      .post(`${BACKEND_URL}/editdeal/${commReqModal?.lid}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
