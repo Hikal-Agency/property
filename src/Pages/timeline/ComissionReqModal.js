@@ -73,7 +73,9 @@ const CommissionReqModal = ({
     leadName: commReqModal?.leadName || null,
     amount: commReqModal?.amount || null,
     vat: commReqModal?.vat || 0,
-    total_amount: commReqModal?.vat + commReqModal?.comm_amount || null,
+    total_amount:
+      (Number(commReqModal?.comm_amount) || 0) +
+      (Number(commReqModal?.vat) || 0),
     company: "HIKAL REAL STATE LLC" || null,
     company_trn: "100587185800003" || null,
     company_email: "info@hikalagency.ae" || null,
@@ -578,18 +580,14 @@ const CommissionReqModal = ({
     doc.save(`${data?.vendor_name || "Invoice"}.pdf`);
     return pdfBlob;
   };
-
   useEffect(() => {
-    // const handleChange = () => {
     console.log("total changed: ");
     setCommReqData({
       ...commReqData,
-      total_amount: commReqData?.comm_amount + commReqData?.vat,
+      total_amount: Number(commReqData?.comm_amount) + Number(commReqData?.vat),
     });
-    // };
-
-    // handleChange();
   }, [commReqData?.comm_amount, commReqData?.vat]);
+
   console.log("TOTAL:: ", commReqData?.total_amount);
 
   useEffect(() => {
