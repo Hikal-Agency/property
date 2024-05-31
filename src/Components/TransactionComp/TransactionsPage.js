@@ -71,7 +71,7 @@ const TransactionsPage = ({ pathname }) => {
 
   console.log("location:: ", pathname);
 
-  const visaPage = pathname === "/new-transactions" ? true : false;
+  const visaPage = pathname === "/visa" ? true : false;
 
   const handleClick = (event) => {
     setOpen(!open);

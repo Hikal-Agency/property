@@ -528,7 +528,7 @@ const routes = [
     pageName: "Transaction",
   },
   {
-    path: "/new-transactions",
+    path: "/visa",
     element: <Transaction />,
     pageName: "New Transaction",
   },
