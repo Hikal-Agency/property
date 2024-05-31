@@ -415,6 +415,8 @@ const CommissionReqModal = ({
       // Phone icon
       doc.setFontSize(12);
       // doc.text("\u260E", 20, pageHeight - 23); // Use Unicode for phone icon
+      const callIcon = "assets/icon-call.png";
+      doc.addImage(callIcon, "JPEG", 17, pageHeight - 26, 5, 5);
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
       doc.text("+971 4 272 2249", 20 + iconOffset, pageHeight - 23);
@@ -423,6 +425,8 @@ const CommissionReqModal = ({
       doc.setFontSize(12);
       doc.setTextColor(255, 0, 0);
       // doc.text("\u2709", 20, pageHeight - 10); // Use Unicode for email icon
+      const emailIcon = "assets/icon-email.png";
+      doc.addImage(emailIcon, "JPEG", 17, pageHeight - 14, 5, 5);
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
       doc.text("info@hikalagency.ae", 20 + iconOffset, pageHeight - 10);
@@ -431,6 +435,8 @@ const CommissionReqModal = ({
       doc.setFontSize(12);
       doc.setTextColor(255, 0, 0);
       // doc.text("\u25CF", 130, pageHeight - 23); // Use a dot as an icon
+      const locIcon = "assets/icon-location.png";
+      doc.addImage(locIcon, "JPEG", 126, pageHeight - 23, 5, 5);
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
       doc.text(
@@ -444,6 +450,8 @@ const CommissionReqModal = ({
       doc.setFontSize(12);
       doc.setTextColor(255, 0, 0);
       // doc.text("\u25CF", 130, pageHeight - 10); // Use a dot as an icon
+      const webIcon = "assets/icon-website.png";
+      doc.addImage(webIcon, "JPEG", 126, pageHeight - 13, 5, 5);
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
       doc.text("www.hikalproperties.com", 130 + iconOffset, pageHeight - 10);
