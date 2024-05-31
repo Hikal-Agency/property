@@ -8,6 +8,9 @@ import {
   TextField,
   Button,
   Box,
+  InputAdornment,
+  FormControlLabel,
+  Checkbox
 } from "@mui/material";
 import Select from "react-select";
 import {
@@ -25,6 +28,10 @@ import { selectStyles } from "../_elements/SelectStyles";
 import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
+import {
+  BsPercent
+} from "react-icons/bs";
 
 const BookedDealsForm = ({
   BookedForm,
@@ -55,6 +62,8 @@ const BookedDealsForm = ({
   const [isClosing, setIsClosing] = useState(false);
 
   const [updatedField, setUpdatedField] = useState("");
+  const [withDiscount, setWithDiscount] = useState(false);
+  const [withCashback, setWithCashback] = useState(false);
 
   const [closedDealData, setClosedDealsData] = useState({
     leadId: Feedback?.leadId,
@@ -62,14 +71,19 @@ const BookedDealsForm = ({
     dealDate: moment(Feedback?.creationDate).format("YYYY-MM-DD"),
     currency: "AED",
     booking_percent: 0,
-    booking_amount: Feedback?.booked_amount,
+    booking_amount: Feedback?.booked_amount || 0,
     booking_date: Feedback?.booked_date,
     passport: null,
+    leadName: Feedback?.leadName,
     project: Feedback?.project,
     enquiryType: Feedback?.enquiryType,
-    amount: null,
+    amount: 0,
     paid_amount: 0,
-    paid_percent: null,
+    paid_percent: 0,
+    cashback_percent: 0,
+    cashback_amount: 0,
+    discount_percent: 0,
+    discount_amount: 0,
   });
 
   console.log("closed deal data:: ", closedDealData);
@@ -106,9 +120,40 @@ const BookedDealsForm = ({
     setUpdatedField(id);
   };
 
+  // DISCOUNT
+  const toggleDiscount = (value) => {
+    setWithDiscount(value);
+    if (value === true) {
+      console.log("WITH DISCOUNT");
+    } else {
+      setClosedDealsData({
+        ...closedDealData,
+        discount_amount: 0,
+        discount_percent: 0,
+      });
+    }
+  };
+  // CASHBACK 
+  const toggleCashback = (value) => {
+    setWithCashback(value);
+    if (value === true) {
+      console.log("WITH CASHBACK");
+    } else {
+      setClosedDealsData({
+        ...closedDealData,
+        cashback_amount: 0,
+        cashback_percent: 0,
+      });
+    }
+  };
+
   useEffect(() => {
-    const { amount, paid_percent, booking_amount, paid_amount } =
-      closedDealData;
+    const {
+      amount,
+      paid_percent, booking_amount, paid_amount,
+      discount_amount, discount_percent,
+      cashback_amount, cashback_percent,
+    } = closedDealData;
 
     if (updatedField === "amount" || updatedField === "paid_percent") {
       autoCalculate("paid_amount", amount, paid_percent);
@@ -119,11 +164,27 @@ const BookedDealsForm = ({
     if (updatedField === "amount" || updatedField === "paid_amount") {
       autoCalculate("paid_percent", amount, paid_amount);
     }
+    if (updatedField === "amount" || updatedField === "discount_amount") {
+      autoCalculate("discount_percent", amount, discount_amount);
+    }
+    if (updatedField === "amount" || updatedField === "discount_percent") {
+      autoCalculate("discount_amount", amount, discount_percent);
+    }
+    if (updatedField === "amount" || updatedField === "cashback_amount") {
+      autoCalculate("cashback_percent", amount, cashback_amount);
+    }
+    if (updatedField === "amount" || updatedField === "cashback_percent") {
+      autoCalculate("cashback_amount", amount, cashback_percent);
+    }
   }, [
     closedDealData.amount,
     closedDealData.paid_percent,
     closedDealData.booking_amount,
     closedDealData.paid_amount,
+    closedDealData.discount_amount,
+    closedDealData.discount_percent,
+    closedDealData.cashback_amount,
+    closedDealData.cashback_percent,
     updatedField,
   ]);
 
@@ -180,6 +241,74 @@ const BookedDealsForm = ({
         setClosedDealsData((prevData) => ({
           ...prevData,
           booking_percent: bookingPercent,
+        }));
+      }
+    }
+    if (value === "discount_amount") {
+      const discountPercent = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(discountPercent)) {
+        let discountAmount = (sellingAmount * discountPercent) / 100;
+        discountAmount =
+          discountAmount % 1 === 0 ? discountAmount.toFixed(0) : discountAmount.toFixed(2);
+
+        console.log("DISCOUNT PERCENT = ", discountPercent);
+        console.log("DISCOUNT AMOUNT = ", discountAmount);
+
+        setClosedDealsData((prevData) => ({
+          ...prevData,
+          discount_amount: discountAmount,
+        }));
+      }
+    }
+    if (value === "discount_percent") {
+      const discountAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(discountAmount)) {
+        let discountPercent = (discountAmount / sellingAmount) * 100 || 0;
+        discountPercent =
+          discountPercent % 1 === 0
+            ? discountPercent.toFixed(0)
+            : discountPercent.toFixed(2);
+
+        console.log("DISCOUNT AMOUNT = ", discountAmount);
+        console.log("DISCOUNT PERCENT = ", discountPercent);
+
+        setClosedDealsData((prevData) => ({
+          ...prevData,
+          discount_percent: discountPercent,
+        }));
+      }
+    }
+    if (value === "cashback_amount") {
+      const cashbackPercent = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(cashbackPercent)) {
+        let cashbackAmount = (sellingAmount * cashbackPercent) / 100;
+        cashbackAmount =
+        cashbackAmount % 1 === 0 ? cashbackAmount.toFixed(0) : cashbackAmount.toFixed(2);
+
+        console.log("CASHBACK PERCENT = ", cashbackPercent);
+        console.log("CASHBACK AMOUNT = ", cashbackAmount);
+
+        setClosedDealsData((prevData) => ({
+          ...prevData,
+          cashback_amount: cashbackAmount,
+        }));
+      }
+    }
+    if (value === "cashback_percent") {
+      const cashbackAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(cashbackAmount)) {
+        let cashbackPercent = (cashbackAmount / sellingAmount) * 100 || 0;
+        cashbackPercent =
+        cashbackPercent % 1 === 0
+            ? cashbackPercent.toFixed(0)
+            : cashbackPercent.toFixed(2);
+
+        console.log("CASHBACK AMOUNT = ", cashbackAmount);
+        console.log("CASHBACK PERCENT = ", cashbackPercent);
+
+        setClosedDealsData((prevData) => ({
+          ...prevData,
+          cashback_percent: cashbackPercent,
         }));
       }
     }
@@ -287,21 +416,18 @@ const BookedDealsForm = ({
       }}
     >
       <div
-        className={`${
-          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-        } ${
-          isClosing
+        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-        } w-[100vw] h-[100vh] flex items-start justify-end`}
+          } w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${
-            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-          }
+          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -312,15 +438,13 @@ const BookedDealsForm = ({
         </button>
         <div
           style={style}
-          className={` ${
-            currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-          } ${
-            isLangRTL(i18n.language)
+          className={` ${currentMode === "dark"
+            ? "bg-[#000000] text-white"
+            : "bg-[#FFFFFF] text-black"
+            } ${isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-          }
+            }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
         >
@@ -332,14 +456,12 @@ const BookedDealsForm = ({
             <>
               <div className="w-full flex items-center pb-5">
                 <div
-                  className={`${
-                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                  } bg-primary h-10 w-1 rounded-full my-1`}
+                  className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                    } bg-primary h-10 w-1 rounded-full my-1`}
                 ></div>
                 <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
+                  className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                   style={{
                     fontFamily: isArabic(Feedback?.feedback)
                       ? "Noto Kufi Arabic"
@@ -351,16 +473,16 @@ const BookedDealsForm = ({
                     <span className="text-sm bg-gray-500 text-white px-2 py-1 rounded-md font-bold">
                       {t(
                         "feedback_" +
-                          Feedback?.feedback
-                            ?.toLowerCase()
-                            ?.replaceAll(" ", "_")
+                        Feedback?.feedback
+                          ?.toLowerCase()
+                          ?.replaceAll(" ", "_")
                       )}
                     </span>{" "}
                     {t("to")}{" "}
                     <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
                       {t(
                         "feedback_" +
-                          newFeedback?.toLowerCase()?.replaceAll(" ", "_")
+                        newFeedback?.toLowerCase()?.replaceAll(" ", "_")
                       )}
                     </span>{" "}
                     ?
@@ -368,33 +490,109 @@ const BookedDealsForm = ({
                 </h1>
               </div>
 
-              <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5 p-5">
-                {/* PROJECT DETAILS  */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
-                >
-                  <h1 className="text-center uppercase font-semibold">
-                    {t("project_details")?.toUpperCase()}
+              <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5 p-5">
+                {/* LEAD DETAILS */}
+                <div className="px-2">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
+                    {t("lead_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
+                  <div className="w-full pt-5">
                     <Box
                       sx={{
                         ...darkModeColors,
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      }}
+                    >
+                      {/* LEAD NAME */}
+                      <TextField
+                        id="leadName"
+                        type={"text"}
+                        label={t("label_lead_name")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "20px !important",
+                            zIndex: 1,
                           },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={closedDealData?.leadName}
+                        onChange={(e) => handleChange(e)}
+                        required
+                      />
+                      {/* PASSPORT */}
+                      <div className="  mb-5 flex items-center justify-center ">
+                        <div className=" rounded-lg border">
+                          <img
+                            src={imagePreview}
+                            width="100px"
+                            height="100px"
+                          />
+                        </div>
+                      </div>
+                      <input
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        id="contained-button-file"
+                        type="file"
+                        onChange={handleImgUpload}
+                      />
+                      <label htmlFor="contained-button-file">
+                        <Button
+                          variant="contained"
+                          size="medium"
+                          className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+                          style={{
+                            color: "#ffffff",
+                            border: "1px solid white",
+                            fontFamily: fontFam,
+                          }}
+                          component="span"
+                          disabled={loading ? true : false}
+                          startIcon={
+                            loading ? null : (
+                              <MdFileUpload className="mx-2" size={16} />
+                            )
+                          }
+                        >
+                          <span>{t("label_passport_image")}</span>
+                        </Button>
+                      </label>
+                    </Box>
+                  </div>
+                </div>
+                {/* PROJECT DETAILS  */}
+                <div className="px-2">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
+                    {t("project_details")?.toUpperCase()}
+                  </h1>
+                  <div className="w-full pt-5">
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
                         "& legend": {
                           textAlign: isLangRTL(i18n.language)
                             ? "right"
@@ -410,7 +608,7 @@ const BookedDealsForm = ({
                         className="w-full"
                         sx={{
                           "&": {
-                            marginBottom: "1.25rem !important",
+                            marginBottom: "20px !important",
                             zIndex: 1,
                           },
                         }}
@@ -421,23 +619,6 @@ const BookedDealsForm = ({
                         required
                       />
                       {/* ENQUIRY  */}
-                      {/* <TextField
-                        id="enquiryType"
-                        type={"text"}
-                        label={t("label_enquiry_for")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={closedDealData.enquiryType}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      /> */}
                       <Select
                         id="enquiryType"
                         options={enquiry_options(t)}
@@ -464,7 +645,7 @@ const BookedDealsForm = ({
                         className="w-full"
                         sx={{
                           "&": {
-                            marginBottom: "1.25rem !important",
+                            marginBottom: "20px !important",
                             zIndex: 1,
                           },
                         }}
@@ -474,7 +655,6 @@ const BookedDealsForm = ({
                         onChange={(e) => handleChange(e)}
                         required
                       />
-
                       <div className="grid grid-cols-3">
                         {/* CURRENCY */}
                         <Select
@@ -517,24 +697,30 @@ const BookedDealsForm = ({
                 </div>
 
                 {/* PAYMENT DETAILS  */}
-                <div
-                  className={`px-5 pt-5 \ rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
-                >
-                  <h1 className="text-center uppercase font-semibold">
+                <div className="px-2">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("payment_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
+                  <div className="w-full pt-5">
                     <Box
                       sx={{
                         ...darkModeColors,
-                        // marginTop:"20p"
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
                       }}
+                      className="flex flex-col"
                     >
                       {/* DEAL DATE */}
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -564,7 +750,7 @@ const BookedDealsForm = ({
                                   color:
                                     currentMode === "dark" ? "white" : "black",
                                 },
-                                marginBottom: "15px",
+                                marginBottom: "20px",
                               }}
                               fullWidth
                               size="small"
@@ -574,29 +760,12 @@ const BookedDealsForm = ({
                             />
                           )}
                           minDate={closedDealData?.booking_date}
-                          // maxDate={dayjs().startOf("day").toDate()}
+                        // maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
 
-                      {/* PAID PERCENTAGE */}
-                      <TextField
-                        id="paid_percent"
-                        type={"number"}
-                        label={t("paid_percent")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={closedDealData?.paid_percent}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                      <div className="grid grid-cols-3">
+                      {/* PAID */}
+                      <div className="grid grid-cols-4">
                         {/* CURRENCY */}
                         <Select
                           id="currency"
@@ -611,7 +780,7 @@ const BookedDealsForm = ({
                             });
                           }}
                           placeholder={t("label_select_currency")}
-                          className={`mb-5`}
+                          // className={`mb-5`}
                           menuPortalTarget={document.body}
                           styles={selectStyles(currentMode, primaryColor)}
                         />
@@ -623,7 +792,7 @@ const BookedDealsForm = ({
                           className="w-full col-span-2"
                           sx={{
                             "&": {
-                              marginBottom: "1.25rem !important",
+                              // marginBottom: "20px !important",
                               zIndex: 1,
                             },
                           }}
@@ -633,28 +802,59 @@ const BookedDealsForm = ({
                           onChange={(e) => handleChange(e)}
                           required
                         />
+                        {/* PAID PERCENTAGE */}
+                        <TextField
+                          id="paid_percent"
+                          type={"number"}
+                          // label={t("paid_percent")}
+                          className="w-full"
+                          sx={{
+                            "&": {
+                              // marginBottom: "20px !important",
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={closedDealData?.paid_percent}
+                          onChange={(e) => handleChange(e)}
+                          required
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <BsPercent size={18} color={"#777777"} />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
                       </div>
                     </Box>
                   </div>
                 </div>
 
                 {/* BOOKING DETAILS */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
-                >
-                  <h1 className="text-center uppercase font-semibold">
+                <div className="px-2">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("booking_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
+                  <div className="w-full pt-5">
                     <Box
                       sx={{
                         ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
                       }}
                     >
                       {/* BOOKING DATE  */}
@@ -685,7 +885,7 @@ const BookedDealsForm = ({
                                   color:
                                     currentMode === "dark" ? "white" : "black",
                                 },
-                                marginBottom: "15px",
+                                marginBottom: "20px",
                               }}
                               fullWidth
                               size="small"
@@ -697,28 +897,8 @@ const BookedDealsForm = ({
                           maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
-                      {/* BOOKING PERCENT */}
-                      <TextField
-                        id="booking_percent"
-                        type={"number"}
-                        label={t("booked_perc")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={closedDealData?.booking_percent}
-                        onChange={(e) => handleChange(e)}
-                        // readOnly={true}
-                        InputProps={{
-                          readOnly: true, // Set readonly to true
-                        }}
-                      />
-                      <div className="grid grid-cols-3">
+                      {/* BOOKING */}
+                      <div className="grid grid-cols-4">
                         {/* CURRENCY  */}
                         <Select
                           id="currency"
@@ -733,7 +913,6 @@ const BookedDealsForm = ({
                             });
                           }}
                           placeholder={t("label_select_currency")}
-                          className={`mb-5`}
                           menuPortalTarget={document.body}
                           styles={selectStyles(currentMode, primaryColor)}
                         />
@@ -745,7 +924,6 @@ const BookedDealsForm = ({
                           className="w-full col-span-2"
                           sx={{
                             "&": {
-                              marginBottom: "1.25rem !important",
                               zIndex: 1,
                             },
                           }}
@@ -755,9 +933,233 @@ const BookedDealsForm = ({
                           onChange={(e) => handleChange(e)}
                           required
                         />
+                        {/* BOOKING PERCENT */}
+                        <TextField
+                          id="booking_percent"
+                          type={"number"}
+                          // label={t("booked_perc")}
+                          className="w-full"
+                          sx={{
+                            "&": {
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={closedDealData?.booking_percent}
+                          onChange={(e) => handleChange(e)}
+                          InputProps={{
+                            readOnly: true,
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <BsPercent size={18} color={"#777777"} />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
                       </div>
                     </Box>
                   </div>
+                </div>
+
+                {/* DISCOUNT */}
+                <div className="px-2">
+                  <h1 className={`text-center text-primary py-2 mb-5 uppercase font-semibold ${withDiscount && "border-b-2 border-primary"}`}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="success"
+                          checked={withDiscount}
+                          onChange={() => toggleDiscount(!withDiscount)}
+                        />
+                      }
+                      label={t("discount")}
+                      className="font-semibold"
+                    />
+                  </h1>
+                  {withDiscount && (
+                    <div className="w-full pt-5">
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
+                        <div className="grid grid-cols-4">
+                          {/* CURRENCY */}
+                          <Select
+                            id="currency"
+                            options={currencies(t)}
+                            value={currencies(t)?.find(
+                              (curr) => curr.value === closedDealData?.currency
+                            )}
+                            onChange={(e) => {
+                              setClosedDealsData({
+                                ...closedDealData,
+                                currency: e.value,
+                              });
+                            }}
+                            placeholder={t("label_select_currency")}
+                            // className={`mb-5`}
+                            menuPortalTarget={document.body}
+                            styles={selectStyles(currentMode, primaryColor)}
+                          />
+                          {/* DISCOUNT AMOUNT */}
+                          <TextField
+                            id="discount_amount"
+                            type={"number"}
+                            label={t("discount")}
+                            className="w-full col-span-2"
+                            sx={{
+                              "&": {
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={closedDealData?.discount_amount}
+                            onChange={(e) => handleChange(e)}
+                          />
+                          {/* DISCOUNT PERCENTAGE */}
+                          <TextField
+                            id="discount_percent"
+                            type={"number"}
+                            // label={t("paid_percent")}
+                            className="w-full"
+                            sx={{
+                              "&": {
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={closedDealData?.discount_percent}
+                            onChange={(e) => handleChange(e)}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <BsPercent size={18} color={"#777777"} />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </div>
+                      </Box>
+                    </div>
+                  )}
+                </div>
+
+                {/* CASHBACK */}
+                <div className="px-2">
+                  <h1 className={`text-center text-primary py-2 mb-5 uppercase font-semibold ${withCashback && "border-b-2 border-primary"}`}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="success"
+                          checked={withCashback}
+                          onChange={() => toggleCashback(!withCashback)}
+                        />
+                      }
+                      label={t("cashback")}
+                      className="font-semibold"
+                    />
+                  </h1>
+                  {withCashback && (
+                    <div className="w-full pt-5">
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
+                        <div className="grid grid-cols-4">
+                          {/* CURRENCY */}
+                          <Select
+                            id="currency"
+                            options={currencies(t)}
+                            value={currencies(t)?.find(
+                              (curr) => curr.value === closedDealData?.currency
+                            )}
+                            onChange={(e) => {
+                              setClosedDealsData({
+                                ...closedDealData,
+                                currency: e.value,
+                              });
+                            }}
+                            placeholder={t("label_select_currency")}
+                            // className={`mb-5`}
+                            menuPortalTarget={document.body}
+                            styles={selectStyles(currentMode, primaryColor)}
+                          />
+                          {/* CASHBACK AMOUNT */}
+                          <TextField
+                            id="cashback_amount"
+                            type={"number"}
+                            label={t("cashback")}
+                            className="w-full col-span-2"
+                            sx={{
+                              "&": {
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={closedDealData?.cashback_amount}
+                            onChange={(e) => handleChange(e)}
+                          />
+                          {/* CASHBACK PERCENTAGE */}
+                          <TextField
+                            id="cashback_percent"
+                            type={"number"}
+                            // label={t("paid_percent")}
+                            className="w-full"
+                            sx={{
+                              "&": {
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={closedDealData?.cashback_percent}
+                            onChange={(e) => handleChange(e)}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <BsPercent size={18} color={"#777777"} />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </div>
+                      </Box>
+                    </div>
+                  )}
                 </div>
 
                 {/* CLIENT  DETAILS  */}
@@ -818,6 +1220,7 @@ const BookedDealsForm = ({
                   </div>
                 </div> */}
               </div>
+
             </>
           )}
           <div className="px-4">
@@ -839,7 +1242,7 @@ const BookedDealsForm = ({
                   className="text-white"
                 />
               ) : (
-                <span>{t("create")}</span>
+                <span>{t("close_deal")}</span>
               )}
             </Button>
           </div>

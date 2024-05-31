@@ -33,6 +33,7 @@ import Loader from "../../Components/Loader";
 import Transactions from "../../Components/TransactionComp/Transactions";
 import { useLocation } from "react-router-dom";
 import TransactionsPage from "../../Components/TransactionComp/TransactionsPage";
+import VisaTransaction from "../../Components/TransactionComp/VisaTransaction";
 
 const currentDate = dayjs();
 
@@ -63,9 +64,8 @@ const Transaction = ({ isLoading }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 mt-2 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
-            } ${currentMode === "dark" ? "text-white" : "text-black"}`}
+            className={`w-full p-4 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              } ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
             <div className="w-full flex items-center pb-3">
               <div className="bg-primary h-10 w-1 rounded-full"></div>
@@ -75,8 +75,11 @@ const Transaction = ({ isLoading }) => {
             </div>
 
             <div className="mt-3 pb-3">
-              {/* <Transactions isLoading={loading} pathname={pathname} /> */}
-              <TransactionsPage isLoading={loading} pathname={pathname} />
+              {pathname === "/visa" ? (
+                <VisaTransaction isLoading={loading} pathname={pathname} />
+              ) : (
+                <TransactionsPage isLoading={loading} pathname={pathname} />
+              )}
             </div>
           </div>
         )}
