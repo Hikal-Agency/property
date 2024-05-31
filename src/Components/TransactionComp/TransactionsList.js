@@ -43,7 +43,8 @@ import NewTransactionForm from "./NewTransactionForm";
 import { formatNoIntl } from "../_elements/FormatNoIntl";
 
 const TransactionsList = ({
-  filtersData
+  filtersData,
+  visa
 }) => {
   const {
     currentMode,
@@ -181,7 +182,11 @@ const TransactionsList = ({
       console.log("queryParams:: ", queryParams);
 
       let url;
-      url = `${BACKEND_URL}/invoices?page=${page}${queryParams}`;
+      if (visa) {
+        url = `${BACKEND_URL}/invoices?page=${page}&category=Visa`;
+      } else {
+        url = `${BACKEND_URL}/invoices?page=${page}${queryParams}`;
+      }
 
       const response = await axios.get(url, {
         headers: {

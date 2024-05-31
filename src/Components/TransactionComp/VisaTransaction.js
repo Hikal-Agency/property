@@ -337,9 +337,9 @@ const VisaTransaction = ({ pathname }) => {
 
       let url;
       // if (isUrl) {
-      url = `${BACKEND_URL}/invoices?page=${page}${queryParams}`;
+      // url = `${BACKEND_URL}/invoices?page=${page}${queryParams}`;
       // } else {
-      // url = `${BACKEND_URL}/invoices?page=${page}&added_by=${User?.id}`;
+      url = `${BACKEND_URL}/invoices?page=${page}&category=Visa`;
       // }
 
       const response = await axios.get(url, {
@@ -397,7 +397,7 @@ const VisaTransaction = ({ pathname }) => {
       />
 
       {/* TRANSACTIONS LIST */}
-      <TransactionsList filtersData={filtersData} />
+      <TransactionsList filtersData={filtersData} visa={true} />
 
       {singleTransModal && (
         <SingleTransactionModal
