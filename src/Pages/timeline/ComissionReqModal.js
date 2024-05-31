@@ -178,95 +178,6 @@ const CommissionReqModal = ({
   };
 
   const token = localStorage.getItem("auth-token");
-  // const GenerateRequest = () => {
-  //   // setbtnloading(true);
-
-  //   generatePDF(commReqData);
-  //   console.log("generatepdf response: ", generatePDF());
-
-  //   const data = {
-  //     deal_id: commReqModal?.id,
-  //     invoice_type: "Income",
-  //     category: "Commission",
-  //     country: "UAE",
-  //     status: "Unpaid",
-  //     vendor_id: commReqData?.vendor_id,
-  //     currency: commReqData?.currency,
-  //     percent: commReqData?.comm_percent,
-  //     vat: commReqData?.vat,
-  //     amount: commReqData?.amount,
-  //     total_amount: commReqData?.total_amount,
-  //     date: commReqData?.date,
-
-  //   };
-
-  //   axios
-  //     .post(`${BACKEND_URL}/invoices`, data, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       console.log("Result: ");
-  //       console.log("Result: ", result);
-  //       setbtnloading(false);
-  //       if (result?.data?.status === false || result?.status === false) {
-  //         toast.error(result?.data?.message || result?.message, {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //         return;
-  //       }
-
-  //       // setCommReqData({
-  //       //   ...commReqData,
-  //       //   invoice_id: result?.data?.data?.id,
-  //       //   vendor_id: null,
-  //       //   vendor_name: null,
-  //       //   address: null,
-  //       //   trn: null,
-  //       // });
-
-  //       // const pdfData = {
-  //       //   ...commReqData,
-  //       //   invoice_id: result?.data?.data?.id,
-  //       // };
-
-  //       // generatePDF(pdfData);
-
-  //       toast.success("Commission Request Generated Successfully.", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       setbtnloading(false);
-  //       console.log(err);
-  //       toast.error("Soemthing Went Wrong! Please Try Again", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     });
-  // };
 
   const GenerateRequest = () => {
     setbtnloading(true);
@@ -274,7 +185,7 @@ const CommissionReqModal = ({
     const pdfBlob = generatePDF(commReqData);
 
     const formData = new FormData();
-    formData.append("file", pdfBlob, `Invoice_${commReqData?.id}.pdf`);
+    formData.append("tax_invoice", pdfBlob, `Invoice_${commReqData?.id}.pdf`);
     formData.append("deal_id", commReqModal?.id);
     formData.append("invoice_type", "Income");
     formData.append("category", "Commission");
@@ -289,7 +200,7 @@ const CommissionReqModal = ({
     formData.append("date", commReqData?.date);
 
     axios
-      .post(`${BACKEND_URL}/invoices`, formData, {
+      .post(`${BACKEND_URL}/editdeal/${commReqModal?.id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
