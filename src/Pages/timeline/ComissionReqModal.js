@@ -761,7 +761,6 @@ const CommissionReqModal = ({
                     <Box
                       sx={{
                         ...darkModeColors,
-                        // marginTop:"20p"
                       }}
                     >
                       {/* VENDORS LIST */}
