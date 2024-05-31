@@ -283,8 +283,9 @@ const CommissionReqModal = ({
     // Define the document structure
     const addHeader = () => {
       // Add the logo
-      const logoUrl = "assets/hikal-real.jpg";
-      doc.addImage(logoUrl, "JPEG", 20, 10, 50, 20);
+      // const logoUrl = "assets/hikal-real.jpg";
+      const logoUrl = "assets/hikal-logo.png";
+      doc.addImage(logoUrl, "JPEG", 10, 2, 50, 50);
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
