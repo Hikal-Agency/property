@@ -6,7 +6,7 @@ import {
   MenuItem,
   TextField,
   FormControlLabel,
-  Checkbox
+  Checkbox,
 } from "@mui/material";
 import React, { useRef, useState, useEffect } from "react";
 import Select from "react-select";
@@ -40,7 +40,7 @@ const NewTransactionForm = ({
   edit,
   transData,
   handleClose,
-  fullRow
+  fullRow,
 }) => {
   console.log("user list: ", user);
   const {
@@ -62,6 +62,7 @@ const NewTransactionForm = ({
   const [includeVat, setIncludeVat] = useState(false);
   const [pettyCash, setPettyCash] = useState(false);
   const [updatedField, setUpdatedField] = useState();
+  const [imagePreview, setImagePreview] = useState(null);
 
   const token = localStorage.getItem("auth-token");
 
@@ -76,7 +77,7 @@ const NewTransactionForm = ({
     setUpdatedField(id);
   };
 
-  // VAT TOGGLE 
+  // VAT TOGGLE
   const toggleVat = (value) => {
     setIncludeVat(value);
     if (value === true) {
@@ -85,7 +86,7 @@ const NewTransactionForm = ({
       setAddTransactionData({
         ...addTransactionData,
         vat: 0,
-        amount: addTransactionData?.total_amount
+        amount: addTransactionData?.total_amount,
       });
     }
   };
@@ -96,7 +97,12 @@ const NewTransactionForm = ({
     } else {
       console.log("VAT NOT INCLUDED!");
     }
-  }, [updatedField, addTransactionData?.amount, addTransactionData?.vat, addTransactionData?.total_amount]);
+  }, [
+    updatedField,
+    addTransactionData?.amount,
+    addTransactionData?.vat,
+    addTransactionData?.total_amount,
+  ]);
 
   const autoCalculate = (upField) => {
     const inclVat = includeVat;
@@ -130,7 +136,10 @@ const NewTransactionForm = ({
           let vat = amount * (5 / 100);
           vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
           let totalAmount = amount + parseFloat(vat);
-          totalAmount = totalAmount % 1 === 0 ? totalAmount.toFixed(0) : totalAmount.toFixed(2);
+          totalAmount =
+            totalAmount % 1 === 0
+              ? totalAmount.toFixed(0)
+              : totalAmount.toFixed(2);
           setAddTransactionData((prevData) => ({
             ...prevData,
             vat: vat,
@@ -150,7 +159,10 @@ const NewTransactionForm = ({
           }
           if (!isNaN(amount)) {
             totalAmount = parseFloat(amount) + parseFloat(vat);
-            totalAmount = totalAmount % 1 === 0 ? totalAmount.toFixed(0) : totalAmount.toFixed(2);
+            totalAmount =
+              totalAmount % 1 === 0
+                ? totalAmount.toFixed(0)
+                : totalAmount.toFixed(2);
           }
           setAddTransactionData((prevData) => ({
             ...prevData,
@@ -170,7 +182,7 @@ const NewTransactionForm = ({
 
     const reader = new FileReader();
     reader.onload = () => {
-      // setImagePreview(reader.result);
+      setImagePreview(reader.result);
 
       const base64Image = reader.result;
       setAddTransactionData({
@@ -351,22 +363,27 @@ const NewTransactionForm = ({
         sx={{
           ...darkModeColors,
           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-          {
-            right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-            transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-          },
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
           "& legend": {
             textAlign: isLangRTL(i18n.language) ? "right" : "left",
           },
         }}
-        className={`p-5 ${themeBgImg && (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-          } ${!themeBgImg && "py-0 rounded-xl shadow-sm"
-          }`}
+        className={`p-5 ${
+          themeBgImg &&
+          (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+        } ${!themeBgImg && "py-0 rounded-xl shadow-sm"}`}
       >
         <h3 className="text-primary mb-5 text-center font-semibold">
           {t("new_transaction")}
         </h3>
-        <div className={`grid grid-cols-1 ${fullRow && "md:grid-cols-2 lg:grid-cols-3 gap-5"}`}>
+        <div
+          className={`grid grid-cols-1 ${
+            fullRow && "md:grid-cols-2 lg:grid-cols-3 gap-5"
+          }`}
+        >
           {/* INVOICE DETAILS */}
           <div className="flex flex-col">
             {/* CATEGORY */}
@@ -446,7 +463,9 @@ const NewTransactionForm = ({
             />
             {/* USER */}
             <FormControl
-              className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
               sx={{
                 minWidth: "100%",
                 // border: 1,
@@ -515,7 +534,9 @@ const NewTransactionForm = ({
             </FormControl>
             {/* VENDOR */}
             <FormControl
-              className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
+              className={`${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
               sx={{
                 minWidth: "100%",
                 // border: 1,
@@ -591,7 +612,9 @@ const NewTransactionForm = ({
                 label={t("date")}
                 views={["day", "month", "year"]}
                 onChange={(newValue) => {
-                  const formattedDate = moment(newValue?.$d).format("YYYY-MM-DD");
+                  const formattedDate = moment(newValue?.$d).format(
+                    "YYYY-MM-DD"
+                  );
 
                   setAddTransactionData((prev) => ({
                     ...prev,
@@ -697,7 +720,8 @@ const NewTransactionForm = ({
                 sx={{
                   marginBottom: "20px",
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: fieldErrors?.amount === true && "#DA1F26 !important",
+                    borderColor:
+                      fieldErrors?.amount === true && "#DA1F26 !important",
                   },
                 }}
                 variant="outlined"
@@ -793,7 +817,8 @@ const NewTransactionForm = ({
                     sx={{
                       marginBottom: "20px",
                       "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: fieldErrors?.amount === true && "#DA1F26 !important",
+                        borderColor:
+                          fieldErrors?.amount === true && "#DA1F26 !important",
                       },
                     }}
                     variant="outlined"
@@ -810,6 +835,13 @@ const NewTransactionForm = ({
           <div className="flex flex-col h-full justify-center items-center gap-5">
             {!edit && (
               <>
+                {imagePreview && (
+                  <div className="  mb-5 flex items-center justify-center ">
+                    <div className=" rounded-lg border">
+                      <img src={imagePreview} width="100px" height="100px" />
+                    </div>
+                  </div>
+                )}
                 <input
                   accept="image/*"
                   style={{ display: "none" }}

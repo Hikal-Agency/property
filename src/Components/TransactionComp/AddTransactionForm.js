@@ -75,7 +75,7 @@ const AddTransactionForm = ({
   const handleImgUpload = (e) => {
     const file = e.target.files[0];
 
-    console.log("files:: ", file);
+    console.log("selected file:: ", file);
 
     const reader = new FileReader();
     reader.onload = () => {
