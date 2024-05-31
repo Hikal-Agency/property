@@ -56,7 +56,10 @@ const AddTransactionForm = ({
   const searchRef = useRef();
 
   const [btnLoading, setBtnLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
   const token = localStorage.getItem("auth-token");
+
+  console.log("image preview: ", imagePreview);
 
   console.log("addtransaction:: ", addTransactionData);
   const handleChange = (e) => {
@@ -76,7 +79,7 @@ const AddTransactionForm = ({
 
     const reader = new FileReader();
     reader.onload = () => {
-      // setImagePreview(reader.result);
+      setImagePreview(reader.result);
 
       const base64Image = reader.result;
       setAddTransactionData({
@@ -619,6 +622,13 @@ const AddTransactionForm = ({
 
         {!edit && (
           <>
+            {imagePreview && (
+              <div className="  mb-5 flex items-center justify-center ">
+                <div className=" rounded-lg border">
+                  <img src={imagePreview} width="100px" height="100px" />
+                </div>
+              </div>
+            )}
             <input
               accept="image/*"
               style={{ display: "none" }}

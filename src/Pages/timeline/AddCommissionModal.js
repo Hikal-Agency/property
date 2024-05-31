@@ -89,6 +89,8 @@ const AddCommissionModal = ({
     category: commData?.category || "Commission",
   });
 
+  console.log("selected commission data:", commissionData);
+
   // Function to find the username of selected user or vendor
   const getSelectedOption = () => {
     // Find the selected option based on the condition

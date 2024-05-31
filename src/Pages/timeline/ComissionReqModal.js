@@ -13,28 +13,16 @@ import {
 } from "@mui/material";
 import Select from "react-select";
 
-import {
-  currencies,
-  enquiry_options,
-  feedback_options,
-} from "../../Components/_elements/SelectOptions";
-import {
-  FaPhoneAlt,
-  FaEnvelope,
-  FaMapMarkerAlt,
-  FaGlobe,
-} from "react-icons/fa";
+import { currencies } from "../../Components/_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
 
-import { MdClose, MdFileUpload } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import { selectStyles } from "../../Components/_elements/SelectStyles";
-import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { CommissionRequestPDF } from "./CommissionRequestPDF";
 import jsPDF from "jspdf";
 
 const CommissionReqModal = ({
@@ -67,7 +55,6 @@ const CommissionReqModal = ({
   const currentDate = moment().format("YYYY-MM-DD");
 
   const [updatedField, setUpdatedField] = useState("");
-  const [openPDF, setOpenPDF] = useState(false);
   const [pdfUrl, setPDFUrl] = useState(false);
 
   const searchRef = useRef();
@@ -285,7 +272,7 @@ const CommissionReqModal = ({
     const pdfBlob = generatePDF(commReqData);
 
     const formData = new FormData();
-    formData.append("pdf", pdfBlob, `Invoice_${commReqData?.id}.pdf`);
+    formData.append("file", pdfBlob, `Invoice_${commReqData?.id}.pdf`);
     formData.append("deal_id", commReqModal?.id);
     formData.append("invoice_type", "Income");
     formData.append("category", "Commission");
@@ -1414,9 +1401,6 @@ const CommissionReqModal = ({
               ></iframe>
             )}
           </div>
-          {openPDF && (
-            <CommissionRequestPDF data={openPDF} setOpenPDF={setOpenPDF} />
-          )}
         </div>
       </div>
     </Modal>
