@@ -253,6 +253,33 @@ const CommissionReqModal = ({
       unit: "mm",
     });
 
+    const addWatermark = () => {
+      const watermarkUrl = "assets/pdf-watermark.png";
+      console.log("watermark url: ", watermarkUrl);
+      const pageCount = doc.internal.getNumberOfPages();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      console.log("");
+
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+
+        // doc.setGState(new doc.GState({ opacity: 0.1 })); // Set opacity for watermark
+        const x = pageWidth / 2 - 50; // Centered horizontally
+        const y = pageHeight / 2 - 50; // Centered vertically
+        const width = 100;
+        const height = 100;
+
+        // doc.addImage(watermarkUrl, "PNG", x, y, width, height);
+        doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+        // doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+        // doc.setGState(new doc.GState({ opacity: 1 })); // Reset opacity to default
+      }
+    };
+
+    addWatermark();
+
     // Define the document structure
     const addHeader = () => {
       // Add the logo
@@ -399,10 +426,67 @@ const CommissionReqModal = ({
       doc.line(150, startY + 15, 190, startY + 15);
     };
 
+    // const addFooter = () => {
+    //   const pageHeight = doc.internal.pageSize.getHeight();
+    //   doc.setLineWidth(0.5);
+    //   doc.line(20, pageHeight - 30, 190, pageHeight - 30);
+
+    //   doc.setFont("helvetica", "normal");
+    //   doc.setFontSize(10);
+    //   doc.setTextColor(0, 0, 0);
+
+    //   const iconOffset = 4;
+    //   doc.setFont("helvetica", "bold");
+    //   doc.setTextColor(255, 0, 0);
+
+    //   // Phone icon
+    //   doc.setFontSize(12);
+    //   // doc.text("\u260E", 20, pageHeight - 23); // Use Unicode for phone icon
+    //   const callIcon = "assets/icon-call.png";
+    //   doc.addImage(callIcon, "JPEG", 17, pageHeight - 26, 5, 5);
+    //   doc.setFontSize(10);
+    //   doc.setTextColor(0, 0, 0);
+    //   doc.text("+971 4 272 2249", 20 + iconOffset, pageHeight - 23);
+
+    //   // Email icon
+    //   doc.setFontSize(12);
+    //   doc.setTextColor(255, 0, 0);
+    //   // doc.text("\u2709", 20, pageHeight - 10); // Use Unicode for email icon
+    //   const emailIcon = "assets/icon-email.png";
+    //   doc.addImage(emailIcon, "JPEG", 17, pageHeight - 14, 5, 5);
+    //   doc.setFontSize(10);
+    //   doc.setTextColor(0, 0, 0);
+    //   doc.text("info@hikalagency.ae", 20 + iconOffset, pageHeight - 10);
+
+    //   // Office address icon
+    //   doc.setFontSize(12);
+    //   doc.setTextColor(255, 0, 0);
+    //   // doc.text("\u25CF", 130, pageHeight - 23); // Use a dot as an icon
+    //   const locIcon = "assets/icon-location.png";
+    //   doc.addImage(locIcon, "JPEG", 126, pageHeight - 23, 5, 5);
+    //   doc.setFontSize(10);
+    //   doc.setTextColor(0, 0, 0);
+    //   doc.text(
+    //     "Office No. 2704, API World Tower,",
+    //     130 + iconOffset,
+    //     pageHeight - 23
+    //   );
+    //   doc.text("Sheikh Zayed Road, Dubai", 130 + iconOffset, pageHeight - 17);
+
+    //   // Website icon
+    //   doc.setFontSize(12);
+    //   doc.setTextColor(255, 0, 0);
+    //   // doc.text("\u25CF", 130, pageHeight - 10); // Use a dot as an icon
+    //   const webIcon = "assets/icon-website.png";
+    //   doc.addImage(webIcon, "JPEG", 126, pageHeight - 13, 5, 5);
+    //   doc.setFontSize(10);
+    //   doc.setTextColor(0, 0, 0);
+    //   doc.text("www.hikalproperties.com", 130 + iconOffset, pageHeight - 10);
+    // };
     const addFooter = () => {
       const pageHeight = doc.internal.pageSize.getHeight();
       doc.setLineWidth(0.5);
-      doc.line(20, pageHeight - 30, 190, pageHeight - 30);
+      doc.line(20, pageHeight - 20, 190, pageHeight - 20);
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
@@ -414,62 +498,62 @@ const CommissionReqModal = ({
 
       // Phone icon
       doc.setFontSize(12);
-      // doc.text("\u260E", 20, pageHeight - 23); // Use Unicode for phone icon
+
       const callIcon = "assets/icon-call.png";
-      doc.addImage(callIcon, "JPEG", 17, pageHeight - 26, 5, 5);
+      doc.addImage(callIcon, "JPEG", 98, pageHeight - 14, 5, 5);
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
-      doc.text("+971 4 272 2249", 20 + iconOffset, pageHeight - 23);
+      doc.text("+971 4 272 2249", 100 + iconOffset, pageHeight - 10);
 
       // Email icon
       doc.setFontSize(12);
       doc.setTextColor(255, 0, 0);
-      // doc.text("\u2709", 20, pageHeight - 10); // Use Unicode for email icon
+
       const emailIcon = "assets/icon-email.png";
-      doc.addImage(emailIcon, "JPEG", 17, pageHeight - 14, 5, 5);
+      doc.addImage(emailIcon, "JPEG", 152, pageHeight - 14, 5, 5);
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
-      doc.text("info@hikalagency.ae", 20 + iconOffset, pageHeight - 10);
+      doc.text("info@hikalagency.ae", 155 + iconOffset, pageHeight - 10);
 
       // Office address icon
       doc.setFontSize(12);
       doc.setTextColor(255, 0, 0);
-      // doc.text("\u25CF", 130, pageHeight - 23); // Use a dot as an icon
       const locIcon = "assets/icon-location.png";
-      doc.addImage(locIcon, "JPEG", 126, pageHeight - 23, 5, 5);
+      doc.addImage(locIcon, "JPEG", 18, pageHeight - 14, 5, 5);
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
       doc.text(
-        "Office No. 2704, API World Tower,",
-        130 + iconOffset,
-        pageHeight - 23
+        "Office No. 2704, API World Tower.",
+        20 + iconOffset,
+        pageHeight - 10
       );
-      doc.text("Sheikh Zayed Road, Dubai", 130 + iconOffset, pageHeight - 17);
-
-      // Website icon
-      doc.setFontSize(12);
-      doc.setTextColor(255, 0, 0);
-      // doc.text("\u25CF", 130, pageHeight - 10); // Use a dot as an icon
-      const webIcon = "assets/icon-website.png";
-      doc.addImage(webIcon, "JPEG", 126, pageHeight - 13, 5, 5);
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.text("www.hikalproperties.com", 130 + iconOffset, pageHeight - 10);
+      // doc.text("Sheikh Zayed Road, Dubai", 130 + iconOffset, pageHeight - 17);
     };
 
-    const addWatermark = () => {
-      const watermarkUrl = "/assets/hikal-wtermark.png"; // Adjust the path if necessary
-      const pageCount = doc.internal.getNumberOfPages();
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
+    // const addWatermark = () => {
+    //   const watermarkUrl = "assets/pdf-watermark.png";
+    //   console.log("watermark url: ", watermarkUrl);
+    //   const pageCount = doc.internal.getNumberOfPages();
+    //   const pageWidth = doc.internal.pageSize.getWidth();
+    //   const pageHeight = doc.internal.pageSize.getHeight();
 
-      for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        doc.setGState(new doc.GState({ opacity: 0.1 })); // Set opacity for watermark
-        doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
-        doc.setGState(new doc.GState({ opacity: 1 })); // Reset opacity to default
-      }
-    };
+    //   console.log("");
+
+    //   for (let i = 1; i <= pageCount; i++) {
+    //     doc.setPage(i);
+
+    //     // doc.setGState(new doc.GState({ opacity: 0.1 })); // Set opacity for watermark
+    //     const x = pageWidth / 2 - 50; // Centered horizontally
+    //     const y = pageHeight / 2 - 50; // Centered vertically
+    //     const width = 100;
+    //     const height = 100;
+
+    //     // doc.addImage(watermarkUrl, "PNG", x, y, width, height);
+    //     doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+    //     // doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+    //     // doc.setGState(new doc.GState({ opacity: 1 })); // Reset opacity to default
+    //   }
+    // };
 
     addHeader();
     addClientDetails();
@@ -479,7 +563,7 @@ const CommissionReqModal = ({
     const bankDetailsHeight = doc.lastAutoTable.finalY;
     addSignatureSection(bankDetailsHeight + 15);
     addFooter();
-    addWatermark();
+    // addWatermark();
 
     // Save the PDF as Blob
     const pdfBlob = doc.output("blob");
