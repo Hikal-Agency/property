@@ -41,8 +41,10 @@ const NewTransactionForm = ({
   transData,
   handleClose,
   fullRow,
+  visa,
 }) => {
   console.log("user list: ", user);
+  console.log("visa: ", visa);
   const {
     currentMode,
     darkModeColors,
@@ -240,6 +242,20 @@ const NewTransactionForm = ({
       category: false,
     });
 
+    if (visa && !addTransactionData?.image) {
+      toast.error(`Invoice image is required`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
     setBtnLoading(true);
 
     let url;
@@ -377,7 +393,7 @@ const NewTransactionForm = ({
         } ${!themeBgImg && "py-0 rounded-xl shadow-sm"}`}
       >
         <h3 className="text-primary mb-5 text-center font-semibold">
-          {t("new_transaction")}
+          {visa ? t("visa") : t("new_transaction")}
         </h3>
         <div
           className={`grid grid-cols-1 ${
@@ -386,60 +402,64 @@ const NewTransactionForm = ({
         >
           {/* INVOICE DETAILS */}
           <div className="flex flex-col">
-            {/* CATEGORY */}
-            <Select
-              id="category"
-              options={invoice_category(t)
-                ?.filter((trans) => trans.value !== "Commission")
-                .map((trans) => ({
-                  value: trans.value,
-                  label: trans.label,
-                }))}
-              value={invoice_category(t)?.filter(
-                (trans) => trans?.value === addTransactionData?.category
-              )}
-              onChange={(e) => {
-                setAddTransactionData({
-                  ...addTransactionData,
-                  category: e.value,
-                });
-              }}
-              placeholder={t("label_category")}
-              // className={`mb-4`}
-              menuPortalTarget={document.body}
-              // styles={selectStyles(currentMode, primaryColor)}
-              styles={getMergedStyles(
-                fieldErrors.category,
-                selectStyles(currentMode, primaryColor)
-              )}
-              required={true}
-            />
-            {/* INVOICE TYPE */}
-            <Select
-              id="invoice_type"
-              options={commission_type(t, false)?.map((trans) => ({
-                value: trans.value,
-                label: trans.value,
-              }))}
-              value={commission_type(t, false)?.filter(
-                (comm) => comm?.value === addTransactionData?.invoice_type
-              )}
-              onChange={(e) => {
-                console.log("commission type e: ", e);
-                setAddTransactionData({
-                  ...addTransactionData,
-                  invoice_type: e.value,
-                });
-              }}
-              placeholder={t("type")}
-              // className={`mb-5`}
-              menuPortalTarget={document.body}
-              // styles={selectStyles(currentMode, primaryColor)}
-              styles={getMergedStyles(
-                fieldErrors.invoice_type,
-                selectStyles(currentMode, primaryColor)
-              )}
-            />
+            {visa ? null : (
+              <>
+                {/* CATEGORY */}
+                <Select
+                  id="category"
+                  options={invoice_category(t)
+                    ?.filter((trans) => trans.value !== "Commission")
+                    .map((trans) => ({
+                      value: trans.value,
+                      label: trans.label,
+                    }))}
+                  value={invoice_category(t)?.filter(
+                    (trans) => trans?.value === addTransactionData?.category
+                  )}
+                  onChange={(e) => {
+                    setAddTransactionData({
+                      ...addTransactionData,
+                      category: e.value,
+                    });
+                  }}
+                  placeholder={t("label_category")}
+                  // className={`mb-4`}
+                  menuPortalTarget={document.body}
+                  // styles={selectStyles(currentMode, primaryColor)}
+                  styles={getMergedStyles(
+                    fieldErrors.category,
+                    selectStyles(currentMode, primaryColor)
+                  )}
+                  required={true}
+                />
+                {/* INVOICE TYPE */}
+                <Select
+                  id="invoice_type"
+                  options={commission_type(t, false)?.map((trans) => ({
+                    value: trans.value,
+                    label: trans.value,
+                  }))}
+                  value={commission_type(t, false)?.filter(
+                    (comm) => comm?.value === addTransactionData?.invoice_type
+                  )}
+                  onChange={(e) => {
+                    console.log("commission type e: ", e);
+                    setAddTransactionData({
+                      ...addTransactionData,
+                      invoice_type: e.value,
+                    });
+                  }}
+                  placeholder={t("type")}
+                  // className={`mb-5`}
+                  menuPortalTarget={document.body}
+                  // styles={selectStyles(currentMode, primaryColor)}
+                  styles={getMergedStyles(
+                    fieldErrors.invoice_type,
+                    selectStyles(currentMode, primaryColor)
+                  )}
+                />
+              </>
+            )}
             {/* COUNTRY */}
             <Select
               id="country"

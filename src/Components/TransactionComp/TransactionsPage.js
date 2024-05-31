@@ -42,8 +42,9 @@ import { DatePicker } from "@mui/x-date-pickers";
 import NewTransactionForm from "./NewTransactionForm";
 import TransactionsList from "./TransactionsList";
 import { formatNoIntl } from "../_elements/FormatNoIntl";
+import { useLocation } from "react-router-dom";
 
-const TransactionsPage = () => {
+const TransactionsPage = ({ pathname }) => {
   const {
     currentMode,
     darkModeColors,
@@ -68,6 +69,10 @@ const TransactionsPage = () => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
+  console.log("location:: ", pathname);
+
+  const visaPage = pathname === "/new-transactions" ? true : false;
+
   const handleClick = (event) => {
     setOpen(!open);
     setAnchorEl(event.currentTarget);
@@ -89,7 +94,7 @@ const TransactionsPage = () => {
 
   const [addTransactionData, setAddTransactionData] = useState({
     user_id: "",
-    invoice_type: "",
+    invoice_type: visaPage ? "Expense" : "",
     amount: 0,
     total_amount: 0,
     date: "",
@@ -98,10 +103,12 @@ const TransactionsPage = () => {
     status: "Paid",
     paid_by: "",
     vendor_id: "",
-    category: "",
+    category: visaPage ? "Visa" : "",
     image: null,
     vat: 0,
   });
+
+  console.log("addtransaction data: ", addTransactionData);
 
   const [user, setUser] = useState([]);
   const [userLoading, setUserLoading] = useState(false);
@@ -376,11 +383,14 @@ const TransactionsPage = () => {
   return (
     <div className="flex flex-col gap-5">
       {/* FILTERS */}
-      <div className={`fixed top-20 flex flex-col items-end ${isLangRTL(i18n.language) ? "left-0" : "right-0"
+      <div
+        className={`fixed top-20 flex flex-col items-end ${
+          isLangRTL(i18n.language) ? "left-0" : "right-0"
         }`}
         style={{
           zIndex: 10,
-        }}>
+        }}
+      >
         <button
           onClick={(e) => {
             handleClick(e);
@@ -392,8 +402,11 @@ const TransactionsPage = () => {
             },
             color: "white",
           }}
-          className={`w-fit bg-primary text-white py-2 px-3 ${isLangRTL(i18n.language) ? "left-0 rounded-r-full" : "right-0 rounded-l-full"
-            }`}
+          className={`w-fit bg-primary text-white py-2 px-3 ${
+            isLangRTL(i18n.language)
+              ? "left-0 rounded-r-full"
+              : "right-0 rounded-l-full"
+          }`}
         >
           {open ? (
             <div className="flex items-center">
@@ -407,8 +420,11 @@ const TransactionsPage = () => {
         </button>
         {open && (
           <div
-            className={`p-2 mx-2 my-2 rounded-xl ${currentMode === "dark" ? "blur-bg-black text-white" : "blur-bg-white text-black"
-              }`}
+            className={`p-2 mx-2 my-2 rounded-xl ${
+              currentMode === "dark"
+                ? "blur-bg-black text-white"
+                : "blur-bg-white text-black"
+            }`}
           >
             <div
               className="overflow-y-scroll hide-scrollbar p-2"
@@ -511,12 +527,12 @@ const TransactionsPage = () => {
                   sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                    {
-                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                      transformOrigin: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                     "& legend": {
                       textAlign: isLangRTL(i18n.language) ? "right" : "left",
                     },
@@ -524,8 +540,9 @@ const TransactionsPage = () => {
                 >
                   {/* USER */}
                   <FormControl
-                    className={`${currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                     sx={{
                       minWidth: "100%",
                       // border: 1,
@@ -593,8 +610,9 @@ const TransactionsPage = () => {
                   </FormControl>
                   {/* VENDOR */}
                   <FormControl
-                    className={`${currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                     sx={{
                       minWidth: "100%",
                       // border: 1,
@@ -674,10 +692,12 @@ const TransactionsPage = () => {
                           <TextField
                             sx={{
                               "& input": {
-                                color: currentMode === "dark" ? "white" : "black",
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                               "& .MuiSvgIcon-root": {
-                                color: currentMode === "dark" ? "white" : "black",
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                               "& .MuiOutlinedInput-notchedOutline": {
                                 borderColor:
@@ -707,10 +727,12 @@ const TransactionsPage = () => {
                           <TextField
                             sx={{
                               "& input": {
-                                color: currentMode === "dark" ? "white" : "black",
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                               "& .MuiSvgIcon-root": {
-                                color: currentMode === "dark" ? "white" : "black",
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
                               },
                               "& .MuiOutlinedInput-notchedOutline": {
                                 borderColor:
@@ -804,66 +826,85 @@ const TransactionsPage = () => {
         loading={loading}
         fetchUsers={fetchUsers}
         fullRow={true}
+        visa={visaPage}
       />
 
       {/* TRANSACTIONS LIST */}
-      <TransactionsList
-        filtersData={filtersData}
-      />
+      <TransactionsList filtersData={filtersData} />
 
       {/* VAT CALCULATIONS */}
-      <div className={`w-full flex flex-col gap-5 p-5 ${themeBgImg && (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-        }`}>
+      <div
+        className={`w-full flex flex-col gap-5 p-5 ${
+          themeBgImg &&
+          (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+        }`}
+      >
         <h3 className="text-primary text-center font-semibold">
           {` ${t("vat")}`}
         </h3>
-        {vatData && vatData?.length > 0
-          ? vatData?.map((vat) => (
+        {vatData && vatData?.length > 0 ? (
+          vatData?.map((vat) => (
             <div>
               <div className="bg-primary p-2 text-center text-white font-semibold rounded-t-xl w-full text-center">
                 {vat?.currency}
               </div>
               <div className="grid grid-cols-2 gap-5">
                 {/* INCOME */}
-                <div className={`${!themeBgImg
-                  && (currentMode === "dark" ? "bg-black" : "bg-white")
+                <div
+                  className={`${
+                    !themeBgImg &&
+                    (currentMode === "dark" ? "bg-black" : "bg-white")
                   } rounded-b-xl p-5`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="flex flex-col gap-2 justify-center items-center">
                       <div>{t("income_amount")}</div>
-                      <div className="font-semibold">{vat?.currency} {formatNoIntl(vat?.income_amount.toFixed(2))}</div>
+                      <div className="font-semibold">
+                        {vat?.currency}{" "}
+                        {formatNoIntl(vat?.income_amount.toFixed(2))}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-2 justify-center items-center">
                       <div>{t("vat")}</div>
-                      <div className="font-semibold">{vat?.currency} {formatNoIntl(vat?.income_vat.toFixed(2))}</div>
+                      <div className="font-semibold">
+                        {vat?.currency}{" "}
+                        {formatNoIntl(vat?.income_vat.toFixed(2))}
+                      </div>
                     </div>
                   </div>
                 </div>
                 {/* EXPENSE */}
-                <div className={`${!themeBgImg
-                  && (currentMode === "dark" ? "bg-black" : "bg-white")
+                <div
+                  className={`${
+                    !themeBgImg &&
+                    (currentMode === "dark" ? "bg-black" : "bg-white")
                   } rounded-b-xl p-5`}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div className="flex flex-col gap-2 justify-center items-center">
                       <div>{t("expense_amount")}</div>
-                      <div className="font-semibold">{vat?.currency} {formatNoIntl(vat?.expense_amount.toFixed(2))}</div>
+                      <div className="font-semibold">
+                        {vat?.currency}{" "}
+                        {formatNoIntl(vat?.expense_amount.toFixed(2))}
+                      </div>
                     </div>
                     <div className="flex flex-col gap-2 justify-center items-center">
                       <div>{t("vat")}</div>
-                      <div className="font-semibold">{vat?.currency} {formatNoIntl(vat?.expense_vat.toFixed(2))}</div>
+                      <div className="font-semibold">
+                        {vat?.currency}{" "}
+                        {formatNoIntl(vat?.expense_vat.toFixed(2))}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           ))
-          : (
-            <div>
-              <h1>{t("no_data_found")}</h1>
-            </div>
-          )}
+        ) : (
+          <div>
+            <h1>{t("no_data_found")}</h1>
+          </div>
+        )}
       </div>
 
       {singleTransModal && (

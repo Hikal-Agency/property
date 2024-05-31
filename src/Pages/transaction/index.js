@@ -63,24 +63,20 @@ const Transaction = ({ isLoading }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
-              } ${currentMode === "dark" ? "text-white" : "text-black"
-              }`}
+            className={`w-full p-4 mt-2 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+            } ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
             <div className="w-full flex items-center pb-3">
               <div className="bg-primary h-10 w-1 rounded-full"></div>
-              <h1
-                className={`text-lg font-semibold mx-2 uppercase`}
-              >
-                {pathname === "/transactions"
-                  ? t("transaction")
-                  : t("menu_new_transactions")}
+              <h1 className={`text-lg font-semibold mx-2 uppercase`}>
+                {pathname === "/transactions" ? t("transaction") : t("visa")}
               </h1>
             </div>
 
             <div className="mt-3 pb-3">
               {/* <Transactions isLoading={loading} pathname={pathname} /> */}
-              <TransactionsPage isLoading={loading} />
+              <TransactionsPage isLoading={loading} pathname={pathname} />
             </div>
           </div>
         )}
