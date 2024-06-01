@@ -256,7 +256,6 @@ const CommissionReqModal = ({
 
     const addWatermark = () => {
       const watermarkUrl = "assets/pdf-watermark.png";
-      console.log("watermark url: ", watermarkUrl);
       const pageCount = doc.internal.getNumberOfPages();
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
@@ -267,14 +266,15 @@ const CommissionReqModal = ({
         doc.setPage(i);
 
         // doc.setGState(new doc.GState({ opacity: 0.1 })); // Set opacity for watermark
-        const x = pageWidth / 2 - 50; // Centered horizontally
-        const y = pageHeight / 2 - 50; // Centered vertically
+        const x = pageWidth / 2 - 100; // Centered horizontally
+        const y = pageHeight / 2 - 100; // Centered vertically
         const width = 100;
         const height = 100;
 
         // doc.addImage(watermarkUrl, "PNG", x, y, width, height);
-        doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+        // doc.addImage(watermarkUrl, "PNG", 50, 120, 200, 200, "", "NONE", 0.3);
         // doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+        doc.addImage(watermarkUrl, "PNG", x, y, 200, 200, "", "NONE", 0.3);
         // doc.setGState(new doc.GState({ opacity: 1 })); // Reset opacity to default
       }
     };
