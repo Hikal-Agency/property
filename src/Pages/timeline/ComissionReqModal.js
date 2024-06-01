@@ -492,18 +492,18 @@ const CommissionReqModal = ({
 
       // Draw line at the top of the footer
       doc.setLineWidth(0.5);
-      doc.line(20, pageHeight - 30, pageWidth - 20, pageHeight - 30);
+      doc.line(20, pageHeight - 35, pageWidth - 20, pageHeight - 35);
 
       // Add the footer image
       const footerImage = "assets/footer-pdf.png"; // Ensure the path is correct and image is accessible
-      const footerHeight = 20; // Adjust height to fit your layout
+      const footerHeight = 27; // Adjust height to fit your layout
 
       // Add image covering the footer area
       doc.addImage(
         footerImage,
         "PNG",
         20,
-        pageHeight - footerHeight - 10,
+        pageHeight - footerHeight - 7,
         pageWidth - 45,
         footerHeight
       );
