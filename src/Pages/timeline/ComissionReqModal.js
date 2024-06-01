@@ -256,7 +256,6 @@ const CommissionReqModal = ({
 
     const addWatermark = () => {
       const watermarkUrl = "assets/pdf-watermark.png";
-      console.log("watermark url: ", watermarkUrl);
       const pageCount = doc.internal.getNumberOfPages();
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
@@ -267,14 +266,15 @@ const CommissionReqModal = ({
         doc.setPage(i);
 
         // doc.setGState(new doc.GState({ opacity: 0.1 })); // Set opacity for watermark
-        const x = pageWidth / 2 - 50; // Centered horizontally
-        const y = pageHeight / 2 - 50; // Centered vertically
+        const x = pageWidth / 2 - 100; // Centered horizontally
+        const y = pageHeight / 2 - 100; // Centered vertically
         const width = 100;
         const height = 100;
 
         // doc.addImage(watermarkUrl, "PNG", x, y, width, height);
-        doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+        // doc.addImage(watermarkUrl, "PNG", 50, 120, 200, 200, "", "NONE", 0.3);
         // doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+        doc.addImage(watermarkUrl, "PNG", x, y, 200, 200, "", "NONE", 0.3);
         // doc.setGState(new doc.GState({ opacity: 1 })); // Reset opacity to default
       }
     };
@@ -287,7 +287,7 @@ const CommissionReqModal = ({
 
       // Add the header image
       const headerImg = "assets/header-pdf.png";
-      doc.addImage(headerImg, "PNG", 10, 2, pageWidth - 25, 35);
+      doc.addImage(headerImg, "PNG", 0, 2, pageWidth, 35);
       // const logoUrl = "assets/hikal-logo.png";
       // doc.addImage(logoUrl, "JPEG", 10, 2, 50, 50);
 
@@ -492,19 +492,19 @@ const CommissionReqModal = ({
 
       // Draw line at the top of the footer
       doc.setLineWidth(0.5);
-      doc.line(20, pageHeight - 35, pageWidth - 20, pageHeight - 35);
+      doc.line(5, pageHeight - 35, pageWidth - 5, pageHeight - 35);
 
       // Add the footer image
-      const footerImage = "assets/footer-pdf.png"; // Ensure the path is correct and image is accessible
+      const footerImage = "assets/Footer.jpg"; // Ensure the path is correct and image is accessible
       const footerHeight = 27; // Adjust height to fit your layout
 
       // Add image covering the footer area
       doc.addImage(
         footerImage,
-        "PNG",
-        20,
-        pageHeight - footerHeight - 7,
-        pageWidth - 45,
+        "JPEG",
+        0,
+        pageHeight - footerHeight,
+        pageWidth,
         footerHeight
       );
     };
