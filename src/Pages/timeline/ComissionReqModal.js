@@ -65,6 +65,7 @@ const CommissionReqModal = ({
     address: null,
     trn: null,
     unit: commReqModal?.unit || null,
+    invoice_id: commReqModal?.lid || null,
     date: moment().format("YYYY-MM-DD"),
     currency: commReqModal?.currency || "AED",
     comm_amount: commReqModal?.comm_amount || null,
@@ -286,60 +287,60 @@ const CommissionReqModal = ({
 
       // Add the header image
       const headerImg = "assets/header-pdf.png";
-      doc.addImage(headerImg, "PNG", 10, 2, pageWidth - 25, 50);
+      doc.addImage(headerImg, "PNG", 10, 2, pageWidth - 25, 30);
       // const logoUrl = "assets/hikal-logo.png";
       // doc.addImage(logoUrl, "JPEG", 10, 2, 50, 50);
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
-      doc.text("TAX INVOICE", 105, 50, null, null, "center");
+      doc.text("TAX INVOICE", 105, 35, null, null, "center");
 
       // Underline the "TAX INVOICE" title
       const textWidth = doc.getTextWidth("TAX INVOICE");
       doc.setLineWidth(0.5);
-      doc.line(105 - textWidth / 2, 22, 105 + textWidth / 2, 22);
+      doc.line(105 - textWidth / 2, 36, 105 + textWidth / 2, 36);
 
       doc.setFontSize(12);
-      doc.text("Company:", 120, 46);
-      doc.text(`${data?.company}`, 120, 53);
-      doc.text(`TRN No: ${data?.company_trn}`, 120, 60);
-      doc.text(`Email Address: ${data?.company_email} `, 120, 67);
-      doc.text(`Telephone: ${data?.company_tele}`, 120, 74);
+      doc.text("Company:", 120, 66);
+      doc.text(`${data?.company}`, 120, 73);
+      doc.text(`TRN No: ${data?.company_trn}`, 120, 80);
+      doc.text(`Email Address: ${data?.company_email} `, 120, 87);
+      doc.text(`Telephone: ${data?.company_tele}`, 120, 94);
 
-      doc.text("Bill to:", 20, 46);
-      doc.text(`${data?.vendor_name}`, 20, 53);
-      doc.text(`${data?.address}`, 20, 60);
-      doc.text(`TRN No: ${data?.trn}`, 20, 67);
+      doc.text("Bill to:", 20, 73);
+      doc.text(`${data?.vendor_name}`, 20, 80);
+      doc.text(`${data?.address}`, 20, 87);
+      doc.text(`TRN No: ${data?.trn}`, 20, 94);
 
       doc.setFont("helvetica", "normal");
-      doc.text(`Date: ${currentDate}`, 140, 32);
+      doc.text(`Date: ${currentDate}`, 140, 49);
       data?.invoice_id &&
-        doc.text(`Invoice No: ${data?.invoice_id || "-"}`, 140, 38);
+        doc.text(`Invoice No: ${data?.invoice_id || "-"}`, 140, 57);
 
       doc.setDrawColor(0);
       doc.setLineWidth(0.5);
-      doc.line(20, 80, 190, 80);
+      doc.line(20, 101, 190, 101);
     };
 
     const addClientDetails = () => {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(10);
-      doc.text("CLIENT NAME", 20, 92);
-      doc.text("UNIT NO", 75, 92);
-      doc.text("PROJECT NAME", 130, 92);
+      doc.text("CLIENT NAME", 20, 112);
+      doc.text("UNIT NO", 75, 112);
+      doc.text("PROJECT NAME", 130, 112);
 
       doc.setFont("helvetica", "normal");
-      doc.text(`${data?.leadName}`, 20, 100);
-      doc.text(`${data?.unit}`, 75, 100);
-      doc.text(`${data?.project}`, 130, 100);
+      doc.text(`${data?.leadName}`, 20, 120);
+      doc.text(`${data?.unit}`, 75, 120);
+      doc.text(`${data?.project}`, 130, 120);
 
       doc.setLineWidth(0.5);
-      doc.line(20, 110, 190, 110); // Draw a line below the client details
+      doc.line(20, 130, 190, 130); // Draw a line below the client details
     };
 
     const addTable = () => {
       doc.autoTable({
-        startY: 120, // Adjusted startY for spacing
+        startY: 140, // Adjusted startY for spacing
         head: [
           [
             `SALES VALUE ${data?.currency}`,
@@ -384,11 +385,11 @@ const CommissionReqModal = ({
     const addBankDetails = (startY) => {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
-      doc.text("All cheques payable to the following account.", 20, startY);
+      doc.text("All cheques payable to the following account.", 20, startY + 6);
 
       // Adjusted the table format to two columns
       doc.autoTable({
-        startY: startY + 5,
+        startY: startY + 10,
         head: [
           ["Bank Name", `${data?.bank_name}`],
           ["Bank Address", `${data?.bank_address}`],
@@ -419,15 +420,15 @@ const CommissionReqModal = ({
     const addSignatureSection = (startY) => {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(10);
-      doc.text("Sincerely,", 20, startY);
-      doc.text("Mr. MOHAMED MEDHAT FATHY IBRAHIM HIKAL", 20, startY + 5);
-      doc.text("CEO", 20, startY + 10);
-      doc.text("HIKAL REAL ESTATE L.L.C", 20, startY + 15);
+      doc.text("Sincerely,", 20, startY + 11);
+      doc.text("Mr. MOHAMED MEDHAT FATHY IBRAHIM HIKAL", 20, startY + 16);
+      doc.text("CEO", 20, startY + 21);
+      doc.text("HIKAL REAL ESTATE L.L.C", 20, startY + 26);
 
       doc.setFont("helvetica", "normal");
-      doc.text("Authorized Signature", 150, startY + 20);
+      doc.text("Authorized Signature", 150, startY + 28);
       doc.setLineWidth(0.5);
-      doc.line(150, startY + 15, 190, startY + 15);
+      doc.line(150, startY + 23, 190, startY + 23);
     };
 
     // const addFooter = () => {
@@ -537,9 +538,9 @@ const CommissionReqModal = ({
     addClientDetails();
     addTable();
     const tableHeight = doc.lastAutoTable.finalY;
-    addBankDetails(tableHeight + 30);
+    addBankDetails(tableHeight + 12);
     const bankDetailsHeight = doc.lastAutoTable.finalY;
-    addSignatureSection(bankDetailsHeight + 15);
+    addSignatureSection(bankDetailsHeight + 6);
     addFooter();
     // addWatermark();
 
