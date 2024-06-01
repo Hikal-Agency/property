@@ -291,7 +291,7 @@ const CommissionReqModal = ({
       // const logoUrl = "assets/hikal-logo.png";
       // doc.addImage(logoUrl, "JPEG", 10, 2, 50, 50);
 
-      doc.setFont("helvetica", "bold");
+      doc.setFont("Arial", "bold");
       doc.setFontSize(18);
       doc.text("TAX INVOICE", 105, 35, null, null, "center");
 
@@ -312,7 +312,7 @@ const CommissionReqModal = ({
       doc.text(`${data?.address}`, 20, 87);
       doc.text(`TRN No: ${data?.trn}`, 20, 94);
 
-      doc.setFont("helvetica", "normal");
+      doc.setFont("Arial", "normal");
       doc.text(`Date: ${currentDate}`, 140, 49);
       data?.invoice_id &&
         doc.text(`Invoice No: ${data?.invoice_id || "-"}`, 140, 57);
@@ -323,13 +323,13 @@ const CommissionReqModal = ({
     };
 
     const addClientDetails = () => {
-      doc.setFont("helvetica", "bold");
+      doc.setFont("Arial", "bold");
       doc.setFontSize(10);
       doc.text("CLIENT NAME", 20, 112);
       doc.text("UNIT NO", 75, 112);
       doc.text("PROJECT NAME", 130, 112);
 
-      doc.setFont("helvetica", "normal");
+      doc.setFont("Arial", "normal");
       doc.text(`${data?.leadName}`, 20, 120);
       doc.text(`${data?.unit}`, 75, 120);
       doc.text(`${data?.project}`, 130, 120);
@@ -377,13 +377,13 @@ const CommissionReqModal = ({
 
       const tableHeight = doc.lastAutoTable.finalY;
 
-      doc.setFont("helvetica", "bold");
+      doc.setFont("Arial", "bold");
       doc.text("TOTAL", 150, tableHeight + 10);
       doc.text(`${data?.total_amount}`, 170, tableHeight + 10);
     };
 
     const addBankDetails = (startY) => {
-      doc.setFont("helvetica", "normal");
+      doc.setFont("Arial", "normal");
       doc.setFontSize(10);
       doc.text("All cheques payable to the following account.", 20, startY + 6);
 
@@ -418,14 +418,14 @@ const CommissionReqModal = ({
     };
 
     const addSignatureSection = (startY) => {
-      doc.setFont("helvetica", "bold");
+      doc.setFont("Arial", "bold");
       doc.setFontSize(10);
       doc.text("Sincerely,", 20, startY + 11);
       doc.text("Mr. MOHAMED MEDHAT FATHY IBRAHIM HIKAL", 20, startY + 16);
       doc.text("CEO", 20, startY + 21);
       doc.text("HIKAL REAL ESTATE L.L.C", 20, startY + 26);
 
-      doc.setFont("helvetica", "normal");
+      doc.setFont("Arial", "normal");
       doc.text("Authorized Signature", 150, startY + 28);
       doc.setLineWidth(0.5);
       doc.line(150, startY + 23, 190, startY + 23);
@@ -436,12 +436,12 @@ const CommissionReqModal = ({
     //   doc.setLineWidth(0.5);
     //   doc.line(20, pageHeight - 20, 190, pageHeight - 20);
 
-    //   doc.setFont("helvetica", "normal");
+    //   doc.setFont("Arial", "normal");
     //   doc.setFontSize(10);
     //   doc.setTextColor(0, 0, 0);
 
     //   const iconOffset = 4;
-    //   doc.setFont("helvetica", "bold");
+    //   doc.setFont("Arial", "bold");
     //   doc.setTextColor(255, 0, 0);
 
     //   // Phone icon
