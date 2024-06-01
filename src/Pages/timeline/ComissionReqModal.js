@@ -287,18 +287,18 @@ const CommissionReqModal = ({
 
       // Add the header image
       const headerImg = "assets/header-pdf.png";
-      doc.addImage(headerImg, "PNG", 10, 2, pageWidth - 25, 30);
+      doc.addImage(headerImg, "PNG", 10, 2, pageWidth - 25, 35);
       // const logoUrl = "assets/hikal-logo.png";
       // doc.addImage(logoUrl, "JPEG", 10, 2, 50, 50);
 
       doc.setFont("Arial", "bold");
       doc.setFontSize(18);
-      doc.text("TAX INVOICE", 105, 35, null, null, "center");
+      doc.text("TAX INVOICE", 105, 39, null, null, "center");
 
       // Underline the "TAX INVOICE" title
       const textWidth = doc.getTextWidth("TAX INVOICE");
       doc.setLineWidth(0.5);
-      doc.line(105 - textWidth / 2, 36, 105 + textWidth / 2, 36);
+      doc.line(105 - textWidth / 2, 40, 105 + textWidth / 2, 40);
 
       doc.setFontSize(12);
       doc.text("Company:", 120, 66);
