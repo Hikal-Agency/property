@@ -502,9 +502,9 @@ const CommissionReqModal = ({
       doc.addImage(
         footerImage,
         "JPEG",
-        1,
+        0,
         pageHeight - footerHeight,
-        pageWidth - 2,
+        pageWidth,
         footerHeight
       );
     };
