@@ -1076,5 +1076,8 @@
     "menu_visa":"Visa",
     "discount": "Discount",
     "cashback": "Cashback",
-    "close_deal": "Close Deal"
+    "close_deal": "Close Deal",
+    "tax_invoice": "Tax Invoice",
+    "generate_tax_invoice": "Generate Tax Invoice",
+    "invoice_id": "Invoice ID"
 } 

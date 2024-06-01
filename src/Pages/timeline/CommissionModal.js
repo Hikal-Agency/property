@@ -164,23 +164,20 @@ const CommissionModal = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseCommissionModal}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -192,15 +189,13 @@ const CommissionModal = ({
 
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
+            className={` ${currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-            } 
+              } 
              p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
@@ -213,9 +208,8 @@ const CommissionModal = ({
                     <div className="flex items-center ">
                       <div className="bg-primary h-10 w-1 rounded-full"></div>
                       <h1
-                        className={`text-lg font-semibold mx-2 uppercase ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                        className={`text-lg font-semibold mx-2 uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
                       >
                         {invoiceModal ? t("invoice") : t("commission")}
                       </h1>
@@ -242,9 +236,8 @@ const CommissionModal = ({
 
                   <div>
                     <div
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      } p-4 `}
+                      className={`${currentMode === "dark" ? "text-white" : "text-black"
+                        } p-4 `}
                     >
                       <div className="col-span-12 md:col-span-4 w-full">
                         {loading ? (
@@ -269,28 +262,25 @@ const CommissionModal = ({
                                 console.log("user true or false: ", data?.user);
                                 return (
                                   <div
-                                    className={`${
-                                      currentMode === "dark"
+                                    className={`${currentMode === "dark"
                                         ? "bg-[#1C1C1C]"
                                         : "bg-[#EEEEEE]"
-                                    } p-4 rounded-xl shadow-sm card-hover mb-5 w-full relative`}
+                                      } p-4 rounded-xl shadow-sm card-hover mb-5 w-full relative`}
                                   >
                                     {/* AMOUNT  */}
                                     <div
-                                      className={`absolute top-4 p-2 text-white font-semibold rounded-sm ${
-                                        isLangRTL(i18n.language)
+                                      className={`absolute top-4 p-2 text-white font-semibold rounded-sm ${isLangRTL(i18n.language)
                                           ? "left-4"
                                           : "right-4"
-                                      } ${
-                                        data?.invoice_type.toLowerCase() ===
-                                        "income"
+                                        } ${data?.invoice_type.toLowerCase() ===
+                                          "income"
                                           ? "bg-green-600"
                                           : "bg-red-600"
-                                      }
+                                        }
                                     `}
                                     >
                                       {data?.invoice_type.toLowerCase() ===
-                                      "income" ? (
+                                        "income" ? (
                                         <>
                                           {data?.currency} {data?.amount}
                                         </>
@@ -304,11 +294,10 @@ const CommissionModal = ({
                                     {/* EDIT  */}
                                     {!invoiceModal && (
                                       <div
-                                        className={`absolute bottom-4 ${
-                                          isLangRTL(i18n.language)
+                                        className={`absolute bottom-4 ${isLangRTL(i18n.language)
                                             ? "left-4"
                                             : "right-4"
-                                        }`}
+                                          }`}
                                       >
                                         <button
                                           className="bg-btn-primary rounded-full p-3 bottom-0 "
@@ -328,11 +317,10 @@ const CommissionModal = ({
                                     <div className="gap-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                                       {/* COMMISSION DETAILS */}
                                       <div
-                                        className={`${
-                                          currentMode === "dark"
+                                        className={`${currentMode === "dark"
                                             ? "bg-[#000000]"
                                             : "bg-[#ffffff]"
-                                        } rounded-md p-5 w-full`}
+                                          } rounded-md p-5 w-full`}
                                       >
                                         <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
                                           {t("commissions")}
@@ -384,15 +372,14 @@ const CommissionModal = ({
 
                                       {/* VENDOR/USER DETAILS */}
                                       <div
-                                        className={`${
-                                          currentMode === "dark"
+                                        className={`${currentMode === "dark"
                                             ? "bg-[#000000]"
                                             : "bg-[#ffffff]"
-                                        } rounded-md p-5 w-full`}
+                                          } rounded-md p-5 w-full`}
                                       >
                                         <h3 className="text-sm font-semibold uppercase mb-6 mt-3 text-center">
                                           {data?.invoice_type.toLowerCase() ===
-                                          "expense"
+                                            "expense"
                                             ? t("user_details")
                                             : t("vendor_details")}
                                         </h3>
@@ -467,7 +454,6 @@ const CommissionModal = ({
                                                     <BsFileEarmarkMedical
                                                       size={100}
                                                       color={"#AAAAAA"}
-                                                      // onClick={() => handlePdfClick(`data:application/pdf;base64, ${data?.receipt[0]?.temp_file}`)}
                                                       onClick={() =>
                                                         handlePdfClick(
                                                           data?.receipt[0]

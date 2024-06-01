@@ -5,6 +5,9 @@ import {
   Modal,
   TextField,
   Box,
+  InputAdornment,
+  FormControlLabel,
+  Checkbox
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -21,6 +24,10 @@ import Select from "react-select";
 import { currencies, enquiry_options } from "../_elements/SelectOptions";
 import usePermission from "../../utils/usePermission";
 import moment from "moment";
+
+import {
+  BsPercent
+} from "react-icons/bs";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -55,6 +62,10 @@ const UpdateLead = ({
   const [imagePreview, setImagePreview] = useState(null);
   const [leadDate, setLeadDate] = useState("");
   const [updatedField, setUpdatedField] = useState("");
+
+  const [withDiscount, setWithDiscount] = useState(false);
+  const [withCashback, setWithCashback] = useState(false);
+
   // const [updateLeadData, setUpdateLeadData] = useState({});
   const [updateLeadData, setUpdateLeadData] = useState({
     agent_comm_amount: 0,
@@ -64,6 +75,10 @@ const UpdateLead = ({
     amount: 0,
     comm_amount: 0,
     comm_percent: 0,
+    discount_amount: 0,
+    discount_percent: 0,
+    cashback_amount: 0,
+    cashback_percent: 0,
     comm_status: '',
     currency: '',
     dealDate: '',
@@ -76,20 +91,15 @@ const UpdateLead = ({
     updated_by: '',
     updated_by_name: '',
     vat: '',
+    leadName: '',
     project: '',
     enquiryType: '',
   });
 
-  // const style = {
-  //   transform: "translate(-50%, -50%)",
-  //   boxShadow: 24,
-  // };
   const style = {
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
-
-  console.log("update lead data:: ", updateLeadData);
 
   const handleImgUpload = (e) => {
     console.log("image upload: ");
@@ -130,15 +140,41 @@ const UpdateLead = ({
     setUpdatedField(id);
   };
 
+  // DISCOUNT
+  const toggleDiscount = (value) => {
+    setWithDiscount(value);
+    if (value === true) {
+      console.log("WITH DISCOUNT");
+    } else {
+      setUpdateLeadData({
+        ...updateLeadData,
+        discount_amount: 0,
+        discount_percent: 0,
+      });
+    }
+  };
+  // CASHBACK 
+  const toggleCashback = (value) => {
+    setWithCashback(value);
+    if (value === true) {
+      console.log("WITH CASHBACK");
+    } else {
+      setUpdateLeadData({
+        ...updateLeadData,
+        cashback_amount: 0,
+        cashback_percent: 0,
+      });
+    }
+  };
+
   useEffect(() => {
     const {
       amount,
-      comm_percent,
-      comm_amount,
-      agent_comm_percent,
-      agent_comm_amount,
-      manager_comm_percent,
-      manager_comm_amount
+      comm_percent, comm_amount,
+      agent_comm_percent, agent_comm_amount,
+      manager_comm_percent, manager_comm_amount,
+      discount_percent, discount_amount,
+      cashback_percent, cashback_amount
     } = updateLeadData;
 
     // COMMISSION AMOUNT
@@ -166,7 +202,31 @@ const UpdateLead = ({
     if (updatedField === "amount" || updatedField === "manager_comm_amount") {
       autoCalculate("manager_comm_percent", comm_amount, manager_comm_amount);
     }
-  }, [updateLeadData.amount, updateLeadData.comm_percent, updateLeadData.comm_amount, updateLeadData.agent_comm_percent, updateLeadData.agent_comm_amount, updateLeadData.manager_comm_percent, updateLeadData.manager_comm_amount, updatedField]);
+    // DISCOUNT PERCENT 
+    if (updatedField === "amount" || updatedField === "discount_amount") {
+      autoCalculate("discount_percent", amount, discount_amount);
+    }
+    // DISCOUNT AMOUNT 
+    if (updatedField === "amount" || updatedField === "discount_percent") {
+      autoCalculate("discount_amount", amount, discount_percent);
+    }
+    // CASHBACK PERCENT 
+    if (updatedField === "amount" || updatedField === "cashback_amount") {
+      autoCalculate("cashback_percent", amount, cashback_amount);
+    }
+    // CASHBACK AMOUNT 
+    if (updatedField === "amount" || updatedField === "cashback_percent") {
+      autoCalculate("cashback_amount", amount, cashback_percent);
+    }
+  }, [
+    updateLeadData.amount,
+    updateLeadData.comm_percent, updateLeadData.comm_amount,
+    updateLeadData.agent_comm_percent, updateLeadData.agent_comm_amount,
+    updateLeadData.manager_comm_percent, updateLeadData.manager_comm_amount,
+    updateLeadData.discount_percent, updateLeadData.discount_amount,
+    updateLeadData.cashback_percent, updateLeadData.cashback_amount,
+    updatedField
+  ]);
 
 
   const autoCalculate = (value, amount, percentOrAmount) => {
@@ -321,8 +381,79 @@ const UpdateLead = ({
         }));
       }
     }
+    // DISCOUNT AMOUNT 
+    if (value === "discount_amount") {
+      const discountPercent = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(discountPercent)) {
+        let discountAmount = (sellingAmount * discountPercent) / 100;
+        discountAmount =
+          discountAmount % 1 === 0 ? discountAmount.toFixed(0) : discountAmount.toFixed(2);
+
+        console.log("DISCOUNT PERCENT = ", discountPercent);
+        console.log("DISCOUNT AMOUNT = ", discountAmount);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          discount_amount: discountAmount,
+        }));
+      }
+    }
+    // DISCOUNT PERCENT 
+    if (value === "discount_percent") {
+      const discountAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(discountAmount)) {
+        let discountPercent = (discountAmount / sellingAmount) * 100 || 0;
+        discountPercent =
+          discountPercent % 1 === 0
+            ? discountPercent.toFixed(0)
+            : discountPercent.toFixed(2);
+
+        console.log("DISCOUNT AMOUNT = ", discountAmount);
+        console.log("DISCOUNT PERCENT = ", discountPercent);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          discount_percent: discountPercent,
+        }));
+      }
+    }
+    // CASHBACK AMOUNT 
+    if (value === "cashback_amount") {
+      const cashbackPercent = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(cashbackPercent)) {
+        let cashbackAmount = (sellingAmount * cashbackPercent) / 100;
+        cashbackAmount =
+          cashbackAmount % 1 === 0 ? cashbackAmount.toFixed(0) : cashbackAmount.toFixed(2);
+
+        console.log("CASHBACK PERCENT = ", cashbackPercent);
+        console.log("CASHBACK AMOUNT = ", cashbackAmount);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          cashback_amount: cashbackAmount,
+        }));
+      }
+    }
+    // CASHBACK PERCENT 
+    if (value === "cashback_percent") {
+      const cashbackAmount = parseFloat(percentOrAmount);
+      if (!isNaN(sellingAmount) && !isNaN(cashbackAmount)) {
+        let cashbackPercent = (cashbackAmount / sellingAmount) * 100 || 0;
+        cashbackPercent =
+          cashbackPercent % 1 === 0
+            ? cashbackPercent.toFixed(0)
+            : cashbackPercent.toFixed(2);
+
+        console.log("CASHBACK AMOUNT = ", cashbackAmount);
+        console.log("CASHBACK PERCENT = ", cashbackPercent);
+
+        setUpdateLeadData((prevData) => ({
+          ...prevData,
+          cashback_percent: cashbackPercent,
+        }));
+      }
+    }
   };
-  // ----------------------
 
   useEffect(() => {
     console.log("lead data is ");
@@ -332,11 +463,16 @@ const UpdateLead = ({
     // GETTING LEAD DETAILS
     if (LeadData) {
       setUpdateLeadData({
+        amount: LeadData.amount,
         agent_comm_amount: LeadData.agent_comm_amount,
         agent_comm_percent: LeadData.agent_comm_percent,
         manager_comm_amount: LeadData.manager_comm_amount,
         manager_comm_percent: LeadData.manager_comm_percent,
-        amount: LeadData.amount,
+
+        discount_amount: LeadData.discount_amount,
+        discount_percent: LeadData.discount_percent,
+        cashback_amount: LeadData.cashback_amount,
+        cashback_percent: LeadData.cashback_percent,
 
         comm_amount: LeadData.comm_amount,
         comm_percent: LeadData.comm_percent,
@@ -354,6 +490,7 @@ const UpdateLead = ({
         updated_by: LeadData.updated_by,
         updated_by_name: LeadData.updated_by_name,
         vat: LeadData.vat,
+        leadName: LeadData.leadName,
         project: LeadData?.project,
         enquiryType: LeadData?.enquiryType,
 
@@ -361,81 +498,14 @@ const UpdateLead = ({
         salesId: LeadData?.salesId,
         closedBy: LeadData?.closedBy,
       });
+      setImagePreview(LeadData.passport);
+      if (LeadData.discount_amount !== 0) {
+        setWithDiscount(true);
+      }
+      if (LeadData.cashback_amount !== 0) {
+        setWithCashback(true);
+      }
     }
-    // axios
-    //   .get(
-    //     `${BACKEND_URL}/closedDeals/${LeadData.lid}`,
-    //     {},
-    //     {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         Authorization: "Bearer " + token,
-    //       },
-    //     }
-    //   )
-    //   .then((result) => {
-    //     console.log("the lead details is given by");
-    //     console.log(result);
-    //     setloading(false);
-
-    //     if (result.data.status) {
-    //       const newData = result.data.closeddeals;
-    //       setUpdateLeadData({
-    //         agent_comm_amount: newData.agent_comm_amount,
-    //         agent_comm_percent: newData.agent_comm_percent,
-    //         amount: newData.amount,
-
-    //         comm_amount: newData.comm_amount,
-    //         comm_percent: newData.comm_percent,
-    //         comm_status: newData.comm_status,
-
-    //         currency: newData.currency,
-    //         dealDate: newData.dealDate,
-    //         id: newData.id,
-    //         leadId: newData.leadId,
-    //         managerId: newData.managerId,
-    //         passport: newData.passport,
-    //         // pdc_status: newData.pdc_status,
-    //         // salesId: newData.salesId,
-    //         // spa_status: newData.spa_status,
-    //         unit: newData.unit,
-    //         updated_at: newData.updated_at,
-    //         updated_by: newData.updated_by,
-    //         updated_by_name: newData.updated_by_name,
-    //         vat: newData.vat,
-    //         project: LeadData?.project,
-    //         enquiryType: LeadData?.enquiryType,
-    //       });
-    //     } else {
-    //       toast.error("Error in Fetching the Lead", {
-    //         position: "top-right",
-    //         autoClose: 3000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "light",
-    //       });
-    //       handleLeadModelClose();
-    //     }
-    //     setloading(false);
-    //   })
-    //   .catch((err) => {
-    //     setloading(false);
-    //     console.error(err);
-    //     toast.error("Error in Fetching the Lead", {
-    //       position: "top-right",
-    //       autoClose: 3000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //     handleLeadModelClose();
-    //   });
     // eslint-disable-next-line
   }, [LeadData]);
 
@@ -513,23 +583,20 @@ const UpdateLead = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -548,7 +615,7 @@ const UpdateLead = ({
               } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-            }
+              }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
           >
@@ -560,14 +627,12 @@ const UpdateLead = ({
               <>
                 <div className="w-full flex items-center pb-3 ">
                   <div
-                    className={`${
-                      isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                    } bg-primary h-10 w-1 rounded-full my-1`}
+                    className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                      } bg-primary h-10 w-1 rounded-full my-1`}
                   ></div>
                   <h1
-                    className={`text-lg font-semibold ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
+                    className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
                     style={{
                       fontFamily: isArabic(Feedback?.feedback)
                         ? "Noto Kufi Arabic"
@@ -578,33 +643,109 @@ const UpdateLead = ({
                   </h1>
                 </div>
 
-                <div className={`grid md:grid-cols-1 sm:grid-cols-1 gap-6 p-6 justify-center ${hasPermission("deal_commission") ? "lg:grid-cols-3" :"lg:grid-cols-2"}`}>
-                  {/* Project DETAILS  */}
-                  <div
-                    className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
-                  >
-                    <h1 className="text-center uppercase font-semibold">
-                      {t("project_details")?.toUpperCase()}
+                <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5 p-5">
+                  {/* LEAD DETAILS */}
+                  <div className="px-2">
+                    <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
+                      {t("lead_details")?.toUpperCase()}
                     </h1>
-                    <hr className="my-4" />
-                    <div className="w-full">
+                    <div className="w-full pt-5">
                       <Box
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                      >
+                        {/* LEAD NAME */}
+                        <TextField
+                          id="leadName"
+                          type={"text"}
+                          label={t("label_lead_name")}
+                          className="w-full"
+                          sx={{
+                            "&": {
+                              marginBottom: "1.25rem !important",
+                              zIndex: 1,
                             },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={updateLeadData?.leadName}
+                          onChange={(e) => handleChange(e)}
+                          required
+                        />
+                        {/* PASSPORT */}
+                        <div className="mb-5 flex items-center justify-center ">
+                          <div className=" rounded-lg border">
+                            <img
+                              src={imagePreview}
+                              width="100px"
+                              height="100px"
+                            />
+                          </div>
+                        </div>
+                        <input
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          id="contained-button-file"
+                          type="file"
+                          onChange={handleImgUpload}
+                          ref={inputFileRef}
+                        />
+                        <label htmlFor="contained-button-file">
+                          <Button
+                            variant="contained"
+                            size="medium"
+                            className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+                            style={{
+                              color: "#ffffff",
+                              border: "1px solid white",
+                              fontFamily: fontFam,
+                            }}
+                            component="span" // Required so the button doesn't automatically submit form
+                            disabled={btnloading ? true : false}
+                            startIcon={
+                              <MdFileUpload className="mx-2" size={16} />
+                            }
+                            onClick={() => inputFileRef.current.click()}
+                          >
+                            <span>{t("button_upload_image")}</span>
+                          </Button>
+                        </label>
+                      </Box>
+                    </div>
+                  </div>
+                  {/* PROJECT DETAILS */}
+                  <div className="px-2">
+                    <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
+                      {t("project_details")?.toUpperCase()}
+                    </h1>
+                    <div className="w-full pt-5">
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
                           "& legend": {
                             textAlign: isLangRTL(i18n.language)
                               ? "right"
@@ -630,28 +771,10 @@ const UpdateLead = ({
                           onChange={(e) => handleChange(e)}
                           required
                         />
-                        {/* <TextField
-                          id="enquiryType"
-                          type={"text"}
-                          label={t("label_enquiry_for")}
-                          className="w-full"
-                          sx={{
-                            "&": {
-                              marginBottom: "1.25rem !important",
-                              zIndex: 1,
-                            },
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={updateLeadData?.enquiryType}
-                          onChange={(e) => handleChange(e)}
-                          required
-                        /> */}
                         {/* ENQUIRY TYPE */}
                         <Select
                           id="enquiryType"
                           options={enquiry_options(t)}
-                          // value={closedDealData.enquiryType}
                           value={enquiry_options(t)?.find(
                             (fb) => fb.value === updateLeadData?.enquiryType
                           )}
@@ -684,6 +807,48 @@ const UpdateLead = ({
                           onChange={(e) => handleChange(e)}
                           required
                         />
+                        {/* SELLING AMOUNT */}
+                        <div className="grid grid-cols-4">
+                          {/* CURRENCY */}
+                          <Select
+                            id="currency"
+                            options={currencies(t)?.map((curr) => ({
+                              value: curr.value,
+                              label: curr.label,
+                            }))}
+                            value={currencies(t)?.find(
+                              (curr) => curr.value === updateLeadData?.currency
+                            )}
+                            onChange={(e) => {
+                              setUpdateLeadData({
+                                ...updateLeadData,
+                                currency: e.value,
+                              });
+                            }}
+                            placeholder={t("label_select_currency")}
+                            // className={`mb-5`}
+                            menuPortalTarget={document.body}
+                            styles={selectStyles(currentMode, primaryColor)}
+                          />
+                          {/* SELLING AMOUNT */}
+                          <TextField
+                            id="amount"
+                            type={"text"}
+                            label={t("selling_amount")}
+                            className="w-full col-span-3"
+                            sx={{
+                              "&": {
+                                marginBottom: "1.25rem !important",
+                                zIndex: 1,
+                              },
+                            }}
+                            variant="outlined"
+                            size="small"
+                            value={updateLeadData?.amount}
+                            onChange={(e) => handleChange(e)}
+                            required
+                          />
+                        </div>
                         {/* DEAL DATE */}
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
@@ -730,90 +895,37 @@ const UpdateLead = ({
                             maxDate={dayjs().startOf("day").toDate()}
                           />
                         </LocalizationProvider>
-                        <div className="grid grid-cols-3">
-                          {/* CURRENCY */}
-                          <Select
-                            id="currency"
-                            options={currencies(t)?.map((curr) => ({
-                              value: curr.value,
-                              label: curr.label,
-                            }))}
-                            value={currencies(t)?.find(
-                              (curr) => curr.value === updateLeadData?.currency
-                            )}
-                            onChange={(e) => {
-                              setUpdateLeadData({
-                                ...updateLeadData,
-                                currency: e.value,
-                              });
-                            }}
-                            placeholder={t("label_select_currency")}
-                            // className={`mb-5`}
-                            menuPortalTarget={document.body}
-                            styles={selectStyles(currentMode, primaryColor)}
-                          />
-                          {/* SELLING AMOUNT */}
-                          <TextField
-                            id="amount"
-                            type={"text"}
-                            label={t("selling_amount")}
-                            className="w-full col-span-2"
-                            sx={{
-                              "&": {
-                                marginBottom: "1.25rem !important",
-                                zIndex: 1,
-                              },
-                            }}
-                            variant="outlined"
-                            size="small"
-                            value={updateLeadData?.amount}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
-                        </div>
                       </Box>
                     </div>
                   </div>
-
-                  {/* COMMISSION DETAILS  */}
+                  {/* COMMISSION DETAILS */}
                   {hasPermission("deal_commission") && (
-                    <div
-                      className={`p-4 rounded-xl shadow-sm card-hover ${
-                        currentMode === "dark"
-                          ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EEEEEE] text-black"
-                      }
-                      `}
-                    >
-                      <h1 className="text-center uppercase font-semibold">
+                    <div className="px-2">
+                      <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                         {t("commission_details")?.toUpperCase()}
                       </h1>
-                      <hr className="my-4" />
-                      <div className="w-full">
+                      <div className="w-full pt-5">
                         <Box
                           sx={{
                             ...darkModeColors,
+                            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+                            "& legend": {
+                              textAlign: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
                           }}
                         >
-                          {/* COMM PERCENT */}
-                          <TextField
-                            id="comm_percent"
-                            type={"text"}
-                            label={t("total_commission")}
-                            className="w-full"
-                            sx={{
-                              "&": {
-                                marginBottom: "1.25rem !important",
-                                zIndex: 1,
-                              },
-                            }}
-                            variant="outlined"
-                            size="small"
-                            value={updateLeadData?.comm_percent}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
-                          <div className="grid grid-cols-3">
+                          {/* COMMISSION */}
+                          <div className="grid grid-cols-4">
                             {/* CURRENCY */}
                             <Select
                               id="currency"
@@ -854,8 +966,34 @@ const UpdateLead = ({
                               onChange={(e) => handleChange(e)}
                               required
                             />
+                            {/* COMM PERCENT */}
+                            <TextField
+                              id="comm_percent"
+                              type={"text"}
+                              // label={t("total_commission")}
+                              className="w-full"
+                              sx={{
+                                "&": {
+                                  marginBottom: "1.25rem !important",
+                                  zIndex: 1,
+                                },
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={updateLeadData?.comm_percent}
+                              onChange={(e) => handleChange(e)}
+                              required
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <BsPercent size={18} color={"#777777"} />
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
                           </div>
-                          <div className="grid grid-cols-3">
+                          {/* VAT */}
+                          <div className="grid grid-cols-4">
                             {/* CURRENCY */}
                             <Select
                               id="currency"
@@ -883,7 +1021,7 @@ const UpdateLead = ({
                               id="vat"
                               type={"text"}
                               label={t("vat_amount")}
-                              className="w-full col-span-2"
+                              className="w-full col-span-3"
                               sx={{
                                 "&": {
                                   marginBottom: "1.25rem !important",
@@ -897,44 +1035,8 @@ const UpdateLead = ({
                               required
                             />
                           </div>
-
-                          {/* <TextField
-                            id="vat"
-                            type={"text"}
-                            label={t("vat_perc")}
-                            className="w-full"
-                            sx={{
-                              "&": {
-                                marginBottom: "1.25rem !important",
-                                zIndex: 1,
-                              },
-                            }}
-                            variant="outlined"
-                            size="small"
-                            value={updateLeadData?.vat}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          /> */}
-
-                          {/* AGENT PERCENT */}
-                          <TextField
-                            id="agent_comm_percent"
-                            type={"text"}
-                            label={t("agent_comm_perc")}
-                            className="w-full"
-                            sx={{
-                              "&": {
-                                marginBottom: "1.25rem !important",
-                                zIndex: 1,
-                              },
-                            }}
-                            variant="outlined"
-                            size="small"
-                            value={updateLeadData?.agent_comm_percent}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
-                          <div className="grid grid-cols-3">
+                          {/* AGENT */}
+                          <div className="grid grid-cols-4">
                             {/* CURRENCY */}
                             <Select
                               id="currency"
@@ -975,11 +1077,74 @@ const UpdateLead = ({
                               onChange={(e) => handleChange(e)}
                               required
                             />
+                            {/* AGENT PERCENT */}
+                            <TextField
+                              id="agent_comm_percent"
+                              type={"text"}
+                              // label={t("agent_comm_perc")}
+                              className="w-full"
+                              sx={{
+                                "&": {
+                                  marginBottom: "1.25rem !important",
+                                  zIndex: 1,
+                                },
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={updateLeadData?.agent_comm_percent}
+                              onChange={(e) => handleChange(e)}
+                              required
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <BsPercent size={18} color={"#777777"} />
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
                           </div>
-
-                          {/* MANAGER COMM PERCENT */}
+                          {/* MANAGER */}
                           {updateLeadData?.salesId === updateLeadData?.closedBy && (
-                            <>
+                            <div className="grid grid-cols-4">
+                              {/* CURRENCY */}
+                              <Select
+                                id="currency"
+                                options={currencies(t)?.map((curr) => ({
+                                  value: curr.value,
+                                  label: curr.label,
+                                }))}
+                                value={currencies(t)?.find(
+                                  (curr) => curr.value === updateLeadData?.currency
+                                )}
+                                onChange={(e) => {
+                                  setUpdateLeadData({
+                                    ...updateLeadData,
+                                    currency: e.value,
+                                  });
+                                }}
+                                placeholder={t("label_select_currency")}
+                                // className={`mb-5`}
+                                menuPortalTarget={document.body}
+                                styles={selectStyles(currentMode, primaryColor)}
+                              />
+                              {/* MANAGER COMM */}
+                              <TextField
+                                id="manager_comm_amount"
+                                type={"text"}
+                                label={t("manager_comm_amount")}
+                                className="w-full col-span-2"
+                                sx={{
+                                  "&": {
+                                    marginBottom: "1.25rem !important",
+                                    zIndex: 1,
+                                  },
+                                }}
+                                variant="outlined"
+                                size="small"
+                                value={updateLeadData?.manager_comm_amount}
+                                onChange={(e) => handleChange(e)}
+                                required
+                              />
                               <TextField
                                 id="manager_comm_percent"
                                 type={"text"}
@@ -996,107 +1161,192 @@ const UpdateLead = ({
                                 value={updateLeadData?.manager_comm_percent}
                                 onChange={(e) => handleChange(e)}
                                 required
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <BsPercent size={18} color={"#777777"} />
+                                    </InputAdornment>
+                                  ),
+                                }}
                               />
-                              <div className="grid grid-cols-3">
-                                {/* CURRENCY */}
-                                <Select
-                                  id="currency"
-                                  options={currencies(t)?.map((curr) => ({
-                                    value: curr.value,
-                                    label: curr.label,
-                                  }))}
-                                  value={currencies(t)?.find(
-                                    (curr) => curr.value === updateLeadData?.currency
-                                  )}
-                                  onChange={(e) => {
-                                    setUpdateLeadData({
-                                      ...updateLeadData,
-                                      currency: e.value,
-                                    });
-                                  }}
-                                  placeholder={t("label_select_currency")}
-                                  // className={`mb-5`}
-                                  menuPortalTarget={document.body}
-                                  styles={selectStyles(currentMode, primaryColor)}
-                                />
-                                {/* MANAGER COMM */}
-                                <TextField
-                                  id="manager_comm_amount"
-                                  type={"text"}
-                                  label={t("manager_comm_amount")}
-                                  className="w-full col-span-2"
-                                  sx={{
-                                    "&": {
-                                      marginBottom: "1.25rem !important",
-                                      zIndex: 1,
-                                    },
-                                  }}
-                                  variant="outlined"
-                                  size="small"
-                                  value={updateLeadData?.manager_comm_amount}
-                                  onChange={(e) => handleChange(e)}
-                                  required
-                                />
-                              </div>
-                            </>
+                            </div>
                           )}
-
                         </Box>
                       </div>
                     </div>
                   )}
-
-                  {/* CLIENT  DETAILS  */}
-                  <div
-                    className={`p-4 rounded-xl shadow-sm card-hover
-                  ${currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                      }`}
-                  >
-                    <h1 className="text-center uppercase font-semibold">
-                      {t("client_details")?.toUpperCase()}
+                  {/* DISCOUNT OR CASHBACK */}
+                  <div className="px-2">
+                    <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
+                      {t("label_other_details")?.toUpperCase()}
                     </h1>
-                    <hr className="my-4" />
-                    <div className="w-full">
-                      <Box sx={darkModeColors} className="p-2">
-                        <div className="  mb-5 flex items-center justify-center ">
-                          <div className=" rounded-lg border">
-                            <img
-                              src={imagePreview}
-                              width="100px"
-                              height="100px"
+                    <div className="w-full pt-5">
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                        className="flex flex-col"
+                      >
+                        {/* DISCOUNT TOGGLE */}
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              color="success"
+                              checked={withDiscount}
+                              onChange={() => toggleDiscount(!withDiscount)}
+                            />
+                          }
+                          label={t("discount")}
+                          className="font-semibold"
+                        />
+                        {withDiscount && (
+                          <div className="grid grid-cols-4">
+                            {/* CURRENCY */}
+                            <Select
+                              id="currency"
+                              options={currencies(t)}
+                              value={currencies(t)?.find(
+                                (curr) => curr.value === updateLeadData?.currency
+                              )}
+                              onChange={(e) => {
+                                setUpdateLeadData({
+                                  ...updateLeadData,
+                                  currency: e.value,
+                                });
+                              }}
+                              placeholder={t("label_select_currency")}
+                              // className={`mb-5`}
+                              menuPortalTarget={document.body}
+                              styles={selectStyles(currentMode, primaryColor)}
+                            />
+                            {/* DISCOUNT AMOUNT */}
+                            <TextField
+                              id="discount_amount"
+                              type={"number"}
+                              label={t("discount")}
+                              className="w-full col-span-2"
+                              sx={{
+                                "&": {
+                                  zIndex: 1,
+                                },
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={updateLeadData?.discount_amount}
+                              onChange={(e) => handleChange(e)}
+                            />
+                            {/* DISCOUNT PERCENTAGE */}
+                            <TextField
+                              id="discount_percent"
+                              type={"number"}
+                              // label={t("paid_percent")}
+                              className="w-full"
+                              sx={{
+                                "&": {
+                                  zIndex: 1,
+                                },
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={updateLeadData?.discount_percent}
+                              onChange={(e) => handleChange(e)}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <BsPercent size={18} color={"#777777"} />
+                                  </InputAdornment>
+                                ),
+                              }}
                             />
                           </div>
-                        </div>
-                        <input
-                          accept="image/*"
-                          style={{ display: "none" }}
-                          id="contained-button-file"
-                          type="file"
-                          onChange={handleImgUpload}
-                          ref={inputFileRef}
+                        )}
+                        {/* CASHBACK TOGGLE */}
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              color="success"
+                              checked={withCashback}
+                              onChange={() => toggleCashback(!withCashback)}
+                            />
+                          }
+                          label={t("cashback")}
+                          className="font-semibold"
                         />
-                        <label htmlFor="contained-button-file">
-                          <Button
-                            variant="contained"
-                            size="medium"
-                            className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
-                            style={{
-                              color: "#ffffff",
-                              border: "1px solid white",
-                              fontFamily: fontFam,
-                            }}
-                            component="span" // Required so the button doesn't automatically submit form
-                            disabled={btnloading ? true : false}
-                            startIcon={
-                              <MdFileUpload className="mx-2" size={16} />
-                            }
-                            onClick={() => inputFileRef.current.click()}
-                          >
-                            <span>{t("button_upload_image")}</span>
-                          </Button>
-                        </label>
+                        {withCashback && (
+                          <div className="grid grid-cols-4">
+                            {/* CURRENCY */}
+                            <Select
+                              id="currency"
+                              options={currencies(t)}
+                              value={currencies(t)?.find(
+                                (curr) => curr.value === updateLeadData?.currency
+                              )}
+                              onChange={(e) => {
+                                setUpdateLeadData({
+                                  ...updateLeadData,
+                                  currency: e.value,
+                                });
+                              }}
+                              placeholder={t("label_select_currency")}
+                              // className={`mb-5`}
+                              menuPortalTarget={document.body}
+                              styles={selectStyles(currentMode, primaryColor)}
+                            />
+                            {/* CASHBACK AMOUNT */}
+                            <TextField
+                              id="cashback_amount"
+                              type={"number"}
+                              label={t("cashback")}
+                              className="w-full col-span-2"
+                              sx={{
+                                "&": {
+                                  zIndex: 1,
+                                },
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={updateLeadData?.cashback_amount}
+                              onChange={(e) => handleChange(e)}
+                            />
+                            {/* CASHBACK PERCENTAGE */}
+                            <TextField
+                              id="cashback_percent"
+                              type={"number"}
+                              // label={t("paid_percent")}
+                              className="w-full"
+                              sx={{
+                                "&": {
+                                  zIndex: 1,
+                                },
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={updateLeadData?.cashback_percent}
+                              onChange={(e) => handleChange(e)}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <BsPercent size={18} color={"#777777"} />
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          </div>
+                        )}
                       </Box>
                     </div>
                   </div>
