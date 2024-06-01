@@ -671,6 +671,12 @@ const Closedeals = ({ pageState, setpageState }) => {
           managerId: row?.managerId,
           salesId: row?.salesId,
           closedBy: row?.closedBy,
+          discount_amount: row?.discount_amount || 0,
+          discount_percent: row?.discount_percent || 0,
+          cashback_amount: row?.cashback_amount || 0,
+          cashback_percent: row?.cashback_percent || 0,
+          passport: row?.passport,
+          tax_invoicece: row?.tax_invoice || null,
         }));
 
         setpageState((old) => ({

@@ -39,6 +39,7 @@ import SingleTransImage from "./SingleTransImage";
 import usePermission from "../../utils/usePermission";
 import OverlayFile from "../../Components/_elements/OverlayFile";
 import { Tooltip, dialog } from "@material-tailwind/react";
+import CommissionReqModal from "./ComissionReqModal";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -60,6 +61,8 @@ const DealHistory = ({
     isLangRTL,
     i18n,
     darkModeColors,
+    User,
+    deviceType
   } = useStateContext();
   const { hasPermission } = usePermission();
   const [leadsCycle, setLeadsCycle] = useState(null);
@@ -83,6 +86,7 @@ const DealHistory = ({
   const [btnloading, setBtnLoading] = useState(false);
 
   const [dealNote, setDealNote] = useState("");
+  const [commReqModal, setCommReqModal] = useState(false);
 
   const handleImageClick = (image) => {
     setOverlayContent(image);
@@ -486,8 +490,8 @@ const DealHistory = ({
           <div
             style={style}
             className={` ${currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
               } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
@@ -524,77 +528,57 @@ const DealHistory = ({
                   <div>
                     <div
                       className={`${currentMode === "dark" ? "text-white" : "text-black"
-                        } p-4`}
+                        } px-4`}
                     >
-                      <div className="grid grid-cols-12 gap-5">
-                        {/* STATUS */}
-                        <div className="col-span-12 lg:col-span-4 w-full mb-5">
-                          {loading ? (
-                            <div className="flex items-center justify-center w-full">
-                              <h1 className="font-semibold text-lg">Loading</h1>
-                            </div>
-                          ) : (
-                            <>
-                              <h3 className="text-center font-semibold uppercase mb-5">
-                                {t("status")}
-                              </h3>
-                              <div className="w-full grid grid-cols-4 lg:grid-cols-2 gap-5 mb-4">
-                                {statuses?.map((status) => {
-                                  return (
+                      {/* STATUS */}
+                      <div className="w-full mb-5">
+                        {loading ? (
+                          <div className="flex items-center justify-center w-full">
+                            <h1 className="font-semibold text-lg">Loading</h1>
+                          </div>
+                        ) : (
+                          <>
+                            {/* <h3 className="text-center font-semibold uppercase mb-5">
+                              {t("status")}
+                            </h3> */}
+                            <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 mb-4">
+                              {statuses?.map((status) => {
+                                return (
+                                  <div
+                                    className={`${currentMode === "dark"
+                                      ? "bg-[#1C1C1C]"
+                                      : "bg-[#EEEEEE]"
+                                      } items-center justify-center flex flex-col rounded-xl shadow-sm h-full relative`}
+                                  >
                                     <div
-                                      className={`${currentMode === "dark"
-                                          ? "bg-[#1C1C1C]"
-                                          : "bg-[#EEEEEE]"
-                                        } items-center justify-center flex flex-col rounded-xl shadow-sm h-fit relative`}
+                                      className={`p-8 mb-8 flex flex-col w-full items-center text-center justify-center ${status?.type === "commission" &&
+                                        hasPermission("add_commission")
+                                        ? "cursor-pointer"
+                                        : null
+                                        } `}
+                                      onClick={
+                                        status?.type === "commission" &&
+                                          hasPermission("add_commission")
+                                          ? () => handleCommissionModalOpen()
+                                          : undefined
+                                      }
                                     >
-                                      <div
-                                        className={`p-8 flex flex-col w-full items-center text-center justify-center ${status?.type === "commission" &&
-                                            hasPermission("add_commission")
-                                            ? "cursor-pointer"
-                                            : null
-                                          } `}
-                                        onClick={
-                                          status?.type === "commission" &&
-                                            hasPermission("add_commission")
-                                            ? () => handleCommissionModalOpen()
-                                            : undefined
-                                        }
-                                      >
-                                        {/* <p className={`flex items-center mb-2`}>
-                                          {status?.icon}
-                                        </p> */}
-                                        <p className="text-lg font-semibold mt-4">
-                                          {status?.text}
-                                        </p>
-                                      </div>
-                                      <div
-                                        className={`p-2 w-full rounded-b-xl shadow-sm text-white text-center uppercase ${status?.value
-                                            ? "bg-green-600"
-                                            : "bg-red-600"
-                                          }`}
-                                      >
-                                        {status?.status}
-                                      </div>
+                                      <p className="text-lg font-semibold mt-4">
+                                        {status?.text}
+                                      </p>
+                                    </div>
+                                    <div
+                                      className={`p-2 absolute bottom-0 w-full rounded-b-xl shadow-sm text-white text-center uppercase ${status?.value
+                                        ? "bg-green-600"
+                                        : "bg-red-600"
+                                        }`}
+                                    >
+                                      {status?.status}
+                                    </div>
 
-                                      {status?.value === false &&
-                                        (status?.perm === true ? (
-                                          hasPermission("add_commission") && (
-                                            <div className="p-2 rounded-full flex items-center justify-center bg-green-600 absolute top-2 right-2">
-                                              <Tooltip title="Mark">
-                                                <button
-                                                  onClick={() =>
-                                                    setDialogue(status)
-                                                  }
-                                                >
-                                                  <BsCheck2All
-                                                    size={16}
-                                                    color={"white"}
-                                                  />
-                                                </button>
-                                              </Tooltip>
-                                            </div>
-                                          )
-                                        ) : (
+                                    {status?.value === false &&
+                                      (status?.perm === true ? (
+                                        hasPermission("add_commission") && (
                                           <div className="p-2 rounded-full flex items-center justify-center bg-green-600 absolute top-2 right-2">
                                             <Tooltip title="Mark">
                                               <button
@@ -609,146 +593,257 @@ const DealHistory = ({
                                               </button>
                                             </Tooltip>
                                           </div>
-                                        ))}
-                                    </div>
-                                  );
-                                })}
-                              </div>
+                                        )
+                                      ) : (
+                                        <div className="p-2 rounded-full flex items-center justify-center bg-green-600 absolute top-2 right-2">
+                                          <Tooltip title="Mark">
+                                            <button
+                                              onClick={() =>
+                                                setDialogue(status)
+                                              }
+                                            >
+                                              <BsCheck2All
+                                                size={16}
+                                                color={"white"}
+                                              />
+                                            </button>
+                                          </Tooltip>
+                                        </div>
+                                      ))}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </>
+                        )}
+                      </div>
 
-                              <div className="flex items-center justify-between flex-row">
-                                <h3 className="font-semibold uppercase mb-5 mt-3">
-                                  {t("payments")}
-                                </h3>
-                                {hasPermission("add_deal_spa") && (
+                      <div className="grid grid-cols-12 gap-5 py-5">
+                        <div className="col-span-12 lg:col-span-4 gap-4">
+                          {/* DETAILS */}
+                          <div className="w-full flex flex-col py-5">
+                            <h3 className="font-semibold uppercase mb-4">
+                              {t("details")}
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-5">
+                              <div className="flex flex-col gap-3">
+                                <li>
+                                  <span className="font-semibold">{t("label_project_name")}</span>
+                                  : {LeadData?.project}
+                                </li>
+                                <li>
+                                  <span className="font-semibold">{t("label_enquiry_for")}</span>
+                                  : {LeadData?.enquiryType}
+                                </li>
+                                <li>
+                                  <span className="font-semibold">{t("label_unit")}</span>
+                                  : {LeadData?.unit}
+                                </li>
+                                <li>
+                                  <span className="font-semibold">{t("selling_amount")}</span>
+                                  : {LeadData?.currency} {LeadData?.amount}
+                                </li>
+                              </div>
+                              <div className="flex flex-col gap-3">
+                                {hasPermission("add_commission") && (
                                   <>
-                                    <div>
-                                      <button
-                                        className="bg-btn-primary rounded-full p-2"
-                                        onClick={handleTransactionModalOpen}
-                                      >
-                                        <FaPlus color="white" />
-                                      </button>
-                                    </div>
+                                    <li>
+                                      <span className="font-semibold">{t("commission")}</span>
+                                      : {LeadData?.currency} {LeadData?.comm_amount} ({LeadData?.comm_percent}%)
+                                    </li>
                                   </>
                                 )}
+                                <li>
+                                  <span className="font-semibold">{t("agent_comm")}</span>
+                                  : {LeadData?.currency} {LeadData?.agent_comm_amount} ({LeadData?.agent_comm_percent}%)
+                                </li>
+                                {User?.role !== 7 && (
+                                  <li>
+                                    <span className="font-semibold">{t("manager_comm")}</span>
+                                    : {LeadData?.currency} {LeadData?.manager_comm_amount} ({LeadData?.manager_comm_percent}%)
+                                  </li>
+                                )}
+                                {LeadData.discount !== 0 && (
+                                  <li>
+                                    <span className="font-semibold">{t("discount")}</span>
+                                    : {LeadData?.currency} {LeadData?.discount_amount} ({LeadData?.discount_percent}%)
+                                  </li>
+                                )}
+                                {LeadData.cashback !== 0 && (
+                                  <li>
+                                    <span className="font-semibold">{t("cashback")}</span>
+                                    : {LeadData?.currency} {LeadData?.cashback_amount} ({LeadData?.cashback_percent}%)
+                                  </li>
+                                )}
                               </div>
-                              <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
-                                {transactions?.map((spa) => (
-                                  <div
-                                    className={`${currentMode === "dark"
-                                        ? "bg-[#1C1C1C]"
-                                        : "bg-[#EEEEEE]"
-                                      } rounded-xl shadow-sm card-hover w-full relative mb-4`}
-                                  >
-                                    {/* EDIT BUTTON */}
-                                    {hasPermission("deal_spa") && (
-                                      <div className="absolute bottom-2 right-2">
-                                        <button
-                                          className="bg-primary text-white rounded-full p-2"
-                                          onClick={(e) =>
-                                            handleTransactionModalOpen(3, spa)
-                                          }
-                                        >
-                                          <BsPencil size={14} color={"white"} />
-                                        </button>
-                                      </div>
-                                    )}
-                                    {/* BANNER  */}
-                                    <div className="relative bg-primary p-2 rounded-t-xl text-center text-white font-semibold">
-                                      <div>{spa?.type}</div>
-                                    </div>
-                                    {/* DETAILS */}
-                                    <div
-                                      className={`p-4 grid ${spa?.temp_file === null
-                                          ? "grid-cols-1"
-                                          : "grid-cols-2"
-                                        } justify-between gap-4`}
+                            </div>
+                          </div>
+                          {/* TAX INVOICE */}
+                          {hasPermission("add_commission") && (
+                            <div className="w-full flex flex-col py-5">
+                              <h3 className="font-semibold uppercase mb-5">
+                                {t("tax_invoice")}
+                              </h3>
+                              {LeadData.tax_invoice ? (
+                                <div className="flex flex-col justify-center items-center w-full gap-4">
+                                  <BsFileEarmarkMedical
+                                    size={100}
+                                    color={"#AAAAAA"}
+                                    onClick={() =>
+                                      handlePdfClick(
+                                        LeadData?.tax_invoice
+                                      )
+                                    }
+                                  />
+                                  <div className="">
+                                    {t("invoice_id")}: {LeadData.lid}
+                                  </div>
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={(e) => setCommReqModal(LeadData)}
+                                  className="bg-btn-primary rounded-md py-2 px-4 mr-2 text-white"
+                                >
+                                  {t("generate_tax_invoice")}
+                                </button>
+                              )}
+                            </div>
+                          )}
+                          {/* PAYMENTS */}
+                          <div className="w-full flex flex-col py-5">
+                            <div className="flex items-center justify-between flex-row">
+                              <h3 className="font-semibold uppercase mb-5 mt-3">
+                                {t("payments")}
+                              </h3>
+                              {hasPermission("add_deal_spa") && (
+                                <>
+                                  <div>
+                                    <button
+                                      className="bg-btn-primary rounded-full p-2"
+                                      onClick={handleTransactionModalOpen}
                                     >
-                                      {/* TEXT */}
-                                      <div className="flex flex-col gap-4">
-                                        {/* DATE */}
-                                        <p>
-                                          {t("date")}:{" "}
-                                          <span className="font-semibold">
-                                            {spa?.dealDate}
-                                          </span>
-                                        </p>
-                                        {/* PERCENTAGE */}
-                                        <p>
-                                          {t("percentage")}:{" "}
-                                          <span className="font-semibold">
-                                            {spa?.percent}%
-                                          </span>
-                                        </p>
-                                        {/* AMOUNT */}
-                                        <p>
-                                          {t("label_amount")}:{" "}
-                                          <span className="font-semibold">
-                                            {spa?.currency} {spa?.amount}
-                                          </span>
-                                        </p>
-                                        {/* ADDED BY */}
-                                        <p>
-                                          {t("label_added_by")}:{" "}
-                                          <span className="font-semibold">
-                                            {spa?.added_by_name}
-                                          </span>
-                                        </p>
-                                      </div>
-                                      {/* FILE */}
-                                      <div className="w-full flex items-center justify-center">
-                                        {spa?.temp_file && (
-                                          <div className="flex items-center justify-center">
-                                            {(() => {
-                                              const ext = spa?.image
-                                                .split(".")
-                                                .pop()
-                                                .toLowerCase();
-                                              if (ext === "pdf") {
-                                                return (
-                                                  <div className="mb-3">
-                                                    <BsFileEarmarkMedical
-                                                      size={100}
-                                                      color={"#AAAAAA"}
-                                                      // onClick={() => handlePdfClick(`data:application/pdf;base64,${spa?.temp_file}`)}
-                                                      onClick={() =>
-                                                        handlePdfClick(
-                                                          spa?.temp_file
-                                                        )
-                                                      }
-                                                    />
-                                                  </div>
-                                                );
-                                              } else {
-                                                return (
-                                                  <img
-                                                    // onClick={(e) => setOpenImageModal(spa)}
-                                                    className="mb-3"
-                                                    src={`data:image/${ext};base64, ${spa?.temp_file}`}
-                                                    width="150px"
-                                                    height="150px"
+                                      <FaPlus color="white" />
+                                    </button>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
+                              {transactions?.map((spa) => (
+                                <div
+                                  className={`${currentMode === "dark"
+                                    ? "bg-[#1C1C1C]"
+                                    : "bg-[#EEEEEE]"
+                                    } rounded-xl shadow-sm card-hover w-full relative mb-4`}
+                                >
+                                  {/* EDIT BUTTON */}
+                                  {hasPermission("deal_spa") && (
+                                    <div className="absolute bottom-2 right-2">
+                                      <button
+                                        className="bg-primary text-white rounded-full p-2"
+                                        onClick={(e) =>
+                                          handleTransactionModalOpen(3, spa)
+                                        }
+                                      >
+                                        <BsPencil size={14} color={"white"} />
+                                      </button>
+                                    </div>
+                                  )}
+                                  {/* BANNER  */}
+                                  <div className="relative bg-primary p-2 rounded-t-xl text-center text-white font-semibold">
+                                    <div>{spa?.type}</div>
+                                  </div>
+                                  {/* DETAILS */}
+                                  <div
+                                    className={`p-4 grid ${spa?.temp_file === null
+                                      ? "grid-cols-1"
+                                      : "grid-cols-2"
+                                      } justify-between gap-4`}
+                                  >
+                                    {/* TEXT */}
+                                    <div className="flex flex-col gap-4">
+                                      {/* DATE */}
+                                      <p>
+                                        {t("date")}:{" "}
+                                        <span className="font-semibold">
+                                          {spa?.dealDate}
+                                        </span>
+                                      </p>
+                                      {/* PERCENTAGE */}
+                                      <p>
+                                        {t("percentage")}:{" "}
+                                        <span className="font-semibold">
+                                          {spa?.percent}%
+                                        </span>
+                                      </p>
+                                      {/* AMOUNT */}
+                                      <p>
+                                        {t("label_amount")}:{" "}
+                                        <span className="font-semibold">
+                                          {spa?.currency} {spa?.amount}
+                                        </span>
+                                      </p>
+                                      {/* ADDED BY */}
+                                      <p>
+                                        {t("label_added_by")}:{" "}
+                                        <span className="font-semibold">
+                                          {spa?.added_by_name}
+                                        </span>
+                                      </p>
+                                    </div>
+                                    {/* FILE */}
+                                    <div className="w-full flex items-center justify-center">
+                                      {spa?.temp_file && (
+                                        <div className="flex items-center justify-center">
+                                          {(() => {
+                                            const ext = spa?.image
+                                              .split(".")
+                                              .pop()
+                                              .toLowerCase();
+                                            if (ext === "pdf") {
+                                              return (
+                                                <div className="mb-3">
+                                                  <BsFileEarmarkMedical
+                                                    size={100}
+                                                    color={"#AAAAAA"}
+                                                    // onClick={() => handlePdfClick(`data:application/pdf;base64,${spa?.temp_file}`)}
                                                     onClick={() =>
-                                                      handleImageClick(
-                                                        `data:image/${ext};base64,${spa?.temp_file}`
+                                                      handlePdfClick(
+                                                        spa?.temp_file
                                                       )
                                                     }
                                                   />
-                                                );
-                                              }
-                                            })()}
-                                          </div>
-                                        )}
-                                      </div>
+                                                </div>
+                                              );
+                                            } else {
+                                              return (
+                                                <img
+                                                  // onClick={(e) => setOpenImageModal(spa)}
+                                                  className="mb-3"
+                                                  src={`data:image/${ext};base64, ${spa?.temp_file}`}
+                                                  width="150px"
+                                                  height="150px"
+                                                  onClick={() =>
+                                                    handleImageClick(
+                                                      `data:image/${ext};base64,${spa?.temp_file}`
+                                                    )
+                                                  }
+                                                />
+                                              );
+                                            }
+                                          })()}
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
-                                ))}
-                              </div>
-                            </>
-                          )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
 
                         {/* HISTORY */}
-                        <div className="col-span-12 lg:col-span-8 w-full mb-5">
+                        <div className="col-span-12 lg:col-span-8 w-full py-5">
                           <h3 className="text-center font-semibold uppercase mb-5">
                             {t("history")}
                           </h3>
@@ -756,7 +851,7 @@ const DealHistory = ({
                           <div
                             className={`flex items-center justify-end gap-4`}
                           >
-                            <Box sx={{ ...darkModeColors, minWidth: "300px" }}>
+                            <Box sx={{ ...darkModeColors, minWidth: deviceType === "mobile" ? "180px" : "300px" }}>
                               <TextField
                                 id="note"
                                 type={"text"}
@@ -791,8 +886,8 @@ const DealHistory = ({
                                     <React.Fragment key={index}>
                                       <div
                                         className={`${isLangRTL(i18n.language)
-                                            ? "ml-3"
-                                            : "mr-3"
+                                          ? "ml-3"
+                                          : "mr-3"
                                           } col-start-1 col-end-3 md:mx-auto relative`}
                                       >
                                         <div className="h-full w-6 flex items-center justify-center">
@@ -819,8 +914,8 @@ const DealHistory = ({
                                               <>
                                                 <div
                                                   className={`${isLangRTL(i18n.language)
-                                                      ? "ml-3"
-                                                      : "mr-3"
+                                                    ? "ml-3"
+                                                    : "mr-3"
                                                     } col-start-1 col-end-3 md:mx-auto relative`}
                                                 >
                                                   <div className="h-full w-6 flex items-center justify-center">
@@ -828,8 +923,8 @@ const DealHistory = ({
                                                   </div>
                                                   <div
                                                     className={`${isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
+                                                      ? "-mr-2"
+                                                      : "-ml-2"
                                                       } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
                                                   >
                                                     <MdNoteAlt
@@ -840,8 +935,8 @@ const DealHistory = ({
                                                 </div>
                                                 <div
                                                   className={`${currentMode === "dark"
-                                                      ? "bg-[#1C1C1C]"
-                                                      : "bg-[#EEEEEE]"
+                                                    ? "bg-[#1C1C1C]"
+                                                    : "bg-[#EEEEEE]"
                                                     } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                 >
                                                   {/* ADDED BY  */}
@@ -906,7 +1001,7 @@ const DealHistory = ({
                                       currentMode === "dark"
                                         ? "white"
                                         : "black",
-                                  },
+                                  }
                                 }}
                               />
                             </Stack>
@@ -940,6 +1035,15 @@ const DealHistory = ({
               />
             )}
 
+            {/* GENERATE TAX INVOICE */}
+            {commReqModal && (
+              <CommissionReqModal
+                commReqModal={commReqModal}
+                // commReqModal={commissionModal}
+                setCommReqModal={setCommReqModal}
+              />
+            )}
+
             {DialogueVal && (
               <>
                 <Dialog
@@ -970,15 +1074,15 @@ const DealHistory = ({
                   </IconButton>
                   <div
                     className={`px-10 py-5 ${currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-white text-black"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-white text-black"
                       }`}
                   >
                     <div className="flex flex-col justify-center items-center">
                       <IoIosAlert size={50} className="text-primary text-2xl" />
                       <h1 className="font-semibold pt-3 text-lg text-center">
                         {t("do_you_really_Want")}{" "}
-                        <span className="text-sm bg-gray-500 px-2 py-1 rounded-md font-bold">
+                        <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
                           {DialogueVal?.text}
                         </span>{" "}
                         ?
@@ -1003,8 +1107,8 @@ const DealHistory = ({
                         ripple={true}
                         variant="outlined"
                         className={`shadow-none p-3 rounded-md text-sm  ${currentMode === "dark"
-                            ? "text-white border-white"
-                            : "text-black border-black"
+                          ? "text-white border-white"
+                          : "text-black border-black"
                           }`}
                       >
                         {t("cancel")}
