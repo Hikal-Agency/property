@@ -287,7 +287,7 @@ const CommissionReqModal = ({
 
       // Add the header image
       const headerImg = "assets/header-pdf.png";
-      doc.addImage(headerImg, "PNG", 10, 2, pageWidth - 25, 35);
+      doc.addImage(headerImg, "PNG", 0, 2, pageWidth, 35);
       // const logoUrl = "assets/hikal-logo.png";
       // doc.addImage(logoUrl, "JPEG", 10, 2, 50, 50);
 
@@ -492,7 +492,7 @@ const CommissionReqModal = ({
 
       // Draw line at the top of the footer
       doc.setLineWidth(0.5);
-      doc.line(20, pageHeight - 35, pageWidth - 20, pageHeight - 35);
+      doc.line(5, pageHeight - 35, pageWidth - 5, pageHeight - 35);
 
       // Add the footer image
       const footerImage = "assets/footer-pdf.png"; // Ensure the path is correct and image is accessible
@@ -502,9 +502,9 @@ const CommissionReqModal = ({
       doc.addImage(
         footerImage,
         "PNG",
-        20,
+        2,
         pageHeight - footerHeight - 7,
-        pageWidth - 45,
+        pageWidth - 5,
         footerHeight
       );
     };
