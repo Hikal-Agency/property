@@ -503,7 +503,7 @@ const CommissionReqModal = ({
         footerImage,
         "JPEG",
         1,
-        pageHeight - footerHeight - 7,
+        pageHeight - footerHeight,
         pageWidth - 2,
         footerHeight
       );
