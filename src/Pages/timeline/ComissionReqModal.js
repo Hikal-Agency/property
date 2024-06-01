@@ -282,14 +282,17 @@ const CommissionReqModal = ({
 
     // Define the document structure
     const addHeader = () => {
-      // Add the logo
-      // const logoUrl = "assets/hikal-real.jpg";
-      const logoUrl = "assets/hikal-logo.png";
-      doc.addImage(logoUrl, "JPEG", 10, 2, 50, 50);
+      const pageWidth = doc.internal.pageSize.getWidth();
+
+      // Add the header image
+      const headerImg = "assets/header-pdf.png";
+      doc.addImage(headerImg, "PNG", 10, 2, pageWidth - 25, 50);
+      // const logoUrl = "assets/hikal-logo.png";
+      // doc.addImage(logoUrl, "JPEG", 10, 2, 50, 50);
 
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
-      doc.text("TAX INVOICE", 105, 20, null, null, "center");
+      doc.text("TAX INVOICE", 105, 50, null, null, "center");
 
       // Underline the "TAX INVOICE" title
       const textWidth = doc.getTextWidth("TAX INVOICE");
