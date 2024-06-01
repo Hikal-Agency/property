@@ -430,7 +430,7 @@ const CommissionReqModal = ({
     // const addFooter = () => {
     //   const pageHeight = doc.internal.pageSize.getHeight();
     //   doc.setLineWidth(0.5);
-    //   doc.line(20, pageHeight - 30, 190, pageHeight - 30);
+    //   doc.line(20, pageHeight - 20, 190, pageHeight - 20);
 
     //   doc.setFont("helvetica", "normal");
     //   doc.setFontSize(10);
@@ -442,93 +442,67 @@ const CommissionReqModal = ({
 
     //   // Phone icon
     //   doc.setFontSize(12);
-    //   // doc.text("\u260E", 20, pageHeight - 23); // Use Unicode for phone icon
+
     //   const callIcon = "assets/icon-call.png";
-    //   doc.addImage(callIcon, "JPEG", 17, pageHeight - 26, 5, 5);
+    //   doc.addImage(callIcon, "JPEG", 98, pageHeight - 14, 5, 5);
     //   doc.setFontSize(10);
     //   doc.setTextColor(0, 0, 0);
-    //   doc.text("+971 4 272 2249", 20 + iconOffset, pageHeight - 23);
+    //   doc.text("+971 4 272 2249", 100 + iconOffset, pageHeight - 10);
 
     //   // Email icon
     //   doc.setFontSize(12);
     //   doc.setTextColor(255, 0, 0);
-    //   // doc.text("\u2709", 20, pageHeight - 10); // Use Unicode for email icon
+
     //   const emailIcon = "assets/icon-email.png";
-    //   doc.addImage(emailIcon, "JPEG", 17, pageHeight - 14, 5, 5);
+    //   doc.addImage(emailIcon, "JPEG", 152, pageHeight - 14, 5, 5);
     //   doc.setFontSize(10);
     //   doc.setTextColor(0, 0, 0);
-    //   doc.text("info@hikalagency.ae", 20 + iconOffset, pageHeight - 10);
+    //   doc.text("info@hikalagency.ae", 155 + iconOffset, pageHeight - 10);
 
     //   // Office address icon
     //   doc.setFontSize(12);
     //   doc.setTextColor(255, 0, 0);
-    //   // doc.text("\u25CF", 130, pageHeight - 23); // Use a dot as an icon
     //   const locIcon = "assets/icon-location.png";
-    //   doc.addImage(locIcon, "JPEG", 126, pageHeight - 23, 5, 5);
+    //   doc.addImage(locIcon, "JPEG", 18, pageHeight - 14, 5, 5);
     //   doc.setFontSize(10);
     //   doc.setTextColor(0, 0, 0);
     //   doc.text(
-    //     "Office No. 2704, API World Tower,",
-    //     130 + iconOffset,
-    //     pageHeight - 23
+    //     "Office No. 2704, API World Tower.",
+    //     20 + iconOffset,
+    //     pageHeight - 10
     //   );
-    //   doc.text("Sheikh Zayed Road, Dubai", 130 + iconOffset, pageHeight - 17);
-
-    //   // Website icon
-    //   doc.setFontSize(12);
-    //   doc.setTextColor(255, 0, 0);
-    //   // doc.text("\u25CF", 130, pageHeight - 10); // Use a dot as an icon
-    //   const webIcon = "assets/icon-website.png";
-    //   doc.addImage(webIcon, "JPEG", 126, pageHeight - 13, 5, 5);
-    //   doc.setFontSize(10);
-    //   doc.setTextColor(0, 0, 0);
-    //   doc.text("www.hikalproperties.com", 130 + iconOffset, pageHeight - 10);
+    //   // doc.text("Sheikh Zayed Road, Dubai", 130 + iconOffset, pageHeight - 17);
     // };
+
+    // const addFooter = () => {
+    //   const pageHeight = doc.internal.pageSize.getHeight();
+    //   doc.setLineWidth(0.5);
+    //   doc.line(20, pageHeight - 20, 190, pageHeight - 20);
+    //   const footerImg = "assets/footer-pdf.png";
+    //   doc.addImage(footerImg, "PNG", 98, pageHeight - 10, 100, 100);
+    // };
+
     const addFooter = () => {
       const pageHeight = doc.internal.pageSize.getHeight();
+      const pageWidth = doc.internal.pageSize.getWidth();
+
+      // Draw line at the top of the footer
       doc.setLineWidth(0.5);
-      doc.line(20, pageHeight - 20, 190, pageHeight - 20);
+      doc.line(20, pageHeight - 30, pageWidth - 20, pageHeight - 30);
 
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
+      // Add the footer image
+      const footerImage = "assets/footer-pdf.png"; // Ensure the path is correct and image is accessible
+      const footerHeight = 20; // Adjust height to fit your layout
 
-      const iconOffset = 4;
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(255, 0, 0);
-
-      // Phone icon
-      doc.setFontSize(12);
-
-      const callIcon = "assets/icon-call.png";
-      doc.addImage(callIcon, "JPEG", 98, pageHeight - 14, 5, 5);
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.text("+971 4 272 2249", 100 + iconOffset, pageHeight - 10);
-
-      // Email icon
-      doc.setFontSize(12);
-      doc.setTextColor(255, 0, 0);
-
-      const emailIcon = "assets/icon-email.png";
-      doc.addImage(emailIcon, "JPEG", 152, pageHeight - 14, 5, 5);
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.text("info@hikalagency.ae", 155 + iconOffset, pageHeight - 10);
-
-      // Office address icon
-      doc.setFontSize(12);
-      doc.setTextColor(255, 0, 0);
-      const locIcon = "assets/icon-location.png";
-      doc.addImage(locIcon, "JPEG", 18, pageHeight - 14, 5, 5);
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.text(
-        "Office No. 2704, API World Tower.",
-        20 + iconOffset,
-        pageHeight - 10
+      // Add image covering the footer area
+      doc.addImage(
+        footerImage,
+        "PNG",
+        20,
+        pageHeight - footerHeight - 10,
+        pageWidth - 45,
+        footerHeight
       );
-      // doc.text("Sheikh Zayed Road, Dubai", 130 + iconOffset, pageHeight - 17);
     };
 
     // const addWatermark = () => {
