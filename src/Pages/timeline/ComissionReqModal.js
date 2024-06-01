@@ -65,6 +65,7 @@ const CommissionReqModal = ({
     address: null,
     trn: null,
     unit: commReqModal?.unit || null,
+    invoice_id: commReqModal?.lid || null,
     date: moment().format("YYYY-MM-DD"),
     currency: commReqModal?.currency || "AED",
     comm_amount: commReqModal?.comm_amount || null,
@@ -253,62 +254,93 @@ const CommissionReqModal = ({
       unit: "mm",
     });
 
+    const addWatermark = () => {
+      const watermarkUrl = "assets/pdf-watermark.png";
+      console.log("watermark url: ", watermarkUrl);
+      const pageCount = doc.internal.getNumberOfPages();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      console.log("");
+
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+
+        // doc.setGState(new doc.GState({ opacity: 0.1 })); // Set opacity for watermark
+        const x = pageWidth / 2 - 50; // Centered horizontally
+        const y = pageHeight / 2 - 50; // Centered vertically
+        const width = 100;
+        const height = 100;
+
+        // doc.addImage(watermarkUrl, "PNG", x, y, width, height);
+        doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+        // doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+        // doc.setGState(new doc.GState({ opacity: 1 })); // Reset opacity to default
+      }
+    };
+
+    addWatermark();
+
     // Define the document structure
     const addHeader = () => {
-      // Add the logo
-      const logoUrl = "assets/hikal-real.jpg";
-      doc.addImage(logoUrl, "JPEG", 20, 10, 50, 20);
+      const pageWidth = doc.internal.pageSize.getWidth();
 
-      doc.setFont("helvetica", "bold");
+      // Add the header image
+      const headerImg = "assets/header-pdf.png";
+      doc.addImage(headerImg, "PNG", 10, 2, pageWidth - 25, 35);
+      // const logoUrl = "assets/hikal-logo.png";
+      // doc.addImage(logoUrl, "JPEG", 10, 2, 50, 50);
+
+      doc.setFont("Arial", "bold");
       doc.setFontSize(18);
-      doc.text("TAX INVOICE", 105, 20, null, null, "center");
+      doc.text("TAX INVOICE", 105, 39, null, null, "center");
 
       // Underline the "TAX INVOICE" title
       const textWidth = doc.getTextWidth("TAX INVOICE");
       doc.setLineWidth(0.5);
-      doc.line(105 - textWidth / 2, 22, 105 + textWidth / 2, 22);
+      doc.line(105 - textWidth / 2, 40, 105 + textWidth / 2, 40);
 
       doc.setFontSize(12);
-      doc.text("Company:", 120, 46);
-      doc.text(`${data?.company}`, 120, 53);
-      doc.text(`TRN No: ${data?.company_trn}`, 120, 60);
-      doc.text(`Email Address: ${data?.company_email} `, 120, 67);
-      doc.text(`Telephone: ${data?.company_tele}`, 120, 74);
+      doc.text("Company:", 120, 66);
+      doc.text(`${data?.company}`, 120, 73);
+      doc.text(`TRN No: ${data?.company_trn}`, 120, 80);
+      doc.text(`Email Address: ${data?.company_email} `, 120, 87);
+      doc.text(`Telephone: ${data?.company_tele}`, 120, 94);
 
-      doc.text("Bill to:", 20, 46);
-      doc.text(`${data?.vendor_name}`, 20, 53);
-      doc.text(`${data?.address}`, 20, 60);
-      doc.text(`TRN No: ${data?.trn}`, 20, 67);
+      doc.text("Bill to:", 20, 73);
+      doc.text(`${data?.vendor_name}`, 20, 80);
+      doc.text(`${data?.address}`, 20, 87);
+      doc.text(`TRN No: ${data?.trn}`, 20, 94);
 
-      doc.setFont("helvetica", "normal");
-      doc.text(`Date: ${currentDate}`, 140, 32);
+      doc.setFont("Arial", "normal");
+      doc.text(`Date: ${currentDate}`, 140, 49);
       data?.invoice_id &&
-        doc.text(`Invoice No: ${data?.invoice_id || "-"}`, 140, 38);
+        doc.text(`Invoice No: ${data?.invoice_id || "-"}`, 140, 57);
 
       doc.setDrawColor(0);
       doc.setLineWidth(0.5);
-      doc.line(20, 80, 190, 80);
+      doc.line(20, 101, 190, 101);
     };
 
     const addClientDetails = () => {
-      doc.setFont("helvetica", "bold");
+      doc.setFont("Arial", "bold");
       doc.setFontSize(10);
-      doc.text("CLIENT NAME", 20, 92);
-      doc.text("UNIT NO", 75, 92);
-      doc.text("PROJECT NAME", 130, 92);
+      doc.text("CLIENT NAME", 20, 112);
+      doc.text("UNIT NO", 75, 112);
+      doc.text("PROJECT NAME", 130, 112);
 
-      doc.setFont("helvetica", "normal");
-      doc.text(`${data?.leadName}`, 20, 100);
-      doc.text(`${data?.unit}`, 75, 100);
-      doc.text(`${data?.project}`, 130, 100);
+      doc.setFont("Arial", "normal");
+      doc.text(`${data?.leadName}`, 20, 120);
+      doc.text(`${data?.unit}`, 75, 120);
+      doc.text(`${data?.project}`, 130, 120);
 
       doc.setLineWidth(0.5);
-      doc.line(20, 110, 190, 110); // Draw a line below the client details
+      doc.line(20, 130, 190, 130); // Draw a line below the client details
     };
 
     const addTable = () => {
       doc.autoTable({
-        startY: 120, // Adjusted startY for spacing
+        startY: 140, // Adjusted startY for spacing
         head: [
           [
             `SALES VALUE ${data?.currency}`,
@@ -345,19 +377,19 @@ const CommissionReqModal = ({
 
       const tableHeight = doc.lastAutoTable.finalY;
 
-      doc.setFont("helvetica", "bold");
+      doc.setFont("Arial", "bold");
       doc.text("TOTAL", 150, tableHeight + 10);
       doc.text(`${data?.total_amount}`, 170, tableHeight + 10);
     };
 
     const addBankDetails = (startY) => {
-      doc.setFont("helvetica", "normal");
+      doc.setFont("Arial", "normal");
       doc.setFontSize(10);
-      doc.text("All cheques payable to the following account.", 20, startY);
+      doc.text("All cheques payable to the following account.", 20, startY + 6);
 
       // Adjusted the table format to two columns
       doc.autoTable({
-        startY: startY + 5,
+        startY: startY + 10,
         head: [
           ["Bank Name", `${data?.bank_name}`],
           ["Bank Address", `${data?.bank_address}`],
@@ -386,100 +418,131 @@ const CommissionReqModal = ({
     };
 
     const addSignatureSection = (startY) => {
-      doc.setFont("helvetica", "bold");
+      doc.setFont("Arial", "bold");
       doc.setFontSize(10);
-      doc.text("Sincerely,", 20, startY);
-      doc.text("Mr. MOHAMED MEDHAT FATHY IBRAHIM HIKAL", 20, startY + 5);
-      doc.text("CEO", 20, startY + 10);
-      doc.text("HIKAL REAL ESTATE L.L.C", 20, startY + 15);
+      doc.text("Sincerely,", 20, startY + 11);
+      doc.text("Mr. MOHAMED MEDHAT FATHY IBRAHIM HIKAL", 20, startY + 16);
+      doc.text("CEO", 20, startY + 21);
+      doc.text("HIKAL REAL ESTATE L.L.C", 20, startY + 26);
 
-      doc.setFont("helvetica", "normal");
-      doc.text("Authorized Signature", 150, startY + 20);
+      doc.setFont("Arial", "normal");
+      doc.text("Authorized Signature", 150, startY + 28);
       doc.setLineWidth(0.5);
-      doc.line(150, startY + 15, 190, startY + 15);
+      doc.line(150, startY + 23, 190, startY + 23);
     };
+
+    // const addFooter = () => {
+    //   const pageHeight = doc.internal.pageSize.getHeight();
+    //   doc.setLineWidth(0.5);
+    //   doc.line(20, pageHeight - 20, 190, pageHeight - 20);
+
+    //   doc.setFont("Arial", "normal");
+    //   doc.setFontSize(10);
+    //   doc.setTextColor(0, 0, 0);
+
+    //   const iconOffset = 4;
+    //   doc.setFont("Arial", "bold");
+    //   doc.setTextColor(255, 0, 0);
+
+    //   // Phone icon
+    //   doc.setFontSize(12);
+
+    //   const callIcon = "assets/icon-call.png";
+    //   doc.addImage(callIcon, "JPEG", 98, pageHeight - 14, 5, 5);
+    //   doc.setFontSize(10);
+    //   doc.setTextColor(0, 0, 0);
+    //   doc.text("+971 4 272 2249", 100 + iconOffset, pageHeight - 10);
+
+    //   // Email icon
+    //   doc.setFontSize(12);
+    //   doc.setTextColor(255, 0, 0);
+
+    //   const emailIcon = "assets/icon-email.png";
+    //   doc.addImage(emailIcon, "JPEG", 152, pageHeight - 14, 5, 5);
+    //   doc.setFontSize(10);
+    //   doc.setTextColor(0, 0, 0);
+    //   doc.text("info@hikalagency.ae", 155 + iconOffset, pageHeight - 10);
+
+    //   // Office address icon
+    //   doc.setFontSize(12);
+    //   doc.setTextColor(255, 0, 0);
+    //   const locIcon = "assets/icon-location.png";
+    //   doc.addImage(locIcon, "JPEG", 18, pageHeight - 14, 5, 5);
+    //   doc.setFontSize(10);
+    //   doc.setTextColor(0, 0, 0);
+    //   doc.text(
+    //     "Office No. 2704, API World Tower.",
+    //     20 + iconOffset,
+    //     pageHeight - 10
+    //   );
+    //   // doc.text("Sheikh Zayed Road, Dubai", 130 + iconOffset, pageHeight - 17);
+    // };
+
+    // const addFooter = () => {
+    //   const pageHeight = doc.internal.pageSize.getHeight();
+    //   doc.setLineWidth(0.5);
+    //   doc.line(20, pageHeight - 20, 190, pageHeight - 20);
+    //   const footerImg = "assets/footer-pdf.png";
+    //   doc.addImage(footerImg, "PNG", 98, pageHeight - 10, 100, 100);
+    // };
 
     const addFooter = () => {
       const pageHeight = doc.internal.pageSize.getHeight();
-      doc.setLineWidth(0.5);
-      doc.line(20, pageHeight - 30, 190, pageHeight - 30);
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-
-      const iconOffset = 4;
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(255, 0, 0);
-
-      // Phone icon
-      doc.setFontSize(12);
-      // doc.text("\u260E", 20, pageHeight - 23); // Use Unicode for phone icon
-      const callIcon = "assets/icon-call.png";
-      doc.addImage(callIcon, "JPEG", 17, pageHeight - 26, 5, 5);
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.text("+971 4 272 2249", 20 + iconOffset, pageHeight - 23);
-
-      // Email icon
-      doc.setFontSize(12);
-      doc.setTextColor(255, 0, 0);
-      // doc.text("\u2709", 20, pageHeight - 10); // Use Unicode for email icon
-      const emailIcon = "assets/icon-email.png";
-      doc.addImage(emailIcon, "JPEG", 17, pageHeight - 14, 5, 5);
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.text("info@hikalagency.ae", 20 + iconOffset, pageHeight - 10);
-
-      // Office address icon
-      doc.setFontSize(12);
-      doc.setTextColor(255, 0, 0);
-      // doc.text("\u25CF", 130, pageHeight - 23); // Use a dot as an icon
-      const locIcon = "assets/icon-location.png";
-      doc.addImage(locIcon, "JPEG", 126, pageHeight - 23, 5, 5);
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.text(
-        "Office No. 2704, API World Tower,",
-        130 + iconOffset,
-        pageHeight - 23
-      );
-      doc.text("Sheikh Zayed Road, Dubai", 130 + iconOffset, pageHeight - 17);
-
-      // Website icon
-      doc.setFontSize(12);
-      doc.setTextColor(255, 0, 0);
-      // doc.text("\u25CF", 130, pageHeight - 10); // Use a dot as an icon
-      const webIcon = "assets/icon-website.png";
-      doc.addImage(webIcon, "JPEG", 126, pageHeight - 13, 5, 5);
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.text("www.hikalproperties.com", 130 + iconOffset, pageHeight - 10);
-    };
-
-    const addWatermark = () => {
-      const watermarkUrl = "/assets/hikal-wtermark.png"; // Adjust the path if necessary
-      const pageCount = doc.internal.getNumberOfPages();
       const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
 
-      for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        doc.setGState(new doc.GState({ opacity: 0.1 })); // Set opacity for watermark
-        doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
-        doc.setGState(new doc.GState({ opacity: 1 })); // Reset opacity to default
-      }
+      // Draw line at the top of the footer
+      doc.setLineWidth(0.5);
+      doc.line(20, pageHeight - 35, pageWidth - 20, pageHeight - 35);
+
+      // Add the footer image
+      const footerImage = "assets/footer-pdf.png"; // Ensure the path is correct and image is accessible
+      const footerHeight = 27; // Adjust height to fit your layout
+
+      // Add image covering the footer area
+      doc.addImage(
+        footerImage,
+        "PNG",
+        20,
+        pageHeight - footerHeight - 7,
+        pageWidth - 45,
+        footerHeight
+      );
     };
+
+    // const addWatermark = () => {
+    //   const watermarkUrl = "assets/pdf-watermark.png";
+    //   console.log("watermark url: ", watermarkUrl);
+    //   const pageCount = doc.internal.getNumberOfPages();
+    //   const pageWidth = doc.internal.pageSize.getWidth();
+    //   const pageHeight = doc.internal.pageSize.getHeight();
+
+    //   console.log("");
+
+    //   for (let i = 1; i <= pageCount; i++) {
+    //     doc.setPage(i);
+
+    //     // doc.setGState(new doc.GState({ opacity: 0.1 })); // Set opacity for watermark
+    //     const x = pageWidth / 2 - 50; // Centered horizontally
+    //     const y = pageHeight / 2 - 50; // Centered vertically
+    //     const width = 100;
+    //     const height = 100;
+
+    //     // doc.addImage(watermarkUrl, "PNG", x, y, width, height);
+    //     doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+    //     // doc.addImage(watermarkUrl, "PNG", 50, 120, 100, 100, "", "NONE", 0.3);
+    //     // doc.setGState(new doc.GState({ opacity: 1 })); // Reset opacity to default
+    //   }
+    // };
 
     addHeader();
     addClientDetails();
     addTable();
     const tableHeight = doc.lastAutoTable.finalY;
-    addBankDetails(tableHeight + 30);
+    addBankDetails(tableHeight + 12);
     const bankDetailsHeight = doc.lastAutoTable.finalY;
-    addSignatureSection(bankDetailsHeight + 15);
+    addSignatureSection(bankDetailsHeight + 6);
     addFooter();
-    addWatermark();
+    // addWatermark();
 
     // Save the PDF as Blob
     const pdfBlob = doc.output("blob");
