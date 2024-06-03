@@ -566,11 +566,13 @@ const RenderFeedback = ({ cellValues }) => {
                         value={booked_date}
                         views={["year", "month", "day"]}
                         onChange={(selectedDate) => {
-                          const formattedDate =
-                            moment(selectedDate).format("YYYY-MM-DD");
+                          console.log("selected Date: ", selectedDate);
+                          const formattedDate = moment(selectedDate?.$d).format(
+                            "YYYY-MM-DD"
+                          );
                           setBookedDate(formattedDate);
                         }}
-                        format="yyyy-MM-dd"
+                        format="YYYY-MM-DD"
                         renderInput={(params) => (
                           <TextField
                             {...params}
