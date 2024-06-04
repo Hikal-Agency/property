@@ -727,15 +727,12 @@ const DealHistory = ({
                                   <BsFileEarmarkMedical
                                     size={100}
                                     color={"#AAAAAA"}
-                                    onClick={() =>
-                                      // handlePdfClick(LeadData?.tax_invoice)
-                                      {
-                                        window.open(
-                                          LeadData?.tax_invoice,
-                                          "_blank"
-                                        );
-                                      }
-                                    }
+                                    onClick={() => {
+                                      window.open(
+                                        LeadData?.tax_invoice,
+                                        "_blank"
+                                      );
+                                    }}
                                   />
                                   <div className="">
                                     {t("invoice_id")}: {LeadData?.lid}
