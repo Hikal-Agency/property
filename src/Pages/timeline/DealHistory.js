@@ -1180,6 +1180,7 @@ const DealHistory = ({
                   setShowOverlayImage(false);
                   setOverlayContent(null);
                 }}
+                category={"tax"}
               />
             </>
           )}
