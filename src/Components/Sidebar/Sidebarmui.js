@@ -1616,7 +1616,7 @@ const Sidebarmui = () => {
         {
           name: t("menu_visa"),
           // pro: true,
-          link: "/new-transactions",
+          link: "/visa",
         },
 
         {

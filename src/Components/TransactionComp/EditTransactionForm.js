@@ -24,6 +24,7 @@ import { BsFileEarmarkMedical } from "react-icons/bs";
 
 import usePermission from "../../utils/usePermission";
 import AddTransactionForm from "./AddTransactionForm";
+import NewTransactionForm from "./NewTransactionForm";
 
 const EditTransactionForm = ({
   openEditModal,
@@ -139,7 +140,7 @@ const EditTransactionForm = ({
                   <Error404 />
                 ) : (
                   <div className="w-full">
-                    <AddTransactionForm
+                    {/* <AddTransactionForm
                       user={user}
                       vendors={vendors}
                       loading={loading}
@@ -150,6 +151,19 @@ const EditTransactionForm = ({
                       edit={true}
                       transData={transData}
                       handleClose={handleClose}
+                    /> */}
+                    <NewTransactionForm
+                      user={user}
+                      vendors={vendors}
+                      loading={loading}
+                      fetchUsers={fetchUsers}
+                      fetchTransactions={fetchTransactions}
+                      addTransactionData={addTransactionData}
+                      setAddTransactionData={setAddTransactionData}
+                      edit={true}
+                      transData={transData}
+                      handleClose={handleClose}
+                      fullRow={true}
                     />
                   </div>
                 )}
