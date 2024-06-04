@@ -728,7 +728,13 @@ const DealHistory = ({
                                     size={100}
                                     color={"#AAAAAA"}
                                     onClick={() =>
-                                      handlePdfClick(LeadData?.tax_invoice)
+                                      // handlePdfClick(LeadData?.tax_invoice)
+                                      {
+                                        window.open(
+                                          LeadData?.tax_invoice,
+                                          "_blank"
+                                        );
+                                      }
                                     }
                                   />
                                   <div className="">
