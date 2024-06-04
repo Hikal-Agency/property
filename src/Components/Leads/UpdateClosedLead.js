@@ -85,7 +85,6 @@ const UpdateLead = ({
     id: '',
     leadId: '',
     managerId: '',
-    passport: '',
     unit: '',
     updated_at: '',
     updated_by: '',
@@ -482,7 +481,7 @@ const UpdateLead = ({
         dealDate: LeadData.dealDate,
         id: LeadData.id,
         leadId: LeadData.leadId,
-        passport: LeadData.passport,
+        // passport: LeadData.passport,
         // pdc_status: newData.pdc_status,
         // spa_status: newData.spa_status,
         unit: LeadData.unit,
@@ -697,34 +696,37 @@ const UpdateLead = ({
                             />
                           </div>
                         </div>
-                        <input
-                          accept="image/*"
-                          style={{ display: "none" }}
-                          id="contained-button-file"
-                          type="file"
-                          onChange={handleImgUpload}
-                          ref={inputFileRef}
-                        />
-                        <label htmlFor="contained-button-file">
-                          <Button
-                            variant="contained"
-                            size="medium"
-                            className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
-                            style={{
-                              color: "#ffffff",
-                              border: "1px solid white",
-                              fontFamily: fontFam,
-                            }}
-                            component="span" // Required so the button doesn't automatically submit form
-                            disabled={btnloading ? true : false}
-                            startIcon={
-                              <MdFileUpload className="mx-2" size={16} />
-                            }
-                            onClick={() => inputFileRef.current.click()}
-                          >
-                            <span>{t("button_upload_image")}</span>
-                          </Button>
-                        </label>
+                        <>
+                          <input
+                            accept="image/*"
+                            style={{ display: "none" }}
+                            id="contained-button-file"
+                            type="file"
+                            onChange={handleImgUpload}
+                            ref={inputFileRef}
+                          />
+                          <label htmlFor="contained-button-file">
+                            <Button
+                              variant="contained"
+                              size="medium"
+                              className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+                              style={{
+                                color: "#ffffff",
+                                border: "1px solid white",
+                                fontFamily: fontFam,
+                              }}
+                              component="span" // Required so the button doesn't automatically submit form
+                              disabled={btnloading ? true : false}
+                              startIcon={
+                                <MdFileUpload className="mx-2" size={16} />
+                              }
+                              onClick={() => inputFileRef.current.click()}
+                            >
+                              <span>{t("button_upload_image")}</span>
+                            </Button>
+                          </label>
+                        </>
+
                       </Box>
                     </div>
                   </div>

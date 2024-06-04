@@ -714,6 +714,10 @@ const CommissionReqModal = ({
 
               <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5 p-5">
                 {/* PROJECT DETAILS  */}
+                {/* <div className="px-4 flex flex-col gap-5">
+                  <h1 className="text-center uppercase font-semibold border-b-2 border-primary pb-3">
+                    {t("project_details")?.toUpperCase()}
+                  </h1> */}
                 <div
                   className={`px-5 pt-5 rounded-xl shadow-sm card-hover
                   ${
@@ -746,43 +750,6 @@ const CommissionReqModal = ({
                         },
                       }}
                     >
-                      {/* PROJECT */}
-                      <TextField
-                        id="project"
-                        type={"text"}
-                        label={t("label_project_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.project}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                      {/* ENQUIRY  */}
-                      {/* <TextField
-                        id="enquiryType"
-                        type={"text"}
-                        label={t("label_enquiry_for")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData.enquiryType}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      /> */}
-
                       {/* CLIENT NAME */}
                       <TextField
                         id="leadName"
@@ -801,7 +768,24 @@ const CommissionReqModal = ({
                         onChange={(e) => handleChange(e)}
                         required
                       />
-
+                      {/* PROJECT */}
+                      <TextField
+                        id="project"
+                        type={"text"}
+                        label={t("label_project_name")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commReqData?.project}
+                        onChange={(e) => handleChange(e)}
+                        required
+                      />
                       {/* UNIT */}
                       <TextField
                         id="unit"
@@ -820,8 +804,7 @@ const CommissionReqModal = ({
                         onChange={(e) => handleChange(e)}
                         required
                       />
-
-                      <div className="grid grid-cols-3">
+                      <div className="grid grid-cols-4">
                         {/* CURRENCY */}
                         <Select
                           id="currency"
@@ -845,7 +828,7 @@ const CommissionReqModal = ({
                           id="amount"
                           type={"number"}
                           label={t("selling_amount")}
-                          className="w-full col-span-2"
+                          className="w-full col-span-3"
                           sx={{
                             "&": {
                               zIndex: 1,
