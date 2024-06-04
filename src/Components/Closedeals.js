@@ -27,10 +27,7 @@ import { renderOTPIcons } from "./_elements/OTPIconsDataGrid";
 import DealHistory from "../Pages/timeline/DealHistory";
 import usePermission from "../utils/usePermission";
 
-import {
-  BsCheck2,
-  BsX
-} from "react-icons/bs";
+import { BsCheck2, BsX } from "react-icons/bs";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
@@ -86,76 +83,118 @@ const Closedeals = ({ pageState, setpageState }) => {
   // RENDER STATUS ICONS
   const renderStatusIcons = (cellValues, currentMode) => {
     const statuses = [
-      { field: 'pdc_status', label: t("pdc"), status: cellValues.row.pdc_status },
-      { field: 'spa_status', label: t("spa"), status: cellValues.row.spa_status },
-      { field: 'invoice_status', label: t("invoice"), status: cellValues.row.invoice_status },
-      { field: 'comm_status', label: t("commission"), status: cellValues.row.comm_status },
-      { field: 'agent_comm_status', label: t("agent_comm"), status: cellValues.row.agent_comm_status },
-      { field: 'manager_comm_status', label: t("manager_comm"), status: cellValues.row.manager_comm_status },
+      {
+        field: "pdc_status",
+        label: t("pdc"),
+        status: cellValues.row.pdc_status,
+      },
+      {
+        field: "spa_status",
+        label: t("spa"),
+        status: cellValues.row.spa_status,
+      },
+      {
+        field: "invoice_status",
+        label: t("invoice"),
+        status: cellValues.row.invoice_status,
+      },
+      {
+        field: "comm_status",
+        label: t("commission"),
+        status: cellValues.row.comm_status,
+      },
+      {
+        field: "agent_comm_status",
+        label: t("agent_comm"),
+        status: cellValues.row.agent_comm_status,
+      },
+      {
+        field: "manager_comm_status",
+        label: t("manager_comm"),
+        status: cellValues.row.manager_comm_status,
+      },
     ];
     const other_statuses = [
-      { field: 'pdc_status', label: t("pdc"), status: cellValues.row.pdc_status },
-      { field: 'spa_status', label: t("spa"), status: cellValues.row.spa_status },
-      { field: 'invoice_status', label: t("invoice"), status: cellValues.row.invoice_status },
-      { field: 'comm_status', label: t("commission"), status: cellValues.row.comm_status },
-      { field: 'agent_comm_status', label: t("agent_comm"), status: cellValues.row.agent_comm_status },
+      {
+        field: "pdc_status",
+        label: t("pdc"),
+        status: cellValues.row.pdc_status,
+      },
+      {
+        field: "spa_status",
+        label: t("spa"),
+        status: cellValues.row.spa_status,
+      },
+      {
+        field: "invoice_status",
+        label: t("invoice"),
+        status: cellValues.row.invoice_status,
+      },
+      {
+        field: "comm_status",
+        label: t("commission"),
+        status: cellValues.row.comm_status,
+      },
+      {
+        field: "agent_comm_status",
+        label: t("agent_comm"),
+        status: cellValues.row.agent_comm_status,
+      },
     ];
 
     return (
       <Box display="flex" flexDirection="row" gap={0.5}>
-        {(User?.role === 1 || User?.role === 8) ? (
-          statuses.map((status) => (
-            <Tooltip
-              key={status.field}
-              title={
-                <Box>
-                  <strong>{status.label}</strong>
-                  <br />
-                  {status.status === 1 ? 'Completed' : 'Pending'}
-                </Box>
-              }
-              arrow
-            >
-              <div className="flex items-center justify-center">
-                {status.status === 1 ? (
-                  <p className="bg-green-600 rounded-full shadow-none p-1 flex items-center">
-                    <BsCheck2 size={12} color="white" />
-                  </p>
-                ) : (
-                  <p className="bg-red-600 rounded-full shadow-none p-1 flex items-center">
-                    <BsX size={12} color="#ffffff" />
-                  </p>
-                )}
-              </div>
-            </Tooltip>
-          ))
-        ) : (
-          other_statuses.map((status) => (
-            <Tooltip
-              key={status.field}
-              title={
-                <Box>
-                  <strong>{status.label}</strong>
-                  <br />
-                  {status.status === 1 ? 'Completed' : 'Pending'}
-                </Box>
-              }
-              arrow
-            >
-              <div className="flex items-center justify-center">
-                {status.status === 1 ? (
-                  <p className="bg-green-600 rounded-full shadow-none p-1 flex items-center">
-                    <BsCheck2 size={12} color="white" />
-                  </p>
-                ) : (
-                  <p className="bg-red-600 rounded-full shadow-none p-1 flex items-center">
-                    <BsX size={12} color="#ffffff" />
-                  </p>
-                )}
-              </div>
-            </Tooltip>
-          ))
-        )}
+        {User?.role === 1 || User?.role === 8
+          ? statuses.map((status) => (
+              <Tooltip
+                key={status.field}
+                title={
+                  <Box>
+                    <strong>{status.label}</strong>
+                    <br />
+                    {status.status === 1 ? "Completed" : "Pending"}
+                  </Box>
+                }
+                arrow
+              >
+                <div className="flex items-center justify-center">
+                  {status.status === 1 ? (
+                    <p className="bg-green-600 rounded-full shadow-none p-1 flex items-center">
+                      <BsCheck2 size={12} color="white" />
+                    </p>
+                  ) : (
+                    <p className="bg-red-600 rounded-full shadow-none p-1 flex items-center">
+                      <BsX size={12} color="#ffffff" />
+                    </p>
+                  )}
+                </div>
+              </Tooltip>
+            ))
+          : other_statuses.map((status) => (
+              <Tooltip
+                key={status.field}
+                title={
+                  <Box>
+                    <strong>{status.label}</strong>
+                    <br />
+                    {status.status === 1 ? "Completed" : "Pending"}
+                  </Box>
+                }
+                arrow
+              >
+                <div className="flex items-center justify-center">
+                  {status.status === 1 ? (
+                    <p className="bg-green-600 rounded-full shadow-none p-1 flex items-center">
+                      <BsCheck2 size={12} color="white" />
+                    </p>
+                  ) : (
+                    <p className="bg-red-600 rounded-full shadow-none p-1 flex items-center">
+                      <BsX size={12} color="#ffffff" />
+                    </p>
+                  )}
+                </div>
+              </Tooltip>
+            ))}
       </Box>
     );
   };
@@ -311,17 +350,17 @@ const Closedeals = ({ pageState, setpageState }) => {
       headerAlign: "center",
       renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
     },
-    // STATUS 
+    // STATUS
     {
-      field: 'status',
-      headerName: 'Status',
+      field: "status",
+      headerName: "Status",
       flex: 1,
       minWidth: 160,
       // width: 150,
-      headerAlign: 'center',
+      headerAlign: "center",
       renderCell: (cellValues) => renderStatusIcons(cellValues, currentMode),
     },
-    // ACTION 
+    // ACTION
     {
       field: "",
       headerName: t("label_action"),
@@ -342,10 +381,11 @@ const Closedeals = ({ pageState, setpageState }) => {
           >
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark"
-                ? "text-[#FFFFFF] bg-[#262626]"
-                : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
                 <button onClick={() => HandleEditFunc(cellValues)}>
@@ -356,10 +396,11 @@ const Closedeals = ({ pageState, setpageState }) => {
 
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark"
-                ? "text-[#FFFFFF] bg-[#262626]"
-                : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
@@ -371,10 +412,11 @@ const Closedeals = ({ pageState, setpageState }) => {
             {hasPermission("deal_history") && (
               <p
                 style={{ cursor: "pointer" }}
-                className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-                  } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Deal History" arrow>
                   <button onClick={() => HandleViewDealHistory(cellValues)}>
@@ -522,17 +564,17 @@ const Closedeals = ({ pageState, setpageState }) => {
       flex: 1,
       renderCell: (cellValues) => renderOTPIcons(cellValues, currentMode),
     },
-    // STATUS 
+    // STATUS
     {
-      field: 'status',
-      headerName: 'Status',
+      field: "status",
+      headerName: "Status",
       flex: 1,
       minWidth: 160,
       // width: 150,
-      headerAlign: 'center',
+      headerAlign: "center",
       renderCell: (cellValues) => renderStatusIcons(cellValues, currentMode),
     },
-    // ACTION 
+    // ACTION
     {
       field: "",
       headerName: t("label_action"),
@@ -549,10 +591,11 @@ const Closedeals = ({ pageState, setpageState }) => {
           >
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark"
-                ? "text-[#FFFFFF] bg-[#262626]"
-                : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#2ea8d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Closed Deal" arrow>
                 <button onClick={() => HandleEditFunc(cellValues)}>
@@ -563,10 +606,11 @@ const Closedeals = ({ pageState, setpageState }) => {
 
             <p
               style={{ cursor: "pointer" }}
-              className={`${currentMode === "dark"
-                ? "text-[#FFFFFF] bg-[#262626]"
-                : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
@@ -577,10 +621,11 @@ const Closedeals = ({ pageState, setpageState }) => {
             {hasPermission("deal_history") && (
               <p
                 style={{ cursor: "pointer" }}
-                className={`${currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-                  } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Deal History" arrow>
                   <button onClick={() => HandleViewDealHistory(cellValues)}>
@@ -611,7 +656,8 @@ const Closedeals = ({ pageState, setpageState }) => {
 
     axios
       .get(
-        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${pageState.perpage || 14
+        `${BACKEND_URL}/closedDeals?page=${pageState.page}&perpage=${
+          pageState.perpage || 14
         }`,
         {
           headers: {
@@ -635,8 +681,8 @@ const Closedeals = ({ pageState, setpageState }) => {
           id:
             pageState.page > 1
               ? pageState.page * pageState.pageSize -
-              (pageState.pageSize - 1) +
-              index
+                (pageState.pageSize - 1) +
+                index
               : index + 1,
           dealDate: row?.dealDate || "-",
           leadName: row?.leadName || "-",
@@ -676,7 +722,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           cashback_amount: row?.cashback_amount || 0,
           cashback_percent: row?.cashback_percent || 0,
           passport: row?.passport,
-          tax_invoicece: row?.tax_invoice || null,
+          tax_invoice: row?.tax_invoice || null,
         }));
 
         setpageState((old) => ({
@@ -785,7 +831,12 @@ const Closedeals = ({ pageState, setpageState }) => {
     <div className="pb-10">
       <Box
         className={`closed-datatable ${currentMode}-mode-datatable`}
-        sx={{ ...DataGridStyles, position: "relative", marginBottom: "50px", width: "100%" }}
+        sx={{
+          ...DataGridStyles,
+          position: "relative",
+          marginBottom: "50px",
+          width: "100%",
+        }}
       >
         <DataGrid
           disableDensitySelector
@@ -811,7 +862,9 @@ const Closedeals = ({ pageState, setpageState }) => {
           onPageSizeChange={(newPageSize) =>
             setpageState((old) => ({ ...old, pageSize: newPageSize }))
           }
-          columns={(User?.role === 1 || User?.role === 8) ? columns : otherColumns}
+          columns={
+            User?.role === 1 || User?.role === 8 ? columns : otherColumns
+          }
           // columns={columns?.filter((c) =>
           //   hasPermission("leads_col_" + c?.field)
           // )}
