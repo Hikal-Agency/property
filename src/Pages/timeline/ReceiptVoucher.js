@@ -26,13 +26,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import jsPDF from "jspdf";
 import { fontSize } from "@mui/system";
 
-const CommissionReqModal = ({
-  commReqModal,
-  setCommReqModal,
-  newFeedback,
+const ReceiptVoucher = ({
+  receiptVoucher,
+  setReceiptVoucher,
   Feedback,
+  data,
 }) => {
-  console.log("Commission req modal: ", commReqModal);
+  console.log("receipt voucher: ", receiptVoucher);
+  console.log("closed deals data: ", data);
   const {
     darkModeColors,
     currentMode,
@@ -48,8 +49,6 @@ const CommissionReqModal = ({
 
   const { hasPermission } = usePermission();
 
-  const [vendors, setVendors] = useState([]);
-  const [singleVendor, setSingleVendor] = useState(null);
   const [loading, setLoading] = useState(false);
   const [btnloading, setbtnloading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -58,101 +57,18 @@ const CommissionReqModal = ({
   const [updatedField, setUpdatedField] = useState("");
   const [pdfUrl, setPDFUrl] = useState(false);
 
-  const searchRef = useRef();
-
-  const [commReqData, setCommReqData] = useState({
-    vendor_id: null,
-    vendor_name: "",
-    address: null,
-    trn: null,
-    unit: commReqModal?.unit || null,
-    invoice_id: commReqModal?.lid || null,
+  const [receiptVoucherData, setCommReqData] = useState({
+    cheque_number: null,
+    unit: data?.unit || null,
+    invoice_id: receiptVoucher?.lid || null,
     date: moment().format("YYYY-MM-DD"),
-    currency: commReqModal?.currency || "AED",
-    comm_amount: commReqModal?.comm_amount || 0,
-    comm_percent: commReqModal?.comm_percent || 0,
-    project: commReqModal?.project || null,
-    leadName: commReqModal?.leadName || null,
-    amount: commReqModal?.amount || 0,
-    vat: commReqModal?.vat || 0,
-    total_amount:
-      (Number(commReqModal?.comm_amount) || 0) +
-      (Number(commReqModal?.vat) || 0),
-    company: "HIKAL REAL STATE LLC" || null,
-    company_trn: "100587185800003" || null,
-    company_email: "info@hikalagency.ae" || null,
-    company_tele: "+97142722249" || null,
-    bank_name: "EMIRATES ISLAMIC" || null,
-    bank_address: "EI SHK ZAYED RD AL WASL TOWER" || null,
-    bank_acc_name: "HIKAL REAL STATE L.L.C." || null,
-    bank_acc_no: "3708453323701" || null,
-    bank_iban: "AE810340003708453323701" || null,
-    bank_swift_code: "MEBLAEAD" || null,
+    currency: receiptVoucher?.currency || "AED",
+    developer: receiptVoucher?.vendor?.vendor_name || null,
+    amount: receiptVoucher?.total_amount || 0,
+    bank_name: null,
   });
 
-  console.log("comm req data:: ", commReqData);
-
-  const fetchVendors = async () => {
-    setLoading(true);
-    const vendorUrl = `${BACKEND_URL}/vendors`;
-
-    try {
-      const vendorsList = await axios.get(vendorUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      console.log("vendors list:: ", vendorsList);
-
-      setVendors(vendorsList?.data?.data?.data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching data:", error);
-      toast.error("Unable to fetch data", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
-  const fetchUsers = async (title) => {
-    try {
-      let url = "";
-
-      url = `${BACKEND_URL}/vendors?vendor_name=${title}`;
-
-      const response = await axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      console.log("vendors: ", response);
-
-      setVendors(response?.data?.data?.data);
-    } catch (error) {
-      console.log(error);
-      toast.error("Unable to fetch vendors.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
+  console.log("comm req data:: ", receiptVoucherData);
 
   const handleChange = (e) => {
     console.log("E::: ", e);
@@ -170,7 +86,7 @@ const CommissionReqModal = ({
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
-      setCommReqModal(false);
+      setReceiptVoucher(false);
     }, 1000);
   };
 
@@ -184,21 +100,25 @@ const CommissionReqModal = ({
   const GenerateRequest = () => {
     setbtnloading(true);
 
-    const pdfBlob = generatePDF(commReqData);
+    const pdfBlob = generatePDF(receiptVoucherData);
 
     const formData = new FormData();
-    formData.append("tax_invoice", pdfBlob, `Invoice_${commReqData?.lid}.pdf`);
-    formData.append("currency", commReqData?.currency);
-    formData.append("comm_amount", commReqData?.comm_amount);
-    formData.append("comm_percent", commReqData?.comm_percent);
-    formData.append("vat", commReqData?.vat);
-    formData.append("amount", commReqData?.amount);
-    formData.append("project", commReqData?.project);
-    formData.append("unit", commReqData?.unit);
-    formData.append("enquiryType", commReqModal?.enquiryType);
+    formData.append(
+      "tax_invoice",
+      pdfBlob,
+      `Invoice_${receiptVoucherData?.lid}.pdf`
+    );
+    formData.append("currency", receiptVoucherData?.currency);
+    formData.append("comm_amount", receiptVoucherData?.comm_amount);
+    formData.append("comm_percent", receiptVoucherData?.comm_percent);
+    formData.append("vat", receiptVoucherData?.vat);
+    formData.append("amount", receiptVoucherData?.amount);
+    formData.append("project", receiptVoucherData?.project);
+    formData.append("unit", receiptVoucherData?.unit);
+    formData.append("enquiryType", receiptVoucher?.enquiryType);
 
     axios
-      .post(`${BACKEND_URL}/editdeal/${commReqModal?.lid}`, formData, {
+      .post(`${BACKEND_URL}/editdeal/${receiptVoucher?.lid}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -608,34 +528,19 @@ const CommissionReqModal = ({
   useEffect(() => {
     console.log("total changed: ");
     setCommReqData({
-      ...commReqData,
-      total_amount: Number(commReqData?.comm_amount) + Number(commReqData?.vat),
+      ...receiptVoucherData,
+      total_amount:
+        Number(receiptVoucherData?.comm_amount) +
+        Number(receiptVoucherData?.vat),
     });
-  }, [commReqData?.comm_amount, commReqData?.vat]);
+  }, [receiptVoucherData?.comm_amount, receiptVoucherData?.vat]);
 
-  console.log("TOTAL:: ", commReqData?.total_amount);
-
-  useEffect(() => {
-    const handleChange = () => {
-      setCommReqData({
-        ...commReqData,
-        vendor_name: singleVendor?.vendor_name,
-        address: singleVendor?.address,
-        trn: singleVendor?.trn,
-      });
-    };
-
-    handleChange();
-  }, [singleVendor]);
-
-  useEffect(() => {
-    fetchVendors();
-  }, []);
+  console.log("TOTAL:: ", receiptVoucherData?.total_amount);
 
   return (
     <Modal
       keepMounted
-      open={commReqModal}
+      open={receiptVoucher}
       onClose={handleClose}
       aria-labelledby="keep-mounted-modal-title"
       aria-describedby="keep-mounted-modal-description"
@@ -707,7 +612,7 @@ const CommissionReqModal = ({
                   }}
                 >
                   <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("generate_comm_req")}
+                    {t("receipt_voucher_heading")}
                   </h1>
                 </h1>
               </div>
@@ -746,62 +651,6 @@ const CommissionReqModal = ({
                         },
                       }}
                     >
-                      {/* PROJECT */}
-                      <TextField
-                        id="project"
-                        type={"text"}
-                        label={t("label_project_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.project}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                      {/* ENQUIRY  */}
-                      {/* <TextField
-                        id="enquiryType"
-                        type={"text"}
-                        label={t("label_enquiry_for")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData.enquiryType}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      /> */}
-
-                      {/* CLIENT NAME */}
-                      <TextField
-                        id="leadName"
-                        type={"text"}
-                        label={t("label_lead_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.leadName}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-
                       {/* UNIT */}
                       <TextField
                         id="unit"
@@ -816,7 +665,7 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={commReqData?.unit}
+                        value={receiptVoucherData?.unit}
                         onChange={(e) => handleChange(e)}
                         required
                       />
@@ -827,11 +676,12 @@ const CommissionReqModal = ({
                           id="currency"
                           options={currencies(t)}
                           value={currencies(t)?.find(
-                            (curr) => curr.value === commReqData?.currency
+                            (curr) =>
+                              curr.value === receiptVoucherData?.currency
                           )}
                           onChange={(e) => {
                             setCommReqData({
-                              ...commReqData,
+                              ...receiptVoucherData,
                               currency: e.value,
                             });
                           }}
@@ -844,7 +694,7 @@ const CommissionReqModal = ({
                         <TextField
                           id="amount"
                           type={"number"}
-                          label={t("selling_amount")}
+                          label={t("commission_amount")}
                           className="w-full col-span-2"
                           sx={{
                             "&": {
@@ -853,7 +703,7 @@ const CommissionReqModal = ({
                           }}
                           variant="outlined"
                           size="small"
-                          value={commReqData?.amount}
+                          value={receiptVoucherData?.amount}
                           onChange={(e) => handleChange(e)}
                           required
                         />
@@ -881,92 +731,11 @@ const CommissionReqModal = ({
                         ...darkModeColors,
                       }}
                     >
-                      {/* VENDORS LIST */}
-                      <FormControl
-                        className={`${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
-                        sx={{
-                          minWidth: "100%",
-                          // border: 1,
-                          borderRadius: 1,
-                          marginBottom: "10px",
-                        }}
-                      >
-                        <TextField
-                          id="vendor_id"
-                          select
-                          value={commReqData?.vendor_id || "selected"}
-                          label={t("vendor")}
-                          onChange={(e) => {
-                            const singleVendor = vendors?.find(
-                              (ven) => ven?.id === e.target.value
-                            );
-                            console.log("singlevendor: ", singleVendor);
-                            setSingleVendor(singleVendor);
-                            setCommReqData({
-                              ...commReqData,
-                              vendor_id: e.target.value,
-                              // vendor_name: singleVendor?.vendor_name,
-                              // address: singleVendor?.address,
-                              // trn: singleVendor?.trn,
-                            });
-                          }}
-                          size="small"
-                          className="w-full border border-gray-300 rounded "
-                          displayEmpty
-                          required
-                          sx={{
-                            // border: "1px solid #000000",
-                            height: "40px",
-
-                            "& .MuiSelect-select": {
-                              fontSize: 11,
-                            },
-                          }}
-                        >
-                          <MenuItem selected value="selected">
-                            ---{t("select_vendor")}----
-                          </MenuItem>
-                          <MenuItem
-                            onKeyDown={(e) => {
-                              e.stopPropagation();
-                            }}
-                          >
-                            <TextField
-                              placeholder={t("search_vendors")}
-                              ref={searchRef}
-                              sx={{
-                                "& input": {
-                                  border: "0",
-                                },
-                              }}
-                              variant="standard"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                              }}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                if (value.length >= 3) {
-                                  fetchUsers(value);
-                                }
-                              }}
-                            />
-                          </MenuItem>
-
-                          {vendors?.map((vendor) => (
-                            <MenuItem value={vendor?.id}>
-                              {vendor?.vendor_name}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      </FormControl>
-
                       {/* VENDOR NAME */}
                       <TextField
-                        id="vendor_name"
+                        id="developer"
                         type={"text"}
-                        label={t("form_vendor_name")}
+                        label={t("label_dev_name")}
                         className="w-full"
                         sx={{
                           "&": {
@@ -974,50 +743,12 @@ const CommissionReqModal = ({
                             zIndex: 1,
                           },
                         }}
-                        InputLabelProps={{ shrink: !!commReqData?.vendor_name }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.vendor_name}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-
-                      {/* VENDOR ADDRESS */}
-                      <TextField
-                        id="address"
-                        type={"text"}
-                        label={t("label_address")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
+                        InputLabelProps={{
+                          shrink: !!receiptVoucherData?.developer,
                         }}
                         variant="outlined"
                         size="small"
-                        value={commReqData?.address}
-                        InputLabelProps={{ shrink: !!commReqData?.address }}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-
-                      {/* TRN */}
-                      <TextField
-                        id="trn"
-                        type={"text"}
-                        label={t("trn")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.trn}
-                        InputLabelProps={{ shrink: !!commReqData?.trn }}
+                        value={receiptVoucherData?.developer}
                         onChange={(e) => handleChange(e)}
                         required
                       />
@@ -1025,7 +756,7 @@ const CommissionReqModal = ({
                   </div>
                 </div>
 
-                {/* COMMISSION DETAILS */}
+                {/* CHEQUE DETAILS */}
                 <div
                   className={`px-5 pt-5 rounded-xl shadow-sm card-hover
                   ${
@@ -1035,7 +766,7 @@ const CommissionReqModal = ({
                   }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
-                    {t("commission_details")?.toUpperCase()}
+                    {t("cheque_details")?.toUpperCase()}
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
@@ -1044,10 +775,10 @@ const CommissionReqModal = ({
                         ...darkModeColors,
                       }}
                     >
-                      {/* BOOKING DATE  */}
+                      {/* CHEQUE DATE */}
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          value={commReqData?.date}
+                          value={receiptVoucherData?.date}
                           label={t("date")}
                           views={["day", "month", "year"]}
                           onChange={(newValue) => {
@@ -1085,65 +816,11 @@ const CommissionReqModal = ({
                         />
                       </LocalizationProvider>
 
-                      {/* COMMISSION AMOUNT */}
+                      {/* CHEQUE NUMBER  */}
                       <TextField
-                        id="comm_amount"
-                        type={"number"}
-                        label={t("comm_amount")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.comm_amount}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* COMMISSION PERCENT */}
-                      <TextField
-                        id="comm_percent"
-                        type={"number"}
-                        label={t("comm_perc")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.comm_percent}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* VAT AMOUNT*/}
-                      <TextField
-                        id="vat"
-                        type={"number"}
-                        label={t("vat")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.vat}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* TOTAL AMOUNT*/}
-                      <TextField
-                        id="total_amount"
+                        id="cheque_number"
                         type={"text"}
-                        label={t("total")}
+                        label={t("cheque_number")}
                         className="w-full"
                         sx={{
                           "&": {
@@ -1153,129 +830,10 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={commReqData?.total_amount}
-                        onChange={(e) => e.preventDefault()}
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                      />
-                    </Box>
-                  </div>
-                </div>
-
-                {/* COMPANY DETAILS */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
-                >
-                  <h1 className="text-center uppercase font-semibold">
-                    {t("company_details")?.toUpperCase()}
-                  </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
-                      }}
-                    >
-                      {/* COMPANY NAME  */}
-                      <TextField
-                        id="company"
-                        type={"text"}
-                        label={t("company_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.company}
+                        value={receiptVoucherData?.cheque_number}
                         onChange={(e) => handleChange(e)}
                       />
 
-                      {/* COMPANY TRN */}
-                      <TextField
-                        id="company_trn"
-                        type={"number"}
-                        label={t("trn")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.company_trn}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* COMPANY EMAIL */}
-                      <TextField
-                        id="company_email"
-                        type={"text"}
-                        label={t("label_email")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.company_email}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* COMPANY TELEPHONE */}
-                      <TextField
-                        id="company_tele"
-                        type={"text"}
-                        label={t("company_tele")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.company_tele}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    </Box>
-                  </div>
-                </div>
-
-                {/* BANK DETAILS */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
-                >
-                  <h1 className="text-center uppercase font-semibold">
-                    {t("bank_details")?.toUpperCase()}
-                  </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
-                      }}
-                    >
                       {/* BANK NAME  */}
                       <TextField
                         id="bank_name"
@@ -1290,97 +848,7 @@ const CommissionReqModal = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={commReqData?.bank_name}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* BANK ADDRESS */}
-                      <TextField
-                        id="bank_address"
-                        type={"text"}
-                        label={t("bank_address")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_address}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* BANK ACC NAME */}
-                      <TextField
-                        id="bank_acc_name"
-                        type={"text"}
-                        label={t("bank_acc_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_acc_name}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* BANK ACC NO */}
-                      <TextField
-                        id="bank_acc_no"
-                        type={"number"}
-                        label={t("bank_acc_no")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_acc_no}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* BANK IBAN */}
-                      <TextField
-                        id="bank_iban"
-                        type={"text"}
-                        label={t("bank_iban")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_iban}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* SWIFT CODE */}
-                      <TextField
-                        id="bank_swift_code"
-                        type={"text"}
-                        label={t("bank_swift_code")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_swift_code}
+                        value={receiptVoucherData?.bank_name}
                         onChange={(e) => handleChange(e)}
                       />
                     </Box>
@@ -1429,4 +897,4 @@ const CommissionReqModal = ({
   );
 };
 
-export default CommissionReqModal;
+export default ReceiptVoucher;

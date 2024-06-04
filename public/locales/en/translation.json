@@ -1079,5 +1079,17 @@
     "close_deal": "Close Deal",
     "tax_invoice": "Tax Invoice",
     "generate_tax_invoice": "Generate Tax Invoice",
-    "invoice_id": "Invoice ID"
+    "invoice_id": "Invoice ID",
+
+
+
+
+
+
+    "receipt_voucher_heading":"Generate Receipt Voucher",
+    "label_dev_name":"Developer Name",
+    "cheque_details":"Check Details",
+    "cheque_number":"Check Number",
+    "cheque_date":"Check Date"
+  
 } 
