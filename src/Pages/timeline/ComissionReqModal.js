@@ -399,8 +399,26 @@ const CommissionReqModal = ({
       doc.setFont("Arial", "bold");
       doc.text(`${data?.vendor_name}`, paddingX, usedY + 15 + 6);
       doc.setFont("Arial", "normal");
-      doc.text(`${data?.address}`, paddingX, usedY + 15 + 6 + 6);
-      doc.text(`TRN No: ${data?.trn}`, paddingX, usedY + 15 + 6 + 6 + 6);
+
+      // doc.text(`${data?.address}`, paddingX, usedY + 15 + 6 + 6);
+
+      // const maxWidth = doc.internal.pageSize.getWidth() - 2 * paddingX; // Subtracting padding from both sides
+      const maxWidth = 90;
+
+      // Split the address text to fit within the specified width
+      const addressLines = doc.splitTextToSize(`${data?.address}`, maxWidth);
+
+      // Render each line of the address
+      let currentY = usedY + 15 + 6 + 6;
+      addressLines.forEach((line, index) => {
+        doc.text(line, paddingX, currentY + index * 5); // Adjust line spacing as needed (10 units here)
+      });
+
+      const addressHeight = addressLines.length * 5; // Total height occupied by the address lines
+      const trnY = currentY + addressHeight; // Adjust Y position for the TRN
+
+      doc.text(`TRN No: ${data?.trn}`, paddingX, trnY);
+      // doc.text(`TRN No: ${data?.trn}`, paddingX, usedY + 15 + 6 + 6 + 6);
       // COMPANY
       doc.text("Company: ", pageWidth / 2 + paddingX, usedY + 15);
       doc.setFont("Arial", "bold");
