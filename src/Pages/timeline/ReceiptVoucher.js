@@ -183,7 +183,7 @@ const ReceiptVoucher = ({
 
     // WATERMARK
     const addWatermark = () => {
-      const watermarkUrl = "assets/pdf-watermark.png";
+      const watermarkUrl = "assets/Watermark.png";
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
 
@@ -199,7 +199,7 @@ const ReceiptVoucher = ({
 
     // HEADER
     const addHeader = () => {
-      const headerImg = "assets/Header.jpg";
+      const headerImg = "assets/Header-update.jpg";
 
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
