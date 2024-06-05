@@ -262,19 +262,50 @@ const CommissionReqModal = ({
     let usedY = 50;
 
     // WATERMARK
+    // const addWatermark = () => {
+    //   // const watermarkUrl = "assets/pdf-watermark.png";
+    //   const watermarkUrl = "assets/Watermark.png";
+    //   for (let i = 1; i <= pageCount; i++) {
+    //     doc.setPage(i);
+
+    //     const x = pageWidth / 2 - 75; // Centered horizontally
+    //     const y = pageHeight / 2 - 75; // Centered vertically
+    //     const width = 150;
+    //     const height = 150;
+
+    //     doc.addImage(watermarkUrl, "PNG", x, y, width, height, "", "NONE", 0.1);
+    //   }
+    // };
     const addWatermark = () => {
-      const watermarkUrl = "assets/pdf-watermark.png";
+      const watermarkUrl = "assets/Watermark.png";
+      const watermarkWidth = 150;
+      const watermarkHeight = 150;
+
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
 
-        const x = pageWidth / 2 - 150; // Centered horizontally
-        const y = pageHeight / 2 - 150; // Centered vertically
-        const width = 300;
-        const height = 300;
+        // Center the watermark
+        const x = (pageWidth - watermarkWidth) / 2; // Centered horizontally
+        const y = (pageHeight - watermarkHeight) / 2; // Centered vertically
 
-        doc.addImage(watermarkUrl, "PNG", x, y, width, height, "", "NONE", 0.3);
+        // Set opacity to 0.1
+        doc.setGState(new doc.GState({ opacity: 0.1 }));
+
+        // Add the watermark image
+        doc.addImage(
+          watermarkUrl,
+          "PNG",
+          x,
+          y,
+          watermarkWidth,
+          watermarkHeight
+        );
+
+        // Reset opacity to default (1.0) for subsequent content
+        doc.setGState(new doc.GState({ opacity: 1.0 }));
       }
     };
+
     addWatermark();
 
     // HEADER
@@ -414,7 +445,7 @@ const CommissionReqModal = ({
         doc.text(line, paddingX, currentY + index * 5); // Adjust line spacing as needed (10 units here)
       });
 
-      const addressHeight = addressLines.length * 5; // Total height occupied by the address lines
+      const addressHeight = addressLines.length * 5 + 1; // Total height occupied by the address lines
       const trnY = currentY + addressHeight; // Adjust Y position for the TRN
 
       doc.text(`TRN No: ${data?.trn}`, paddingX, trnY);
