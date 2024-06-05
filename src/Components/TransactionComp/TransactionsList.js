@@ -42,10 +42,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import NewTransactionForm from "./NewTransactionForm";
 import { formatNoIntl } from "../_elements/FormatNoIntl";
 
-const TransactionsList = ({
-  filtersData,
-  visa
-}) => {
+const TransactionsList = ({ filtersData, visa }) => {
   const {
     currentMode,
     darkModeColors,
@@ -58,7 +55,7 @@ const TransactionsList = ({
     fontFam,
     isLangRTL,
     i18n,
-    deviceType
+    deviceType,
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
@@ -231,7 +228,11 @@ const TransactionsList = ({
     }, {});
   };
   const groupedTransactions = groupTransactionsByDate(transactionsData);
-  const sortedDates = Object.keys(groupedTransactions).sort((a, b) => moment(b).diff(moment(a)));
+  const sortedDates = Object.keys(groupedTransactions).sort((a, b) =>
+    moment(b).diff(moment(a))
+  );
+
+  console.log("sorted DAtes: ", sortedDates);
 
   useEffect(() => {
     fetchTransactions();
@@ -244,18 +245,23 @@ const TransactionsList = ({
         sx={{
           ...darkModeColors,
           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-          {
-            right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-            transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-          },
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
           "& legend": {
             textAlign: isLangRTL(i18n.language) ? "right" : "left",
           },
         }}
-        className={`p-5 rounded-xl shadow-md ${themeBgImg
-          ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-          : (currentMode === "dark" ? "bg-black" : "bg-white")
-          }`}
+        className={`p-5 rounded-xl shadow-md ${
+          themeBgImg
+            ? currentMode === "dark"
+              ? "blur-bg-black"
+              : "blur-bg-white"
+            : currentMode === "dark"
+            ? "bg-black"
+            : "bg-white"
+        }`}
       >
         {loading ? (
           <div className="flex items-center justify-center">
@@ -388,14 +394,17 @@ const TransactionsList = ({
                     </div>
                     <div className="col-span-9 md:col-span-10"></div>
                   </div>
-                  {groupedTransactions[date].map((trans) => (
+                  {groupedTransactions[date]?.map((trans) => (
                     <div
-                      key={trans.id}
+                      key={trans?.id}
                       className="cursor-pointer"
                       onClick={() => setSingleTransModal(trans)}
                     >
-                      <div className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
-                        } grid grid-cols-12 gap-5`}>
+                      <div
+                        className={`${
+                          isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                        } grid grid-cols-12 gap-5`}
+                      >
                         {/* DATE */}
                         <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
                           <div
@@ -403,15 +412,16 @@ const TransactionsList = ({
                             style={{ transform: "translateX(-50%)" }}
                           ></div>
                           <div
-                            className={`${currentMode === "dark" ? "bg-black" : "bg-white"
-                              } border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3`}
+                            className={`${
+                              currentMode === "dark" ? "bg-black" : "bg-white"
+                            } border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3`}
                             style={{ zIndex: 1 }}
                           >
-                            {trans.category === "Commission" ? (
+                            {trans?.category === "Commission" ? (
                               <BsBuildings size={16} color={"#AAAAAA"} />
-                            ) : trans.category === "Salary" ? (
+                            ) : trans?.category === "Salary" ? (
                               <BsCalendarCheck size={16} color={"#AAAAAA"} />
-                            ) : trans.category === "Purchase" ? (
+                            ) : trans?.category === "Purchase" ? (
                               <BsCart4 size={16} color={"#AAAAAA"} />
                             ) : (
                               <BsQuestionLg size={16} color={"#AAAAAA"} />
@@ -420,44 +430,45 @@ const TransactionsList = ({
                         </div>
                         {/* DETAILS */}
                         <div className="col-span-9 md:col-span-8 pb-6 flex flex-col gap-2">
-                          {trans.vendor_id && (
+                          {trans?.vendor_id && (
                             <div className="flex">
-                              {trans.vendor.type} - {trans.vendor.vendor_name}
+                              {trans?.vendor?.type} -{" "}
+                              {trans?.vendor?.vendor_name}
                             </div>
                           )}
                           {trans.user_id && (
-                            <div className="flex">
-                              {trans.user.userName}
-                            </div>
+                            <div className="flex">{trans.user.userName}</div>
                           )}
                           <div className="flex items-center justify-between gap-5">
                             <div className="flex gap-1 text-sm">
                               <p
                                 className={
-                                  trans.status === "Paid"
+                                  trans?.status === "Paid"
                                     ? "text-green-600"
                                     : "text-red-600"
                                 }
                               >
-                                {trans.status}
+                                {trans?.status}
                               </p>
-                              <p> - {trans.category}</p>
+                              <p> - {trans?.category}</p>
                             </div>
                             {/* AMOUNT FOR MOBILE */}
                             {deviceType === "mobile" && (
                               <div className="flex flex-col items-end">
                                 <p
-                                  className={`font-semibold ${trans.invoice_type == "Income"
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                    } `}
+                                  className={`font-semibold ${
+                                    trans?.invoice_type == "Income"
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  } `}
                                 >
-                                  {trans.invoice_type === "Income" ? "+" : "-"}{" "}
-                                  {trans.currency} {formatNoIntl(trans.total_amount)}
+                                  {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                                  {trans?.currency}{" "}
+                                  {formatNoIntl(trans?.total_amount)}
                                 </p>
                                 {(trans?.vat !== 0 || trans?.vat !== null) && (
                                   <p className="text-sm">
-                                    {t("vat")}:{" "}{trans.currency}{" "}{trans.vat}
+                                    {t("vat")}: {trans?.currency} {trans?.vat}
                                   </p>
                                 )}
                               </div>
@@ -468,20 +479,21 @@ const TransactionsList = ({
                         {deviceType !== "mobile" && (
                           <div className="col-span-3 md:col-span-2 pb-5 flex flex-col items-end gap-2">
                             <p
-                              className={`font-semibold ${trans.invoice_type == "Income"
-                                ? "text-green-600"
-                                : "text-red-600"
-                                } `}
+                              className={`font-semibold ${
+                                trans?.invoice_type == "Income"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              } `}
                             >
-                              {trans.invoice_type === "Income" ? "+" : "-"}{" "}
-                              {trans.currency} {formatNoIntl(trans.total_amount)}
+                              {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                              {trans?.currency}{" "}
+                              {formatNoIntl(trans?.total_amount)}
                             </p>
                             {(trans?.vat !== 0 || trans?.vat !== null) && (
                               <p className="text-sm">
-                                {t("vat")}:{" "}{trans.currency}{" "}{trans.vat}
+                                {t("vat")}: {trans?.currency} {trans?.vat}
                               </p>
                             )}
-
                           </div>
                         )}
                       </div>
