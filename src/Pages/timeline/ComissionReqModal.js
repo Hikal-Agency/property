@@ -247,7 +247,6 @@ const CommissionReqModal = ({
         });
       });
   };
-
   const generatePDF = (data) => {
     console.log("PDF Data:: ", data);
     const doc = new jsPDF({
@@ -262,24 +261,56 @@ const CommissionReqModal = ({
     let usedY = 50;
 
     // WATERMARK
+    // const addWatermark = () => {
+    //   // const watermarkUrl = "assets/pdf-watermark.png";
+    //   const watermarkUrl = "assets/Watermark.png";
+    //   for (let i = 1; i <= pageCount; i++) {
+    //     doc.setPage(i);
+
+    //     const x = pageWidth / 2 - 150; // Centered horizontally
+    //     const y = pageHeight / 2 - 150; // Centered vertically
+    //     const width = 150;
+    //     const height = 150;
+
+    //     doc.addImage(watermarkUrl, "PNG", x, y, width, height, "", "NONE", 0.1);
+    //   }
+    // };
     const addWatermark = () => {
-      const watermarkUrl = "assets/pdf-watermark.png";
+      const watermarkUrl = "assets/Watermark.png";
+      const watermarkWidth = 150;
+      const watermarkHeight = 150;
+
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
 
-        const x = pageWidth / 2 - 150; // Centered horizontally
-        const y = pageHeight / 2 - 150; // Centered vertically
-        const width = 300;
-        const height = 300;
+        // Center the watermark
+        const x = (pageWidth - watermarkWidth) / 2; // Centered horizontally
+        const y = (pageHeight - watermarkHeight) / 2; // Centered vertically
 
-        doc.addImage(watermarkUrl, "PNG", x, y, width, height, "", "NONE", 0.3);
+        // Set opacity to 0.1
+        doc.setGState(new doc.GState({ opacity: 0.1 }));
+
+        // Add the watermark image
+        doc.addImage(
+          watermarkUrl,
+          "PNG",
+          x,
+          y,
+          watermarkWidth,
+          watermarkHeight
+        );
+
+        // Reset opacity to default (1.0) for subsequent content
+        doc.setGState(new doc.GState({ opacity: 1.0 }));
       }
     };
+
     addWatermark();
 
     // HEADER
     const addHeader = () => {
-      const headerImg = "assets/Header.jpg";
+      // const headerImg = "assets/Header.jpg";
+      const headerImg = "assets/Header-update.jpg";
 
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
