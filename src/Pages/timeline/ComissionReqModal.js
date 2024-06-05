@@ -247,7 +247,6 @@ const CommissionReqModal = ({
         });
       });
   };
-
   const generatePDF = (data) => {
     console.log("PDF Data:: ", data);
     const doc = new jsPDF({
@@ -267,9 +266,8 @@ const CommissionReqModal = ({
     //   const watermarkUrl = "assets/Watermark.png";
     //   for (let i = 1; i <= pageCount; i++) {
     //     doc.setPage(i);
-
-    //     const x = pageWidth / 2 - 75; // Centered horizontally
-    //     const y = pageHeight / 2 - 75; // Centered vertically
+    //     const x = pageWidth / 2 - 150; // Centered horizontally
+    //     const y = pageHeight / 2 - 150; // Centered vertically
     //     const width = 150;
     //     const height = 150;
 
@@ -310,7 +308,8 @@ const CommissionReqModal = ({
 
     // HEADER
     const addHeader = () => {
-      const headerImg = "assets/Header.jpg";
+      // const headerImg = "assets/Header.jpg";
+      const headerImg = "assets/Header-update.jpg";
 
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
