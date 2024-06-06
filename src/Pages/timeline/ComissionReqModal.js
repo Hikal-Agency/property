@@ -309,7 +309,6 @@ const CommissionReqModal = ({
 
     // HEADER
     const addHeader = () => {
-      // const headerImg = "assets/Header.jpg";
       const headerImg = "assets/Header-update.jpg";
 
       for (let i = 1; i <= pageCount; i++) {
