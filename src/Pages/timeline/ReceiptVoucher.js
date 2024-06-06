@@ -184,15 +184,31 @@ const ReceiptVoucher = ({
     // WATERMARK
     const addWatermark = () => {
       const watermarkUrl = "assets/Watermark.png";
+      const watermarkWidth = 150;
+      const watermarkHeight = 150;
+
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
 
-        const x = pageWidth / 2 - 150; // Centered horizontally
-        const y = pageHeight / 2 - 150; // Centered vertically
-        const width = 300;
-        const height = 300;
+        // Center the watermark
+        const x = (pageWidth - watermarkWidth) / 2; // Centered horizontally
+        const y = (pageHeight - watermarkHeight) / 2; // Centered vertically
 
-        doc.addImage(watermarkUrl, "PNG", x, y, width, height, "", "NONE", 0.3);
+        // Set opacity to 0.1
+        doc.setGState(new doc.GState({ opacity: 0.1 }));
+
+        // Add the watermark image
+        doc.addImage(
+          watermarkUrl,
+          "PNG",
+          x,
+          y,
+          watermarkWidth,
+          watermarkHeight
+        );
+
+        // Reset opacity to default (1.0) for subsequent content
+        doc.setGState(new doc.GState({ opacity: 1.0 }));
       }
     };
     addWatermark();
@@ -212,21 +228,6 @@ const ReceiptVoucher = ({
       }
     };
     addHeader();
-    // const addHeader = () => {
-    //   const pageHeight = doc.internal.pageSize.getHeight();
-    //   const pageWidth = doc.internal.pageSize.getWidth();
-
-    //   // Add the header image
-    //   const headerImg = "assets/Header.jpg";
-    //   doc.addImage(
-    //     headerImg,
-    //     "JPEG",
-    //     0,
-    //     0,
-    //     pageWidth,
-    //     50
-    //   );
-    // };
 
     // FOOTER
     const addFooter = () => {
@@ -243,32 +244,14 @@ const ReceiptVoucher = ({
       }
     };
     addFooter();
-    // const addFooter = () => {
-    //   const pageHeight = doc.internal.pageSize.getHeight();
-    //   const pageWidth = doc.internal.pageSize.getWidth();
-
-    //   // Add the footer image
-    //   const footerImage = "assets/Footer.jpg"; // Ensure the path is correct and image is accessible
-    //   const footerHeight = 50; // Adjust height to fit your layout
-
-    //   // Add image covering the footer area
-    //   doc.addImage(
-    //     footerImage,
-    //     "JPEG",
-    //     0,
-    //     pageHeight - footerHeight,
-    //     pageWidth,
-    //     footerHeight
-    //   );
-    // };
 
     const addHeading = () => {
       const x = pageWidth / 2;
       const y = 50 - 4;
       doc.setFont("Arial", "bold");
       doc.setFontSize(14);
-      doc.text("TAX INVOICE", x, y, null, null, "center");
-      const textWidth = doc.getTextWidth("TAX INVOICE");
+      doc.text("Receipt Voucher", x, y, null, null, "center");
+      const textWidth = doc.getTextWidth("Receipt Voucher");
       const titleY = y + 2;
       doc.setLineWidth(0.5);
       doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
@@ -284,63 +267,18 @@ const ReceiptVoucher = ({
         null,
         "right"
       );
-      // INVOICE ID
-      doc.text(
-        `Invoice No.: ${data?.invoice_id}`,
-        pageWidth - paddingX,
-        dateY + 6,
-        null,
-        null,
-        "right"
-      );
+
       usedY = 54;
     };
 
     const addCompanyDetails = () => {
-      // doc.setFont("Arial", "normal");
-      // doc.setFontSize(12);
-      // doc.text("Company:", 120, 66);
-      // doc.text(`${data?.company}`, 120, 73);
-      // doc.text(`TRN No: ${data?.company_trn}`, 120, 80);
-      // doc.text(` `, 120, 87);
-
-      // doc.text("Bill to:", 20, 73);
-      // doc.text(`${data?.vendor_name}`, 20, 80);
-      // doc.text(`${data?.address}`, 20, 87);
-      // doc.text(`TRN No: ${data?.trn}`, 20, 94);
-
-      // doc.setDrawColor(0);
-      // doc.setLineWidth(0.5);
-      // doc.line(20, 101, 190, 101);
       doc.setFont("Arial", "normal");
       doc.setFontSize(12);
       // VENDOR
-      doc.text("Bill to: ", paddingX, usedY + 15);
+      doc.text("Received From: ", paddingX, usedY + 15);
       doc.setFont("Arial", "bold");
-      doc.text(`${data?.vendor_name}`, paddingX, usedY + 15 + 6);
-      doc.setFont("Arial", "normal");
-      doc.text(`${data?.address}`, paddingX, usedY + 15 + 6 + 6);
-      doc.text(`TRN No: ${data?.trn}`, paddingX, usedY + 15 + 6 + 6 + 6);
-      // COMPANY
-      doc.text("Company: ", pageWidth / 2 + paddingX, usedY + 15);
-      doc.setFont("Arial", "bold");
-      doc.text(`${data?.company}`, pageWidth / 2 + paddingX, usedY + 15 + 6);
-      doc.setFont("Arial", "normal");
-      doc.text(
-        `TRN No: ${data?.company_trn}`,
-        pageWidth / 2 + paddingX,
-        usedY + 15 + 6 + 6
-      );
-      doc.text(
-        `Email: ${data?.company_email}`,
-        pageWidth / 2 + paddingX,
-        usedY + 15 + 6 + 6 + 6
-      );
-      doc.text(
-        `Telephone: ${data?.company_tele}`,
-        pageWidth / 2 + paddingX,
-        usedY + 15 + 6 + 6 + 6 + 6
-      );
+      doc.text(`${data?.developer}`, paddingX, usedY + 15 + 6);
+
       usedY = 93;
     };
 
@@ -351,8 +289,24 @@ const ReceiptVoucher = ({
       // TABLE
       doc.autoTable({
         startY: usedY + 10,
-        head: [["CLIENT NAME", "UNIT NO", "PROJECT NAME"]],
-        body: [[`${data?.leadName}`, `${data?.unit}`, `${data?.project}`]],
+        head: [
+          [
+            "UNIT DETAIL",
+            "BROKER COMPANY",
+            "TOTAL COMMISSION",
+            "CHEQUE NUMBER",
+            "BANK",
+          ],
+        ],
+        body: [
+          [
+            `${data?.unit}`,
+            `HIKAL REAL ESTATE L.L.C.`,
+            `${data?.amount}`,
+            `${data?.cheque_number}`,
+            `${data?.bank_name}`,
+          ],
+        ],
         theme: "grid",
         headStyles: {
           fillColor: [238, 238, 238],
@@ -398,6 +352,7 @@ const ReceiptVoucher = ({
             `${data?.comm_amount}`,
             `${data?.vat}`,
             `${data?.total_amount}`,
+            `${data?.bank_name}`,
           ],
         ],
         theme: "grid",
@@ -440,11 +395,15 @@ const ReceiptVoucher = ({
     const addBankDetails = () => {
       doc.setFont("Arial", "normal");
       doc.setFontSize(10);
+      doc.text("Being:", paddingX, usedY + 10);
       doc.text(
-        "All cheques payable to the following account.",
+        `We, HIKAL REAL ESTATE L.L.C. received with thanks the sum of ${
+          data?.currency
+        } ${" "} ${data?.amount} as One Cheque,as a commission amount `,
         paddingX,
-        usedY + 10
+        usedY + 17
       );
+      doc.text(`for selling mentioned unit above.`, paddingX, usedY + 19);
 
       doc.autoTable({
         startY: usedY + 10 + 10,
