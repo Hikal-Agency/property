@@ -36,7 +36,7 @@ const CommissionReceipt = ({
   Feedback,
   data,
 }) => {
-  console.log("receipt voucher: ", commissionReceipt);
+  console.log(" commission receipt : ", commissionReceipt);
   console.log("closed deals data: ", data);
   const {
     darkModeColors,
@@ -74,6 +74,7 @@ const CommissionReceipt = ({
     currency: commissionReceipt?.currency || "AED",
     developer: null,
     amount: commissionReceipt?.amount || 0,
+    claim: commissionReceipt?.claim,
     user: null,
   });
 
@@ -280,8 +281,8 @@ const CommissionReceipt = ({
       const y = 50 - 4;
       doc.setFont("Arial", "bold");
       doc.setFontSize(14);
-      doc.text("Receipt Voucher", x, y, null, null, "center");
-      const textWidth = doc.getTextWidth("Receipt Voucher");
+      doc.text("Commission Receipt", x, y, null, null, "center");
+      const textWidth = doc.getTextWidth("Commission Receipt");
       const titleY = y + 2;
       doc.setLineWidth(0.5);
       doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
@@ -304,37 +305,41 @@ const CommissionReceipt = ({
     const addCompanyDetails = () => {
       doc.setFont("Arial", "normal");
       doc.setFontSize(12);
-      // VENDOR
-      doc.text("Received From: ", paddingX, usedY + 15);
-      doc.setFont("Arial", "bold");
-      doc.text(`${data?.developer}`, paddingX, usedY + 15 + 6);
+      // Message
+      doc.text(
+        `Dear: ${data?.title?.toUpperCase()} ${data?.user} `,
+        paddingX,
+        usedY + 15
+      );
+      doc.setFont("Arial", "normal");
+      doc.text(
+        `We, HIKAL REAL ESTATE L.L.C. is paying net commission againts following details, which you`,
+        paddingX,
+        usedY + 23 + 6
+      );
+      doc.text(
+        `closed in ${data?.developer}. Kindly see the detailed table velow for the unit.`,
+        paddingX,
+        usedY + 30 + 6
+      );
 
-      usedY = 93;
+      usedY = 110;
     };
 
-    // CLIENT
-    const addClientDetails = () => {
+    // COMMISSION DETAILS
+    const addCommDetails = () => {
       doc.setFont("Arial", "bold");
       doc.setFontSize(12);
       // TABLE
       doc.autoTable({
         startY: usedY + 10,
-        head: [
-          [
-            "UNIT DETAIL",
-            "BROKER COMPANY",
-            "TOTAL COMMISSION",
-            "CHEQUE NUMBER",
-            "BANK",
-          ],
-        ],
+        head: [["PROJECT", "UNIT", "CLAIM TYPE", "AMOUNT"]],
         body: [
           [
+            `${data?.project}`,
             `${data?.unit}`,
-            `HIKAL REAL ESTATE L.L.C.`,
+            `${data?.claim}`,
             `${data?.amount}`,
-            `${data?.cheque_number}`,
-            `${data?.bank_name}`,
           ],
         ],
         theme: "grid",
@@ -361,18 +366,34 @@ const CommissionReceipt = ({
 
       const clientTableHeight = doc.lastAutoTable.finalY;
       usedY = clientTableHeight || 119;
+
+      doc.setFont("Arial", "bold");
+      doc.text(
+        `SUB TOTAL: ${data?.currency} ${data?.amount}`,
+        pageWidth - paddingX,
+        usedY + 6,
+        null,
+        null,
+        "right"
+      );
+      usedY = usedY + 6;
     };
 
-    const addMessage = () => {
+    const addPaymentModa = () => {
       doc.setFont("Arial", "normal");
       doc.setFontSize(10);
-      doc.text("Being:", paddingX, usedY + 30);
-      doc.text(
-        `We, HIKAL REAL ESTATE L.L.C. received with thanks the sum of ${data?.currency}  ${data?.amount} as One Cheque,as a commission amount `,
-        paddingX,
-        usedY + 39
-      );
-      doc.text(`for selling mentioned unit above.`, paddingX, usedY + 44);
+      doc.text("Payment Mode:", paddingX, usedY + 30);
+      doc.setFont("Arial", "bold");
+      doc.setFontSize(10);
+      doc.text(`${data?.payment_source} `, paddingX, usedY + 39);
+
+      const x = paddingX;
+      const y = 50 - 4;
+      const textWidth = doc.getTextWidth(`${data?.payment_source}`);
+      //   const textY = y + 2;
+      const textY = usedY + 41;
+      doc.setLineWidth(0.5);
+      doc.line(x - textWidth / 2, textY, x + textWidth / 2, textY);
 
       usedY = 215;
     };
@@ -404,8 +425,8 @@ const CommissionReceipt = ({
 
     addHeading();
     addCompanyDetails();
-    addClientDetails();
-    addMessage();
+    addCommDetails();
+    addPaymentModa();
     addSignatureSection();
 
     // Save the PDF as Blob
