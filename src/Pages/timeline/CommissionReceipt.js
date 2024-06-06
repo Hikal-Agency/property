@@ -16,6 +16,7 @@ import Select from "react-select";
 import {
   currencies,
   payment_source,
+  title,
 } from "../../Components/_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -48,6 +49,8 @@ const CommissionReceipt = ({
     isLangRTL,
     i18n,
     primaryColor,
+    Managers,
+    SalesPerson,
   } = useStateContext();
 
   const { hasPermission } = usePermission();
@@ -58,20 +61,118 @@ const CommissionReceipt = ({
   const currentDate = moment().format("YYYY-MM-DD");
 
   const [pdfUrl, setPDFUrl] = useState(false);
+  const [vendors, setVendors] = useState([]);
+  const searchRef = useRef();
 
   const [commissionReceiptData, setCommRecData] = useState({
     project: data?.project || null,
     payment_source: null,
+    title: null,
     unit: data?.unit || null,
     invoice_id: commissionReceipt?.id || null,
     date: moment().format("YYYY-MM-DD"),
     currency: commissionReceipt?.currency || "AED",
-    developer: commissionReceipt?.user?.userName || null,
+    developer: null,
     amount: commissionReceipt?.amount || 0,
-    bank_name: null,
+    user: null,
   });
 
   console.log("comm req data:: ", commissionReceiptData);
+
+  const extractedAgents = Object.values(SalesPerson).flat();
+
+  console.log("extracted agents:: ", extractedAgents);
+
+  const user = () => [
+    {
+      type: "manager",
+      label: Managers.find((manager) => manager.id === data?.managerId)
+        ?.userName,
+    },
+    {
+      type: "agent",
+      label: extractedAgents?.find((sale) => sale.id === data?.salesId)
+        ?.userName,
+    },
+  ];
+
+  const token = localStorage.getItem("auth-token");
+
+  const fetchVendors = async () => {
+    setLoading(true);
+    const vendorUrl = `${BACKEND_URL}/vendors`;
+
+    try {
+      const vendorsList = await axios.get(vendorUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("vendors list:: ", vendorsList);
+
+      const vendor = vendorsList?.data?.data?.data;
+      const filteredVendor = vendor?.filter(
+        (ven) => ven?.type?.toLowerCase() === "developer"
+      );
+
+      console.log("filtered vendors : ", filteredVendor);
+
+      setVendors(filteredVendor);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching data:", error);
+      toast.error("Unable to fetch data", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const fetchUsers = async (title) => {
+    try {
+      let url = "";
+
+      url = `${BACKEND_URL}/vendors?vendor_name=${title}`;
+
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("vendors: ", response);
+
+      const vendor = response?.data?.data?.data;
+      const filteredVendor = vendor?.filter(
+        (ven) => ven?.type?.toLowerCase() === "developer"
+      );
+
+      console.log(" search filtered vendors : ", filteredVendor);
+
+      setVendors(filteredVendor);
+    } catch (error) {
+      console.log(error);
+      toast.error("Unable to fetch vendors.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const handleChange = (e) => {
     console.log("E::: ", e);
@@ -322,6 +423,10 @@ const CommissionReceipt = ({
     return pdfBlob;
   };
 
+  useEffect(() => {
+    fetchVendors();
+  }, []);
+
   return (
     <Modal
       keepMounted
@@ -474,27 +579,78 @@ const CommissionReceipt = ({
                         required
                       />
 
-                      {/* DEVELOPER NAME */}
-                      <TextField
-                        id="developer"
-                        type={"text"}
-                        label={t("label_dev_name")}
-                        className="w-full"
+                      {/* VENDORS LIST */}
+                      <FormControl
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
                         sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
+                          minWidth: "100%",
+                          // border: 1,
+                          borderRadius: 1,
+                          marginBottom: "10px",
                         }}
-                        InputLabelProps={{
-                          shrink: !!commissionReceiptData?.developer,
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commissionReceiptData?.developer}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
+                      >
+                        <TextField
+                          id="developer"
+                          select
+                          value={commissionReceiptData?.developer || "selected"}
+                          label={t("vendor")}
+                          onChange={(e) => {
+                            setCommRecData({
+                              ...commissionReceiptData,
+                              developer: e.target.value,
+                            });
+                          }}
+                          size="small"
+                          className="w-full border border-gray-300 rounded "
+                          displayEmpty
+                          required
+                          sx={{
+                            // border: "1px solid #000000",
+                            height: "40px",
+
+                            "& .MuiSelect-select": {
+                              fontSize: 11,
+                            },
+                          }}
+                        >
+                          <MenuItem selected value="selected">
+                            ---{t("select_vendor")}----
+                          </MenuItem>
+                          <MenuItem
+                            onKeyDown={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
+                            <TextField
+                              placeholder={t("search_vendors")}
+                              ref={searchRef}
+                              sx={{
+                                "& input": {
+                                  border: "0",
+                                },
+                              }}
+                              variant="standard"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                              }}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (value.length >= 3) {
+                                  fetchUsers(value);
+                                }
+                              }}
+                            />
+                          </MenuItem>
+
+                          {vendors?.map((vendor) => (
+                            <MenuItem value={vendor?.id}>
+                              {vendor?.vendor_name}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </FormControl>
                     </Box>
                   </div>
                 </div>
@@ -518,26 +674,42 @@ const CommissionReceipt = ({
                         ...darkModeColors,
                       }}
                     >
-                      {/* VENDOR NAME */}
-                      <TextField
-                        id="developer"
-                        type={"text"}
-                        label={t("label_dev_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
+                      {/* TITLE  */}
+                      <Select
+                        id="title"
+                        options={title()}
+                        value={title(t)?.find(
+                          (curr) => curr.value === commissionReceiptData?.title
+                        )}
+                        onChange={(e) => {
+                          setCommRecData({
+                            ...commissionReceiptData,
+                            title: e.value,
+                          });
                         }}
-                        InputLabelProps={{
-                          shrink: !!commissionReceiptData?.developer,
+                        placeholder={t("title")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+
+                      {/* AGENT MANAGER USERNAMES  */}
+                      <Select
+                        id="user"
+                        options={user()}
+                        value={user()?.find(
+                          (user) => user.label === commissionReceiptData?.user
+                        )}
+                        onChange={(e) => {
+                          setCommRecData({
+                            ...commissionReceiptData,
+                            user: e.label,
+                          });
                         }}
-                        variant="outlined"
-                        size="small"
-                        value={commissionReceiptData?.developer}
-                        onChange={(e) => handleChange(e)}
-                        required
+                        placeholder={t("username")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
                       />
                     </Box>
                   </div>

@@ -849,3 +849,10 @@ export const vendors_search_filter = (t) => [
   { value: "email", label: t("label_email") },
   { value: "contact", label: t("label_contact") },
 ];
+
+// PRONOUNCE
+export const title = () => [
+  { value: "mr", label: "Mr" },
+  { value: "ms", label: "Ms" },
+  { value: "mrs", label: "Mrs" },
+];
