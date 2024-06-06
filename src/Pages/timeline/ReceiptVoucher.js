@@ -54,13 +54,12 @@ const ReceiptVoucher = ({
   const [isClosing, setIsClosing] = useState(false);
   const currentDate = moment().format("YYYY-MM-DD");
 
-  const [updatedField, setUpdatedField] = useState("");
   const [pdfUrl, setPDFUrl] = useState(false);
 
   const [receiptVoucherData, setCommReqData] = useState({
     cheque_number: null,
     unit: data?.unit || null,
-    invoice_id: receiptVoucher?.lid || null,
+    invoice_id: receiptVoucher?.id || null,
     date: moment().format("YYYY-MM-DD"),
     currency: receiptVoucher?.currency || "AED",
     developer: receiptVoucher?.vendor?.vendor_name || null,
@@ -79,7 +78,6 @@ const ReceiptVoucher = ({
       ...prev,
       [id]: value,
     }));
-    setUpdatedField(id);
   };
 
   const handleClose = () => {
@@ -93,79 +91,6 @@ const ReceiptVoucher = ({
   const style = {
     transform: "translate(0%, 0%)",
     boxShadow: 24,
-  };
-
-  const token = localStorage.getItem("auth-token");
-
-  const GenerateRequest = () => {
-    setbtnloading(true);
-
-    const pdfBlob = generatePDF(receiptVoucherData);
-
-    const formData = new FormData();
-    formData.append(
-      "tax_invoice",
-      pdfBlob,
-      `Invoice_${receiptVoucherData?.lid}.pdf`
-    );
-    formData.append("currency", receiptVoucherData?.currency);
-    formData.append("comm_amount", receiptVoucherData?.comm_amount);
-    formData.append("comm_percent", receiptVoucherData?.comm_percent);
-    formData.append("vat", receiptVoucherData?.vat);
-    formData.append("amount", receiptVoucherData?.amount);
-    formData.append("project", receiptVoucherData?.project);
-    formData.append("unit", receiptVoucherData?.unit);
-    formData.append("enquiryType", receiptVoucher?.enquiryType);
-
-    axios
-      .post(`${BACKEND_URL}/editdeal/${receiptVoucher?.lid}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Result: ", result);
-        setbtnloading(false);
-        if (result?.data?.status === false || result?.status === false) {
-          toast.error(result?.data?.message || result?.message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          return;
-        }
-
-        toast.success("Commission Request Generated Successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      })
-      .catch((err) => {
-        setbtnloading(false);
-        console.log(err);
-        toast.error("Something Went Wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
   };
 
   const generatePDF = (data) => {
@@ -332,117 +257,26 @@ const ReceiptVoucher = ({
       const clientTableHeight = doc.lastAutoTable.finalY;
       usedY = clientTableHeight || 119;
     };
-    // COMMISSION
-    const addTable = () => {
-      doc.autoTable({
-        startY: usedY + 10,
-        head: [
-          [
-            `SALES VALUE (${data?.currency})`,
-            "COMMISSION %",
-            "NET VALUE BEFORE VAT",
-            "VAT VALUE",
-            `GROSS VALUE (${data?.currency})`,
-          ],
-        ],
-        body: [
-          [
-            `${data?.amount}`,
-            `${data?.comm_percent}`,
-            `${data?.comm_amount}`,
-            `${data?.vat}`,
-            `${data?.total_amount}`,
-            `${data?.bank_name}`,
-          ],
-        ],
-        theme: "grid",
-        headStyles: {
-          fillColor: [238, 238, 238],
-          textColor: [0, 0, 0],
-          fontStyle: "bold",
-          halign: "center",
-          font: "Arial",
-          fontSize: 12,
-        },
-        bodyStyles: {
-          fillColor: null,
-          textColor: [0, 0, 0],
-          halign: "center",
-          font: "Arial",
-          fontSize: 12,
-        },
-        styles: {
-          lineWidth: 0.1,
-          lineColor: [0, 0, 0],
-        },
-      });
 
-      const tableHeight = doc.lastAutoTable.finalY;
-      usedY = tableHeight || 152;
-
-      doc.setFont("Arial", "bold");
-      doc.text(
-        `TOTAL: ${data?.currency} ${data?.total_amount}`,
-        pageWidth - paddingX,
-        usedY + 6,
-        null,
-        null,
-        "right"
-      );
-      usedY = usedY + 6;
-    };
-
-    const addBankDetails = () => {
+    const addMessage = () => {
       doc.setFont("Arial", "normal");
       doc.setFontSize(10);
-      doc.text("Being:", paddingX, usedY + 10);
+      doc.text("Being:", paddingX, usedY + 30);
       doc.text(
-        `We, HIKAL REAL ESTATE L.L.C. received with thanks the sum of ${
-          data?.currency
-        } ${" "} ${data?.amount} as One Cheque,as a commission amount `,
+        `We, HIKAL REAL ESTATE L.L.C. received with thanks the sum of ${data?.currency}  ${data?.amount} as One Cheque,as a commission amount `,
         paddingX,
-        usedY + 17
+        usedY + 39
       );
-      doc.text(`for selling mentioned unit above.`, paddingX, usedY + 19);
+      doc.text(`for selling mentioned unit above.`, paddingX, usedY + 44);
 
-      doc.autoTable({
-        startY: usedY + 10 + 10,
-        head: [
-          ["Bank Name", `${data?.bank_name}`],
-          ["Bank Address", `${data?.bank_address}`],
-          ["Bank Account Name", `${data?.bank_acc_name}`],
-          ["Account Number", `${data?.bank_acc_no}`],
-          ["IBAN", `${data?.bank_iban}`],
-          ["SWIFT Code", `${data?.bank_swift_code}`],
-        ],
-        body: [],
-        theme: "grid",
-        headStyles: {
-          fillColor: null,
-          textColor: [0, 0, 0],
-          font: "Arial",
-          fontSize: 10,
-        },
-        styles: {
-          fontSize: 10,
-          lineWidth: 0.1,
-          lineColor: [0, 0, 0],
-        },
-      });
-      const bankTableHeight = doc.lastAutoTable.finalY;
-      usedY = bankTableHeight;
+      usedY = 215;
     };
 
     const addSignatureSection = () => {
       doc.setFont("Arial", "bold");
       doc.setFontSize(10);
-      doc.text("Sincerely,", paddingX, usedY + 10);
-      doc.text(
-        "Mr. MOHAMED MEDHAT FATHY IBRAHIM HIKAL",
-        paddingX,
-        usedY + 10 + 6
-      );
-      doc.text("CEO", paddingX, usedY + 10 + 6 + 6);
+
+      doc.text("Received By:", paddingX, usedY + 10 + 6 + 6);
       doc.text("HIKAL REAL ESTATE L.L.C", paddingX, usedY + 10 + 6 + 6 + 6);
 
       doc.setLineWidth(0.5);
@@ -466,8 +300,7 @@ const ReceiptVoucher = ({
     addHeading();
     addCompanyDetails();
     addClientDetails();
-    addTable();
-    addBankDetails();
+    addMessage();
     addSignatureSection();
 
     // Save the PDF as Blob
@@ -481,7 +314,7 @@ const ReceiptVoucher = ({
     // Set the PDF URL in the component state
     setPDFUrl(pdfBlobUrl);
 
-    doc.save(`${data?.invoice_id} - ${data?.vendor_name}.pdf`);
+    doc.save(`${data?.invoice_id} - ${data?.developer}.pdf`);
     return pdfBlob;
   };
   useEffect(() => {
@@ -825,7 +658,7 @@ const ReceiptVoucher = ({
                 fontFamily: fontFam,
               }}
               className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-              onClick={GenerateRequest}
+              onClick={() => generatePDF(receiptVoucherData)}
               disabled={btnloading ? true : false}
             >
               {btnloading ? (
