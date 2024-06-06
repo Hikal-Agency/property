@@ -76,6 +76,13 @@ const NewTransactionForm = ({
       ...addTransactionData,
       [id]: value,
     });
+
+    // if (id === "total_amount" && includeVat === false) {
+    //   setAddTransactionData({
+    //     ...addTransactionData,
+    //     amount: addTransactionData?.total_amount,
+    //   });
+    // }
     setUpdatedField(id);
   };
 
@@ -98,6 +105,12 @@ const NewTransactionForm = ({
       autoCalculate(updatedField);
     } else {
       console.log("VAT NOT INCLUDED!");
+      if (updatedField === "total_amount" && includeVat === false) {
+      setAddTransactionData({
+        ...addTransactionData,
+        amount: addTransactionData?.total_amount,
+      });
+    }
     }
   }, [
     updatedField,
@@ -407,7 +420,7 @@ const NewTransactionForm = ({
             fullRow &&
             (edit
               ? "md:grid-cols-2 lg:grid-cols-2 gap-5"
-              : "md:grid-cols-2 lg:grid-cols-2 gap-5")
+              : "md:grid-cols-2 lg:grid-cols-3 gap-5")
           }`}
         >
           {/* INVOICE DETAILS */}
