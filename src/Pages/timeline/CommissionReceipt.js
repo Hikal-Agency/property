@@ -74,7 +74,7 @@ const CommissionReceipt = ({
     currency: commissionReceipt?.currency || "AED",
     developer: null,
     amount: commissionReceipt?.amount || 0,
-    claim: commissionReceipt?.claim,
+    claim: "Full",
     user: null,
   });
 
