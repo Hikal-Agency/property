@@ -13,7 +13,10 @@ import {
 } from "@mui/material";
 import Select from "react-select";
 
-import { currencies } from "../../Components/_elements/SelectOptions";
+import {
+  currencies,
+  payment_source,
+} from "../../Components/_elements/SelectOptions";
 
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
@@ -26,13 +29,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import jsPDF from "jspdf";
 import { fontSize } from "@mui/system";
 
-const ReceiptVoucher = ({
-  receiptVoucher,
-  setReceiptVoucher,
+const CommissionReceipt = ({
+  commissionReceipt,
+  setCommissionReceipt,
   Feedback,
   data,
 }) => {
-  console.log("receipt voucher: ", receiptVoucher);
+  console.log("receipt voucher: ", commissionReceipt);
   console.log("closed deals data: ", data);
   const {
     darkModeColors,
@@ -56,25 +59,26 @@ const ReceiptVoucher = ({
 
   const [pdfUrl, setPDFUrl] = useState(false);
 
-  const [receiptVoucherData, setCommReqData] = useState({
-    cheque_number: null,
+  const [commissionReceiptData, setCommRecData] = useState({
+    project: data?.project || null,
+    payment_source: null,
     unit: data?.unit || null,
-    invoice_id: receiptVoucher?.id || null,
+    invoice_id: commissionReceipt?.id || null,
     date: moment().format("YYYY-MM-DD"),
-    currency: receiptVoucher?.currency || "AED",
-    developer: receiptVoucher?.vendor?.vendor_name || null,
-    amount: receiptVoucher?.total_amount || 0,
+    currency: commissionReceipt?.currency || "AED",
+    developer: commissionReceipt?.user?.userName || null,
+    amount: commissionReceipt?.amount || 0,
     bank_name: null,
   });
 
-  console.log("comm req data:: ", receiptVoucherData);
+  console.log("comm req data:: ", commissionReceiptData);
 
   const handleChange = (e) => {
     console.log("E::: ", e);
     const value = e.target.value;
     const id = e.target.id;
 
-    setCommReqData((prev) => ({
+    setCommRecData((prev) => ({
       ...prev,
       [id]: value,
     }));
@@ -84,7 +88,7 @@ const ReceiptVoucher = ({
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
-      setReceiptVoucher(false);
+      setCommissionReceipt(false);
     }, 1000);
   };
 
@@ -318,12 +322,10 @@ const ReceiptVoucher = ({
     return pdfBlob;
   };
 
-  console.log("TOTAL:: ", receiptVoucherData?.total_amount);
-
   return (
     <Modal
       keepMounted
-      open={receiptVoucher}
+      open={commissionReceipt}
       onClose={handleClose}
       aria-labelledby="keep-mounted-modal-title"
       aria-describedby="keep-mounted-modal-description"
@@ -395,7 +397,7 @@ const ReceiptVoucher = ({
                   }}
                 >
                   <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("receipt_voucher_heading")}
+                    {t("commission_voucher_heading")}
                   </h1>
                 </h1>
               </div>
@@ -434,6 +436,25 @@ const ReceiptVoucher = ({
                         },
                       }}
                     >
+                      {/* PROJECT NAME */}
+                      <TextField
+                        id="project"
+                        type={"text"}
+                        label={t("project")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commissionReceiptData?.project}
+                        onChange={(e) => handleChange(e)}
+                        required
+                      />
+
                       {/* UNIT */}
                       <TextField
                         id="unit"
@@ -448,49 +469,32 @@ const ReceiptVoucher = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={receiptVoucherData?.unit}
+                        value={commissionReceiptData?.unit}
                         onChange={(e) => handleChange(e)}
                         required
                       />
 
-                      <div className="grid grid-cols-3">
-                        {/* CURRENCY */}
-                        <Select
-                          id="currency"
-                          options={currencies(t)}
-                          value={currencies(t)?.find(
-                            (curr) =>
-                              curr.value === receiptVoucherData?.currency
-                          )}
-                          onChange={(e) => {
-                            setCommReqData({
-                              ...receiptVoucherData,
-                              currency: e.value,
-                            });
-                          }}
-                          placeholder={t("label_select_currency")}
-                          className={`mb-5`}
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                        {/* SELLING AMOUNT */}
-                        <TextField
-                          id="amount"
-                          type={"number"}
-                          label={t("commission_amount")}
-                          className="w-full col-span-2"
-                          sx={{
-                            "&": {
-                              zIndex: 1,
-                            },
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={receiptVoucherData?.amount}
-                          onChange={(e) => handleChange(e)}
-                          required
-                        />
-                      </div>
+                      {/* DEVELOPER NAME */}
+                      <TextField
+                        id="developer"
+                        type={"text"}
+                        label={t("label_dev_name")}
+                        className="w-full"
+                        sx={{
+                          "&": {
+                            marginBottom: "1.25rem !important",
+                            zIndex: 1,
+                          },
+                        }}
+                        InputLabelProps={{
+                          shrink: !!commissionReceiptData?.developer,
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={commissionReceiptData?.developer}
+                        onChange={(e) => handleChange(e)}
+                        required
+                      />
                     </Box>
                   </div>
                 </div>
@@ -527,11 +531,11 @@ const ReceiptVoucher = ({
                           },
                         }}
                         InputLabelProps={{
-                          shrink: !!receiptVoucherData?.developer,
+                          shrink: !!commissionReceiptData?.developer,
                         }}
                         variant="outlined"
                         size="small"
-                        value={receiptVoucherData?.developer}
+                        value={commissionReceiptData?.developer}
                         onChange={(e) => handleChange(e)}
                         required
                       />
@@ -539,7 +543,7 @@ const ReceiptVoucher = ({
                   </div>
                 </div>
 
-                {/* CHEQUE DETAILS */}
+                {/* PAYMENT DETAILS */}
                 <div
                   className={`px-5 pt-5 rounded-xl shadow-sm card-hover
                   ${
@@ -549,7 +553,7 @@ const ReceiptVoucher = ({
                   }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
-                    {t("cheque_details")?.toUpperCase()}
+                    {t("payment_details")?.toUpperCase()}
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
@@ -558,70 +562,55 @@ const ReceiptVoucher = ({
                         ...darkModeColors,
                       }}
                     >
-                      {/* CHEQUE DATE */}
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={receiptVoucherData?.date}
-                          label={t("date")}
-                          views={["day", "month", "year"]}
-                          onChange={(newValue) => {
-                            const formattedDate = moment(newValue?.$d).format(
-                              "YYYY-MM-DD"
-                            );
-
-                            setCommReqData((prev) => ({
-                              ...prev,
-                              date: formattedDate,
-                            }));
-                          }}
-                          format="DD-MM-YYYY"
-                          renderInput={(params) => (
-                            <TextField
-                              sx={{
-                                "& input": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                },
-                                "& .MuiSvgIcon-root": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                },
-                                marginBottom: "15px",
-                              }}
-                              fullWidth
-                              size="small"
-                              {...params}
-                              onKeyDown={(e) => e.preventDefault()}
-                              readOnly={true}
-                            />
-                          )}
-                          // maxDate={dayjs().startOf("day").toDate()}
-                        />
-                      </LocalizationProvider>
-
-                      {/* CHEQUE NUMBER  */}
-                      <TextField
-                        id="cheque_number"
-                        type={"text"}
-                        label={t("cheque_number")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
+                      {/* PAYMENT MODE  */}
+                      <Select
+                        id="payment_source"
+                        options={payment_source(t)?.map((payment) => ({
+                          value: payment.value,
+                          label: payment.label,
+                        }))}
+                        value={payment_source(t)?.filter(
+                          (pay_src) =>
+                            pay_src?.value ===
+                            commissionReceiptData?.payment_source
+                        )}
+                        onChange={(e) => {
+                          setCommRecData({
+                            ...commissionReceiptData,
+                            payment_source: e.value,
+                          });
                         }}
-                        variant="outlined"
-                        size="small"
-                        value={receiptVoucherData?.cheque_number}
-                        onChange={(e) => handleChange(e)}
+                        placeholder={t("payment_source")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
                       />
 
-                      {/* BANK NAME  */}
+                      {/* CURRENCY  */}
+                      <Select
+                        id="currency"
+                        options={currencies(t)}
+                        value={currencies(t)?.find(
+                          (curr) =>
+                            curr.value === commissionReceiptData?.currency
+                        )}
+                        onChange={(e) => {
+                          setCommRecData({
+                            ...commissionReceiptData,
+                            currency: e.value,
+                          });
+                        }}
+                        placeholder={t("label_select_currency")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+
+                      {/* AMOUNT  */}
                       <TextField
-                        id="bank_name"
+                        id="amount"
                         type={"text"}
-                        label={t("bank_name")}
+                        label={t("label_amount")}
                         className="w-full"
                         sx={{
                           "&": {
@@ -631,7 +620,7 @@ const ReceiptVoucher = ({
                         }}
                         variant="outlined"
                         size="small"
-                        value={receiptVoucherData?.bank_name}
+                        value={commissionReceiptData?.amount}
                         onChange={(e) => handleChange(e)}
                       />
                     </Box>
@@ -649,7 +638,7 @@ const ReceiptVoucher = ({
                 fontFamily: fontFam,
               }}
               className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-              onClick={() => generatePDF(receiptVoucherData)}
+              onClick={() => generatePDF(commissionReceiptData)}
               disabled={btnloading ? true : false}
             >
               {btnloading ? (
@@ -680,4 +669,4 @@ const ReceiptVoucher = ({
   );
 };
 
-export default ReceiptVoucher;
+export default CommissionReceipt;

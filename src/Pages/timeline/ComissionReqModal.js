@@ -106,7 +106,14 @@ const CommissionReqModal = ({
 
       console.log("vendors list:: ", vendorsList);
 
-      setVendors(vendorsList?.data?.data?.data);
+      const vendor = vendorsList?.data?.data?.data;
+      const filteredVendor = vendor?.filter(
+        (ven) => ven?.type?.toLowerCase() === "developer"
+      );
+
+      console.log("filtered vendors : ", filteredVendor);
+
+      setVendors(filteredVendor);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -138,7 +145,14 @@ const CommissionReqModal = ({
       });
       console.log("vendors: ", response);
 
-      setVendors(response?.data?.data?.data);
+      const vendor = response?.data?.data?.data;
+      const filteredVendor = vendor?.filter(
+        (ven) => ven?.type?.toLowerCase() === "developer"
+      );
+
+      console.log(" search filtered vendors : ", filteredVendor);
+
+      setVendors(filteredVendor);
     } catch (error) {
       console.log(error);
       toast.error("Unable to fetch vendors.", {

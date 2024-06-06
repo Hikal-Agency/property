@@ -1090,6 +1090,10 @@
     "label_dev_name":"Developer Name",
     "cheque_details":"Check Details",
     "cheque_number":"Check Number",
-    "cheque_date":"Check Date"
+    "cheque_date":"Check Date",
+
+
+
+    "commission_voucher_heading":"Generate Commission Receipt"
   
 } 

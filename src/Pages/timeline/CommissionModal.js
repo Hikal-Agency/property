@@ -18,6 +18,7 @@ import { over } from "lodash";
 import moment from "moment";
 import CommissionReqModal from "./ComissionReqModal";
 import ReceiptVoucher from "./ReceiptVoucher";
+import CommissionReceipt from "./CommissionReceipt";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -45,7 +46,7 @@ const CommissionModal = ({
   const [loading, setLoading] = useState(false);
   const [addCommissionModal, setOpenAddCommissionModal] = useState(false);
   const [receiptVoucher, setReceiptVoucher] = useState(false);
-  const [commVoucher, setCommVoucher] = useState(false);
+  const [commissionReceipt, setCommissionReceipt] = useState(false);
   const [commReqModal, setCommReqModal] = useState(false);
   const [maxPage, setMaxPage] = useState(0);
   const [page, setPage] = useState(1);
@@ -332,7 +333,7 @@ const CommissionModal = ({
                                             ) {
                                               setReceiptVoucher(data);
                                             } else {
-                                              setCommVoucher(data);
+                                              setCommissionReceipt(data);
                                             }
                                           }}
                                         >
@@ -615,6 +616,13 @@ const CommissionModal = ({
             <ReceiptVoucher
               receiptVoucher={receiptVoucher}
               setReceiptVoucher={setReceiptVoucher}
+              data={commissionModal}
+            />
+          )}
+          {commissionReceipt && (
+            <CommissionReceipt
+              commissionReceipt={commissionReceipt}
+              setCommissionReceipt={setCommissionReceipt}
               data={commissionModal}
             />
           )}
