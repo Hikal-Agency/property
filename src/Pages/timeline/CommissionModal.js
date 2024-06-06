@@ -324,23 +324,6 @@ const CommissionModal = ({
                                             color={"white"}
                                           />
                                         </button>
-                                        <button
-                                          className="bg-btn-primary rounded-full p-3 mr-3 bottom-5 "
-                                          onClick={() => {
-                                            if (
-                                              data?.invoice_type === "Income"
-                                            ) {
-                                              setReceiptVoucher(data);
-                                            } else {
-                                              setCommVoucher(data);
-                                            }
-                                          }}
-                                        >
-                                          <MdDownload
-                                            size={16}
-                                            color={"white"}
-                                          />
-                                        </button>
                                       </div>
                                     )}
 
