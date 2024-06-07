@@ -333,7 +333,6 @@ const NewTransactionForm = ({
 
       if (!edit) {
         setAddTransactionData({
-          user_id: "",
           invoice_type: visa ? "Expense" : "",
           amount: 0,
           total_amount: 0,
@@ -343,7 +342,6 @@ const NewTransactionForm = ({
           country: "",
           status: "Paid",
           paid_by: "",
-          vendor_id: "",
           category: visa ? "Visa" : "",
           image: null,
         });
@@ -520,7 +518,6 @@ const NewTransactionForm = ({
               }`}
               sx={{
                 minWidth: "100%",
-                // border: 1,
                 borderRadius: 1,
                 marginBottom: "10px",
               }}
