@@ -226,8 +226,8 @@ const StatementPDFComp = ({
       usedY = 93;
     };
 
-    // CLIENT
-    const addClientDetails = () => {
+    // PROFIT LOSS
+    const addProfitLoss = () => {
       doc.setFont("Arial", "bold");
       doc.setFontSize(12);
       doc.text("Profit/Loss: ", paddingX, usedY + 6);
@@ -319,10 +319,14 @@ const StatementPDFComp = ({
       const clientTableHeight = doc.lastAutoTable.finalY;
       usedY = clientTableHeight || 119;
     };
-    // COMMISSION
-    const addTable = () => {
+
+    // TRANSACTIONS
+    const addTransactions = () => {
+      doc.setFont("Arial", "bold");
+      doc.setFontSize(12);
+      doc.text("Transactions: ", paddingX, usedY + 13);
       doc.autoTable({
-        startY: usedY + 10,
+        startY: usedY + 17,
         head: [
           [
             `SALES VALUE (${data?.currency})`,
@@ -447,8 +451,8 @@ const StatementPDFComp = ({
 
     addHeading();
     // addCompanyDetails();
-    addClientDetails();
-    addTable();
+    addProfitLoss();
+    addTransactions();
     addBankDetails();
     addSignatureSection();
 
@@ -486,34 +490,50 @@ const StatementPDFComp = ({
       setLoading(false);
       return;
     }
+
+    const params = {
+      month: filters?.month,
+      year: filters?.year,
+    };
+
+    // Conditionally add country and currency if they have values
+    if (filters?.country) {
+      params.country = filters.country;
+    }
+    if (filters?.currency) {
+      params.currency = filters.currency;
+    }
+
     try {
-      const params = {
-        month: filters?.month,
-        year: filters?.year,
-      };
+      // Promise.all to make both API calls concurrently
+      const [statementsResponse, invoicesResponse] = await Promise.all([
+        axios.get(`${BACKEND_URL}/statements`, {
+          params: params,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+        axios.get(`${BACKEND_URL}/invoices`, {
+          // params: params,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+      ]);
 
-      // Conditionally add country and currency if they have values
-      if (filters?.country) {
-        params.country = filters.country;
-      }
-      if (filters?.currency) {
-        params.currency = filters.currency;
-      }
-      const response = await axios.get(`${BACKEND_URL}/statements`, {
-        params: params,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const statementsData = statementsResponse?.data?.data;
+      const invoicesData = invoicesResponse?.data?.data?.data;
 
-      console.log("statements list:: ", response);
-      const data = response?.data?.data;
-      generatePDF(data);
+      console.log("Statements List:", statementsData);
+      console.log("Invoices List:", invoicesData);
+
+      // Call functions to process statements and invoices data as needed
+      generatePDF(statementsData, invoicesData);
     } catch (error) {
-      setLoading(false);
-      console.error("Error fetching statements:", error);
-      toast.error("Unable to fetch the Statments List", {
+      console.error("Error fetching data:", error);
+      toast.error("Unable to fetch data", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
