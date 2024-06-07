@@ -9,7 +9,7 @@ import pdf from "../../assets/Pdf.pdf";
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const OverlayFile = ({ type, content, onClose, category }) => {
-  const [pdfUrl, setPdfUrl] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState(content);
 
   console.log("OVERLAY ================== ", content);
   console.log("Category ================== ", category);
@@ -31,9 +31,9 @@ const OverlayFile = ({ type, content, onClose, category }) => {
     setPdfUrl(url);
   };
 
-  useEffect(() => {
-    generateTempPdf();
-  }, [content]);
+  // useEffect(() => {
+  //   generateTempPdf();
+  // }, [content]);
 
   return (
     <div

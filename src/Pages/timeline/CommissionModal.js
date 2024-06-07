@@ -19,6 +19,7 @@ import moment from "moment";
 import CommissionReqModal from "./ComissionReqModal";
 import ReceiptVoucher from "./ReceiptVoucher";
 import CommissionReceipt from "./CommissionReceipt";
+// import base64ToBlob from "../../utils/baseToBlob";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -63,8 +64,28 @@ const CommissionModal = ({
     setShowOverlayImage(true);
   };
 
+  const base64ToBlob = (base64, mime) => {
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: mime });
+  };
+
   const handlePdfClick = (pdf) => {
-    setOverlayContent(pdf);
+    const base64String = pdf.split(",")[1];
+    const pdfBlob = base64ToBlob(base64String, "application/pdf");
+    const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+    setOverlayContent(pdfBlobUrl);
     console.log("OVERLAY PDF ========= ", overlayContent);
     setShowOverlayImage(false);
     setShowOverlayPdf(true);
@@ -489,10 +510,9 @@ const CommissionModal = ({
                                                       size={100}
                                                       color={"#AAAAAA"}
                                                       onClick={() =>
-                                                        handlePdfClick(
-                                                          data?.receipt[0]
-                                                            ?.temp_file
-                                                        )
+                                                        handlePdfClick(`
+                                                        data:application/pdf;base64,
+                                                         ${data?.receipt[0]?.temp_file}`)
                                                       }
                                                     />
                                                   </div>
