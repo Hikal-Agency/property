@@ -96,7 +96,7 @@ const VisaTransaction = ({ pathname }) => {
     user_id: "",
     invoice_type: visaPage ? "Expense" : "",
     amount: 0,
-    total_amount: "",
+    total_amount: 0,
     date: "",
     currency: "AED",
     country: "",
