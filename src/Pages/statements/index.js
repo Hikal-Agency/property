@@ -26,7 +26,6 @@ const Statements = ({ isLoading }) => {
 
   useEffect(() => {
     setopenBackDrop(false);
-    // eslint-disable-next-line
   }, []);
 
   return (
