@@ -308,7 +308,7 @@ const CommissionModal = ({
                                     {/* EDIT  */}
                                     {!invoiceModal && (
                                       <div
-                                        className={`absolute bottom-4 ${
+                                        className={`flex flex-col space-y-3 absolute bottom-4 ${
                                           isLangRTL(i18n.language)
                                             ? "left-4"
                                             : "right-4"
@@ -326,7 +326,7 @@ const CommissionModal = ({
                                           />
                                         </button>
                                         <button
-                                          className="bg-btn-primary rounded-full p-3 mr-3 bottom-5 "
+                                          className="bg-btn-primary rounded-full p-3  bottom-5 "
                                           onClick={() => {
                                             if (
                                               data?.invoice_type === "Income"
