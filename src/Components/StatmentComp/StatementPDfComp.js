@@ -147,8 +147,17 @@ const StatementPDFComp = ({
       const y = 50 - 4;
       doc.setFont("Arial", "bold");
       doc.setFontSize(14);
-      doc.text("TAX INVOICE", x, y, null, null, "center");
-      const textWidth = doc.getTextWidth("TAX INVOICE");
+      doc.text(
+        `STATEMENT - ${filters?.month} ${filters?.year}`,
+        x,
+        y,
+        null,
+        null,
+        "center"
+      );
+      const textWidth = doc.getTextWidth(
+        `STATEMENT - ${filters?.month} ${filters?.year}`
+      );
       const titleY = y + 2;
       doc.setLineWidth(0.5);
       doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
@@ -164,16 +173,8 @@ const StatementPDFComp = ({
         null,
         "right"
       );
-      // INVOICE ID
-      doc.text(
-        `Invoice No.: ${data?.invoice_id}`,
-        pageWidth - paddingX,
-        dateY + 6,
-        null,
-        null,
-        "right"
-      );
-      usedY = 54;
+
+      usedY = 75;
     };
 
     const addCompanyDetails = () => {
@@ -229,11 +230,53 @@ const StatementPDFComp = ({
     const addClientDetails = () => {
       doc.setFont("Arial", "bold");
       doc.setFontSize(12);
+      doc.text("Profit/Loss: ", paddingX, usedY + 6);
+
+      const profitColumns = [
+        { field: "currency", headerName: "CURRENCY" },
+        { field: "total_income", headerName: "INCOME" },
+        { field: "total_expense", headerName: "EXPENSE" },
+        { field: "percent", headerName: "PROFIT/LOSS %" },
+        { field: "profit_loss", headerName: "PROFIT/LOSS" },
+      ];
+
+      let loss;
+
+      const profitHeaders = profitColumns?.map((col) => col.headerName);
+      const tableData = data?.map((row) =>
+        profitColumns?.map((col) => {
+          console.log("rowdata: ", row);
+          if (row?.output?.toLowerCase() === "loss") {
+            loss = true;
+          } else {
+            loss = false;
+          }
+          console.log("loss after condition:: ", loss);
+          if (col.field === "percent") {
+            return row[col.field] !== undefined && row[col.field] !== null
+              ? parseFloat(row[col.field]).toFixed(1) + " %"
+              : "0.0 %";
+          }
+          if (col.field === "profit_loss") {
+            return row[col.field] !== undefined && row[col.field] !== null
+              ? parseFloat(row[col.field]).toFixed(2)
+              : "0.00";
+          }
+          return row[col.field];
+        })
+      );
+      // const tableData = data?.map((row) =>
+      //   profitColumns?.map((col) =>
+      //     col.renderCell ? col.renderCell({ row }) : row[col.field]
+      //   )
+      // );
       // TABLE
       doc.autoTable({
         startY: usedY + 10,
-        head: [["CLIENT NAME", "UNIT NO", "PROJECT NAME"]],
-        body: [[`${data?.leadName}`, `${data?.unit}`, `${data?.project}`]],
+
+        head: [profitHeaders],
+        body: tableData,
+
         theme: "grid",
         headStyles: {
           fillColor: [238, 238, 238],
@@ -253,6 +296,23 @@ const StatementPDFComp = ({
         styles: {
           lineWidth: 0.1,
           lineColor: [0, 0, 0],
+        },
+        didParseCell: function (data) {
+          const rowIndex = data.row.index;
+          const colIndex = data.column.index;
+          const cellData = tableData[rowIndex][colIndex];
+
+          console.log("celldata: ", cellData);
+          console.log("loss: ", loss);
+
+          if (colIndex === 3 || colIndex === 4) {
+            // Last two columns (percent and profit_loss)
+            if (loss) {
+              data.cell.styles.textColor = "#DA1F26"; // Red for loss
+            } else {
+              data.cell.styles.textColor = "#269144"; // Green for profit
+            }
+          }
         },
       });
 
@@ -386,7 +446,7 @@ const StatementPDFComp = ({
     };
 
     addHeading();
-    addCompanyDetails();
+    // addCompanyDetails();
     addClientDetails();
     addTable();
     addBankDetails();
@@ -403,7 +463,7 @@ const StatementPDFComp = ({
     // Set the PDF URL in the component state
     setPdfUrl(pdfBlobUrl);
 
-    doc.save(`${data?.invoice_id} - ${data?.vendor_name}.pdf`);
+    doc.save(`Statement- ${filters?.month}${filters?.year}.pdf`);
     return pdfBlob;
   };
 
@@ -471,27 +531,6 @@ const StatementPDFComp = ({
   const style = {
     transform: "translate(0%, 0%)",
     boxShadow: 24,
-  };
-
-  const FetchLead = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("auth-token");
-      const result = await axios.get(`${BACKEND_URL}/leads/${LeadData}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      console.log("leads: ", result);
-
-      setLeadData(result?.data?.data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
   };
 
   useEffect(() => {
