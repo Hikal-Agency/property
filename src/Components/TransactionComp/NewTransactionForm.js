@@ -26,6 +26,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import moment from "moment";
 import { MdFileUpload } from "react-icons/md";
 import axios from "../../axoisConfig";
+import { BsFileEarmarkMedical } from "react-icons/bs";
 
 import { toast } from "react-toastify";
 
@@ -65,6 +66,7 @@ const NewTransactionForm = ({
   const [pettyCash, setPettyCash] = useState(false);
   const [updatedField, setUpdatedField] = useState();
   const [imagePreview, setImagePreview] = useState(null);
+  const [pdfPreview, setPdfPreview] = useState(null);
 
   const token = localStorage.getItem("auth-token");
 
@@ -196,6 +198,7 @@ const NewTransactionForm = ({
     console.log("files:: ", file);
 
     if (file && file.type.startsWith("image/")) {
+      setPdfPreview(null);
       const reader = new FileReader();
       reader.onload = () => {
         setImagePreview(reader.result);
@@ -203,6 +206,9 @@ const NewTransactionForm = ({
         const base64Image = reader.result;
       };
       reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+      setPdfPreview(true);
     }
 
     setAddTransactionData({
@@ -885,6 +891,14 @@ const NewTransactionForm = ({
                   <div className="  mb-5 flex items-center justify-center ">
                     <div className=" rounded-lg border">
                       <img src={imagePreview} width="100px" height="100px" />
+                    </div>
+                  </div>
+                )}
+                {pdfPreview && (
+                  <div className="flex flex-col justify-center items-center w-full gap-4">
+                    <BsFileEarmarkMedical size={100} color={"#AAAAAA"} />
+                    <div className="">
+                      <p>File Selected </p>
                     </div>
                   </div>
                 )}
