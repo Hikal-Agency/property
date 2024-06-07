@@ -20,6 +20,7 @@ import { countries_list, currencies } from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
 import TransactionsListModal from "../TransactionComp/TransactionsListModal";
 import StatmentsCharts from "./StatmentsChart";
+import StatementPDFComp from "./StatementPDfComp";
 
 const StatmentsList = () => {
   const {
@@ -39,6 +40,7 @@ const StatmentsList = () => {
   const [loading, setloading] = useState(true);
   const [statementsData, setStatementsData] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
+  const [pdfModal, setPDFModal] = useState(false);
   const [transactionsListModal, setTransactionsListModal] = useState(null);
 
   const token = localStorage.getItem("auth-token");
@@ -258,7 +260,10 @@ const StatmentsList = () => {
           </Box>
 
           <div className="mb-4">
-            <button className="bg-btn-primary p-4 mt-0 rounded-full">
+            <button
+              className="bg-btn-primary p-4 mt-0 rounded-full"
+              onClick={() => setPDFModal(true)}
+            >
               {" "}
               <BsDownload size={16} color={"#FFFFFF"} />
             </button>
@@ -423,6 +428,10 @@ const StatmentsList = () => {
           setTransactionsListModal={setTransactionsListModal}
           filters={filters}
         />
+      )}
+
+      {pdfModal && (
+        <StatementPDFComp pdfModal={pdfModal} setPDFModal={setPDFModal} />
       )}
     </div>
   );
