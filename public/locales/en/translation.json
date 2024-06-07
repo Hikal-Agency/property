@@ -1088,9 +1088,9 @@
 
     "receipt_voucher_heading":"Generate Receipt Voucher",
     "label_dev_name":"Developer Name",
-    "cheque_details":"Check Details",
-    "cheque_number":"Check Number",
-    "cheque_date":"Check Date",
+    "cheque_details":"Cheque Details",
+    "cheque_number":"Cheque Number",
+    "cheque_date":"Cheque Date",
 
 
 
