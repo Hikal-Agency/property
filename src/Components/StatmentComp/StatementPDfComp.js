@@ -25,7 +25,8 @@ import { selectStyles } from "../_elements/SelectStyles";
 const StatementPDFComp = ({
   pdfModal,
   setPDFModal,
-
+  filters,
+  setFilters,
   LeadData,
   setLeadData,
 }) => {
