@@ -2,6 +2,24 @@ import React from "react";
 
 import { TbFlag3Filled } from "react-icons/tb";
 
+// OWNERS 
+export const boss = (t) => [
+  {
+    id: 102,
+    title: "Mr.",
+    name: "Mohamed Hikal",
+    phone: "+971585556605",
+    email: "hikal@hikalagency.ae"
+  },
+  {
+    id: 132,
+    title: "Mr.",
+    name: "Belal Hikal",
+    phone: "+971585550775",
+    email: "belal.hikal@hikalproperties.ae"
+  }
+];
+
 // LEAD CATEGORY
 export const lead_category = (t) => [
   {
