@@ -79,163 +79,355 @@ const StatementPDFComp = ({
   };
 
   // generate report
-  const generateReportPDF = (data) => {
+  const generatePDF = (data) => {
+    console.log("PDF Data:: ", data);
     const doc = new jsPDF({
-      format: [300, 300],
+      format: "a4",
       unit: "mm",
     });
 
-    const columns = [
-      { field: "user_name", headerName: "Name" },
-      { field: "salary", headerName: "Salary" },
-      { field: "present_days", headerName: "Attended" },
-      { field: "leave_days", headerName: "Leave" },
-      { field: "late_days", headerName: "Late" },
-      { field: "deducted_salary", headerName: "Deducted" },
-      { field: "net_salary", headerName: "Total" },
-    ];
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const pageCount = doc.internal.getNumberOfPages();
+    const paddingX = 15;
+    let usedY = 50;
 
-    const headers = columns.map((column) => column.headerName);
+    const addWatermark = () => {
+      const watermarkUrl = "assets/Watermark.png";
+      const watermarkWidth = 150;
+      const watermarkHeight = 150;
 
-    const tableData = data?.map((row) =>
-      columns.map((column) =>
-        column.renderCell ? column.renderCell({ row }) : row[column.field]
-      )
-    );
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
 
-    if (tableData.length > 0) {
-      const totalWidth = headers.length * 30;
-      const fontSize = 7;
+        // Center the watermark
+        const x = (pageWidth - watermarkWidth) / 2; // Centered horizontally
+        const y = (pageHeight - watermarkHeight) / 2; // Centered vertically
 
-      doc.setDrawColor(218, 31, 38);
-      doc.setLineWidth(1);
-      doc.line(10, 25, doc.internal.pageSize.getWidth() - 10, 25);
+        // Set opacity to 0.1
+        doc.setGState(new doc.GState({ opacity: 0.1 }));
 
-      const currentDate = new Date();
-      const monthName = new Intl.DateTimeFormat("en-US", {
-        month: "long",
-      }).format(currentDate);
-      const year = currentDate.getFullYear();
-      const reportMonthName = moment()
-        .month(reportMonth?.month - 1)
-        .format("MMMM");
-      const reportText = `Salary Evaluation Report for ${reportMonthName}`;
-
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "bold");
-      doc.text(reportText, 20, 15);
-
-      doc.setTextColor("#DA1F26");
-      doc.setFont("helvetica", "bold");
-
-      const DateinNum = moment().format("YYYY-MM-DD");
-      const date = `Date: ${DateinNum}`;
-      doc.setTextColor("#000");
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      doc.text(date, doc.internal.pageSize.getWidth() - 45, 33);
-
-      const numColumns = 2;
-      const columnWidth = (doc.internal.pageSize.getWidth() - 30) / numColumns;
-
-      // Load the logo image
-      const logoImg = new Image();
-      logoImg.src = "/assets/hikal_watermark.png";
-      logoImg.onload = () => {
-        const originalWidth = logoImg.width; // Get the original width of the logo
-        const originalHeight = logoImg.height; // Get the original height of the logo
-
-        const desiredWidth = 20; // Set the desired width of the logo
-        const scaleFactor = desiredWidth / originalWidth; // Calculate the scale factor
-
-        // Calculate the height to maintain the original aspect ratio
-        const desiredHeight = originalHeight * scaleFactor;
-
-        // Calculate the position to place the logo in the top right corner
-        const logoX = doc.internal.pageSize.getWidth() - desiredWidth - 15;
-        const logoY = 8;
-
-        // Add the logo to the PDF with the adjusted dimensions
+        // Add the watermark image
         doc.addImage(
-          logoImg.src,
+          watermarkUrl,
           "PNG",
-          logoX,
-          logoY,
-          desiredWidth,
-          desiredHeight // Use the adjusted height here
+          x,
+          y,
+          watermarkWidth,
+          watermarkHeight
         );
-        // Add the table to the PDF
 
-        doc.autoTable({
-          head: [headers],
-          body: tableData,
-          tableWidth: totalWidth,
-          startY: 40,
-          headStyles: {
-            fillColor: "#DA1F26",
-          },
-          styles: {
-            fontSize: fontSize,
-            cellPadding: 2,
-            head: { fillColor: "#DA1F26" },
-          },
-          autoSize: true,
-          minCellWidth: 40,
-          margin: { top: 50, right: 15, bottom: 20, left: 15 },
-        });
+        // Reset opacity to default (1.0) for subsequent content
+        doc.setGState(new doc.GState({ opacity: 1.0 }));
+      }
+    };
 
-        // Save the PDF as Blob
-        const pdfBlob = doc.output("blob");
+    addWatermark();
 
-        // Create a Blob URL
-        const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+    // HEADER
+    const addHeader = () => {
+      const headerImg = "assets/Header-update.jpg";
 
-        // Set the PDF URL in the component state
-        setPdfUrl(pdfBlobUrl);
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        const x = 0;
+        const y = -3;
+        const width = pageWidth;
+        const height = 50;
 
-        // doc.save(`Salary-Report.pdf`);
-      };
+        doc.addImage(headerImg, "JPEG", x, y, width, height);
+      }
+    };
+    addHeader();
 
-      // Handle image load error
-      logoImg.onerror = () => {
-        console.error("Error loading the logo image.");
-      };
-    } else {
-      alert("No valid data to export!");
-    }
-  };
+    // FOOTER
+    const addFooter = () => {
+      const footerImage = "assets/Footer.jpg";
 
-  const fetchSalaryCalc = async () => {
-    setLoading(true);
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        const width = pageWidth;
+        const height = 44;
+        const x = 0;
+        const y = pageHeight - height + 4;
 
-    if (!reportMonth?.month || !reportMonth?.year) {
-      setLoading(false);
-      toast.error("Kindly select month and year first.", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
+        doc.addImage(footerImage, "JPEG", x, y, width, height);
+      }
+    };
+    addFooter();
+
+    const addHeading = () => {
+      const x = pageWidth / 2;
+      const y = 50 - 4;
+      doc.setFont("Arial", "bold");
+      doc.setFontSize(14);
+      doc.text("TAX INVOICE", x, y, null, null, "center");
+      const textWidth = doc.getTextWidth("TAX INVOICE");
+      const titleY = y + 2;
+      doc.setLineWidth(0.5);
+      doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
+      // DATE
+      doc.setFont("Arial", "normal");
+      doc.setFontSize(12);
+      const dateY = titleY + 4;
+      doc.text(
+        `Date: ${currentDate}`,
+        pageWidth - paddingX,
+        dateY,
+        null,
+        null,
+        "right"
+      );
+      // INVOICE ID
+      doc.text(
+        `Invoice No.: ${data?.invoice_id}`,
+        pageWidth - paddingX,
+        dateY + 6,
+        null,
+        null,
+        "right"
+      );
+      usedY = 54;
+    };
+
+    const addCompanyDetails = () => {
+      doc.setFont("Arial", "normal");
+      doc.setFontSize(12);
+      // VENDOR
+      doc.text("Bill to: ", paddingX, usedY + 15);
+      doc.setFont("Arial", "bold");
+      doc.text(`${data?.vendor_name}`, paddingX, usedY + 15 + 6);
+      doc.setFont("Arial", "normal");
+
+      // const maxWidth = doc.internal.pageSize.getWidth() - 2 * paddingX; // Subtracting padding from both sides
+      const maxWidth = 90;
+
+      // Split the address text to fit within the specified width
+      const addressLines = doc.splitTextToSize(`${data?.address}`, maxWidth);
+
+      // Render each line of the address
+      let currentY = usedY + 15 + 6 + 6;
+      addressLines.forEach((line, index) => {
+        doc.text(line, paddingX, currentY + index * 5); // Adjust line spacing as needed (10 units here)
       });
 
-      return;
-    }
+      const addressHeight = addressLines.length * 5 + 1; // Total height occupied by the address lines
+      const trnY = currentY + addressHeight; // Adjust Y position for the TRN
 
-    try {
-      const response = await axios.post(
-        `https://reports.hikalcrm.com/api/calculate_salary`,
-        { month: reportMonth.month, year: reportMonth.year, agency: 1 },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+      doc.text(`TRN No: ${data?.trn}`, paddingX, trnY);
+      // doc.text(`TRN No: ${data?.trn}`, paddingX, usedY + 15 + 6 + 6 + 6);
+      // COMPANY
+      doc.text("Company: ", pageWidth / 2 + paddingX, usedY + 15);
+      doc.setFont("Arial", "bold");
+      doc.text(`${data?.company}`, pageWidth / 2 + paddingX, usedY + 15 + 6);
+      doc.setFont("Arial", "normal");
+      doc.text(
+        `TRN No: ${data?.company_trn}`,
+        pageWidth / 2 + paddingX,
+        usedY + 15 + 6 + 6
+      );
+      doc.text(
+        `Email: ${data?.company_email}`,
+        pageWidth / 2 + paddingX,
+        usedY + 15 + 6 + 6 + 6
+      );
+      doc.text(
+        `Telephone: ${data?.company_tele}`,
+        pageWidth / 2 + paddingX,
+        usedY + 15 + 6 + 6 + 6 + 6
+      );
+      usedY = 93;
+    };
+
+    // CLIENT
+    const addClientDetails = () => {
+      doc.setFont("Arial", "bold");
+      doc.setFontSize(12);
+      // TABLE
+      doc.autoTable({
+        startY: usedY + 10,
+        head: [["CLIENT NAME", "UNIT NO", "PROJECT NAME"]],
+        body: [[`${data?.leadName}`, `${data?.unit}`, `${data?.project}`]],
+        theme: "grid",
+        headStyles: {
+          fillColor: [238, 238, 238],
+          textColor: [0, 0, 0],
+          fontStyle: "bold",
+          halign: "center",
+          font: "Arial",
+          fontSize: 12,
+        },
+        bodyStyles: {
+          fillColor: null,
+          textColor: [0, 0, 0],
+          halign: "center",
+          font: "Arial",
+          fontSize: 12,
+        },
+        styles: {
+          lineWidth: 0.1,
+          lineColor: [0, 0, 0],
+        },
+      });
+
+      const clientTableHeight = doc.lastAutoTable.finalY;
+      usedY = clientTableHeight || 119;
+    };
+    // COMMISSION
+    const addTable = () => {
+      doc.autoTable({
+        startY: usedY + 10,
+        head: [
+          [
+            `SALES VALUE (${data?.currency})`,
+            "COMMISSION %",
+            "NET VALUE BEFORE VAT",
+            "VAT VALUE",
+            `GROSS VALUE (${data?.currency})`,
+          ],
+        ],
+        body: [
+          [
+            `${data?.amount}`,
+            `${data?.comm_percent}`,
+            `${data?.comm_amount}`,
+            `${data?.vat}`,
+            `${data?.total_amount}`,
+          ],
+        ],
+        theme: "grid",
+        headStyles: {
+          fillColor: [238, 238, 238],
+          textColor: [0, 0, 0],
+          fontStyle: "bold",
+          halign: "center",
+          font: "Arial",
+          fontSize: 12,
+        },
+        bodyStyles: {
+          fillColor: null,
+          textColor: [0, 0, 0],
+          halign: "center",
+          font: "Arial",
+          fontSize: 12,
+        },
+        styles: {
+          lineWidth: 0.1,
+          lineColor: [0, 0, 0],
+        },
+      });
+
+      const tableHeight = doc.lastAutoTable.finalY;
+      usedY = tableHeight || 152;
+
+      doc.setFont("Arial", "bold");
+      doc.text(
+        `TOTAL: ${data?.currency} ${data?.total_amount}`,
+        pageWidth - paddingX,
+        usedY + 6,
+        null,
+        null,
+        "right"
+      );
+      usedY = usedY + 6;
+    };
+
+    const addBankDetails = () => {
+      doc.setFont("Arial", "normal");
+      doc.setFontSize(10);
+      doc.text(
+        "All cheques payable to the following account.",
+        paddingX,
+        usedY + 10
       );
 
-      toast.success("Generating preview of report.", {
+      doc.autoTable({
+        startY: usedY + 10 + 10,
+        head: [
+          ["Bank Name", `${data?.bank_name}`],
+          ["Bank Address", `${data?.bank_address}`],
+          ["Bank Account Name", `${data?.bank_acc_name}`],
+          ["Account Number", `${data?.bank_acc_no}`],
+          ["IBAN", `${data?.bank_iban}`],
+          ["SWIFT Code", `${data?.bank_swift_code}`],
+        ],
+        body: [],
+        theme: "grid",
+        headStyles: {
+          fillColor: null,
+          textColor: [0, 0, 0],
+          font: "Arial",
+          fontSize: 10,
+        },
+        styles: {
+          fontSize: 10,
+          lineWidth: 0.1,
+          lineColor: [0, 0, 0],
+        },
+      });
+      const bankTableHeight = doc.lastAutoTable.finalY;
+      usedY = bankTableHeight;
+    };
+
+    const addSignatureSection = () => {
+      doc.setFont("Arial", "bold");
+      doc.setFontSize(10);
+      doc.text("Sincerely,", paddingX, usedY + 10);
+      doc.text(
+        "Mr. MOHAMED MEDHAT FATHY IBRAHIM HIKAL",
+        paddingX,
+        usedY + 10 + 6
+      );
+      doc.text("CEO", paddingX, usedY + 10 + 6 + 6);
+      doc.text("HIKAL REAL ESTATE L.L.C", paddingX, usedY + 10 + 6 + 6 + 6);
+
+      doc.setLineWidth(0.5);
+      doc.line(
+        150,
+        usedY + 10 + 6 + 6 + 6,
+        pageWidth - paddingX,
+        usedY + 10 + 6 + 6 + 6
+      );
+      doc.setFont("Arial", "normal");
+      doc.setFontSize(10);
+      const text = "Authorized Signature";
+      const centerX = (150 + pageWidth - paddingX) / 2;
+      const textWidth =
+        (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
+        doc.internal.scaleFactor;
+      const textX = centerX - textWidth / 2;
+      doc.text(text, textX, usedY + 10 + 6 + 6 + 6 + 6);
+    };
+
+    addHeading();
+    addCompanyDetails();
+    addClientDetails();
+    addTable();
+    addBankDetails();
+    addSignatureSection();
+
+    // Save the PDF as Blob
+    const pdfBlob = doc.output("blob");
+
+    // Create a Blob URL
+    const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+
+    console.log("PDF Blob URL: ", pdfBlobUrl);
+
+    // Set the PDF URL in the component state
+    setPdfUrl(pdfBlobUrl);
+
+    doc.save(`${data?.invoice_id} - ${data?.vendor_name}.pdf`);
+    return pdfBlob;
+  };
+
+  const token = localStorage.getItem("auth-token");
+
+  const fetchStatements = async () => {
+    setLoading(true);
+
+    if (!filters?.month || !filters?.year) {
+      toast.error("Month and year are required.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -245,35 +437,37 @@ const StatementPDFComp = ({
         progress: undefined,
         theme: "light",
       });
-
-      console.log("salary Calc: ", response);
-
-      let rowsDataArray = response?.data?.data;
-
-      let rowsdata = rowsDataArray?.map((row, index) => ({
-        id: index,
-        deducted_salary: row?.deducted_salary || "-",
-        late_day_salary: row?.late_day_salary || "-",
-        late_days: row?.late_days || "-",
-        leave_day_salary: row?.leave_day_salary || "-",
-        leave_days: row?.leave_days || "-",
-        net_salary: row?.net_salary || "-",
-        present_days: row?.present_days || "-",
-        salary: row?.salary || "-",
-        salary_per_day: row?.salary_per_day || "-",
-        user_id: row?.user_id || "-",
-        user_name: row?.user_name || "-",
-        weekends: row?.weekends || "-",
-      }));
-
-      setReportDetails(rowsdata);
-      generateReportPDF(rowsDataArray);
-
       setLoading(false);
+      return;
+    }
+    try {
+      const params = {
+        month: filters?.month,
+        year: filters?.year,
+      };
+
+      // Conditionally add country and currency if they have values
+      if (filters?.country) {
+        params.country = filters.country;
+      }
+      if (filters?.currency) {
+        params.currency = filters.currency;
+      }
+      const response = await axios.get(`${BACKEND_URL}/statements`, {
+        params: params,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("statements list:: ", response);
+      const data = response?.data?.data;
+      generatePDF(data);
     } catch (error) {
       setLoading(false);
-      console.log("ERROR::: ", error);
-      toast.error("Unable to download report.", {
+      console.error("Error fetching statements:", error);
+      toast.error("Unable to fetch the Statments List", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -283,6 +477,8 @@ const StatementPDFComp = ({
         progress: undefined,
         theme: "light",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -310,57 +506,6 @@ const StatementPDFComp = ({
       setLoading(false);
       console.log(error);
     }
-  };
-
-  const AddNote = (note = "") => {
-    setaddNoteloading(true);
-    const token = localStorage.getItem("auth-token");
-
-    const data = {
-      leadId: LeadData.leadId || LeadData.id,
-      leadNote: note || AddNoteTxt,
-      addedBy: User?.id,
-      addedByName: User?.userName,
-    };
-    axios
-      .post(`${BACKEND_URL}/leadNotes`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Result: ");
-        console.log("Result: ", result);
-        setaddNoteloading(false);
-        setAddNoteTxt("");
-        if (!note) {
-          toast.success("Note added Successfully", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      })
-      .catch((err) => {
-        setaddNoteloading(false);
-        console.log(err);
-        toast.error("Soemthing Went Wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
   };
 
   const fetchLastNote = async () => {
@@ -428,19 +573,6 @@ const StatementPDFComp = ({
     return (
       <button className="email-button" onClick={handleEmailClick}>
         <VscMail size={16} />
-      </button>
-    );
-  };
-
-  const CallButton = ({ phone }) => {
-    const handlePhoneClick = (event) => {
-      event.stopPropagation();
-      window.location.href = `tel:${phone}`;
-    };
-
-    return (
-      <button className="call-button" onClick={handlePhoneClick}>
-        <VscCallOutgoing size={16} />
       </button>
     );
   };
@@ -594,20 +726,21 @@ const StatementPDFComp = ({
                     <Box
                       sx={{
                         ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                        marginRight: "12px",
+                        // "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        //   {
+                        //     right: isLangRTL(i18n.language)
+                        //       ? "2.5rem"
+                        //       : "inherit",
+                        //     transformOrigin: isLangRTL(i18n.language)
+                        //       ? "right"
+                        //       : "left",
+                        //   },
+                        // "& legend": {
+                        //   textAlign: isLangRTL(i18n.language)
+                        //     ? "right"
+                        //     : "left",
+                        // },
                       }}
                     >
                       <Select
@@ -625,7 +758,6 @@ const StatementPDFComp = ({
                           });
                         }}
                         placeholder={t("label_currency")}
-                        className={`mb-5`}
                         menuPortalTarget={document.body}
                         styles={selectStyles(currentMode, primaryColor)}
                         required
@@ -634,20 +766,22 @@ const StatementPDFComp = ({
                     <Box
                       sx={{
                         ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                        marginRight: "12px",
+
+                        // "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        //   {
+                        //     right: isLangRTL(i18n.language)
+                        //       ? "2.5rem"
+                        //       : "inherit",
+                        //     transformOrigin: isLangRTL(i18n.language)
+                        //       ? "right"
+                        //       : "left",
+                        //   },
+                        // "& legend": {
+                        //   textAlign: isLangRTL(i18n.language)
+                        //     ? "right"
+                        //     : "left",
+                        // },
                       }}
                     >
                       <Select
@@ -665,7 +799,6 @@ const StatementPDFComp = ({
                           });
                         }}
                         placeholder={t("label_country")}
-                        className={`mb-5`}
                         menuPortalTarget={document.body}
                         styles={selectStyles(currentMode, primaryColor)}
                         required
@@ -674,7 +807,7 @@ const StatementPDFComp = ({
 
                     <button
                       className="bg-primary text-white rounded-md card-hover p-2 shadow-sm"
-                      onClick={fetchSalaryCalc}
+                      onClick={fetchStatements}
                     >
                       {t("generate_report_btn")?.toUpperCase()}
                     </button>
