@@ -83,9 +83,33 @@ const SingleTransactionModal = ({
     id: null,
   });
 
-  const handlePdfClick = (pdfUrl) => {
-    setPdfUrl(pdfUrl);
+  const base64ToBlob = (base64, mime) => {
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: mime });
   };
+
+  const handlePdfClick = (base64Pdf) => {
+    const base64String = base64Pdf.split(",")[1];
+    const pdfBlob = base64ToBlob(base64String, "application/pdf");
+    const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+    setPdfUrl(pdfBlobUrl);
+  };
+
+  // const handlePdfClick = (pdfUrl) => {
+  //   setPdfUrl(pdfUrl);
+  // };
 
   const FetchSingleTransaction = (e) => {
     setloading(true);
