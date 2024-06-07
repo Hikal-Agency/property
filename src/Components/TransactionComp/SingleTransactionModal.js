@@ -55,6 +55,7 @@ const SingleTransactionModal = ({
   const [showOverlay, setShowOverlay] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
   const [pdfUrl, setPdfUrl] = useState(null);
+  console.log("pdf url: ", pdfUrl);
 
   const handleCloseOverlay = () => {
     setShowOverlay(false);
@@ -249,19 +250,22 @@ const SingleTransactionModal = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            }
+          }
           w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-              }
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -273,13 +277,15 @@ const SingleTransactionModal = ({
 
           <div
             style={style}
-            className={` ${currentMode === "dark"
-              ? "bg-[#1C1C1C] text-white"
-              : "bg-[#FFFFFF] text-black"
-              } ${isLangRTL(i18n.language)
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#1C1C1C] text-white"
+                : "bg-[#FFFFFF] text-black"
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-              } p-4 h-[100vh] w-[80vw] overflow-y-scroll `}
+            } p-4 h-[100vh] w-[80vw] overflow-y-scroll `}
           >
             {loading ? (
               <Loader />
@@ -352,7 +358,9 @@ const SingleTransactionModal = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                       {/* TRANSACTION DETAILS */}
                       <div className="col-span-1 md:col-span-2 gap-5">
-                        <div className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}>
+                        <div
+                          className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}
+                        >
                           {t("transaction_details")}
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -375,7 +383,7 @@ const SingleTransactionModal = ({
                             {/* CLAIM */}
                             {singleTrans?.category?.toLowerCase() ===
                               "commission" &&
-                              singleTrans?.invoice_type?.toLowerCase() ===
+                            singleTrans?.invoice_type?.toLowerCase() ===
                               "income" ? (
                               <div className="flex gap-3">
                                 <p className="font-bold capitalize">
@@ -386,7 +394,7 @@ const SingleTransactionModal = ({
                             ) : null}
                             {/* PERCENTAGE */}
                             {singleTrans?.category?.toLowerCase() ===
-                              "commission" ? (
+                            "commission" ? (
                               <div className="flex gap-3">
                                 <p className="font-bold capitalize">
                                   {t("percentage")}:
@@ -402,7 +410,9 @@ const SingleTransactionModal = ({
                               <p className="font-bold capitalize">
                                 {t("date")}:
                               </p>
-                              <p>{moment(singleTrans?.date).format("YYYY-MM-DD")}</p>
+                              <p>
+                                {moment(singleTrans?.date).format("YYYY-MM-DD")}
+                              </p>
                             </div>
                           </div>
                           {/* PAYENT DETAILS */}
@@ -426,21 +436,28 @@ const SingleTransactionModal = ({
                               <p className="font-bold capitalize">
                                 {t("amount")}:
                               </p>
-                              <p>{singleTrans?.currency} {singleTrans?.amount}</p>
+                              <p>
+                                {singleTrans?.currency} {singleTrans?.amount}
+                              </p>
                             </div>
                             {/* VAT */}
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
                                 {t("vat_amount")}:
                               </p>
-                              <p>{singleTrans?.currency} {singleTrans?.vat}</p>
+                              <p>
+                                {singleTrans?.currency} {singleTrans?.vat}
+                              </p>
                             </div>
                             {/* TOTAL AMOUNT */}
                             <div className="flex gap-3">
                               <p className="font-bold capitalize">
                                 {t("total_amount")}:
                               </p>
-                              <p>{singleTrans?.currency} {singleTrans?.total_amount}</p>
+                              <p>
+                                {singleTrans?.currency}{" "}
+                                {singleTrans?.total_amount}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -448,7 +465,9 @@ const SingleTransactionModal = ({
                       {/* USER DETAILS */}
                       {singleTrans?.user_id && (
                         <div className="col-span-1 gap-5">
-                          <div className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}>
+                          <div
+                            className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}
+                          >
                             {t("user_details")}
                           </div>
                           <div className="flex flex-col gap-4 p-5">
@@ -479,7 +498,9 @@ const SingleTransactionModal = ({
                       {/* VENDOR DETAILS */}
                       {singleTrans?.vendor_id && (
                         <div className="col-span-1 gap-5">
-                          <div className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}>
+                          <div
+                            className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}
+                          >
                             {t("vendor_details")}
                           </div>
                           <div className="flex flex-col gap-4 p-5">
@@ -515,8 +536,16 @@ const SingleTransactionModal = ({
                         </div>
                       )}
                       {/* INVOICE RECEIPTS */}
-                      <div className={`col-span-1 md:col-span-3 gap-5 ${(singleTrans?.vendor_id && singleTrans?.user_id) ? "lg:col-span-2" : "lg:col-span-3"}`}>
-                        <div className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}>
+                      <div
+                        className={`col-span-1 md:col-span-3 gap-5 ${
+                          singleTrans?.vendor_id && singleTrans?.user_id
+                            ? "lg:col-span-2"
+                            : "lg:col-span-3"
+                        }`}
+                      >
+                        <div
+                          className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}
+                        >
                           {t("invoice_receipt")}
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-4 w-full">
@@ -527,10 +556,11 @@ const SingleTransactionModal = ({
                                   {l.temp_file && (
                                     <div
                                       key={l?.id}
-                                      className={`${currentMode === "dark"
-                                        ? "bg-black"
-                                        : "bg-[#EEEEEE]"
-                                        } p-4 rounded-xl shadow-sm card-hover`}
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-black"
+                                          : "bg-[#EEEEEE]"
+                                      } p-4 rounded-xl shadow-sm card-hover`}
                                     >
                                       <div className="p-2 flex items-center justify-center hover:cursor-pointer space-x-5 ">
                                         {(() => {
@@ -597,7 +627,6 @@ const SingleTransactionModal = ({
                         user={user}
                         fetchUsers={fetchUsers}
                         vendors={vendors}
-                        
                       />
                     )}
                   </div>
