@@ -380,9 +380,19 @@ const VisaTransaction = ({ pathname }) => {
     fetchTransactions();
   }, [filtersData, page, "/visa"]);
 
+  useEffect(() => {
+    console.log("visaaaaaaaaaaaaaaaaaaaa==================");
+    if (visaPage) {
+      setAddTransactionData((prevData) => ({
+        ...prevData,
+        invoice_type: prevData.invoice_type || "Expense",
+        category: prevData.category || "Visa",
+      }));
+    }
+  }, [visaPage]);
+
   return (
     <div className="flex flex-col gap-5">
-
       {/* NEW TRANSACTION */}
       <NewTransactionForm
         fetchTransactions={fetchTransactions}

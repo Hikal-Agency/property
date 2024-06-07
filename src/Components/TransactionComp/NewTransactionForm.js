@@ -106,11 +106,11 @@ const NewTransactionForm = ({
     } else {
       console.log("VAT NOT INCLUDED!");
       if (updatedField === "total_amount" && includeVat === false) {
-      setAddTransactionData({
-        ...addTransactionData,
-        amount: addTransactionData?.total_amount,
-      });
-    }
+        setAddTransactionData({
+          ...addTransactionData,
+          amount: addTransactionData?.total_amount,
+        });
+      }
     }
   }, [
     updatedField,
@@ -195,17 +195,20 @@ const NewTransactionForm = ({
 
     console.log("files:: ", file);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImagePreview(reader.result);
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result);
 
-      const base64Image = reader.result;
-      setAddTransactionData({
-        ...addTransactionData,
-        image: file,
-      });
-    };
-    reader.readAsDataURL(file);
+        const base64Image = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    setAddTransactionData({
+      ...addTransactionData,
+      image: file,
+    });
   };
 
   // Define an error state object
@@ -325,7 +328,7 @@ const NewTransactionForm = ({
       if (!edit) {
         setAddTransactionData({
           user_id: "",
-          invoice_type: "",
+          invoice_type: visa ? "Expense" : "",
           amount: 0,
           total_amount: 0,
           date: "",
@@ -335,7 +338,7 @@ const NewTransactionForm = ({
           status: "Paid",
           paid_by: "",
           vendor_id: "",
-          category: "",
+          category: visa ? "Visa" : "",
           image: null,
         });
 
