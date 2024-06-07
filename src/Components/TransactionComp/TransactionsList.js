@@ -36,7 +36,11 @@ import {
   BsQuestionLg,
   BsCart4,
   BsCalendarCheck,
+  BsTools,
+  BsCash,
+  BsMegaphone
 } from "react-icons/bs";
+import { RiVisaLine } from "react-icons/ri";
 import AddTransactionForm from "./AddTransactionForm";
 import { DatePicker } from "@mui/x-date-pickers";
 import NewTransactionForm from "./NewTransactionForm";
@@ -417,12 +421,20 @@ const TransactionsList = ({ filtersData, visa }) => {
                             } border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3`}
                             style={{ zIndex: 1 }}
                           >
-                            {trans?.category === "Commission" ? (
+                            {trans?.category.toLowerCase() === "commission" ? (
                               <BsBuildings size={16} color={"#AAAAAA"} />
-                            ) : trans?.category === "Salary" ? (
+                            ) : trans?.category.toLowerCase() === "salary" ? (
                               <BsCalendarCheck size={16} color={"#AAAAAA"} />
-                            ) : trans?.category === "Purchase" ? (
+                            ) : trans?.category.toLowerCase() === "purchase" ? (
                               <BsCart4 size={16} color={"#AAAAAA"} />
+                            ) : trans?.category.toLowerCase() === "visa" ? (
+                              <RiVisaLine size={20} color={"#AAAAAA"} />
+                            ) : trans?.category.toLowerCase() === "maintenance" ? (
+                              <BsTools size={16} color={"#AAAAAA"} />
+                            ) : trans?.category.toLowerCase() === "borrow" ? (
+                              <BsCash size={16} color={"#AAAAAA"} />
+                            ) : trans?.category.toLowerCase() === "campaigns" ? (
+                              <BsMegaphone size={16} color={"#AAAAAA"} />
                             ) : (
                               <BsQuestionLg size={16} color={"#AAAAAA"} />
                             )}
