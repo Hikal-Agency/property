@@ -25,8 +25,7 @@ import { selectStyles } from "../_elements/SelectStyles";
 const StatementPDFComp = ({
   pdfModal,
   setPDFModal,
-  filters,
-  setFilters,
+
   LeadData,
   setLeadData,
 }) => {
@@ -42,31 +41,18 @@ const StatementPDFComp = ({
   } = useStateContext();
 
   const [pdfUrl, setPdfUrl] = useState(null);
+  const [filters, setFilters] = useState({
+    currency: "",
+    country: "",
+    month: moment().format("MM"),
+    year: moment().format("YYYY"),
+  });
+  const currentDate = moment().format("YYYY-MM-DD");
 
   const { hasPermission } = usePermission();
-  const [AddNoteTxt, setAddNoteTxt] = useState("");
-  const [reportDetails, setReportDetails] = useState([]);
   const [open, setOpen] = useState(false);
 
-  const [addNoteloading, setaddNoteloading] = useState(false);
-  const [lastNote, setLastNote] = useState("");
-  const [lastNoteDate, setLastNoteDate] = useState("");
-  const [lastNoteAddedBy, setLastNoteAddedBy] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth() + 1;
-  const currentYear = currentDate.getFullYear();
-  const [reportMonth, setReportMonth] = useState({
-    month: currentMonth,
-    year: currentYear,
-  });
-  const [reportMonthValue, setReportMonthValue] = useState("");
-
-  console.log("report month value:: ", reportMonthValue);
-  console.log("salary report:: ", reportDetails);
-
-  console.log("report month:: ", reportMonth);
 
   const [isClosing, setIsClosing] = useState(false);
 
@@ -508,75 +494,6 @@ const StatementPDFComp = ({
     }
   };
 
-  const fetchLastNote = async () => {
-    try {
-      const token = localStorage.getItem("auth-token");
-      const result = await axios.get(
-        `${BACKEND_URL}/lastnote/${LeadData?.leadId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      const lastNoteText = result.data?.notes?.data[0]?.leadNote;
-      const lastNoteDate = result.data?.notes?.data[0]?.creationDate;
-      const lastNoteAddedBy = result.data?.notes?.data[0]?.addedByName;
-      setLastNote(lastNoteText);
-      setLastNoteDate(lastNoteDate);
-      setLastNoteAddedBy(lastNoteAddedBy);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (LeadData?.leadId) {
-      fetchLastNote();
-    }
-
-    console.log("leaddata: ", LeadData);
-
-    if (typeof LeadData === "number") {
-      FetchLead(LeadData);
-    }
-
-    console.log("LeadData::", LeadData);
-  }, [LeadData]);
-
-  // Replace last 4 digits with "*"
-  const stearics =
-    LeadData?.leadContact
-      ?.replaceAll(" ", "")
-      ?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) +
-    "****";
-  let contact;
-
-  if (hasPermission("number_masking")) {
-    if (User?.role === 1) {
-      contact = LeadData?.leadContact?.replaceAll(" ", "");
-    } else {
-      contact = `${stearics}`;
-    }
-  } else {
-    contact = LeadData?.leadContact?.replaceAll(" ", "");
-  }
-
-  const EmailButton = ({ email }) => {
-    // console.log("email:::::::::::::::::::: ", email);
-    const handleEmailClick = (event) => {
-      event.stopPropagation();
-      window.location.href = `mailto:${email}`;
-    };
-
-    return (
-      <button className="email-button" onClick={handleEmailClick}>
-        <VscMail size={16} />
-      </button>
-    );
-  };
-
   useEffect(() => {
     // Open the modal after a short delay to allow the animation to work
     const timeout = setTimeout(() => {
@@ -668,35 +585,23 @@ const StatementPDFComp = ({
                     <Box sx={{ ...darkModeColors, marginRight: "12px" }}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          value={reportMonthValue || new Date()?.toString()}
-                          label={t("report_month")}
+                          value={dayjs(`${filters?.year}-${filters?.month}-01`)}
+                          label={t("month_year")}
                           views={["month", "year"]}
                           onChange={(newValue) => {
-                            if (newValue) {
-                              // Extract the month digit
-                              const monthDigit = moment(newValue.$d).format(
-                                "M"
-                              );
+                            // Extract month and year as numbers from newValue
+                            const month = newValue
+                              ? newValue.$d.getMonth() + 1
+                              : "";
+                            const year = newValue
+                              ? newValue.$d.getFullYear()
+                              : "";
 
-                              // Convert the month digit string to an integer
-                              const monthDigitInt = parseInt(monthDigit, 10);
-                              console.log(
-                                "month digit int :: ",
-                                typeof monthDigitInt
-                              );
-
-                              // Extract the year
-                              const year = moment(newValue.$d).format("YYYY");
-
-                              // Set the report month digit as an integer and the year
-                              setReportMonth({
-                                month: monthDigitInt,
-                                year: parseInt(year, 10),
-                              });
-                            }
-                            console.log("val:", newValue);
-
-                            setReportMonthValue(newValue?.$d);
+                            setFilters((prev) => ({
+                              ...prev,
+                              month: month.toString().padStart(2, "0"), // Ensure month is two digits
+                              year: year.toString(),
+                            }));
                           }}
                           format="MM-YYYY"
                           renderInput={(params) => (
@@ -710,6 +615,7 @@ const StatementPDFComp = ({
                                   color:
                                     currentMode === "dark" ? "white" : "black",
                                 },
+                                marginBottom: "20px",
                               }}
                               fullWidth
                               size="small"

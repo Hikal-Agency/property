@@ -431,12 +431,7 @@ const StatmentsList = () => {
       )}
 
       {pdfModal && (
-        <StatementPDFComp
-          pdfModal={pdfModal}
-          setPDFModal={setPDFModal}
-          filters={filters}
-          setFilters={setFilters}
-        />
+        <StatementPDFComp pdfModal={pdfModal} setPDFModal={setPDFModal} />
       )}
     </div>
   );
