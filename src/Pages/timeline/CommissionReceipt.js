@@ -86,12 +86,12 @@ const CommissionReceipt = ({
 
   const user = () => [
     {
-      type: "manager",
+      value: data?.managerId,
       label: Managers.find((manager) => manager.id === data?.managerId)
         ?.userName,
     },
     {
-      type: "agent",
+      value: data?.salesId,
       label: extractedAgents?.find((sale) => sale.id === data?.salesId)
         ?.userName,
     },
@@ -722,6 +722,7 @@ const CommissionReceipt = ({
                           (user) => user.label === commissionReceiptData?.user
                         )}
                         onChange={(e) => {
+                          console.log("e::::::::: user: ", e);
                           setCommRecData({
                             ...commissionReceiptData,
                             user: e.label,
