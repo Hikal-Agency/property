@@ -330,11 +330,11 @@ const NewTransactionForm = ({
         handleClose();
       }
 
-      if (visa) {
+      if (!edit) {
         setCallAPi(true);
       }
 
-      if (!visa) {
+      if (edit) {
         fetchTransactions();
       }
 
@@ -354,6 +354,7 @@ const NewTransactionForm = ({
         });
 
         setImagePreview(null);
+        setPdfPreview(null);
       }
 
       setBtnLoading(false);

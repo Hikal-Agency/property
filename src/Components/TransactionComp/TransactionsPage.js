@@ -114,6 +114,7 @@ const TransactionsPage = ({ pathname }) => {
   const [userLoading, setUserLoading] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [callApi, setCallAPi] = useState(false);
 
   const [page, setPage] = useState(1);
 
@@ -827,10 +828,11 @@ const TransactionsPage = ({ pathname }) => {
         fetchUsers={fetchUsers}
         fullRow={true}
         visa={visaPage}
+        setCallAPi={setCallAPi}
       />
 
       {/* TRANSACTIONS LIST */}
-      <TransactionsList filtersData={filtersData} />
+      <TransactionsList filtersData={filtersData} callApi={callApi} />
 
       {/* VAT CALCULATIONS */}
       <div
