@@ -50,6 +50,15 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
 
   const [isClosing, setIsClosing] = useState(false);
 
+  const clearFilters = () => {
+    setFilters({
+      currency: "",
+      country: "",
+      month: moment().format("MM"),
+      year: moment().format("YYYY"),
+    });
+  };
+
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
@@ -521,10 +530,17 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                   </div>
 
                   <div className="w-full flex justify-end items-center">
+                    <button
+                      className="bg-btn-primary py-2 px-4 mr-3 text-white rounded-md"
+                      onClick={clearFilters}
+                    >
+                      {t("clear_all")}
+                    </button>
                     <Box
                       sx={{
                         ...darkModeColors,
                         marginRight: "12px",
+                        marginTop: "15px",
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                           {
                             right: isLangRTL(i18n.language)
@@ -556,7 +572,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                           });
                         }}
                         placeholder={t("label_currency")}
-                        className={`mb-5`}
+                        // className={`mb-5`}
                         menuPortalTarget={document.body}
                         styles={selectStyles(currentMode, primaryColor)}
                         required
@@ -566,6 +582,8 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                       sx={{
                         ...darkModeColors,
                         marginRight: "12px",
+                        marginTop: "15px",
+
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                           {
                             right: isLangRTL(i18n.language)
@@ -607,6 +625,8 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                       sx={{
                         ...darkModeColors,
                         marginRight: "12px",
+                        marginTop: "15px",
+
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                           {
                             right: isLangRTL(i18n.language)

@@ -147,7 +147,7 @@ const Commission_VAT_List = () => {
           }}
           className={`p-4 `}
         > */}
-        <div className="mb-5">
+        <div className="mb-5 ">
           <button
             className="bg-btn-primary py-2 px-4 text-white rounded-md"
             onClick={clearFilters}
