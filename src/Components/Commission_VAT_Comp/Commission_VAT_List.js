@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  TextField,
-  CircularProgress,
-} from "@mui/material";
+import { Box, TextField, CircularProgress } from "@mui/material";
 
 import { useStateContext } from "../../context/ContextProvider";
 import dayjs from "dayjs";
@@ -25,7 +21,7 @@ import {
   BsBuildings,
   BsCalendarCheck,
   BsCart4,
-  BsQuestionLg
+  BsQuestionLg,
 } from "react-icons/bs";
 
 const Commission_VAT_List = () => {
@@ -133,9 +129,7 @@ const Commission_VAT_List = () => {
   }, [filters]);
 
   return (
-    <div
-      className={`pb-4 px-4`}
-    >
+    <div className={`pb-4 px-4`}>
       <div className="flex items-center justify-end gap-4">
         {/* <Box
           sx={{
@@ -163,10 +157,10 @@ const Commission_VAT_List = () => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
@@ -197,10 +191,10 @@ const Commission_VAT_List = () => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
@@ -231,10 +225,10 @@ const Commission_VAT_List = () => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
@@ -297,24 +291,35 @@ const Commission_VAT_List = () => {
               comm_vat_data?.map((comm_vat) => {
                 return (
                   <div className="bg-primary p-4 rounded-xl shadow-sm mb-5">
-                    <h1 className={`text-2xl font-bold mx-2 uppercase text-white text-center mb-4`} >
+                    <h1
+                      className={`text-2xl font-bold mx-2 uppercase text-white text-center mb-4`}
+                    >
                       {comm_vat?.year}
                     </h1>
                     <div className="flex flex-col gap-4">
                       {comm_vat?.vat && comm_vat?.vat?.length > 0 ? (
                         comm_vat?.vat?.map((vat) => (
                           <div
-                            className={`${currentMode === "dark"
-                              ? "bg-[#1c1c1c] text-white"
-                              : "bg-[#eeeeee] text-black"
-                              } p-5 rounded-xl flex flex-col items-center justify-center gap-4`}
+                            className={`${
+                              currentMode === "dark"
+                                ? "bg-[#1c1c1c] text-white"
+                                : "bg-[#eeeeee] text-black"
+                            } p-5 rounded-xl flex flex-col items-center justify-center gap-4`}
                           >
                             <div className="w-full text-xl font-bold mx-2 uppercase text-center">
                               {vat?.currency}
                             </div>
-                            <div className={`w-full rounded-xl shadow-sm p-5 ${currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"}`}>
-                              <div className={`w-full text-center text-primary text-2xl font-bold mb-3`}>
-                                {vat?.currency} {" "} {vat?.vat}
+                            <div
+                              className={`w-full rounded-xl shadow-sm p-5 ${
+                                currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                              }`}
+                            >
+                              <div
+                                className={`w-full text-center text-primary text-2xl font-bold mb-3`}
+                              >
+                                {vat?.currency} {vat?.vat}
                               </div>
                               <p className={`text-center text-sm`}>
                                 {t("vat_amount")}
@@ -331,7 +336,9 @@ const Commission_VAT_List = () => {
                                 " " +
                                 vat?.count +
                                 " " +
-                                (vat?.count === 1 ? t("invoice") : t("invoices")) +
+                                (vat?.count === 1
+                                  ? t("invoice")
+                                  : t("invoices")) +
                                 "."}
                               {/* t("invoices")} */}
                             </p>
@@ -358,10 +365,10 @@ const Commission_VAT_List = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -393,7 +400,9 @@ const Commission_VAT_List = () => {
                       <>
                         <div
                           className={`cursor-pointer rounded-xl p-4 ${
-                            themeBgImg && currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
+                            themeBgImg && currentMode === "dark"
+                              ? "blur-bg-dark"
+                              : "blur-bg-light"
                           }`}
                           onClick={() => setSingleTransModal(trans)}
                         >
@@ -406,7 +415,10 @@ const Commission_VAT_List = () => {
                                 {trans?.invoice?.category === "Commission" ? (
                                   <BsBuildings size={16} color={"#AAAAAA"} />
                                 ) : trans?.invoice?.category === "Salary" ? (
-                                  <BsCalendarCheck size={16} color={"#AAAAAA"} />
+                                  <BsCalendarCheck
+                                    size={16}
+                                    color={"#AAAAAA"}
+                                  />
                                 ) : trans?.invoice?.category === "Purchase" ? (
                                   <BsCart4 size={16} color={"#AAAAAA"} />
                                 ) : (
@@ -435,10 +447,11 @@ const Commission_VAT_List = () => {
                             </div>
                             <div>
                               <p
-                                className={`font-semibold text-lg ${trans?.invoice?.invoice_type == "Income"
+                                className={`font-semibold text-lg ${
+                                  trans?.invoice?.invoice_type == "Income"
                                     ? "text-green-600"
                                     : "text-red-600"
-                                  } `}
+                                } `}
                               >
                                 {trans?.invoice?.invoice_type === "Income"
                                   ? "+"
@@ -448,39 +461,6 @@ const Commission_VAT_List = () => {
                               </p>
                             </div>
                           </div>
-                          {/* <div className="flex items-center justify-between my-3">
-                            <div>
-                              <div className="flex flex-col">
-                                <div className="flex items-center mb-1">
-                                  <span className="border rounded-md p-3 mr-3">
-                                    {user ? <FaUser /> : <FaHome size={20} />}
-                                  </span>
-                                  <p>
-                                    {user
-                                      ? trans?.user?.userName
-                                      : trans?.vendor?.vendor_name}
-                                  </p>
-                                </div>
-                                <p className="text-sm self-start pl-[calc(20px+2rem)]">
-                                  {trans?.invoice?.category}
-                                </p>
-                              </div>
-                            </div>
-                            <div>
-                              <p
-                                className={`font-semibold ${trans?.invoice?.invoice_type == "Income"
-                                  ? "text-green-600"
-                                  : "text-red-600"
-                                  } `}
-                              >
-                                {trans?.invoice?.invoice_type === "Income"
-                                  ? "+"
-                                  : "-"}{" "}
-                                {trans?.invoice?.currency}{" "}
-                                {trans?.invoice?.amount}
-                              </p>
-                            </div>
-                          </div> */}
                         </div>
                       </>
                     );
@@ -495,15 +475,13 @@ const Commission_VAT_List = () => {
           </Box>
         </div>
       </div>
-      {
-        singleTransModal && (
-          <SingleTransactionModal
-            singleTransModal={singleTransModal}
-            setSingleTransModal={setSingleTransModal}
-          />
-        )
-      }
-    </div >
+      {singleTransModal && (
+        <SingleTransactionModal
+          singleTransModal={singleTransModal}
+          setSingleTransModal={setSingleTransModal}
+        />
+      )}
+    </div>
   );
 };
 
