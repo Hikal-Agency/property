@@ -514,7 +514,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
             ) : (
               <>
                 <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5">
-                  <div className="w-full flex items-center pb-3 ">
+                  <div className="w-full flex items-center  pb-3 ">
                     <div
                       className={`${
                         isLangRTL(i18n.language) ? "ml-2" : "mr-2"
@@ -529,7 +529,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                     </h1>
                   </div>
 
-                  <div className="w-full flex justify-end items-center">
+                  <div className="w-full flex justify-end space-x-5 items-center">
                     <button
                       className="bg-btn-primary py-2 px-4 mr-3 text-white rounded-md"
                       onClick={clearFilters}
