@@ -10,7 +10,7 @@ import {
   FormControl,
   InputAdornment,
   FormControlLabel,
-  Checkbox
+  Checkbox,
 } from "@mui/material";
 import Select from "react-select";
 import {
@@ -20,6 +20,7 @@ import {
   payment_source,
   payment_status,
 } from "../../Components/_elements/SelectOptions";
+import { BsFileEarmarkMedical } from "react-icons/bs";
 
 import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
@@ -33,9 +34,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import moment from "moment";
-import {
-  BsPercent
-} from "react-icons/bs";
+import { BsPercent } from "react-icons/bs";
 
 const AddCommissionModal = ({
   addCommissionModal,
@@ -68,6 +67,8 @@ const AddCommissionModal = ({
   const [btnLoading, setBtnLoading] = useState(false);
   const [updatedField, setUpdatedField] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
+  const [pdfPreview, setPdfPreview] = useState(null);
+
   const [amountToCalculate, setAmountToCalculate] = useState("");
 
   const [includeVat, setIncludeVat] = useState(true);
@@ -84,11 +85,17 @@ const AddCommissionModal = ({
     vendor_id: commData?.vendor_id || null,
     invoice_type: commData?.invoice_type || null,
     date: commData?.date || null,
-    amount: commData?.amount || (commData?.invoice_type === "Income" && newCommData?.comm_amount) || 0,
+    amount:
+      commData?.amount ||
+      (commData?.invoice_type === "Income" && newCommData?.comm_amount) ||
+      0,
     vat: commData?.vat || 0,
     total_amount: commData?.total_amount || 0,
     status: commData?.status || null,
-    comm_percent: commData?.comm_percent || (commData?.invoice_type === "Income" && newCommData?.comm_percent) || 0,
+    comm_percent:
+      commData?.comm_percent ||
+      (commData?.invoice_type === "Income" && newCommData?.comm_percent) ||
+      0,
     claim: commData?.claim || null,
     // comm_amount: commData?.comm_amount || null,
     paid_by: commData?.paid_by || null,
@@ -128,17 +135,24 @@ const AddCommissionModal = ({
 
     console.log("files:: ", file);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImagePreview(reader.result);
+    if (file && file.type.startsWith("image/")) {
+      setPdfPreview(null);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result);
 
-      const base64Image = reader.result;
-      setCommissionData({
-        ...commissionData,
-        file: file,
-      });
-    };
-    reader.readAsDataURL(file);
+        const base64Image = reader.result;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+      setPdfPreview(true);
+    }
+
+    setCommissionData({
+      ...commissionData,
+      file: file,
+    });
   };
 
   const handleChange = (e) => {
@@ -183,7 +197,7 @@ const AddCommissionModal = ({
     commissionData?.amount,
     commissionData?.vat,
     commissionData?.total_amount,
-    commissionData?.comm_percent
+    commissionData?.comm_percent,
   ]);
 
   const autoCalculate = (upField) => {
@@ -199,7 +213,7 @@ const AddCommissionModal = ({
       }));
       return;
     } else {
-      // AMOUNT 
+      // AMOUNT
       if (upField === "amount") {
         const amount = parseFloat(commissionData.amount);
         if (!isNaN(amount)) {
@@ -221,7 +235,7 @@ const AddCommissionModal = ({
               vat: vat,
               amount: amount,
               total_amount: totalAmount,
-              comm_percent: commPercent
+              comm_percent: commPercent,
             }));
           } else {
             setCommissionData((prevData) => ({
@@ -233,7 +247,7 @@ const AddCommissionModal = ({
           }
         }
       }
-      // TOTAL AMOUNT 
+      // TOTAL AMOUNT
       if (upField === "total_amount") {
         const totalAmount = parseFloat(commissionData.total_amount);
         if (!isNaN(totalAmount)) {
@@ -265,7 +279,7 @@ const AddCommissionModal = ({
           }
         }
       }
-      // VAT 
+      // VAT
       if (upField === "vat") {
         const vat = parseFloat(commissionData.vat);
         let totalAmount = parseFloat(commissionData.total_amount);
@@ -285,7 +299,7 @@ const AddCommissionModal = ({
                 vat: vat,
                 amount: amount,
                 total_amount: totalAmount,
-                comm_percent: commPercent
+                comm_percent: commPercent,
               }));
             }
           }
@@ -304,7 +318,7 @@ const AddCommissionModal = ({
           }));
         }
       }
-      // COMMISSION PERCENT 
+      // COMMISSION PERCENT
       if (upField === "comm_percent") {
         const commPercent = parseFloat(commissionData.comm_percent);
         if (!isNaN(commPercent) && !isNaN(sellingAmount)) {
@@ -322,7 +336,7 @@ const AddCommissionModal = ({
             vat: vat,
             amount: amount,
             total_amount: totalAmount,
-            comm_percent: commPercent
+            comm_percent: commPercent,
           }));
         }
       }
@@ -638,6 +652,8 @@ const AddCommissionModal = ({
             theme: "light",
           }
         );
+        setPdfPreview(null);
+        setImagePreview(null);
         setBtnLoading(false);
         handleClose();
         fetchLeadsData();
@@ -675,19 +691,22 @@ const AddCommissionModal = ({
       }}
     >
       <div
-        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${isClosing
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-          }
+        }
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -698,13 +717,15 @@ const AddCommissionModal = ({
         </button>
         <div
           style={style}
-          className={` ${currentMode === "dark"
-            ? "bg-[#000000] text-white"
-            : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language)
+          className={` ${
+            currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+          } ${
+            isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-            }
+          }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
         >
@@ -714,12 +735,14 @@ const AddCommissionModal = ({
             >
               <div className="w-full flex items-center pb-3 ">
                 <div
-                  className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                    } bg-primary h-10 w-1 rounded-full my-1`}
+                  className={`${
+                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                  } bg-primary h-10 w-1 rounded-full my-1`}
                 ></div>
                 <h1
-                  className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
+                  className={`text-lg font-semibold ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
                 >
                   <h1 className="font-semibold pt-3 text-lg text-center">
                     {commData ? t("edit_commission") : t("commission_details")}
@@ -729,9 +752,11 @@ const AddCommissionModal = ({
             </div>
 
             <div
-              className={`grid md:grid-cols-2 sm:grid-cols-1 ${commData ? "lg:grid-cols-2" : "lg:grid-cols-2 xl:grid-cols-3"
-                } ${currentMode === "dark" ? "text-white" : "text-black"
-                } gap-5 p-5`}
+              className={`grid md:grid-cols-2 sm:grid-cols-1 ${
+                commData ? "lg:grid-cols-2" : "lg:grid-cols-2 xl:grid-cols-3"
+              } ${
+                currentMode === "dark" ? "text-white" : "text-black"
+              } gap-5 p-5`}
             >
               {/* Commission DETAILS  */}
               <div className="px-2">
@@ -743,18 +768,16 @@ const AddCommissionModal = ({
                     sx={{
                       ...darkModeColors,
                       "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                      {
-                        right: isLangRTL(i18n.language)
-                          ? "2.5rem"
-                          : "inherit",
-                        transformOrigin: isLangRTL(i18n.language)
-                          ? "right"
-                          : "left",
-                      },
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
                       "& legend": {
-                        textAlign: isLangRTL(i18n.language)
-                          ? "right"
-                          : "left",
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
                       },
                     }}
                   >
@@ -817,7 +840,7 @@ const AddCommissionModal = ({
                             readOnly={true}
                           />
                         )}
-                      // maxDate={dayjs().startOf("day").toDate()}
+                        // maxDate={dayjs().startOf("day").toDate()}
                       />
                     </LocalizationProvider>
                     {/* CLAIM */}
@@ -842,10 +865,11 @@ const AddCommissionModal = ({
                     />
                     {/* VENDOR / USER */}
                     {commissionData?.invoice_type === "Income" ? (
-                      // VENDOR 
+                      // VENDOR
                       <FormControl
-                        className={`${currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
                         sx={{
                           minWidth: "100%",
                           borderRadius: 1,
@@ -908,8 +932,9 @@ const AddCommissionModal = ({
                     ) : commissionData?.invoice_type === "Expense" ? (
                       // USER
                       <FormControl
-                        className={`${currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
                         sx={{
                           minWidth: "100%",
                           borderRadius: 1,
@@ -985,6 +1010,17 @@ const AddCommissionModal = ({
                             </div>
                           </div>
                         )}
+                        {pdfPreview && (
+                          <div className="flex flex-col justify-center items-center w-full gap-4">
+                            <BsFileEarmarkMedical
+                              size={100}
+                              color={"#AAAAAA"}
+                            />
+                            <div className="">
+                              <p>File Selected </p>
+                            </div>
+                          </div>
+                        )}
                         <input
                           accept="image/jpeg, image/png, image/jpg, image/gif, application/pdf"
                           style={{ display: "none" }}
@@ -1029,18 +1065,16 @@ const AddCommissionModal = ({
                     sx={{
                       ...darkModeColors,
                       "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                      {
-                        right: isLangRTL(i18n.language)
-                          ? "2.5rem"
-                          : "inherit",
-                        transformOrigin: isLangRTL(i18n.language)
-                          ? "right"
-                          : "left",
-                      },
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
                       "& legend": {
-                        textAlign: isLangRTL(i18n.language)
-                          ? "right"
-                          : "left",
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
                       },
                     }}
                   >
@@ -1268,7 +1302,6 @@ const AddCommissionModal = ({
                   </Box>
                 </div>
               </div>
-
             </div>
           </>
 
