@@ -280,7 +280,9 @@ const StatementPDFComp = ({
             };
           }
           return {
-            content: row[col.field] || "",
+            content: row[col.field]
+              ? `${row[col.field]} ${row.currency || ""}`
+              : "",
             loss: col.field === "total_amount" ? loss : false,
           };
         });
