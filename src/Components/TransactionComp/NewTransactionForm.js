@@ -35,6 +35,7 @@ const NewTransactionForm = ({
   setAddTransactionData,
   addTransactionData,
   user,
+  setCallAPi,
   vendors,
   loading,
   fetchUsers,
@@ -329,7 +330,13 @@ const NewTransactionForm = ({
         handleClose();
       }
 
-      fetchTransactions();
+      if (visa) {
+        setCallAPi(true);
+      }
+
+      if (!visa) {
+        fetchTransactions();
+      }
 
       if (!edit) {
         setAddTransactionData({

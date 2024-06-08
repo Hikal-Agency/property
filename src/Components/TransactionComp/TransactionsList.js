@@ -38,7 +38,7 @@ import {
   BsCalendarCheck,
   BsTools,
   BsCash,
-  BsMegaphone
+  BsMegaphone,
 } from "react-icons/bs";
 import { RiVisaLine } from "react-icons/ri";
 import AddTransactionForm from "./AddTransactionForm";
@@ -46,7 +46,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import NewTransactionForm from "./NewTransactionForm";
 import { formatNoIntl } from "../_elements/FormatNoIntl";
 
-const TransactionsList = ({ filtersData, visa }) => {
+const TransactionsList = ({ filtersData, visa, callApi }) => {
   const {
     currentMode,
     darkModeColors,
@@ -240,7 +240,7 @@ const TransactionsList = ({ filtersData, visa }) => {
 
   useEffect(() => {
     fetchTransactions();
-  }, [filtersData, page, "/transactions"]);
+  }, [filtersData, page, "/transactions", callApi]);
 
   return (
     <div>
@@ -429,11 +429,13 @@ const TransactionsList = ({ filtersData, visa }) => {
                               <BsCart4 size={16} color={"#AAAAAA"} />
                             ) : trans?.category.toLowerCase() === "visa" ? (
                               <RiVisaLine size={20} color={"#AAAAAA"} />
-                            ) : trans?.category.toLowerCase() === "maintenance" ? (
+                            ) : trans?.category.toLowerCase() ===
+                              "maintenance" ? (
                               <BsTools size={16} color={"#AAAAAA"} />
                             ) : trans?.category.toLowerCase() === "borrow" ? (
                               <BsCash size={16} color={"#AAAAAA"} />
-                            ) : trans?.category.toLowerCase() === "campaigns" ? (
+                            ) : trans?.category.toLowerCase() ===
+                              "campaigns" ? (
                               <BsMegaphone size={16} color={"#AAAAAA"} />
                             ) : (
                               <BsQuestionLg size={16} color={"#AAAAAA"} />

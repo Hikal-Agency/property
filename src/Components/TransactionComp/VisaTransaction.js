@@ -62,6 +62,7 @@ const VisaTransaction = ({ pathname }) => {
   const [loading, setloading] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
   const [transactionsData, setTransactionsData] = useState([]);
+  const [callApi, setCallAPi] = useState(false);
   const [vatData, setVAT] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [error, setError] = useState(false);
@@ -376,9 +377,13 @@ const VisaTransaction = ({ pathname }) => {
     }
   };
 
+  // useEffect(() => {
+  //   fetchTransactions();
+  // }, [filtersData, page, "/visa"]);
+
   useEffect(() => {
-    fetchTransactions();
-  }, [filtersData, page, "/visa"]);
+    fetchVendor();
+  }, []);
 
   useEffect(() => {
     console.log("visaaaaaaaaaaaaaaaaaaaa==================");
@@ -404,10 +409,15 @@ const VisaTransaction = ({ pathname }) => {
         fetchUsers={fetchUsers}
         fullRow={true}
         visa={visaPage}
+        setCallAPi={setCallAPi}
       />
 
       {/* TRANSACTIONS LIST */}
-      <TransactionsList filtersData={filtersData} visa={true} />
+      <TransactionsList
+        filtersData={filtersData}
+        visa={true}
+        callApi={callApi}
+      />
 
       {singleTransModal && (
         <SingleTransactionModal
