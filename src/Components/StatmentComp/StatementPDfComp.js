@@ -755,6 +755,7 @@ const StatementPDFComp = ({
     const params = {
       month: filters?.month,
       year: filters?.year,
+      include: 1,
     };
 
     // Conditionally add country and currency if they have values
@@ -767,31 +768,39 @@ const StatementPDFComp = ({
 
     try {
       // Promise.all to make both API calls concurrently
-      const [statementsResponse, invoicesResponse] = await Promise.all([
-        axios.get(`${BACKEND_URL}/statements`, {
-          params: params,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-        axios.get(`${BACKEND_URL}/invoices`, {
-          // params: params,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-      ]);
+      // const [statementsResponse, invoicesResponse] = await Promise.all([
+      //   axios.get(`${BACKEND_URL}/statements`, {
+      //     params: params,
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: "Bearer " + token,
+      //     },
+      //   }),
+      //   axios.get(`${BACKEND_URL}/invoices`, {
+      //     // params: params,
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: "Bearer " + token,
+      //     },
+      //   }),
+      // ]);
 
-      const statementsData = statementsResponse?.data?.data;
-      const invoicesData = invoicesResponse?.data?.data?.data;
+      const getStatements = axios.get(`${BACKEND_URL}/statements`, {
+        params: params,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("get statements:: ", getStatements);
+
+      const statementsData = getStatements?.data?.data;
 
       console.log("Statements List:", statementsData);
-      console.log("Invoices List:", invoicesData);
 
-      // Call functions to process statements and invoices data as needed
-      generatePDF(statementsData, invoicesData);
+      // call pdf generation function
+      generatePDF(statementsData);
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error("Unable to fetch data", {
