@@ -23,6 +23,7 @@ import {
   BsCart4,
   BsQuestionLg,
 } from "react-icons/bs";
+import Comm_VAT_PDF from "./Comm_VAT_PDF";
 
 const Commission_VAT_List = () => {
   const {
@@ -43,6 +44,7 @@ const Commission_VAT_List = () => {
   const [comm_vat_data, setCommVATData] = useState([]);
   const [transactionsData, setTransData] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
+  const [pdfModal, setPDFModal] = useState(false);
 
   console.log("transactions data:", transactionsData);
 
@@ -272,7 +274,10 @@ const Commission_VAT_List = () => {
         </Box>
 
         <div className="mb-4">
-          <button className="bg-btn-primary p-4 mt-0 rounded-full">
+          <button
+            className="bg-btn-primary p-4 mt-0 rounded-full"
+            onClick={() => setPDFModal(true)}
+          >
             {" "}
             <BsDownload size={16} color={"#FFFFFF"} />
           </button>
@@ -480,6 +485,9 @@ const Commission_VAT_List = () => {
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
         />
+      )}
+      {pdfModal && (
+        <Comm_VAT_PDF pdfModal={pdfModal} setPDFModal={setPDFModal} />
       )}
     </div>
   );

@@ -46,7 +46,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
   const { hasPermission } = usePermission();
   const [open, setOpen] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setloading] = useState(false);
 
   const [isClosing, setIsClosing] = useState(false);
 
@@ -59,9 +59,10 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
   };
 
   // generate report
-  const generatePDF = (data, invoicesData) => {
+  const generatePDF = (data, commData) => {
     console.log("PDF Data:: ", data);
-    console.log("Invoice Data:: ", invoicesData);
+    console.log("Commission Data:: ", commData);
+
     const doc = new jsPDF({
       format: "a4",
       unit: "mm",
@@ -69,164 +70,143 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    const pageCount = doc.internal.getNumberOfPages();
     const paddingX = 15;
     let usedY = 50;
 
-    const addWatermark = () => {
+    const addWatermark = (doc, pageWidth, pageHeight) => {
       const watermarkUrl = "assets/Watermark.png";
       const watermarkWidth = 150;
       const watermarkHeight = 150;
+      const x = (pageWidth - watermarkWidth) / 2; // Centered horizontally
+      const y = (pageHeight - watermarkHeight) / 2; // Centered vertically
 
-      for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-
-        // Center the watermark
-        const x = (pageWidth - watermarkWidth) / 2; // Centered horizontally
-        const y = (pageHeight - watermarkHeight) / 2; // Centered vertically
-
-        // Set opacity to 0.1
-        doc.setGState(new doc.GState({ opacity: 0.1 }));
-
-        // Add the watermark image
-        doc.addImage(
-          watermarkUrl,
-          "PNG",
-          x,
-          y,
-          watermarkWidth,
-          watermarkHeight
-        );
-
-        // Reset opacity to default (1.0) for subsequent content
-        doc.setGState(new doc.GState({ opacity: 1.0 }));
-      }
+      doc.setGState(new doc.GState({ opacity: 0.1 }));
+      doc.addImage(watermarkUrl, "PNG", x, y, watermarkWidth, watermarkHeight);
+      doc.setGState(new doc.GState({ opacity: 1.0 }));
     };
 
-    addWatermark();
-
-    // HEADER
-    const addHeader = () => {
+    const addHeader = (doc, pageWidth) => {
       const headerImg = "assets/Header-update.jpg";
+      const x = 0;
+      const y = -3;
+      const width = pageWidth;
+      const height = 50;
 
-      for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        const x = 0;
-        const y = -3;
-        const width = pageWidth;
-        const height = 50;
-
-        doc.addImage(headerImg, "JPEG", x, y, width, height);
-      }
+      doc.addImage(headerImg, "JPEG", x, y, width, height);
     };
-    addHeader();
 
-    // FOOTER
-    const addFooter = () => {
+    const addFooter = (doc, pageWidth, pageHeight) => {
       const footerImage = "assets/Footer.jpg";
+      const width = pageWidth;
+      const height = 44;
+      const x = 0;
+      const y = pageHeight - height + 4;
 
-      for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
-        const width = pageWidth;
-        const height = 44;
-        const x = 0;
-        const y = pageHeight - height + 4;
-
-        doc.addImage(footerImage, "JPEG", x, y, width, height);
-      }
-    };
-    addFooter();
-
-    const addHeading = () => {
-      const x = pageWidth / 2;
-      const y = 50 - 4;
-      doc.setFont("Arial", "bold");
-      doc.setFontSize(14);
-      doc.text(
-        `STATEMENT - ${filters?.month} ${filters?.year}`,
-        x,
-        y,
-        null,
-        null,
-        "center"
-      );
-      const textWidth = doc.getTextWidth(
-        `STATEMENT - ${filters?.month} ${filters?.year}`
-      );
-      const titleY = y + 2;
-      doc.setLineWidth(0.5);
-      doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
-      // DATE
-      doc.setFont("Arial", "normal");
-      doc.setFontSize(12);
-      const dateY = titleY + 4;
-      doc.text(
-        `Date: ${currentDate}`,
-        pageWidth - paddingX,
-        dateY,
-        null,
-        null,
-        "right"
-      );
-
-      usedY = 75;
+      doc.addImage(footerImage, "JPEG", x, y, width, height);
     };
 
-    // PROFIT LOSS
-    const addProfitLoss = () => {
+    const addPageContent = () => {
+      addHeader(doc, pageWidth);
+      addFooter(doc, pageWidth, pageHeight);
+      addWatermark(doc, pageWidth, pageHeight);
+    };
+
+    doc.setFont("Arial", "bold");
+    doc.setFontSize(14);
+    const x = pageWidth / 2;
+    const y = 55 - 4;
+    doc.text(
+      `YEARLY COMMISSION VAT - ${filters?.year}`,
+      x,
+      y,
+      null,
+      null,
+      "center"
+    );
+    const textWidth = doc.getTextWidth(
+      `YEARLY COMMISSION VAT - ${filters?.year}`
+    );
+    const titleY = y + 2;
+    doc.setLineWidth(0.5);
+    doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
+    doc.setFont("Arial", "normal");
+    doc.setFontSize(12);
+    const dateY = titleY + 4;
+    doc.text(
+      `Date: ${currentDate}`,
+      pageWidth - paddingX,
+      dateY,
+      null,
+      null,
+      "right"
+    );
+
+    usedY = 75;
+
+    const addVatList = () => {
       doc.setFont("Arial", "bold");
       doc.setFontSize(12);
-      doc.text("Profit/Loss: ", paddingX, usedY + 6);
+      doc.text("VAT: ", paddingX, usedY + 6);
 
-      const profitColumns = [
+      const vatColumns = [
         { field: "currency", headerName: "CURRENCY" },
-        { field: "total_income", headerName: "INCOME" },
-        { field: "total_expense", headerName: "EXPENSE" },
-        { field: "percent", headerName: "PROFIT/LOSS %" },
-        { field: "profit_loss", headerName: "PROFIT/LOSS" },
+        { field: "amount", headerName: "COMMISSION AMOUNT" },
+        { field: "count", headerName: "NO OF COMMISSION" },
+        { field: "vat", headerName: "VAT AMOUNT" },
       ];
 
-      const profitHeaders = profitColumns?.map((col) => col.headerName);
-      const tableData = data?.map((row) => {
-        const loss = row?.output?.toLowerCase() === "loss";
-        return profitColumns?.map((col) => {
-          if (col.field === "percent") {
-            return {
-              content:
-                row[col.field] !== undefined && row[col.field] !== null
-                  ? parseFloat(row[col.field]).toFixed(1) + " %"
-                  : "0.0 %",
-              loss: loss,
-            };
-          }
-          if (col.field === "profit_loss") {
-            return {
-              content:
-                row[col.field] !== undefined && row[col.field] !== null
-                  ? parseFloat(row[col.field]).toFixed(2)
-                  : "0.00",
-              loss: loss,
-            };
-          }
-          return {
-            content: row[col.field] || "",
-            loss: false, // Only the last two columns are conditionally styled
-          };
-        });
-      });
+      const vatHeaders = vatColumns?.map((col) => col.headerName);
+      //   const tableData = data?.map((row) => {
+      //     return vatColumns?.map((col) => {
+      //       if (col.field === "percent") {
+      //         return {
+      //           content:
+      //             row[col.field] !== undefined && row[col.field] !== null
+      //               ? parseFloat(row[col.field]).toFixed(1) + " %"
+      //               : "0.0 %",
+      //         };
+      //       }
+      //       if (col.field === "profit_loss") {
+      //         return {
+      //           content:
+      //             row[col.field] !== undefined && row[col.field] !== null
+      //               ? parseFloat(row[col.field]).toFixed(2)
+      //               : "0.00",
+      //         };
+      //       }
+      //       return {
+      //         content: row[col.field] || "",
+      //       };
+      //     });
+      //   });
 
+      const tableData = data
+        ?.flatMap((entry) => entry?.vat)
+        ?.map((row) =>
+          vatColumns?.map((col) => {
+            if (col.field === "amount" || col.field === "vat") {
+              return {
+                content:
+                  row[col.field] !== undefined && row[col.field] !== null
+                    ? parseFloat(row[col.field]).toFixed(2)
+                    : "0.00",
+              };
+            }
+            return {
+              content: row[col.field] || "",
+            };
+          })
+        );
       if (!tableData || tableData.length === 0) {
         doc.setFont("Arial", "bold");
         doc.setFontSize(12);
-        doc.text("No profit/loss data available.", paddingX, usedY + 30);
+        doc.text("No vat data available.", paddingX, usedY + 30);
         usedY = 100;
       } else {
         doc.autoTable({
           startY: usedY + 10,
-
-          head: [profitHeaders],
-          body: tableData.map((row) => row.map((cell) => cell.content)),
-
+          head: [vatHeaders],
+          body: tableData?.map((row) => row?.map((cell) => cell.content)),
           theme: "grid",
           headStyles: {
             fillColor: [238, 238, 238],
@@ -247,20 +227,20 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
             lineWidth: 0.1,
             lineColor: [0, 0, 0],
           },
-          didParseCell: function (data) {
-            const rowIndex = data.row.index;
-            const colIndex = data.column.index;
-            const cellData = tableData[rowIndex][colIndex];
+          //   didParseCell: function (data) {
+          //     const rowIndex = data.row.index;
+          //     const colIndex = data.column.index;
+          //     const cellData = tableData[rowIndex][colIndex];
 
-            if (data.section === "body" && (colIndex === 3 || colIndex === 4)) {
-              // Last two columns (percent and profit_loss)
-              if (cellData.loss) {
-                data.cell.styles.textColor = "#DA1F26"; // Red for loss
-              } else {
-                data.cell.styles.textColor = "#269144"; // Green for profit
-              }
-            }
-          },
+          //     if (data.section === "body" && (colIndex === 3 || colIndex === 4)) {
+          //       if (cellData.loss) {
+          //         data.cell.styles.textColor = "#DA1F26";
+          //       } else {
+          //         data.cell.styles.textColor = "#269144";
+          //       }
+          //     }
+          //   },
+          addPageContent: addPageContent, // Ensure header, footer, and watermark are added to new pages
         });
 
         const clientTableHeight = doc.lastAutoTable.finalY;
@@ -268,39 +248,35 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
       }
     };
 
-    // TRANSACTIONS
-    const addTransactions = () => {
+    const addCommission = () => {
       doc.setFont("Arial", "bold");
       doc.setFontSize(12);
-      doc.text("Transactions: ", paddingX, usedY + 13);
+      doc.text("Commissions: ", paddingX, usedY + 13);
 
-      const transData = [
+      const commissionDAta = [
         { field: "date", headerName: "DATE" },
         { field: "category", headerName: "CATEGORY" },
         { field: "user", headerName: "USER" },
         { field: "vendor", headerName: "VENDOR" },
-        { field: "total_amount", headerName: "AMOUNT" },
+        { field: "amount", headerName: "COMMISSION" },
+        { field: "vat", headerName: "VAT" },
       ];
 
-      const tableHead = transData?.map((col) => col.headerName);
-      const tableData = invoicesData?.map((row) => {
-        const loss = row?.invoice_type.toLowerCase() === "expense";
-        return transData?.map((col) => {
+      const tableHead = commissionDAta?.map((col) => col.headerName);
+      const tableData = commData?.map((row) => {
+        return commissionDAta?.map((col) => {
           if (col.field === "user") {
             return {
               content: row?.user?.userName || "",
-              loss: false,
             };
           }
           if (col.field === "vendor") {
             return {
               content: row?.vendor?.vendor_name || "",
-              loss: false,
             };
           }
           return {
-            content: row[col.field] || "",
-            loss: col.field === "total_amount" ? loss : false,
+            content: row?.invoice?.[col.field] || "",
           };
         });
       });
@@ -308,7 +284,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
       if (tableData.length === 0) {
         doc.setFont("Arial", "bold");
         doc.setFontSize(12);
-        doc.text("No transactions available.", paddingX, usedY + 30);
+        doc.text("No commission data available.", paddingX, usedY + 30);
         usedY = 200;
       } else {
         doc.autoTable({
@@ -335,18 +311,8 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
             lineWidth: 0.1,
             lineColor: [0, 0, 0],
           },
-          didParseCell: function (data) {
-            const rowIndex = data.row.index;
-            const colIndex = data.column.index;
-            const cellData = tableData[rowIndex][colIndex];
 
-            if (data.section === "body" && colIndex === 4 && cellData.loss) {
-              // Check if the column is "AMOUNT" and loss is true
-              data.cell.styles.textColor = "#DA1F26";
-            } else if (data.section === "body" && colIndex === 4) {
-              data.cell.styles.textColor = "#269144";
-            }
-          },
+          addPageContent: addPageContent, // Ensure header, footer, and watermark are added to new pages
         });
 
         const tableHeight = doc.lastAutoTable.finalY;
@@ -360,13 +326,11 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
     };
 
     const addSignatureSection = () => {
+      const finalPageHeight = doc.internal.pageSize.getHeight();
+      const signatureY = finalPageHeight - 60; // Adjust as needed to place the signature at the bottom
+
       doc.setLineWidth(0.5);
-      doc.line(
-        150,
-        usedY + 10 + 6 + 6 + 6,
-        pageWidth - paddingX,
-        usedY + 10 + 6 + 6 + 6
-      );
+      doc.line(150, signatureY, pageWidth - paddingX, signatureY);
       doc.setFont("Arial", "normal");
       doc.setFontSize(10);
       const text = "Authorized Signature";
@@ -375,12 +339,12 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
         (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
         doc.internal.scaleFactor;
       const textX = centerX - textWidth / 2;
-      doc.text(text, textX, usedY + 10 + 6 + 6 + 6 + 6);
+      doc.text(text, textX, signatureY + 5);
     };
 
-    addHeading();
-    addProfitLoss();
-    addTransactions();
+    addPageContent();
+    addVatList();
+    addCommission();
     addSignatureSection();
 
     // Save the PDF as Blob
@@ -394,345 +358,17 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
     // Set the PDF URL in the component state
     setPdfUrl(pdfBlobUrl);
 
-    doc.save(`Statement-${filters?.month}-${filters?.year}.pdf`);
+    doc.save(`Yearly VAT-${filters?.year}.pdf`);
     return pdfBlob;
   };
-  // const generatePDF = (data, invoicesData) => {
-  //   console.log("PDF Data:: ", data);
-  //   console.log("Invoice Data:: ", invoicesData);
-  //   const doc = new jsPDF({
-  //     format: "a4",
-  //     unit: "mm",
-  //   });
-
-  //   const pageWidth = doc.internal.pageSize.getWidth();
-  //   const pageHeight = doc.internal.pageSize.getHeight();
-  //   const paddingX = 15;
-  //   let usedY = 50;
-
-  //   const addWatermark = () => {
-  //     const watermarkUrl = "assets/Watermark.png";
-  //     const watermarkWidth = 150;
-  //     const watermarkHeight = 150;
-
-  //     for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
-  //       doc.setPage(i);
-
-  //       const x = (pageWidth - watermarkWidth) / 2;
-  //       const y = (pageHeight - watermarkHeight) / 2;
-
-  //       doc.setGState(new doc.GState({ opacity: 0.1 }));
-  //       doc.addImage(
-  //         watermarkUrl,
-  //         "PNG",
-  //         x,
-  //         y,
-  //         watermarkWidth,
-  //         watermarkHeight
-  //       );
-  //       doc.setGState(new doc.GState({ opacity: 1.0 }));
-  //     }
-  //   };
-
-  //   const addHeader = () => {
-  //     const headerImg = "assets/Header-update.jpg";
-
-  //     for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
-  //       doc.setPage(i);
-  //       const x = 0;
-  //       const y = -3;
-  //       const width = pageWidth;
-  //       const height = 50;
-
-  //       doc.addImage(headerImg, "JPEG", x, y, width, height);
-  //     }
-  //   };
-
-  //   const addFooter = () => {
-  //     const footerImage = "assets/Footer.jpg";
-
-  //     for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
-  //       doc.setPage(i);
-  //       const width = pageWidth;
-  //       const height = 44;
-  //       const x = 0;
-  //       const y = pageHeight - height + 4;
-
-  //       doc.addImage(footerImage, "JPEG", x, y, width, height);
-  //     }
-  //   };
-
-  //   const addHeading = () => {
-  //     const x = pageWidth / 2;
-  //     const y = 50 - 4;
-  //     doc.setFont("Arial", "bold");
-  //     doc.setFontSize(14);
-  //     doc.text(
-  //       `STATEMENT - ${filters?.month} ${filters?.year}`,
-  //       x,
-  //       y,
-  //       null,
-  //       null,
-  //       "center"
-  //     );
-  //     const textWidth = doc.getTextWidth(
-  //       `STATEMENT - ${filters?.month} ${filters?.year}`
-  //     );
-  //     const titleY = y + 2;
-  //     doc.setLineWidth(0.5);
-  //     doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
-  //     doc.setFont("Arial", "normal");
-  //     doc.setFontSize(12);
-  //     const dateY = titleY + 4;
-  //     doc.text(
-  //       `Date: ${currentDate}`,
-  //       pageWidth - paddingX,
-  //       dateY,
-  //       null,
-  //       null,
-  //       "right"
-  //     );
-
-  //     usedY = 75;
-  //   };
-
-  //   const addProfitLoss = () => {
-  //     doc.setFont("Arial", "bold");
-  //     doc.setFontSize(12);
-  //     doc.text("Profit/Loss: ", paddingX, usedY + 6);
-
-  //     const profitColumns = [
-  //       { field: "currency", headerName: "CURRENCY" },
-  //       { field: "total_income", headerName: "INCOME" },
-  //       { field: "total_expense", headerName: "EXPENSE" },
-  //       { field: "percent", headerName: "PROFIT/LOSS %" },
-  //       { field: "profit_loss", headerName: "PROFIT/LOSS" },
-  //     ];
-
-  //     const profitHeaders = profitColumns?.map((col) => col.headerName);
-  //     const tableData = data?.map((row) => {
-  //       const loss = row?.output?.toLowerCase() === "loss";
-  //       return profitColumns?.map((col) => {
-  //         if (col.field === "percent") {
-  //           return {
-  //             content:
-  //               row[col.field] !== undefined && row[col.field] !== null
-  //                 ? parseFloat(row[col.field]).toFixed(1) + " %"
-  //                 : "0.0 %",
-  //             loss: loss,
-  //           };
-  //         }
-  //         if (col.field === "profit_loss") {
-  //           return {
-  //             content:
-  //               row[col.field] !== undefined && row[col.field] !== null
-  //                 ? parseFloat(row[col.field]).toFixed(2)
-  //                 : "0.00",
-  //             loss: loss,
-  //           };
-  //         }
-  //         return {
-  //           content: row[col.field] || "",
-  //           loss: false,
-  //         };
-  //       });
-  //     });
-
-  //     if (!tableData || tableData.length === 0) {
-  //       doc.setFont("Arial", "bold");
-  //       doc.setFontSize(12);
-  //       doc.text("No profit/loss data available.", paddingX, usedY + 30);
-  //       usedY = 100;
-  //     } else {
-  //       doc.autoTable({
-  //         startY: usedY + 10,
-
-  //         head: [profitHeaders],
-  //         body: tableData.map((row) => row.map((cell) => cell.content)),
-
-  //         theme: "grid",
-  //         headStyles: {
-  //           fillColor: [238, 238, 238],
-  //           textColor: [0, 0, 0],
-  //           fontStyle: "bold",
-  //           halign: "center",
-  //           font: "Arial",
-  //           fontSize: 12,
-  //         },
-  //         bodyStyles: {
-  //           fillColor: null,
-  //           textColor: [0, 0, 0],
-  //           halign: "center",
-  //           font: "Arial",
-  //           fontSize: 12,
-  //         },
-  //         styles: {
-  //           lineWidth: 0.1,
-  //           lineColor: [0, 0, 0],
-  //         },
-  //         didParseCell: function (data) {
-  //           const rowIndex = data.row.index;
-  //           const colIndex = data.column.index;
-  //           const cellData = tableData[rowIndex][colIndex];
-
-  //           if (data.section === "body" && (colIndex === 3 || colIndex === 4)) {
-  //             if (cellData.loss) {
-  //               data.cell.styles.textColor = "#DA1F26";
-  //             } else {
-  //               data.cell.styles.textColor = "#269144";
-  //             }
-  //           }
-  //         },
-  //       });
-
-  //       const clientTableHeight = doc.lastAutoTable.finalY;
-  //       usedY = clientTableHeight || 119;
-  //     }
-  //   };
-
-  //   const addTransactions = () => {
-  //     doc.setFont("Arial", "bold");
-  //     doc.setFontSize(12);
-  //     doc.text("Transactions: ", paddingX, usedY + 13);
-
-  //     const transData = [
-  //       { field: "date", headerName: "DATE" },
-  //       { field: "category", headerName: "CATEGORY" },
-  //       { field: "user", headerName: "USER" },
-  //       { field: "vendor", headerName: "VENDOR" },
-  //       { field: "total_amount", headerName: "AMOUNT" },
-  //     ];
-
-  //     const tableHead = transData?.map((col) => col.headerName);
-  //     const tableData = invoicesData?.map((row) => {
-  //       const loss = row?.invoice_type.toLowerCase() === "expense";
-  //       return transData?.map((col) => {
-  //         if (col.field === "user") {
-  //           return {
-  //             content: row?.user?.userName || "",
-  //             loss: false,
-  //           };
-  //         }
-  //         if (col.field === "vendor") {
-  //           return {
-  //             content: row?.vendor?.vendor_name || "",
-  //             loss: false,
-  //           };
-  //         }
-  //         return {
-  //           content: row[col.field] || "",
-  //           loss: col.field === "total_amount" ? loss : false,
-  //         };
-  //       });
-  //     });
-
-  //     if (tableData.length === 0) {
-  //       doc.setFont("Arial", "bold");
-  //       doc.setFontSize(12);
-  //       doc.text("No transactions available.", paddingX, usedY + 30);
-  //       usedY = 200;
-  //     } else {
-  //       doc.autoTable({
-  //         startY: usedY + 17,
-  //         head: [tableHead],
-  //         body: tableData.map((row) => row.map((cell) => cell.content)),
-  //         theme: "grid",
-  //         headStyles: {
-  //           fillColor: [238, 238, 238],
-  //           textColor: [0, 0, 0],
-  //           fontStyle: "bold",
-  //           halign: "center",
-  //           font: "Arial",
-  //           fontSize: 12,
-  //         },
-  //         bodyStyles: {
-  //           fillColor: null,
-  //           textColor: [0, 0, 0],
-  //           halign: "center",
-  //           font: "Arial",
-  //           fontSize: 12,
-  //         },
-  //         styles: {
-  //           lineWidth: 0.1,
-  //           lineColor: [0, 0, 0],
-  //         },
-  //         didParseCell: function (data) {
-  //           const rowIndex = data.row.index;
-  //           const colIndex = data.column.index;
-  //           const cellData = tableData[rowIndex][colIndex];
-
-  //           if (data.section === "body" && colIndex === 4 && cellData.loss) {
-  //             data.cell.styles.textColor = "#DA1F26";
-  //           } else if (data.section === "body" && colIndex === 4) {
-  //             data.cell.styles.textColor = "#269144";
-  //           }
-  //         },
-  //       });
-
-  //       const tableHeight = doc.lastAutoTable.finalY;
-  //       usedY = tableHeight || 152;
-  //     }
-
-  //     doc.setFont("Arial", "bold");
-  //     doc.setFontSize(10);
-  //     doc.text(`Generated By: ${User?.userName}`, paddingX, usedY + 12);
-  //     usedY = usedY + 18; // Adjust the spacing to fit the signature section
-  //   };
-
-  //   const addSignatureSection = () => {
-  //     if (usedY + 30 > pageHeight - 50) {
-  //       doc.addPage();
-  //       addHeader();
-  //       addFooter();
-  //       addWatermark();
-  //       usedY = 50;
-  //     }
-
-  //     doc.setLineWidth(0.5);
-  //     doc.line(
-  //       150,
-  //       usedY + 10 + 6 + 6 + 6,
-  //       pageWidth - paddingX,
-  //       usedY + 10 + 6 + 6 + 6
-  //     );
-  //     doc.setFont("Arial", "normal");
-  //     doc.setFontSize(10);
-  //     const text = "Authorized Signature";
-  //     const centerX = (150 + pageWidth - paddingX) / 2;
-  //     const textWidth =
-  //       (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
-  //       doc.internal.scaleFactor;
-  //     const textX = centerX - textWidth / 2;
-  //     doc.text(text, textX, usedY + 10 + 6 + 6 + 6 + 6);
-  //   };
-
-  //   addHeading();
-  //   addProfitLoss();
-  //   addTransactions();
-  //   addSignatureSection();
-
-  //   // Save the PDF as Blob
-  //   const pdfBlob = doc.output("blob");
-
-  //   // Create a Blob URL
-  //   const pdfBlobUrl = URL.createObjectURL(pdfBlob);
-
-  //   console.log("PDF Blob URL: ", pdfBlobUrl);
-
-  //   // Set the PDF URL in the component state
-  //   setPdfUrl(pdfBlobUrl);
-
-  //   doc.save(`Statement-${filters?.month}-${filters?.year}.pdf`);
-  //   return pdfBlob;
-  // };
 
   const token = localStorage.getItem("auth-token");
 
   const fetchStatements = async () => {
-    setLoading(true);
+    setloading(true);
 
-    if (!filters?.month || !filters?.year) {
-      toast.error("Month and year are required.", {
+    if (!filters?.year) {
+      toast.error("Year is required.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -742,53 +378,42 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
         progress: undefined,
         theme: "light",
       });
-      setLoading(false);
+      setloading(false);
       return;
     }
-
-    const params = {
-      month: filters?.month,
-      year: filters?.year,
-    };
-
-    // Conditionally add country and currency if they have values
-    if (filters?.country) {
-      params.country = filters.country;
-    }
-    if (filters?.currency) {
-      params.currency = filters.currency;
-    }
-
     try {
-      // Promise.all to make both API calls concurrently
-      const [statementsResponse, invoicesResponse] = await Promise.all([
-        axios.get(`${BACKEND_URL}/statements`, {
-          params: params,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-        axios.get(`${BACKEND_URL}/invoices`, {
-          // params: params,
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }),
-      ]);
+      const params = {
+        year: filters?.year,
+      };
 
-      const statementsData = statementsResponse?.data?.data;
-      const invoicesData = invoicesResponse?.data?.data?.data;
+      // Conditionally add country and currency if they have values
+      if (filters?.country) {
+        params.country = filters.country;
+      }
+      if (filters?.currency) {
+        params.currency = filters.currency;
+      }
+      const response = await axios.get(`${BACKEND_URL}/commission-vat`, {
+        params: params,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
-      console.log("Statements List:", statementsData);
-      console.log("Invoices List:", invoicesData);
+      console.log("commission vat list:: ", response);
 
-      // Call functions to process statements and invoices data as needed
-      generatePDF(statementsData, invoicesData);
+      const vatData = response?.data?.data;
+      const commData = response?.data?.data?.[0]?.invoices;
+
+      generatePDF(vatData, commData);
+
+      //   setCommVATData(response?.data?.data);
+      //   setTransData(response?.data?.data?.[0]?.invoices);
     } catch (error) {
-      console.error("Error fetching data:", error);
-      toast.error("Unable to fetch data", {
+      setloading(false);
+      console.error("Error fetching statements:", error);
+      toast.error("Unable to fetch the Commission VAT.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -799,7 +424,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
         theme: "light",
       });
     } finally {
-      setLoading(false);
+      setloading(false);
     }
   };
 
@@ -896,28 +521,124 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                   </div>
 
                   <div className="w-full flex justify-end items-center">
-                    <Box sx={{ ...darkModeColors, marginRight: "12px" }}>
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        marginRight: "12px",
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      }}
+                    >
+                      <Select
+                        options={currencies(t)?.map((curr) => ({
+                          value: curr?.value,
+                          label: curr?.label,
+                        }))}
+                        value={currencies(t)?.filter(
+                          (curr) => curr?.value === filters?.currency
+                        )}
+                        onChange={(e) => {
+                          setFilters({
+                            ...filters,
+                            currency: e.value,
+                          });
+                        }}
+                        placeholder={t("label_currency")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                        required
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        marginRight: "12px",
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      }}
+                    >
+                      <Select
+                        options={countries_list(t)?.map((country) => ({
+                          value: country?.value,
+                          label: country?.label,
+                        }))}
+                        value={countries_list(t)?.filter(
+                          (country) => country?.value === filters?.country
+                        )}
+                        onChange={(e) => {
+                          setFilters({
+                            ...filters,
+                            country: e.value,
+                          });
+                        }}
+                        placeholder={t("label_country")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                        required
+                      />
+                    </Box>
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        marginRight: "12px",
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      }}
+                    >
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           value={dayjs(`${filters?.year}-${filters?.month}-01`)}
-                          label={t("month_year")}
-                          views={["month", "year"]}
+                          label={t("select_year")}
+                          views={["year"]}
                           onChange={(newValue) => {
-                            // Extract month and year as numbers from newValue
-                            const month = newValue
-                              ? newValue.$d.getMonth() + 1
-                              : "";
                             const year = newValue
                               ? newValue.$d.getFullYear()
                               : "";
 
                             setFilters((prev) => ({
                               ...prev,
-                              month: month.toString().padStart(2, "0"), // Ensure month is two digits
                               year: year.toString(),
                             }));
                           }}
-                          format="MM-YYYY"
+                          format="YYYY"
                           renderInput={(params) => (
                             <TextField
                               sx={{
@@ -941,88 +662,6 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                           maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        ...darkModeColors,
-                        marginRight: "12px",
-                        // "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        //   {
-                        //     right: isLangRTL(i18n.language)
-                        //       ? "2.5rem"
-                        //       : "inherit",
-                        //     transformOrigin: isLangRTL(i18n.language)
-                        //       ? "right"
-                        //       : "left",
-                        //   },
-                        // "& legend": {
-                        //   textAlign: isLangRTL(i18n.language)
-                        //     ? "right"
-                        //     : "left",
-                        // },
-                      }}
-                    >
-                      <Select
-                        options={currencies(t)?.map((curr) => ({
-                          value: curr?.value,
-                          label: curr?.label,
-                        }))}
-                        value={currencies(t)?.filter(
-                          (curr) => curr?.value === filters?.currency
-                        )}
-                        onChange={(e) => {
-                          setFilters({
-                            ...filters,
-                            currency: e.value,
-                          });
-                        }}
-                        placeholder={t("label_currency")}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                        required
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        ...darkModeColors,
-                        marginRight: "12px",
-
-                        // "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        //   {
-                        //     right: isLangRTL(i18n.language)
-                        //       ? "2.5rem"
-                        //       : "inherit",
-                        //     transformOrigin: isLangRTL(i18n.language)
-                        //       ? "right"
-                        //       : "left",
-                        //   },
-                        // "& legend": {
-                        //   textAlign: isLangRTL(i18n.language)
-                        //     ? "right"
-                        //     : "left",
-                        // },
-                      }}
-                    >
-                      <Select
-                        options={countries_list(t)?.map((country) => ({
-                          value: country?.value,
-                          label: country?.label,
-                        }))}
-                        value={countries_list(t)?.filter(
-                          (country) => country?.value === filters?.country
-                        )}
-                        onChange={(e) => {
-                          setFilters({
-                            ...filters,
-                            country: e.value,
-                          });
-                        }}
-                        placeholder={t("label_country")}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                        required
-                      />
                     </Box>
 
                     <button
