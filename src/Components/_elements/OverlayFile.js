@@ -31,10 +31,6 @@ const OverlayFile = ({ type, content, onClose, category }) => {
     setPdfUrl(url);
   };
 
-  // useEffect(() => {
-  //   generateTempPdf();
-  // }, [content]);
-
   return (
     <div
       className="top-0 left-0 flex items-center justify-center px-5 pt-5"
