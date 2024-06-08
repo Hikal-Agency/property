@@ -56,6 +56,15 @@ const StatementPDFComp = ({
 
   const [isClosing, setIsClosing] = useState(false);
 
+  const clearFilters = () => {
+    setFilters({
+      currency: "",
+      country: "",
+      month: moment().format("MM"),
+      year: moment().format("YYYY"),
+    });
+  };
+
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
@@ -1198,7 +1207,19 @@ const StatementPDFComp = ({
                   </div>
 
                   <div className="w-full flex justify-end items-center">
-                    <Box sx={{ ...darkModeColors, marginRight: "12px" }}>
+                    <button
+                      className="bg-btn-primary py-2 px-4 mr-3 text-white rounded-md"
+                      onClick={clearFilters}
+                    >
+                      {t("clear_all")}
+                    </button>
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        marginRight: "12px",
+                        marginTop: "15px",
+                      }}
+                    >
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           value={dayjs(`${filters?.year}-${filters?.month}-01`)}
@@ -1249,6 +1270,8 @@ const StatementPDFComp = ({
                       sx={{
                         ...darkModeColors,
                         marginRight: "12px",
+                        marginTop: "15px",
+
                         // "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                         //   {
                         //     right: isLangRTL(i18n.language)
@@ -1289,6 +1312,7 @@ const StatementPDFComp = ({
                       sx={{
                         ...darkModeColors,
                         marginRight: "12px",
+                        marginTop: "15px",
 
                         // "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                         //   {
