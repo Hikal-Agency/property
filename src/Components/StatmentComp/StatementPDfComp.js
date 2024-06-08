@@ -178,55 +178,6 @@ const StatementPDFComp = ({
       usedY = 75;
     };
 
-    const addCompanyDetails = () => {
-      doc.setFont("Arial", "normal");
-      doc.setFontSize(12);
-      // VENDOR
-      doc.text("Bill to: ", paddingX, usedY + 15);
-      doc.setFont("Arial", "bold");
-      doc.text(`${data?.vendor_name}`, paddingX, usedY + 15 + 6);
-      doc.setFont("Arial", "normal");
-
-      // const maxWidth = doc.internal.pageSize.getWidth() - 2 * paddingX; // Subtracting padding from both sides
-      const maxWidth = 90;
-
-      // Split the address text to fit within the specified width
-      const addressLines = doc.splitTextToSize(`${data?.address}`, maxWidth);
-
-      // Render each line of the address
-      let currentY = usedY + 15 + 6 + 6;
-      addressLines.forEach((line, index) => {
-        doc.text(line, paddingX, currentY + index * 5); // Adjust line spacing as needed (10 units here)
-      });
-
-      const addressHeight = addressLines.length * 5 + 1; // Total height occupied by the address lines
-      const trnY = currentY + addressHeight; // Adjust Y position for the TRN
-
-      doc.text(`TRN No: ${data?.trn}`, paddingX, trnY);
-      // doc.text(`TRN No: ${data?.trn}`, paddingX, usedY + 15 + 6 + 6 + 6);
-      // COMPANY
-      doc.text("Company: ", pageWidth / 2 + paddingX, usedY + 15);
-      doc.setFont("Arial", "bold");
-      doc.text(`${data?.company}`, pageWidth / 2 + paddingX, usedY + 15 + 6);
-      doc.setFont("Arial", "normal");
-      doc.text(
-        `TRN No: ${data?.company_trn}`,
-        pageWidth / 2 + paddingX,
-        usedY + 15 + 6 + 6
-      );
-      doc.text(
-        `Email: ${data?.company_email}`,
-        pageWidth / 2 + paddingX,
-        usedY + 15 + 6 + 6 + 6
-      );
-      doc.text(
-        `Telephone: ${data?.company_tele}`,
-        pageWidth / 2 + paddingX,
-        usedY + 15 + 6 + 6 + 6 + 6
-      );
-      usedY = 93;
-    };
-
     // PROFIT LOSS
     const addProfitLoss = () => {
       doc.setFont("Arial", "bold");
@@ -452,6 +403,334 @@ const StatementPDFComp = ({
     doc.save(`Statement-${filters?.month}-${filters?.year}.pdf`);
     return pdfBlob;
   };
+  // const generatePDF = (data, invoicesData) => {
+  //   console.log("PDF Data:: ", data);
+  //   console.log("Invoice Data:: ", invoicesData);
+  //   const doc = new jsPDF({
+  //     format: "a4",
+  //     unit: "mm",
+  //   });
+
+  //   const pageWidth = doc.internal.pageSize.getWidth();
+  //   const pageHeight = doc.internal.pageSize.getHeight();
+  //   const paddingX = 15;
+  //   let usedY = 50;
+
+  //   const addWatermark = () => {
+  //     const watermarkUrl = "assets/Watermark.png";
+  //     const watermarkWidth = 150;
+  //     const watermarkHeight = 150;
+
+  //     for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
+  //       doc.setPage(i);
+
+  //       const x = (pageWidth - watermarkWidth) / 2;
+  //       const y = (pageHeight - watermarkHeight) / 2;
+
+  //       doc.setGState(new doc.GState({ opacity: 0.1 }));
+  //       doc.addImage(
+  //         watermarkUrl,
+  //         "PNG",
+  //         x,
+  //         y,
+  //         watermarkWidth,
+  //         watermarkHeight
+  //       );
+  //       doc.setGState(new doc.GState({ opacity: 1.0 }));
+  //     }
+  //   };
+
+  //   const addHeader = () => {
+  //     const headerImg = "assets/Header-update.jpg";
+
+  //     for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
+  //       doc.setPage(i);
+  //       const x = 0;
+  //       const y = -3;
+  //       const width = pageWidth;
+  //       const height = 50;
+
+  //       doc.addImage(headerImg, "JPEG", x, y, width, height);
+  //     }
+  //   };
+
+  //   const addFooter = () => {
+  //     const footerImage = "assets/Footer.jpg";
+
+  //     for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
+  //       doc.setPage(i);
+  //       const width = pageWidth;
+  //       const height = 44;
+  //       const x = 0;
+  //       const y = pageHeight - height + 4;
+
+  //       doc.addImage(footerImage, "JPEG", x, y, width, height);
+  //     }
+  //   };
+
+  //   const addHeading = () => {
+  //     const x = pageWidth / 2;
+  //     const y = 50 - 4;
+  //     doc.setFont("Arial", "bold");
+  //     doc.setFontSize(14);
+  //     doc.text(
+  //       `STATEMENT - ${filters?.month} ${filters?.year}`,
+  //       x,
+  //       y,
+  //       null,
+  //       null,
+  //       "center"
+  //     );
+  //     const textWidth = doc.getTextWidth(
+  //       `STATEMENT - ${filters?.month} ${filters?.year}`
+  //     );
+  //     const titleY = y + 2;
+  //     doc.setLineWidth(0.5);
+  //     doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
+  //     doc.setFont("Arial", "normal");
+  //     doc.setFontSize(12);
+  //     const dateY = titleY + 4;
+  //     doc.text(
+  //       `Date: ${currentDate}`,
+  //       pageWidth - paddingX,
+  //       dateY,
+  //       null,
+  //       null,
+  //       "right"
+  //     );
+
+  //     usedY = 75;
+  //   };
+
+  //   const addProfitLoss = () => {
+  //     doc.setFont("Arial", "bold");
+  //     doc.setFontSize(12);
+  //     doc.text("Profit/Loss: ", paddingX, usedY + 6);
+
+  //     const profitColumns = [
+  //       { field: "currency", headerName: "CURRENCY" },
+  //       { field: "total_income", headerName: "INCOME" },
+  //       { field: "total_expense", headerName: "EXPENSE" },
+  //       { field: "percent", headerName: "PROFIT/LOSS %" },
+  //       { field: "profit_loss", headerName: "PROFIT/LOSS" },
+  //     ];
+
+  //     const profitHeaders = profitColumns?.map((col) => col.headerName);
+  //     const tableData = data?.map((row) => {
+  //       const loss = row?.output?.toLowerCase() === "loss";
+  //       return profitColumns?.map((col) => {
+  //         if (col.field === "percent") {
+  //           return {
+  //             content:
+  //               row[col.field] !== undefined && row[col.field] !== null
+  //                 ? parseFloat(row[col.field]).toFixed(1) + " %"
+  //                 : "0.0 %",
+  //             loss: loss,
+  //           };
+  //         }
+  //         if (col.field === "profit_loss") {
+  //           return {
+  //             content:
+  //               row[col.field] !== undefined && row[col.field] !== null
+  //                 ? parseFloat(row[col.field]).toFixed(2)
+  //                 : "0.00",
+  //             loss: loss,
+  //           };
+  //         }
+  //         return {
+  //           content: row[col.field] || "",
+  //           loss: false,
+  //         };
+  //       });
+  //     });
+
+  //     if (!tableData || tableData.length === 0) {
+  //       doc.setFont("Arial", "bold");
+  //       doc.setFontSize(12);
+  //       doc.text("No profit/loss data available.", paddingX, usedY + 30);
+  //       usedY = 100;
+  //     } else {
+  //       doc.autoTable({
+  //         startY: usedY + 10,
+
+  //         head: [profitHeaders],
+  //         body: tableData.map((row) => row.map((cell) => cell.content)),
+
+  //         theme: "grid",
+  //         headStyles: {
+  //           fillColor: [238, 238, 238],
+  //           textColor: [0, 0, 0],
+  //           fontStyle: "bold",
+  //           halign: "center",
+  //           font: "Arial",
+  //           fontSize: 12,
+  //         },
+  //         bodyStyles: {
+  //           fillColor: null,
+  //           textColor: [0, 0, 0],
+  //           halign: "center",
+  //           font: "Arial",
+  //           fontSize: 12,
+  //         },
+  //         styles: {
+  //           lineWidth: 0.1,
+  //           lineColor: [0, 0, 0],
+  //         },
+  //         didParseCell: function (data) {
+  //           const rowIndex = data.row.index;
+  //           const colIndex = data.column.index;
+  //           const cellData = tableData[rowIndex][colIndex];
+
+  //           if (data.section === "body" && (colIndex === 3 || colIndex === 4)) {
+  //             if (cellData.loss) {
+  //               data.cell.styles.textColor = "#DA1F26";
+  //             } else {
+  //               data.cell.styles.textColor = "#269144";
+  //             }
+  //           }
+  //         },
+  //       });
+
+  //       const clientTableHeight = doc.lastAutoTable.finalY;
+  //       usedY = clientTableHeight || 119;
+  //     }
+  //   };
+
+  //   const addTransactions = () => {
+  //     doc.setFont("Arial", "bold");
+  //     doc.setFontSize(12);
+  //     doc.text("Transactions: ", paddingX, usedY + 13);
+
+  //     const transData = [
+  //       { field: "date", headerName: "DATE" },
+  //       { field: "category", headerName: "CATEGORY" },
+  //       { field: "user", headerName: "USER" },
+  //       { field: "vendor", headerName: "VENDOR" },
+  //       { field: "total_amount", headerName: "AMOUNT" },
+  //     ];
+
+  //     const tableHead = transData?.map((col) => col.headerName);
+  //     const tableData = invoicesData?.map((row) => {
+  //       const loss = row?.invoice_type.toLowerCase() === "expense";
+  //       return transData?.map((col) => {
+  //         if (col.field === "user") {
+  //           return {
+  //             content: row?.user?.userName || "",
+  //             loss: false,
+  //           };
+  //         }
+  //         if (col.field === "vendor") {
+  //           return {
+  //             content: row?.vendor?.vendor_name || "",
+  //             loss: false,
+  //           };
+  //         }
+  //         return {
+  //           content: row[col.field] || "",
+  //           loss: col.field === "total_amount" ? loss : false,
+  //         };
+  //       });
+  //     });
+
+  //     if (tableData.length === 0) {
+  //       doc.setFont("Arial", "bold");
+  //       doc.setFontSize(12);
+  //       doc.text("No transactions available.", paddingX, usedY + 30);
+  //       usedY = 200;
+  //     } else {
+  //       doc.autoTable({
+  //         startY: usedY + 17,
+  //         head: [tableHead],
+  //         body: tableData.map((row) => row.map((cell) => cell.content)),
+  //         theme: "grid",
+  //         headStyles: {
+  //           fillColor: [238, 238, 238],
+  //           textColor: [0, 0, 0],
+  //           fontStyle: "bold",
+  //           halign: "center",
+  //           font: "Arial",
+  //           fontSize: 12,
+  //         },
+  //         bodyStyles: {
+  //           fillColor: null,
+  //           textColor: [0, 0, 0],
+  //           halign: "center",
+  //           font: "Arial",
+  //           fontSize: 12,
+  //         },
+  //         styles: {
+  //           lineWidth: 0.1,
+  //           lineColor: [0, 0, 0],
+  //         },
+  //         didParseCell: function (data) {
+  //           const rowIndex = data.row.index;
+  //           const colIndex = data.column.index;
+  //           const cellData = tableData[rowIndex][colIndex];
+
+  //           if (data.section === "body" && colIndex === 4 && cellData.loss) {
+  //             data.cell.styles.textColor = "#DA1F26";
+  //           } else if (data.section === "body" && colIndex === 4) {
+  //             data.cell.styles.textColor = "#269144";
+  //           }
+  //         },
+  //       });
+
+  //       const tableHeight = doc.lastAutoTable.finalY;
+  //       usedY = tableHeight || 152;
+  //     }
+
+  //     doc.setFont("Arial", "bold");
+  //     doc.setFontSize(10);
+  //     doc.text(`Generated By: ${User?.userName}`, paddingX, usedY + 12);
+  //     usedY = usedY + 18; // Adjust the spacing to fit the signature section
+  //   };
+
+  //   const addSignatureSection = () => {
+  //     if (usedY + 30 > pageHeight - 50) {
+  //       doc.addPage();
+  //       addHeader();
+  //       addFooter();
+  //       addWatermark();
+  //       usedY = 50;
+  //     }
+
+  //     doc.setLineWidth(0.5);
+  //     doc.line(
+  //       150,
+  //       usedY + 10 + 6 + 6 + 6,
+  //       pageWidth - paddingX,
+  //       usedY + 10 + 6 + 6 + 6
+  //     );
+  //     doc.setFont("Arial", "normal");
+  //     doc.setFontSize(10);
+  //     const text = "Authorized Signature";
+  //     const centerX = (150 + pageWidth - paddingX) / 2;
+  //     const textWidth =
+  //       (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
+  //       doc.internal.scaleFactor;
+  //     const textX = centerX - textWidth / 2;
+  //     doc.text(text, textX, usedY + 10 + 6 + 6 + 6 + 6);
+  //   };
+
+  //   addHeading();
+  //   addProfitLoss();
+  //   addTransactions();
+  //   addSignatureSection();
+
+  //   // Save the PDF as Blob
+  //   const pdfBlob = doc.output("blob");
+
+  //   // Create a Blob URL
+  //   const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+
+  //   console.log("PDF Blob URL: ", pdfBlobUrl);
+
+  //   // Set the PDF URL in the component state
+  //   setPdfUrl(pdfBlobUrl);
+
+  //   doc.save(`Statement-${filters?.month}-${filters?.year}.pdf`);
+  //   return pdfBlob;
+  // };
 
   const token = localStorage.getItem("auth-token");
 
