@@ -241,42 +241,41 @@ const StatementPDFComp = ({
         { field: "profit_loss", headerName: "PROFIT/LOSS" },
       ];
 
-      let loss;
-
       const profitHeaders = profitColumns?.map((col) => col.headerName);
-      const tableData = data?.map((row) =>
-        profitColumns?.map((col) => {
-          console.log("rowdata: ", row);
-          if (row?.output?.toLowerCase() === "loss") {
-            loss = true;
-          } else {
-            loss = false;
-          }
-          console.log("loss after condition:: ", loss);
+      const tableData = data?.map((row) => {
+        const loss = row?.output?.toLowerCase() === "loss";
+        return profitColumns?.map((col) => {
           if (col.field === "percent") {
-            return row[col.field] !== undefined && row[col.field] !== null
-              ? parseFloat(row[col.field]).toFixed(1) + " %"
-              : "0.0 %";
+            return {
+              content:
+                row[col.field] !== undefined && row[col.field] !== null
+                  ? parseFloat(row[col.field]).toFixed(1) + " %"
+                  : "0.0 %",
+              loss: loss,
+            };
           }
           if (col.field === "profit_loss") {
-            return row[col.field] !== undefined && row[col.field] !== null
-              ? parseFloat(row[col.field]).toFixed(2)
-              : "0.00";
+            return {
+              content:
+                row[col.field] !== undefined && row[col.field] !== null
+                  ? parseFloat(row[col.field]).toFixed(2)
+                  : "0.00",
+              loss: loss,
+            };
           }
-          return row[col.field];
-        })
-      );
-      // const tableData = data?.map((row) =>
-      //   profitColumns?.map((col) =>
-      //     col.renderCell ? col.renderCell({ row }) : row[col.field]
-      //   )
-      // );
+          return {
+            content: row[col.field] || "",
+            loss: false, // Only the last two columns are conditionally styled
+          };
+        });
+      });
+
       // TABLE
       doc.autoTable({
         startY: usedY + 10,
 
         head: [profitHeaders],
-        body: tableData,
+        body: tableData.map((row) => row.map((cell) => cell.content)),
 
         theme: "grid",
         headStyles: {
@@ -303,12 +302,9 @@ const StatementPDFComp = ({
           const colIndex = data.column.index;
           const cellData = tableData[rowIndex][colIndex];
 
-          console.log("celldata: ", cellData);
-          console.log("loss: ", loss);
-
-          if (colIndex === 3 || colIndex === 4) {
+          if (data.section === "body" && (colIndex === 3 || colIndex === 4)) {
             // Last two columns (percent and profit_loss)
-            if (loss) {
+            if (cellData.loss) {
               data.cell.styles.textColor = "#DA1F26"; // Red for loss
             } else {
               data.cell.styles.textColor = "#269144"; // Green for profit
@@ -330,16 +326,47 @@ const StatementPDFComp = ({
       const transData = [
         { field: "date", headerName: "DATE" },
         { field: "category", headerName: "CATEGORY" },
-        { field: "category", headerName: "CATEGORY" },
-        { field: "amount", headerName: "AMOUNT" },
+        { field: "user", headerName: "USER" },
+        { field: "vendor", headerName: "VENDOR" },
+        { field: "total_amount", headerName: "AMOUNT" },
       ];
 
+      let loss;
+
       const tableHead = transData?.map((col) => col.headerName);
-      const tableData = invoicesData?.map((row) =>
-        transData?.map((col) =>
-          col.renderCell ? col.renderCell({ row }) : row[col.field]
-        )
-      );
+      const tableData = invoicesData?.map((row) => {
+        const loss = row?.invoice_type.toLowerCase() === "expense";
+        return transData?.map((col) => {
+          if (col.field === "user") {
+            return {
+              content: row?.user?.userName || "",
+              loss: false,
+            };
+          }
+          if (col.field === "vendor") {
+            return {
+              content: row?.vendor?.vendor_name || "",
+              loss: false,
+            };
+          }
+          return {
+            content: row[col.field] || "",
+            loss: col.field === "total_amount" ? loss : false,
+          };
+        });
+      });
+      // const tableData = invoicesData?.map((row) =>
+      //   transData?.map((col) => {
+      //     loss = row?.invoice_type.toLowerCase() === "expense" ? true : false;
+      //     if (col.field === "user") {
+      //       return row?.user?.userName || ""; // Access userName from user object
+      //     }
+      //     if (col.field === "vendor") {
+      //       return row?.vendor?.vendor_name || ""; // Access vendor_name from vendor object
+      //     }
+      //     return row[col.field] || ""; // Default for other fields
+      //   })
+      // );
 
       doc.autoTable({
         startY: usedY + 17,
@@ -364,6 +391,18 @@ const StatementPDFComp = ({
         styles: {
           lineWidth: 0.1,
           lineColor: [0, 0, 0],
+        },
+        didParseCell: function (data) {
+          const rowIndex = data.row.index;
+          const colIndex = data.column.index;
+          const cellData = tableData[rowIndex][colIndex];
+
+          if (data.section === "body" && colIndex === 4 && cellData.loss) {
+            // Check if the column is "AMOUNT" and loss is true
+            data.cell.styles.textColor = "#DA1F26";
+          } else if (data.section === "body" && colIndex === 4) {
+            data.cell.styles.textColor = "#269144";
+          }
         },
       });
 
