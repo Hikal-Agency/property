@@ -270,51 +270,57 @@ const StatementPDFComp = ({
         });
       });
 
-      // TABLE
-      doc.autoTable({
-        startY: usedY + 10,
+      if (!tableData || tableData.length === 0) {
+        doc.setFont("Arial", "bold");
+        doc.setFontSize(12);
+        doc.text("No profit/loss data available.", paddingX, usedY + 30);
+        usedY = 100;
+      } else {
+        doc.autoTable({
+          startY: usedY + 10,
 
-        head: [profitHeaders],
-        body: tableData.map((row) => row.map((cell) => cell.content)),
+          head: [profitHeaders],
+          body: tableData.map((row) => row.map((cell) => cell.content)),
 
-        theme: "grid",
-        headStyles: {
-          fillColor: [238, 238, 238],
-          textColor: [0, 0, 0],
-          fontStyle: "bold",
-          halign: "center",
-          font: "Arial",
-          fontSize: 12,
-        },
-        bodyStyles: {
-          fillColor: null,
-          textColor: [0, 0, 0],
-          halign: "center",
-          font: "Arial",
-          fontSize: 12,
-        },
-        styles: {
-          lineWidth: 0.1,
-          lineColor: [0, 0, 0],
-        },
-        didParseCell: function (data) {
-          const rowIndex = data.row.index;
-          const colIndex = data.column.index;
-          const cellData = tableData[rowIndex][colIndex];
+          theme: "grid",
+          headStyles: {
+            fillColor: [238, 238, 238],
+            textColor: [0, 0, 0],
+            fontStyle: "bold",
+            halign: "center",
+            font: "Arial",
+            fontSize: 12,
+          },
+          bodyStyles: {
+            fillColor: null,
+            textColor: [0, 0, 0],
+            halign: "center",
+            font: "Arial",
+            fontSize: 12,
+          },
+          styles: {
+            lineWidth: 0.1,
+            lineColor: [0, 0, 0],
+          },
+          didParseCell: function (data) {
+            const rowIndex = data.row.index;
+            const colIndex = data.column.index;
+            const cellData = tableData[rowIndex][colIndex];
 
-          if (data.section === "body" && (colIndex === 3 || colIndex === 4)) {
-            // Last two columns (percent and profit_loss)
-            if (cellData.loss) {
-              data.cell.styles.textColor = "#DA1F26"; // Red for loss
-            } else {
-              data.cell.styles.textColor = "#269144"; // Green for profit
+            if (data.section === "body" && (colIndex === 3 || colIndex === 4)) {
+              // Last two columns (percent and profit_loss)
+              if (cellData.loss) {
+                data.cell.styles.textColor = "#DA1F26"; // Red for loss
+              } else {
+                data.cell.styles.textColor = "#269144"; // Green for profit
+              }
             }
-          }
-        },
-      });
+          },
+        });
 
-      const clientTableHeight = doc.lastAutoTable.finalY;
-      usedY = clientTableHeight || 119;
+        const clientTableHeight = doc.lastAutoTable.finalY;
+        usedY = clientTableHeight || 119;
+      }
     };
 
     // TRANSACTIONS
@@ -330,8 +336,6 @@ const StatementPDFComp = ({
         { field: "vendor", headerName: "VENDOR" },
         { field: "total_amount", headerName: "AMOUNT" },
       ];
-
-      let loss;
 
       const tableHead = transData?.map((col) => col.headerName);
       const tableData = invoicesData?.map((row) => {
@@ -355,59 +359,54 @@ const StatementPDFComp = ({
           };
         });
       });
-      // const tableData = invoicesData?.map((row) =>
-      //   transData?.map((col) => {
-      //     loss = row?.invoice_type.toLowerCase() === "expense" ? true : false;
-      //     if (col.field === "user") {
-      //       return row?.user?.userName || ""; // Access userName from user object
-      //     }
-      //     if (col.field === "vendor") {
-      //       return row?.vendor?.vendor_name || ""; // Access vendor_name from vendor object
-      //     }
-      //     return row[col.field] || ""; // Default for other fields
-      //   })
-      // );
 
-      doc.autoTable({
-        startY: usedY + 17,
-        head: [tableHead],
-        body: tableData,
-        theme: "grid",
-        headStyles: {
-          fillColor: [238, 238, 238],
-          textColor: [0, 0, 0],
-          fontStyle: "bold",
-          halign: "center",
-          font: "Arial",
-          fontSize: 12,
-        },
-        bodyStyles: {
-          fillColor: null,
-          textColor: [0, 0, 0],
-          halign: "center",
-          font: "Arial",
-          fontSize: 12,
-        },
-        styles: {
-          lineWidth: 0.1,
-          lineColor: [0, 0, 0],
-        },
-        didParseCell: function (data) {
-          const rowIndex = data.row.index;
-          const colIndex = data.column.index;
-          const cellData = tableData[rowIndex][colIndex];
+      if (tableData.length === 0) {
+        doc.setFont("Arial", "bold");
+        doc.setFontSize(12);
+        doc.text("No transactions available.", paddingX, usedY + 30);
+        usedY = 200;
+      } else {
+        doc.autoTable({
+          startY: usedY + 17,
+          head: [tableHead],
+          body: tableData.map((row) => row.map((cell) => cell.content)),
+          theme: "grid",
+          headStyles: {
+            fillColor: [238, 238, 238],
+            textColor: [0, 0, 0],
+            fontStyle: "bold",
+            halign: "center",
+            font: "Arial",
+            fontSize: 12,
+          },
+          bodyStyles: {
+            fillColor: null,
+            textColor: [0, 0, 0],
+            halign: "center",
+            font: "Arial",
+            fontSize: 12,
+          },
+          styles: {
+            lineWidth: 0.1,
+            lineColor: [0, 0, 0],
+          },
+          didParseCell: function (data) {
+            const rowIndex = data.row.index;
+            const colIndex = data.column.index;
+            const cellData = tableData[rowIndex][colIndex];
 
-          if (data.section === "body" && colIndex === 4 && cellData.loss) {
-            // Check if the column is "AMOUNT" and loss is true
-            data.cell.styles.textColor = "#DA1F26";
-          } else if (data.section === "body" && colIndex === 4) {
-            data.cell.styles.textColor = "#269144";
-          }
-        },
-      });
+            if (data.section === "body" && colIndex === 4 && cellData.loss) {
+              // Check if the column is "AMOUNT" and loss is true
+              data.cell.styles.textColor = "#DA1F26";
+            } else if (data.section === "body" && colIndex === 4) {
+              data.cell.styles.textColor = "#269144";
+            }
+          },
+        });
 
-      const tableHeight = doc.lastAutoTable.finalY;
-      usedY = tableHeight || 152;
+        const tableHeight = doc.lastAutoTable.finalY;
+        usedY = tableHeight || 152;
+      }
 
       doc.setFont("Arial", "bold");
       doc.setFontSize(10);
