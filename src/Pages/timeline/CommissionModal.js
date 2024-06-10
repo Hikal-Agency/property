@@ -127,11 +127,25 @@ const CommissionModal = ({
     if (invoiceModal) {
       params = { page: page, deal_id: commissionModal?.lid };
     } else {
-      params = {
-        page: page,
-        deal_id: commissionModal?.lid,
-        category: "Commission",
-      };
+      if (status?.field == "comm_status") {
+        params = {
+          page: page,
+          deal_id: commissionModal?.lid,
+          category: "Commission",
+          invoice_type: "Income",
+        };
+      } else {
+        params = {
+          page: page,
+          deal_id: commissionModal?.lid,
+          user_id:
+            status?.field === "agent_comm_status"
+              ? commissionModal?.salesId
+              : commissionModal?.managerId,
+          category: "Commission",
+          invoice_type: "Expense",
+        };
+      }
     }
     try {
       const leadsCycleResult = await axios.get(dataUrl, {

@@ -108,9 +108,9 @@ const DealHistory = ({
 
   const handleCommissionModalOpen = (data) => {
     console.log("open invoice", data);
-    if (data?.field == "invoice_status") {
-      setInvoiceModal(LeadData);
-    }
+    // if (data?.field == "invoice_status") {
+    //   setInvoiceModal(LeadData);
+    // }
     setCommissionModal(LeadData);
     setStatus(data);
   };
