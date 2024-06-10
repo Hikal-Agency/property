@@ -319,7 +319,7 @@ const DealHistory = ({
             console.log("fetchLeadsData running");
             FetchLeads(token);
           })();
-          handleClose();
+          // handleClose();
         } else {
           setBtnLoading(false);
           throw new Error("Error in marking the status.");
