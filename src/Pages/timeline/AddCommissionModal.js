@@ -83,7 +83,7 @@ const AddCommissionModal = ({
     user_id: commData?.user_id || null,
     deal_id: newCommData?.lid,
     vendor_id: commData?.vendor_id || null,
-    invoice_type: commData?.invoice_type || null,
+    invoice_type: commData?.invoice_type || "Income",
     date: commData?.date || null,
     amount:
       commData?.amount ||
