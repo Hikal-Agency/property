@@ -7,7 +7,7 @@ import {
   Box,
   InputAdornment,
   FormControlLabel,
-  Checkbox
+  Checkbox,
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -25,9 +25,7 @@ import { currencies, enquiry_options } from "../_elements/SelectOptions";
 import usePermission from "../../utils/usePermission";
 import moment from "moment";
 
-import {
-  BsPercent
-} from "react-icons/bs";
+import { BsPercent } from "react-icons/bs";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -79,20 +77,20 @@ const UpdateLead = ({
     discount_percent: 0,
     cashback_amount: 0,
     cashback_percent: 0,
-    comm_status: '',
-    currency: '',
-    dealDate: '',
-    id: '',
-    leadId: '',
-    managerId: '',
-    unit: '',
-    updated_at: '',
-    updated_by: '',
-    updated_by_name: '',
-    vat: '',
-    leadName: '',
-    project: '',
-    enquiryType: '',
+    comm_status: "",
+    currency: "",
+    dealDate: "",
+    id: "",
+    leadId: "",
+    managerId: "",
+    unit: "",
+    updated_at: "",
+    updated_by: "",
+    updated_by_name: "",
+    vat: "",
+    leadName: "",
+    project: "",
+    enquiryType: "",
   });
 
   const style = {
@@ -152,7 +150,7 @@ const UpdateLead = ({
       });
     }
   };
-  // CASHBACK 
+  // CASHBACK
   const toggleCashback = (value) => {
     setWithCashback(value);
     if (value === true) {
@@ -169,11 +167,16 @@ const UpdateLead = ({
   useEffect(() => {
     const {
       amount,
-      comm_percent, comm_amount,
-      agent_comm_percent, agent_comm_amount,
-      manager_comm_percent, manager_comm_amount,
-      discount_percent, discount_amount,
-      cashback_percent, cashback_amount
+      comm_percent,
+      comm_amount,
+      agent_comm_percent,
+      agent_comm_amount,
+      manager_comm_percent,
+      manager_comm_amount,
+      discount_percent,
+      discount_amount,
+      cashback_percent,
+      cashback_amount,
     } = updateLeadData;
 
     // COMMISSION AMOUNT
@@ -201,32 +204,36 @@ const UpdateLead = ({
     if (updatedField === "amount" || updatedField === "manager_comm_amount") {
       autoCalculate("manager_comm_percent", comm_amount, manager_comm_amount);
     }
-    // DISCOUNT PERCENT 
+    // DISCOUNT PERCENT
     if (updatedField === "amount" || updatedField === "discount_amount") {
       autoCalculate("discount_percent", amount, discount_amount);
     }
-    // DISCOUNT AMOUNT 
+    // DISCOUNT AMOUNT
     if (updatedField === "amount" || updatedField === "discount_percent") {
       autoCalculate("discount_amount", amount, discount_percent);
     }
-    // CASHBACK PERCENT 
+    // CASHBACK PERCENT
     if (updatedField === "amount" || updatedField === "cashback_amount") {
       autoCalculate("cashback_percent", amount, cashback_amount);
     }
-    // CASHBACK AMOUNT 
+    // CASHBACK AMOUNT
     if (updatedField === "amount" || updatedField === "cashback_percent") {
       autoCalculate("cashback_amount", amount, cashback_percent);
     }
   }, [
     updateLeadData.amount,
-    updateLeadData.comm_percent, updateLeadData.comm_amount,
-    updateLeadData.agent_comm_percent, updateLeadData.agent_comm_amount,
-    updateLeadData.manager_comm_percent, updateLeadData.manager_comm_amount,
-    updateLeadData.discount_percent, updateLeadData.discount_amount,
-    updateLeadData.cashback_percent, updateLeadData.cashback_amount,
-    updatedField
+    updateLeadData.comm_percent,
+    updateLeadData.comm_amount,
+    updateLeadData.agent_comm_percent,
+    updateLeadData.agent_comm_amount,
+    updateLeadData.manager_comm_percent,
+    updateLeadData.manager_comm_amount,
+    updateLeadData.discount_percent,
+    updateLeadData.discount_amount,
+    updateLeadData.cashback_percent,
+    updateLeadData.cashback_amount,
+    updatedField,
   ]);
-
 
   const autoCalculate = (value, amount, percentOrAmount) => {
     const sellingAmount = parseFloat(amount);
@@ -234,7 +241,9 @@ const UpdateLead = ({
     // COMM AMOUNT
     if (value === "comm_amount") {
       const commPercent = parseFloat(percentOrAmount);
-      const managerCommPercent = parseFloat(updateLeadData?.manager_comm_percent);
+      const managerCommPercent = parseFloat(
+        updateLeadData?.manager_comm_percent
+      );
 
       if (!isNaN(sellingAmount) && !isNaN(commPercent)) {
         let commAmount = (sellingAmount * commPercent) / 100;
@@ -243,18 +252,24 @@ const UpdateLead = ({
         let vat = (commAmount * 5) / 100;
         vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
 
-        // MANAGER 
+        // MANAGER
         let managerCommAmount = 0;
         if (updateLeadData?.salesId === updateLeadData?.closedBy) {
           managerCommAmount = (managerCommPercent * commAmount) / 100;
-          managerCommAmount = managerCommAmount % 1 === 0 ? managerCommAmount.toFixed(0) : managerCommAmount.toFixed(2);
+          managerCommAmount =
+            managerCommAmount % 1 === 0
+              ? managerCommAmount.toFixed(0)
+              : managerCommAmount.toFixed(2);
         }
         // AGENT
         let agentCommAmount = 0;
         if (updateLeadData.agent_comm_percent !== 0) {
           const agentCommPercent = updateLeadData.agent_comm_percent;
           agentCommAmount = (agentCommPercent * commAmount) / 100;
-          agentCommAmount = agentCommAmount % 1 === 0 ? agentCommAmount.toFixed(0) : agentCommAmount.toFixed(2);
+          agentCommAmount =
+            agentCommAmount % 1 === 0
+              ? agentCommAmount.toFixed(0)
+              : agentCommAmount.toFixed(2);
         }
 
         console.log("COMM PERCENT = ", commPercent);
@@ -273,7 +288,9 @@ const UpdateLead = ({
     // COMM PERCENT
     if (value === "comm_percent") {
       const commAmount = parseFloat(percentOrAmount);
-      const managerCommPercent = parseFloat(updateLeadData?.manager_comm_percent);
+      const managerCommPercent = parseFloat(
+        updateLeadData?.manager_comm_percent
+      );
 
       if (!isNaN(sellingAmount) && !isNaN(commAmount)) {
         let commPercent = (commAmount / sellingAmount) * 100 || 0;
@@ -287,14 +304,20 @@ const UpdateLead = ({
         let managerCommAmount = 0;
         if (updateLeadData?.salesId === updateLeadData?.closedBy) {
           managerCommAmount = (managerCommPercent * commAmount) / 100;
-          managerCommAmount = managerCommAmount % 1 === 0 ? managerCommAmount.toFixed(0) : managerCommAmount.toFixed(2);
+          managerCommAmount =
+            managerCommAmount % 1 === 0
+              ? managerCommAmount.toFixed(0)
+              : managerCommAmount.toFixed(2);
         }
         // AGENT
         let agentCommAmount = 0;
         if (updateLeadData.agent_comm_percent !== 0) {
           const agentCommPercent = updateLeadData.agent_comm_percent;
           agentCommAmount = (agentCommPercent * commAmount) / 100;
-          agentCommAmount = agentCommAmount % 1 === 0 ? agentCommAmount.toFixed(0) : agentCommAmount.toFixed(2);
+          agentCommAmount =
+            agentCommAmount % 1 === 0
+              ? agentCommAmount.toFixed(0)
+              : agentCommAmount.toFixed(2);
         }
 
         console.log("COMM AMOUNT = ", commAmount);
@@ -348,12 +371,15 @@ const UpdateLead = ({
         }));
       }
     }
-    // MANAGER COMM AMOUNT 
+    // MANAGER COMM AMOUNT
     if (value === "manager_comm_amount") {
       const managerCommPercent = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(managerCommPercent)) {
         let managerCommAmount = (sellingAmount * managerCommPercent) / 100;
-        managerCommAmount = managerCommAmount % 1 === 0 ? managerCommAmount.toFixed(0) : managerCommAmount.toFixed(2);
+        managerCommAmount =
+          managerCommAmount % 1 === 0
+            ? managerCommAmount.toFixed(0)
+            : managerCommAmount.toFixed(2);
 
         console.log("MANAGER COMM PERCENT = ", managerCommPercent);
         console.log("MANAGER COMM AMOUNT = ", managerCommAmount);
@@ -364,12 +390,15 @@ const UpdateLead = ({
         }));
       }
     }
-    // MANAGER COMM PERCENT 
+    // MANAGER COMM PERCENT
     if (value === "manager_comm_percent") {
       const managerCommAmount = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(managerCommAmount)) {
         let managerCommPercent = (managerCommAmount / sellingAmount) * 100 || 0;
-        managerCommPercent = managerCommPercent % 1 === 0 ? managerCommPercent.toFixed(0) : managerCommPercent.toFixed(2);
+        managerCommPercent =
+          managerCommPercent % 1 === 0
+            ? managerCommPercent.toFixed(0)
+            : managerCommPercent.toFixed(2);
 
         console.log("MANAGER COMM AMOUNT = ", managerCommAmount);
         console.log("MANAGER COMM PERCENT = ", managerCommPercent);
@@ -380,13 +409,15 @@ const UpdateLead = ({
         }));
       }
     }
-    // DISCOUNT AMOUNT 
+    // DISCOUNT AMOUNT
     if (value === "discount_amount") {
       const discountPercent = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(discountPercent)) {
         let discountAmount = (sellingAmount * discountPercent) / 100;
         discountAmount =
-          discountAmount % 1 === 0 ? discountAmount.toFixed(0) : discountAmount.toFixed(2);
+          discountAmount % 1 === 0
+            ? discountAmount.toFixed(0)
+            : discountAmount.toFixed(2);
 
         console.log("DISCOUNT PERCENT = ", discountPercent);
         console.log("DISCOUNT AMOUNT = ", discountAmount);
@@ -397,7 +428,7 @@ const UpdateLead = ({
         }));
       }
     }
-    // DISCOUNT PERCENT 
+    // DISCOUNT PERCENT
     if (value === "discount_percent") {
       const discountAmount = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(discountAmount)) {
@@ -416,13 +447,15 @@ const UpdateLead = ({
         }));
       }
     }
-    // CASHBACK AMOUNT 
+    // CASHBACK AMOUNT
     if (value === "cashback_amount") {
       const cashbackPercent = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(cashbackPercent)) {
         let cashbackAmount = (sellingAmount * cashbackPercent) / 100;
         cashbackAmount =
-          cashbackAmount % 1 === 0 ? cashbackAmount.toFixed(0) : cashbackAmount.toFixed(2);
+          cashbackAmount % 1 === 0
+            ? cashbackAmount.toFixed(0)
+            : cashbackAmount.toFixed(2);
 
         console.log("CASHBACK PERCENT = ", cashbackPercent);
         console.log("CASHBACK AMOUNT = ", cashbackAmount);
@@ -433,7 +466,7 @@ const UpdateLead = ({
         }));
       }
     }
-    // CASHBACK PERCENT 
+    // CASHBACK PERCENT
     if (value === "cashback_percent") {
       const cashbackAmount = parseFloat(percentOrAmount);
       if (!isNaN(sellingAmount) && !isNaN(cashbackAmount)) {
@@ -582,20 +615,23 @@ const UpdateLead = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            }
+          }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-              }
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -606,15 +642,17 @@ const UpdateLead = ({
           </button>
           <div
             style={style}
-            className={` ${currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
+            className={` ${
+              currentMode === "dark"
+                ? "bg-[#000000] text-white"
+                : "bg-[#FFFFFF] text-black"
               // ? "blur-bg-dark-nr text-white"
               // : "blur-bg-white-nr text-black"
-              } ${isLangRTL(i18n.language)
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-              }
+            }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
           >
@@ -626,12 +664,14 @@ const UpdateLead = ({
               <>
                 <div className="w-full flex items-center pb-3 ">
                   <div
-                    className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                      } bg-primary h-10 w-1 rounded-full my-1`}
+                    className={`${
+                      isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                    } bg-primary h-10 w-1 rounded-full my-1`}
                   ></div>
                   <h1
-                    className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                    className={`text-lg font-semibold ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                     style={{
                       fontFamily: isArabic(Feedback?.feedback)
                         ? "Noto Kufi Arabic"
@@ -653,14 +693,14 @@ const UpdateLead = ({
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
                           "& legend": {
                             textAlign: isLangRTL(i18n.language)
                               ? "right"
@@ -726,7 +766,6 @@ const UpdateLead = ({
                             </Button>
                           </label>
                         </>
-
                       </Box>
                     </div>
                   </div>
@@ -740,14 +779,14 @@ const UpdateLead = ({
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
                           "& legend": {
                             textAlign: isLangRTL(i18n.language)
                               ? "right"
@@ -911,14 +950,14 @@ const UpdateLead = ({
                           sx={{
                             ...darkModeColors,
                             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
+                              {
+                                right: isLangRTL(i18n.language)
+                                  ? "2.5rem"
+                                  : "inherit",
+                                transformOrigin: isLangRTL(i18n.language)
+                                  ? "right"
+                                  : "left",
+                              },
                             "& legend": {
                               textAlign: isLangRTL(i18n.language)
                                 ? "right"
@@ -1038,75 +1077,7 @@ const UpdateLead = ({
                             />
                           </div>
                           {/* AGENT */}
-                          <div className="grid grid-cols-4">
-                            {/* CURRENCY */}
-                            <Select
-                              id="currency"
-                              options={currencies(t)?.map((curr) => ({
-                                value: curr.value,
-                                label: curr.label,
-                              }))}
-                              value={currencies(t)?.find(
-                                (curr) =>
-                                  curr.value === updateLeadData?.currency
-                              )}
-                              onChange={(e) => {
-                                setUpdateLeadData({
-                                  ...updateLeadData,
-                                  currency: e.value,
-                                });
-                              }}
-                              placeholder={t("label_select_currency")}
-                              // className={`mb-5`}
-                              menuPortalTarget={document.body}
-                              styles={selectStyles(currentMode, primaryColor)}
-                            />
-                            {/* AGENT COMM */}
-                            <TextField
-                              id="agent_comm_amount"
-                              type={"text"}
-                              label={t("agent_comm_amount")}
-                              className="w-full col-span-2"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                  zIndex: 1,
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              value={updateLeadData?.agent_comm_amount}
-                              onChange={(e) => handleChange(e)}
-                              required
-                            />
-                            {/* AGENT PERCENT */}
-                            <TextField
-                              id="agent_comm_percent"
-                              type={"text"}
-                              // label={t("agent_comm_perc")}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  marginBottom: "1.25rem !important",
-                                  zIndex: 1,
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              value={updateLeadData?.agent_comm_percent}
-                              onChange={(e) => handleChange(e)}
-                              required
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <BsPercent size={18} color={"#777777"} />
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </div>
-                          {/* MANAGER */}
-                          {updateLeadData?.salesId === updateLeadData?.closedBy && (
+                          {LeadData?.salesId && (
                             <div className="grid grid-cols-4">
                               {/* CURRENCY */}
                               <Select
@@ -1116,7 +1087,79 @@ const UpdateLead = ({
                                   label: curr.label,
                                 }))}
                                 value={currencies(t)?.find(
-                                  (curr) => curr.value === updateLeadData?.currency
+                                  (curr) =>
+                                    curr.value === updateLeadData?.currency
+                                )}
+                                onChange={(e) => {
+                                  setUpdateLeadData({
+                                    ...updateLeadData,
+                                    currency: e.value,
+                                  });
+                                }}
+                                placeholder={t("label_select_currency")}
+                                // className={`mb-5`}
+                                menuPortalTarget={document.body}
+                                styles={selectStyles(currentMode, primaryColor)}
+                              />
+                              {/* AGENT COMM */}
+                              <TextField
+                                id="agent_comm_amount"
+                                type={"text"}
+                                label={t("agent_comm_amount")}
+                                className="w-full col-span-2"
+                                sx={{
+                                  "&": {
+                                    marginBottom: "1.25rem !important",
+                                    zIndex: 1,
+                                  },
+                                }}
+                                variant="outlined"
+                                size="small"
+                                value={updateLeadData?.agent_comm_amount}
+                                onChange={(e) => handleChange(e)}
+                                required
+                              />
+                              {/* AGENT PERCENT */}
+                              <TextField
+                                id="agent_comm_percent"
+                                type={"text"}
+                                // label={t("agent_comm_perc")}
+                                className="w-full"
+                                sx={{
+                                  "&": {
+                                    marginBottom: "1.25rem !important",
+                                    zIndex: 1,
+                                  },
+                                }}
+                                variant="outlined"
+                                size="small"
+                                value={updateLeadData?.agent_comm_percent}
+                                onChange={(e) => handleChange(e)}
+                                required
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <BsPercent size={18} color={"#777777"} />
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
+                            </div>
+                          )}
+                          {/* MANAGER */}
+                          {updateLeadData?.salesId ===
+                            updateLeadData?.closedBy && (
+                            <div className="grid grid-cols-4">
+                              {/* CURRENCY */}
+                              <Select
+                                id="currency"
+                                options={currencies(t)?.map((curr) => ({
+                                  value: curr.value,
+                                  label: curr.label,
+                                }))}
+                                value={currencies(t)?.find(
+                                  (curr) =>
+                                    curr.value === updateLeadData?.currency
                                 )}
                                 onChange={(e) => {
                                   setUpdateLeadData({
@@ -1187,14 +1230,14 @@ const UpdateLead = ({
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
                           "& legend": {
                             textAlign: isLangRTL(i18n.language)
                               ? "right"
@@ -1222,7 +1265,8 @@ const UpdateLead = ({
                               id="currency"
                               options={currencies(t)}
                               value={currencies(t)?.find(
-                                (curr) => curr.value === updateLeadData?.currency
+                                (curr) =>
+                                  curr.value === updateLeadData?.currency
                               )}
                               onChange={(e) => {
                                 setUpdateLeadData({
@@ -1295,7 +1339,8 @@ const UpdateLead = ({
                               id="currency"
                               options={currencies(t)}
                               value={currencies(t)?.find(
-                                (curr) => curr.value === updateLeadData?.currency
+                                (curr) =>
+                                  curr.value === updateLeadData?.currency
                               )}
                               onChange={(e) => {
                                 setUpdateLeadData({

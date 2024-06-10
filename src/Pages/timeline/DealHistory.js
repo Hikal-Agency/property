@@ -173,6 +173,7 @@ const DealHistory = ({
           <RxCross2 size={20} color="#DA1F26" />
         ),
       type: "commission",
+      hide: LeadData?.salesId ? false : true,
     },
     // AGENT COMMISSION
     {
@@ -550,6 +551,10 @@ const DealHistory = ({
                             </h3> */}
                             <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 mb-4">
                               {statuses?.map((status) => {
+                                if (status?.hide) {
+                                  return null;
+                                }
+
                                 return (
                                   <div
                                     className={`${
