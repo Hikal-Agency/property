@@ -40,8 +40,10 @@ const AddCommissionModal = ({
   addCommissionModal,
   handleCloseAddCommission,
   fetchLeadsData,
+  status,
 }) => {
   console.log("parent commission data: ", addCommissionModal);
+  console.log("status in add comm: ", status);
   const token = localStorage.getItem("auth-token");
   const {
     darkModeColors,
@@ -54,6 +56,8 @@ const AddCommissionModal = ({
     isLangRTL,
     i18n,
     primaryColor,
+    Managers,
+    SalesPerson,
   } = useStateContext();
 
   const { hasPermission } = usePermission();
@@ -80,10 +84,19 @@ const AddCommissionModal = ({
 
   console.log("vendors or users:: ", vendor);
   const [commissionData, setCommissionData] = useState({
-    user_id: commData?.user_id || null,
+    user_id:
+      status?.field === "agent_comm_status"
+        ? newCommData?.salesId
+        : status?.field === "manager_comm_status"
+        ? newCommData?.managerId
+        : null,
     deal_id: newCommData?.lid,
     vendor_id: commData?.vendor_id || null,
-    invoice_type: commData?.invoice_type || "Income",
+    invoice_type:
+      status?.field === "agent_comm_status" ||
+      status?.field === "manager_comm_status"
+        ? "Expense"
+        : "Income",
     date: commData?.date || null,
     amount:
       commData?.amount ||
@@ -106,6 +119,27 @@ const AddCommissionModal = ({
   });
 
   console.log("selected commission data:", commissionData);
+
+  const extractedAgents = Object.values(SalesPerson).flat();
+
+  console.log("extracted agents:: ", extractedAgents);
+
+  const users = () => [
+    {
+      value: newCommData?.managerId,
+      label: Managers?.find((manager) => manager.id === newCommData?.managerId)
+        ?.userName,
+    },
+    {
+      value: newCommData?.salesId,
+      label: extractedAgents?.find((sale) => sale.id === newCommData?.salesId)
+        ?.userName,
+    },
+  ];
+  console.table(
+    "manager and agents: ",
+    users()?.map((user) => user)
+  );
 
   // Function to find the username of selected user or vendor
   const getSelectedOption = () => {
@@ -929,7 +963,8 @@ const AddCommissionModal = ({
                           ))}
                         </TextField>
                       </FormControl>
-                    ) : commissionData?.invoice_type === "Expense" ? (
+                    ) : commissionData?.invoice_type === "Expense" &&
+                      status?.field == "comm_status" ? (
                       // USER
                       <FormControl
                         className={`${
@@ -996,6 +1031,28 @@ const AddCommissionModal = ({
                     ) : (
                       <></>
                     )}
+                    {/* AGENT MANAGER USERNAMES  */}
+                    {status?.field !== "comm_status" && (
+                      <Select
+                        id="user_id"
+                        options={users()}
+                        value={users()?.find(
+                          (user) => user.value === commissionData?.user_id
+                        )}
+                        onChange={(e) => {
+                          console.log("e::::::::: user: ", e);
+                          setCommissionData({
+                            ...commissionData,
+                            user_id: e.label,
+                          });
+                        }}
+                        placeholder={t("username")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                    )}
+
                     {/* INVOICE */}
                     {!commData && (
                       <>

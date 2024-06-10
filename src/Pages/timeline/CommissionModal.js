@@ -30,9 +30,11 @@ const CommissionModal = ({
   commissionModal,
   handleCloseCommissionModal,
   invoiceModal,
+  status,
 }) => {
   console.log("invoice modal: ", invoiceModal);
   console.log("comission modal: ", commissionModal);
+  console.log("status: ", status);
   const {
     currentMode,
     BACKEND_URL,
@@ -596,6 +598,7 @@ const CommissionModal = ({
               addCommissionModal={addCommissionModal}
               handleCloseAddCommission={() => setOpenAddCommissionModal(false)}
               fetchLeadsData={fetchLeadsData}
+              status={status}
             />
           )}
 

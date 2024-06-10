@@ -68,6 +68,7 @@ const DealHistory = ({
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [statusData, setStatusData] = useState(null);
   const [commissionModal, setCommissionModal] = useState(false);
+  const [status, setStatus] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [imageModal, setOpenImageModal] = useState(false);
   const [addTransactionModal, setAddTransactionModal] = useState(false);
@@ -105,12 +106,13 @@ const DealHistory = ({
   console.log("lead Data:: ", LeadData);
   console.log("deal history modal: ", dealHistoryModel);
 
-  const handleCommissionModalOpen = (invoice) => {
-    console.log("open invoice", invoice);
-    if (invoice) {
+  const handleCommissionModalOpen = (data) => {
+    console.log("open invoice", data);
+    if (data?.field == "invoice_status") {
       setInvoiceModal(LeadData);
     }
     setCommissionModal(LeadData);
+    setStatus(data);
   };
 
   const handleTransactionModalOpen = (e, data) => {
@@ -173,7 +175,6 @@ const DealHistory = ({
           <RxCross2 size={20} color="#DA1F26" />
         ),
       type: "commission",
-      hide: LeadData?.salesId ? false : true,
     },
     // AGENT COMMISSION
     {
@@ -189,6 +190,7 @@ const DealHistory = ({
           <RxCross2 size={20} color="#DA1F26" />
         ),
       type: "commission",
+      hide: LeadData?.salesId ? false : true,
     },
     // MANAGER COMMISSION
     {
@@ -573,7 +575,8 @@ const DealHistory = ({
                                       onClick={
                                         status?.type === "commission" &&
                                         hasPermission("add_commission")
-                                          ? () => handleCommissionModalOpen()
+                                          ? () =>
+                                              handleCommissionModalOpen(status)
                                           : undefined
                                       }
                                     >
@@ -1073,6 +1076,7 @@ const DealHistory = ({
               <CommissionModal
                 commissionModal={commissionModal}
                 setCommissionModal={setCommissionModal}
+                status={status}
                 handleCloseCommissionModal={() => {
                   setCommissionModal(false);
                   setInvoiceModal(false);

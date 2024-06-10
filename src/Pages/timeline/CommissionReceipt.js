@@ -87,7 +87,7 @@ const CommissionReceipt = ({
   const user = () => [
     {
       value: data?.managerId,
-      label: Managers.find((manager) => manager.id === data?.managerId)
+      label: Managers?.find((manager) => manager.id === data?.managerId)
         ?.userName,
     },
     {
