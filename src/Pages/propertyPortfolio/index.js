@@ -32,7 +32,7 @@ import { enquiry_options } from "../../Components/_elements/SelectOptions";
 import {
   BsBookmarkCheckFill,
   BsBookmarkXFill,
-  BsFillBookmarkDashFill
+  BsFillBookmarkDashFill,
 } from "react-icons/bs";
 import View360Modal from "./view360";
 
@@ -50,7 +50,7 @@ const PropertyPortfolio = () => {
     isLangRTL,
     i18n,
     fontFam,
-    primaryColor
+    primaryColor,
   } = useStateContext();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -160,7 +160,7 @@ const PropertyPortfolio = () => {
     // eslint-disable-next-line
   }, [searchQuery]);
 
-  // TRANSLATED BEDS 
+  // TRANSLATED BEDS
   const getBedLabel = (bedValue, t) => {
     const options = enquiry_options(t);
     const option = options.find((option) => option.value === bedValue);
@@ -173,9 +173,7 @@ const PropertyPortfolio = () => {
         <div
           className={`w-full p-4  ${
             !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
-          } ${
-            currentMode === "dark" ? "text-white" : "text-black"
-          }`}
+          } ${currentMode === "dark" ? "text-white" : "text-black"}`}
         >
           <div className="flex flex-wrap items-center pb-3 justify-between gap-4">
             <div className="flex items-center">
@@ -211,7 +209,7 @@ const PropertyPortfolio = () => {
               </div>
             )}
           </div>
-          
+
           {/* SEARCH  */}
           <div className="flex justify-end pb-3">
             {searchQuery && (
@@ -219,15 +217,21 @@ const PropertyPortfolio = () => {
                 onClick={clearFilter}
                 className={`w-max btn py-2 px-3 bg-btn-primary mr-2`}
               >
-                <span className={currentMode === "dark" ? "text-white" : "text-black"}>
+                <span
+                  className={
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }
+                >
                   {t("clear")}
                 </span>
               </Button>
             )}
-            <Box sx={{
-              ...darkModeColors,
-              minWidth: "120px",
-            }}>
+            <Box
+              sx={{
+                ...darkModeColors,
+                minWidth: "120px",
+              }}
+            >
               <TextField
                 className={`${
                   themeBgImg &&
@@ -282,17 +286,18 @@ const PropertyPortfolio = () => {
                             : blurLightColor,
                           color: currentMode === "dark" ? "#FFFFFF" : "#000000",
                           borderRadius: "10px",
-                          "& .css-sh22l5-MuiButtonBase-root-MuiAccordionSummary-root.Mui-expanded": {
-                            background: primaryColor,
-                            color: "#FFFFFF",
-                            borderRadius: "5px 5px 0 0",
-                          }
+                          "& .css-sh22l5-MuiButtonBase-root-MuiAccordionSummary-root.Mui-expanded":
+                            {
+                              background: primaryColor,
+                              color: "#FFFFFF",
+                              borderRadius: "5px 5px 0 0",
+                            },
                         }}
                       >
                         <AccordionSummary
                           expandIcon={
                             <MdOutlineExpandMore
-                            size={20}
+                              size={20}
                               className={`${
                                 currentMode === "dark"
                                   ? "text-white"
@@ -303,7 +308,9 @@ const PropertyPortfolio = () => {
                           aria-controls="panel1a-content"
                           id="panel1a-header"
                         >
-                          <div className={`flex gap-3 items-center font-semibold`}>
+                          <div
+                            className={`flex gap-3 items-center font-semibold`}
+                          >
                             <div className="bg-primary rounded-md px-2 py-1 text-white border-2">
                               {developer?.projects?.length}
                             </div>
@@ -325,9 +332,11 @@ const PropertyPortfolio = () => {
                                       : "blur-bg-light"
                                   } card-hover shadow-sm w-full h-full rounded-xl space-y-1 border-t-2
                                   ${
-                                    project?.projectStatus.toLowerCase() === "available"
+                                    project?.projectStatus.toLowerCase() ===
+                                    "available"
                                       ? "border-green-600"
-                                      : project.projectStatus.toLowerCase() === "sold out"
+                                      : project.projectStatus.toLowerCase() ===
+                                        "sold out"
                                       ? "border-red-600"
                                       : "border-yellow-600"
                                   }`}
@@ -340,12 +349,23 @@ const PropertyPortfolio = () => {
                                   >
                                     <div className="font-semibold flex gap-3 justify-between items-center">
                                       <div>{project?.projectName}</div>
-                                      {project?.projectStatus.toLowerCase() === "available" ? (
-                                        <BsBookmarkCheckFill size={18} className="text-green-600" />
-                                      ) : project?.projectStatus.toLowerCase() === "sold out" ? (
-                                        <BsBookmarkXFill size={18} className="text-red-600" />
+                                      {project?.projectStatus.toLowerCase() ===
+                                      "available" ? (
+                                        <BsBookmarkCheckFill
+                                          size={18}
+                                          className="text-green-600"
+                                        />
+                                      ) : project?.projectStatus.toLowerCase() ===
+                                        "sold out" ? (
+                                        <BsBookmarkXFill
+                                          size={18}
+                                          className="text-red-600"
+                                        />
                                       ) : (
-                                        <BsFillBookmarkDashFill size={18} className="text-yellow-600" />
+                                        <BsFillBookmarkDashFill
+                                          size={18}
+                                          className="text-yellow-600"
+                                        />
                                       )}
                                     </div>
                                     <div className="grid grid-cols-8 gap-3 items-center">
@@ -355,14 +375,19 @@ const PropertyPortfolio = () => {
                                       />
                                       <div className="col-span-7 flex flex-wrap gap-2">
                                         {project?.bedrooms &&
-                                        project?.bedrooms !== null &&
-                                        project?.bedrooms.length > 0 &&
-                                        project?.bedrooms?.map((bed, index) => (
-                                          <div key={index}>
-                                            {getBedLabel(bed, t)}
-                                            {(project?.bedrooms.length - 1) !== index && ","}
-                                          </div>
-                                        ))}
+                                          project?.bedrooms !== null &&
+                                          Array.isArray(project?.bedrooms) &&
+                                          project?.bedrooms.length > 0 &&
+                                          project?.bedrooms?.map(
+                                            (bed, index) => (
+                                              <div key={index}>
+                                                {getBedLabel(bed, t)}
+                                                {project?.bedrooms.length -
+                                                  1 !==
+                                                  index && ","}
+                                              </div>
+                                            )
+                                          )}
                                       </div>
                                     </div>
                                     <div className="grid grid-cols-8 gap-3 items-center">
@@ -382,7 +407,7 @@ const PropertyPortfolio = () => {
                                         <button
                                           onClick={(e) => {
                                             e.stopPropagation();
-                                            handleView360Modal(project)
+                                            handleView360Modal(project);
                                           }}
                                           className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
                                         >
@@ -449,35 +474,39 @@ const PropertyPortfolio = () => {
                         <div className="font-semibold flex gap-3 justify-between items-center">
                           <div>{project?.projectName}</div>
                           {project?.projectStatus === "Available" ? (
-                            <BsBookmarkCheckFill size={18} className="text-green-600" />
+                            <BsBookmarkCheckFill
+                              size={18}
+                              className="text-green-600"
+                            />
                           ) : project?.projectStatus === "Sold-out" ? (
-                            <BsBookmarkXFill size={18} className="text-red-600" />
+                            <BsBookmarkXFill
+                              size={18}
+                              className="text-red-600"
+                            />
                           ) : (
-                            <BsFillBookmarkDashFill size={18} className="text-yellow-600" />
+                            <BsFillBookmarkDashFill
+                              size={18}
+                              className="text-yellow-600"
+                            />
                           )}
                         </div>
                         <div className="grid grid-cols-8 gap-3 items-center">
-                          <FaBed
-                            size={16}
-                            className="text-primary"
-                          />
+                          <FaBed size={16} className="text-primary" />
                           <div className="col-span-7 flex flex-wrap gap-2">
                             {project?.bedrooms &&
-                            project?.bedrooms !== null &&
-                            project?.bedrooms.length > 0 &&
-                            project?.bedrooms?.map((bed, index) => (
-                              <div key={index}>
-                                {getBedLabel(bed, t)}
-                                {(project?.bedrooms.length - 1) !== index && ","}
-                              </div>
-                            ))}
+                              project?.bedrooms !== null &&
+                              project?.bedrooms.length > 0 &&
+                              project?.bedrooms?.map((bed, index) => (
+                                <div key={index}>
+                                  {getBedLabel(bed, t)}
+                                  {project?.bedrooms.length - 1 !== index &&
+                                    ","}
+                                </div>
+                              ))}
                           </div>
                         </div>
                         <div className="grid grid-cols-8 gap-3 items-center">
-                          <FaMoneyBill
-                            size={16}
-                            className="text-primary"
-                          />
+                          <FaMoneyBill size={16} className="text-primary" />
                           <div className="col-span-7 flex flex-wrap gap-2">
                             {project?.price}
                           </div>
@@ -490,7 +519,7 @@ const PropertyPortfolio = () => {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleView360Modal(project)
+                                handleView360Modal(project);
                               }}
                               className="bg-primary text-white rounded-md card-hover shadow-sm gap-2 px-3 py-2 flex items-center"
                             >
