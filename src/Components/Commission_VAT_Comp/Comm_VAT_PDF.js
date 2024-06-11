@@ -290,7 +290,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
         });
       });
 
-      if (tableData.length === 0) {
+      if (!tableData || tableData.length === 0) {
         doc.setFont("Arial", "bold");
         doc.setFontSize(12);
         doc.text("No commission data available.", paddingX, usedY + 30);
