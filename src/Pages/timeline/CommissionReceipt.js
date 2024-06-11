@@ -318,7 +318,7 @@ const CommissionReceipt = ({
         usedY + 23 + 6
       );
       doc.text(
-        `closed in ${data?.developer}. Kindly see the detailed table velow for the unit.`,
+        `closed in ${data?.developer}. Kindly see the detailed table below for the unit.`,
         paddingX,
         usedY + 30 + 6
       );

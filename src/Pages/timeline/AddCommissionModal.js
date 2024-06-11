@@ -19,6 +19,7 @@ import {
   currencies,
   payment_source,
   payment_status,
+  title,
 } from "../../Components/_elements/SelectOptions";
 import { BsFileEarmarkMedical } from "react-icons/bs";
 
@@ -35,6 +36,7 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { BsPercent } from "react-icons/bs";
+import jsPDF from "jspdf";
 
 const AddCommissionModal = ({
   addCommissionModal,
@@ -72,6 +74,9 @@ const AddCommissionModal = ({
   const [updatedField, setUpdatedField] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [pdfPreview, setPdfPreview] = useState(null);
+  const [pdfUrl, setPDFUrl] = useState(false);
+  const [singleVendor, setSingleVendor] = useState(null);
+  const currentDate = moment().format("YYYY-MM-DD");
 
   const [amountToCalculate, setAmountToCalculate] = useState("");
 
@@ -116,6 +121,9 @@ const AddCommissionModal = ({
     file: addCommissionModal?.image || null,
     currency: commData?.currency || newCommData?.currency,
     category: commData?.category || "Commission",
+    title: null,
+    project: newCommData?.project || null,
+    unit: newCommData?.unit || null,
   });
 
   console.log("selected commission data:", commissionData);
@@ -198,6 +206,257 @@ const AddCommissionModal = ({
       [id]: value,
     });
     setUpdatedField(id);
+  };
+
+  // genenrate pdf
+
+  const generatePDF = (data) => {
+    console.log("PDF Data:: ", data);
+    const doc = new jsPDF({
+      format: "a4",
+      unit: "mm",
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const pageCount = doc.internal.getNumberOfPages();
+    const paddingX = 15;
+    let usedY = 50;
+
+    // WATERMARK
+    const addWatermark = () => {
+      const watermarkUrl = "assets/Watermark.png";
+      const watermarkWidth = 150;
+      const watermarkHeight = 150;
+
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+
+        // Center the watermark
+        const x = (pageWidth - watermarkWidth) / 2; // Centered horizontally
+        const y = (pageHeight - watermarkHeight) / 2; // Centered vertically
+
+        // Set opacity to 0.1
+        doc.setGState(new doc.GState({ opacity: 0.1 }));
+
+        // Add the watermark image
+        doc.addImage(
+          watermarkUrl,
+          "PNG",
+          x,
+          y,
+          watermarkWidth,
+          watermarkHeight
+        );
+
+        // Reset opacity to default (1.0) for subsequent content
+        doc.setGState(new doc.GState({ opacity: 1.0 }));
+      }
+    };
+    addWatermark();
+
+    // HEADER
+    const addHeader = () => {
+      const headerImg = "assets/Header-update.jpg";
+
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        const x = 0;
+        const y = -3;
+        const width = pageWidth;
+        const height = 50;
+
+        doc.addImage(headerImg, "JPEG", x, y, width, height);
+      }
+    };
+    addHeader();
+
+    // FOOTER
+    const addFooter = () => {
+      const footerImage = "assets/Footer.jpg";
+
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        const width = pageWidth;
+        const height = 44;
+        const x = 0;
+        const y = pageHeight - height + 4;
+
+        doc.addImage(footerImage, "JPEG", x, y, width, height);
+      }
+    };
+    addFooter();
+
+    const addHeading = () => {
+      const x = pageWidth / 2;
+      const y = 50 - 4;
+      doc.setFont("Arial", "bold");
+      doc.setFontSize(14);
+      doc.text("Commission Receipt", x, y, null, null, "center");
+      const textWidth = doc.getTextWidth("Commission Receipt");
+      const titleY = y + 2;
+      doc.setLineWidth(0.5);
+      doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
+      // DATE
+      doc.setFont("Arial", "normal");
+      doc.setFontSize(12);
+      const dateY = titleY + 4;
+      doc.text(
+        `Date: ${currentDate}`,
+        pageWidth - paddingX,
+        dateY,
+        null,
+        null,
+        "right"
+      );
+
+      usedY = 54;
+    };
+
+    const user = users()?.find(
+      (user) => user.value === commissionData?.user_id
+    )?.label;
+
+    const addCompanyDetails = () => {
+      doc.setFont("Arial", "normal");
+      doc.setFontSize(12);
+      // Message
+      doc.text(
+        `Dear: ${data?.title?.toUpperCase()} ${user} `,
+        paddingX,
+        usedY + 15
+      );
+      doc.setFont("Arial", "normal");
+      doc.text(
+        `We, HIKAL REAL ESTATE L.L.C. is paying net commission againts following details, which you`,
+        paddingX,
+        usedY + 23 + 6
+      );
+      doc.text(
+        `closed in ${singleVendor?.vendor_name}. Kindly see the detailed table below for the unit.`,
+        paddingX,
+        usedY + 30 + 6
+      );
+
+      usedY = 110;
+    };
+
+    // COMMISSION DETAILS
+    const addCommDetails = () => {
+      doc.setFont("Arial", "bold");
+      doc.setFontSize(12);
+      // TABLE
+      doc.autoTable({
+        startY: usedY + 10,
+        head: [["PROJECT", "UNIT", "CLAIM TYPE", "AMOUNT"]],
+        body: [
+          [
+            `${data?.project}`,
+            `${data?.unit}`,
+            `${data?.claim}`,
+            `${data?.amount}`,
+          ],
+        ],
+        theme: "grid",
+        headStyles: {
+          fillColor: [238, 238, 238],
+          textColor: [0, 0, 0],
+          fontStyle: "bold",
+          halign: "center",
+          font: "Arial",
+          fontSize: 12,
+        },
+        bodyStyles: {
+          fillColor: null,
+          textColor: [0, 0, 0],
+          halign: "center",
+          font: "Arial",
+          fontSize: 12,
+        },
+        styles: {
+          lineWidth: 0.1,
+          lineColor: [0, 0, 0],
+        },
+      });
+
+      const clientTableHeight = doc.lastAutoTable.finalY;
+      usedY = clientTableHeight || 119;
+
+      doc.setFont("Arial", "bold");
+      doc.text(
+        `SUB TOTAL: ${data?.currency} ${data?.amount}`,
+        pageWidth - paddingX,
+        usedY + 6,
+        null,
+        null,
+        "right"
+      );
+      usedY = usedY + 6;
+    };
+
+    const addPaymentModa = () => {
+      doc.setFont("Arial", "normal");
+      doc.setFontSize(10);
+      doc.text("Payment Mode:", paddingX, usedY + 30);
+      doc.setFont("Arial", "bold");
+      doc.setFontSize(10);
+      doc.text(`${data?.paid_by} `, paddingX, usedY + 39);
+
+      // const x = paddingX;
+      // const y = 50 - 4;
+      // const textWidth = doc.getTextWidth(`${data?.payment_source}`);
+      // //   const textY = y + 2;
+      // const textY = usedY + 41;
+      // doc.setLineWidth(0.5);
+      // doc.line(x - textWidth / 2, textY, x + textWidth / 2, textY);
+
+      usedY = 215;
+    };
+
+    const addSignatureSection = () => {
+      doc.setFont("Arial", "bold");
+      doc.setFontSize(10);
+
+      doc.text("Received By:", paddingX, usedY + 10 + 6 + 6);
+      doc.text("HIKAL REAL ESTATE L.L.C", paddingX, usedY + 10 + 6 + 6 + 6);
+
+      doc.setLineWidth(0.5);
+      doc.line(
+        150,
+        usedY + 10 + 6 + 6 + 6,
+        pageWidth - paddingX,
+        usedY + 10 + 6 + 6 + 6
+      );
+      doc.setFont("Arial", "normal");
+      doc.setFontSize(10);
+      const text = "Authorized Signature";
+      const centerX = (150 + pageWidth - paddingX) / 2;
+      const textWidth =
+        (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
+        doc.internal.scaleFactor;
+      const textX = centerX - textWidth / 2;
+      doc.text(text, textX, usedY + 10 + 6 + 6 + 6 + 6);
+    };
+
+    addHeading();
+    addCompanyDetails();
+    addCommDetails();
+    addPaymentModa();
+    addSignatureSection();
+
+    // Save the PDF as Blob
+    const pdfBlob = doc.output("blob");
+
+    // Create a Blob URL
+    const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+
+    console.log("PDF Blob URL: ", pdfBlobUrl);
+
+    // Set the PDF URL in the component state
+    setPDFUrl(pdfBlobUrl);
+
+    doc.save(`${user}.pdf`);
+    return pdfBlob;
   };
 
   // VAT TOGGLE
@@ -589,7 +848,10 @@ const AddCommissionModal = ({
 
     let url;
 
-    if (commissionData?.invoice_type === "Income") {
+    if (
+      commissionData?.invoice_type === "Income" ||
+      status?.field !== "comm_status"
+    ) {
       url = `${BACKEND_URL}/vendors`;
     } else {
       url = `${BACKEND_URL}/users`;
@@ -605,7 +867,10 @@ const AddCommissionModal = ({
 
       console.log("vendors ::: ", vendorsList);
 
-      if (commissionData?.invoice_type === "Income") {
+      if (
+        commissionData?.invoice_type === "Income" ||
+        status?.field !== "comm_status"
+      ) {
         setVendor(vendorsList?.data?.data?.data);
       } else {
         setUser(vendorsList?.data?.managers?.data);
@@ -636,7 +901,8 @@ const AddCommissionModal = ({
   }, [commissionData?.invoice_type]);
 
   const AddCommmission = () => {
-    setBtnLoading(true);
+    // setBtnLoading(true);
+
     const token = localStorage.getItem("auth-token");
 
     let url;
@@ -686,6 +952,11 @@ const AddCommissionModal = ({
             theme: "light",
           }
         );
+
+        if (status?.field !== "comm_status") {
+          const pdfBlob = generatePDF(commissionData);
+        }
+
         setPdfPreview(null);
         setImagePreview(null);
         setBtnLoading(false);
@@ -897,6 +1168,77 @@ const AddCommissionModal = ({
                       menuPortalTarget={document.body}
                       styles={selectStyles(currentMode, primaryColor)}
                     />
+                    {status?.field !== "comm_status" && (
+                      // VENDOR
+                      <FormControl
+                        className={`${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                        sx={{
+                          minWidth: "100%",
+                          borderRadius: 1,
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <TextField
+                          id="vendor_id"
+                          select
+                          value={commissionData?.vendor_id || "selected"}
+                          label={t("vendor")}
+                          onChange={(e) => {
+                            const singleVendor = vendor?.find(
+                              (ven) => ven?.id === e.target.value
+                            );
+                            console.log("singlevendor: ", singleVendor);
+                            setSingleVendor(singleVendor);
+                            setCommissionData({
+                              ...commissionData,
+
+                              vendor_id: e.target.value,
+                            });
+                          }}
+                          size="small"
+                          className="w-full border border-gray-300 rounded"
+                          displayEmpty
+                          required
+                          sx={{
+                            // border: "1px solid #000000",
+                            height: "40px",
+                            "& .MuiSelect-select": {
+                              fontSize: 11,
+                            },
+                          }}
+                        >
+                          <MenuItem selected value="selected">
+                            ---{t("select_vendor")}----
+                          </MenuItem>
+                          <MenuItem onKeyDown={(e) => e.stopPropagation()}>
+                            <TextField
+                              placeholder={t("search_vendors")}
+                              ref={searchRef}
+                              sx={{ "& input": { border: "0" } }}
+                              variant="standard"
+                              onChange={(e) => {
+                                e.preventDefault();
+                                const inputValue =
+                                  searchRef.current.querySelector(
+                                    "input"
+                                  ).value;
+                                if (inputValue) {
+                                  fetchUsers(inputValue);
+                                }
+                              }}
+                              onClick={(event) => event.stopPropagation()}
+                            />
+                          </MenuItem>
+                          {vendor?.map((vendor) => (
+                            <MenuItem key={vendor?.id} value={vendor?.id}>
+                              {vendor?.vendor_name}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </FormControl>
+                    )}
                     {/* VENDOR / USER */}
                     {commissionData?.invoice_type === "Income" ? (
                       // VENDOR
@@ -916,6 +1258,11 @@ const AddCommissionModal = ({
                           value={commissionData?.vendor_id || "selected"}
                           label={t("vendor")}
                           onChange={(e) => {
+                            const singleVendor = vendor?.find(
+                              (ven) => ven?.id === e.target.value
+                            );
+                            console.log("singlevendor: ", singleVendor);
+                            setSingleVendor(singleVendor);
                             setCommissionData({
                               ...commissionData,
 
@@ -1033,24 +1380,45 @@ const AddCommissionModal = ({
                     )}
                     {/* AGENT MANAGER USERNAMES  */}
                     {status?.field !== "comm_status" && (
-                      <Select
-                        id="user_id"
-                        options={users()}
-                        value={users()?.find(
-                          (user) => user.value === commissionData?.user_id
-                        )}
-                        onChange={(e) => {
-                          console.log("e::::::::: user: ", e);
-                          setCommissionData({
-                            ...commissionData,
-                            user_id: e.label,
-                          });
-                        }}
-                        placeholder={t("username")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
+                      <>
+                        {/* TITLE  */}
+                        <Select
+                          id="title"
+                          options={title()}
+                          value={title(t)?.find(
+                            (curr) => curr.value === commissionData?.title
+                          )}
+                          onChange={(e) => {
+                            setCommissionData({
+                              ...commissionData,
+                              title: e.value,
+                            });
+                          }}
+                          placeholder={t("title")}
+                          className={`mb-5`}
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+
+                        <Select
+                          id="user_id"
+                          options={users()}
+                          value={users()?.find(
+                            (user) => user.value === commissionData?.user_id
+                          )}
+                          onChange={(e) => {
+                            console.log("e::::::::: user: ", e);
+                            setCommissionData({
+                              ...commissionData,
+                              user_id: e.label,
+                            });
+                          }}
+                          placeholder={t("username")}
+                          className={`mb-5`}
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                      </>
                     )}
 
                     {/* INVOICE */}
@@ -1383,6 +1751,17 @@ const AddCommissionModal = ({
               <span>{commData ? t("edit_commission") : t("save")}</span>
             )}
           </Button>
+          <div className="p-5">
+            {pdfUrl && !loading && (
+              <iframe
+                src={pdfUrl}
+                width="100%"
+                height="600px"
+                style={{ border: "none" }}
+                title="PDF Preview"
+              ></iframe>
+            )}
+          </div>
         </div>
       </div>
     </Modal>
