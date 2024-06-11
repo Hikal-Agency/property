@@ -6,6 +6,7 @@ import {
   TextField,
   Button,
   Box,
+  Typography,
 } from "@mui/material";
 import Select from "react-select";
 import {
@@ -27,6 +28,12 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { toast } from "react-toastify";
 import moment from "moment";
+import PhoneInput, {
+  formatPhoneNumberIntl,
+  isValidPhoneNumber,
+  isPossiblePhoneNumber,
+} from "react-phone-number-input";
+import classNames from "classnames";
 
 const AddVendor = ({
   openVendorModal,
@@ -46,6 +53,7 @@ const AddVendor = ({
     isLangRTL,
     i18n,
     primaryColor,
+    themeBgImg,
   } = useStateContext();
 
   const { hasPermission } = usePermission();
@@ -53,6 +61,8 @@ const AddVendor = ({
   const [loading, setLoading] = useState(false);
   const [btnloading, setBtnLoading] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [value, setValue] = useState();
+  const [error, setError] = useState(false);
   let editData;
 
   if (edit) {
@@ -74,6 +84,28 @@ const AddVendor = ({
   });
 
   console.log("vendor data:: ", vendorData);
+
+  const handleContact = () => {
+    setError(false);
+    const inputValue = value;
+    console.log("Phone: ", inputValue);
+    if (inputValue && isPossiblePhoneNumber(inputValue)) {
+      console.log("Possible: ", inputValue);
+      if (isValidPhoneNumber(inputValue)) {
+        setVendorData({
+          ...vendorData,
+          contact: formatPhoneNumberIntl(inputValue),
+        });
+        console.log("Valid lead contact: ", vendorData?.contact);
+        console.log("Valid input: ", inputValue);
+        setError(false);
+      } else {
+        setError("Not a valid number.");
+      }
+    } else {
+      setError("Not a valid number.");
+    }
+  };
 
   const handleChange = (e) => {
     const id = e.target.id;
@@ -423,22 +455,48 @@ const AddVendor = ({
                         onChange={handleChange}
                       />
 
-                      <TextField
-                        id="contact"
-                        type={"text"}
-                        label={t("label_contact_number")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
+                      <PhoneInput
+                        placeholder={t("label_contact_number")}
+                        value={value}
+                        onChange={(value) => setValue(value)}
+                        onKeyUp={handleContact}
+                        error={error}
+                        className={` ${classNames({
+                          "dark-mode": currentMode === "dark",
+                          "phone-input-light": currentMode !== "dark",
+                          "phone-input-dark": currentMode === "dark",
+                        })} mb-5`}
                         size="small"
-                        value={vendorData?.contact}
-                        onChange={handleChange}
+                        style={{
+                          background: `${
+                            !themeBgImg
+                              ? currentMode === "dark"
+                                ? "#000000"
+                                : "#FFFFFF"
+                              : "transparent"
+                            // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
+                          }`,
+                          "& .PhoneInputCountryIconImg": {
+                            color: "#fff",
+                          },
+                          color: currentMode === "dark" ? "white" : "black",
+                          border: `1px solid ${
+                            currentMode === "dark" ? "#EEEEEE" : "#666666"
+                          }`,
+                          borderRadius: "5px",
+                          outline: "none",
+                        }}
+                        inputStyle={{
+                          outline: "none !important",
+                        }}
+                        required
                       />
+
+                      {error && (
+                        <Typography variant="body2" color="error">
+                          {error}
+                        </Typography>
+                      )}
 
                       <TextField
                         id="email"
