@@ -1220,6 +1220,7 @@ const StatementPDFComp = ({
                         ...darkModeColors,
                         marginRight: "12px",
                         marginTop: "15px",
+                        width: "100%",
                       }}
                     >
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -1273,6 +1274,7 @@ const StatementPDFComp = ({
                         ...darkModeColors,
                         marginRight: "12px",
                         marginTop: "15px",
+                        width: "100%",
 
                         // "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                         //   {
@@ -1315,6 +1317,7 @@ const StatementPDFComp = ({
                         ...darkModeColors,
                         marginRight: "12px",
                         marginTop: "15px",
+                        width: "100%",
 
                         // "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                         //   {
