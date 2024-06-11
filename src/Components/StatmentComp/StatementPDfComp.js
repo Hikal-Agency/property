@@ -208,7 +208,7 @@ const StatementPDFComp = ({
         doc.autoTable({
           startY: usedY + 10,
           head: [profitHeaders],
-          body: tableData.map((row) => row.map((cell) => cell.content)),
+          body: tableData?.map((row) => row.map((cell) => cell.content)),
           theme: "grid",
           headStyles: {
             fillColor: [238, 238, 238],
@@ -288,7 +288,7 @@ const StatementPDFComp = ({
         });
       });
 
-      if (tableData.length === 0) {
+      if (!tableData || tableData.length === 0) {
         doc.setFont("Arial", "bold");
         doc.setFontSize(12);
         doc.text("No transactions available.", paddingX, usedY + 30);
@@ -297,7 +297,7 @@ const StatementPDFComp = ({
         doc.autoTable({
           startY: usedY + 17,
           head: [tableHead],
-          body: tableData.map((row) => row.map((cell) => cell.content)),
+          body: tableData?.map((row) => row.map((cell) => cell.content)),
           theme: "grid",
           headStyles: {
             fillColor: [238, 238, 238],
@@ -1095,7 +1095,7 @@ const StatementPDFComp = ({
       const invoicesList = getStatements?.data?.invoices;
 
       console.log("Statements List:", statementsData);
-      console.log("invoices length: ", invoicesList.length);
+      console.log("invoices length: ", invoicesList);
 
       // call pdf generation function
       generatePDF(statementsData, invoicesList);
