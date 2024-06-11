@@ -529,7 +529,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                     </h1>
                   </div>
 
-                  <div className="w-full flex justify-end md:space-x-5 items-center">
+                  <div className="w-full flex justify-end space-x-5 items-center">
                     <button
                       className="bg-btn-primary py-2 px-4 mr-3 text-white rounded-md"
                       onClick={clearFilters}
@@ -541,6 +541,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                         ...darkModeColors,
                         marginRight: "12px",
                         marginTop: "15px",
+                        width: "100%",
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                           {
                             right: isLangRTL(i18n.language)
@@ -583,6 +584,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                         ...darkModeColors,
                         marginRight: "12px",
                         marginTop: "15px",
+                        width: "100%",
 
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                           {
@@ -626,6 +628,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                         ...darkModeColors,
                         marginRight: "12px",
                         marginTop: "15px",
+                        width: "100%",
 
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
                           {
