@@ -531,7 +531,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
 
                   <div className="w-full flex justify-end space-x-5 items-center">
                     <button
-                      className="bg-btn-primary py-2 px-4 mr-3 text-white rounded-md"
+                      className="bg-btn-primary py-2 px-4 mr-3 text-white rounded-md w-full"
                       onClick={clearFilters}
                     >
                       {t("clear_all")}
@@ -688,7 +688,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
                     </Box>
 
                     <button
-                      className="bg-primary text-white rounded-md card-hover p-2 shadow-sm"
+                      className="bg-primary text-white rounded-md card-hover p-2 shadow-sm w-full"
                       onClick={fetchStatements}
                     >
                       {t("generate_report_btn")?.toUpperCase()}
