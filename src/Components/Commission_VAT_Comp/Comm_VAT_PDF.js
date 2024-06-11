@@ -320,6 +320,7 @@ const Comm_VAT_PDF = ({ pdfModal, setPDFModal }) => {
             lineWidth: 0.1,
             lineColor: [0, 0, 0],
           },
+          margin: { bottom: 50 }, // Add margin to the bottom to prevent cutting off
 
           addPageContent: addPageContent, // Ensure header, footer, and watermark are added to new pages
         });
