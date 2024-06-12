@@ -43,7 +43,7 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
   };
   return (
     <>
-      <div className="overflow-x-scroll snap-x grid grid-flow-col auto-cols-max gap-x-3 scrollbar-thin">
+      <div className="overflow-x-scroll snap-x grid grid-flow-col auto-cols-max gap-x-5 scrollbar-thin px-4 py-2">
         {upcoming_meetings?.length > 0 ? (
           upcoming_meetings?.map((meeting, index) => {
             return (
@@ -54,17 +54,17 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                   }
                 }}
                 key={index}
-                className={`card-hover w-[350px] flex flex-col justify-between ${
-                  !themeBgImg
+                className={`w-[350px] flex flex-col justify-between ${
+                  themeBgImg
                     ? currentMode === "dark"
-                      ? "bg-black"
-                      : "bg-white"
+                      ? "blur-bg-black"
+                      : "blur-bg-white"
                     : currentMode === "dark"
-                    ? "blur-bg-black"
-                    : "blur-bg-white"
-                } rounded-xl shadow-sm my-2 `}
+                    ? "bg-dark-neu"
+                    : "bg-light-neu"
+                } my-2`}
               >
-                <div className="px-5 py-5 space-y-3">
+                <div className="p-5 space-y-3">
                   <div className="flex items-center justify-between">
                     <h2
                       style={{

@@ -107,39 +107,37 @@ const ReminderComponent = ({
     <>
       <div
         key={reminder.id}
-        className={`card-hover w-[350px] flex flex-col justify-between ${
-          !themeBgImg ? (currentMode === "dark"
-          ? "bg-black text-white "
-          : "bg-white text-main-dark-bg")
+        className={`w-[350px] flex flex-col justify-between ${!themeBgImg
+          ? (currentMode === "dark"
+            ? "bg-dark-neu"
+            : "bg-light-neu")
           : (currentMode === "dark"
             ? "blur-bg-black"
             : "blur-bg-white")
-        } rounded-xl shadow-sm my-2 cursor-pointer `}
+          } my-2 cursor-pointer `}
         onClick={() => handleClick(reminder?.lead_id)}
       >
         <div className="p-5 grid grid-cols-9">
           <div className="col-span-8 space-y-3">
             <h2 className={` ${!themeBgImg ? "text-primary" : (currentMode === "dark" ? "text-white" : "text-black")} text-md font-semibold`}
-            style={{
-              fontFamily: isArabic(reminder?.leadName) ? 'Noto Kufi Arabic' : 'inherit',
-            }}
+              style={{
+                fontFamily: isArabic(reminder?.leadName) ? 'Noto Kufi Arabic' : 'inherit',
+              }}
             >
               {reminder?.leadName || "No Lead Name"}
             </h2>
-            
+
             <div className="grid grid-cols-11">
               <BsClock
                 size={16}
-                className={`mr-3 ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
+                className={`mr-3 ${currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
               />
               <p className="text-sm mr-3 col-span-10">
                 {reminder?.reminder_date && reminder?.reminder_time ? (
                   <>
-                    {`${
-                      reminder?.reminder_time
-                    }, ${moment(reminder?.reminder_date).format("MMMM D, Y")}`}
+                    {`${reminder?.reminder_time
+                      }, ${moment(reminder?.reminder_date).format("MMMM D, Y")}`}
                   </>
                 ) : (
                   "Unavailable"
@@ -150,11 +148,10 @@ const ReminderComponent = ({
             <div className="grid grid-cols-11">
               <BsChatSquareText
                 size={16}
-                className={`mr-3 ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
+                className={`mr-3 ${currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
               />
-              <p className="text-sm mr-3 col-span-10" style={{fontFamily: isArabic(reminder?.reminder_note) ? "Noto Kufi Arabic" : "inherit"}}>
+              <p className="text-sm mr-3 col-span-10" style={{ fontFamily: isArabic(reminder?.reminder_note) ? "Noto Kufi Arabic" : "inherit" }}>
                 {reminder?.reminder_note || "No Notes"}
               </p>
             </div>
@@ -191,7 +188,7 @@ const ReminderComponent = ({
               </IconButton>
             </Tooltip>
           </div>
-          
+
         </div>
       </div>
     </>

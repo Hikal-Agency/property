@@ -140,7 +140,7 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
     <>
       {reminder?.length > 0 && (
         <>
-          <div className="overflow-x-scroll snap-x grid grid-flow-col auto-cols-max gap-x-3 scrollbar-thin">
+          <div className="overflow-x-scroll snap-x grid grid-flow-col auto-cols-max gap-x-5 scrollbar-thin px-4 py-2">
             {reminder?.map((meeting, index) => {
               const isLoading = loadingStates[meeting.id] || false;
               return (
