@@ -61,6 +61,7 @@ const AddCommissionModal = ({
     Managers,
     SalesPerson,
   } = useStateContext();
+  console.log("managers list: ", Managers);
 
   const { hasPermission } = usePermission();
 
@@ -1410,7 +1411,7 @@ const AddCommissionModal = ({
                             console.log("e::::::::: user: ", e);
                             setCommissionData({
                               ...commissionData,
-                              user_id: e.label,
+                              user_id: e.value,
                             });
                           }}
                           placeholder={t("username")}
