@@ -1169,7 +1169,8 @@ const AddCommissionModal = ({
                       menuPortalTarget={document.body}
                       styles={selectStyles(currentMode, primaryColor)}
                     />
-                    {status?.field !== "comm_status" && (
+                    {status?.field !== "comm_status" &&
+                    commissionData?.invoice_type !== "Income" ? (
                       // VENDOR
                       <FormControl
                         className={`${
@@ -1239,7 +1240,7 @@ const AddCommissionModal = ({
                           ))}
                         </TextField>
                       </FormControl>
-                    )}
+                    ) : null}
                     {/* VENDOR / USER */}
                     {commissionData?.invoice_type === "Income" ? (
                       // VENDOR
