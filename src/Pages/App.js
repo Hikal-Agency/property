@@ -91,6 +91,7 @@ import Transaction from "./transaction";
 import Vendors from "./vendors";
 import Statements from "./statements";
 import Commission_VAT from "./commission_vat";
+import Petty_Cash from "./Petty_Cash";
 
 const libraries = ["places"];
 
@@ -545,6 +546,11 @@ const routes = [
     path: "/commission_vat",
     element: <Commission_VAT />,
     pageName: "Commission VAT",
+  },
+  {
+    path: "/petty_cash",
+    element: <Petty_Cash />,
+    pageName: "Petty Cash",
   },
   {
     path: "*",

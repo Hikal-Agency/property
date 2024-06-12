@@ -1643,6 +1643,12 @@ const Sidebarmui = () => {
               // pro: true,
               link: "/commission_vat",
             },
+            {
+              name: t("menu_petty_cash"),
+              // icon: <FaHome size={16} />,
+              // pro: true,
+              link: "/petty_cash",
+            },
           ],
         },
       ],

@@ -1321,6 +1321,9 @@ const StatementPDFComp = ({
                     >
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
+                          sx={{
+                            width: "100%",
+                          }}
                           value={dayjs(`${filters?.year}-${filters?.month}-01`)}
                           label={t("month_year")}
                           views={["month", "year"]}
