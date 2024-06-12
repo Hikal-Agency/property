@@ -601,7 +601,7 @@ const SingleTransactionModal = ({
                                                     color={"#AAAAAA"}
                                                     onClick={() =>
                                                       handlePdfClick(
-                                                        `data:application/pdf;base64, ${l?.temp_file}`
+                                                        `data:application/pdf;base64,${l?.temp_file}`
                                                       )
                                                     }
                                                   />
