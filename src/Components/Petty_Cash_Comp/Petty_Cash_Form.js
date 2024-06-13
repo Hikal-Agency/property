@@ -23,13 +23,6 @@ const Petty_Cash_Form = ({ fetchPettyCash }) => {
     primaryColor,
   } = useStateContext();
 
-  console.log(
-    "boss list: ",
-    boss(t)?.map((boss) => ({
-      value: boss?.id,
-      name: boss?.name,
-    }))
-  );
   const [btnLoading, setBtnLoading] = useState(false);
   const token = localStorage.getItem("auth-token");
 
@@ -40,6 +33,7 @@ const Petty_Cash_Form = ({ fetchPettyCash }) => {
     fund_amount: "",
     type: "Fund",
     fund_by: "",
+    fund_by_name: "",
   });
 
   console.log("petty data:", petty_data);
@@ -287,6 +281,7 @@ const Petty_Cash_Form = ({ fetchPettyCash }) => {
             setPettyData({
               ...petty_data,
               fund_by: e.value,
+              fund_by_name: e.label,
             });
           }}
           placeholder={t("label_fund_by")}
