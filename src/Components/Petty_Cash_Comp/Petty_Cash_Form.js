@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import axios from "../../axoisConfig";
 
-const Petty_Cash_Form = () => {
+const Petty_Cash_Form = ({ fetchPettyCash }) => {
   const {
     currentMode,
     t,
@@ -99,6 +99,7 @@ const Petty_Cash_Form = () => {
       });
 
       setBtnLoading(false);
+      fetchPettyCash();
     } catch (error) {
       console.log("Error: ", error);
       setBtnLoading(false);

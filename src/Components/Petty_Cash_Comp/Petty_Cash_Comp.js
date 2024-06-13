@@ -125,7 +125,7 @@ const Petty_Cash_Comp = () => {
           currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#eeeeee]"
         } mb-6 rounded-xl p-4`}
       >
-        <Petty_Cash_Form />
+        <Petty_Cash_Form fetchPettyCash={fetchPettyCash} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
