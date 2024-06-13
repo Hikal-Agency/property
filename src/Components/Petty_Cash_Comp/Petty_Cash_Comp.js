@@ -131,7 +131,11 @@ const Petty_Cash_Comp = () => {
 
   return (
     <div className={`pb-4 px-4`}>
-      <div className="flex items-center justify-between gap-4 bg-primary mb-6 rounded-xl p-4">
+      <div
+        className={`w-full ${
+          currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#eeeeee]"
+        } mb-6 rounded-xl p-4`}
+      >
         <Petty_Cash_Form />
       </div>
 
