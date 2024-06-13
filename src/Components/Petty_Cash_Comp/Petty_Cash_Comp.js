@@ -9,6 +9,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 import SingleTransactionModal from "../TransactionComp/SingleTransactionModal";
 import Select from "react-select";
+import { BsCash } from "react-icons/bs";
 
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
@@ -41,7 +42,7 @@ const Petty_Cash_Comp = () => {
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
-  const [comm_vat_data, setCommVATData] = useState([]);
+  const [pettyCashData, setPettyCashData] = useState([]);
   const [transactionsData, setTransData] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
 
@@ -67,46 +68,34 @@ const Petty_Cash_Comp = () => {
 
   console.log("filter data:: ", filters);
 
-  const fetchStatements = async () => {
+  const fetchPettyCash = async () => {
     setloading(true);
 
-    if (!filters?.year) {
-      toast.error("Year is required.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      setloading(false);
-      return;
-    }
+    const paramsPettyCash = { type: "Fund" };
+    const paramsInvoices = { is_petty_cash: 1 };
     try {
-      const params = {
-        year: filters?.year,
-      };
+      const [pettyCashResponse, invoicesResponse] = await Promise.all([
+        axios.get(`${BACKEND_URL}/pettycash`, {
+          params: paramsPettyCash,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        axios.get(`${BACKEND_URL}/invoices`, {
+          params: paramsInvoices,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      ]);
 
-      // Conditionally add country and currency if they have values
-      if (filters?.country) {
-        params.country = filters.country;
-      }
-      if (filters?.currency) {
-        params.currency = filters.currency;
-      }
-      const response = await axios.get(`${BACKEND_URL}/commission-vat`, {
-        params: params,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      console.log("Petty Cash list:: ", pettyCashResponse);
+      console.log("Invoices list:: ", invoicesResponse);
 
-      console.log("commission vat list:: ", response);
-      setCommVATData(response?.data?.data);
-      setTransData(response?.data?.data?.[0]?.invoices);
+      setPettyCashData(pettyCashResponse?.data?.data?.data);
+      setTransData(invoicesResponse?.data?.data?.data);
     } catch (error) {
       setloading(false);
       console.error("Error fetching statements:", error);
@@ -126,7 +115,7 @@ const Petty_Cash_Comp = () => {
   };
 
   useEffect(() => {
-    fetchStatements();
+    fetchPettyCash();
   }, [filters]);
 
   return (
@@ -140,85 +129,81 @@ const Petty_Cash_Comp = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-        {loading ? (
-          <div className="flex items-center justify-center">
-            <CircularProgress />
-          </div>
-        ) : (
-          <div className="flex flex-col">
-            {comm_vat_data && comm_vat_data?.length > 0 ? (
-              comm_vat_data?.map((comm_vat) => {
-                return (
-                  <div className="bg-primary p-4 rounded-xl shadow-sm mb-5">
-                    <h1
-                      className={`text-2xl font-bold mx-2 uppercase text-white text-center mb-4`}
-                    >
-                      {comm_vat?.year}
-                    </h1>
-                    <div className="flex flex-col gap-4">
-                      {comm_vat?.vat && comm_vat?.vat?.length > 0 ? (
-                        comm_vat?.vat?.map((vat) => (
-                          <div
-                            className={`${
-                              currentMode === "dark"
-                                ? "bg-[#1c1c1c] text-white"
-                                : "bg-[#eeeeee] text-black"
-                            } p-5 rounded-xl flex flex-col items-center justify-center gap-4`}
-                          >
-                            <div className="w-full text-xl font-bold mx-2 uppercase text-center">
-                              {vat?.currency}
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+          className={`p-2 ${
+            currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#eeeeee]"
+          }`}
+        >
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <CircularProgress />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <h3 className="text-primary mb-5 text-center font-semibold">
+                {t("funds")}
+              </h3>
+              {pettyCashData && pettyCashData?.length > 0 ? (
+                pettyCashData?.map((petty) => {
+                  return (
+                    <>
+                      <div
+                        className={` rounded-xl p-4 ${
+                          themeBgImg && currentMode === "dark"
+                            ? "blur-bg-dark"
+                            : "blur-bg-light"
+                        }`}
+                        // onClick={() => setSingleTransModal(petty)}
+                      >
+                        <p className="mb-3 font-semibold text-sm">
+                          {moment(petty?.date).format("YYYY-MM-DD")}
+                        </p>
+                        <div className="flex justify-between gap-4">
+                          <div className="flex gap-4">
+                            <div className="border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3">
+                              <BsCash size={16} color={"#AAAAAA"} />
                             </div>
-                            <div
-                              className={`w-full rounded-xl shadow-sm p-5 ${
-                                currentMode === "dark"
-                                  ? "bg-black text-white"
-                                  : "bg-white text-black"
-                              }`}
-                            >
-                              <div
-                                className={`w-full text-center text-primary text-2xl font-bold mb-3`}
-                              >
-                                {vat?.currency} {vat?.vat}
+                            <div className="flex flex-col">
+                              <p>{petty?.fund_by_name}</p>
+                              <div className="flex gap-1 text-sm">
+                                <p className={`text-green-600`}>
+                                  {petty?.currency} {petty?.petty_cash_amount}
+                                </p>
+                                {/* <p> - {petty?.invoice?.category}</p> */}
                               </div>
-                              <p className={`text-center text-sm`}>
-                                {t("vat_amount")}
-                              </p>
                             </div>
-                            <p className={`text-center text-sm my-3`}>
-                              {t("vat_calculated_for") +
-                                " " +
-                                vat?.currency +
-                                " " +
-                                vat?.amount +
-                                " " +
-                                t("from") +
-                                " " +
-                                vat?.count +
-                                " " +
-                                (vat?.count === 1
-                                  ? t("invoice")
-                                  : t("invoices")) +
-                                "."}
-                              {/* t("invoices")} */}
+                          </div>
+                          <div>
+                            <p className={`font-semibold text-lg `}>
+                              {t("balance")}: {petty?.currency}{" "}
+                              {petty?.fund_amount}
                             </p>
                           </div>
-                        ))
-                      ) : (
-                        <h1>{t("no_data_year")}</h1>
-                      )}
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div>
-                <h1>{t("no_data_found")}</h1>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* transactions list */}
+                        </div>
+                      </div>
+                    </>
+                  );
+                })
+              ) : (
+                <div>
+                  <h1>{t("no_data_found")}</h1>
+                </div>
+              )}
+            </div>
+          )}
+        </Box>
+        {/* expenses list */}
         <div>
           <Box
             sx={{
@@ -240,16 +225,13 @@ const Petty_Cash_Comp = () => {
               </div>
             ) : (
               <div className="flex flex-col gap-4">
+                <h3 className="text-primary mb-5 text-center font-semibold">
+                  {t("expense_amount")}
+                </h3>
                 {transactionsData && transactionsData?.length > 0 ? (
                   transactionsData?.map((trans) => {
-                    // let user;
-                    // if (trans?.invoice?.category?.toLowerCase() === "salary") {
-                    //   user = true;
-                    // } else {
-                    //   user = false;
-                    // }
                     let user;
-                    if (trans?.invoice?.user_id) {
+                    if (trans?.user_id) {
                       user = true;
                     } else {
                       user = false;
@@ -266,19 +248,22 @@ const Petty_Cash_Comp = () => {
                           onClick={() => setSingleTransModal(trans)}
                         >
                           <p className="mb-3 font-semibold text-sm">
-                            {moment(trans?.invoice?.date).format("YYYY-MM-DD")}
+                            {moment(trans?.date).format("YYYY-MM-DD")}
                           </p>
                           <div className="flex justify-between gap-4">
                             <div className="flex gap-4">
                               <div className="border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3">
-                                {trans?.invoice?.category === "Commission" ? (
+                                {trans?.category?.toLowerCase() ===
+                                "commission" ? (
                                   <BsBuildings size={16} color={"#AAAAAA"} />
-                                ) : trans?.invoice?.category === "Salary" ? (
+                                ) : trans?.category?.toLowerCase() ===
+                                  "salary" ? (
                                   <BsCalendarCheck
                                     size={16}
                                     color={"#AAAAAA"}
                                   />
-                                ) : trans?.invoice?.category === "Purchase" ? (
+                                ) : trans?.category?.toLowerCase() ===
+                                  "purchase" ? (
                                   <BsCart4 size={16} color={"#AAAAAA"} />
                                 ) : (
                                   <BsQuestionLg size={16} color={"#AAAAAA"} />
@@ -293,30 +278,27 @@ const Petty_Cash_Comp = () => {
                                 <div className="flex gap-1 text-sm">
                                   <p
                                     className={
-                                      trans?.invoice?.status === "Paid"
+                                      trans?.status === "Paid"
                                         ? "text-green-600"
                                         : "text-red-600"
                                     }
                                   >
-                                    {trans?.invoice?.status}
+                                    {trans?.status}
                                   </p>
-                                  <p> - {trans?.invoice?.category}</p>
+                                  <p> - {trans?.category}</p>
                                 </div>
                               </div>
                             </div>
                             <div>
                               <p
                                 className={`font-semibold text-lg ${
-                                  trans?.invoice?.invoice_type == "Income"
+                                  trans?.invoice_type == "Income"
                                     ? "text-green-600"
                                     : "text-red-600"
                                 } `}
                               >
-                                {trans?.invoice?.invoice_type === "Income"
-                                  ? "+"
-                                  : "-"}{" "}
-                                {trans?.invoice?.currency}{" "}
-                                {trans?.invoice?.amount}
+                                {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                                {trans?.currency} {trans?.amount}
                               </p>
                             </div>
                           </div>
