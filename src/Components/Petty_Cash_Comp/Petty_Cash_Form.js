@@ -91,6 +91,7 @@ const Petty_Cash_Form = ({ fetchPettyCash }) => {
       });
 
       setPettyData({
+        type: "Fund",
         date: "",
         country: "",
         currency: "AED",
