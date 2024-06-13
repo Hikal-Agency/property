@@ -288,8 +288,17 @@ const NewTransactionForm = ({
       url = `${BACKEND_URL}/invoices`;
     }
 
+    let data = addTransactionData;
+
+    if (pettyCash) {
+      data = {
+        ...addTransactionData,
+        is_petty_cash: 1,
+      };
+    }
+
     try {
-      const submitTransaction = await axios.post(url, addTransactionData, {
+      const submitTransaction = await axios.post(url, data, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -353,6 +362,7 @@ const NewTransactionForm = ({
           image: null,
         });
 
+        setPettyCash(false);
         setImagePreview(null);
         setPdfPreview(null);
       }
@@ -789,6 +799,18 @@ const NewTransactionForm = ({
                 error={fieldErrors.total_amount}
               />
             </div>
+            {/* PETTY CASH TOGGLE */}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color="success"
+                  checked={pettyCash}
+                  onChange={() => setPettyCash(!pettyCash)}
+                />
+              }
+              label={t("menu_petty_cash")}
+              className="mb-5"
+            />
             {/* VAT TOGGLE */}
             <FormControlLabel
               control={
