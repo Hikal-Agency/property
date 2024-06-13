@@ -1105,6 +1105,10 @@
 
 
     "menu_petty_cash":"Petty Cash",
-    "label_fund_by":"Fund By"
+    "label_fund_by":"Fund By",
+
+
+    "funds":"Funds",
+    "balance":"Balance"
   
 } 

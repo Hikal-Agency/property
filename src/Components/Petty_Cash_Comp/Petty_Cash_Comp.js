@@ -152,7 +152,7 @@ const Petty_Cash_Comp = () => {
           ) : (
             <div className="flex flex-col gap-4">
               <h3 className="text-primary mb-5 text-center font-semibold">
-                {t("transactions")}
+                {t("funds")}
               </h3>
               {pettyCashData && pettyCashData?.length > 0 ? (
                 pettyCashData?.map((petty) => {
@@ -186,7 +186,8 @@ const Petty_Cash_Comp = () => {
                           </div>
                           <div>
                             <p className={`font-semibold text-lg `}>
-                              Balance: {petty?.currency} {petty?.fund_amount}
+                              {t("balance")}: {petty?.currency}{" "}
+                              {petty?.fund_amount}
                             </p>
                           </div>
                         </div>
