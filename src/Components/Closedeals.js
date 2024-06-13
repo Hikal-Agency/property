@@ -703,6 +703,7 @@ const Closedeals = ({ pageState, setpageState }) => {
           booking_date: row?.booking_date,
           booking_amount: row?.booking_amount,
           spa_status: row?.spa_status,
+          invoice_status: row?.invoice_status,
           comm_status: row?.comm_status,
           agent_comm_status: row?.agent_comm_status,
           manager_comm_status: row?.manager_comm_status,

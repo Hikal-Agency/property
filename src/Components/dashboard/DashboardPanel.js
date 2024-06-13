@@ -25,6 +25,7 @@ import { AiOutlineFire } from "react-icons/ai";
 import { GiThermometerCold } from "react-icons/gi";
 import { FiUsers } from "react-icons/fi";
 import "../../styles/animation.css";
+import HeadingTitle from "../_elements/HeadingTitle";
 
 const DashboardPanel = ({ setloading }) => {
   const {
@@ -193,340 +194,234 @@ const DashboardPanel = ({ setloading }) => {
   }
 
   return (
-    <div className="">
-      <div className="w-full flex items-center pb-3">
-        <div className="bg-primary h-10 w-1 rounded-full"></div>
-        <h1
-          className={`text-lg font-semibold mx-2 uppercase ${!themeBgImg
-              ? "text-primary"
-              : currentMode === "dark"
-                ? "text-white"
-                : "text-black"
-            }`}
-        >
-          {t("overview")?.toUpperCase()}
-        </h1>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-5 gap-y-5 pb-2">
-        <motion.div
-          transition={{ duration: 0.6 }}
-          initial={{ y: -120 }}
-          animate={{ y: [20, 30, 0] }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5 text-center pb-2"
-        >
-          {/* {DashboardData?.designation === "Head" && ( */}
-          <Link
-            to={"/freshleads/all"}
-            className={` ${
-              !themeBgImg
-                ? currentMode === "dark"
-                  ? "bg-black text-white"
-                  : "bg-white text-black"
-                 : currentMode === "dark"
-                  ? "blur-bg-black text-white"
-                  : "blur-bg-white text-black"
-              }  h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
-            onClick={() => setopenBackDrop(true)}
-          >
-            <div>
-              {User?.role === 3 && (
-                <p
-                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
-                      ? "text-primary"
-                      : currentMode === "dark"
-                        ? "text-white"
-                        : "text-black"
-                    }`}
-                >
-                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
-                </p>
-              )}
-              {User?.role === 7 && (
-                <p
-                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
-                      ? "text-primary"
-                      : currentMode === "dark"
-                        ? "text-white"
-                        : "text-black"
-                    }`}
-                >
-                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
-                </p>
-              )}
-              {(User?.role === 1 || User?.role === 2 || User?.role === 8) && (
-                <p
-                  className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
-                      ? "text-primary"
-                      : currentMode === "dark"
-                        ? "text-white"
-                        : "text-black"
-                    }`}
-                >
-                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
-                </p>
-              )}
-              <p
-                className={` ${currentMode === "dark" ? "text-white" : "text-black"
-                  }   `}
-              >
-                {t("fresh")} {t("leads")}
-              </p>
-            </div>
-          </Link>
-          {/* )} */}
+    <div className={`${currentMode === "dark" ? "text-white" : "text-black"}`}>
+      <HeadingTitle title={t("overview")} />
 
-          {User?.role === 1 || User?.role === 2 || User?.role === 8 ? (
-            HeadData.map((item, index) => {
-              return (
-                <Link
-                  key={index}
-                  to={item?.link}
-                  className={`card-hover ${!themeBgImg
-                      ? currentMode === "dark"
-                        ? "bg-black text-white "
-                        : "bg-white text-main-dark-bg"
-                      : currentMode === "dark"
-                        ? "blur-bg-black text-white "
-                        : "blur-bg-white text-main-dark-bg"
-                    } h-auto w-full p-5 rounded-xl shadow-sm grid content-center`}
+      {User?.role === 1 || User?.role === 2 || User?.role === 8 ? (
+        <>
+          {/* OVERVIEW */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-5 pb-5">
+            {/* COUNTERS */}
+            <motion.div
+              transition={{ duration: 0.5 }}
+              initial={{ y: -120 }}
+              animate={{ y: [20, 30, 0] }}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-8 2xl:col-span-3 gap-5 text-center pb-5"
+            >
+              {/* FRESH LEADS */}
+              <Link
+                to={"/freshleads/all"}
+                className={`${themeBgImg
+                  ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                  : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                  } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                onClick={() => setopenBackDrop(true)}
+              >
+                <p
+                  className={`${!themeBgImg
+                    ? "text-primary"
+                    : currentMode === "dark"
+                      ? "text-white"
+                      : "text-black"
+                    } text-[16px] break-words font-bold`}
                 >
-                  <p
-                    className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
+                </p>
+                <p className={currentMode === "dark" ? "text-white" : "text-black"}>
+                  {t("fresh")} {t("leads")}
+                </p>
+              </Link>
+              {/* OTHER COUNTERS */}
+              {HeadData.map((item, index) => {
+                return (
+                  <Link
+                    key={index}
+                    to={item?.link}
+                    className={`${themeBgImg
+                      ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                      : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                      } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                  >
+                    <p
+                      className={`${!themeBgImg
                         ? "text-primary"
                         : currentMode === "dark"
                           ? "text-white"
                           : "text-black"
-                      }`}
-                  >
-                    <CountUp end={item.amount} duration={3} />
-                  </p>
-                  <p
-                    className={` ${currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
-                  >
-                    {item?.title}
-                  </p>
-                </Link>
-              );
-            })
-          ) : User?.role === 3 ? (
-            <>
-              {ManagerData.map((item, index) => {
-                return (
-                  <Link
-                    to={item?.link}
-                    key={index}
-                    className={`card-hover ${!themeBgImg
-                        ? currentMode === "dark"
-                          ? "bg-black"
-                          : "bg-white"
-                        : currentMode === "dark"
-                          ? "blur-bg-black "
-                          : "blur-bg-white"
-                      } h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
-                    onClick={() => setopenBackDrop(true)}
-                  >
-                    <div>
-                      <p
-                        className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
-                            ? "text-primary"
-                            : currentMode === "dark"
-                              ? "text-white"
-                              : "text-black"
-                          }`}
-                      >
-                        <CountUp end={item.amount} duration={3} />
-                      </p>
-                      <p>
-                        {item?.title}
-                      </p>
-                    </div>
+                        } text-[16px] break-words font-bold`}
+                    >
+                      <CountUp end={item.amount} duration={3} />
+                    </p>
+                    <p
+                      className={` ${currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                    >
+                      {item?.title}
+                    </p>
                   </Link>
                 );
               })}
-            </>
-          ) : (
-            <>
-              {AgentData.map((item, index) => {
-                return (
-                  <Link
-                    to={item.link}
-                    key={index}
-                    className={`card-hover ${!themeBgImg
-                        ? currentMode === "dark"
-                          ? "bg-black"
-                          : "bg-white"
-                        : currentMode === "dark"
-                          ? "blur-bg-black"
-                          : "blur-bg-white"
-                      }  h-auto w-full p-5 rounded-xl shadow-sm cursor-pointer grid content-center`}
-                    onClick={() => setopenBackDrop(true)}
-                  >
-                    <div>
-                      <p
-                        className={`text-[16px] break-words font-bold pb-3 ${!themeBgImg
-                            ? "text-primary"
-                            : currentMode === "dark"
-                              ? "text-white"
-                              : "text-black"
-                          }`}
-                      >
-                        <CountUp end={item.amount} duration={3} />
-                      </p>
-                      <p>
-                        {item?.title}
-                      </p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </>
-          )}
-        </motion.div>
-
-        {/* CHART  */}
-        <>
-          {User?.role === 1 || User?.role === 2 || User?.role === 8 ? (
-            <div className="mb-2">
-              <motion.div
-                initial={{ x: 120 }}
-                transition={{ duration: 0.7 }}
-                animate={{ x: [-20, 30, 0] }}
-                className={`card-hover ${!themeBgImg
-                    ? currentMode === "dark"
-                      ? "bg-black"
-                      : "bg-white"
-                    : currentMode === "dark"
-                      ? "blur-bg-black"
-                      : "blur-bg-white"
-                  } h-full rounded-xl shadow-sm p-5 cursor-pointer w-full`}
-              >
-                <div className="justify-between items-center w-full">
-                  <h6 className="font-semibold">{t("performance")}</h6>
-                  <CombinationChart />
-                </div>
-              </motion.div>
-            </div>
-          ) : User?.role === 3 ? (
-            <div className="mb-2">
-              <div
-                className={`card-hover ${!themeBgImg
-                    ? currentMode === "dark"
-                      ? "bg-black"
-                      : "bg-white"
-                    : currentMode === "dark"
-                      ? "blur-bg-black"
-                      : "blur-bg-white"
-                  } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
-              >
-                <div className="justify-between items-center">
-                  <h6 className="font-semibold">{t("performance")}</h6>
-                  <CombinationChart />
-                </div>
+            </motion.div>
+            {/* PERFORMANCE CHART  */}
+            <motion.div
+              initial={{ x: 120 }}
+              transition={{ duration: 0.6 }}
+              animate={{ x: [-20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+            >
+              <div className="justify-between items-center w-full">
+                <h6 className="font-semibold uppercase pb-3">{t("performance")}</h6>
+                <CombinationChart />
               </div>
-            </div>
-          ) : (
-            <div className="mb-2">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3">
-                <div
-                  className={`card-hover ${!themeBgImg
-                      ? currentMode === "dark"
-                        ? "bg-black"
-                        : "bg-white"
-                      : currentMode === "dark"
-                        ? "blur-bg-black"
-                        : "blur-bg-white"
-                    } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
-                >
-                  <div className="justify-between items-center">
-                    <h6 className="font-semibold">{t("label_target")}</h6>
-                    <DoughnutChart
-                      target_reached={DashboardData?.target_reached}
-                      target_remaining={DashboardData?.target_remaining}
-                    />
-                  </div>
-                </div>
-                <div
-                  className={`card-hover ${!themeBgImg
-                      ? currentMode === "dark"
-                        ? "bg-black"
-                        : "bg-white"
-                      : currentMode === "dark"
-                        ? "blur-bg-black"
-                        : "blur-bg-white"
-                    } h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
-                >
-                  <div className="justify-between items-center">
-                    <h6 className="font-semibold">{t("project")}</h6>
-                    <BarChartProject
-                      total_projects={DashboardData?.total_projects}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </>
-      </div>
-
-      {/* 2ND ROW [CHARTS FOR ADMIN ONLY] */}
-      {User?.role === 1 || User?.role === 2 || User?.role === 8 ? (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-5 pb-2">
-            <div
-              className={`card-hover ${!themeBgImg
-                  ? currentMode === "dark"
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
-                  : currentMode === "dark"
-                    ? "blur-bg-black text-white"
-                    : "blur-bg-white text-black"
-                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+            </motion.div>
+            {/* SALES CHART */}
+            <motion.div
+              initial={{ y: -120 }}
+              transition={{ duration: 0.7 }}
+              animate={{ y: [20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">{t("sales")}</h6>
+                <h6 className="font-semibold uppercase pb-3">{t("sales")}</h6>
                 <SalesAmountChartAdmin />
               </div>
-            </div>
-
-            <div
-              className={`card-hover ${!themeBgImg
-                  ? currentMode === "dark"
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
-                  : currentMode === "dark"
-                    ? "blur-bg-black text-white"
-                    : "blur-bg-white text-black"
-                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer `}
+            </motion.div>
+            {/* CLOSED PROJECTS CHART */}
+            <motion.div
+              initial={{ y: -120 }}
+              transition={{ duration: 0.8 }}
+              animate={{ y: [20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">{`${t("closed")} ${t(
+                <h6 className="font-semibold uppercase pb-3">{`${t("closed")} ${t(
                   "projects"
                 )}`}</h6>
                 <BarChartProjectAdmin
                   total_projects={DashboardData?.total_projects}
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
-          {/* MANAGER TAGET PROGRESS BAR  */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-x-3 gap-y-3 pb-3"></div>
         </>
       ) : User?.role === 3 ? (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-3 gap-y-3 pb-3">
-            <div
-              className={`card-hover ${!themeBgImg
-                  ? currentMode === "dark"
-                    ? "bg-black"
-                    : "bg-white"
-                  : currentMode === "dark"
-                    ? "blur-bg-black"
-                    : "blur-bg-white"
-                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+          {/* OVERVIEW */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-1 gap-5 pb-5">
+            {/* COUNTERS */}
+            <motion.div
+              transition={{ duration: 0.5 }}
+              initial={{ y: -120 }}
+              animate={{ y: [20, 30, 0] }}
+              className="grid grid-cols-2 md:grid-cols-6 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-6 md:col-span-2 lg:col-span-1 gap-5 text-center pb-5"
+            >
+              {/* FRESH LEADS */}
+              <Link
+                to={"/freshleads/all"}
+                className={`${themeBgImg
+                  ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                  : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                  } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                onClick={() => setopenBackDrop(true)}
+              >
+                <p
+                  className={`${!themeBgImg
+                    ? "text-primary"
+                    : currentMode === "dark"
+                      ? "text-white"
+                      : "text-black"
+                    } text-[16px] break-words font-bold`}
+                >
+                  <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
+                </p>
+                <p className={` ${currentMode === "dark" ? "text-white" : "text-black"}`}>
+                  {t("fresh")} {t("leads")}
+                </p>
+              </Link>
+              {/* OTHER COUNTERS */}
+              {ManagerData.map((item, index) => {
+                return (
+                  <Link
+                    to={item?.link}
+                    key={index}
+                    className={`${themeBgImg
+                      ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                      : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                      } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                    onClick={() => setopenBackDrop(true)}
+                  >
+                    <div>
+                      <p
+                        className={`${!themeBgImg
+                          ? "text-primary"
+                          : currentMode === "dark"
+                            ? "text-white"
+                            : "text-black"
+                          } text-[16px] break-words font-bold`}
+                      >
+                        <CountUp end={item.amount} duration={3} />
+                      </p>
+                      <p>
+                        {item?.title}
+                      </p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </motion.div>
+            {/* PERFORMANCE CHART - HIDE IN 2XL */}
+            <motion.div
+              initial={{ y: -120 }}
+              transition={{ duration: 0.6 }}
+              animate={{ y: [20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex flex-col gap-2 md:hidden lg:flex 2xl:hidden`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">{t("sales")}</h6>
+                <h6 className="font-semibold uppercase pb-3">{t("performance")}</h6>
+                <CombinationChart />
+              </div>
+            </motion.div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 pb-5">
+            {/* PERFORMANCE CHART - SHOW IN 2XL */}
+            <motion.div
+              initial={{ y: -120 }}
+              transition={{ duration: 0.6 }}
+              animate={{ y: [20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex-col gap-2 hidden md:flex lg:hidden 2xl:flex`}
+            >
+              <div className="justify-between items-center">
+                <h6 className="font-semibold uppercase pb-3">{t("performance")}</h6>
+                <CombinationChart />
+              </div>
+            </motion.div>
+            {/* SALES CHART */}
+            <motion.div
+              initial={{ y: -120 }}
+              transition={{ duration: 0.7 }}
+              animate={{ y: [20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+            >
+              <div className="justify-between items-center">
+                <h6 className="font-semibold uppercase pb-3">{t("sales")}</h6>
                 {saleschart_loading ? (
                   <div className="flex items-center space-x-2">
                     <CircularProgress size={20} /> <span>Loading</span>
@@ -535,61 +430,201 @@ const DashboardPanel = ({ setloading }) => {
                   <BarChart Sales_chart_data={Sales_chart_data} />
                 )}
               </div>
-            </div>
-            <div
-              className={`card-hover ${!themeBgImg
-                  ? currentMode === "dark"
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
-                  : currentMode === "dark"
-                    ? "blur-bg-black text-white"
-                    : "blur-bg-white text-black"
-                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+            </motion.div>
+            {/* TARGET */}
+            <motion.div
+              initial={{ y: -120 }}
+              transition={{ duration: 0.7 }}
+              animate={{ y: [20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">{t("monthly_target")}</h6>
+                <h6 className="font-semibold uppercase pb-3">{t("monthly_target")}</h6>
                 <DoughnutChart
                   target={DashboardData?.user?.target}
                   target_reached={DashboardData?.target_reached}
                   target_remaining={DashboardData?.target_remaining}
                 />
               </div>
-            </div>
-
-            <div
-              className={`card-hover ${!themeBgImg
-                  ? currentMode === "dark"
-                    ? "bg-black text-white"
-                    : "bg-white text-black"
-                  : currentMode === "dark"
-                    ? "blur-bg-black text-white"
-                    : "blur-bg-white text-black"
-                } col-span-1 h-full w-full rounded-xl shadow-sm p-5 cursor-pointer`}
+            </motion.div>
+            {/* CLOSED PROJECT */}
+            <motion.div
+              initial={{ y: -120 }}
+              transition={{ duration: 0.7 }}
+              animate={{ y: [20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold pb-3">{`${t("project")} ${t(
+                <h6 className="font-semibold uppercase pb-3">{`${t("project")} ${t(
                   "chart"
                 )}`}</h6>
                 <BarChartProject
                   total_projects={DashboardData?.total_projects}
                 />
               </div>
+            </motion.div>
+          </div>
+        </>
+      ) : User?.role === 7 ? (
+        <>
+          {/* OVERVIEW */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-5 pb-5">
+            <div className="col-span-1 md:col-span-2 lg:col-span-1 xl:col-span-2 w-full flex flex-col">
+              {/* COUNTERS */}
+              <motion.div
+                transition={{ duration: 0.5 }}
+                initial={{ y: -120 }}
+                animate={{ y: [20, 30, 0] }}
+                className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-5 text-center pb-5"
+              >
+                {/* FRESH LEADS */}
+                <Link
+                  to={"/freshleads/all"}
+                  className={`${themeBgImg
+                    ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                    : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                    } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                  onClick={() => setopenBackDrop(true)}
+                >
+                  <p
+                    className={`${!themeBgImg
+                      ? "text-primary"
+                      : currentMode === "dark"
+                        ? "text-white"
+                        : "text-black"
+                      } text-[16px] break-words font-bold`}
+                  >
+                    <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
+                  </p>
+                  <p className={` ${currentMode === "dark" ? "text-white" : "text-black"}`}>
+                    {t("fresh")} {t("leads")}
+                  </p>
+                </Link>
+                {/* OTHER COUNTERS */}
+                {AgentData.map((item, index) => {
+                  return (
+                    <Link
+                      to={item.link}
+                      key={index}
+                      className={`${themeBgImg
+                        ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                        : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                        } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                      onClick={() => setopenBackDrop(true)}
+                    >
+                      <div>
+                        <p
+                          className={`${!themeBgImg
+                            ? "text-primary"
+                            : currentMode === "dark"
+                              ? "text-white"
+                              : "text-black"
+                            } text-[16px] break-words font-bold`}
+                        >
+                          <CountUp end={item.amount} duration={3} />
+                        </p>
+                        <p>
+                          {item?.title}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </motion.div>
+              {/* REVENUE */}
+              <div className="hidden xl:flex w-full grid grid-cols-2 gap-5 pb-5">
+                <motion.div
+                  transition={{ duration: 0.6 }}
+                  initial={{ y: -120 }}
+                  animate={{ y: [20, 30, 0] }}
+                  className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                    } h-full w-full justify-between items-center px-10 py-7 text-center`}
+                >
+                  <div>
+                    <p className={`text-sm font-semibold text-white `}>
+                      {t("deal_drawn_in_the_month")}
+                    </p>
+                    <p className={`text-4xl font-bold mt-2 text-white`}>
+                      AED {formatNumber(Number(DashboardData?.target_reached))}
+                    </p>
+                  </div>
+                </motion.div>
+                <motion.div
+                  transition={{ duration: 0.7 }}
+                  initial={{ y: -120 }}
+                  animate={{ y: [20, 30, 0] }}
+                  className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                    } h-full w-full justify-between items-center px-10 py-7 text-center`}
+                >
+                  <div>
+                    <p className={`text-sm font-semibold text-white`}>
+                      {t("all_time_revenue")}
+                    </p>
+                    <p className={`text-4xl font-bold mt-2 text-white`}>
+                      AED {formatNumber(Number(DashboardData?.total_closed))}
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
             </div>
+            {/* TARGET */}
+            <motion.div
+              initial={{ y: -120 }}
+              transition={{ duration: 0.6 }}
+              animate={{ y: [20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+            >
+              <div className="justify-between items-center">
+                <h6 className="font-semibold uppercase pb-3">{t("label_target")}</h6>
+                <DoughnutChart
+                  className="p-2"
+                  target_reached={DashboardData?.target_reached}
+                  target_remaining={DashboardData?.target_remaining}
+                />
+              </div>
+            </motion.div>
+            {/* PROJECT */}
+            <motion.div
+              initial={{ y: -120 }}
+              transition={{ duration: 0.7 }}
+              animate={{ y: [20, 30, 0] }}
+              className={`${themeBgImg
+                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+            >
+              <div className="justify-between items-center">
+                <h6 className="font-semibold uppercase pb-3">{t("project")}</h6>
+                <BarChartProject
+                  total_projects={DashboardData?.total_projects}
+                />
+              </div>
+            </motion.div>
           </div>
         </>
       ) : (
         <></>
-      )}
-      {/* 2ND ROW END [CHARTS FOR ADMIN ONLY] */}
+      )
+      }
 
       {/* 3RD ROW [REVENUE, TOTAL SALES] */}
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-3 pb-3">
+      <div className={`${User?.role === 7 && "xl:hidden"
+        } flex grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-5 pb-5`}>
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
-          className={`
-          card-hover bg-primary h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+            } h-full w-full justify-between items-center px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white `}>
@@ -600,12 +635,12 @@ const DashboardPanel = ({ setloading }) => {
             </p>
           </div>
         </motion.div>
-
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
-          className={`bg-primary card-hover h-auto w-full justify-between items-center rounded-xl px-10 py-7 text-center`}
+          className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+            } h-full w-full justify-between items-center px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white`}>
@@ -620,45 +655,40 @@ const DashboardPanel = ({ setloading }) => {
 
       {/* UPCOMING MEETINGS  */}
       {hasPermission("upcoming_meetings") && (
-        <div className="grid grid-cols-1 pb-3">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ margin: "-70px" }}
-            className={`${currentMode === "dark" ? "text-white" : "text-black"
-              } col-span-1 h-fit py-2`}
-          >
-            <h4 className="font-semibold p-3">
-              {`${t("upcoming")} ${t("meetings")}`?.toUpperCase()}
-            </h4>
-            <UpcomingMeeting
-              upcoming_meetings={DashboardData?.upcoming_meetings}
-            />
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ margin: "-70px" }}
+          className={`h-fit py-2 pb-5`}
+        >
+          <h4 className="font-semibold pt-3 uppercase">
+            {`${t("upcoming")} ${t("meetings")}`}
+          </h4>
+          <UpcomingMeeting
+            upcoming_meetings={DashboardData?.upcoming_meetings}
+          />
+        </motion.div>
       )}
 
       {/* REMINDERS  */}
       {visible === true && (
-        <div className="grid grid-cols-1 pb-3">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ margin: "-70px" }}
-            className={`${currentMode === "dark" ? "text-white " : "text-black"
-              } col-span-1 h-fit`}
-          >
-            <h4 id="reminders" className="font-semibold p-3">
-              {t("reminders")?.toUpperCase()}
-            </h4>
-            <Reminder
-              reminder={reminder}
-              setReminder={setReminder}
-              visible={visible}
-              setVisible={setVisible}
-            />
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ margin: "-70px" }}
+          className={`${currentMode === "dark" ? "text-white " : "text-black"
+            } h-fit`}
+        >
+          <h4 id="reminders" className="font-semibold pt-3">
+            {t("reminders")?.toUpperCase()}
+          </h4>
+          <Reminder
+            reminder={reminder}
+            setReminder={setReminder}
+            visible={visible}
+            setVisible={setVisible}
+          />
+        </motion.div>
       )}
 
       {/* 5TH ROW END [REMINDER] */}
@@ -669,18 +699,18 @@ const DashboardPanel = ({ setloading }) => {
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
         className={`${!themeBgImg
-            ? currentMode === "dark"
-              ? "bg-black"
-              : "bg-white"
-            : currentMode === "dark"
-              ? "blur-bg-black"
-              : "blur-bg-white"
+          ? currentMode === "dark"
+            ? "bg-black"
+            : "bg-white"
+          : currentMode === "dark"
+            ? "blur-bg-black"
+            : "blur-bg-white"
           } grid grid-cols-1 pb-3 my-3 rounded-xl shadow-md`}
       >
         <Task />
       </motion.div>
       {/* 5TH ROW END [TODO + SHORTCUTS] */}
-    </div>
+    </div >
   );
 };
 

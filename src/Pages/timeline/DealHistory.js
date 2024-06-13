@@ -159,7 +159,7 @@ const DealHistory = ({
         ) : (
           <RxCross2 size={20} color="#DA1F26" />
         ),
-      type: "commission",
+      // type: "commission",
     },
     // COMMISSION
     {
@@ -468,22 +468,19 @@ const DealHistory = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          } w-[100vw] h-[100vh] flex items-start justify-end `}
+            } w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseDealHistory}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -495,15 +492,13 @@ const DealHistory = ({
 
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+            className={` ${currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-            } 
+              } 
              p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
@@ -516,9 +511,8 @@ const DealHistory = ({
                     <div className="flex items-center ">
                       <div className="bg-primary h-10 w-1 rounded-full"></div>
                       <h1
-                        className={`text-lg font-semibold mx-2 uppercase ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                        className={`text-lg font-semibold mx-2 uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
                       >
                         {t("deal_history")}
                       </h1>
@@ -536,9 +530,8 @@ const DealHistory = ({
                   </div>
                   <div>
                     <div
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      } px-4`}
+                      className={`${currentMode === "dark" ? "text-white" : "text-black"
+                        } px-4`}
                     >
                       {/* STATUS */}
                       <div className="w-full mb-5">
@@ -559,37 +552,34 @@ const DealHistory = ({
 
                                 return (
                                   <div
-                                    className={`${
-                                      currentMode === "dark"
-                                        ? "bg-[#1C1C1C]"
-                                        : "bg-[#EEEEEE]"
-                                    } items-center justify-center flex flex-col rounded-xl shadow-sm h-full relative`}
+                                    className={`${currentMode === "dark"
+                                      ? "bg-[#1C1C1C]"
+                                      : "bg-[#EEEEEE]"
+                                      } items-center justify-center flex flex-col rounded-xl shadow-sm h-full relative`}
                                   >
                                     <div
-                                      className={`p-8 mb-8 flex flex-col w-full items-center text-center justify-center ${
-                                        status?.type === "commission" &&
+                                      className={`p-6 mb-8 flex flex-col w-full items-center text-center justify-center ${status?.type === "commission" &&
                                         hasPermission("add_commission")
-                                          ? "cursor-pointer"
-                                          : null
-                                      } `}
+                                        ? "cursor-pointer"
+                                        : null
+                                        } `}
                                       onClick={
                                         status?.type === "commission" &&
-                                        hasPermission("add_commission")
+                                          hasPermission("add_commission")
                                           ? () =>
-                                              handleCommissionModalOpen(status)
+                                            handleCommissionModalOpen(status)
                                           : undefined
                                       }
                                     >
-                                      <p className="text-lg font-semibold mt-4">
+                                      <p className="text-lg font-semibold mt-2">
                                         {status?.text}
                                       </p>
                                     </div>
                                     <div
-                                      className={`p-2 absolute bottom-0 w-full rounded-b-xl shadow-sm text-white text-center uppercase ${
-                                        status?.value
-                                          ? "bg-green-600"
-                                          : "bg-red-600"
-                                      }`}
+                                      className={`p-2 absolute bottom-0 w-full rounded-b-xl shadow-sm text-white text-center uppercase ${status?.value
+                                        ? "bg-green-600"
+                                        : "bg-red-600"
+                                        }`}
                                     >
                                       {status?.status}
                                     </div>
@@ -597,37 +587,48 @@ const DealHistory = ({
                                     {status?.value === false &&
                                       (status?.perm === true ? (
                                         hasPermission("add_commission") && (
-                                          <div className="p-2 rounded-full flex items-center justify-center bg-green-600 absolute top-2 right-2">
+                                          <div className={`p-2 absolute bottom-0 w-full rounded-b-xl shadow-sm text-white text-center uppercase ${status?.value
+                                            ? "bg-green-600"
+                                            : "bg-red-600"
+                                            }`}>
                                             <Tooltip title="Mark">
                                               <button
                                                 onClick={() =>
                                                   setDialogue(status)
                                                 }
+                                                className="uppercase"
                                               >
-                                                <BsCheck2All
-                                                  size={16}
-                                                  color={"white"}
-                                                />
+                                                {status?.status}
                                               </button>
                                             </Tooltip>
                                           </div>
                                         )
                                       ) : (
-                                        <div className="p-2 rounded-full flex items-center justify-center bg-green-600 absolute top-2 right-2">
+                                        <div className={`p-2 absolute bottom-0 w-full rounded-b-xl shadow-sm text-white text-center uppercase ${status?.value
+                                          ? "bg-green-600"
+                                          : "bg-red-600"
+                                          }`}>
                                           <Tooltip title="Mark">
                                             <button
                                               onClick={() =>
                                                 setDialogue(status)
                                               }
+                                              className="uppercase"
                                             >
-                                              <BsCheck2All
-                                                size={16}
-                                                color={"white"}
-                                              />
+                                              {status?.status}
                                             </button>
                                           </Tooltip>
                                         </div>
                                       ))}
+
+                                    {status?.value === true && (
+                                      <div className="absolute top-0 right-0 p-2">
+                                        <BsCheck2All
+                                          size={18}
+                                          color={"#16a34a"}
+                                        />
+                                      </div>
+                                    )}
                                   </div>
                                 );
                               })}
@@ -683,25 +684,29 @@ const DealHistory = ({
                                     </li>
                                   </>
                                 )}
-                                <li>
-                                  <span className="font-semibold">
-                                    {t("agent_comm")}
-                                  </span>
-                                  : {LeadData?.currency}{" "}
-                                  {LeadData?.agent_comm_amount} (
-                                  {LeadData?.agent_comm_percent}%)
-                                </li>
-                                {User?.role !== 7 && (
+                                {LeadData?.agent_comm_amount !== 0 && (
                                   <li>
                                     <span className="font-semibold">
-                                      {t("manager_comm")}
+                                      {t("agent_comm")}
                                     </span>
                                     : {LeadData?.currency}{" "}
-                                    {LeadData?.manager_comm_amount} (
-                                    {LeadData?.manager_comm_percent}%)
+                                    {LeadData?.agent_comm_amount} (
+                                    {LeadData?.agent_comm_percent}%)
                                   </li>
                                 )}
-                                {LeadData.discount !== 0 && (
+                                {LeadData?.agent_comm_amount !== 0 && (
+                                  User?.role !== 7 && (
+                                    <li>
+                                      <span className="font-semibold">
+                                        {t("manager_comm")}
+                                      </span>
+                                      : {LeadData?.currency}{" "}
+                                      {LeadData?.manager_comm_amount} (
+                                      {LeadData?.manager_comm_percent}%)
+                                    </li>
+                                  )
+                                )}
+                                {LeadData?.discount_amount !== 0 && (
                                   <li>
                                     <span className="font-semibold">
                                       {t("discount")}
@@ -711,7 +716,7 @@ const DealHistory = ({
                                     {LeadData?.discount_percent}%)
                                   </li>
                                 )}
-                                {LeadData.cashback !== 0 && (
+                                {LeadData?.cashback_amount !== 0 && (
                                   <li>
                                     <span className="font-semibold">
                                       {t("cashback")}
@@ -778,11 +783,10 @@ const DealHistory = ({
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
                               {transactions?.map((spa) => (
                                 <div
-                                  className={`${
-                                    currentMode === "dark"
-                                      ? "bg-[#1C1C1C]"
-                                      : "bg-[#EEEEEE]"
-                                  } rounded-xl shadow-sm card-hover w-full relative mb-4`}
+                                  className={`${currentMode === "dark"
+                                    ? "bg-[#1C1C1C]"
+                                    : "bg-[#EEEEEE]"
+                                    } rounded-xl shadow-sm card-hover w-full relative mb-4`}
                                 >
                                   {/* EDIT BUTTON */}
                                   {hasPermission("deal_spa") && (
@@ -803,11 +807,10 @@ const DealHistory = ({
                                   </div>
                                   {/* DETAILS */}
                                   <div
-                                    className={`p-4 grid ${
-                                      spa?.temp_file === null
-                                        ? "grid-cols-1"
-                                        : "grid-cols-2"
-                                    } justify-between gap-4`}
+                                    className={`p-4 grid ${spa?.temp_file === null
+                                      ? "grid-cols-1"
+                                      : "grid-cols-2"
+                                      } justify-between gap-4`}
                                   >
                                     {/* TEXT */}
                                     <div className="flex flex-col gap-4">
@@ -940,11 +943,10 @@ const DealHistory = ({
                                   (timeline, index) => (
                                     <React.Fragment key={index}>
                                       <div
-                                        className={`${
-                                          isLangRTL(i18n.language)
-                                            ? "ml-3"
-                                            : "mr-3"
-                                        } col-start-1 col-end-3 md:mx-auto relative`}
+                                        className={`${isLangRTL(i18n.language)
+                                          ? "ml-3"
+                                          : "mr-3"
+                                          } col-start-1 col-end-3 md:mx-auto relative`}
                                       >
                                         <div className="h-full w-6 flex items-center justify-center">
                                           <div
@@ -969,21 +971,19 @@ const DealHistory = ({
                                             {item.note && (
                                               <>
                                                 <div
-                                                  className={`${
-                                                    isLangRTL(i18n.language)
-                                                      ? "ml-3"
-                                                      : "mr-3"
-                                                  } col-start-1 col-end-3 md:mx-auto relative`}
+                                                  className={`${isLangRTL(i18n.language)
+                                                    ? "ml-3"
+                                                    : "mr-3"
+                                                    } col-start-1 col-end-3 md:mx-auto relative`}
                                                 >
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
                                                   </div>
                                                   <div
-                                                    className={`${
-                                                      isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
-                                                    } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
+                                                    className={`${isLangRTL(i18n.language)
+                                                      ? "-mr-2"
+                                                      : "-ml-2"
+                                                      } absolute top-1/2 -mt-5 text-center bg-primary rounded-full p-2`}
                                                   >
                                                     <MdNoteAlt
                                                       className="text-white"
@@ -992,11 +992,10 @@ const DealHistory = ({
                                                   </div>
                                                 </div>
                                                 <div
-                                                  className={`${
-                                                    currentMode === "dark"
-                                                      ? "bg-[#1C1C1C]"
-                                                      : "bg-[#EEEEEE]"
-                                                  } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  className={`${currentMode === "dark"
+                                                    ? "bg-[#1C1C1C]"
+                                                    : "bg-[#EEEEEE]"
+                                                    } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                 >
                                                   {/* ADDED BY  */}
                                                   <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
@@ -1112,9 +1111,9 @@ const DealHistory = ({
                       boxShadow: "none !important",
                     },
                     "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                      {
-                        // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
-                      },
+                    {
+                      // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                    },
                   }}
                   open={DialogueVal}
                   onClose={(e) => setDialogue(false)}
@@ -1133,11 +1132,10 @@ const DealHistory = ({
                     <IoMdClose size={18} />
                   </IconButton>
                   <div
-                    className={`px-10 py-5 ${
-                      currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-white text-black"
-                    }`}
+                    className={`px-10 py-5 ${currentMode === "dark"
+                      ? "bg-[#1C1C1C] text-white"
+                      : "bg-white text-black"
+                      }`}
                   >
                     <div className="flex flex-col justify-center items-center">
                       <IoIosAlert size={50} className="text-primary text-2xl" />
@@ -1167,11 +1165,10 @@ const DealHistory = ({
                         onClick={() => setDialogue(false)}
                         ripple={true}
                         variant="outlined"
-                        className={`shadow-none p-3 rounded-md text-sm  ${
-                          currentMode === "dark"
-                            ? "text-white border-white"
-                            : "text-black border-black"
-                        }`}
+                        className={`shadow-none p-3 rounded-md text-sm  ${currentMode === "dark"
+                          ? "text-white border-white"
+                          : "text-black border-black"
+                          }`}
                       >
                         {t("cancel")}
                       </Button>

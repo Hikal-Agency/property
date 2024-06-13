@@ -2,11 +2,11 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;800&display=swap"); */
 /* @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;900&display=swap'); */
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500&display=swap");
 
 body {
   margin: 0;
@@ -15,114 +15,145 @@ body {
 }
 
 .bg-dark {
-  background-color: #282B30;
+  background-color: #282b30;
 }
 .bg-light {
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
 
-
+.bg-dark-neu {
+  border-radius: 10px;
+  background: #282b30;
+  box-shadow: 5px 5px 10px #111111, -5px -5px 10px #444444;
+}
+.bg-light-neu {
+  border-radius: 10px;
+  background: #eeeeee;
+  box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
+}
+.bg-primary-dark-neu {
+  border-radius: 10px;
+  background: var(--primary-color);
+  box-shadow: 5px 5px 10px #111111, -5px -5px 10px #444444;
+}
+.bg-primary-light-neu {
+  border-radius: 10px;
+  background: var(--primary-color);
+  box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
+}
+.bg-dark-neu-bg {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 10px #111111, -2px -2px 10px #444444;
+  border: 1px solid #111111;
+}
+.bg-light-neu-bg {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 2px 2px 10px #cccccc, -2px -2px 10px #ffffff;
+  border: 1px solid #eeeeee;
+}
 
 /* search bar */
 
 .search {
   &__container {
-      padding-top: 64px;
+    padding-top: 64px;
   }
-  
-  &__title {
-      font-size: 22px;
-      font-weight: 900;
-      text-align: center;
-      color: #ff8b88;
-  }
-  
-  &__input {
-      width: 100%;
-      padding: 12px 24px;
 
-      background-color: transparent;
-      transition: transform 250ms ease-in-out;
-      font-size: 14px;
-      line-height: 18px;
-      
-      color: #575756;
-      background-color: transparent;
-/*         background-image: url(http://mihaeltomic.com/codepen/input-search/ic_search_black_24px.svg); */
+  &__title {
+    font-size: 22px;
+    font-weight: 900;
+    text-align: center;
+    color: #ff8b88;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 12px 24px;
+
+    background-color: transparent;
+    transition: transform 250ms ease-in-out;
+    font-size: 14px;
+    line-height: 18px;
+
+    color: #575756;
+    background-color: transparent;
+    /*         background-image: url(http://mihaeltomic.com/codepen/input-search/ic_search_black_24px.svg); */
 
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-size: 18px 18px;
-      background-position: 95% center;
-      border-radius: 50px;
-      border: 1px solid #575756;
-      transition: all 250ms ease-in-out;
-      backface-visibility: hidden;
-      transform-style: preserve-3d;
-      
-      &::placeholder {
-          color: color(#575756 a(0.8));
-          text-transform: uppercase;
-          letter-spacing: 1.5px;
-      }
-      
-      &:hover,
-      &:focus {
-          padding: 12px 0;
-          outline: 0;
-          border: 1px solid transparent;
-          border-bottom: 1px solid #575756;
-          border-radius: 0;
-          background-position: 100% center;
-      }
+    background-repeat: no-repeat;
+    background-size: 18px 18px;
+    background-position: 95% center;
+    border-radius: 50px;
+    border: 1px solid #575756;
+    transition: all 250ms ease-in-out;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+
+    &::placeholder {
+      color: color(#575756 a(0.8));
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    &:hover,
+    &:focus {
+      padding: 12px 0;
+      outline: 0;
+      border: 1px solid transparent;
+      border-bottom: 1px solid #575756;
+      border-radius: 0;
+      background-position: 100% center;
+    }
   }
 }
 
 .country-dropdown-container option {
-  color: black !important; 
+  color: black !important;
 }
 
 .credits {
   &__container {
-      margin-top: 24px;
+    margin-top: 24px;
   }
-  
+
   &__text {
-      text-align: center;
-      font-size: 13px;
-      line-height: 18px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 18px;
   }
-  
+
   &__link {
-      color: #ff8b88;
-      text-decoration: none;
-      transition: color 250ms ease-in;
-      
-      &:hover,
-      &:focus {
-          color: color(#ff8b88 blackness(+25%));
-      }
+    color: #ff8b88;
+    text-decoration: none;
+    transition: color 250ms ease-in;
+
+    &:hover,
+    &:focus {
+      color: color(#ff8b88 blackness(+25%));
+    }
   }
 }
 
 /* search bar ends  */
 
-.PhoneInputInput{
+.PhoneInputInput {
   background: none;
 }
-
 
 :root {
   --primary-color: "";
   /* --font-family: "Open Sans", system-ui, Inter, -apple-system, BlinkMacSystemFont,
   "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
   sans-serif; */
-  --font-family: "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-family: "Noto Sans", system-ui, -apple-system, BlinkMacSystemFont,
+    Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   --font-size: "12px";
-
 }
 
-html, body{
+html,
+body {
   font-family: var(--font-family) !important;
 }
 
@@ -140,10 +171,10 @@ html, body{
 
 .bg-btn-primary {
   background: var(--primary-color) !important;
-  border: 1px solid
+  border: 1px solid;
 }
 
-.MuiTabs-indicator{
+.MuiTabs-indicator {
   background: var(--primary-color) !important;
 }
 
@@ -165,8 +196,8 @@ html, body{
   /* padding: 10px; */
 }
 
-.custom-tooltip h1{
-  background: #E5E7EB;
+.custom-tooltip h1 {
+  background: #e5e7eb;
   color: black;
   font-weight: bold;
   padding: 4px;
@@ -245,19 +276,23 @@ input[type="number"] {
 }
 
 .MuiDataGrid-panel .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
-  color : var(--primary-color) !important;
+  color: var(--primary-color) !important;
 }
 
-.MuiDataGrid-panel .MuiButtonBase-root .MuiSwitch-switchBase{
+.MuiDataGrid-panel .MuiButtonBase-root .MuiSwitch-switchBase {
   color: var(--primary-color);
   font-family: var(--font-family);
 }
 
 .MuiDataGrid-panel .MuiSwitch-root .MuiSwitch-track {
-background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
-.MuiDataGrid-panel  .css-1ycxvqq-MuiSwitch-root .MuiSwitch-thumb .MuiSwitch-thumb .css-jsexje-MuiSwitch-thumb {
-  color : var(--primary-color) !important;
+.MuiDataGrid-panel
+  .css-1ycxvqq-MuiSwitch-root
+  .MuiSwitch-thumb
+  .MuiSwitch-thumb
+  .css-jsexje-MuiSwitch-thumb {
+  color: var(--primary-color) !important;
   font-family: var(--font-family);
 }
 
@@ -271,7 +306,6 @@ background-color: var(--primary-color);
   color: black !important;
   font-family: var(--font-family);
 }
-
 
 /* .sidebar-root > .ps-menu-root > ul > div > div > li > a > .ps-menu-label{
   color: var(--primary-color);
@@ -480,7 +514,7 @@ aside.ps-sidebar-root {
   z-index: 10 !important;
   min-height: 45px !important;
   /* font-size: 12px !important; */
-  
+
   font-family: var(--font-family);
   font-size: var(--font-size) !important;
 }
@@ -620,7 +654,6 @@ label[for="bulkImport"] .MuiButtonBase-root {
   font-family: var(--font-family);
 }
 
-
 .MuiDataGrid-cell badge:not(badge.available) {
   background: #000000c7 !important;
   width: 100%;
@@ -671,8 +704,10 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 /* mui input label padding remove */
-.css-e2zqu4 .MuiFormLabel-root, .css-e2zqu4 .MuiInputLabel-root, .css-e2zqu4 .MuiInputLabel-formControl{
-  left:0 !important
+.css-e2zqu4 .MuiFormLabel-root,
+.css-e2zqu4 .MuiInputLabel-root,
+.css-e2zqu4 .MuiInputLabel-formControl {
+  left: 0 !important;
 }
 
 .MuiDataGrid-main
@@ -735,7 +770,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .light-mode-sidebar .leads_counter {
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   background: var(--primary-color) !important;
   font-family: var(--font-family);
 }
@@ -777,11 +812,13 @@ label[for="bulkImport"] .MuiButtonBase-root {
   gap: 0.4rem !important;
 }
 
-.MuiDataGrid-columnsPanel .css-jsexje-MuiSwitch-thumb{
-    background-color: var(--primary-color) !important;
+.MuiDataGrid-columnsPanel .css-jsexje-MuiSwitch-thumb {
+  background-color: var(--primary-color) !important;
 }
 
-.MuiDataGrid-columnsPanel .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track{
+.MuiDataGrid-columnsPanel
+  .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked
+  + .MuiSwitch-track {
   background-color: var(--primary-color) !important;
 }
 
@@ -789,13 +826,13 @@ label[for="bulkImport"] .MuiButtonBase-root {
   border-bottom: 0 !important;
 }
 
- .css-otzuo3-MuiDataGrid-root .MuiDataGrid-cell:focus {
+.css-otzuo3-MuiDataGrid-root .MuiDataGrid-cell:focus {
   outline: 1px solid var(--primary-color) !important;
- }
+}
 
- .MuiDataGrid-root {
+.MuiDataGrid-root {
   z-index: 1;
- }
+}
 
 .MuiDataGrid-cell {
   text-align: center !important;
@@ -1223,35 +1260,35 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .animate-profile-pic img {
-  animation: popout .15s ease-in forwards;
+  animation: popout 0.15s ease-in forwards;
   pointer-events: none;
 }
 
 @keyframes popout {
   0% {
     transform: scale(0.8);
-    position: fixed; 
+    position: fixed;
     left: 76px;
     top: 56px;
-  } 
+  }
 
   100% {
     transform: translate(45vw, 45vh) scale(7);
-    position: fixed; 
+    position: fixed;
   }
 }
 
 @keyframes float {
-    0% {
-      transform: translateY(-20px);
-    }
+  0% {
+    transform: translateY(-20px);
+  }
 
-    100% {
-      transform: translateY(0);
-    }
+  100% {
+    transform: translateY(0);
+  }
 }
 
-.navbar-menu-backdrop{
+.navbar-menu-backdrop {
   z-index: 15 !important;
 }
 
@@ -1264,8 +1301,8 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .deal-closed-animation {
-  position: fixed; 
-  bottom: 0; 
+  position: fixed;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 999;
@@ -1274,105 +1311,116 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 @keyframes slideIn {
-    0% {
-      transform: translateY(130%);
-    }
-    
-    20% {
-      transform: scale(1.5) translateY(-18%);
-    }
-    
-    100% {
-      transform: scale(1) translateY(0);
-    }
+  0% {
+    transform: translateY(130%);
+  }
+
+  20% {
+    transform: scale(1.5) translateY(-18%);
+  }
+
+  100% {
+    transform: scale(1) translateY(0);
+  }
 }
 
-.fade-out-confetti, .fade-out-popup{
-  animation: fadeoutclosedanimation .4s ease-in-out forwards;
+.fade-out-confetti,
+.fade-out-popup {
+  animation: fadeoutclosedanimation 0.4s ease-in-out forwards;
 }
 
 @keyframes fadeoutclosedanimation {
-    100%{
-      opacity: 0;
-    }
+  100% {
+    opacity: 0;
+  }
 }
 
-
-.OffEx4 {/* ex 4 texts  */
+.OffEx4 {
+  /* ex 4 texts  */
   -webkit-animation: fadeinout 1s linear forwards;
- animation: fadeinout 1s linear alternate infinite;
- animation-delay: 0s;
+  animation: fadeinout 1s linear alternate infinite;
+  animation-delay: 0s;
 }
 
-.triangle1Ex4{
- -webkit-animation: fadeinout 4s linear forwards;
- animation: fadeinout 3s linear alternate infinite;
- animation-delay: 2s;
+.triangle1Ex4 {
+  -webkit-animation: fadeinout 4s linear forwards;
+  animation: fadeinout 3s linear alternate infinite;
+  animation-delay: 2s;
 }
-        .reminder-line {
-            width: 2px;
-            height: 0;
-            background-color: var(--primary-color);
-            position: absolute;
-            animation: reminderAnimation 2s infinite;
-        }
-
-.triangle2Ex4{
- -webkit-animation: fadeinout 4s linear forwards;
- animation: fadeinout 2s linear alternate infinite;
- animation-delay: 3s;
+.reminder-line {
+  width: 2px;
+  height: 0;
+  background-color: var(--primary-color);
+  position: absolute;
+  animation: reminderAnimation 2s infinite;
 }
 
-.triangle3Ex4{
- -webkit-animation: fadeinout 4s linear forwards;
- animation: fadeinout 1s linear alternate infinite;
- animation-delay: 4s;
+.triangle2Ex4 {
+  -webkit-animation: fadeinout 4s linear forwards;
+  animation: fadeinout 2s linear alternate infinite;
+  animation-delay: 3s;
+}
+
+.triangle3Ex4 {
+  -webkit-animation: fadeinout 4s linear forwards;
+  animation: fadeinout 1s linear alternate infinite;
+  animation-delay: 4s;
 }
 
 .BorderAnimationEx4 {
- stroke-dasharray: 2000;
- stroke-dashoffset: 2000;
- animation: BannerBorder 3s linear forwards;
- animation-delay: 0s;
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: BannerBorder 3s linear forwards;
+  animation-delay: 0s;
 }
 
-/* Global Border Animation   */ 
+/* Global Border Animation   */
 @keyframes BannerBorder {
- from {
-   stroke-dashoffset: 2000;
- }
- to {
-   stroke-dashoffset: 1;
- }
+  from {
+    stroke-dashoffset: 2000;
+  }
+  to {
+    stroke-dashoffset: 1;
+  }
 }
 
 @-webkit-keyframes fadeinout {
- 0%,100% { opacity: 0; }
- 50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeinout {
- 0%,100% { opacity: 0; }
- 50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
-
 .amount-animation {
- animation:  amountFade 1s linear alternate infinite;
+  animation: amountFade 1s linear alternate infinite;
 }
 
 @keyframes amountFade {
-    0% {
-      opacity: 0.6;
-    }
+  0% {
+    opacity: 0.6;
+  }
 
-    100% {
-      opacity: 1;
-    }
+  100% {
+    opacity: 1;
+  }
 }
 
-.apexcharts-xaxis-label, .apexcharts-yaxis-label {
-  fill: #AAAAAA; /* Set the color for all labels */
+.apexcharts-xaxis-label,
+.apexcharts-yaxis-label {
+  fill: #aaaaaa; /* Set the color for all labels */
 }
 
 /* DROPDOWN  */

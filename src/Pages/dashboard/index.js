@@ -72,7 +72,7 @@ const Dashboard = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 mt-2 overflow-x-hidden ${
+            className={`w-full p-5 overflow-x-hidden ${
               !themeBgImg && (currentMode === "dark" ? "bg-dark text-white" : "bg-light text-black")
             }`}
           >

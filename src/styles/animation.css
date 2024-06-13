@@ -282,7 +282,7 @@
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(38, 38, 38, 0.4);
+  box-shadow: 0 0 10px rgba(38, 38, 38, 0.2);
 }
 .blur-bg-light-nr::before {
   content: "";
@@ -295,7 +295,7 @@
   background: rgba(238, 238, 238, 0.5);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px rgba(38, 38, 38, 0.4);
+  box-shadow: 0 0 10px rgba(38, 38, 38, 0.2);
 }
 
 .blur-bg-dark,
@@ -315,7 +315,7 @@
   backdrop-filter: blur(10px);
   /* border-radius: 0.75rem; */
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(238, 238, 238, 0.4);
+  box-shadow: 0 0 10px rgba(238, 238, 238, 0.2);
 }
 .blur-bg-dark-nr::before {
   content: "";
@@ -328,7 +328,7 @@
   background: rgba(28, 28, 28, 0.5);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px rgba(238, 238, 238, 0.4);
+  box-shadow: 0 0 10px rgba(238, 238, 238, 0.2);
 }
 
 .blur-bg-dark,
@@ -352,7 +352,7 @@
   backdrop-filter: blur(10px);
   /* border-radius: 0.75rem; */
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(238, 238, 238, 0.4);
+  box-shadow: 0 0 10px rgba(238, 238, 238, 0.2);
 }
 .blur-bg-black-nr::before {
   content: "";
@@ -365,7 +365,7 @@
   background: rgba(0, 0, 0, 0.5);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px rgba(238, 238, 238, 0.4);
+  box-shadow: 0 0 10px rgba(238, 238, 238, 0.2);
 }
 
 .blur-bg-white,
@@ -385,7 +385,7 @@
   backdrop-filter: blur(10px);
   /* border-radius: 0.75rem; */
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(38, 38, 38, 0.4);
+  box-shadow: 0 0 10px rgba(38, 38, 38, 0.2);
 }
 .blur-bg-white-nr::before {
   content: "";
@@ -398,7 +398,7 @@
   background: rgba(255, 255, 255, 0.5);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px rgba(38, 38, 38, 0.4);
+  box-shadow: 0 0 10px rgba(38, 38, 38, 0.2);
 }
 
 /* booked deals slide */

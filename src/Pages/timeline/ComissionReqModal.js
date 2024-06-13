@@ -78,13 +78,13 @@ const CommissionReqModal = ({
     total_amount:
       (Number(commReqModal?.comm_amount) || 0) +
       (Number(commReqModal?.vat) || 0),
-    company: "HIKAL REAL STATE LLC" || null,
-    company_trn: "100587185800003" || null,
+    company: "HIKAL REAL ESTATE LLC" || null,
+    company_trn: "104389744400003" || null,
     company_email: "info@hikalagency.ae" || null,
     company_tele: "+97142722249" || null,
     bank_name: "EMIRATES ISLAMIC" || null,
     bank_address: "EI SHK ZAYED RD AL WASL TOWER" || null,
-    bank_acc_name: "HIKAL REAL STATE L.L.C." || null,
+    bank_acc_name: "HIKAL REAL ESTATE L.L.C." || null,
     bank_acc_no: "3708453323701" || null,
     bank_iban: "AE810340003708453323701" || null,
     bank_swift_code: "MEBLAEAD" || null,
