@@ -38,7 +38,7 @@ const Petty_Cash_Form = () => {
     country: "",
     currency: "AED",
     fund_amount: "",
-    type: "fund",
+    type: "Fund",
     fund_by: "",
   });
 
