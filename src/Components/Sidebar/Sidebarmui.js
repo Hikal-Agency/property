@@ -1608,29 +1608,34 @@ const Sidebarmui = () => {
       // pro: true,
       links: [
         {
-          name: t("menu_vendors"),
-          icon: <FaHome size={16} />,
+          name: t("menu_transaction"),
+          // icon: <BsArrowLeftRight size={16} />,
           // pro: true,
-          link: "/vendors",
+          link: "/transactions",
         },
         {
           name: t("menu_visa"),
           // pro: true,
           link: "/visa",
         },
+        {
+          name: t("menu_petty_cash"),
+          // icon: <FaHome size={16} />,
+          // pro: true,
+          link: "/petty_cash",
+        },
+        {
+          name: t("menu_vendors"),
+          icon: <FaHome size={16} />,
+          // pro: true,
+          link: "/vendors",
+        },
 
         {
-          name: t("menu_transaction"),
+          name: t("menu_reports"),
           icon: <BsArrowLeftRight size={16} />,
           pro: false,
           submenu: [
-            {
-              name: t("menu_transaction"),
-              // icon: <BsArrowLeftRight size={16} />,
-              // pro: true,
-              link: "/transactions",
-            },
-
             {
               name: t("menu_statements"),
               // icon: <FaHome size={16} />,
@@ -1642,12 +1647,6 @@ const Sidebarmui = () => {
               // icon: <FaHome size={16} />,
               // pro: true,
               link: "/commission_vat",
-            },
-            {
-              name: t("menu_petty_cash"),
-              // icon: <FaHome size={16} />,
-              // pro: true,
-              link: "/petty_cash",
             },
           ],
         },
@@ -2021,10 +2020,7 @@ const Sidebarmui = () => {
     });
   }, []);
 
-  const SidebarMenu = ({
-    currentMode,
-    isLangRTL
-  }) => {
+  const SidebarMenu = ({ currentMode, isLangRTL }) => {
     return (
       <Menu
         menuItemStyles={{
@@ -2068,25 +2064,25 @@ const Sidebarmui = () => {
               minWidth: "18px",
             },
             "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
-            {
-              display: "flex",
-              gap: "5px",
-              paddingRight: !isLangRTL(i18n?.language) && "10px",
-              paddingLeft: isLangRTL(i18n?.language) && "10px",
-              // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
-              // color: !themeBgImg
-              //   ? primaryColor
-              //   : currentMode === "dark"
-              //   ? "#FFFFFF"
-              //   : "#000000",
-            },
+              {
+                display: "flex",
+                gap: "5px",
+                paddingRight: !isLangRTL(i18n?.language) && "10px",
+                paddingLeft: isLangRTL(i18n?.language) && "10px",
+                // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                // color: !themeBgImg
+                //   ? primaryColor
+                //   : currentMode === "dark"
+                //   ? "#FFFFFF"
+                //   : "#000000",
+              },
             "& .ps-menu-button": {
               fontWeight: "medium",
               color: !themeBgImg
                 ? primaryColor
                 : currentMode === "dark"
-                  ? "#FFFFFF"
-                  : "#000000",
+                ? "#FFFFFF"
+                : "#000000",
               gap: "5px",
             },
             "& .ps-menu-button:hover": {
@@ -2094,8 +2090,8 @@ const Sidebarmui = () => {
               color: !themeBgImg
                 ? primaryColor
                 : currentMode === "dark"
-                  ? "#000000"
-                  : "#FFFFFF",
+                ? "#000000"
+                : "#FFFFFF",
             },
             "& .ps-menu-icon": {
               marginRight: !isLangRTL(i18n.language) && "10px",
@@ -2126,20 +2122,14 @@ const Sidebarmui = () => {
                       }
                     }
                   } else {
-                    if (
-                      hasPermission(subMenu[k]?.link, true)
-                        .isPermitted
-                    ) {
+                    if (hasPermission(subMenu[k]?.link, true).isPermitted) {
                       permittedLinksMoreThan0 = true;
                       break;
                     }
                   }
                 }
               } else {
-                if (
-                  hasPermission(link?.links[i]?.link, true)
-                    ?.isPermitted
-                ) {
+                if (hasPermission(link?.links[i]?.link, true)?.isPermitted) {
                   permittedLinksMoreThan0 = true;
                   break;
                 }
@@ -2193,20 +2183,17 @@ const Sidebarmui = () => {
                     <MenuItem
                       active={
                         link?.links[0]?.link ===
-                        window.location.pathname.replaceAll(
-                          "%20",
-                          " "
-                        )
+                        window.location.pathname.replaceAll("%20", " ")
                       }
                     >
                       <div
-                        className={`flex items-center ${isCollapsed ? "gap-4" : ""
-                          } rounded-lg text-base ${!isCollapsed ? "justify-center" : ""
-                          } `}
+                        className={`flex items-center ${
+                          isCollapsed ? "gap-4" : ""
+                        } rounded-lg text-base ${
+                          !isCollapsed ? "justify-center" : ""
+                        } `}
                       >
-                        <span
-                          className={`${!isCollapsed && "text-xl"}`}
-                        >
+                        <span className={`${!isCollapsed && "text-xl"}`}>
                           {link?.links[0]?.icon}
                         </span>
                         {isCollapsed && (
@@ -2216,17 +2203,15 @@ const Sidebarmui = () => {
                             {link?.links[0]?.name}
                             {link?.links[0].pro && (
                               <div
-                                className={`${themeBgImg
-                                  ? currentMode === "dark"
-                                    ? "bg-black"
-                                    : "bg-white"
-                                  : "bg-transparent"
-                                  } p-1 rounded-full`}
+                                className={`${
+                                  themeBgImg
+                                    ? currentMode === "dark"
+                                      ? "bg-black"
+                                      : "bg-white"
+                                    : "bg-transparent"
+                                } p-1 rounded-full`}
                               >
-                                <GiQueenCrown
-                                  size={16}
-                                  className="gold-grad"
-                                />
+                                <GiQueenCrown size={16} className="gold-grad" />
                               </div>
                             )}
                           </span>
@@ -2299,10 +2284,7 @@ const Sidebarmui = () => {
                           <MenuItem
                             active={
                               link?.links[0]?.link ===
-                              window.location.pathname.replaceAll(
-                                "%20",
-                                " "
-                              )
+                              window.location.pathname.replaceAll("%20", " ")
                             }
                           >
                             <div className="flex my-1 h-[38px] items-center justify-center text-xl">
@@ -2325,17 +2307,15 @@ const Sidebarmui = () => {
                           {link.title}
                           {link.pro && (
                             <div
-                              className={`${themeBgImg
-                                ? currentMode === "dark"
-                                  ? "bg-black"
-                                  : "bg-white"
-                                : "bg-transparent"
-                                } p-1 rounded-full`}
+                              className={`${
+                                themeBgImg
+                                  ? currentMode === "dark"
+                                    ? "bg-black"
+                                    : "bg-white"
+                                  : "bg-transparent"
+                              } p-1 rounded-full`}
                             >
-                              <GiQueenCrown
-                                size={16}
-                                className="gold-grad"
-                              />
+                              <GiQueenCrown size={16} className="gold-grad" />
                             </div>
                           )}
                         </span>
@@ -2344,15 +2324,11 @@ const Sidebarmui = () => {
                     >
                       {link.links.map((menu, index) => {
                         if (
-                          hasPermission(menu?.link, true)
-                            ?.isPermitted ||
+                          hasPermission(menu?.link, true)?.isPermitted ||
                           (menu?.submenu &&
-                            hasPermission(
-                              menu?.submenu[0]?.link,
-                              true
-                            )?.isPermitted) ||
-                          (menu?.link === "/dashboard" &&
-                            User?.role !== 5)
+                            hasPermission(menu?.submenu[0]?.link, true)
+                              ?.isPermitted) ||
+                          (menu?.link === "/dashboard" && User?.role !== 5)
                         ) {
                           if (menu?.submenu) {
                             return (
@@ -2389,15 +2365,12 @@ const Sidebarmui = () => {
                                   // submenu containerr color
                                   "& .css-z5rm24": {
                                     backgroundColor:
-                                      currentMode === "dark" &&
-                                      "#1C1C1C",
+                                      currentMode === "dark" && "#1C1C1C",
                                     borderRadius: "0px",
                                   },
                                   // Submenu count color
                                   "& .css-1rnkhs0": {
-                                    color:
-                                      currentMode === "dark" &&
-                                      "white",
+                                    color: currentMode === "dark" && "white",
                                   },
                                   // LIGHT MODE SETTINGS
                                   "& .css-1ohfb25:hover": {
@@ -2417,11 +2390,9 @@ const Sidebarmui = () => {
                                   },
                                   "& .ps-menu-icon": {
                                     marginRight:
-                                      !isLangRTL(i18n.language) &&
-                                      "10px",
+                                      !isLangRTL(i18n.language) && "10px",
                                     marginLeft:
-                                      isLangRTL(i18n.language) &&
-                                      "10px",
+                                      isLangRTL(i18n.language) && "10px",
                                     // color:
                                     //   currentMode === "dark"
                                     //     ? "white"
@@ -2439,12 +2410,13 @@ const Sidebarmui = () => {
                                       {menu.name}
                                       {menu.pro && (
                                         <div
-                                          className={`${themeBgImg
-                                            ? currentMode === "dark"
-                                              ? "bg-black"
-                                              : "bg-white"
-                                            : "bg-transparent"
-                                            } p-1 rounded-full`}
+                                          className={`${
+                                            themeBgImg
+                                              ? currentMode === "dark"
+                                                ? "bg-black"
+                                                : "bg-white"
+                                              : "bg-transparent"
+                                          } p-1 rounded-full`}
                                         >
                                           <GiQueenCrown
                                             size={16}
@@ -2456,18 +2428,13 @@ const Sidebarmui = () => {
                                   }
                                   icon={menu.icon}
                                   open={
-                                    openedSubMenu.menuIndex ===
-                                    index + 1 &&
-                                    openedSubMenu.linkIndex ===
-                                    linkIndex
+                                    openedSubMenu.menuIndex === index + 1 &&
+                                    openedSubMenu.linkIndex === linkIndex
                                   }
                                 >
                                   {menu?.submenu.map((m, index) => {
                                     return (
-                                      <Link
-                                        key={index}
-                                        to={`${m.link}`}
-                                      >
+                                      <Link key={index} to={`${m.link}`}>
                                         <Box
                                           sx={{
                                             // STYLING FOR LIGHT MODE
@@ -2475,28 +2442,23 @@ const Sidebarmui = () => {
                                               borderRadius: "0px",
                                             },
                                             "& .css-1mfnem1:hover": {
-                                              backgroundColor:
-                                                primaryColor,
+                                              backgroundColor: primaryColor,
                                               color: "white",
                                             },
                                             "& .css-1ogoo8i": {
-                                              backgroundColor:
-                                                primaryColor,
+                                              backgroundColor: primaryColor,
                                               color: "white",
                                             },
                                             // STYLING FOR DARK MODE
                                             "& .css-yktbuo": {
-                                              backgroundColor:
-                                                primaryColor,
+                                              backgroundColor: primaryColor,
                                               color: "white",
                                             },
                                             "& .css-1f8bwsm": {
-                                              minWidth:
-                                                "10px !important",
+                                              minWidth: "10px !important",
                                             },
                                             "& .css-yktbuo:hover": {
-                                              backgroundColor:
-                                                primaryColor,
+                                              backgroundColor: primaryColor,
                                               color: "white",
                                             },
                                             "& .css-1v6ithu": {
@@ -2505,24 +2467,20 @@ const Sidebarmui = () => {
                                             "& .leads_counter": {
                                               color: m?.countColor
                                                 ? m?.countColor
-                                                : currentMode ===
-                                                  "dark"
-                                                  ? "white"
-                                                  : "black",
+                                                : currentMode === "dark"
+                                                ? "white"
+                                                : "black",
                                               right:
-                                                !isLangRTL(
-                                                  i18n.language
-                                                ) && "3px",
+                                                !isLangRTL(i18n.language) &&
+                                                "3px",
                                               left:
-                                                isLangRTL(
-                                                  i18n.language
-                                                ) && "3px",
+                                                isLangRTL(i18n.language) &&
+                                                "3px",
                                             },
                                             "& .css-cveggr-MuiListItemIcon-root":
-                                            {
-                                              minWidth:
-                                                "10px !important",
-                                            },
+                                              {
+                                                minWidth: "10px !important",
+                                              },
                                           }}
                                           className=" relative my-1"
                                         >
@@ -2539,11 +2497,9 @@ const Sidebarmui = () => {
                                             {m?.icon && (
                                               <ListItemIcon
                                                 style={{
-                                                  minWidth:
-                                                    "23px !important",
+                                                  minWidth: "23px !important",
                                                   color:
-                                                    currentMode ===
-                                                      "dark"
+                                                    currentMode === "dark"
                                                       ? "white !important"
                                                       : "black !important",
                                                 }}
@@ -2557,13 +2513,13 @@ const Sidebarmui = () => {
                                               {m?.name || ""}
                                               {m.pro && (
                                                 <div
-                                                  className={`${themeBgImg
-                                                    ? currentMode ===
-                                                      "dark"
-                                                      ? "bg-black"
-                                                      : "bg-white"
-                                                    : "bg-transparent"
-                                                    } p-1 rounded-full`}
+                                                  className={`${
+                                                    themeBgImg
+                                                      ? currentMode === "dark"
+                                                        ? "bg-black"
+                                                        : "bg-white"
+                                                      : "bg-transparent"
+                                                  } p-1 rounded-full`}
                                                 >
                                                   <GiQueenCrown
                                                     size={16}
@@ -2575,20 +2531,18 @@ const Sidebarmui = () => {
                                           </MenuItem>
                                           {m?.count != null && (
                                             <span
-                                              className={`leads_counter block absolute ${isLangRTL(
-                                                i18n.language
-                                              )
-                                                ? "left-5"
-                                                : "right-5"
-                                                }`}
+                                              className={`leads_counter block absolute ${
+                                                isLangRTL(i18n.language)
+                                                  ? "left-5"
+                                                  : "right-5"
+                                              }`}
                                               style={{
                                                 top: "50%",
-                                                transform:
-                                                  "translateY(-50%)",
+                                                transform: "translateY(-50%)",
                                               }}
                                             >
                                               {m?.count !== null &&
-                                                m?.count !== undefined
+                                              m?.count !== undefined
                                                 ? m?.count
                                                 : ""}
                                             </span>
@@ -2638,12 +2592,8 @@ const Sidebarmui = () => {
                                         currentMode === "dark"
                                           ? menu?.countColor
                                           : "black",
-                                      right:
-                                        !isLangRTL(i18n.language) &&
-                                        "3px",
-                                      left:
-                                        isLangRTL(i18n.language) &&
-                                        "3px",
+                                      right: !isLangRTL(i18n.language) && "3px",
+                                      left: isLangRTL(i18n.language) && "3px",
                                     },
                                   }}
                                   className="relative my-1"
@@ -2659,20 +2609,18 @@ const Sidebarmui = () => {
                                   >
                                     <div className="flex items-center gap-4 text-base">
                                       <span
-                                        className={`${!isCollapsed && "text-xl"
-                                          }`}
+                                        className={`${
+                                          !isCollapsed && "text-xl"
+                                        }`}
                                         style={{
                                           // icons css
                                           "& .css-wx7wi4": {
-                                            display:
-                                              "none !important",
+                                            display: "none !important",
                                             opacity: "0.7",
                                           },
                                           "& .css-wx7wi4:hover": {
-                                            transform:
-                                              "rotate(20deg)",
-                                            transition:
-                                              "all 0.6s ease",
+                                            transform: "rotate(20deg)",
+                                            transition: "all 0.6s ease",
                                             opacity: "1",
                                           },
                                         }}
@@ -2686,13 +2634,13 @@ const Sidebarmui = () => {
                                           {menu.name}
                                           {menu.pro && (
                                             <div
-                                              className={`${themeBgImg
-                                                ? currentMode ===
-                                                  "dark"
-                                                  ? "bg-black"
-                                                  : "bg-white"
-                                                : "bg-transparent"
-                                                } p-1 rounded-full`}
+                                              className={`${
+                                                themeBgImg
+                                                  ? currentMode === "dark"
+                                                    ? "bg-black"
+                                                    : "bg-white"
+                                                  : "bg-transparent"
+                                              } p-1 rounded-full`}
                                             >
                                               <GiQueenCrown
                                                 size={16}
@@ -2707,18 +2655,18 @@ const Sidebarmui = () => {
                                   {menu?.count !== null &&
                                     menu?.count !== undefined && (
                                       <span
-                                        className={`leads_counter block absolute ${isLangRTL(i18n.language)
-                                          ? "left-5"
-                                          : "right-5"
-                                          }`}
+                                        className={`leads_counter block absolute ${
+                                          isLangRTL(i18n.language)
+                                            ? "left-5"
+                                            : "right-5"
+                                        }`}
                                         style={{
                                           top: "50%",
-                                          transform:
-                                            "translateY(-50%)",
+                                          transform: "translateY(-50%)",
                                         }}
                                       >
                                         {menu?.count !== null &&
-                                          menu?.count !== undefined
+                                        menu?.count !== undefined
                                           ? menu?.count
                                           : ""}
                                       </span>
@@ -2738,7 +2686,7 @@ const Sidebarmui = () => {
         </Box>
       </Menu>
     );
-  }
+  };
 
   return (
     <>
@@ -2764,10 +2712,11 @@ const Sidebarmui = () => {
         <>
           {!showSidebar && (
             <div
-              className={`fixed top-10 shadow-xl bg-primary text-white py-2 px-4 ${isLangRTL(i18n.language)
-                ? "right-0 rounded-l-full"
-                : "left-0 rounded-r-full"
-                }`}
+              className={`fixed top-10 shadow-xl bg-primary text-white py-2 px-4 ${
+                isLangRTL(i18n.language)
+                  ? "right-0 rounded-l-full"
+                  : "left-0 rounded-r-full"
+              }`}
               style={{
                 zIndex: 101,
               }}
@@ -2780,18 +2729,20 @@ const Sidebarmui = () => {
             <>
               <div
                 ref={sidebarRef}
-                className={`fixed top-5 bottom-5 rounded-xl ${isLangRTL(i18n.language) ? "right-5" : "left-5"
-                  }`}
+                className={`fixed top-5 bottom-5 rounded-xl ${
+                  isLangRTL(i18n.language) ? "right-5" : "left-5"
+                }`}
                 style={{
                   zIndex: 101,
                 }}
               >
                 <div className="relative flex">
                   <div
-                    className={`h-[95vh] w-[200px] ${currentMode === "dark"
-                      ? "blur-bg-dark text-white"
-                      : "blur-bg-light text-black"
-                      }`}
+                    className={`h-[95vh] w-[200px] ${
+                      currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black"
+                    }`}
                   >
                     {/* SIDEBAR */}
                     <div>
@@ -2829,10 +2780,11 @@ const Sidebarmui = () => {
                                 alt=""
                               />
                               <h1
-                                className={`font-bold overflow-hidden uppercase ${currentMode === "dark"
-                                  ? "text-white"
-                                  : "text-black"
-                                  }`}
+                                className={`font-bold overflow-hidden uppercase ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-black"
+                                }`}
                               >
                                 HIKAL CRM
                               </h1>
@@ -2869,10 +2821,11 @@ const Sidebarmui = () => {
                               />
                             </Box>
                             <h1
-                              className={`my-2 font-bold text-lg text-center capitalize multiline-ellipsis line-clamp-2 ${currentMode === "dark"
-                                ? "text-white"
-                                : "text-main-dark-bg"
-                                }`}
+                              className={`my-2 font-bold text-lg text-center capitalize multiline-ellipsis line-clamp-2 ${
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-main-dark-bg"
+                              }`}
                             >
                               {User?.userName ? User?.userName : "-"}
                             </h1>
@@ -2925,16 +2878,20 @@ const Sidebarmui = () => {
                           height: "calc(92vh - 250px)",
                         }}
                       >
-                        <SidebarMenu currentMode={currentMode} isLangRTL={isLangRTL} />
+                        <SidebarMenu
+                          currentMode={currentMode}
+                          isLangRTL={isLangRTL}
+                        />
                       </div>
                     </div>
                     {/* SIDEBAR */}
                   </div>
                   <div
-                    className={`my-5 shadow-xl h-fit bg-primary text-white py-2 px-3 ${isLangRTL(i18n.language)
-                      ? "right-0 rounded-l-full"
-                      : "left-0 rounded-r-full"
-                      }`}
+                    className={`my-5 shadow-xl h-fit bg-primary text-white py-2 px-3 ${
+                      isLangRTL(i18n.language)
+                        ? "right-0 rounded-l-full"
+                        : "left-0 rounded-r-full"
+                    }`}
                     style={{
                       zIndex: 101,
                     }}
@@ -2958,13 +2915,14 @@ const Sidebarmui = () => {
                   ? blurDarkColor
                   : blurLightColor
                 : currentMode === "dark"
-                  ? "#000000"
-                  : "#FFFFFF",
+                ? "#000000"
+                : "#FFFFFF",
             },
           }}
           style={{ display: "flex", height: "100%" }}
-          className={`max-w-[200px] sticky top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"
-            }  `}
+          className={`max-w-[200px] sticky top-0 ${
+            isLangRTL(i18n.language) ? "right-0" : "left-0"
+          }  `}
         >
           <Sidebar
             rootStyles={{
@@ -2990,8 +2948,9 @@ const Sidebarmui = () => {
               >
                 {/* HIKAL CRM  */}
                 <div
-                  className={`flex ${isCollapsed ? "justify-between" : "justify-center"
-                    } w-full items-center h-[50px]`}
+                  className={`flex ${
+                    isCollapsed ? "justify-between" : "justify-center"
+                  } w-full items-center h-[50px]`}
                 >
                   <Link
                     to={
@@ -3018,8 +2977,9 @@ const Sidebarmui = () => {
                       />
                       {isCollapsed && (
                         <h1
-                          className={`font-bold overflow-hidden uppercase ${currentMode === "dark" ? "text-white" : "text-black"
-                            }`}
+                          className={`font-bold overflow-hidden uppercase ${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          }`}
                         >
                           HIKAL CRM
                         </h1>
@@ -3077,10 +3037,11 @@ const Sidebarmui = () => {
                         </Box>
 
                         <h1
-                          className={`my-2 font-bold text-lg text-center capitalize ${currentMode === "dark"
-                            ? "text-white"
-                            : "text-main-dark-bg"
-                            }`}
+                          className={`my-2 font-bold text-lg text-center capitalize ${
+                            currentMode === "dark"
+                              ? "text-white"
+                              : "text-main-dark-bg"
+                          }`}
                         >
                           {User?.userName ? User?.userName : "No username"}
                         </h1>
@@ -3112,9 +3073,11 @@ const Sidebarmui = () => {
                 </div>
 
                 <div
-                  className={`${animateProfilePic ? "animate-profile-pic" : ""
-                    } fixed hidden top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"
-                    } w-screen h-screen`}
+                  className={`${
+                    animateProfilePic ? "animate-profile-pic" : ""
+                  } fixed hidden top-0 ${
+                    isLangRTL(i18n.language) ? "right-0" : "left-0"
+                  } w-screen h-screen`}
                   style={{
                     backgroundColor: "rgba(0, 0, 0, 0.85)",
                   }}
@@ -3144,7 +3107,8 @@ const Sidebarmui = () => {
               </div>
 
               {/* MODULES  */}
-              <div className="sidebar-root mt-4 mb-4 text-base">\
+              <div className="sidebar-root mt-4 mb-4 text-base">
+                \
                 <SidebarMenu currentMode={currentMode} isLangRTL={isLangRTL} />
               </div>
             </div>
@@ -3167,20 +3131,17 @@ const Sidebarmui = () => {
             <></>
           )} */}
           </Sidebar>
-        </Box >
+        </Box>
       )}
 
-      {
-        dealClosedAnimation?.isOpen && (
-          <DealClosedAlert
-            className={closeDealPopupFade ? "fade-out-popup" : ""}
-            data={dealClosedAnimation?.data}
-          />
-        )
-      }
+      {dealClosedAnimation?.isOpen && (
+        <DealClosedAlert
+          className={closeDealPopupFade ? "fade-out-popup" : ""}
+          data={dealClosedAnimation?.data}
+        />
+      )}
 
-      {
-        newMessageReceived === User?.loginId &&
+      {newMessageReceived === User?.loginId &&
         location.pathname !== "/chat" && (
           <div className={`message-received-float ${blink ? "animate" : ""}`}>
             <Link
@@ -3198,8 +3159,7 @@ const Sidebarmui = () => {
               {messagesCount}
             </div>
           </div>
-        )
-      }
+        )}
     </>
   );
 };
