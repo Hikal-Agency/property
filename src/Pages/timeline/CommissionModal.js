@@ -258,7 +258,11 @@ const CommissionModal = ({
                           currentMode === "dark" ? "text-white" : "text-black"
                         }`}
                       >
-                        {invoiceModal ? t("invoice") : t("commission")}
+                        {status?.field === "agent_comm_status"
+                          ? t("agent_comm")
+                          : status?.field === "manager_comm_status"
+                          ? t("manager_comm")
+                          : t("commission")}
                       </h1>
                     </div>
                     <div>
