@@ -2,11 +2,11 @@
 import { boss } from "../../Components/_elements/SelectOptions";
 import axios from "axios";
 
-export const sendSMSNotif = async (t, BACKEND_URL, data) => {
+export const sendSMSNotif = async (t, BACKEND_URL, data, phoneNumber) => {
   console.log("sms data: ", data);
   const token = localStorage.getItem("auth-token");
   // const phoneNumber = boss(t)?.find((boss) => boss?.id == 102)?.phone;
-  const phoneNumber = "+971563110950";
+  // const phoneNumber = "+971563110950";
   console.log("phone number: ", phoneNumber);
   const smsData = {
     phone_number: phoneNumber,
