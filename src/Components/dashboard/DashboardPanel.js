@@ -691,21 +691,19 @@ const DashboardPanel = ({ setloading }) => {
         </motion.div>
       )}
 
-      {/* 5TH ROW END [REMINDER] */}
-
       {/* 5TH ROW [TODO + SHORTCUTS] */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
-        className={`${!themeBgImg
+        className={`${themeBgImg
           ? currentMode === "dark"
-            ? "bg-black"
-            : "bg-white"
-          : currentMode === "dark"
             ? "blur-bg-black"
             : "blur-bg-white"
-          } grid grid-cols-1 pb-3 my-3 rounded-xl shadow-md`}
+          : currentMode === "dark"
+            ? "bg-dark-neu"
+            : "bg-light-neu"
+          } grid grid-cols-1 pb-5 my-5`}
       >
         <Task />
       </motion.div>

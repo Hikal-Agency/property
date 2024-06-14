@@ -71,7 +71,7 @@ const Task = () => {
           className={`w-full overflow-hidden ${currentMode === "dark" ? "text-white" : "text-black"}`}
         >
           <div className="flex justify-between items-center">
-            <h4 className="font-semibold p-5">{t("summary")}</h4>
+            <h4 className="font-semibold uppercase p-5">{t("summary")}</h4>
             <Tabs
               value={value}
               onChange={handleChange}
@@ -107,7 +107,15 @@ const Task = () => {
   );
   function TabPanel(props) {
     const { children, value, index } = props;
-    return <div>{value === index && <div>{children}</div>}</div>;
+    return (
+      <div>
+        {value === index && (
+          <div>
+            {children}
+          </div>
+        )}
+      </div>
+    );
   }
 };
 
