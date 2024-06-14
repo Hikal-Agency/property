@@ -17,6 +17,7 @@ const initialState = {
 export const ContextProvider = ({ children }) => {
   const BACKEND_URL = process.env.REACT_APP_API_URL;
   const graph_api_token = process.env.REACT_APP_FB_TOKEN;
+  const phoneNumber = process.env.REACT_APP_HIKAL_PHONE_NO;
   const [screenSize, setScreenSize] = useState(undefined);
   const [currentMode, setCurrentMode] = useState(
     localStorage.getItem("currentMode") || "light"
@@ -82,9 +83,9 @@ export const ContextProvider = ({ children }) => {
   };
   useEffect(() => {
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -96,7 +97,7 @@ export const ContextProvider = ({ children }) => {
 
   const { t, i18n } = useTranslation();
 
-  // RGB TO RGBA 
+  // RGB TO RGBA
   const primaryToRgba = () => {
     if (!primaryColor) {
       return "";
@@ -107,7 +108,7 @@ export const ContextProvider = ({ children }) => {
     }
     const alpha = 0.25;
     const rgbValues = primary.match(/\d+/g);
-    return `rgba(${rgbValues[0]}, ${rgbValues[1]}, ${rgbValues[2]}, ${alpha})`
+    return `rgba(${rgbValues[0]}, ${rgbValues[1]}, ${rgbValues[2]}, ${alpha})`;
   };
 
   // DATA GRID
@@ -144,11 +145,17 @@ export const ContextProvider = ({ children }) => {
       left: 0,
       bottom: 0,
       right: 0,
-      backgroundColor: currentMode === "dark" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+      backgroundColor:
+        currentMode === "dark"
+          ? "rgba(0, 0, 0, 0.5)"
+          : "rgba(255, 255, 255, 0.5)",
       backdropFilter: "blur(10px)",
       webkitBackdropFilter: "blur(10px)",
-      boxShadow: currentMode === "dark" ? "0 0 10px rgba(238, 238, 238, 0.1)" : "0 0 10px rgba(38, 38, 38, 0.1)",
-      border: "none"
+      boxShadow:
+        currentMode === "dark"
+          ? "0 0 10px rgba(238, 238, 238, 0.1)"
+          : "0 0 10px rgba(38, 38, 38, 0.1)",
+      border: "none",
     },
     // TOOLBAR BUTTON
     "& .MuiInputBase-root": {
@@ -209,11 +216,17 @@ export const ContextProvider = ({ children }) => {
       left: 0,
       bottom: 0,
       right: 0,
-      backgroundColor: currentMode === "dark" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+      backgroundColor:
+        currentMode === "dark"
+          ? "rgba(0, 0, 0, 0.5)"
+          : "rgba(255, 255, 255, 0.5)",
       backdropFilter: "blur(10px)",
       webkitBackdropFilter: "blur(10px)",
-      boxShadow: currentMode === "dark" ? "0 0 10px rgba(238, 238, 238, 0.1)" : "0 0 10px rgba(38, 38, 38, 0.1)",
-      border: "none"
+      boxShadow:
+        currentMode === "dark"
+          ? "0 0 10px rgba(238, 238, 238, 0.1)"
+          : "0 0 10px rgba(38, 38, 38, 0.1)",
+      border: "none",
     },
     // changing rows hover color
     "& .MuiDataGrid-row:hover": {
@@ -257,11 +270,17 @@ export const ContextProvider = ({ children }) => {
       left: 0,
       bottom: 0,
       right: 0,
-      backgroundColor: currentMode === "dark" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+      backgroundColor:
+        currentMode === "dark"
+          ? "rgba(0, 0, 0, 0.5)"
+          : "rgba(255, 255, 255, 0.5)",
       backdropFilter: "blur(10px)",
       webkitBackdropFilter: "blur(10px)",
-      boxShadow: currentMode === "dark" ? "0 0 10px rgba(238, 238, 238, 0.1)" : "0 0 10px rgba(38, 38, 38, 0.1)",
-      border: "none"
+      boxShadow:
+        currentMode === "dark"
+          ? "0 0 10px rgba(238, 238, 238, 0.1)"
+          : "0 0 10px rgba(38, 38, 38, 0.1)",
+      border: "none",
     },
     "& .MuiTablePagination-selectLabel": {
       color: currentMode === "dark" ? "white" : "black",
@@ -298,10 +317,10 @@ export const ContextProvider = ({ children }) => {
 
     // TEXT FIELDS LABEL COLOR
     "& .MuiFormLabel-root, & .MuiInputLabel-root, & .MuiInputLabel-formControl":
-    {
-      color: currentMode === "dark" && "white !important",
-      fontFamily: fontFam,
-    },
+      {
+        color: currentMode === "dark" && "white !important",
+        fontFamily: fontFam,
+      },
 
     // border color of text fields and select fields
     "& .MuiOutlinedInput-notchedOutline": {
@@ -310,10 +329,10 @@ export const ContextProvider = ({ children }) => {
 
     // color of dropdown button
     "& .MuiSvgIcon-root, & .MuiSvgIcon-fontSizeMedium, & .MuiSelect-icon,& .MuiSelect-iconOutlined":
-    {
-      color: currentMode === "dark" && "white",
-      fontFamily: fontFam,
-    },
+      {
+        color: currentMode === "dark" && "white",
+        fontFamily: fontFam,
+      },
     // text color for textfields
     // "& .MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-formControl":
     //   {
@@ -339,7 +358,9 @@ export const ContextProvider = ({ children }) => {
       fontFamily: fontFam,
     },
     "& .MuiTabs-indicator": {
-      backgroundColor: themeBgImg ? `${primaryToRgba} !important` : `${primaryColor} !important`,
+      backgroundColor: themeBgImg
+        ? `${primaryToRgba} !important`
+        : `${primaryColor} !important`,
     },
 
     // DROPDOWN SELECT
@@ -354,11 +375,17 @@ export const ContextProvider = ({ children }) => {
       left: 0,
       bottom: 0,
       right: 0,
-      backgroundColor: currentMode === "dark" ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+      backgroundColor:
+        currentMode === "dark"
+          ? "rgba(0, 0, 0, 0.5)"
+          : "rgba(255, 255, 255, 0.5)",
       backdropFilter: "blur(10px)",
       webkitBackdropFilter: "blur(10px)",
-      boxShadow: currentMode === "dark" ? "0 0 10px rgba(238, 238, 238, 0.1)" : "0 0 10px rgba(38, 38, 38, 0.1)",
-      border: "none"
+      boxShadow:
+        currentMode === "dark"
+          ? "0 0 10px rgba(238, 238, 238, 0.1)"
+          : "0 0 10px rgba(38, 38, 38, 0.1)",
+      border: "none",
     },
   };
 
@@ -494,21 +521,28 @@ export const ContextProvider = ({ children }) => {
     // }
   }, [primaryColor]);
 
-  useEffect(() => {
-    if (!themeBgImg?.startsWith("#")) {
-      document.body.style.backgroundColor = "transparent";
-      document.body.style.backgroundImage = currentMode === "dark" ? `linear-gradient(to bottom right, rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url(${themeBgImg})` : `linear-gradient(to bottom right, rgba(255,255,255,0.3), rgba(255,255,255,0.4)), url(${themeBgImg})`;
-      document.body.style.backgroundRepeat = "no-repeat";
-      document.body.style.backgroundSize = "cover";
-      document.body.style.backgroundPosition = "center";
-      document.body.style.backgroundAttachment = "fixed";
-      // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
-      // document.body.style.backgroundBlendMode = "overlay";
-    } else {
-      document.body.style.backgroundImage = "none";
-      document.body.style.backgroundColor = themeBgImg;
-    }
-  }, [themeBgImg], [currentMode]);
+  useEffect(
+    () => {
+      if (!themeBgImg?.startsWith("#")) {
+        document.body.style.backgroundColor = "transparent";
+        document.body.style.backgroundImage =
+          currentMode === "dark"
+            ? `linear-gradient(to bottom right, rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url(${themeBgImg})`
+            : `linear-gradient(to bottom right, rgba(255,255,255,0.3), rgba(255,255,255,0.4)), url(${themeBgImg})`;
+        document.body.style.backgroundRepeat = "no-repeat";
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.backgroundAttachment = "fixed";
+        // document.body.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+        // document.body.style.backgroundBlendMode = "overlay";
+      } else {
+        document.body.style.backgroundImage = "none";
+        document.body.style.backgroundColor = themeBgImg;
+      }
+    },
+    [themeBgImg],
+    [currentMode]
+  );
 
   const withOpacity = (rgb, opacity) => {
     return rgb.replace("rgb", "rgba").replace(")", `, ${opacity})`);
@@ -819,7 +853,8 @@ export const ContextProvider = ({ children }) => {
         value,
         setValue,
         deviceType,
-        setDeviceType
+        setDeviceType,
+        phoneNumber,
       }}
     >
       {children}
