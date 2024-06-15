@@ -8,21 +8,11 @@ import {
   SubMenu,
   sidebarClasses,
 } from "react-pro-sidebar";
-import { GiForkKnifeSpoon, GiHamburger } from "react-icons/gi";
-import { BsArrowLeftRight } from "react-icons/bs";
-
-import { GrConnect } from "react-icons/gr";
-import { FaFileAlt, FaWrench, FaChartLine, FaHome } from "react-icons/fa";
 
 import { toast } from "react-toastify";
 import ReactConfetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import moment from "moment";
-import { FaCheck } from "react-icons/fa";
-import { IoPeopleCircleSharp } from "react-icons/io5";
-import { IoPersonAddOutline } from "react-icons/io5";
-import { TbUsers } from "react-icons/tb";
-
 import axios from "../../axoisConfig";
 import ringtone from "../../assets/new-message-ringtone.mp3";
 import notifRingtone from "../../assets/notification-ringtone.mp3";
@@ -32,10 +22,23 @@ import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
 import ReminderToast from "./ReminderToast";
 import DealClosedAlert from "./DealClosedAlert";
-import { ImUsers } from "react-icons/im";
-import { MdContactPage } from "react-icons/md";
 
+import { 
+  GiForkKnifeSpoon, 
+  GiHamburger 
+} from "react-icons/gi";
+import { VscDebugDisconnect } from "react-icons/vsc";
+import { 
+  IoPeopleCircleSharp,
+  IoPersonAddOutline 
+} from "react-icons/io5";
+import { RiVisaLine } from "react-icons/ri";
 import {
+  BsFiles,
+  BsWrenchAdjustableCircle,
+  BsShopWindow,
+  BsCashCoin,
+  BsArrowLeftRight,
   BsStopCircle,
   BsCheck2Circle,
   BsCalendarWeek,
@@ -1604,48 +1607,49 @@ const Sidebarmui = () => {
     // TRANSACTION
     {
       title: t("menu_finance"),
-      icon: <FaChartLine size={18} />,
-      // pro: true,
+      icon: <BsBarChart size={18} />,
+      pro: true,
       links: [
         {
           name: t("menu_transaction"),
-          // icon: <BsArrowLeftRight size={16} />,
-          // pro: true,
+          icon: <BsArrowLeftRight size={16} />,
+          pro: true,
           link: "/transactions",
         },
         {
           name: t("menu_visa"),
-          // pro: true,
+          icon: <RiVisaLine size={18} />,
+          pro: true,
           link: "/visa",
         },
         {
           name: t("menu_petty_cash"),
-          // icon: <FaHome size={16} />,
-          // pro: true,
+          icon: <BsCashCoin size={16} />,
+          pro: true,
           link: "/petty_cash",
         },
         {
           name: t("menu_vendors"),
-          icon: <FaHome size={16} />,
-          // pro: true,
+          icon: <BsShopWindow size={16} />,
+          pro: true,
           link: "/vendors",
         },
 
         {
           name: t("menu_reports"),
-          icon: <BsArrowLeftRight size={16} />,
-          pro: false,
+          icon: <BsFileEarmarkBarGraph size={16} />,
+          pro: true,
           submenu: [
             {
               name: t("menu_statements"),
               // icon: <FaHome size={16} />,
-              // pro: true,
+              pro: true,
               link: "/statements",
             },
             {
               name: t("menu_commission_vat"),
               // icon: <FaHome size={16} />,
-              // pro: true,
+              pro: true,
               link: "/commission_vat",
             },
           ],
@@ -1759,7 +1763,7 @@ const Sidebarmui = () => {
         },
         {
           name: t("menu_order_history"),
-          icon: <TbUsers size={16} />,
+          icon: <BsPeople size={16} />,
           // pro: true,
           link: "/order_history",
         },
@@ -1795,7 +1799,7 @@ const Sidebarmui = () => {
     // Editor
     {
       title: t("menu_editor"),
-      icon: <FaWrench size={20} />,
+      icon: <BsWrenchAdjustableCircle size={16} />,
       pro: false,
       links: [
         // {
@@ -1806,7 +1810,7 @@ const Sidebarmui = () => {
         // },
         {
           name: t("menu_template_list"),
-          icon: <FaFileAlt size={16} />,
+          icon: <BsFiles size={16} />,
           pro: false,
           link: "/templates",
         },
@@ -1849,7 +1853,7 @@ const Sidebarmui = () => {
       links: [
         {
           name: t("menu_integration"),
-          icon: <GrConnect size={16} />,
+          icon: <VscDebugDisconnect size={18} />,
           pro: false,
           link: "/integrations",
         },
@@ -2239,6 +2243,9 @@ const Sidebarmui = () => {
                       opacity: "1",
                     },
                   }}
+                // className={`${!themeBgImg
+                //   && (currentMode === "dark" ? "bg-dark" : "bg-light")
+                //   }`}
                 >
                   {!isCollapsed ? (
                     <Tooltip title={link?.title} placement="right">
@@ -2279,7 +2286,7 @@ const Sidebarmui = () => {
                               // color: "white",
                             },
                           }}
-                          className="relative my-1"
+                          className={`relative my-1`}
                         >
                           <MenuItem
                             active={
@@ -2298,11 +2305,11 @@ const Sidebarmui = () => {
                     <SubMenu
                       icon={link?.icon}
                       open={activeSidebarHeading === linkIndex}
+                      className={`top-level-dropdown`}
                       // label={link?.title?.toUpperCase()}
                       label={
                         <span
-                          className={`
-                                  uppercase capitalize flex items-center gap-2`}
+                          className={`uppercase capitalize flex items-center gap-2`}
                         >
                           {link.title}
                           {link.pro && (
@@ -2320,7 +2327,6 @@ const Sidebarmui = () => {
                           )}
                         </span>
                       }
-                      className="top-level-dropdown"
                     >
                       {link.links.map((menu, index) => {
                         if (
@@ -2399,7 +2405,10 @@ const Sidebarmui = () => {
                                     //     : "black",
                                   },
                                 }}
-                                className="my-1 sub"
+                                className={`${themeBgImg
+                                  ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                                  : (currentMode === "dark" ? "bg-black" : "bg-white")
+                                  } py-1 sub`}
                               >
                                 <SubMenu
                                   // label={menu.name}
@@ -2482,7 +2491,7 @@ const Sidebarmui = () => {
                                                 minWidth: "10px !important",
                                               },
                                           }}
-                                          className=" relative my-1"
+                                          className={`relative my-1`}
                                         >
                                           <MenuItem
                                             active={
@@ -2492,7 +2501,10 @@ const Sidebarmui = () => {
                                                 " "
                                               )
                                             }
-                                            className="flex"
+                                            className={`${themeBgImg
+                                              ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                                              : (currentMode === "dark" ? "bg-dark" : "bg-light")
+                                              } flex`}
                                           >
                                             {m?.icon && (
                                               <ListItemIcon
@@ -2596,7 +2608,10 @@ const Sidebarmui = () => {
                                       left: isLangRTL(i18n.language) && "3px",
                                     },
                                   }}
-                                  className="relative my-1"
+                                  className={`${themeBgImg
+                                    ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+                                    : (currentMode === "dark" ? "bg-black" : "bg-white")
+                                    } relative py-1`}
                                 >
                                   <MenuItem
                                     active={
@@ -2915,8 +2930,8 @@ const Sidebarmui = () => {
                   ? blurDarkColor
                   : blurLightColor
                 : currentMode === "dark"
-                ? "#000000"
-                : "#FFFFFF",
+                  ? "#282B30"
+                  : "#EEEEEE",
             },
           }}
           style={{ display: "flex", height: "100%" }}
@@ -2926,98 +2941,104 @@ const Sidebarmui = () => {
         >
           <Sidebar
             rootStyles={{
-              [`.${sidebarClasses.container}`]: {
-                backgroundColor:
-                  !themeBgImg &&
-                  (currentMode === "dark" ? "#000000" : "#ffffff"),
-              },
+            [`.${sidebarClasses.container}`]: {
+            backgroundColor:
+              !themeBgImg &&
+            (currentMode === "dark" ? "#282B30" : "#EEEEEE"),
+            },
             }}
             className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
           >
             {/* ${currentMode}-mode-sidebar */}
-            <div className="">
+            <div>
               <div
                 className="sidebar-top"
                 style={{
                   position: !themeBgImg && "sticky",
                   top: !themeBgImg && 0,
-                  background:
-                    !themeBgImg && (currentMode === "dark" ? "black" : "white"),
+                  background: !themeBgImg && (currentMode === "dark" ? "#282B30" : "#EEEEEE"),
                   zIndex: 1000,
                 }}
               >
-                {/* HIKAL CRM  */}
-                <div
-                  className={`flex ${
-                    isCollapsed ? "justify-between" : "justify-center"
-                  } w-full items-center h-[50px]`}
-                >
-                  <Link
-                    to={
-                      User?.role !== 5
-                        ? "/dashboard"
-                        : "/attendance/officeSettings"
-                    }
-                    className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
-                    onClick={() => {
-                      setSelected({
-                        name:
-                          User?.role !== 5 ? "Dashboard" : "Office Settings",
-                        index: 0,
-                      });
-                    }}
+                <div className={!themeBgImg && (currentMode === "dark" ? "bg-dark-neu-nr" : "bg-light-neu-nr")} >
+                  {/* HIKAL CRM  */}
+                  <div
+                    className={`flex ${isCollapsed ? "justify-between" : "justify-center"
+                      } w-full items-center h-[50px]`}
                   >
-                    <div className="w-full flex items-center gap-2 p-2">
-                      <img
-                        height={40}
-                        width={40}
-                        className="h-[40px] w-[40px] p-1"
-                        src="/favicon.png"
-                        alt=""
-                      />
-                      {isCollapsed && (
-                        <h1
-                          className={`font-bold overflow-hidden uppercase ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                    <Link
+                      to={
+                        User?.role === 5
+                          ? "/attendance/officeSettings"
+                          : User?.role === 9
+                            ? "/order_history"
+                            : "/dashboard"
+                      }
+                      className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                      onClick={() => {
+                        setSelected({
+                          name:
+                            User?.role === 5
+                              ? "Office Settings"
+                              : User?.role === 9
+                                ? "Order History"
+                                : "Dashboard",
+                          index: 0,
+                        });
+                      }}
+                    >
+                      <div className="w-full flex items-center gap-2 p-2">
+                        <img
+                          height={40}
+                          width={40}
+                          className="h-[40px] w-[40px] p-1"
+                          src="/favicon.png"
+                          alt=""
+                        />
+                        {isCollapsed && (
+                          <h1
+                            className={`font-bold overflow-hidden uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                              }`}
+                          >
+                            HIKAL CRM
+                          </h1>
+                        )}
+                      </div>
+                    </Link>
+                  </div>
+                  {/* PROFILE  */}
+                  <div className="profile-section border-b-2 border-primary px-2 pb-5">
+                    {isCollapsed ? (
+                      <>
+                        <div
+                          // to={"/profile"}
+                          onClick={handleClickProfile}
+                          className="flex cursor-pointer flex-col items-center justify-center"
                         >
-                          HIKAL CRM
-                        </h1>
-                      )}
-                    </div>
-                  </Link>
-                </div>
-                {/* PROFILE  */}
-                <div className="profile-section border-b-2 border-primary px-2 pb-5 mb-2">
-                  {isCollapsed ? (
-                    <>
-                      <div
-                        // to={"/profile"}
-                        onClick={handleClickProfile}
-                        className="flex cursor-pointer flex-col items-center justify-center"
-                      >
-                        <Box
-                          className="relative"
-                          sx={{
-                            "&:hover .absolute": {
-                              display: "flex",
-                              background:
-                                currentMode === "dark" ? "white" : "black",
-                            },
-                          }}
-                        >
-                          <img
-                            src={
-                              User?.displayImg
-                                ? User?.displayImg
-                                : "/assets/user.png"
-                            }
-                            height={60}
-                            width={60}
-                            className={`rounded-md object-cover relative`}
-                            alt=""
-                          />
-                          {/* 
+                          <Box
+                            className="relative"
+                            sx={{
+                              "&:hover .absolute": {
+                                display: "flex",
+                                background:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                            }}
+                          >
+                            <img
+                              src={
+                                User?.displayImg
+                                  ? User?.displayImg
+                                  : "/assets/user.png"
+                              }
+                              height={60}
+                              width={60}
+                              className={`${!themeBgImg
+                                && (currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu")
+                                } rounded-md object-cover relative`}
+                              alt=""
+                            />
+                            {/* 
                         <div
                           onClick={() =>
                             setAnimateProfilePic(!animateProfilePic)
@@ -3034,44 +3055,43 @@ const Sidebarmui = () => {
                             View
                           </p>
                         </div> */}
-                        </Box>
+                          </Box>
 
-                        <h1
-                          className={`my-2 font-bold text-lg text-center capitalize ${
-                            currentMode === "dark"
+                          <h1
+                            className={`my-2 font-bold text-lg text-center capitalize ${currentMode === "dark"
                               ? "text-white"
                               : "text-main-dark-bg"
-                          }`}
-                        >
-                          {User?.userName ? User?.userName : "No username"}
-                        </h1>
-                        <span
-                          style={{
-                            background: primaryColor,
-                          }}
-                          className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
-                        >
-                          {User?.position || ""}
-                        </span>
+                              }`}
+                          >
+                            {User?.userName ? User?.userName : "No username"}
+                          </h1>
+                          <span
+                            style={{
+                              background: primaryColor,
+                            }}
+                            className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
+                          >
+                            {User?.position || ""}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div
+                        // to={"/profile"}
+                        onClick={handleClickProfile}
+                        className="flex justify-center"
+                      >
+                        <Avatar
+                          src={User?.displayImg}
+                          height={50}
+                          width={50}
+                          className="rounded-sm cursor-pointer"
+                          alt=""
+                        />
                       </div>
-                    </>
-                  ) : (
-                    <div
-                      // to={"/profile"}
-                      onClick={handleClickProfile}
-                      className="flex justify-center"
-                    >
-                      <Avatar
-                        src={User?.displayImg}
-                        height={50}
-                        width={50}
-                        className="rounded-sm cursor-pointer"
-                        alt=""
-                      />
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-
                 <div
                   className={`${
                     animateProfilePic ? "animate-profile-pic" : ""
@@ -3107,8 +3127,7 @@ const Sidebarmui = () => {
               </div>
 
               {/* MODULES  */}
-              <div className="sidebar-root mt-4 mb-4 text-base">
-                \
+              <div className={`sidebar-root py-5 text-base`}>
                 <SidebarMenu currentMode={currentMode} isLangRTL={isLangRTL} />
               </div>
             </div>
