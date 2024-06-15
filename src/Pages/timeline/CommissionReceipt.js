@@ -182,38 +182,6 @@ const CommissionReceipt = ({
     }
   };
 
-  const searchUsers = async (title, type) => {
-    try {
-      let url = "";
-
-      const ids = `${newCommData?.salesId},${newCommData?.managerId}`;
-      url = `${BACKEND_URL}/users?title=${title}&ids=${ids}`;
-
-      const response = await axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      console.log("Users: ", response);
-
-      setUser(response?.data?.managers?.data);
-    } catch (error) {
-      console.log(error);
-
-      toast.error("Unable to fetch users.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-
   const handleChange = (e) => {
     console.log("E::: ", e);
     const value = e.target.value;
