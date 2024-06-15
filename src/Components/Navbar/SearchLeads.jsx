@@ -129,14 +129,16 @@ const SearchLeads = () => {
             onChange={handleSearch}
             size="small"
           />
-          <div
-            className={`p-3 cursor-pointer hover:bg-gray-200 ${
-              isVoiceSearchState ? "bg-gray-200 listening" : ""
-            } rounded-full`}
+          <divcurr
+            className={`p-3 cursor-pointer  ${
+              isVoiceSearchState ? " listening" : ""
+            } rounded-full ${
+              currentMode == "dark" ? "text-white " : "bg-gray-200"
+            }`}
             onClick={() => setIsVoiceSearchState(!isVoiceSearchState)}
           >
             <MdMic size={18} />
-          </div>
+          </divcurr>
         </Box>
         {searchResult?.data?.length > 0 && (
           <div

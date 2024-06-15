@@ -290,7 +290,8 @@ const DealHistory = ({
     }
   };
 
-  const updateStatus = async (toUpdate) => {
+  const updateStatus = async (toUpdate, type) => {
+    console.log("type::: ", type);
     setBtnLoading(true);
     const token = localStorage.getItem("auth-token");
     const updatedData = { [toUpdate]: 1 };
@@ -322,27 +323,29 @@ const DealHistory = ({
           theme: "light",
         });
 
-        const sendSMS = await sendSMSNotif(
-          t,
-          BACKEND_URL,
-          LeadData,
-          phoneNumber
-        );
+        if (type === "commission") {
+          const sendSMS = await sendSMSNotif(
+            t,
+            BACKEND_URL,
+            LeadData,
+            phoneNumber
+          );
 
-        console.log("sendsms:: ", sendSMS);
-        if (sendSMS.success) {
-          console.log("message sent: ", sendSMS.message);
-        } else {
-          console.log("message not sent", sendSMS.message);
-          toast.error("Unable to send the SMS notification.", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          console.log("sendsms:: ", sendSMS);
+          if (sendSMS.success) {
+            console.log("message sent: ", sendSMS.message);
+          } else {
+            console.log("message not sent", sendSMS.message);
+            toast.error("Unable to send the SMS notification.", {
+              position: "top-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
         }
 
         await fetchLeadsData(LeadData?.lid);
@@ -1278,7 +1281,9 @@ const DealHistory = ({
                         className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
                         ripple={true}
                         size="lg"
-                        onClick={() => updateStatus(DialogueVal?.field)}
+                        onClick={() =>
+                          updateStatus(DialogueVal?.field, DialogueVal?.type)
+                        }
                       >
                         {btnloading ? (
                           <CircularProgress size={16} sx={{ color: "white" }} />
