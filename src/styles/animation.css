@@ -731,3 +731,19 @@
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 20px rgba(8, 7, 16, 0.6);
 }
+/* Microphone Blinking  */
+@keyframes blink {
+  0% {
+    background-color: white;
+  }
+  50% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: white;
+  }
+}
+.listening {
+  animation: blink 1s infinite;
+}
+/* end of Microphone Blinking  */
