@@ -4,8 +4,19 @@ import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router";
 import { search } from "../../utils/axiosSearch";
-
+import { MdMic } from "react-icons/md";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 const SearchLeads = () => {
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition("en");
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+
   const { BACKEND_URL, currentMode, darkModeColors } = useStateContext();
   const [searchTerm, setSearchTerm] = useState(null);
   const [searchResult, setSearchResults] = useState([]);
@@ -16,7 +27,33 @@ const SearchLeads = () => {
   const clearSearchInput = () => {
     setSearchResults(null);
     setSearchTerm("");
+    setIsVoiceSearchState(false);
   };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  useEffect(() => {
+    if (isVoiceSearchState && transcript) {
+      // setSearchTerm(transcript);
+      handleSearch({ target: { value: transcript } });
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
 
   const handleNavigate = (e, search) => {
     clearSearchInput();
@@ -80,10 +117,11 @@ const SearchLeads = () => {
       document.body.removeEventListener("click", cb);
     };
   }, []);
+
   return (
     <div>
       <div class="search-leads-container">
-        <Box sx={darkModeColors}>
+        <Box sx={darkModeColors} className="flex items-center gap-2">
           <TextField
             type="text"
             placeholder="Search Leads"
@@ -91,6 +129,14 @@ const SearchLeads = () => {
             onChange={handleSearch}
             size="small"
           />
+          <div
+            className={`p-3 cursor-pointer hover:bg-gray-200 ${
+              isVoiceSearchState ? "bg-gray-200 listening" : ""
+            } rounded-full`}
+            onClick={() => setIsVoiceSearchState(!isVoiceSearchState)}
+          >
+            <MdMic size={18} />
+          </div>
         </Box>
         {searchResult?.data?.length > 0 && (
           <div
