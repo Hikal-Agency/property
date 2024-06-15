@@ -7,6 +7,7 @@ import Loader from "../../Components/Loader";
 import StatmentsList from "../../Components/StatmentComp/StatmentsList";
 import Commission_VAT_List from "../../Components/Commission_VAT_Comp/Commission_VAT_List";
 import Petty_Cash_Comp from "../../Components/Petty_Cash_Comp/Petty_Cash_Comp";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const Petty_Cash = ({ isLoading }) => {
   const {
@@ -38,26 +39,15 @@ const Petty_Cash = ({ isLoading }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
+            className={`w-full p-5 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
             } ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
-            <div className="w-full flex justify-between items-center">
-              <div className="w-full flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {t("menu_petty_cash")}
-                </h1>
-              </div>
-            </div>
+            <HeadingTitle title={t("menu_petty_cash")} />
 
-            <div className="mt-3 pb-3">
+            {/* <div className="mt-3 pb-3"> */}
               <Petty_Cash_Comp />
-            </div>
+            {/* </div> */}
           </div>
         )}
       </div>

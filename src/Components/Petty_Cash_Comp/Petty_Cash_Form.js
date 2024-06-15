@@ -112,21 +112,21 @@ const Petty_Cash_Form = ({ fetchPettyCash }) => {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between space-x-3">
+    <div className="">
       <Box
         sx={{
           ...darkModeColors,
           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+          {
+            right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+            transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+          },
           "& legend": {
             textAlign: isLangRTL(i18n.language) ? "right" : "left",
           },
-          width: "80%",
           marginTop: "5px",
         }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-5"
       >
         {/* DATE */}
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -163,23 +163,47 @@ const Petty_Cash_Form = ({ fetchPettyCash }) => {
             )}
           />
         </LocalizationProvider>
-      </Box>
-      <Box
-        sx={{
-          ...darkModeColors,
-          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
-          "& legend": {
-            textAlign: isLangRTL(i18n.language) ? "right" : "left",
-          },
-          width: "100%",
-          marginTop: "10px",
-        }}
-      >
-        <div className="grid grid-cols-4">
+        {/* COUNTRY */}
+        <Select
+          id="country"
+          options={countries_list(t)}
+          value={countries_list(t)?.find(
+            (country) => country.value === petty_data?.country
+          )}
+          onChange={(e) => {
+            setPettyData({
+              ...petty_data,
+              country: e.value,
+            });
+          }}
+          placeholder={t("label_country")}
+          menuPortalTarget={document.body}
+          styles={selectStyles(currentMode, primaryColor)}
+        />
+        {/* FUND BY */}
+        <Select
+          id="fund_by"
+          options={boss(t)?.map((boss) => ({
+            value: boss?.id,
+            label: boss?.name,
+          }))}
+          value={currencies(t)?.find(
+            (curr) => curr.value === petty_data?.fund_by
+          )}
+          onChange={(e) => {
+            setPettyData({
+              ...petty_data,
+              fund_by: e.value,
+              fund_by_name: e.label,
+            });
+          }}
+          placeholder={t("label_fund_by")}
+          // className={`mb-5`}
+          menuPortalTarget={document.body}
+          styles={selectStyles(currentMode, primaryColor)}
+        />
+        {/* AMOUNT */}
+        <div className="grid grid-cols-3">
           {/* CURRENCY */}
           <Select
             id="currency"
@@ -225,79 +249,10 @@ const Petty_Cash_Form = ({ fetchPettyCash }) => {
         sx={{
           ...darkModeColors,
           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
-          "& legend": {
-            textAlign: isLangRTL(i18n.language) ? "right" : "left",
+          {
+            right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+            transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
           },
-          width: "80%",
-          marginTop: "10px",
-        }}
-      >
-        <Select
-          id="country"
-          options={countries_list(t)}
-          value={countries_list(t)?.find(
-            (country) => country.value === petty_data?.country
-          )}
-          onChange={(e) => {
-            setPettyData({
-              ...petty_data,
-              country: e.value,
-            });
-          }}
-          placeholder={t("label_country")}
-          menuPortalTarget={document.body}
-          styles={selectStyles(currentMode, primaryColor)}
-        />
-      </Box>
-      <Box
-        sx={{
-          ...darkModeColors,
-          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
-          "& legend": {
-            textAlign: isLangRTL(i18n.language) ? "right" : "left",
-          },
-          width: "80%",
-          marginTop: "10px",
-        }}
-      >
-        <Select
-          id="fund_by"
-          options={boss(t)?.map((boss) => ({
-            value: boss?.id,
-            label: boss?.name,
-          }))}
-          value={currencies(t)?.find(
-            (curr) => curr.value === petty_data?.fund_by
-          )}
-          onChange={(e) => {
-            setPettyData({
-              ...petty_data,
-              fund_by: e.value,
-              fund_by_name: e.label,
-            });
-          }}
-          placeholder={t("label_fund_by")}
-          // className={`mb-5`}
-          menuPortalTarget={document.body}
-          styles={selectStyles(currentMode, primaryColor)}
-        />
-      </Box>
-      <Box
-        sx={{
-          ...darkModeColors,
-          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
           "& legend": {
             textAlign: isLangRTL(i18n.language) ? "right" : "left",
           },

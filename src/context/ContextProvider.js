@@ -66,9 +66,10 @@ export const ContextProvider = ({ children }) => {
   const [feedbackTheme, setFeedbackTheme] = useState("renderStyles");
   const [fontFam, setFontFam] = useState("'Noto Sans', sans-serif");
   const [themeBgImg, setThemeBgImg] = useState(null);
-  const [blurDarkColor, setBlurDarkColor] = useState("rgba(28,28,28,0.5)");
+  const [blurDarkColor, setBlurDarkColor] = useState("rgba(40,43,48,0.5)");
   const [blurLightColor, setBlurLightColor] = useState("rgba(238,238,238,0.5)");
   const [blurWhiteColor, setBlurWhiteColor] = useState("rgba(255,255,255,0.5)");
+  const [blurBlackColor, setBlurBlackColor] = useState("rgba(0,0,0,0.5)");
 
   const [deviceType, setDeviceType] = useState("desktop");
   const handleResize = () => {
@@ -846,6 +847,8 @@ export const ContextProvider = ({ children }) => {
         setBlurLightColor,
         blurWhiteColor,
         setBlurWhiteColor,
+        blurBlackColor,
+        setBlurBlackColor,
         Counters,
         setCounters,
         settings,
