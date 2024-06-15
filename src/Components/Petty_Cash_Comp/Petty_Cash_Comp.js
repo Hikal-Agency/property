@@ -177,17 +177,15 @@ const Petty_Cash_Comp = () => {
                             <div className="flex flex-col">
                               <p>{petty?.fund_by_name}</p>
                               <div className="flex gap-1 text-sm">
-                                <p className={`text-green-600`}>
+                                {/* <p className={`text-green-600`}>
                                   {petty?.currency} {petty?.petty_cash_amount}
-                                </p>
-                                {/* <p> - {petty?.invoice?.category}</p> */}
+                                </p> */}
                               </div>
                             </div>
                           </div>
                           <div>
                             <p className={`font-semibold text-lg `}>
-                              {t("balance")}: {petty?.currency}{" "}
-                              {petty?.fund_amount}
+                              {petty?.currency} {petty?.fund_amount}
                             </p>
                           </div>
                         </div>
