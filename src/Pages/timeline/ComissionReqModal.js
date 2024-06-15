@@ -677,6 +677,70 @@ const CommissionReqModal = ({
   console.log("TOTAL:: ", commReqData?.total_amount);
 
   useEffect(() => {
+    const { amount, comm_percent, comm_amount } = commReqData;
+
+    // COMMISSION AMOUNT
+    if (amount || comm_percent) {
+      autoCalculate("comm_amount", amount, comm_percent);
+    }
+    // COMMISSION PERCENT
+    if (amount || comm_amount) {
+      autoCalculate("comm_percent", amount, comm_amount);
+    }
+  }, [commReqData.amount, commReqData.comm_percent, commReqData.comm_amount]);
+
+  const autoCalculate = (value, amount, percentOrAmount) => {
+    const sellingAmount = parseFloat(amount);
+    console.log("SELLING AMOUNT = ", sellingAmount);
+    // COMM AMOUNT
+    if (value === "comm_amount") {
+      const commPercent = parseFloat(percentOrAmount);
+
+      if (!isNaN(sellingAmount) && !isNaN(commPercent)) {
+        let commAmount = (sellingAmount * commPercent) / 100;
+        commAmount =
+          commAmount % 1 === 0 ? commAmount.toFixed(0) : commAmount.toFixed(2);
+        let vat = (commAmount * 5) / 100;
+        vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
+
+        console.log("COMM PERCENT = ", commPercent);
+        console.log("COMM AMOUNT = ", commAmount);
+        console.log("VAT = ", vat);
+
+        setCommReqData((prevData) => ({
+          ...prevData,
+          comm_amount: commAmount,
+          vat: vat,
+        }));
+      }
+    }
+    // COMM PERCENT
+    if (value === "comm_percent") {
+      const commAmount = parseFloat(percentOrAmount);
+
+      if (!isNaN(sellingAmount) && !isNaN(commAmount)) {
+        let commPercent = (commAmount / sellingAmount) * 100 || 0;
+        commPercent =
+          commPercent % 1 === 0
+            ? commPercent.toFixed(0)
+            : commPercent.toFixed(2);
+        let vat = (commAmount * 5) / 100;
+        vat = vat % 1 === 0 ? vat.toFixed(0) : vat.toFixed(2);
+
+        console.log("COMM AMOUNT = ", commAmount);
+        console.log("COMM PERCENT = ", commPercent);
+        console.log("VAT = ", vat);
+
+        setCommReqData((prevData) => ({
+          ...prevData,
+          comm_percent: commPercent,
+          vat: vat,
+        }));
+      }
+    }
+  };
+
+  useEffect(() => {
     const handleChange = () => {
       setCommReqData({
         ...commReqData,
