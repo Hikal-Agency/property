@@ -26,8 +26,16 @@ body {
   background: #282b30;
   box-shadow: 5px 5px 10px #111111, -5px -5px 10px #444444;
 }
+.bg-dark-neu-nr {
+  background: #282b30;
+  box-shadow: 5px 5px 10px #111111, -5px -5px 10px #444444;
+}
 .bg-light-neu {
   border-radius: 10px;
+  background: #eeeeee;
+  box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
+}
+.bg-light-neu-nr {
   background: #eeeeee;
   box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
 }
@@ -438,7 +446,7 @@ input[type="number"] {
 }  */
 
 .dark-mode-sidebar .ps-submenu-content {
-  background: #1c1c1c;
+  /* background: #1c1c1c; */
 }
 
 /* .css-edu7i6 {
@@ -777,7 +785,7 @@ label[for="bulkImport"] .MuiButtonBase-root {
 
 .dark-mode-sidebar .leads_counter {
   color: #ffffff !important;
-  background: #2f2f2f !important;
+  background: #000000 !important;
   font-family: var(--font-family);
 }
 
@@ -786,22 +794,22 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .light-mode-sidebar .ps-open .MuiBox-root {
-  background: #eeeeee;
+  /* background: #eeeeee; */
   margin: 0 !important;
 }
 
 .light-mode-sidebar .sub .ps-open .MuiBox-root {
-  background: rgb(255 255 255 / 30%);
+  /* background: rgb(255 255 255 / 30%); */
   margin: 0 !important;
 }
 
 .dark-mode-sidebar .sub .ps-open .MuiBox-root {
-  background: rgba(0, 0, 0, 60%);
+  /* background: rgba(0, 0, 0, 60%); */
   margin: 0 !important;
 }
 
 .light-mode-sidebar .ps-open .ps-menu-button:not(.ps-active):hover {
-  background: #e4e4e4;
+  /* background: #e4e4e4; */
 }
 
 .light-mode-sidebar .ps-menu-button.ps-open {

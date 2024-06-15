@@ -62,6 +62,7 @@ const CommissionReceipt = ({
 
   const [pdfUrl, setPDFUrl] = useState(false);
   const [vendors, setVendors] = useState([]);
+  const [user, setUsers] = useState([]);
   const searchRef = useRef();
 
   const [commissionReceiptData, setCommRecData] = useState({
@@ -80,20 +81,14 @@ const CommissionReceipt = ({
 
   console.log("comm req data:: ", commissionReceiptData);
 
-  const extractedAgents = Object.values(SalesPerson).flat();
-
-  console.log("extracted agents:: ", extractedAgents);
-
-  const user = () => [
+  const users = () => [
     {
       value: data?.managerId,
-      label: Managers?.find((manager) => manager.id === data?.managerId)
-        ?.userName,
+      label: user?.find((manager) => manager.id === data?.managerId)?.userName,
     },
     {
       value: data?.salesId,
-      label: extractedAgents?.find((sale) => sale.id === data?.salesId)
-        ?.userName,
+      label: user?.find((sale) => sale.id === data?.salesId)?.userName,
     },
   ];
 
@@ -102,18 +97,29 @@ const CommissionReceipt = ({
   const fetchVendors = async () => {
     setLoading(true);
     const vendorUrl = `${BACKEND_URL}/vendors`;
+    const ids = `${data?.salesId},${data?.managerId}`;
+    const userUrl = `${BACKEND_URL}/users?ids=${ids}`;
 
     try {
-      const vendorsList = await axios.get(vendorUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const [vendorsResponse, usersResponse] = await Promise.all([
+        axios.get(vendorUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+        axios.get(userUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+      ]);
 
-      console.log("vendors list:: ", vendorsList);
+      console.log("vendors list:: ", vendorsResponse);
+      console.log("users list:: ", usersResponse);
 
-      const vendor = vendorsList?.data?.data?.data;
+      const vendor = vendorsResponse?.data?.data?.data;
       const filteredVendor = vendor?.filter(
         (ven) => ven?.type?.toLowerCase() === "developer"
       );
@@ -121,6 +127,7 @@ const CommissionReceipt = ({
       console.log("filtered vendors : ", filteredVendor);
 
       setVendors(filteredVendor);
+      setUsers(usersResponse?.data?.managers?.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -717,8 +724,8 @@ const CommissionReceipt = ({
                       {/* AGENT MANAGER USERNAMES  */}
                       <Select
                         id="user"
-                        options={user()}
-                        value={user()?.find(
+                        options={users()}
+                        value={users()?.find(
                           (user) => user.label === commissionReceiptData?.user
                         )}
                         onChange={(e) => {

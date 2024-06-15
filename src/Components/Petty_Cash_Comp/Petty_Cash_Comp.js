@@ -119,16 +119,18 @@ const Petty_Cash_Comp = () => {
   }, [filters]);
 
   return (
-    <div className={`pb-4 px-4`}>
+    <div className={``}>
+      {/* ADD FUND */}
       <div
-        className={`w-full ${
-          currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#eeeeee]"
-        } mb-6 rounded-xl p-4`}
+        className={`w-full ${ themeBgImg 
+          ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
+          : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
+        } my-5 p-5`}
       >
         <Petty_Cash_Form fetchPettyCash={fetchPettyCash} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-5">
         <Box
           sx={{
             ...darkModeColors,
@@ -141,7 +143,7 @@ const Petty_Cash_Comp = () => {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
           }}
-          className={`p-2 ${
+          className={`${ 
             currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#eeeeee]"
           }`}
         >
@@ -177,17 +179,15 @@ const Petty_Cash_Comp = () => {
                             <div className="flex flex-col">
                               <p>{petty?.fund_by_name}</p>
                               <div className="flex gap-1 text-sm">
-                                <p className={`text-green-600`}>
+                                {/* <p className={`text-green-600`}>
                                   {petty?.currency} {petty?.petty_cash_amount}
-                                </p>
-                                {/* <p> - {petty?.invoice?.category}</p> */}
+                                </p> */}
                               </div>
                             </div>
                           </div>
                           <div>
                             <p className={`font-semibold text-lg `}>
-                              {t("balance")}: {petty?.currency}{" "}
-                              {petty?.fund_amount}
+                              {petty?.currency} {petty?.fund_amount}
                             </p>
                           </div>
                         </div>

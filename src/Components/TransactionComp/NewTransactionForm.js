@@ -800,17 +800,19 @@ const NewTransactionForm = ({
               />
             </div>
             {/* PETTY CASH TOGGLE */}
-            <FormControlLabel
-              control={
-                <Checkbox
-                  color="success"
-                  checked={pettyCash}
-                  onChange={() => setPettyCash(!pettyCash)}
-                />
-              }
-              label={t("menu_petty_cash")}
-              className="mb-5"
-            />
+            {addTransactionData?.invoice_type?.toLowerCase() === "expense" && (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color="success"
+                    checked={pettyCash}
+                    onChange={() => setPettyCash(!pettyCash)}
+                  />
+                }
+                label={t("menu_petty_cash")}
+                className="mb-5"
+              />
+            )}
             {/* VAT TOGGLE */}
             <FormControlLabel
               control={

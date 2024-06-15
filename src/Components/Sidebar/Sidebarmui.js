@@ -8,21 +8,11 @@ import {
   SubMenu,
   sidebarClasses,
 } from "react-pro-sidebar";
-import { GiForkKnifeSpoon, GiHamburger } from "react-icons/gi";
-import { BsArrowLeftRight } from "react-icons/bs";
-
-import { GrConnect } from "react-icons/gr";
-import { FaFileAlt, FaWrench, FaChartLine, FaHome } from "react-icons/fa";
 
 import { toast } from "react-toastify";
 import ReactConfetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import moment from "moment";
-import { FaCheck } from "react-icons/fa";
-import { IoPeopleCircleSharp } from "react-icons/io5";
-import { IoPersonAddOutline } from "react-icons/io5";
-import { TbUsers } from "react-icons/tb";
-
 import axios from "../../axoisConfig";
 import ringtone from "../../assets/new-message-ringtone.mp3";
 import notifRingtone from "../../assets/notification-ringtone.mp3";
@@ -32,10 +22,23 @@ import { useStateContext } from "../../context/ContextProvider";
 import usePermission from "../../utils/usePermission";
 import ReminderToast from "./ReminderToast";
 import DealClosedAlert from "./DealClosedAlert";
-import { ImUsers } from "react-icons/im";
-import { MdContactPage } from "react-icons/md";
 
 import {
+  GiForkKnifeSpoon,
+  GiHamburger
+} from "react-icons/gi";
+import { VscDebugDisconnect } from "react-icons/vsc";
+import {
+  IoPeopleCircleSharp,
+  IoPersonAddOutline
+} from "react-icons/io5";
+import { RiVisaLine } from "react-icons/ri";
+import {
+  BsFiles,
+  BsWrenchAdjustableCircle,
+  BsShopWindow,
+  BsCashCoin,
+  BsArrowLeftRight,
   BsStopCircle,
   BsCheck2Circle,
   BsCalendarWeek,
@@ -118,6 +121,8 @@ const Sidebarmui = () => {
     isLangRTL,
     blurDarkColor,
     blurLightColor,
+    blurBlackColor,
+    blurWhiteColor,
     setThemeBgImg,
     timeZone,
     setTimezone,
@@ -1604,48 +1609,49 @@ const Sidebarmui = () => {
     // TRANSACTION
     {
       title: t("menu_finance"),
-      icon: <FaChartLine size={18} />,
-      // pro: true,
+      icon: <BsBarChart size={18} />,
+      pro: true,
       links: [
         {
           name: t("menu_transaction"),
-          // icon: <BsArrowLeftRight size={16} />,
-          // pro: true,
+          icon: <BsArrowLeftRight size={16} />,
+          pro: true,
           link: "/transactions",
         },
         {
           name: t("menu_visa"),
-          // pro: true,
+          icon: <RiVisaLine size={18} />,
+          pro: true,
           link: "/visa",
         },
         {
           name: t("menu_petty_cash"),
-          // icon: <FaHome size={16} />,
-          // pro: true,
+          icon: <BsCashCoin size={16} />,
+          pro: true,
           link: "/petty_cash",
         },
         {
           name: t("menu_vendors"),
-          icon: <FaHome size={16} />,
-          // pro: true,
+          icon: <BsShopWindow size={16} />,
+          pro: true,
           link: "/vendors",
         },
 
         {
           name: t("menu_reports"),
-          icon: <BsArrowLeftRight size={16} />,
-          pro: false,
+          icon: <BsFileEarmarkBarGraph size={16} />,
+          pro: true,
           submenu: [
             {
               name: t("menu_statements"),
               // icon: <FaHome size={16} />,
-              // pro: true,
+              pro: true,
               link: "/statements",
             },
             {
               name: t("menu_commission_vat"),
               // icon: <FaHome size={16} />,
-              // pro: true,
+              pro: true,
               link: "/commission_vat",
             },
           ],
@@ -1759,7 +1765,7 @@ const Sidebarmui = () => {
         },
         {
           name: t("menu_order_history"),
-          icon: <TbUsers size={16} />,
+          icon: <BsPeople size={16} />,
           // pro: true,
           link: "/order_history",
         },
@@ -1795,7 +1801,7 @@ const Sidebarmui = () => {
     // Editor
     {
       title: t("menu_editor"),
-      icon: <FaWrench size={20} />,
+      icon: <BsWrenchAdjustableCircle size={16} />,
       pro: false,
       links: [
         // {
@@ -1806,7 +1812,7 @@ const Sidebarmui = () => {
         // },
         {
           name: t("menu_template_list"),
-          icon: <FaFileAlt size={16} />,
+          icon: <BsFiles size={16} />,
           pro: false,
           link: "/templates",
         },
@@ -1849,7 +1855,7 @@ const Sidebarmui = () => {
       links: [
         {
           name: t("menu_integration"),
-          icon: <GrConnect size={16} />,
+          icon: <VscDebugDisconnect size={18} />,
           pro: false,
           link: "/integrations",
         },
@@ -2064,25 +2070,25 @@ const Sidebarmui = () => {
               minWidth: "18px",
             },
             "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
-              {
-                display: "flex",
-                gap: "5px",
-                paddingRight: !isLangRTL(i18n?.language) && "10px",
-                paddingLeft: isLangRTL(i18n?.language) && "10px",
-                // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
-                // color: !themeBgImg
-                //   ? primaryColor
-                //   : currentMode === "dark"
-                //   ? "#FFFFFF"
-                //   : "#000000",
-              },
+            {
+              display: "flex",
+              gap: "5px",
+              paddingRight: !isLangRTL(i18n?.language) && "10px",
+              paddingLeft: isLangRTL(i18n?.language) && "10px",
+              // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+              // color: !themeBgImg
+              //   ? primaryColor
+              //   : currentMode === "dark"
+              //   ? "#FFFFFF"
+              //   : "#000000",
+            },
             "& .ps-menu-button": {
               fontWeight: "medium",
               color: !themeBgImg
                 ? primaryColor
                 : currentMode === "dark"
-                ? "#FFFFFF"
-                : "#000000",
+                  ? "#FFFFFF"
+                  : "#000000",
               gap: "5px",
             },
             "& .ps-menu-button:hover": {
@@ -2090,8 +2096,8 @@ const Sidebarmui = () => {
               color: !themeBgImg
                 ? primaryColor
                 : currentMode === "dark"
-                ? "#000000"
-                : "#FFFFFF",
+                  ? "#000000"
+                  : "#FFFFFF",
             },
             "& .ps-menu-icon": {
               marginRight: !isLangRTL(i18n.language) && "10px",
@@ -2102,7 +2108,7 @@ const Sidebarmui = () => {
               //     : "black",
             },
           }}
-          className="my-1"
+          className="py-1"
         >
           {links?.map((link, linkIndex) => {
             let permittedLinksMoreThan0 = false;
@@ -2187,11 +2193,9 @@ const Sidebarmui = () => {
                       }
                     >
                       <div
-                        className={`flex items-center ${
-                          isCollapsed ? "gap-4" : ""
-                        } rounded-lg text-base ${
-                          !isCollapsed ? "justify-center" : ""
-                        } `}
+                        className={`flex items-center ${isCollapsed ? "gap-4" : ""
+                          } rounded-lg text-base ${!isCollapsed ? "justify-center" : ""
+                          } `}
                       >
                         <span className={`${!isCollapsed && "text-xl"}`}>
                           {link?.links[0]?.icon}
@@ -2203,13 +2207,12 @@ const Sidebarmui = () => {
                             {link?.links[0]?.name}
                             {link?.links[0].pro && (
                               <div
-                                className={`${
-                                  themeBgImg
+                                className={`${themeBgImg
                                     ? currentMode === "dark"
                                       ? "bg-black"
                                       : "bg-white"
                                     : "bg-transparent"
-                                } p-1 rounded-full`}
+                                  } p-1 rounded-full`}
                               >
                                 <GiQueenCrown size={16} className="gold-grad" />
                               </div>
@@ -2239,6 +2242,9 @@ const Sidebarmui = () => {
                       opacity: "1",
                     },
                   }}
+                // className={`${!themeBgImg
+                //   && (currentMode === "dark" ? "bg-dark" : "bg-light")
+                //   }`}
                 >
                   {!isCollapsed ? (
                     <Tooltip title={link?.title} placement="right">
@@ -2279,7 +2285,7 @@ const Sidebarmui = () => {
                               // color: "white",
                             },
                           }}
-                          className="relative my-1"
+                          className={`relative py-1`}
                         >
                           <MenuItem
                             active={
@@ -2298,29 +2304,27 @@ const Sidebarmui = () => {
                     <SubMenu
                       icon={link?.icon}
                       open={activeSidebarHeading === linkIndex}
+                      className={`top-level-dropdown`}
                       // label={link?.title?.toUpperCase()}
                       label={
                         <span
-                          className={`
-                                  uppercase capitalize flex items-center gap-2`}
+                          className={`uppercase capitalize flex items-center gap-2`}
                         >
                           {link.title}
                           {link.pro && (
                             <div
-                              className={`${
-                                themeBgImg
+                              className={`${themeBgImg
                                   ? currentMode === "dark"
                                     ? "bg-black"
                                     : "bg-white"
                                   : "bg-transparent"
-                              } p-1 rounded-full`}
+                                } p-1 rounded-full`}
                             >
                               <GiQueenCrown size={16} className="gold-grad" />
                             </div>
                           )}
                         </span>
                       }
-                      className="top-level-dropdown"
                     >
                       {link.links.map((menu, index) => {
                         if (
@@ -2398,8 +2402,9 @@ const Sidebarmui = () => {
                                     //     ? "white"
                                     //     : "black",
                                   },
+                                  backgroundColor: (currentMode === "dark" ? "black" : "white")
                                 }}
-                                className="my-1 sub"
+                                className={`py-1 sub`}
                               >
                                 <SubMenu
                                   // label={menu.name}
@@ -2410,13 +2415,12 @@ const Sidebarmui = () => {
                                       {menu.name}
                                       {menu.pro && (
                                         <div
-                                          className={`${
-                                            themeBgImg
+                                          className={`${themeBgImg
                                               ? currentMode === "dark"
                                                 ? "bg-black"
                                                 : "bg-white"
                                               : "bg-transparent"
-                                          } p-1 rounded-full`}
+                                            } p-1 rounded-full`}
                                         >
                                           <GiQueenCrown
                                             size={16}
@@ -2468,8 +2472,8 @@ const Sidebarmui = () => {
                                               color: m?.countColor
                                                 ? m?.countColor
                                                 : currentMode === "dark"
-                                                ? "white"
-                                                : "black",
+                                                  ? "white"
+                                                  : "black",
                                               right:
                                                 !isLangRTL(i18n.language) &&
                                                 "3px",
@@ -2478,11 +2482,12 @@ const Sidebarmui = () => {
                                                 "3px",
                                             },
                                             "& .css-cveggr-MuiListItemIcon-root":
-                                              {
-                                                minWidth: "10px !important",
-                                              },
+                                            {
+                                              minWidth: "10px !important",
+                                            },
+                                            backgroundColor: (currentMode === "dark" ? "#2B2830" : "#EEEEEE")
                                           }}
-                                          className=" relative my-1"
+                                          className={`relative py-1`}
                                         >
                                           <MenuItem
                                             active={
@@ -2492,7 +2497,7 @@ const Sidebarmui = () => {
                                                 " "
                                               )
                                             }
-                                            className="flex"
+                                            className={`flex`}
                                           >
                                             {m?.icon && (
                                               <ListItemIcon
@@ -2513,13 +2518,12 @@ const Sidebarmui = () => {
                                               {m?.name || ""}
                                               {m.pro && (
                                                 <div
-                                                  className={`${
-                                                    themeBgImg
+                                                  className={`${themeBgImg
                                                       ? currentMode === "dark"
                                                         ? "bg-black"
                                                         : "bg-white"
                                                       : "bg-transparent"
-                                                  } p-1 rounded-full`}
+                                                    } p-1 rounded-full`}
                                                 >
                                                   <GiQueenCrown
                                                     size={16}
@@ -2531,18 +2535,17 @@ const Sidebarmui = () => {
                                           </MenuItem>
                                           {m?.count != null && (
                                             <span
-                                              className={`leads_counter block absolute ${
-                                                isLangRTL(i18n.language)
+                                              className={`leads_counter block absolute ${isLangRTL(i18n.language)
                                                   ? "left-5"
                                                   : "right-5"
-                                              }`}
+                                                }`}
                                               style={{
                                                 top: "50%",
                                                 transform: "translateY(-50%)",
                                               }}
                                             >
                                               {m?.count !== null &&
-                                              m?.count !== undefined
+                                                m?.count !== undefined
                                                 ? m?.count
                                                 : ""}
                                             </span>
@@ -2595,8 +2598,9 @@ const Sidebarmui = () => {
                                       right: !isLangRTL(i18n.language) && "3px",
                                       left: isLangRTL(i18n.language) && "3px",
                                     },
+                                    backgroundColor: (currentMode === "dark" ? "black" : "white")
                                   }}
-                                  className="relative my-1"
+                                  className={`relative py-1`}
                                 >
                                   <MenuItem
                                     active={
@@ -2609,9 +2613,8 @@ const Sidebarmui = () => {
                                   >
                                     <div className="flex items-center gap-4 text-base">
                                       <span
-                                        className={`${
-                                          !isCollapsed && "text-xl"
-                                        }`}
+                                        className={`${!isCollapsed && "text-xl"
+                                          }`}
                                         style={{
                                           // icons css
                                           "& .css-wx7wi4": {
@@ -2634,13 +2637,12 @@ const Sidebarmui = () => {
                                           {menu.name}
                                           {menu.pro && (
                                             <div
-                                              className={`${
-                                                themeBgImg
+                                              className={`${themeBgImg
                                                   ? currentMode === "dark"
                                                     ? "bg-black"
                                                     : "bg-white"
                                                   : "bg-transparent"
-                                              } p-1 rounded-full`}
+                                                } p-1 rounded-full`}
                                             >
                                               <GiQueenCrown
                                                 size={16}
@@ -2655,18 +2657,17 @@ const Sidebarmui = () => {
                                   {menu?.count !== null &&
                                     menu?.count !== undefined && (
                                       <span
-                                        className={`leads_counter block absolute ${
-                                          isLangRTL(i18n.language)
+                                        className={`leads_counter block absolute ${isLangRTL(i18n.language)
                                             ? "left-5"
                                             : "right-5"
-                                        }`}
+                                          }`}
                                         style={{
                                           top: "50%",
                                           transform: "translateY(-50%)",
                                         }}
                                       >
                                         {menu?.count !== null &&
-                                        menu?.count !== undefined
+                                          menu?.count !== undefined
                                           ? menu?.count
                                           : ""}
                                       </span>
@@ -2712,11 +2713,10 @@ const Sidebarmui = () => {
         <>
           {!showSidebar && (
             <div
-              className={`fixed top-10 shadow-xl bg-primary text-white py-2 px-4 ${
-                isLangRTL(i18n.language)
+              className={`fixed top-10 shadow-xl bg-primary text-white py-2 px-4 ${isLangRTL(i18n.language)
                   ? "right-0 rounded-l-full"
                   : "left-0 rounded-r-full"
-              }`}
+                }`}
               style={{
                 zIndex: 101,
               }}
@@ -2729,20 +2729,18 @@ const Sidebarmui = () => {
             <>
               <div
                 ref={sidebarRef}
-                className={`fixed top-5 bottom-5 rounded-xl ${
-                  isLangRTL(i18n.language) ? "right-5" : "left-5"
-                }`}
+                className={`fixed top-5 bottom-5 rounded-xl ${isLangRTL(i18n.language) ? "right-5" : "left-5"
+                  }`}
                 style={{
                   zIndex: 101,
                 }}
               >
                 <div className="relative flex">
                   <div
-                    className={`h-[95vh] w-[200px] ${
-                      currentMode === "dark"
+                    className={`h-[95vh] w-[200px] ${currentMode === "dark"
                         ? "blur-bg-dark text-white"
                         : "blur-bg-light text-black"
-                    }`}
+                      }`}
                   >
                     {/* SIDEBAR */}
                     <div>
@@ -2780,11 +2778,10 @@ const Sidebarmui = () => {
                                 alt=""
                               />
                               <h1
-                                className={`font-bold overflow-hidden uppercase ${
-                                  currentMode === "dark"
+                                className={`font-bold overflow-hidden uppercase ${currentMode === "dark"
                                     ? "text-white"
                                     : "text-black"
-                                }`}
+                                  }`}
                               >
                                 HIKAL CRM
                               </h1>
@@ -2821,11 +2818,10 @@ const Sidebarmui = () => {
                               />
                             </Box>
                             <h1
-                              className={`my-2 font-bold text-lg text-center capitalize multiline-ellipsis line-clamp-2 ${
-                                currentMode === "dark"
+                              className={`my-2 font-bold text-lg text-center capitalize multiline-ellipsis line-clamp-2 ${currentMode === "dark"
                                   ? "text-white"
                                   : "text-main-dark-bg"
-                              }`}
+                                }`}
                             >
                               {User?.userName ? User?.userName : "-"}
                             </h1>
@@ -2887,11 +2883,10 @@ const Sidebarmui = () => {
                     {/* SIDEBAR */}
                   </div>
                   <div
-                    className={`my-5 shadow-xl h-fit bg-primary text-white py-2 px-3 ${
-                      isLangRTL(i18n.language)
+                    className={`my-5 shadow-xl h-fit bg-primary text-white py-2 px-3 ${isLangRTL(i18n.language)
                         ? "right-0 rounded-l-full"
                         : "left-0 rounded-r-full"
-                    }`}
+                      }`}
                     style={{
                       zIndex: 101,
                     }}
@@ -2915,109 +2910,115 @@ const Sidebarmui = () => {
                   ? blurDarkColor
                   : blurLightColor
                 : currentMode === "dark"
-                ? "#000000"
-                : "#FFFFFF",
+                  ? "#282B30"
+                  : "#EEEEEE",
             },
           }}
           style={{ display: "flex", height: "100%" }}
-          className={`max-w-[200px] sticky top-0 ${
-            isLangRTL(i18n.language) ? "right-0" : "left-0"
-          }  `}
+          className={`max-w-[200px] sticky top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"
+            }  `}
         >
           <Sidebar
             rootStyles={{
               [`.${sidebarClasses.container}`]: {
                 backgroundColor:
-                  !themeBgImg &&
-                  (currentMode === "dark" ? "#000000" : "#ffffff"),
+                  themeBgImg
+                    ? (currentMode === "dark" ? blurDarkColor : blurLightColor)
+                    : (currentMode === "dark" ? "#282B30" : "#EEEEEE"),
               },
             }}
             className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
           >
             {/* ${currentMode}-mode-sidebar */}
-            <div className="">
+            <div>
               <div
                 className="sidebar-top"
                 style={{
                   position: !themeBgImg && "sticky",
                   top: !themeBgImg && 0,
-                  background:
-                    !themeBgImg && (currentMode === "dark" ? "black" : "white"),
+                  background: !themeBgImg && (currentMode === "dark" ? "#282B30" : "#EEEEEE"),
                   zIndex: 1000,
                 }}
               >
-                {/* HIKAL CRM  */}
-                <div
-                  className={`flex ${
-                    isCollapsed ? "justify-between" : "justify-center"
-                  } w-full items-center h-[50px]`}
-                >
-                  <Link
-                    to={
-                      User?.role !== 5
-                        ? "/dashboard"
-                        : "/attendance/officeSettings"
-                    }
-                    className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
-                    onClick={() => {
-                      setSelected({
-                        name:
-                          User?.role !== 5 ? "Dashboard" : "Office Settings",
-                        index: 0,
-                      });
-                    }}
+                <div className={!themeBgImg && (currentMode === "dark" ? "bg-dark-neu-nr" : "bg-light-neu-nr")} >
+                  {/* HIKAL CRM  */}
+                  <div
+                    className={`flex ${isCollapsed ? "justify-between" : "justify-center"
+                      } w-full items-center h-[50px]`}
                   >
-                    <div className="w-full flex items-center gap-2 p-2">
-                      <img
-                        height={40}
-                        width={40}
-                        className="h-[40px] w-[40px] p-1"
-                        src="/favicon.png"
-                        alt=""
-                      />
-                      {isCollapsed && (
-                        <h1
-                          className={`font-bold overflow-hidden uppercase ${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                    <Link
+                      to={
+                        User?.role === 5
+                          ? "/attendance/officeSettings"
+                          : User?.role === 9
+                            ? "/order_history"
+                            : "/dashboard"
+                      }
+                      className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                      onClick={() => {
+                        setSelected({
+                          name:
+                            User?.role === 5
+                              ? "Office Settings"
+                              : User?.role === 9
+                                ? "Order History"
+                                : "Dashboard",
+                          index: 0,
+                        });
+                      }}
+                    >
+                      <div className="w-full flex items-center gap-2 p-2">
+                        <img
+                          height={40}
+                          width={40}
+                          className="h-[40px] w-[40px] p-1"
+                          src="/favicon.png"
+                          alt=""
+                        />
+                        {isCollapsed && (
+                          <h1
+                            className={`font-bold overflow-hidden uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                              }`}
+                          >
+                            HIKAL CRM
+                          </h1>
+                        )}
+                      </div>
+                    </Link>
+                  </div>
+                  {/* PROFILE  */}
+                  <div className="profile-section border-b-2 border-primary px-2 pb-5">
+                    {isCollapsed ? (
+                      <>
+                        <div
+                          // to={"/profile"}
+                          onClick={handleClickProfile}
+                          className="flex cursor-pointer flex-col items-center justify-center"
                         >
-                          HIKAL CRM
-                        </h1>
-                      )}
-                    </div>
-                  </Link>
-                </div>
-                {/* PROFILE  */}
-                <div className="profile-section border-b-2 border-primary px-2 pb-5 mb-2">
-                  {isCollapsed ? (
-                    <>
-                      <div
-                        // to={"/profile"}
-                        onClick={handleClickProfile}
-                        className="flex cursor-pointer flex-col items-center justify-center"
-                      >
-                        <Box
-                          className="relative"
-                          sx={{
-                            "&:hover .absolute": {
-                              display: "flex",
-                              background:
-                                currentMode === "dark" ? "white" : "black",
-                            },
-                          }}
-                        >
-                          <img
-                            src={
-                              User?.displayImg
-                                ? User?.displayImg
-                                : "/assets/user.png"
-                            }
-                            height={60}
-                            width={60}
-                            className={`rounded-md object-cover relative`}
-                            alt=""
-                          />
-                          {/* 
+                          <Box
+                            className="relative"
+                            sx={{
+                              "&:hover .absolute": {
+                                display: "flex",
+                                background:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                            }}
+                          >
+                            <img
+                              src={
+                                User?.displayImg
+                                  ? User?.displayImg
+                                  : "/assets/user.png"
+                              }
+                              height={60}
+                              width={60}
+                              className={`${!themeBgImg
+                                && (currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu")
+                                } rounded-md object-cover relative`}
+                              alt=""
+                            />
+                            {/* 
                         <div
                           onClick={() =>
                             setAnimateProfilePic(!animateProfilePic)
@@ -3034,50 +3035,47 @@ const Sidebarmui = () => {
                             View
                           </p>
                         </div> */}
-                        </Box>
+                          </Box>
 
-                        <h1
-                          className={`my-2 font-bold text-lg text-center capitalize ${
-                            currentMode === "dark"
+                          <h1
+                            className={`my-2 font-bold text-lg text-center capitalize ${currentMode === "dark"
                               ? "text-white"
                               : "text-main-dark-bg"
-                          }`}
-                        >
-                          {User?.userName ? User?.userName : "No username"}
-                        </h1>
-                        <span
-                          style={{
-                            background: primaryColor,
-                          }}
-                          className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
-                        >
-                          {User?.position || ""}
-                        </span>
+                              }`}
+                          >
+                            {User?.userName ? User?.userName : "No username"}
+                          </h1>
+                          <span
+                            style={{
+                              background: primaryColor,
+                            }}
+                            className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
+                          >
+                            {User?.position || ""}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div
+                        // to={"/profile"}
+                        onClick={handleClickProfile}
+                        className="flex justify-center"
+                      >
+                        <Avatar
+                          src={User?.displayImg}
+                          height={50}
+                          width={50}
+                          className="rounded-sm cursor-pointer"
+                          alt=""
+                        />
                       </div>
-                    </>
-                  ) : (
-                    <div
-                      // to={"/profile"}
-                      onClick={handleClickProfile}
-                      className="flex justify-center"
-                    >
-                      <Avatar
-                        src={User?.displayImg}
-                        height={50}
-                        width={50}
-                        className="rounded-sm cursor-pointer"
-                        alt=""
-                      />
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-
                 <div
-                  className={`${
-                    animateProfilePic ? "animate-profile-pic" : ""
-                  } fixed hidden top-0 ${
-                    isLangRTL(i18n.language) ? "right-0" : "left-0"
-                  } w-screen h-screen`}
+                  className={`${animateProfilePic ? "animate-profile-pic" : ""
+                    } fixed hidden top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"
+                    } w-screen h-screen`}
                   style={{
                     backgroundColor: "rgba(0, 0, 0, 0.85)",
                   }}
@@ -3107,8 +3105,7 @@ const Sidebarmui = () => {
               </div>
 
               {/* MODULES  */}
-              <div className="sidebar-root mt-4 mb-4 text-base">
-                \
+              <div className={`sidebar-root py-5 text-base`}>
                 <SidebarMenu currentMode={currentMode} isLangRTL={isLangRTL} />
               </div>
             </div>
@@ -3155,7 +3152,7 @@ const Sidebarmui = () => {
               <FaInbox size={22} />
             </Link>
 
-            <div className="border border-[#1C1C1C] bg-black p-1 w-[18px] h-[18px] rounded-full absolute top-0 left-0 flex justify-center items-center text-white">
+            <div className="border border-[#2B2830] bg-black p-1 w-[18px] h-[18px] rounded-full absolute top-0 left-0 flex justify-center items-center text-white">
               {messagesCount}
             </div>
           </div>
