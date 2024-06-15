@@ -124,7 +124,7 @@ const images = [
   { // pink -fl
     "abstract_rainbow": {
       bg: "https://cdn.pixabay.com/photo/2017/03/25/17/55/colorful-2174045_1280.png",
-      theme: "light",
+      theme: "dark",
       primary: "rgb(190, 20, 82)",
     }
   },
