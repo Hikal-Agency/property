@@ -394,14 +394,6 @@ const CommissionReceipt = ({
       doc.setFontSize(10);
       doc.text(`${data?.payment_source} `, paddingX, usedY + 39);
 
-      // const x = paddingX;
-      // const y = 50 - 4;
-      // const textWidth = doc.getTextWidth(`${data?.payment_source}`);
-      // //   const textY = y + 2;
-      // const textY = usedY + 41;
-      // doc.setLineWidth(0.5);
-      // doc.line(x - textWidth / 2, textY, x + textWidth / 2, textY);
-
       usedY = 215;
     };
 
