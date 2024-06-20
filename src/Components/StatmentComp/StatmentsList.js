@@ -286,7 +286,7 @@ const StatmentsList = () => {
                 loss = false;
               }
               return (
-                <div className="w-full grid grid-cols-1 lg: grid-cols-2 gap-4">
+                <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div
                     className={`p-4 pb-5 h-fit rounded-xl shadow-sm ${
                       themeBgImg
