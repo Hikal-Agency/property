@@ -125,6 +125,7 @@ const AllLeads = ({
     i18n,
     blurDarkColor,
     blurLightColor,
+    themeBgImg
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);

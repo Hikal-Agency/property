@@ -20,7 +20,7 @@ body {
 .bg-light {
   background-color: #eeeeee;
 }
-
+/* DARK */
 .bg-dark-neu {
   border-radius: 10px;
   background: #282b30;
@@ -30,6 +30,7 @@ body {
   background: #282b30;
   box-shadow: 5px 5px 10px #111111, -5px -5px 10px #444444;
 }
+/* LIGHT */
 .bg-light-neu {
   border-radius: 10px;
   background: #eeeeee;
@@ -39,6 +40,7 @@ body {
   background: #eeeeee;
   box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
 }
+/* PRIMARY */
 .bg-primary-dark-neu {
   border-radius: 10px;
   background: var(--primary-color);
@@ -49,17 +51,27 @@ body {
   background: var(--primary-color);
   box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
 }
-.bg-dark-neu-bg {
+/* GREEN */
+.bg-green-dark-neu {
   border-radius: 10px;
-  background: rgba(0, 0, 0, 0.5);
-  box-shadow: 2px 2px 10px #111111, -2px -2px 10px #444444;
-  border: 1px solid #111111;
+  background: #16a34a;
+  box-shadow: 5px 5px 10px #111111, -5px -5px 10px #444444;
 }
-.bg-light-neu-bg {
+.bg-green-light-neu {
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 2px 2px 10px #cccccc, -2px -2px 10px #ffffff;
-  border: 1px solid #eeeeee;
+  background: #16a34a;
+  box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
+}
+/* RED */
+.bg-red-dark-neu {
+  border-radius: 10px;
+  background: #DA1F26;
+  box-shadow: 5px 5px 10px #111111, -5px -5px 10px #444444;
+}
+.bg-red-light-neu {
+  border-radius: 10px;
+  background: #DA1F26;
+  box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
 }
 
 /* search bar */

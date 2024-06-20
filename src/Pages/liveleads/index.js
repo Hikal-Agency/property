@@ -1,22 +1,23 @@
 
-import React, { 
-  useEffect, 
-  useState 
+import React, {
+  useEffect,
+  useState
 } from "react";
-import { 
-  useLocation, 
-  useNavigate 
+import {
+  useLocation,
+  useNavigate
 } from "react-router-dom";
-import { 
-  useStateContext 
+import {
+  useStateContext
 } from "../../context/ContextProvider";
-import { 
-  Box 
+import {
+  Box
 } from "@mui/material";
 
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
 import usePermission from "../../utils/usePermission";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 
 const AllLiveLeads = () => {
@@ -29,12 +30,12 @@ const AllLiveLeads = () => {
     t
   } = useStateContext();
   const location = useLocation();
-  const {hasPermission} = usePermission();
+  const { hasPermission } = usePermission();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
   const pathname2 = location.pathname.split("/")[1];
   const [loading, setloading] = useState(true);
-  
+
 
   useEffect(() => {
     setopenBackDrop(false);
@@ -53,28 +54,15 @@ const AllLiveLeads = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-            }`}
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }`}
           >
-            <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
-              <div className="flex items-center pb-3">                
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {`${t("type_livecall")} ${t("leads")}`} 
-                  {" "}
-                  <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", '_'))})</span>{" "}
-                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                    {pageState?.total}
-                  </span>
-                </h1>
-              </div>
+            <HeadingTitle
+              title={`${t("type_livecall")} ${t("leads")}`}
+              subtitle={t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", '_'))}
+              counter={pageState?.total}
+            />
 
-            </div>
             <AllLeads
               BACKEND_URL={BACKEND_URL}
               lead_type={lead_type}

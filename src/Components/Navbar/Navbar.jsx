@@ -363,8 +363,8 @@ const Navbar = () => {
             ? "blur-bg-dark-nr"
             : "blur-bg-light-nr"
           : currentMode === "dark"
-            ? "bg-black"
-            : "bg-white"
+            ? "bg-dark-neu"
+            : "bg-light-neu"
           } flex justify-end items-center p-2 relative w-full`}
         style={{
           position: "fixed",
@@ -844,8 +844,8 @@ const Navbar = () => {
               ? "blur-bg-dark-nr"
               : "blur-bg-light-nr"
             : currentMode === "dark"
-              ? "bg-black"
-              : "bg-white"
+              ? "bg-dark-neu-nr"
+              : "bg-light-neu-nr"
             } flex justify-between items-center p-2 relative`}
           style={{
             position: "fixed",

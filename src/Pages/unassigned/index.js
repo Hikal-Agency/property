@@ -43,6 +43,7 @@ import {
 import {
   TbWorldWww
 } from "react-icons/tb";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const AllUnassignedLeads = () => {
   const {
@@ -56,7 +57,7 @@ const AllUnassignedLeads = () => {
     Counters,
     User
   } = useStateContext();
-  
+
   const location = useLocation();
   const lead_type2 = location.pathname.split("/")[2];
   var lead_type = lead_type2.replace(/%20/g, " ");
@@ -96,30 +97,18 @@ const AllUnassignedLeads = () => {
 
   return (
     <div>
-      <div className={`w-full p-4 flex min-h-screen ${
-        !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+      <div className={`w-full p-5 flex min-h-screen ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
         }`}
       >
         {loading ? (
           <Loader />
         ) : (
-          <div className="w-full">
-            <div className="w-full">
-              <div className="w-full flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {`${t("unassigned")} ${t("leads")}`} {" "}
-                  <span className="capitalize">({t("type_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
-                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                    {pageState?.total}
-                  </span>
-                </h1>
-              </div>
-            </div>
+          <div className="w-full mt-2">
+            <HeadingTitle
+              title={`${t("unassigned")} ${t("leads")}`}
+              subtitle={t("type_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))}
+              counter={pageState?.total}
+            />
 
             <AllLeads
               BACKEND_URL={BACKEND_URL}
