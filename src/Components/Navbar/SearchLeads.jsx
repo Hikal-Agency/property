@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import { Box, CircularProgress, TextField } from "@mui/material";
+import { Box, CircularProgress, TextField, InputAdornment } from "@mui/material";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router";
 import { search } from "../../utils/axiosSearch";
-import { MdMic } from "react-icons/md";
+import { 
+  BsMic,
+  BsMicFill
+} from "react-icons/bs";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -128,21 +131,38 @@ const SearchLeads = () => {
             value={searchTerm}
             onChange={handleSearch}
             size="small"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <div
+                    className={`${isVoiceSearchState ? "listening bg-primary" : ""
+                      } ${currentMode === "dark" ? "text-white" : "text-black"
+                      } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                    onClick={() => setIsVoiceSearchState(!isVoiceSearchState)}
+                  >
+                    {isVoiceSearchState ? (
+                      <BsMicFill size={16} />
+                    ) : (
+                      <BsMic size={16} />
+                    )}
+                  </div>
+                </InputAdornment>
+              ),
+            }}
           />
-          <div
+          {/* <div
             className={`p-3 cursor-pointer hover:bg-gray-200 ${
               isVoiceSearchState ? "bg-gray-200 listening" : ""
             } rounded-full`}
             onClick={() => setIsVoiceSearchState(!isVoiceSearchState)}
           >
-            <MdMic size={18} />
-          </div>
+            <MdMic color={"#AAAAAA"} size={18} />
+          </div> */}
         </Box>
         {searchResult?.data?.length > 0 && (
           <div
-            className={`absolute rounded shadow mt-1 p-3 w-[190px] ${
-              currentMode === "dark" ? "bg-[#292828]" : "bg-white"
-            }`}
+            className={`absolute rounded shadow mt-1 p-3 w-[190px] ${currentMode === "dark" ? "bg-[#292828]" : "bg-white"
+              }`}
             style={{
               overflow:
                 searchResult != null
@@ -169,9 +189,8 @@ const SearchLeads = () => {
                     },
                   }}
                   key={search?.id}
-                  className={`py-2 ${
-                    currentMode === "dark" ? "text-white" : "text-dark"
-                  } cursor-pointer`}
+                  className={`py-2 ${currentMode === "dark" ? "text-white" : "text-dark"
+                    } cursor-pointer`}
                   onClick={(e) => handleNavigate(e, search)}
                 >
                   {search?.leadName}

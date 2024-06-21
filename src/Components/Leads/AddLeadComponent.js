@@ -32,6 +32,7 @@ import {
   purpose_options,
   lead_options,
 } from "../_elements/SelectOptions";
+import HeadingTitle from "../_elements/HeadingTitle";
 
 const AddLeadComponent = ({
   handleCloseAddLeadModal,
@@ -218,7 +219,7 @@ const AddLeadComponent = ({
     else {
       coldCall = LeadCategory;
     }
-    
+
     if (LeadName) LeadData.append("leadName", LeadName);
     if (LeadContact)
       LeadData.append("leadContact", LeadContact?.replaceAll(" ", ""));
@@ -383,293 +384,287 @@ const AddLeadComponent = ({
             }}
             disabled={loading ? true : false}
           >
-            <div className="w-full flex items-center pb-3">
-              <div className="bg-primary h-10 w-1 rounded-full"></div>
-              <h1
-                className={`text-lg font-semibold mx-2 uppercase ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
+            <HeadingTitle title={t("title_add_new_lead_details")} />
+
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 gap-5 mb-5">
+              <Box
+                sx={{
+                  ...darkModeColors,
+                  "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                  {
+                    right: isLangRTL(i18n.language)
+                      ? "2.5rem"
+                      : "inherit",
+                    transformOrigin: isLangRTL(i18n.language)
+                      ? "right"
+                      : "left",
+                  },
+                  "& legend": {
+                    textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                  },
+                }}
+                className={`${themeBgImg
+                  ? (currentMode === "dark"
+                    ? "blur-bg-dark shadow-sm"
+                    : "blur-bg-light shadow-sm")
+                  : (currentMode === "dark"
+                    ? "bg-dark-neu"
+                    : "bg-light-neu")
+                  } p-5`}
               >
-                {t("title_add_new_lead_details")}
-              </h1>
-            </div>
-
-            <div
-              className={`${
-                themeBgImg &&
-                (currentMode === "dark"
-                  ? "blur-bg-dark shadow-sm"
-                  : "blur-bg-light shadow-sm")
-              } p-5 rounded-lg `}
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 mt-5">
-                <div className="px-4">
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
-                      "& legend": {
-                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                      },
-                    }}
-                  >
-                    <h4
-                      className={`${
-                        currentMode === "dark" ? `text-white` : "text-black"
-                      } text-center font-semibold pb-5`}
-                    >
-                      {t("agent_details")}
-                    </h4>
-                    {hasPermission("addlead_manager_dropdown") && (
-                      <Select
-                        id="Manager"
-                        options={Managers.map((person) => ({
-                          value: person.id,
-                          label: person.userName,
-                        }))}
-                        value={
-                          String(Manager) === "1" || !Manager || Manager === "0"
-                            ? null
-                            : {
-                                label: Managers.find(
-                                  (manager) => manager.id === Manager
-                                )?.userName,
-                                value: Manager,
-                              }
+                <h4
+                  className={`${currentMode === "dark" ? `text-white` : "text-black"
+                    } text-center uppercase font-semibold pb-5`}
+                >
+                  {t("agent_details")}
+                </h4>
+                {hasPermission("addlead_manager_dropdown") && (
+                  <Select
+                    id="Manager"
+                    options={Managers.map((person) => ({
+                      value: person.id,
+                      label: person.userName,
+                    }))}
+                    value={
+                      String(Manager) === "1" || !Manager || Manager === "0"
+                        ? null
+                        : {
+                          label: Managers.find(
+                            (manager) => manager.id === Manager
+                          )?.userName,
+                          value: Manager,
                         }
-                        isDisabled={User?.role === 3}
-                        onChange={ChangeManager}
-                        placeholder={t("label_select_manager")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
-                      // <>
-                      // <TextField
-                      //   id="Manager"
-                      //   select
-                      //   sx={{
-                      //     "&": {
-                      //       marginBottom: "1.25rem !important",
-                      //     },
-                      //   }}
-                      //   value={Manager}
-                      //   disabled={User?.role === 3 && true}
-                      //   label={t("label_sales_manager")}
-                      //   onChange={ChangeManager}
-                      //   size="small"
-                      //   className="w-full"
-                      //   displayEmpty
-                      // >
-                      //   <MenuItem value="">
-                      //     {t("label_select_manager")}
-                      //     <span className="ml-1 text-primary">*</span>
-                      //   </MenuItem>
+                    }
+                    isDisabled={User?.role === 3}
+                    onChange={ChangeManager}
+                    placeholder={t("label_select_manager")}
+                    className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                  // <>
+                  // <TextField
+                  //   id="Manager"
+                  //   select
+                  //   sx={{
+                  //     "&": {
+                  //       marginBottom: "1.25rem !important",
+                  //     },
+                  //   }}
+                  //   value={Manager}
+                  //   disabled={User?.role === 3 && true}
+                  //   label={t("label_sales_manager")}
+                  //   onChange={ChangeManager}
+                  //   size="small"
+                  //   className="w-full"
+                  //   displayEmpty
+                  // >
+                  //   <MenuItem value="">
+                  //     {t("label_select_manager")}
+                  //     <span className="ml-1 text-primary">*</span>
+                  //   </MenuItem>
 
-                      //   {Managers?.map((person, index) => (
-                      //     <MenuItem key={index} value={person?.id}>
-                      //       {person?.userName}
-                      //     </MenuItem>
-                      //   ))}
-                      // </TextField>
-                      // </>
-                    )}
+                  //   {Managers?.map((person, index) => (
+                  //     <MenuItem key={index} value={person?.id}>
+                  //       {person?.userName}
+                  //     </MenuItem>
+                  //   ))}
+                  // </TextField>
+                  // </>
+                )}
 
-                    {hasPermission("addlead_agent_dropdown") && (
-                      <Select
-                        id="SalesPerson"
-                        options={
-                          User.role === 1
-                            ? SalesPerson[`manager-${Manager}`]?.map(
-                                (agent) => ({
-                                  value: agent?.id,
-                                  label: agent?.userName,
-                                })
-                              )
-                            : SalesPerson[`manager-${User?.id}`]?.map(
-                                (agent) => ({
-                                  value: agent?.id,
-                                  label: agent?.userName,
-                                })
-                              )
+                {hasPermission("addlead_agent_dropdown") && (
+                  <Select
+                    id="SalesPerson"
+                    options={
+                      User.role === 1
+                        ? SalesPerson[`manager-${Manager}`]?.map(
+                          (agent) => ({
+                            value: agent?.id,
+                            label: agent?.userName,
+                          })
+                        )
+                        : SalesPerson[`manager-${User?.id}`]?.map(
+                          (agent) => ({
+                            value: agent?.id,
+                            label: agent?.userName,
+                          })
+                        )
+                    }
+                    // value={SalesPerson2}
+                    value={
+                      SalesPerson2
+                        ? {
+                          label: SalesPerson[`manager-${Manager}`]?.find(
+                            (agent) => agent?.id === SalesPerson2
+                          )?.userName,
+                          value: SalesPerson2,
                         }
-                        // value={SalesPerson2}
-                        value={
-                          SalesPerson2
-                            ? {
-                                label: SalesPerson[`manager-${Manager}`]?.find(
-                                  (agent) => agent?.id === SalesPerson2
-                                )?.userName,
-                                value: SalesPerson2,
-                              }
-                            : null
-                        }
-                        onChange={ChangeSalesPerson}
-                        placeholder={t("label_sales_agent")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
-                      // <>
-                      //   <TextField
-                      //     sx={{
-                      //       "&": {
-                      //         marginBottom: "1.25rem !important",
-                      //       },
-                      //     }}
-                      //     select
-                      //     id="SalesPerson"
-                      //     label={t("label_sales_agent")}
-                      //     value={SalesPerson2}
-                      //     onChange={ChangeSalesPerson}
-                      //     size="small"
-                      //     className="w-full"
-                      //     displayEmpty
-                      //   >
-                      //     <MenuItem value="">Select Agent</MenuItem>
-                      //     {User.role === 1
-                      //       ? SalesPerson[`manager-${Manager}`]?.map(
-                      //           (agent, index) => (
-                      //             <MenuItem key={index} value={agent?.id}>
-                      //               {agent?.userName}
-                      //             </MenuItem>
-                      //           )
-                      //         )
-                      //       : SalesPerson[`manager-${User?.id}`]?.map(
-                      //           (agent, index) => (
-                      //             <MenuItem key={index} value={agent?.id}>
-                      //               {agent?.userName}
-                      //             </MenuItem>
-                      //           )
-                      //         )}
-                      //   </TextField>
-                      // </>
-                    )}
+                        : null
+                    }
+                    onChange={ChangeSalesPerson}
+                    placeholder={t("label_sales_agent")}
+                    className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                  // <>
+                  //   <TextField
+                  //     sx={{
+                  //       "&": {
+                  //         marginBottom: "1.25rem !important",
+                  //       },
+                  //     }}
+                  //     select
+                  //     id="SalesPerson"
+                  //     label={t("label_sales_agent")}
+                  //     value={SalesPerson2}
+                  //     onChange={ChangeSalesPerson}
+                  //     size="small"
+                  //     className="w-full"
+                  //     displayEmpty
+                  //   >
+                  //     <MenuItem value="">Select Agent</MenuItem>
+                  //     {User.role === 1
+                  //       ? SalesPerson[`manager-${Manager}`]?.map(
+                  //           (agent, index) => (
+                  //             <MenuItem key={index} value={agent?.id}>
+                  //               {agent?.userName}
+                  //             </MenuItem>
+                  //           )
+                  //         )
+                  //       : SalesPerson[`manager-${User?.id}`]?.map(
+                  //           (agent, index) => (
+                  //             <MenuItem key={index} value={agent?.id}>
+                  //               {agent?.userName}
+                  //             </MenuItem>
+                  //           )
+                  //         )}
+                  //   </TextField>
+                  // </>
+                )}
 
+                <TextField
+                  id="notes"
+                  type={"text"}
+                  label={t("label_note")}
+                  className="w-full"
+                  sx={{
+                    "&": {
+                      marginBottom: "1.25rem !important",
+                      zIndex: 1,
+                    },
+                  }}
+                  variant="outlined"
+                  size="small"
+                  value={LeadNotes}
+                  onChange={(e) => setLeadNotes(e.target.value)}
+                />
+
+                {User?.role === 7 && (
+                  <>
                     <TextField
-                      id="notes"
-                      type={"text"}
-                      label={t("label_note")}
+                      id="Manager"
+                      type="text"
+                      label={t("label_manager")}
                       className="w-full"
                       sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                          zIndex: 1,
-                        },
+                        marginBottom: "1.25rem !important",
+                        color:
+                          currentMode === "dark" ? "#ffffff" : "#000000",
+                        pointerEvents: "none",
                       }}
                       variant="outlined"
                       size="small"
-                      value={LeadNotes}
-                      onChange={(e) => setLeadNotes(e.target.value)}
+                      value={
+                        Managers?.find(
+                          (person) => person?.id === User?.isParent
+                        )?.userName || "No manager"
+                      }
+                      onChange={(e) => {
+                        e.preventDefault();
+                      }}
+                      readOnly={true}
                     />
-
-                    {User?.role === 7 && (
-                      <>
-                        <TextField
-                          id="Manager"
-                          type="text"
-                          label={t("label_manager")}
-                          className="w-full"
-                          sx={{
-                            marginBottom: "1.25rem !important",
-                            color:
-                              currentMode === "dark" ? "#ffffff" : "#000000",
-                            pointerEvents: "none",
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={
-                            Managers?.find(
-                              (person) => person?.id === User?.isParent
-                            )?.userName || "No manager"
-                          }
-                          onChange={(e) => {
-                            e.preventDefault();
-                          }}
-                          readOnly={true}
-                        />
-                        <TextField
-                          id="Salesperson"
-                          label={t("label_agent")}
-                          type="text"
-                          className="w-full"
-                          style={{
-                            marginBottom: "1.25rem !important",
-                            color: "#ffffff",
-                            pointerEvents: "none",
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={User?.userName}
-                          readOnly={true}
-                        />
-                      </>
-                    )}
-                  </Box>
-                </div>
-
-                <div className="px-4">
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
-                      "& legend": {
-                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                      },
-                    }}
-                  >
-                    <h4
-                      className={`${
-                        currentMode === "dark" ? `text-white` : "text-black"
-                      } text-center font-semibold pb-5`}
-                    >
-                      {t("project_details")}
-                    </h4>
                     <TextField
-                      id="Project"
-                      type={"text"}
-                      label={t("project")}
+                      id="Salesperson"
+                      label={t("label_agent")}
+                      type="text"
                       className="w-full"
-                      sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                        },
+                      style={{
+                        marginBottom: "1.25rem !important",
+                        color: "#ffffff",
+                        pointerEvents: "none",
                       }}
                       variant="outlined"
                       size="small"
-                      value={LeadProject}
-                      onChange={(e) => setLeadProject(e.target.value)}
+                      value={User?.userName}
+                      readOnly={true}
                     />
+                  </>
+                )}
+              </Box>
 
-                    {/* ENQUIRY TYPE  */}
-                    <Select
-                      id="enquiry"
-                      options={enquiry_options(t)}
-                      value={enquiry_options(t).find(
-                        (option) => option.value === EnquiryType
-                      )}
-                      onChange={ChangeEnquiryType}
-                      placeholder={t("label_enquiry_for")}
-                      className={`mb-5`}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
-                    {/* <TextField
+              <Box
+                sx={{
+                  ...darkModeColors,
+                  "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                  {
+                    right: isLangRTL(i18n.language)
+                      ? "2.5rem"
+                      : "inherit",
+                    transformOrigin: isLangRTL(i18n.language)
+                      ? "right"
+                      : "left",
+                  },
+                  "& legend": {
+                    textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                  },
+                }}
+                className={`${themeBgImg
+                  ? (currentMode === "dark"
+                    ? "blur-bg-dark shadow-sm"
+                    : "blur-bg-light shadow-sm")
+                  : (currentMode === "dark"
+                    ? "bg-dark-neu"
+                    : "bg-light-neu")
+                  } p-5`}
+              >
+                <h4
+                  className={`${currentMode === "dark" ? `text-white` : "text-black"
+                    } text-center uppercase font-semibold pb-5`}
+                >
+                  {t("project_details")}
+                </h4>
+                <TextField
+                  id="Project"
+                  type={"text"}
+                  label={t("project")}
+                  className="w-full"
+                  sx={{
+                    "&": {
+                      marginBottom: "1.25rem !important",
+                    },
+                  }}
+                  variant="outlined"
+                  size="small"
+                  value={LeadProject}
+                  onChange={(e) => setLeadProject(e.target.value)}
+                />
+
+                {/* ENQUIRY TYPE  */}
+                <Select
+                  id="enquiry"
+                  options={enquiry_options(t)}
+                  value={enquiry_options(t).find(
+                    (option) => option.value === EnquiryType
+                  )}
+                  onChange={ChangeEnquiryType}
+                  placeholder={t("label_enquiry_for")}
+                  className={`mb-5`}
+                  styles={selectStyles(currentMode, primaryColor)}
+                />
+                {/* <TextField
                       id="enquiry"
                       label={t("label_enquiry_for")}
                       value={EnquiryType}
@@ -699,19 +694,19 @@ const AddLeadComponent = ({
                       <MenuItem value={"Other"}>{t("enquiry_others")}</MenuItem>
                     </TextField> */}
 
-                    {/* PROPERTY TYPE  */}
-                    <Select
-                      id="property-type"
-                      options={property_options(t)}
-                      value={property_options(t).find(
-                        (option) => option.value === PropertyType
-                      )}
-                      onChange={ChangePropertyType}
-                      placeholder={t("label_property_type")}
-                      className={`mb-5`}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
-                    {/* <TextField
+                {/* PROPERTY TYPE  */}
+                <Select
+                  id="property-type"
+                  options={property_options(t)}
+                  value={property_options(t).find(
+                    (option) => option.value === PropertyType
+                  )}
+                  onChange={ChangePropertyType}
+                  placeholder={t("label_property_type")}
+                  className={`mb-5`}
+                  styles={selectStyles(currentMode, primaryColor)}
+                />
+                {/* <TextField
                       id="property-type"
                       value={PropertyType}
                       label={t("label_property_type")}
@@ -738,19 +733,19 @@ const AddLeadComponent = ({
                       <MenuItem value={"Townhouse"}>{t("property_townhouse")}</MenuItem>
                     </TextField> */}
 
-                    {/* PURPOSE OF ENQUIRY  */}
-                    <Select
-                      id="for"
-                      options={purpose_options(t)}
-                      value={purpose_options(t).find(
-                        (option) => option.value === ForType
-                      )}
-                      onChange={ChangeForType}
-                      placeholder={t("label_purpose_of_enquiry")}
-                      className={`mb-5`}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
-                    {/* <TextField
+                {/* PURPOSE OF ENQUIRY  */}
+                <Select
+                  id="for"
+                  options={purpose_options(t)}
+                  value={purpose_options(t).find(
+                    (option) => option.value === ForType
+                  )}
+                  onChange={ChangeForType}
+                  placeholder={t("label_purpose_of_enquiry")}
+                  className={`mb-5`}
+                  styles={selectStyles(currentMode, primaryColor)}
+                />
+                {/* <TextField
                       id="for"
                       value={ForType}
                       label={t("label_purpose_of_enquiry")}
@@ -772,123 +767,126 @@ const AddLeadComponent = ({
                       <MenuItem value={"Investment"}>{t("purpose_investment")}</MenuItem>
                       <MenuItem value={"End-user"}>{t("purpose_end_user")}</MenuItem>
                     </TextField> */}
-                  </Box>
-                </div>
+              </Box>
 
-                <div className="px-4">
-                  <Box
-                    sx={{
-                      ...darkModeColors,
-                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
-                      "& legend": {
-                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                      },
-                    }}
-                  >
-                    <h4
-                      className={`${
-                        currentMode === "dark" ? `text-white` : "text-black"
-                      } text-center font-semibold pb-5`}
-                    >
-                      {t("lead_details")}
-                    </h4>
-                    <TextField
-                      id="LeadName"
-                      type={"text"}
-                      label={t("label_lead_name")}
-                      className="w-full"
-                      sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                        },
-                      }}
-                      variant="outlined"
-                      size="small"
-                      required
-                      value={LeadName}
-                      onChange={(e) => setLeadName(e.target.value)}
-                    />
-                    <PhoneInput
-                      placeholder={t("label_contact_number")}
-                      value={value}
-                      onChange={(value) => setValue(value)}
-                      onKeyUp={handleContact}
-                      error={error}
-                      className={` ${classNames({
-                        "dark-mode": currentMode === "dark",
-                        "phone-input-light": currentMode !== "dark",
-                        "phone-input-dark": currentMode === "dark",
-                      })} mb-5`}
-                      size="small"
-                      style={{
-                        background: `${
-                          !themeBgImg
-                            ? currentMode === "dark"
-                              ? "#000000"
-                              : "#FFFFFF"
-                            : "transparent"
-                          // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
-                        }`,
-                        "& .PhoneInputCountryIconImg": {
-                          color: "#fff",
-                        },
-                        color: currentMode === "dark" ? "white" : "black",
-                        border: `1px solid ${
-                          currentMode === "dark" ? "#EEEEEE" : "#666666"
-                        }`,
-                        borderRadius: "5px",
-                        outline: "none",
-                      }}
-                      inputStyle={{
-                        outline: "none !important",
-                      }}
-                      required
-                    />
+              <Box
+                sx={{
+                  ...darkModeColors,
+                  "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                  {
+                    right: isLangRTL(i18n.language)
+                      ? "2.5rem"
+                      : "inherit",
+                    transformOrigin: isLangRTL(i18n.language)
+                      ? "right"
+                      : "left",
+                  },
+                  "& legend": {
+                    textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                  },
+                }}
+                className={`${themeBgImg
+                  ? (currentMode === "dark"
+                    ? "blur-bg-dark shadow-sm"
+                    : "blur-bg-light shadow-sm")
+                  : (currentMode === "dark"
+                    ? "bg-dark-neu"
+                    : "bg-light-neu")
+                  } p-5`}
+              >
+                <h4
+                  className={`${currentMode === "dark" ? `text-white` : "text-black"
+                    } text-center font-semibold uppercase pb-5`}
+                >
+                  {t("lead_details")}
+                </h4>
+                <TextField
+                  id="LeadName"
+                  type={"text"}
+                  label={t("label_lead_name")}
+                  className="w-full"
+                  sx={{
+                    "&": {
+                      marginBottom: "1.25rem !important",
+                    },
+                  }}
+                  variant="outlined"
+                  size="small"
+                  required
+                  value={LeadName}
+                  onChange={(e) => setLeadName(e.target.value)}
+                />
+                <PhoneInput
+                  placeholder={t("label_contact_number")}
+                  value={value}
+                  onChange={(value) => setValue(value)}
+                  onKeyUp={handleContact}
+                  error={error}
+                  className={` ${classNames({
+                    "dark-mode": currentMode === "dark",
+                    "phone-input-light": currentMode !== "dark",
+                    "phone-input-dark": currentMode === "dark",
+                  })} mb-5`}
+                  size="small"
+                  style={{
+                    background: `${!themeBgImg
+                      ? currentMode === "dark"
+                        ? "#000000"
+                        : "#FFFFFF"
+                      : "transparent"
+                      // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
+                      }`,
+                    "& .PhoneInputCountryIconImg": {
+                      color: "#fff",
+                    },
+                    color: currentMode === "dark" ? "white" : "black",
+                    border: `1px solid ${currentMode === "dark" ? "#EEEEEE" : "#666666"
+                      }`,
+                    borderRadius: "5px",
+                    outline: "none",
+                  }}
+                  inputStyle={{
+                    outline: "none !important",
+                  }}
+                  required
+                />
 
-                    {error && (
-                      <Typography variant="body2" color="error">
-                        {error}
-                      </Typography>
-                    )}
-                    <TextField
-                      id="LeadEmailAddress"
-                      type={"email"}
-                      label={t("label_email_address")}
-                      className="w-full"
-                      sx={{
-                        "&": {
-                          marginBottom: "1.25rem !important",
-                        },
-                      }}
-                      variant="outlined"
-                      size="small"
-                      error={emailError && emailError}
-                      helperText={emailError && emailError}
-                      // value={LeadEmail}
-                      onChange={handleEmail}
-                    />
+                {error && (
+                  <Typography variant="body2" color="error">
+                    {error}
+                  </Typography>
+                )}
+                <TextField
+                  id="LeadEmailAddress"
+                  type={"email"}
+                  label={t("label_email_address")}
+                  className="w-full"
+                  sx={{
+                    "&": {
+                      marginBottom: "1.25rem !important",
+                    },
+                  }}
+                  variant="outlined"
+                  size="small"
+                  error={emailError && emailError}
+                  helperText={emailError && emailError}
+                  // value={LeadEmail}
+                  onChange={handleEmail}
+                />
 
-                    {/* LANGUAGE  */}
-                    <Select
-                      id="LanguagePrefered"
-                      options={language_options}
-                      value={language_options.find(
-                        (option) => option.value === LanguagePrefered
-                      )}
-                      onChange={ChangeLanguagePrefered}
-                      placeholder={t("label_language")}
-                      className={`mb-5`}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
-                    {/* <TextField
+                {/* LANGUAGE  */}
+                <Select
+                  id="LanguagePrefered"
+                  options={language_options}
+                  value={language_options.find(
+                    (option) => option.value === LanguagePrefered
+                  )}
+                  onChange={ChangeLanguagePrefered}
+                  placeholder={t("label_language")}
+                  className={`mb-5`}
+                  styles={selectStyles(currentMode, primaryColor)}
+                />
+                {/* <TextField
                       id="LanguagePrefered"
                       value={LanguagePrefered}
                       onChange={ChangeLanguagePrefered}
@@ -919,114 +917,114 @@ const AddLeadComponent = ({
                       <MenuItem value={"Urdu"} style={{ fontFamily: "Noto Kufi Arabic" }}>اردو <span className="mx-2" style={{ fontFamily: "Noto Sans" }}>(Urdu)</span></MenuItem>
                     </TextField> */}
 
-                    {/* LEAD SOURCE  */}
-                    {
-                      !noSourceDropdown && (
-                        <Select
-                          id="LeadSource"
-                          options={source_options(t)}
-                          value={source_options(t).find(
-                            (option) => option.value === LeadSource
-                          )}
-                          onChange={ChangeLeadSource}
-                          placeholder={t("label_source")}
-                          className={`mb-5`}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                      )
-                      // <TextField
-                      //   id="LeadSource"
-                      //   value={LeadSource}
-                      //   label={t("label_source")}
-                      //   onChange={ChangeLeadSource}
-                      //   size="small"
-                      //   className="w-full"
-                      //   sx={{
-                      //     "&": {
-                      //       marginBottom: "1.25rem !important",
-                      //     },
-                      //   }}
-                      //   displayEmpty
-                      //   select
-                      //   required
-                      // >
-                      //   <MenuItem value="" disabled>
-                      //     {t("label_source")}
-                      //     <span className="ml-1 text-primary">*</span>
-                      //   </MenuItem>
-                      //   <MenuItem value={"Campaign Facebook"}>
-                      //     {t("source_facebook")} Campaign
-                      //   </MenuItem>
-                      //   <MenuItem value={"Campaign Instagram"}>
-                      //     {t("source_instagram")} Campaign
-                      //   </MenuItem>
-                      //   <MenuItem value={"Campaign Snapchat"}>
-                      //   {t("source_snapchat")}  Campaign
-                      //   </MenuItem>
-                      //   <MenuItem value={"Campaign TikTok"}>
-                      //     {t("source_tiktok")} Campaign
-                      //   </MenuItem>
-                      //   <MenuItem value={"Campaign GoogleAds"}>
-                      // {t("source_googleads")} Campaign
-                      //   </MenuItem>
-                      //   <MenuItem value={"Campaign YouTube"}>
-                      //     {t("source_youtube")} Campaign
-                      //   </MenuItem>
-                      //   <MenuItem value={"Campaign"}>{t("source_campaign")}</MenuItem>
-                      //   <MenuItem value={"WhatsApp"}>{t("source_whatsapp")}</MenuItem>
-                      //   <MenuItem value={"Comment"}>{t("source_comment")}</MenuItem>
-                      //   <MenuItem value={"Message"}>{t("source_message")}</MenuItem>
-                      //   <MenuItem value={"Website"}>{t("source_website")}</MenuItem>
-                      //   <MenuItem value={"Secondary"}>{t("source_secondary")}</MenuItem>
-
-                      //   <MenuItem value={"Property Finder"}>
-                      //     {t("source_property_finder")}
-                      //   </MenuItem>
-
-                      //   <MenuItem value={"Personal"}>{t("source_personal")}</MenuItem>
-                      // </TextField>
-                    }
-
+                {/* LEAD SOURCE  */}
+                {
+                  !noSourceDropdown && (
                     <Select
-                      id="LeadCategory"
-                      options={lead_options(t)}
-                      value={lead_options(t).find(
-                        (option) => option.value === LeadCategory
+                      id="LeadSource"
+                      options={source_options(t)}
+                      value={source_options(t).find(
+                        (option) => option.value === LeadSource
                       )}
-                      onChange={ChangeLeadCategory}
-                      placeholder={t("label_category")}
+                      onChange={ChangeLeadSource}
+                      placeholder={t("label_source")}
                       className={`mb-5`}
                       styles={selectStyles(currentMode, primaryColor)}
                     />
-                  </Box>
-                </div>
-              </div>
+                  )
+                  // <TextField
+                  //   id="LeadSource"
+                  //   value={LeadSource}
+                  //   label={t("label_source")}
+                  //   onChange={ChangeLeadSource}
+                  //   size="small"
+                  //   className="w-full"
+                  //   sx={{
+                  //     "&": {
+                  //       marginBottom: "1.25rem !important",
+                  //     },
+                  //   }}
+                  //   displayEmpty
+                  //   select
+                  //   required
+                  // >
+                  //   <MenuItem value="" disabled>
+                  //     {t("label_source")}
+                  //     <span className="ml-1 text-primary">*</span>
+                  //   </MenuItem>
+                  //   <MenuItem value={"Campaign Facebook"}>
+                  //     {t("source_facebook")} Campaign
+                  //   </MenuItem>
+                  //   <MenuItem value={"Campaign Instagram"}>
+                  //     {t("source_instagram")} Campaign
+                  //   </MenuItem>
+                  //   <MenuItem value={"Campaign Snapchat"}>
+                  //   {t("source_snapchat")}  Campaign
+                  //   </MenuItem>
+                  //   <MenuItem value={"Campaign TikTok"}>
+                  //     {t("source_tiktok")} Campaign
+                  //   </MenuItem>
+                  //   <MenuItem value={"Campaign GoogleAds"}>
+                  // {t("source_googleads")} Campaign
+                  //   </MenuItem>
+                  //   <MenuItem value={"Campaign YouTube"}>
+                  //     {t("source_youtube")} Campaign
+                  //   </MenuItem>
+                  //   <MenuItem value={"Campaign"}>{t("source_campaign")}</MenuItem>
+                  //   <MenuItem value={"WhatsApp"}>{t("source_whatsapp")}</MenuItem>
+                  //   <MenuItem value={"Comment"}>{t("source_comment")}</MenuItem>
+                  //   <MenuItem value={"Message"}>{t("source_message")}</MenuItem>
+                  //   <MenuItem value={"Website"}>{t("source_website")}</MenuItem>
+                  //   <MenuItem value={"Secondary"}>{t("source_secondary")}</MenuItem>
 
-              <div className="">
-                <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
-                  ripple={true}
-                  style={{
-                    background: `${primaryColor}`,
-                  }}
-                  size="lg"
-                  type="submit"
-                  disabled={loading ? true : false}
-                >
-                  {loading ? (
-                    <CircularProgress
-                      size={20}
-                      sx={{ color: "white" }}
-                      className="text-white"
-                    />
-                  ) : (
-                    <span>{t("button_add_new_lead")}</span>
+                  //   <MenuItem value={"Property Finder"}>
+                  //     {t("source_property_finder")}
+                  //   </MenuItem>
+
+                  //   <MenuItem value={"Personal"}>{t("source_personal")}</MenuItem>
+                  // </TextField>
+                }
+
+                <Select
+                  id="LeadCategory"
+                  options={lead_options(t)}
+                  value={lead_options(t).find(
+                    (option) => option.value === LeadCategory
                   )}
-                </Button>
-              </div>
+                  onChange={ChangeLeadCategory}
+                  placeholder={t("label_category")}
+                  className={`mb-5`}
+                  styles={selectStyles(currentMode, primaryColor)}
+                />
+              </Box>
             </div>
-          </form>
-        </div>
+
+            <button
+              className={`${themeBgImg
+                ? currentMode === "dark"
+                  ? "blur-bg-primary"
+                  : "blur-bg-primary"
+                : currentMode === "dark"
+                  ? "bg-primary-dark-neu"
+                  : "bg-primary-light-neu"
+                } w-full text-white uppercase py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed`}
+              // ripple={true}
+              // size="lg"
+              // type="submit"
+              disabled={loading ? true : false}
+            >
+              {loading ? (
+                <CircularProgress
+                  size={20}
+                  sx={{ color: "white" }}
+                  className="text-white"
+                />
+              ) : (
+                <span>{t("button_add_new_lead")}</span>
+              )}
+            </button>
+          </form >
+        </div >
       )}
     </>
   );

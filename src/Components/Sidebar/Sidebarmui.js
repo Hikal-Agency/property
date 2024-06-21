@@ -1158,9 +1158,10 @@ const Sidebarmui = () => {
               link: "/archive/all",
             },
             {
-              name: t("menu_new_leads"),
+              name: t("feedback_new"),
               pro: false,
               count: sidebarData?.WarmLeadCount?.new,
+              icon: <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />,
               link: "/archive/new",
             },
             {

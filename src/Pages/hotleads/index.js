@@ -10,13 +10,14 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import moment from "moment";
 import SourceAnimation from "../../Components/_elements/SourceAnimation";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const AllHotLeads = () => {
-  const { 
-    currentMode, 
-    setopenBackDrop, 
-    pageState, 
-    BACKEND_URL, 
+  const {
+    currentMode,
+    setopenBackDrop,
+    pageState,
+    BACKEND_URL,
     t, User,
     themeBgImg } = useStateContext();
   const location = useLocation();
@@ -37,6 +38,14 @@ const AllHotLeads = () => {
     // eslint-disable-next-line
   }, [lead_type]);
 
+  const Additional = () => {
+    return (
+      (hasPermission("leadSource_counts") || User.role === 1) && (
+        <SourceAnimation />
+      )
+    );
+  }
+
   return (
     <>
       <div className="flex min-h-screen">
@@ -44,38 +53,21 @@ const AllHotLeads = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-            }`}
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }`}
           >
-            <div className="grid-cols-1 md:grid-cols-1 lg:grid-cols-2 w-full lg:flex lg:items-center lg:justify-between">
-              <div className="flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {`${t("fresh")} ${t("leads")}`}
-                  {" "}
-                  <span className="capitalize">
-                    (
-                    {t(
-                      "feedback_" +
-                        lead_type?.toLowerCase()?.replaceAll(" ", "_")
-                    )}
-                    )
-                  </span>{" "}
-                  <span className="bg-primary text-white px-3 py-1 ml-2 rounded-sm my-auto">
-                    {pageState?.total}
-                  </span>
-                </h1>
-              </div>
-
-              {(hasPermission("leadSource_counts") || User.role === 1) && (
-                <SourceAnimation />
+            <HeadingTitle
+              title={`${t("fresh")} ${t("leads")}`}
+              subtitle={t(
+                "feedback_" +
+                lead_type?.toLowerCase()?.replaceAll(" ", "_")
               )}
-            </div>
+              counter={pageState?.total}
+              additional={(hasPermission("leadSource_counts") || User.role === 1) ? (
+                <SourceAnimation />
+              ) : null}
+            />
+
             <AllLeads
               BACKEND_URL={BACKEND_URL}
               lead_type={lead_type}

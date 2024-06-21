@@ -1,17 +1,19 @@
 
-import React, { 
-  useEffect, 
-  useState 
+import React, {
+  useEffect,
+  useState
 } from "react";
-import { 
-  useLocation, 
-  useNavigate } from "react-router-dom";
-import { 
-  useStateContext 
+import {
+  useLocation,
+  useNavigate
+} from "react-router-dom";
+import {
+  useStateContext
 } from "../../context/ContextProvider";
 
 import AllLeads from "../../Components/Leads/AllLeads";
 import Loader from "../../Components/Loader";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const ThirdPartyLeads = () => {
   const location = useLocation();
@@ -43,25 +45,15 @@ const ThirdPartyLeads = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-            }`}
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }`}
           >
-            <div className="w-full flex items-center pb-3">
-              <div className="bg-primary h-10 w-1 rounded-full"></div>
-              <h1
-                className={`text-lg font-semibold mx-2 uppercase ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                {`${t("thirdparty")} ${t("leads")}`} 
-                {" "}
-                <span className="capitalize">({t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))})</span>{" "}
-                <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                  {pageState?.total}
-                </span>
-              </h1>
-            </div>
+            <HeadingTitle
+              title={`${t("thirdparty")} ${t("leads")}`}
+              subtitle={t("feedback_" + lead_type?.toLowerCase()?.replaceAll(" ", "_"))}
+              counter={pageState?.total}
+            />
+
             <AllLeads
               BACKEND_URL={BACKEND_URL}
               lead_type={lead_type}

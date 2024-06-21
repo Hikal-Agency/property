@@ -60,7 +60,13 @@ const ColdcallFiles = ({
     isOpen: false
   });
   const [allFiles, setAllFiles] = useState([]);
-  const { BACKEND_URL, currentMode, darkModeColors } = useStateContext();
+  const {
+    BACKEND_URL,
+    currentMode,
+    darkModeColors,
+    themeBgImg,
+    t
+  } = useStateContext();
   const [sortByVal, setSortByVal] = useState("");
 
   const fetchColdLeadsData = async (type) => {
@@ -69,13 +75,13 @@ const ColdcallFiles = ({
 
       let url = BACKEND_URL + "/total-cold?";
 
-      if(leadCategory === "hot" && lead_type === "coldleads") {
+      if (leadCategory === "hot" && lead_type === "coldleads") {
         url += `&unassigned=1&verified=1`;
       } else {
         if (type) {
           url += `&${type}=1`;
         } else {
-          if(lead_type !== "all"){
+          if (lead_type !== "all") {
             url += `&feedback=${lead_type}`;
           }
           url += `&verified=1`;
@@ -157,7 +163,7 @@ const ColdcallFiles = ({
   }, [sortByVal]);
 
   const fetchFileLeads = async (file, index) => {
-    setActiveFile({index, file});
+    setActiveFile({ index, file });
     try {
       setpageState((old) => ({
         ...old,
@@ -172,9 +178,8 @@ const ColdcallFiles = ({
 
       const nextDayString = nextDay.format('YYYY-MM-DD');
 
-      const url = `${BACKEND_URL}/coldLeads?page=1&perpage=${
-        pageState.perpage || 14
-      }&coldCall=1&is_whatsapp=1&notes=${file?.notes}&date_range=${currDay},${nextDayString}&addedBy=${file?.addedBy}`;
+      const url = `${BACKEND_URL}/coldLeads?page=1&perpage=${pageState.perpage || 14
+        }&coldCall=1&is_whatsapp=1&notes=${file?.notes}&date_range=${currDay},${nextDayString}&addedBy=${file?.addedBy}`;
 
       const result = await axiosInstance.get(url, {
         headers: {
@@ -196,8 +201,8 @@ const ColdcallFiles = ({
         id:
           pageState.page > 1
             ? pageState.page * pageState.pageSize -
-              (pageState.pageSize - 1) +
-              index
+            (pageState.pageSize - 1) +
+            index
             : index + 1,
         leadId: row?.id,
         creationDate: row?.creationDate,
@@ -268,39 +273,41 @@ const ColdcallFiles = ({
       ) : coldcallFiles?.length > 0 ? (
         <div>
           <div className="flex justify-end items-center">
-          {((activeFile?.index || activeFile?.index === 0) && (leadCategory === "hot" && lead_type === "coldleads")) ?  
-            <div className="mr-2">
-              <Button
-              onClick={() => setColdCallAssignModal({isOpen: true, file: activeFile?.file})}
-                className={` uppercase rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
-                ripple="true"
-                size="lg"
-                style={{
-                  color: "white"
-                }}
-                type="submit"
+            {((activeFile?.index || activeFile?.index === 0) && (leadCategory === "hot" && lead_type === "coldleads")) ?
+              <button
+                onClick={() => setColdCallAssignModal({ isOpen: true, file: activeFile?.file })}
+                className={`${themeBgImg
+                  ? "blur-bg-primary"
+                  : currentMode === "dark"
+                    ? "bg-primary-dark-neu"
+                    : "bg-primary-light-neu"
+                  } uppercase rounded-md text-white px-4 py-3 mx-2 font-semibold disabled:opacity-50 disabled:cursor-not-allowed`}
+              // ripple="true"
+              // size="lg"
+              // type="submit"
               >
-               BULK ASSIGN
-              </Button>
-            </div>
-            : <></>
-          }
-            <Button
+                {t("bulk_assign")}
+              </button>
+              : <></>
+            }
+            <button
               onClick={() => bulkImportRef.current.click()}
-              className={` text-white uppercase rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
-              ripple="true"
-              size="lg"
-              style={{
-                color: "white",
-              }}
-              type="submit"
+              className={`${themeBgImg
+                ? "blur-bg-primary"
+                : currentMode === "dark"
+                  ? "bg-primary-dark-neu"
+                  : "bg-primary-light-neu"
+                } uppercase rounded-md text-white px-4 py-3 mx-2 font-semibold disabled:opacity-50 disabled:cursor-not-allowed`}
+            // ripple="true"
+            // size="lg"
+            // type="submit"
             >
-              Upload File
-            </Button>
+              {t("upload_file")}
+            </button>
             <Box
-              className="ml-2"
+              className="mx-2"
               sx={{
-                width: "100px",
+                width: "130px",
               }}
             >
               <FormControl fullWidth>
@@ -340,15 +347,20 @@ const ColdcallFiles = ({
             </Box>
           </div>
           <div
-            className="flex items-center gap-x-1 mt-4 overflow-x-scroll py-8"
+            className="flex items-center gap-5 p-4 overflow-x-scroll"
             style={{ whiteSpace: "nowrap" }}
           >
             {coldcallFiles?.map((file) => {
               return (
                 <div
-                  className={`px-5 shadow-lg mr-2 rounded-lg py-3 inline-block ${
-                    file?.index === activeFile?.index && "border border-primary"
-                  }`}
+                  className={`${themeBgImg
+                    ? currentMode === "dark"
+                      ? "blur-bg-black"
+                      : "blur-bg-white"
+                    : currentMode === "dark"
+                      ? "bg-dark-neu"
+                      : "bg-light-neu"
+                    } p-5 h-full inline-block ${file?.index === activeFile?.index && "border border-primary"}`}
                   onClick={() => fetchFileLeads(file, file?.index)}
                 >
                   {/* <Badge
@@ -361,11 +373,11 @@ const ColdcallFiles = ({
                       },
                     }}
                   > */}
-                    <div className={`${currentMode === "light" ? "text-black" : "text-white"} flex flex-col items-center`}>
-                      <FaRegFileAlt size={34} className="mb-2" />
-                      <p>{file?.notes}</p>
-                      <p>{file["DATE(creationDate)"]}</p>
-                    </div>
+                  <div className={`${currentMode === "light" ? "text-black" : "text-white"} h-full flex flex-col items-center`}>
+                    <FaRegFileAlt size={34} className="mb-2" />
+                    <p>{file?.notes}</p>
+                    <p>{file["DATE(creationDate)"]}</p>
+                  </div>
                   {/* </Badge> */}
                 </div>
               );
@@ -373,12 +385,12 @@ const ColdcallFiles = ({
           </div>
         </div>
       ) : (
-        <div className={`${currentMode === "light" ? "text-black": "text-white"} flex justify-center items-center py-5 mt-4`}>
+        <div className={`${currentMode === "light" ? "text-black" : "text-white"} flex justify-center items-center py-5 mt-4`}>
           Nothing yet
         </div>
       )}
 
-      {coldCallAssignModal?.isOpen && <BulkColdCallAssign bulkColdCallAssignModal={coldCallAssignModal} handleCloseModal={() => setColdCallAssignModal({isOpen: false})}/>}
+      {coldCallAssignModal?.isOpen && <BulkColdCallAssign bulkColdCallAssignModal={coldCallAssignModal} handleCloseModal={() => setColdCallAssignModal({ isOpen: false })} />}
     </>
   );
 };
