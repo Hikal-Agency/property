@@ -6,21 +6,16 @@ import { useEffect } from "react";
 
 const BreadCrumb = ({ allroutes, currentMode }) => {
   const location = useLocation();
-  const {
-    t,
-    i18n,
-    langs
-  } = useStateContext();
+  const { t, i18n, langs } = useStateContext();
 
   const [font, setFont] = useState("'Noto Sans', sans-serif");
 
   useEffect(() => {
-    const matchingFont = langs.find(lang => lang.code === i18n.language);
+    const matchingFont = langs.find((lang) => lang.code === i18n.language);
     if (matchingFont) {
       setFont(matchingFont.font);
     }
   }, [langs, i18n.language]);
-  
 
   const pathnames = location.pathname.split("/").filter((x) => x);
 
@@ -29,10 +24,10 @@ const BreadCrumb = ({ allroutes, currentMode }) => {
 
     if (index === 0) {
       return (
-        <Link 
-          color="inherit" 
-          component={RouterLink} 
-          to="/" 
+        <Link
+          color="inherit"
+          component={RouterLink}
+          to="/"
           key={to}
           style={{
             fontFamily: font,
@@ -44,16 +39,20 @@ const BreadCrumb = ({ allroutes, currentMode }) => {
     }
 
     const parentPage = `/${pathnames.slice(0, index).join("/")}`;
-    const parentPageName = `${pathnames[index - 1][0]?.toUpperCase()}${pathnames[
+    const parentPageName = `${pathnames[
       index - 1
-    ]?.slice(1, pathnames[index - 1].length)}`?.replace("%20", " ");
+    ][0]?.toUpperCase()}${pathnames[index - 1]?.slice(
+      1,
+      pathnames[index - 1].length
+    )}`?.replace("%20", " ");
     // const allRoutes = []; // Add your routes here
 
     if (allroutes.find((route) => route.path === parentPage)) {
       return (
-        <Link 
-          color="inherit" 
-          component={RouterLink} to={parentPage} 
+        <Link
+          color="inherit"
+          component={RouterLink}
+          to={parentPage}
           key={to}
           style={{
             fontFamily: font,
@@ -82,7 +81,7 @@ const BreadCrumb = ({ allroutes, currentMode }) => {
   ][0]?.toUpperCase()}${pathnames[pathnames.length - 1]?.slice(
     1,
     pathnames[pathnames.length - 1].length
-  )}`?.replace("%20", " ");
+  )}`?.replace(/%20/g, " ");
 
   return (
     <Breadcrumbs
@@ -95,11 +94,12 @@ const BreadCrumb = ({ allroutes, currentMode }) => {
       }}
     >
       {breadcrumbItems}
-      <Typography 
+      <Typography
         style={{
           fontFamily: font,
         }}
-        color={currentMode === "dark" ? "white" : "inherit"}>
+        color={currentMode === "dark" ? "white" : "inherit"}
+      >
         {t(formattedLastURL?.toLowerCase())}
       </Typography>
     </Breadcrumbs>
