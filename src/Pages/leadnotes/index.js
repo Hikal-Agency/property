@@ -3,6 +3,7 @@ import Footer from "../../Components/Footer/Footer";
 import LeadNotes from "../../Components/LeadNotes/LeadNotes";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const LeadNotesPage = (props) => {
   const [pageState, setpageState] = useState({
@@ -27,24 +28,14 @@ const LeadNotesPage = (props) => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-            }`}
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }`}
           >
-            <div className="flex items-center">
-              <div className="bg-primary h-10 w-1 rounded-full"></div>
-              <h1
-                className={`text-lg font-semibold mx-2 uppercase ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                {t("lead_notes")} 
-                {" "}  
-                <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                  {pageState?.total}
-                </span>
-              </h1>
-            </div>
+            <HeadingTitle
+              title={t("lead_notes")}
+              counter={pageState?.total}
+            />
+
             <LeadNotes
               pageState={pageState}
               setpageState={setpageState}

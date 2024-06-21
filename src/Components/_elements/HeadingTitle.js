@@ -25,9 +25,9 @@ const HeadingTitle = ({
                 >
                     {title}
                     {subtitle && (
-                        <>
+                        <span className="capitalize">
                             {" "}({subtitle}){" "}
-                        </>
+                        </span>
                     )}
                 </h1>
                 {counter !== null && counter !== undefined && (
