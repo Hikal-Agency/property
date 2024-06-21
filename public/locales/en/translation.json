@@ -1109,6 +1109,8 @@
 
 
     "funds":"Funds",
-    "balance":"Balance"
+    "balance":"Balance",
+    "bulk_assign": "Bulk Assign",
+    "upload_file": "Upload File"
   
 } 

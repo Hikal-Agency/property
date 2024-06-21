@@ -19,7 +19,19 @@ import {
 } from "react-icons/ai";
 
 const LeadNotes = ({ pageState, setpageState }) => {
-  const { currentMode, BACKEND_URL, User, darkModeColors, isArabic, primaryColor } = useStateContext();
+  const { 
+    currentMode, 
+    BACKEND_URL, 
+    User, 
+    darkModeColors, 
+    isArabic, 
+    primaryColor,
+    blurDarkColor,
+    blurLightColor,
+    blurBlackColor,
+    blurWhiteColor,
+    themeBgImg
+  } = useStateContext();
   const [searchText, setSearchText] = useState("");
   const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
@@ -206,8 +218,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
     },
     // TOOLBAR COLORS
     "& .MuiDataGrid-toolbarContainer": {
-      // backgroundColor: currentMode === "dark" ? "#212121" : "#000000",
-      backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+      // backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+      backgroundColor: currentMode === "dark" ? blurBlackColor : blurWhiteColor,
       padding: "10px 5px",
       gap: "15px",
       color: currentMode === "dark" ? "white" : "black",
@@ -250,12 +262,12 @@ const LeadNotes = ({ pageState, setpageState }) => {
     },
     // background color of main table content
     "& .MuiDataGrid-virtualScroller": {
-      backgroundColor: currentMode === "dark" ? "black" : "white",
+      backgroundColor: currentMode === "dark" ? blurBlackColor : blurWhiteColor,
       color: currentMode === "dark" ? "white" : "black",
     },
     // changing rows hover color
     "& .MuiDataGrid-row:hover": { //css-1uhmucx-
-      backgroundColor: currentMode === "dark" && "#1C1C1C",
+      backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
       border: "none !important",
       boxShadow: "none !important",
     },
@@ -268,9 +280,9 @@ const LeadNotes = ({ pageState, setpageState }) => {
       boxShadow: "none !important",
     },
     // changing row colors
-    "& .even": {
-      backgroundColor: currentMode === "dark" ? "black" : "white",
-    },
+    // "& .even": {
+    //   backgroundColor: currentMode === "dark" ? "black" : "white",
+    // },
     // changing rows right border
     // "& .MuiDataGrid-cell": {
       // borderRight: "1px solid rgb(240, 240, 240)",
@@ -280,7 +292,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     "& .MuiDataGrid-footerContainer": {
       // border: "none",
       borderTop: `2px solid ${primaryColor}`,
-      backgroundColor: currentMode === "dark" ? "black" : "white",
+      backgroundColor: currentMode === "dark" ? blurBlackColor : blurWhiteColor,
       color: currentMode === "dark" ? "white" : "black",
     },
     "& .MuiTablePagination-selectLabel": {
@@ -338,7 +350,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
             color: primaryColor,
           },
         }}
-        className={`rounded-md overflow-hidden flex`}
+        className={`rounded-xl overflow-hidden flex`}
         style={{justifyContent: "flex-end"}}
       >
         <Tabs value={value} onClick={handleChange} variant="standard" >

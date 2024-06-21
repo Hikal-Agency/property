@@ -2,6 +2,8 @@ import { useStateContext } from "../../context/ContextProvider";
 
 const HeadingTitle = ({
     title,
+    subtitle,
+    counter,
     additional
 }) => {
     const {
@@ -10,7 +12,7 @@ const HeadingTitle = ({
     } = useStateContext();
 
     return (
-        <div className="w-full flex items-center justify-between pb-4 gap-4">
+        <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between pb-5 gap-4">
             <div className="flex items-center gap-2">
                 <div className="bg-primary h-8 w-1 rounded-full"></div>
                 <h1
@@ -22,9 +24,24 @@ const HeadingTitle = ({
                         }`}
                 >
                     {title}
+                    {subtitle && (
+                        <span className="capitalize">
+                            {" "}({subtitle}){" "}
+                        </span>
+                    )}
                 </h1>
+                {counter !== null && counter !== undefined && (
+                    <div className={`${themeBgImg
+                        ? "blur-bg-primary"
+                        : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                        } text-white px-3 py-1 rounded-sm my-auto`}>
+                        {counter}
+                    </div>
+                )}
             </div>
-            {additional && additional}
+            <div className="flex justify-end">
+                {additional && additional}
+            </div>
         </div>
     );
 };

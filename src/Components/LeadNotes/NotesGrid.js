@@ -53,58 +53,52 @@ const NotesGrid = ({ pageState, setpageState }) => {
         {loading ? (
           <Loader />
         ) : (
-          <div
-            className={`w-full`}
-          >
-            <div className="px-1">
-              <div className="mt-5 md:mt-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
-                  {notesData?.length > 0 &&
-                    notesData?.map((item, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className={`${
-                            !themeBgImg 
-                              ? (currentMode === "dark"
-                              ? "bg-[#1C1C1C] text-white"
-                              : "bg-[#EEEEEE] text-black")
-                              : (currentMode === "dark"
+          <div className={`w-full`}>
+            <div className="mt-5 md:mt-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                {notesData?.length > 0 &&
+                  notesData?.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className={`${!themeBgImg
+                            ? (currentMode === "dark"
+                              ? "bg-dark-neu text-white"
+                              : "bg-light-neu text-black")
+                            : (currentMode === "dark"
                               ? "blur-bg-dark text-white"
                               : "blur-bg-light text-black")
-                          } p-3 rounded-lg shadow-sm card-hover cursor-pointer `}
-                          // onClick={(e) => handleNavigate(e, item?.leadId)}
-                          onClick={() => HandleSingleLead(item?.leadId)}
-                        >
-                          <div className="my-1 space-y-1 overflow-hidden">
-                            <h1 className={`font-semibold capitalize py-1 ${
-                              !themeBgImg ? "text-primary" : ""
+                          } p-4 cursor-pointer `}
+                        // onClick={(e) => handleNavigate(e, item?.leadId)}
+                        onClick={() => HandleSingleLead(item?.leadId)}
+                      >
+                        <div className="my-1 space-y-1 overflow-hidden">
+                          <h1 className={`font-semibold capitalize py-1 ${!themeBgImg ? "text-primary" : ""
                             }`}>
-                              <span style={{fontFamily: isArabic(item?.leadNote) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadNote}</span>
-                            </h1>
-                            <div className="my-3 h-[1px] w-full bg-primary" ></div>
-                            <p className="flex items-center text-sm py-1">
-                              <BiUserCircle size={16} className="mr-2" /> 
-                              <span className="mx-1" style={{fontFamily: isArabic(item?.leadName) ? "Noto Kufi Arabic" : "inherit"}}>{item?.leadName}</span>
-                            </p>
-                            <p className="flex items-center text-sm py-1">
-                              <BsBuildings size={16} className="mr-2" /> 
-                              <span className="mx-1">{item?.project === "null" ? "-" : item?.project}</span>
-                              <span className="mx-1">{item?.enquiryType === "null" ? "-" : item?.enquiryType}</span>
-                              <span className="mx-1">{item?.leadType === "null" ? "-" : item?.leadType}</span>
-                              <span className="mx-1">{item?.leadFor === "null" ? "-" : item?.leadFor}</span>
-                            </p>
-                            <p className="flex items-center text-sm py-1">
-                              <BiUser size={16} className="mr-2" /> 
-                              <span className="mx-1">{item?.userName}</span>
-                              <span className="mx-1">|</span>
-                              <span className="mx-1">{item?.creationDate}</span>
-                            </p>
-                          </div>
+                            <span style={{ fontFamily: isArabic(item?.leadNote) ? "Noto Kufi Arabic" : "inherit" }}>{item?.leadNote}</span>
+                          </h1>
+                          <div className="my-3 h-[1px] w-full bg-primary" ></div>
+                          <p className="flex items-center text-sm py-1">
+                            <BiUserCircle size={16} className="mr-2" />
+                            <span className="mx-1" style={{ fontFamily: isArabic(item?.leadName) ? "Noto Kufi Arabic" : "inherit" }}>{item?.leadName}</span>
+                          </p>
+                          <p className="flex items-center text-sm py-1">
+                            <BsBuildings size={16} className="mr-2" />
+                            <span className="mx-1">{item?.project === "null" ? "-" : item?.project}</span>
+                            <span className="mx-1">{item?.enquiryType === "null" ? "-" : item?.enquiryType}</span>
+                            <span className="mx-1">{item?.leadType === "null" ? "-" : item?.leadType}</span>
+                            <span className="mx-1">{item?.leadFor === "null" ? "-" : item?.leadFor}</span>
+                          </p>
+                          <p className="flex items-center text-sm py-1">
+                            <BiUser size={16} className="mr-2" />
+                            <span className="mx-1">{item?.userName}</span>
+                            <span className="mx-1">|</span>
+                            <span className="mx-1">{item?.creationDate}</span>
+                          </p>
                         </div>
-                      );
-                    })}
-                </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
             <Stack spacing={2} marginTop={2}>
@@ -118,6 +112,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
                   "& .Mui-selected": {
                     color: "white !important",
                     backgroundColor: `${primaryColor} !important`,
+                    boxShadow: "0 0 10px rgba(138, 138, 138, 0.5)",
                     "&:hover": {
                       backgroundColor:
                         currentMode === "dark" ? "black" : "white",
@@ -129,7 +124,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
                 }}
               />
             </Stack>
-            
+
             {singleLeadModelOpen && (
               <SingleLeadModal
                 singleLeadModelOpen={singleLeadModelOpen}
@@ -138,7 +133,7 @@ const NotesGrid = ({ pageState, setpageState }) => {
               />
             )}
           </div>
-          
+
         )}
       </div>
     </>

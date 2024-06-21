@@ -7,6 +7,7 @@ import Loader from "../../Components/Loader";
 import TransferTabs from "./TransferTabs";
 import { Box } from "@mui/material";
 import { lead_category } from "../../Components/_elements/SelectOptions";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const TransferredLeads = (props) => {
   const navigate = useNavigate();
@@ -71,24 +72,15 @@ const TransferredLeads = (props) => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+            className={`w-full p-5 mt-2 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
             }`}
           >
-            <div className="w-full flex items-center pb-3">
-              <div className="bg-primary h-10 w-1 rounded-full"></div>
-              <h1
-                className={`text-lg font-semibold mx-2 uppercase ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                {`${t("reshuffled")} ${t("leads")}`}{" "}
-                <span className="capitalize">({t(value)})</span>{" "}
-                <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                  {pageState?.total}
-                </span>
-              </h1>
-            </div>
+            <HeadingTitle
+              title={`${t("reshuffled")} ${t("leads")}`}
+              subtitle={t(value)}
+              counter={pageState?.total}
+            />
 
             {/* TABS */}
             <div className="grid grid-cols-1">
@@ -108,8 +100,8 @@ const TransferredLeads = (props) => {
                   className={`w-full mb-4 rounded-md overflow-hidden ${
                     !themeBgImg
                       ? currentMode === "dark"
-                        ? "bg-[#1C1C1C]"
-                        : "bg-[#EEEEEE]"
+                        ? "bg-dark-neu"
+                        : "bg-light-neu"
                       : currentMode === "dark"
                       ? "blur-bg-dark"
                       : "blur-bg-light"
