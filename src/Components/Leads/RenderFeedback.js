@@ -280,7 +280,7 @@ const RenderFeedback = ({ cellValues }) => {
           options={feedback_options(t)}
           value={feedback_options(t).find(
             (option) => option.value === Feedback
-          )}
+          ) || { value: Feedback, label: Feedback }}
           onChange={ChangeFeedback}
           placeholder={t("label_feedback")}
           className={`w-full`}
@@ -293,7 +293,7 @@ const RenderFeedback = ({ cellValues }) => {
           options={feedback_options(t)}
           value={feedback_options(t).find(
             (option) => option.value === Feedback
-          )}
+          ) || { value: Feedback, label: Feedback }}
           onChange={ChangeFeedback}
           placeholder={t("label_feedback")}
           className={`w-full`}
