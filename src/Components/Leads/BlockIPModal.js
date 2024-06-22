@@ -87,7 +87,7 @@ const BlockIPModal = ({ FetchLeads, handleLeadModelClose, addNote, handleCloseIP
       <div
         style={style}
         className={`w-[calc(100%-20px)] md:w-[40%]  ${
-          currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+          currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
         } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
       >
 
@@ -106,19 +106,19 @@ const BlockIPModal = ({ FetchLeads, handleLeadModelClose, addNote, handleCloseIP
       : <>
         <div className="flex flex-col justify-center items-center">
           <IoIosAlert size={50} className="text-main-red-color text-2xl" />
-          <h1 className="font-semibold pt-3 text-lg w-[60%] mx-auto text-center">
-            <span
-              className={`${
+          <h1 className={`${
                 currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-            >
+              } font-semibold pt-3 text-lg w-[60%] mx-auto text-center`}
+          >
+            <span>
               Are you sure that you want to block the leads from IP{" "}
             </span>
-            <span className="text-primary">{lead?.ip}</span>?
+            <span className="text-primary">{lead?.ip}</span>
+            <span>?</span>
           </h1>
         </div>
 
-        <form action="" className="mt-6" onSubmit={(e) => blockIP(e, lead?.ip)}>
+        <form action="" className="mt-6 px-4" onSubmit={(e) => blockIP(e, lead?.ip)}>
           <Box sx={darkModeColors}>
             <TextField
               id="reason"

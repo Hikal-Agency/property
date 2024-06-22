@@ -31,6 +31,7 @@ import {
   purpose_options,
 } from "../_elements/SelectOptions";
 import { MdClose } from "react-icons/md";
+import HeadingTitle from "../_elements/HeadingTitle";
 
 const UpdateLead = ({
   LeadModelOpen,
@@ -365,23 +366,20 @@ const UpdateLead = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -392,17 +390,15 @@ const UpdateLead = ({
           </button>
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              currentMode === "dark" &&
+            className={` ${currentMode === "dark"
+              ? "bg-dark text-white"
+              : "bg-light text-black"
+              } ${currentMode === "dark" &&
               (isLangRTL(i18n.language)
                 ? "border-r-2 border-primary"
                 : "border-l-2 border-primary")
-            }
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
+              }
+             p-5 h-[100vh] w-[85vw] overflow-y-scroll 
             `}
           >
             {loading ? (
@@ -415,16 +411,9 @@ const UpdateLead = ({
               </div>
             ) : (
               <>
-                <div className="w-full flex items-center pb-3 mb-3">
-                  <div className="bg-primary h-10 w-1 rounded-full my-1"></div>
-                  <h1
-                    className={`text-lg font-semibold mx-2 ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    {t("update_lead_details")}
-                  </h1>
-                </div>
+                <HeadingTitle
+                  title={t("update_lead_details")}
+                />
 
                 <form
                   onSubmit={(e) => {
@@ -432,165 +421,166 @@ const UpdateLead = ({
                     UpdateLeadFunc();
                   }}
                 >
-                  <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5 p-4">
-                    <div>
-                      <Box
-                        sx={{
-                          ...darkModeColors,
-                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
-                          "& legend": {
-                            textAlign: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        }}
+                  <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5">
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      }}
+                      className={`${currentMode === "dark"
+                        ? "bg-dark-neu" : "bg-light-neu"
+                        } p-5`}
+                    >
+                      <h4
+                        className={`${currentMode === "dark"
+                          ? "text-primary"
+                          : "text-primary"
+                          } text-center font-semibold pb-5 uppercase`}
                       >
-                        <h4
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-primary"
-                              : "text-primary"
-                          } text-center font-semibold pb-5`}
-                        >
-                          {t("agent_details")}
-                        </h4>
+                        {t("agent_details")}
+                      </h4>
 
-                        {/* MANAGER  */}
+                      {/* MANAGER  */}
+                      <TextField
+                        id="Manager"
+                        type="text"
+                        label={t("label_manager")}
+                        className="w-full"
+                        style={{
+                          marginBottom: "20px",
+                          pointerEvents: "none",
+                        }}
+                        variant="outlined"
+                        size="small"
+                        value={
+                          Managers?.find((person) => person?.id === Manager)
+                            ?.userName || t("no_manager")
+                        }
+                        onChange={(e) => {
+                          e.preventDefault();
+                        }}
+                        readOnly={true}
+                      />
+
+                      {/* AGENT  */}
+                      {noAgents
+                        ? ""
+                        : (User.role === 1 || User.role === 3) && (
+                          <>
+                            <TextField
+                              id="Salesperson"
+                              type="text"
+                              label={t("label_agent")}
+                              className="w-full"
+                              style={{
+                                marginBottom: "20px",
+                                pointerEvents: "none",
+                              }}
+                              variant="outlined"
+                              size="small"
+                              value={
+                                SalesPerson?.find(
+                                  (person) => person?.id === SalesPerson2
+                                )?.userName || t("no_agent_assigned")
+                              }
+                              onChange={(e) => {
+                                e.preventDefault();
+                              }}
+                              readOnly={true}
+                            />
+                          </>
+                        )}
+
+                      {User.role === 7 && (
                         <TextField
-                          id="Manager"
+                          id="Salesperson"
+                          label={t("label_agent")}
                           type="text"
-                          label={t("label_manager")}
-                          className="w-full"
+                          className="w-full mb-5"
                           style={{
                             marginBottom: "20px",
                             pointerEvents: "none",
                           }}
                           variant="outlined"
                           size="small"
-                          value={
-                            Managers?.find((person) => person?.id === Manager)
-                              ?.userName || t("no_manager")
-                          }
-                          onChange={(e) => {
-                            e.preventDefault();
-                          }}
+                          value={User?.userName}
                           readOnly={true}
                         />
+                      )}
+                    </Box>
 
-                        {/* AGENT  */}
-                        {noAgents
-                          ? ""
-                          : (User.role === 1 || User.role === 3) && (
-                              <>
-                                <TextField
-                                  id="Salesperson"
-                                  type="text"
-                                  label={t("label_agent")}
-                                  className="w-full"
-                                  style={{
-                                    marginBottom: "20px",
-                                    pointerEvents: "none",
-                                  }}
-                                  variant="outlined"
-                                  size="small"
-                                  value={
-                                    SalesPerson?.find(
-                                      (person) => person?.id === SalesPerson2
-                                    )?.userName || t("no_agent_assigned")
-                                  }
-                                  onChange={(e) => {
-                                    e.preventDefault();
-                                  }}
-                                  readOnly={true}
-                                />
-                              </>
-                            )}
-
-                        {User.role === 7 && (
-                          <TextField
-                            id="Salesperson"
-                            label={t("label_agent")}
-                            type="text"
-                            className="w-full mb-5"
-                            style={{
-                              marginBottom: "20px",
-                              pointerEvents: "none",
-                            }}
-                            variant="outlined"
-                            size="small"
-                            value={User?.userName}
-                            readOnly={true}
-                          />
-                        )}
-                      </Box>
-                    </div>
-
-                    <div>
-                      <Box
-                        sx={{
-                          ...darkModeColors,
-                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
-                          "& legend": {
-                            textAlign: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        }}
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      }}
+                      className={`${currentMode === "dark"
+                        ? "bg-dark-neu" : "bg-light-neu"
+                        } p-5`}
+                    >
+                      <h4
+                        className={`${currentMode === "dark"
+                          ? "text-primary"
+                          : "text-primary"
+                          } text-center font-semibold pb-5 uppercase`}
                       >
-                        <h4
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-primary"
-                              : "text-primary"
-                          } text-center font-semibold pb-5`}
-                        >
-                          {t("project_details")}
-                        </h4>
-                        {/* PROJECT NAME  */}
-                        <TextField
-                          id="Project"
-                          type={"text"}
-                          className="w-full"
-                          style={{
-                            marginBottom: "20px",
-                          }}
-                          label={t("label_project_name")}
-                          variant="outlined"
-                          size="small"
-                          value={LeadProject}
-                          onChange={(e) => setLeadProject(e.target.value)}
-                        />
-                        {/* ENQUIRY  */}
-                        <Select
-                          id="enquiry"
-                          value={enquiry_options(t).find(
-                            (option) => option.value === EnquiryType
-                          )}
-                          onChange={ChangeEnquiryType}
-                          options={enquiry_options(t)}
-                          placeholder={t("label_enquiry_about")}
-                          className="w-full"
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
+                        {t("project_details")}
+                      </h4>
+                      {/* PROJECT NAME  */}
+                      <TextField
+                        id="Project"
+                        type={"text"}
+                        className="w-full"
+                        style={{
+                          marginBottom: "20px",
+                        }}
+                        label={t("label_project_name")}
+                        variant="outlined"
+                        size="small"
+                        value={LeadProject}
+                        onChange={(e) => setLeadProject(e.target.value)}
+                      />
+                      {/* ENQUIRY  */}
+                      <Select
+                        id="enquiry"
+                        value={enquiry_options(t).find(
+                          (option) => option.value === EnquiryType
+                        )}
+                        onChange={ChangeEnquiryType}
+                        options={enquiry_options(t)}
+                        placeholder={t("label_enquiry_about")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
 
-                        {/* <TextField
+                      {/* <TextField
                           id="enquiry"
                           value={EnquiryType}
                           label={t("label_enquiry_for")}
@@ -635,20 +625,20 @@ const UpdateLead = ({
                           </MenuItem>
                         </TextField> */}
 
-                        {/* PROPERTY TYPE  */}
-                        <Select
-                          id="property-type"
-                          value={property_options(t).find(
-                            (option) => option.value === PropertyType
-                          )}
-                          onChange={ChangePropertyType}
-                          options={property_options(t)}
-                          placeholder={t("label_property_type")}
-                          className="w-full"
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                        {/* <TextField
+                      {/* PROPERTY TYPE  */}
+                      <Select
+                        id="property-type"
+                        value={property_options(t).find(
+                          (option) => option.value === PropertyType
+                        )}
+                        onChange={ChangePropertyType}
+                        options={property_options(t)}
+                        placeholder={t("label_property_type")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      {/* <TextField
                           id="property-type"
                           value={PropertyType}
                           label={t("label_property_type")}
@@ -684,20 +674,20 @@ const UpdateLead = ({
                           </MenuItem>
                         </TextField> */}
 
-                        {/* PURPOSE  */}
-                        <Select
-                          id="for"
-                          value={purpose_options(t).find(
-                            (option) => option.value === ForType
-                          )}
-                          onChange={ChangeForType}
-                          options={purpose_options(t)}
-                          placeholder={t("label_purpose_of_enquiry")}
-                          className="w-full"
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                        {/* <TextField
+                      {/* PURPOSE  */}
+                      <Select
+                        id="for"
+                        value={purpose_options(t).find(
+                          (option) => option.value === ForType
+                        )}
+                        onChange={ChangeForType}
+                        options={purpose_options(t)}
+                        placeholder={t("label_purpose_of_enquiry")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      {/* <TextField
                           id="for"
                           sx={{
                             marginBottom: "1.25rem !important",
@@ -720,118 +710,117 @@ const UpdateLead = ({
                             {t("purpose_end_user")}
                           </MenuItem>
                         </TextField> */}
-                      </Box>
-                    </div>
+                    </Box>
 
-                    <div>
-                      <Box
-                        sx={{
-                          ...darkModeColors,
-                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
-                          "& legend": {
-                            textAlign: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        }}
+                    <Box
+                      sx={{
+                        ...darkModeColors,
+                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                        {
+                          right: isLangRTL(i18n.language)
+                            ? "2.5rem"
+                            : "inherit",
+                          transformOrigin: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                        "& legend": {
+                          textAlign: isLangRTL(i18n.language)
+                            ? "right"
+                            : "left",
+                        },
+                      }}
+                      className={`${currentMode === "dark"
+                        ? "bg-dark-neu" : "bg-light-neu"
+                        } p-5`}
+                    >
+                      <h4
+                        className={`${currentMode === "dark"
+                          ? "text-primary"
+                          : "text-primary"
+                          } text-center font-semibold pb-5 uppercase`}
                       >
-                        <h4
-                          className={`${
-                            currentMode === "dark"
-                              ? "text-primary"
-                              : "text-primary"
-                          } text-center font-semibold pb-5`}
-                        >
-                          {t("lead_details")}
-                        </h4>
-                        {/* LEAD NAME  */}
-                        <TextField
-                          id="LeadName"
-                          type={"text"}
-                          label={t("label_lead_name")}
-                          className="w-full"
-                          style={{ marginBottom: "20px" }}
-                          variant="outlined"
-                          size="small"
-                          required
-                          value={LeadName}
-                          onChange={(e) => setLeadName(e.target.value)}
-                        />
+                        {t("lead_details")}
+                      </h4>
+                      {/* LEAD NAME  */}
+                      <TextField
+                        id="LeadName"
+                        type={"text"}
+                        label={t("label_lead_name")}
+                        className="w-full"
+                        style={{ marginBottom: "20px" }}
+                        variant="outlined"
+                        size="small"
+                        required
+                        value={LeadName}
+                        onChange={(e) => setLeadName(e.target.value)}
+                      />
 
-                        {/* CONTACT  */}
-                        <PhoneInput
-                          placeholder={t("label_contact_number")}
-                          value={LeadContact}
-                          onChange={(value) => setValue(value)}
-                          onKeyUp={handlePhone}
-                          required
-                          labels={t("label_phone_number")}
-                          error={error}
-                          className={`
+                      {/* CONTACT  */}
+                      <PhoneInput
+                        placeholder={t("label_contact_number")}
+                        value={LeadContact}
+                        onChange={(value) => setValue(value)}
+                        onKeyUp={handlePhone}
+                        required
+                        labels={t("label_phone_number")}
+                        error={error}
+                        className={`
                           ${classNames({
-                            "dark-mode": currentMode === "dark",
-                            "phone-input-light": currentMode !== "dark",
-                            "phone-input-dark": currentMode === "dark",
-                          })}
+                          "dark-mode": currentMode === "dark",
+                          "phone-input-light": currentMode !== "dark",
+                          "phone-input-dark": currentMode === "dark",
+                        })}
                            mb-5`}
-                          size="small"
-                          style={{
-                            marginBottom: "20px",
-                            color: currentMode === "dark" ? "white" : "black",
-                            border: `1px solid ${
-                              currentMode === "dark" ? "#fff" : "#ccc"
+                        size="small"
+                        style={{
+                          marginBottom: "20px",
+                          color: currentMode === "dark" ? "white" : "black",
+                          border: `1px solid ${currentMode === "dark" ? "#fff" : "#ccc"
                             }`,
-                            borderRadius: "5px",
-                            outline: "none",
-                          }}
-                          inputStyle={{
-                            outline: "none",
-                          }}
-                        />
-                        {error && (
-                          <Typography variant="body2" color="error">
-                            {error}
-                          </Typography>
+                          borderRadius: "5px",
+                          outline: "none",
+                        }}
+                        inputStyle={{
+                          outline: "none",
+                        }}
+                      />
+                      {error && (
+                        <Typography variant="body2" color="error">
+                          {error}
+                        </Typography>
+                      )}
+
+                      {/* EMAIL  */}
+                      <TextField
+                        id="LeadEmailAddress"
+                        type={"email"}
+                        className="w-full"
+                        label={t("label_email_address")}
+                        style={{ marginBottom: "20px" }}
+                        variant="outlined"
+                        size="small"
+                        value={LeadEmail === "undefined" ? "" : LeadEmail}
+                        // onChange={(e) => setLeadEmail(e.target.value)}
+                        error={emailError && emailError}
+                        helperText={emailError && emailError}
+                        onChange={handleEmail}
+                      />
+
+                      {/* LANGUAGE  */}
+                      <Select
+                        id="LanguagePrefered"
+                        value={language_options.find(
+                          (option) => option.value === LanguagePrefered
                         )}
-
-                        {/* EMAIL  */}
-                        <TextField
-                          id="LeadEmailAddress"
-                          type={"email"}
-                          className="w-full"
-                          label={t("label_email_address")}
-                          style={{ marginBottom: "20px" }}
-                          variant="outlined"
-                          size="small"
-                          value={LeadEmail === "undefined" ? "" : LeadEmail}
-                          // onChange={(e) => setLeadEmail(e.target.value)}
-                          error={emailError && emailError}
-                          helperText={emailError && emailError}
-                          onChange={handleEmail}
-                        />
-
-                        {/* LANGUAGE  */}
-                        <Select
-                          id="LanguagePrefered"
-                          value={language_options.find(
-                            (option) => option.value === LanguagePrefered
-                          )}
-                          onChange={ChangeLanguagePrefered}
-                          options={language_options}
-                          placeholder={t("label_language")}
-                          className="w-full"
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                        {/* <TextField
+                        onChange={ChangeLanguagePrefered}
+                        options={language_options}
+                        placeholder={t("label_language")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      {/* <TextField
                           sx={{
                             marginBottom: "1.25rem !important",
                           }}
@@ -856,14 +845,15 @@ const UpdateLead = ({
                           <MenuItem value={"Spanish"}>Spanish</MenuItem>
                           <MenuItem value={"Urdu"}>Urdu</MenuItem>
                         </TextField> */}
-                      </Box>
-                    </div>
+                    </Box>
                   </div>
-                  <Button
-                    className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed bg-btn-primary hover:shadow-none `}
-                    ripple={true}
-                    size="lg"
-                    type="submit"
+                  <button
+                    className={`${currentMode === "dark"
+                      ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                      } w-full my-5 text-white py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed `}
+                    // ripple={true}
+                    // size="lg"
+                    // type="submit"
                     disabled={btnloading ? true : false}
                   >
                     {btnloading ? (
@@ -873,13 +863,13 @@ const UpdateLead = ({
                     ) : (
                       <span> {t("btn_update_lead")}</span>
                     )}
-                  </Button>
+                  </button>
                 </form>
               </>
             )}
           </div>
         </div>
-      </Modal>
+      </Modal >
     </>
   );
 };

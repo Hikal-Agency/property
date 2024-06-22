@@ -1,14 +1,20 @@
-import { useState, useEffect } from "react";
-import { Box, CircularProgress, TextField } from "@mui/material";
+import { useState, useEffect, useRef } from "react";
+import {
+  Box,
+  CircularProgress,
+  TextField,
+  InputAdornment,
+} from "@mui/material";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router";
 import { search } from "../../utils/axiosSearch";
-import { MdMic } from "react-icons/md";
+import { BsMic, BsMicFill } from "react-icons/bs";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 const SearchLeads = () => {
+  const searchContainer = useRef(null);
   const {
     transcript,
     listening,
@@ -24,19 +30,8 @@ const SearchLeads = () => {
 
   const location = useLocation();
 
-  const clearSearchInput = () => {
-    setSearchResults(null);
-    setSearchTerm("");
-    setIsVoiceSearchState(false);
-  };
   useEffect(() => {
-    if (!browserSupportsSpeechRecognition) {
-      console.error("Browser doesn't support speech recognition.");
-    }
-  }, [browserSupportsSpeechRecognition]);
-
-  useEffect(() => {
-    if (isVoiceSearchState && transcript) {
+    if (isVoiceSearchState && transcript.length > 0) {
       // setSearchTerm(transcript);
       handleSearch({ target: { value: transcript } });
     }
@@ -45,12 +40,27 @@ const SearchLeads = () => {
 
   useEffect(() => {
     if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
       startListening();
     } else {
       SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
       resetTranscript();
     }
   }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setSearchResults(null);
+    setSearchTerm("");
+    // setIsVoiceSearchState(false);
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
 
   const startListening = () =>
     SpeechRecognition.startListening({ continuous: true });
@@ -108,7 +118,16 @@ const SearchLeads = () => {
   useEffect(() => {
     const cb = (e) => {
       if (!e.target.closest(".search-leads-container")) {
-        clearSearchInput();
+        if (e?.target?.parentNode?.id != "search_mic") {
+          if (e?.target?.id != "search_mic") {
+            console.log(
+              searchContainer?.current,
+              e?.target?.parentNode,
+              "click element"
+            );
+            clearSearchInput();
+          }
+        }
       }
     };
     document.body.addEventListener("click", cb);
@@ -128,17 +147,39 @@ const SearchLeads = () => {
             value={searchTerm}
             onChange={handleSearch}
             size="small"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <div
+                    ref={searchContainer}
+                    className={`${
+                      isVoiceSearchState ? "listening bg-primary" : ""
+                    } ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                    onClick={() => {
+                      setIsVoiceSearchState(!isVoiceSearchState);
+                      console.log("mic is clicked...");
+                    }}
+                  >
+                    {isVoiceSearchState ? (
+                      <BsMicFill id="search_mic" size={16} />
+                    ) : (
+                      <BsMic id="search_mic" size={16} />
+                    )}
+                  </div>
+                </InputAdornment>
+              ),
+            }}
           />
-          <div
-            className={`p-3 cursor-pointer  ${
-              isVoiceSearchState ? " listening" : ""
-            } rounded-full ${
-              currentMode == "dark" ? "text-white " : "bg-gray-200"
-            }`}
+          {/* <div
+            className={`p-3 cursor-pointer hover:bg-gray-200 ${
+              isVoiceSearchState ? "bg-gray-200 listening" : ""
+            } rounded-full`}
             onClick={() => setIsVoiceSearchState(!isVoiceSearchState)}
           >
-            <MdMic size={18} />
-          </div>
+            <MdMic color={"#AAAAAA"} size={18} />
+          </div> */}
         </Box>
         {searchResult?.data?.length > 0 && (
           <div

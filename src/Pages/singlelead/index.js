@@ -211,9 +211,8 @@ const SingleLeadPage = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-            }`}
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }`}
           >
             {leadNotFound ? (
               <Error404 />
@@ -221,24 +220,32 @@ const SingleLeadPage = () => {
               <div>
                 <div className="w-full flex items-center justify-between pb-3">
                   <div class="flex items-center">
-                    <div className="bg-primary w-fit rounded-md my-1 py-1 px-2 text-white flex items-center justify-center">
+                    <div className={`${currentMode === "dark"
+                      ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                      } w-fit rounded-md py-1 px-2 text-white flex items-center justify-center`}
+                    >
                       {LeadData?.id}
                     </div>
                     <h1
-                      className={`text-lg font-semibold mx-2 uppercase ${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                      className={`text-lg mx-2 uppercase ${currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                      style={{
+                        fontFamily: isArabic(LeadData?.leadName) ? "Noto Kufi Arabic" : "inherit"
+                      }}
                     >
                       {LeadData?.leadName}
                     </h1>
                   </div>
                   <p
                     style={{ cursor: "pointer" }}
-                    className={`${
-                      currentMode === "dark"
-                        ? "text-[#FFFFFF] bg-[#262626]"
-                        : "text-[#1C1C1C] bg-[#EEEEEE]"
-                    } hover:text-white hover:bg-blue-600 rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
+                    className={`${themeBgImg
+                      ? (currentMode === "dark"
+                        ? "text-white blur-bg-black"
+                        : "text-black blur-bg-white")
+                      : (currentMode === "dark"
+                        ? "text-white bg-dark-neu"
+                        : "text-black bg-light-neu")
+                      } hover:text-white hover:bg-blue-600 rounded-full p-2 flex items-center timelineBtn`}
                   >
                     <Tooltip title="View Timeline" arrow>
                       <button
@@ -253,45 +260,42 @@ const SingleLeadPage = () => {
                 <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5">
                   {/* USER DETAILS  */}
                   <div
-                    className={`p-4 rounded-xl shadow-sm card-hover
-                    ${
-                      !themeBgImg
+                    className={`p-4
+                    ${!themeBgImg
                         ? currentMode === "dark"
-                          ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EEEEEE] text-black"
+                          ? "bg-dark-neu text-white"
+                          : "bg-light-neu text-black"
                         : currentMode === "dark"
-                        ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black"
-                    }`}
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black"
+                      }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
                       {t("user_details")?.toUpperCase()}
                     </h1>
-                    <hr className="my-4" />
+                    <hr className="my-3" />
                     <div className="w-full">
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
                         <BsTelephone
                           size={16}
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                          className={`${currentMode === "dark" ? "text-white" : "text-black"
+                            }`}
                         />
                         <div className="col-span-7">{contact}</div>
                       </div>
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
                         <BsEnvelopeAt
                           size={16}
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                          className={`${currentMode === "dark" ? "text-white" : "text-black"
+                            }`}
                         />
                         <div className="col-span-7">
                           {LeadData?.leadEmail === "" ||
-                          LeadData?.leadEmail === "null" ||
-                          LeadData?.leadEmail === "undefined" ||
-                          LeadData?.leadEmail === "-" ||
-                          LeadData?.leadEmail === null ||
-                          LeadData?.leadEmail === undefined
+                            LeadData?.leadEmail === "null" ||
+                            LeadData?.leadEmail === "undefined" ||
+                            LeadData?.leadEmail === "-" ||
+                            LeadData?.leadEmail === null ||
+                            LeadData?.leadEmail === undefined
                             ? "-"
                             : LeadData?.leadEmail}
                         </div>
@@ -299,12 +303,11 @@ const SingleLeadPage = () => {
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
                         <BsType
                           size={16}
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                          className={`${currentMode === "dark" ? "text-white" : "text-black"
+                            }`}
                         />
                         <div className="col-span-7">
-                          {LeadData?.language} Language
+                          {LeadData?.language}
                         </div>
                       </div>
                     </div>
@@ -312,28 +315,26 @@ const SingleLeadPage = () => {
 
                   {/* PROJECT DETAILS  */}
                   <div
-                    className={`p-4 rounded-xl shadow-sm card-hover
-                    ${
-                      !themeBgImg
+                    className={`p-4
+                    ${!themeBgImg
                         ? currentMode === "dark"
-                          ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EEEEEE] text-black"
+                          ? "bg-dark-neu text-white"
+                          : "bg-light-neu text-black"
                         : currentMode === "dark"
-                        ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black"
-                    }`}
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black"
+                      }`}
                   >
                     <h1 className="text-center uppercase font-semibold">
                       {t("enquiry_details")?.toUpperCase()}
                     </h1>
-                    <hr className="my-4" />
+                    <hr className="my-3" />
                     <div className="w-full">
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
                         <BsBuildings
                           size={16}
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                          className={`${currentMode === "dark" ? "text-white" : "text-black"
+                            }`}
                         />
                         <div className="col-span-7">
                           {LeadData?.project === "null"
@@ -347,9 +348,8 @@ const SingleLeadPage = () => {
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
                         <BiBed
                           size={16}
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                          className={`${currentMode === "dark" ? "text-white" : "text-black"
+                            }`}
                         />
                         <div className="col-span-7">
                           {LeadData?.enquiryType === "null"
@@ -360,9 +360,8 @@ const SingleLeadPage = () => {
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
                         <BsHouseGear
                           size={16}
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                          className={`${currentMode === "dark" ? "text-white" : "text-black"
+                            }`}
                         />
                         <div className="col-span-7">
                           {LeadData?.leadFor === "null"
@@ -375,45 +374,49 @@ const SingleLeadPage = () => {
 
                   {/* STATUS  */}
                   <div
-                    className={`p-4 rounded-xl shadow-sm card-hover text-center
-                    ${
-                      !themeBgImg
+                    className={`p-4 text-center
+                    ${!themeBgImg
                         ? currentMode === "dark"
-                          ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EEEEEE] text-black"
+                          ? "bg-dark-neu text-white"
+                          : "bg-light-neu text-black"
                         : currentMode === "dark"
-                        ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black"
-                    }`}
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black"
+                      }`}
                   >
-                    <h1 className="text-center uppercase flex items-center justify-center">
-                      <BsBookmarkFill size={16} className={`text-primary`} />
-                      {t("label_feedback")?.toUpperCase()}
-                      <span className="mx-2  font-semibold">
+                    <h1 className="text-center uppercase flex break-all">
+                      <span>
+                        <BsBookmarkFill size={16} className={`text-primary`} />
+                      </span>
+                      <span className="mx-2 font-semibold">
+                        <span className="font-normal">
+                          {t("label_feedback")?.toUpperCase()}
+                        </span>
+                        {" "}
                         {t(
                           "feedback_" +
-                            LeadData?.feedback
-                              ?.toLowerCase()
-                              ?.replaceAll(" ", "_")
+                          LeadData?.feedback
+                            ?.toLowerCase()
+                            ?.replaceAll(" ", "_")
+                            ?.replace(/[()]/g, "")
                         ) ?? "---"}
                       </span>
                     </h1>
                     <hr className="my-4" />
                     <div className="w-full">
                       {LeadData?.notes === null ||
-                      LeadData?.notes === "" ||
-                      LeadData?.notes === "null" ||
-                      LeadData?.notes === "-" ? (
+                        LeadData?.notes === "" ||
+                        LeadData?.notes === "null" ||
+                        LeadData?.notes === "-" ? (
                         <></>
                       ) : (
                         <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
                           <BsChatLeftText
                             size={16}
-                            className={`${
-                              currentMode === "dark"
-                                ? "text-white"
-                                : "text-black"
-                            }`}
+                            className={`${currentMode === "dark"
+                              ? "text-white"
+                              : "text-black"
+                              }`}
                           />
                           <div
                             className="col-span-7 text-start"
@@ -430,9 +433,8 @@ const SingleLeadPage = () => {
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
                         <BsPersonPlus
                           size={16}
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                          className={`${currentMode === "dark" ? "text-white" : "text-black"
+                            }`}
                         />
                         <div className="col-span-7 text-start">
                           {t("lead_added_on")}{" "}
@@ -442,9 +444,8 @@ const SingleLeadPage = () => {
                       <div class="grid grid-cols-8 gap-3 my-4 lg:px-2">
                         <BsPersonGear
                           size={16}
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                          className={`${currentMode === "dark" ? "text-white" : "text-black"
+                            }`}
                         />
                         <div className="col-span-7 text-start">
                           {t("last_updated_on")}{" "}
@@ -458,33 +459,30 @@ const SingleLeadPage = () => {
                 </div>
 
                 <div
-                  className={`rounded-xl p-4 my-7 ${
-                    !themeBgImg
-                      ? currentMode === "dark"
-                        ? "bg-[#1C1C1C]"
-                        : "bg-[#EEEEEE]"
-                      : currentMode === "dark"
+                  className={`rounded-xl p-4 my-7 ${!themeBgImg
+                    ? currentMode === "dark"
+                      ? "bg-dark-neu"
+                      : "bg-light-neu"
+                    : currentMode === "dark"
                       ? "blur-bg-dark"
                       : "blur-bg-light"
-                  } mb-5`}
+                    } mb-5`}
                 >
                   <h1
-                    className={` ${
-                      currentMode === "dark" ? "text-white" : "text-dark"
-                    } font-semibold text-lg text-center mb-3`}
+                    className={` ${currentMode === "dark" ? "text-white" : "text-dark"
+                      } font-semibold text-lg text-center mb-3`}
                   >
-                    LEAD NOTES
+                    {t("lead_notes")}
                   </h1>
 
                   {LeadNotesData?.notes?.data?.length === 0 ? (
                     <p
-                      className={`mt-3 italic ${
-                        currentMode === "dark"
-                          ? "text-white"
-                          : "text-main-red-color"
-                      }`}
+                      className={`mt-3 italic ${currentMode === "dark"
+                        ? "text-white"
+                        : "text-main-red-color"
+                        }`}
                     >
-                      No notes to show
+                      {t("nothing_to_show")}
                     </p>
                   ) : (
                     <TableContainer component={Paper}>
@@ -506,24 +504,23 @@ const SingleLeadPage = () => {
                               // background: "#DA1F26"
                             },
                           }}
-                          className={`${
-                            currentMode === "dark"
-                              ? "bg-primary"
-                              : "bg-[#000000]"
-                          }`}
+                          className={`${currentMode === "dark"
+                            ? "bg-primary"
+                            : "bg-[#000000]"
+                            }`}
                         >
                           <TableRow>
                             <TableCell align="center" className="w-[5%]">
                               #
                             </TableCell>
                             <TableCell align="center" className="w-[15%]">
-                              Added On
+                              {t("ticket_cat_header_date")}
                             </TableCell>
                             <TableCell align="center" className="w-[15%]">
-                              Added By
+                              {t("label_added_by")}
                             </TableCell>
                             <TableCell align="center" className="w-[65%]">
-                              Note
+                              {t("label_note")}
                             </TableCell>
                           </TableRow>
                         </TableHead>
@@ -607,8 +604,12 @@ const SingleLeadPage = () => {
                     <button
                       disabled={addNoteloading ? true : false}
                       style={{ color: "white" }}
-                      type="submit"
-                      className="mt-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-btn-primary p-1 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase"
+                      // type="submit"
+                      className={`${!themeBgImg
+                        ? currentMode === "dark"
+                        ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                        : "bg-primary rounded-lg shadow-md border"
+                      } my-3 disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center p-3 text-white focus:outline-none focus:ring-2  focus:ring-offset-2 text-md font-bold uppercase`}
                     >
                       {addNoteloading ? (
                         <CircularProgress
