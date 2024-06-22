@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-    Box, 
+    Box,
     Tooltip
 } from "@mui/material";
 import { useStateContext } from '../../context/ContextProvider';
 
-import { 
+import {
     BsMegaphoneFill,
     BsTwitter,
     BsYoutube,
@@ -29,8 +29,8 @@ import {
     FaTiktok,
     FaQuestion
 } from "react-icons/fa";
-import { 
-    FcGoogle 
+import {
+    FcGoogle
 } from "react-icons/fc";
 import {
     MdClose
@@ -48,7 +48,8 @@ const SourceAnimation = () => {
         SourceCounters,
         t,
         isLangRTL,
-        i18n
+        i18n,
+        themeBgImg
     } = useStateContext();
 
     // useEffect(() => {
@@ -263,22 +264,25 @@ const SourceAnimation = () => {
                 // />
                 <div
                     ref={popupRef}
-                    className={`source-counters-open fixed top-0 ${
-                        isLangRTL(i18n.language) ? "left-10" : "right-10"
-                    } ${
-                        isClosing && "source-counters-close"
-                    } w-auto h-auto flex flex-col items-center justify-center`}
+                    className={`source-counters-open fixed top-0 ${isLangRTL(i18n.language) ? "left-10" : "right-10"
+                        } ${isClosing && "source-counters-close"
+                        } w-auto h-auto flex flex-col items-center justify-center`}
                     style={{
                         zIndex: "100"
                     }}
                 >
                     <div
-                        className="relative w-auto h-auto rounded-b-full flex flex-col gap-1 justify-center p-2"
-                        style={{
-                            background: currentMode === "dark" ? "black" : "white",
-                            color: currentMode === "dark" ? "white" : "black",
-                            boxShadow: currentMode === "dark" ? "0 5px 30px rgba(255, 255, 255, 0.5)" : "0 5px 30px rgba(0, 0, 0, 0.5)",
-                        }}
+                        className={`${themeBgImg
+                            ? currentMode === "dark"
+                                ? "blur-bg-black text-white" : "blur-bg-white text-black"
+                            : currentMode === "dark"
+                                ? "bg-dark-neu text-white" : "bg-light-neu text-black"
+                            } relative w-auto h-auto rounded-none rounded-b-full flex flex-col gap-1 justify-center p-2`}
+                    // style={{
+                    //     background: currentMode === "dark" ? "black" : "white",
+                    //     color: currentMode === "dark" ? "white" : "black",
+                    //     boxShadow: currentMode === "dark" ? "0 5px 30px rgba(255, 255, 255, 0.5)" : "0 5px 30px rgba(0, 0, 0, 0.5)",
+                    // }}
                     >
                         {Counters.counters && Counters.counters.length > 0 ? (
                             Counters.counters.map((source) => {
@@ -288,8 +292,8 @@ const SourceAnimation = () => {
                                     // console.log("SOURCE COUNTER ============ ", sourceCounterLeadSource);
                                     // console.log("COUNTER OBJECT ============ ", counterObjectLeadSource);
                                     return (
-                                        counterObjectLeadSource && 
-                                        sourceCounterLeadSource && 
+                                        counterObjectLeadSource &&
+                                        sourceCounterLeadSource &&
                                         // counterObjectLeadSource?.includes(sourceCounterLeadSource)
                                         sourceCounterLeadSource.includes(counterObjectLeadSource)
                                     );
@@ -304,15 +308,15 @@ const SourceAnimation = () => {
                                     <Tooltip title={leadSource} key={leadSource} arrow>
                                         <div className="p-2">
                                             <div
-                                            className="shadow-sm card-hover flex items-center justify-between"
-                                            style={{
-                                                border: `1px solid #AAAAAA`,
-                                            }}
+                                                className="shadow-sm card-hover flex items-center justify-between"
+                                                style={{
+                                                    border: `1px solid #AAAAAA`,
+                                                }}
                                             >
                                                 <div
                                                     className="p-2 h-full flex items-center justify-center"
                                                     style={{
-                                                    backgroundColor: bg,
+                                                        backgroundColor: bg,
                                                     }}
                                                 >
                                                     {icon}
@@ -339,9 +343,9 @@ const SourceAnimation = () => {
                                 className={`card-hover rounded-full bg-primary w-fit h-fit p-3 my-4 z-10`}
                             >
                                 <MdClose
-                                size={18}
-                                color={"white"}
-                                className="hover:border hover:border-white hover:rounded-full"
+                                    size={18}
+                                    color={"white"}
+                                    className="hover:border hover:border-white hover:rounded-full"
                                 />
                             </button>
                         </div>

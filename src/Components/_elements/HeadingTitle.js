@@ -8,7 +8,8 @@ const HeadingTitle = ({
 }) => {
     const {
         currentMode,
-        themeBgImg
+        themeBgImg,
+        isArabic
     } = useStateContext();
 
     return (
@@ -22,6 +23,11 @@ const HeadingTitle = ({
                             ? "text-white"
                             : "text-black"
                         }`}
+                    style={{
+                        fontFamily: isArabic(title)
+                            ? "Noto Kufi Arabic"
+                            : "inherit",
+                    }}
                 >
                     {title}
                     {subtitle && (

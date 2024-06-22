@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import BookedDeals from "../../Components/Leads/BookedDeals";
 import Loader from "../../Components/Loader";
 import { useStateContext } from "../../context/ContextProvider";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const Booked = () => {
 
@@ -23,30 +24,19 @@ const Booked = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-            }`}
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }`}
           >
-            <div className="w-full flex items-center pb-3">
-              <div className="bg-primary h-10 w-1 rounded-full"></div>
-              <h1
-                className={`text-lg font-semibold mx-2 uppercase ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                {`${t("booked")} ${t("deals")}`} 
-                {" "}
-                <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                  {pageState?.total}
-                </span>
-              </h1>
-            </div>
+            <HeadingTitle
+              title={`${t("booked")} ${t("deals")}`}
+              counter={pageState?.total}
+            />
 
             <BookedDeals
               BACKEND_URL={BACKEND_URL}
               lead_type={"booked"}
             />
-            
+
           </div>
         )}
       </div>

@@ -24,17 +24,18 @@ import AddImageModal from "../../Pages/listings/AddImageModal";
 import AddDocumentModal from "../../Pages/listings/AddDocumentModal";
 import { useStateContext } from "../../context/ContextProvider";
 import { selectStyles } from "../_elements/SelectStyles";
-import { 
-  property_options, 
+import {
+  property_options,
   enquiry_options,
   bathroom_options,
   listing_options
 } from "../_elements/SelectOptions";
 
-import { 
-  MdFileUpload,
-  MdClose 
+import {
+  MdClose
 } from "react-icons/md";
+import { BsUpload } from "react-icons/bs";
+import HeadingTitle from "../_elements/HeadingTitle";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -391,23 +392,20 @@ const AddNewListingModal = ({
           } absolute top-1/2 left-1/2 p-3 rounded-md`}
         > */}
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -418,259 +416,255 @@ const AddNewListingModal = ({
           </button>
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) 
-              ? (currentMode === "dark" && "border-r-2 border-primary") 
-              : (currentMode === "dark" && "border-l-2 border-primary")}
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll
+            className={` ${currentMode === "dark"
+              ? "bg-dark text-white"
+              : "bg-light text-black"
+              } ${isLangRTL(i18n.language)
+                ? (currentMode === "dark" && "border-r-2 border-primary")
+                : (currentMode === "dark" && "border-l-2 border-primary")}
+             p-5 h-[100vh] w-[85vw] overflow-y-scroll
             `}
           >
-            <div className="w-full flex items-center py-1 mb-2">
-              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-              <h1
-                className={`text-lg font-semibold ml-3 ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                {t("btn_add_new_listing")}
-              </h1>
-            </div>
+            <HeadingTitle
+              title={t("btn_add_new_listing")}
+            />
 
-            <div className="mx-auto ">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
-                disabled={loading ? true : false}
-              >
-                <div className="grid grid-cols-1 mt-5 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 px-4 md:px-10 ">
-                  <div className="px-3">
-                    <Box sx={{
-                      ...darkModeColors,
-                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                        transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+              disabled={loading ? true : false}
+            >
+              <div className="grid grid-cols-1 my-2 sm:grid-cols-1 md:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5">
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                      transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                    }
+                  }}
+                  className={`${currentMode === "dark"
+                    ? "bg-dark-neu" : "bg-light-neu"
+                    } p-5`}
+                >
+                  <h4
+                    className={`${currentMode === "dark" ? "text-primary" : "text-black"
+                      } text-center font-semibold pb-5 uppercase`}
+                  >
+                    {t("label_seller_details")}
+                  </h4>
+
+                  {/* SELLER NAME  */}
+                  <TextField
+                    id="legalName"
+                    type={"text"}
+                    label={t("label_legal_name")}
+                    name="leadName"
+                    className="w-full"
+                    style={{
+                      marginBottom: "20px"
+                    }}
+                    variant="outlined"
+                    size="small"
+                    required
+                    value={removeNull(sellerDetails?.leadName)}
+                    onChange={handleChange}
+                  />
+
+                  {/* CONTACT NUMBER  */}
+                  <PhoneInput
+                    placeholder={t("label_contact_number")}
+                    onChange={(value) => setValue(value)}
+                    onKeyUp={handleContact}
+                    error={error}
+                    value={removeNull(sellerDetails?.leadContact)}
+                    className={` ${classNames({
+                      "dark-mode": currentMode === "dark",
+                      "phone-input-light": currentMode !== "dark",
+                      "phone-input-dark": currentMode === "dark",
+                    })} mb-5`}
+                    size="small"
+                    style={{
+                      marginBottom: "20px",
+                      background: `${currentMode === "dark" ? "#000000" : "#fff"
+                        }`,
+                      "& .PhoneInputCountryIconImg": {
+                        color: "#fff",
                       },
-                      "& legend": {
-                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                      }
-                    }}>
-                      <h4
-                        className={`${
-                          currentMode === "dark" ? "text-primary" : "text-black"
-                        } text-center font-semibold pb-5`}
-                      >
-                        {t("label_seller_details")}
-                      </h4>
-
-                      {/* SELLER NAME  */}
-                      <TextField
-                        id="legalName"
-                        type={"text"}
-                        label={t("label_legal_name")}
-                        name="leadName"
-                        className="w-full"
-                        style={{
-                          marginBottom: "20px"
-                        }}
-                        variant="outlined"
-                        size="small"
-                        required
-                        value={removeNull(sellerDetails?.leadName)}
-                        onChange={handleChange}
-                      />
-                      
-                      {/* CONTACT NUMBER  */}
-                      <PhoneInput
-                        placeholder={t("label_contact_number")}
-                        onChange={(value) => setValue(value)}
-                        onKeyUp={handleContact}
-                        error={error}
-                        value={removeNull(sellerDetails?.leadContact)}
-                        className={` ${classNames({
-                          "dark-mode": currentMode === "dark",
-                          "phone-input-light": currentMode !== "dark",
-                          "phone-input-dark": currentMode === "dark",
-                        })} mb-5`}
-                        size="small"
-                        style={{
-                          marginBottom: "20px",
-                          background: `${
-                            currentMode === "dark" ? "#000000" : "#fff"
-                          }`,
-                          "& .PhoneInputCountryIconImg": {
-                            color: "#fff",
-                          },
-                          "& .PhoneInputCountrySelectArrow": {
-                            display: "none",
-                          },
-                          color: currentMode === "dark" ? "#FFFFFF" : "#000000",
-                          border: `1px solid ${
-                            currentMode === "dark" ? "#fff" : "#ccc"
-                          }`,
-                          borderRadius: "5px",
-                          outline: "none",
-                        }}
-                        inputStyle={{
-                          outline: "none !important",
-                        }}
-                        required
-                      />
-
-                      {error && (
-                        <Typography variant="body2" color="error">
-                          {error}
-                        </Typography>
-                      )}
-
-                      {/* EMAIL  */}
-                      <TextField
-                        id="notes"
-                        type={"text"}
-                        label={t("label_email")}
-                        name="leadEmail"
-                        className="w-full"
-                        style={{
-                          marginBottom: "20px"
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={removeNull(sellerDetails?.leadEmail)}
-                        onChange={handleChange}
-                      />
-
-                      {/* PRICE  */}
-                      <TextField
-                        id="notes"
-                        type={"text"}
-                        label={t("label_property_price")}
-                        className="w-full"
-                        name="propertyPrice"
-                        style={{
-                          marginBottom: "20px"
-                        }}
-                        variant="outlined"
-                        size="small"
-                        required
-                        value={sellerDetails?.propertyPrice}
-                        onChange={handleChange}
-                      />
-                    </Box>
-                  </div>
-
-                  <div className="px-3">
-                    <Box sx={{
-                      ...darkModeColors,
-                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                        transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                      "& .PhoneInputCountrySelectArrow": {
+                        display: "none",
                       },
-                      "& legend": {
-                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                      }
-                    }}>
-                      <h4
-                        className={`${
-                          currentMode === "dark" ? "text-primary" : "text-black"
-                        } text-center font-semibold pb-5`}
-                      >
-                        {t("project_details")}
-                      </h4>
+                      color: currentMode === "dark" ? "#FFFFFF" : "#000000",
+                      border: `1px solid ${currentMode === "dark" ? "#fff" : "#ccc"
+                        }`,
+                      borderRadius: "5px",
+                      outline: "none",
+                    }}
+                    inputStyle={{
+                      outline: "none !important",
+                    }}
+                    required
+                  />
 
-                      {/* PROPERTY TYPE  */}
-                      <Select
-                        id="property-type"
-                        value={property_options(t).find(option => option.value === projectDetails?.property_type?.value)}
-                        onChange={(selectedOption) => handleProjectDetails({ target: { name: 'property_type', value: selectedOption } })}
-                        // onChange={handleProjectDetails}
-                        options={property_options(t)}
-                        placeholder={t("label_property_type")}
-                        className="w-full"
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                        required
-                      />
+                  {error && (
+                    <Typography variant="body2" color="error">
+                      {error}
+                    </Typography>
+                  )}
 
-                      {/* PROJECT / NAME OF THE BUILDING   */}
-                      <TextField
-                        id="notes"
-                        type={"text"}
-                        label={t("project_name_of_building")}
-                        className="w-full"
-                        name="project"
-                        style={{
-                          marginBottom: "20px",
-                        }}
-                        variant="outlined"
-                        size="small"
-                        required
-                        value={projectDetails?.project}
-                        onChange={handleProjectDetails}
-                      />
+                  {/* EMAIL  */}
+                  <TextField
+                    id="notes"
+                    type={"text"}
+                    label={t("label_email")}
+                    name="leadEmail"
+                    className="w-full"
+                    style={{
+                      marginBottom: "20px"
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={removeNull(sellerDetails?.leadEmail)}
+                    onChange={handleChange}
+                  />
 
-                      {/* ENQUIRY   */}
-                      <Select
-                        id="enquiry"
-                        value={enquiry_options(t).find(option => option.value === projectDetails?.bedrooms?.value)}
-                        onChange={(selectedOption) => handleProjectDetails({ target: { name: 'bedrooms', value: selectedOption } })}
-                        options={enquiry_options(t)}
-                        placeholder={t("number_of_bedrooms")}
-                        className="w-full"
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                        required
-                      />
+                  {/* PRICE  */}
+                  <TextField
+                    id="notes"
+                    type={"text"}
+                    label={t("label_property_price")}
+                    className="w-full"
+                    name="propertyPrice"
+                    style={{
+                      marginBottom: "20px"
+                    }}
+                    variant="outlined"
+                    size="small"
+                    required
+                    value={sellerDetails?.propertyPrice}
+                    onChange={handleChange}
+                  />
+                </Box>
 
-                      {/* BATHROOM  */}
-                      <Select
-                        id="for"
-                        value={bathroom_options(t).find(option => option.value === projectDetails?.bathrooms?.value)}
-                        onChange={(selectedOption) => handleProjectDetails({ target: { name: 'bathrooms', value: selectedOption } })}
-                        options={bathroom_options(t)}
-                        placeholder={t("number_of_bathrooms")}
-                        className="w-full"
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                        required
-                      />
-                    </Box>
-                  </div>
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                      transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                    }
+                  }}
+                  className={`${currentMode === "dark"
+                    ? "bg-dark-neu" : "bg-light-neu"
+                    } p-5`}
+                >
+                  <h4
+                    className={`${currentMode === "dark" ? "text-primary" : "text-black"
+                      } text-center font-semibold pb-5 uppercase`}
+                  >
+                    {t("project_details")}
+                  </h4>
 
-                  <div className="px-3">
-                    <Box sx={{
-                      ...darkModeColors,
-                      "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
-                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                        transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                      },
-                      "& legend": {
-                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
-                      }
-                    }}>
-                      <h4
-                        className={`${
-                          currentMode === "dark" ? "text-primary" : "text-black"
-                        } text-center font-semibold pb-5`}
-                      >
-                        {t("label_other_details")}
-                      </h4>
+                  {/* PROPERTY TYPE  */}
+                  <Select
+                    id="property-type"
+                    value={property_options(t).find(option => option.value === projectDetails?.property_type?.value)}
+                    onChange={(selectedOption) => handleProjectDetails({ target: { name: 'property_type', value: selectedOption } })}
+                    // onChange={handleProjectDetails}
+                    options={property_options(t)}
+                    placeholder={t("label_property_type")}
+                    className="w-full"
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                    required
+                  />
 
-                      {/* LISTING TYPE  */}
-                      <Select
-                        id="type"
-                        value={listing_options(t).find(option => option.value === otherDetails?.listingType?.value)}
-                        onChange={(selectedOption) => handleOtherDetails({ target: { name: 'listingType', value: selectedOption } })}
-                        options={listing_options(t)}
-                        placeholder={t("label_listing_type")}
-                        className="w-full"
-                        required
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
-                      {/* <TextField
+                  {/* PROJECT / NAME OF THE BUILDING   */}
+                  <TextField
+                    id="notes"
+                    type={"text"}
+                    label={t("project_name_of_building")}
+                    className="w-full"
+                    name="project"
+                    style={{
+                      marginBottom: "20px",
+                    }}
+                    variant="outlined"
+                    size="small"
+                    required
+                    value={projectDetails?.project}
+                    onChange={handleProjectDetails}
+                  />
+
+                  {/* ENQUIRY   */}
+                  <Select
+                    id="enquiry"
+                    value={enquiry_options(t).find(option => option.value === projectDetails?.bedrooms?.value)}
+                    onChange={(selectedOption) => handleProjectDetails({ target: { name: 'bedrooms', value: selectedOption } })}
+                    options={enquiry_options(t)}
+                    placeholder={t("number_of_bedrooms")}
+                    className="w-full"
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                    required
+                  />
+
+                  {/* BATHROOM  */}
+                  <Select
+                    id="for"
+                    value={bathroom_options(t).find(option => option.value === projectDetails?.bathrooms?.value)}
+                    onChange={(selectedOption) => handleProjectDetails({ target: { name: 'bathrooms', value: selectedOption } })}
+                    options={bathroom_options(t)}
+                    placeholder={t("number_of_bathrooms")}
+                    className="w-full"
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                    required
+                  />
+                </Box>
+
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl": {
+                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                      transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                    }
+                  }}
+                  className={`${currentMode === "dark"
+                    ? "bg-dark-neu" : "bg-light-neu"
+                    } p-5`}
+                >
+                  <h4
+                    className={`${currentMode === "dark" ? "text-primary" : "text-black"
+                      } text-center font-semibold pb-5 uppercase`}
+                  >
+                    {t("label_other_details")}
+                  </h4>
+
+                  {/* LISTING TYPE  */}
+                  <Select
+                    id="type"
+                    value={listing_options(t).find(option => option.value === otherDetails?.listingType?.value)}
+                    onChange={(selectedOption) => handleOtherDetails({ target: { name: 'listingType', value: selectedOption } })}
+                    options={listing_options(t)}
+                    placeholder={t("label_listing_type")}
+                    className="w-full"
+                    required
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                  {/* <TextField
                         id="type"
                         value={otherDetails?.listingType}
                         label={t("label_listing_type")}
@@ -695,146 +689,149 @@ const AddNewListingModal = ({
                         </MenuItem>
                       </TextField> */}
 
-                      {/* CITY  */}
-                      <TextField
-                        id="leadCity"
-                        type={"text"}
-                        label={t("label_city")}
-                        className="w-full"
-                        name="city"
-                        style={{
-                          marginBottom: "20px"
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={otherDetails?.city}
-                        onChange={handleOtherDetails}
-                        required
-                      />
+                  {/* CITY  */}
+                  <TextField
+                    id="leadCity"
+                    type={"text"}
+                    label={t("label_city")}
+                    className="w-full"
+                    name="city"
+                    style={{
+                      marginBottom: "20px"
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={otherDetails?.city}
+                    onChange={handleOtherDetails}
+                    required
+                  />
 
-                      {/* COUNTRY  */}
-                      <TextField
-                        id="leadCountry"
-                        type={"text"}
-                        label={t("label_country")}
-                        className="w-full"
-                        name="country"
-                        style={{
-                          marginBottom: "20px"
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={otherDetails?.country}
-                        required
-                        onChange={handleOtherDetails}
-                      />
+                  {/* COUNTRY  */}
+                  <TextField
+                    id="leadCountry"
+                    type={"text"}
+                    label={t("label_country")}
+                    className="w-full"
+                    name="country"
+                    style={{
+                      marginBottom: "20px"
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={otherDetails?.country}
+                    required
+                    onChange={handleOtherDetails}
+                  />
 
-                      {/* ADDRESS  */}
-                      <TextField
-                        id="LeadEmailAddress"
-                        type={"text"}
-                        label={t("label_address")}
-                        className="w-full"
-                        style={{
-                          marginBottom: "20px"
-                        }}
-                        variant="outlined"
-                        size="small"
-                        name="address"
-                        value={otherDetails?.address}
-                        onChange={handleOtherDetails}
-                      />
+                  {/* ADDRESS  */}
+                  <TextField
+                    id="LeadEmailAddress"
+                    type={"text"}
+                    label={t("label_address")}
+                    className="w-full"
+                    style={{
+                      marginBottom: "20px"
+                    }}
+                    variant="outlined"
+                    size="small"
+                    name="address"
+                    value={otherDetails?.address}
+                    onChange={handleOtherDetails}
+                  />
 
-                      {/* AREA  */}
-                      <TextField
-                        id="LeadEmailAddress"
-                        type={"text"}
-                        label={t("label_area")}
-                        className="w-full"
-                        name="area"
-                        style={{
-                          marginBottom: "20px"
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={otherDetails?.area}
-                        onChange={handleOtherDetails}
-                      />
-                    </Box>
-                  </div>
-                </div>
+                  {/* AREA  */}
+                  <TextField
+                    id="LeadEmailAddress"
+                    type={"text"}
+                    label={t("label_area")}
+                    className="w-full"
+                    name="area"
+                    style={{
+                      marginBottom: "20px"
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={otherDetails?.area}
+                    onChange={handleOtherDetails}
+                  />
+                </Box>
+              </div>
 
-                <div className="w-full flex items-center justify-center gap-5 grid grid-cols-2 px-7">
-                  <label htmlFor="contained-button-file" className="p-4">
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
-                      onClick={() =>
-                        setSelectImagesModal({
-                          isOpen: true,
-                        })
-                      }
-                      style={{
-                        color: "#ffffff",
-                        fontFamily: fontFam,
-                      }}
-                      component="span"
-                      disabled={loading ? true : false}
-                      startIcon={loading ? null : <MdFileUpload size={18} className="mx-2" />}
-                    >
-                      <span>{t("button_upload_image")}</span>
-                    </Button>
-                    <p className="text-primary mt-2 italic">
-                      {allImages?.length > 0
-                        ? `${allImages?.length} images selected.`
-                        : null}
-                    </p>
-                  </label>
+              <div className="w-full flex items-center justify-center gap-5 grid grid-cols-2">
+                <label htmlFor="contained-button-file">
+                  <button
+                    variant="contained"
+                    // size="medium"
+                    className={`${currentMode === "dark"
+                      ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                      } uppercase w-full text-white py-3 font-semibold my-2 flex items-center justify-center gap-5`}
+                    onClick={() =>
+                      setSelectImagesModal({
+                        isOpen: true,
+                      })
+                    }
+                    style={{
+                      color: "#ffffff",
+                      fontFamily: fontFam,
+                    }}
+                    component="span"
+                    disabled={loading ? true : false}
+                  >
+                    <span><BsUpload size={18} className="mx-2" /></span>
+                    <span>{t("button_upload_image")}</span>
+                  </button>
+                  <p className="text-primary mt-2 italic">
+                    {allImages?.length > 0
+                      ? `${allImages?.length} images selected.`
+                      : null}
+                  </p>
+                </label>
 
-                  <label htmlFor="contained-button-document" className="p-4">
-                    <Button
-                      variant="contained"
-                      size="medium"
-                      className="bg-main-red-color border-primary w-full text-white rounded-lg py-3 bg-btn-primary font-semibold my-3"
-                      style={{
-                        color: "#ffffff",
-                        fontFamily: fontFam,
-                      }}
-                      onClick={() => {
-                        setDocumentModal(true);
-                      }}
-                      component="span"
-                      disabled={loading ? true : false}
-                      startIcon={loading ? null : <MdFileUpload size={18} className="mx-2" />}
-                    >
-                      <span>{t("button_upload_document")}</span>
-                    </Button>
-                    <p className="text-primary mt-2 italic">
-                      {allDocs?.length > 0
-                        ? `${allDocs?.length} documents selected.`
-                        : null}
-                    </p>
-                  </label>
-                </div>
+                <label htmlFor="contained-button-document">
+                  <button
+                    variant="contained"
+                    // size="medium"
+                    className={`${currentMode === "dark"
+                      ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                      } uppercase w-full text-white py-3 font-semibold my-2 flex items-center justify-center gap-5`}
+                    style={{
+                      color: "#ffffff",
+                      fontFamily: fontFam,
+                    }}
+                    onClick={() => {
+                      setDocumentModal(true);
+                    }}
+                    component="span"
+                    disabled={loading ? true : false}
+                  >
+                    <span><BsUpload size={18} className="mx-2" /></span>
+                    <span>{t("button_upload_document")}</span>
+                  </button>
+                  <p className="text-primary mt-2 italic">
+                    {allDocs?.length > 0
+                      ? `${allDocs?.length} documents selected.`
+                      : null}
+                  </p>
+                </label>
+              </div>
 
-                <div className="w-full grid grid-cols-1 gap-5 pt-5 px-4 md:px-10">
-                  <Box sx={darkModeColors}>
-                    <ListingLocation
-                      listingLocation={listingLocation}
-                      currLocByDefault={true}
-                      setListingLocation={setListingLocation}
-                      city={city}
-                      setCity={setCity}
-                      country={country}
-                      setCountry={setCountry}
-                      required
-                    />
-                    {/* )} */}
-                  </Box>
-                </div>
+              <Box
+                sx={darkModeColors}
+                className="w-full grid grid-cols-1 gap-5 my-5"
+              >
+                <ListingLocation
+                  listingLocation={listingLocation}
+                  currLocByDefault={true}
+                  setListingLocation={setListingLocation}
+                  city={city}
+                  setCity={setCity}
+                  country={country}
+                  setCountry={setCountry}
+                  required
+                />
+              </Box>
 
-                {/* <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">
+              {/* <div className="w-full flex justify-center mr-4 items-center my-4 space-x-5">
                 <input
                   accept="image/*"
                   style={{ display: "none" }}
@@ -856,7 +853,7 @@ const AddNewListingModal = ({
                     }}
                     component="span"
                     disabled={loading ? true : false}
-                    startIcon={loading ? null : <MdFileUpload />}
+                    startIcon={loading ? null : <BsUpload />}
                   >
                     <span>Upload Image</span>
                   </Button>
@@ -882,46 +879,37 @@ const AddNewListingModal = ({
                     }}
                     component="span"
                     disabled={loading ? true : false}
-                    startIcon={loading ? null : <MdFileUpload />}
+                    startIcon={loading ? null : <BsUpload />}
                   >
                     <span>Upload Document</span>
                   </Button>
                 </label>
               </div> */}
 
-                <div
-                  className={`${
-                    currentMode === "dark" ? "bg-black" : "bg-white"
-                  } px-5 mx-5 py-2 text-center sm:px-6`}
-                >
-                  <Button
-                    ripple={true}
-                    size="lg"
-                    type="submit"
-                    className="bg-btn-primary"
-                    disabled={loading ? true : false}
-                    style={{
-                      color: "#ffffff",
-                      marginTop: "10px",
-                      width: "100%",
-                      borderRadius: "6px",
-                      fontFamily: fontFam,
-                    }}
-                    onClick={submitListing}
-                  >
-                    {loading ? (
-                      <CircularProgress
-                        size={20}
-                        sx={{ color: "white" }}
-                        className="text-white"
-                      />
-                    ) : (
-                      <span>{t("add_property_to_secondary")}</span>
-                    )}
-                  </Button>
-                </div>
-              </form>
-            </div>
+              <button
+                // ripple={true}
+                // size="lg"
+                // type="submit"
+                className={`${currentMode === "dark"
+                  ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                } text-white uppercase p-3 mb-6 w-full`}
+                disabled={loading ? true : false}
+                style={{
+                  fontFamily: fontFam,
+                }}
+                onClick={submitListing}
+              >
+                {loading ? (
+                  <CircularProgress
+                    size={20}
+                    sx={{ color: "white" }}
+                    className="text-white"
+                  />
+                ) : (
+                  <span>{t("add_property_to_secondary")}</span>
+                )}
+              </button>
+            </form>
           </div>
           {selectImagesModal?.isOpen && (
             <AddImageModal
