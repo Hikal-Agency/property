@@ -125,7 +125,7 @@ const AllLeads = ({
     i18n,
     blurDarkColor,
     blurLightColor,
-    themeBgImg
+    themeBgImg,
   } = useStateContext();
 
   console.log("Path in alleads component: ", lead_origin);
@@ -580,11 +580,7 @@ const AllLeads = ({
             <Tooltip title="Call" arrow>
               <p
                 style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
-                    ? "text-[#FFFFFF] bg-[#262626]"
-                    : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                className={`text-white hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center  bg-primary`}
               >
                 <CallButton
                   phone={cellValues.row.leadContact?.replaceAll(" ", "")}
@@ -596,11 +592,7 @@ const AllLeads = ({
             <Tooltip title="Send Mail" arrow>
               <p
                 style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
-                    ? "text-[#FFFFFF] bg-[#262626]"
-                    : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center `}
+                className={` bg-primary text-white hover:bg-[#0078d7] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center `}
               >
                 <EmailButton email={cellValues.row.leadEmail} />
               </p>
@@ -610,11 +602,7 @@ const AllLeads = ({
             <Tooltip title="Set Reminder" arrow>
               <p
                 style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
-                    ? "text-[#FFFFFF] bg-[#262626]"
-                    : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
+                className={` bg-primary text-white hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
               >
                 <button onClick={() => HandleReminderBtn(cellValues)}>
                   <BsAlarm size={16} />
@@ -637,11 +625,7 @@ const AllLeads = ({
             {/* TIMELINE  */}
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
+              className={` bg-primary text-white hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
             >
               <Tooltip title="View Timeline" arrow>
                 <button onClick={() => HandleViewTimeline(cellValues)}>
