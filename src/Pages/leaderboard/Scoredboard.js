@@ -1,0 +1,379 @@
+import React from "react";
+import { Box } from "@mui/material";
+import { useStateContext } from "../../context/ContextProvider";
+import { toast } from "react-toastify";
+import axios from "../../axoisConfig";
+import { useState } from "react";
+import { useEffect } from "react";
+import Loader from "../../Components/Loader";
+
+import CallsGraph from "../../Components/charts/CallsGraph";
+
+const Scoreboard = ({ tabValue, setTabValue, isLoading }) => {
+  const { currentMode, BACKEND_URL } = useStateContext();
+  const [loading, setLoading] = useState(false);
+  const [callLogs, setCallLogs] = useState();
+
+  const FetchCallLogs = async (token, periods) => {
+    setLoading(true);
+    const callLogsData = {};
+
+    try {
+      const callLogsPromises = periods.map(async (period) => {
+        const apiUrl = "callLogs?period=" + period;
+        const call_logs = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        return call_logs?.data?.call_logs;
+      });
+
+      const callLogsResults = await Promise.all(callLogsPromises);
+
+      periods.forEach((period, index) => {
+        callLogsData[period] = callLogsResults[index];
+      });
+
+      setCallLogs(callLogsData);
+
+      console.log("Call logs: ", callLogsData);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log("Call logs not fetched. ", error);
+      toast.error("Unable to fetch call logs data.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    return callLogsData;
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    FetchCallLogs(token, ["daily", "yearly"])
+      .then((callLogsData) => {
+        console.log(callLogsData.daily); // Call logs data for daily period
+        console.log(callLogsData.yearly); // Call logs data for yearly period
+      })
+      .catch((error) => {
+        console.log("Error in fetching call logs data: ", error);
+      });
+  }, []);
+
+  return (
+    <div>
+      
+      {loading ? (
+        <Loader />
+      ) : (
+        <Box
+          className="mt-1 p-5"
+          sx={
+            isLoading && {
+              opacity: 0.3,
+            }
+          }
+        >
+          <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-12">
+            <div
+              className={`${
+                currentMode === "dark"
+                  ? "bg-[#1c1c1c] text-white"
+                  : "bg-gray-200 text-black"
+              } p-3 rounded-md`}
+            >
+              {/* MANAGER  */}
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "text-primary"
+                    : "text-primary"
+                } text-lg font-bold my-2 text-center`}
+              >
+                Daily Calls
+              </div>
+              <div className="grid  gap-4">
+                <div className="rounded-md px-2 mb-2 w-full">
+                  <div className="grid grid-cols-5 gap-3">
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.daily?.recieved}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Recieved&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.daily?.notanswered}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Not answered&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.daily?.missed}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Missed&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.daily?.dialed}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Dialed&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.daily?.answered}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Answered&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`${
+                currentMode === "dark"
+                  ? "bg-[#1c1c1c] text-white"
+                  : "bg-gray-200 text-black"
+              } p-3 rounded-md`}
+            >
+              {/* MANAGER  */}
+              <div
+                className={`${
+                  currentMode === "dark"
+                    ? "text-primary"
+                    : "text-primary"
+                } text-lg font-bold my-2 text-center`}
+              >
+                Total Calls
+              </div>
+              <div className="grid  gap-4">
+                <div className="rounded-md px-2 mb-2 w-full">
+                  <div className="grid grid-cols-5 gap-3">
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.yearly?.recieved}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Recieved&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.yearly?.notanswered}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Not answered&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.yearly?.missed}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Missed&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.yearly?.dialed}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Dialed&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-black text-white"
+                          : "bg-white text-black"
+                      } rounded-md p-2 w-full`}
+                    >
+                      <h6 className="text-center font-semibold">
+                        {callLogs?.yearly?.answered}
+                      </h6>
+
+                      <div className="block gap-3 mt-2">
+                        <div>
+                          <h1 className="text-sm text-center">
+                            Answered&nbsp;
+                            {/* <span className="font-semibold text-primary">
+                    0
+                  </span> */}
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <div className="justify-between items-center w-full">
+              <h6 className="font-semibold">Performance</h6>
+              <CallsGraph outgoing={callLogs?.yearly?.dialed} />
+            </div>
+          </div>
+        </Box>
+      )}
+    </div>
+  );
+
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return <div>{value === index && <div>{children}</div>}</div>;
+  }
+};
+
+export default Scoreboard;

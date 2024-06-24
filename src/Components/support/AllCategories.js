@@ -1,0 +1,556 @@
+import { useState, useRef } from "react";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@mui/material";
+import { useStateContext } from "../../context/ContextProvider";
+import { DataGrid } from "@mui/x-data-grid";
+import { MdDelete } from "react-icons/md";
+
+import axios from "../../axoisConfig";
+import { useNavigate } from "react-router-dom";
+import { FiEdit } from "react-icons/fi";
+import { IoMdClose } from "react-icons/io";
+import { toast } from "react-toastify";
+import EditCategory from "./EditCategory";
+import { FaCheck } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
+
+const AllCategories = ({ categories, fetchCategories }) => {
+  console.log("all categories::", categories);
+  const {
+    currentMode,
+    DataGridStyles,
+    BACKEND_URL,
+    User,
+    darkModeColors,
+    t,
+    blurDarkColor,
+    blurLightColor,
+    primaryColor,
+    isLangRTL,
+    i18n,
+  } = useStateContext();
+  const searchRef = useRef();
+
+  const [rows, setRows] = useState(categories);
+  const [loading, setLoading] = useState(false);
+  const [noteModal, setNoteModal] = useState(false);
+  const [deleteCat, setDeleteCat] = useState(false);
+  const [btnloading, setBtnLoading] = useState(false);
+  const [showCatForm, setShowCatForm] = useState(false);
+  const [editCategory, setEditCategory] = useState(false);
+
+  const [categoryData, setCategoryData] = useState({
+    category: null,
+    description: null,
+  });
+
+  const handleChange = (e) => {
+    console.log("handlechange ::: ", e.target.value);
+    setCategoryData({
+      ...categoryData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addCategory = async () => {
+    setBtnLoading(true);
+    if (!categoryData?.category) {
+      setBtnLoading(false);
+      toast.error(`Category name is required.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
+    try {
+      const editCategory = await axios.post(
+        `${BACKEND_URL}/categories`,
+        categoryData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      console.log("add category::::: ", editCategory);
+
+      toast.success(`Category added successfully.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setBtnLoading(false);
+      setEditCategory(false);
+      setCategoryData({
+        category: null,
+        description: null,
+      });
+      fetchCategories();
+    } catch (error) {
+      setBtnLoading(false);
+      console.log("error:::: ", error);
+      toast.error(`Unable to add category.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const token = localStorage.getItem("auth-token");
+
+  const deleteCategory = async (e, noteModal) => {
+    e.preventDefault();
+    console.log("notemodal::: ", noteModal);
+    setBtnLoading(true);
+
+    try {
+      const response = await axios.delete(
+        `${BACKEND_URL}/categories/${deleteCat?.row?.id}`,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      console.log("Category deleted::: ", response);
+
+      setBtnLoading(false);
+
+      toast.success("Category deleted.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setDeleteCat(false);
+      fetchCategories();
+    } catch (error) {
+      setBtnLoading(false);
+      console.log("Error::: ", error);
+      toast.error("Unable to delete category.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const columns = [
+    {
+      field: "id",
+      headerName: "#",
+      headerAlign: "center",
+      editable: false,
+      minWidth: 120,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue || "-"}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "category",
+      headerName: t("ticket_cat_header_category"),
+      headerAlign: "center",
+      editable: false,
+      minWidth: 120,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue || "-"}
+            </p>
+          </div>
+        );
+      },
+    },
+
+    {
+      field: "description",
+      headerName: t("description"),
+      headerAlign: "center",
+      editable: false,
+      minWidth: 150,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue || "-"}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "added_by_name",
+      headerName: t("ticket_cat_header_addedBy"),
+      headerAlign: "center",
+      editable: false,
+      minWidth: 150,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue || "-"}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "created_at",
+      headerName: t("ticket_cat_header_date"),
+      headerAlign: "center",
+      editable: false,
+      minWidth: 60,
+      flex: 1,
+    },
+
+    {
+      field: "action",
+      headerName: t("label_action"),
+      flex: 1,
+      minWidth: 100,
+      maxWidth: "auto",
+      sortable: false,
+      filterable: false,
+      headerAlign: "center",
+
+      renderCell: (cellValues) => {
+        return (
+          <div
+            className={`action w-full h-full px-1 flex items-center justify-center`}
+          >
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Edit Category" arrow>
+                <button onClick={() => setEditCategory(cellValues)}>
+                  <FiEdit size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Delete Category" arrow>
+                <button onClick={() => setDeleteCat(cellValues)}>
+                  <MdDelete size={16} />
+                </button>
+              </Tooltip>
+            </p>
+          </div>
+        );
+      },
+    },
+  ];
+
+  //   useEffect(() => {
+  //     fetchCategories();
+  //   }, []);
+
+  return (
+    <div
+      className={`${
+        currentMode === "dark" ? "bg-black text-white" : "bg-white text-black"
+      } rounded-md`}
+    >
+      <Box
+        sx={{
+          darkModeColors,
+          ...darkModeColors,
+          marginTop: "5px",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "end",
+
+          "& .MuiInputBase-root": {
+            width: "max-content",
+            marginRight: "5px",
+          },
+        }}
+        className="p-2"
+      >
+        {showCatForm ? (
+          <>
+            <Box
+              sx={{
+                ...darkModeColors,
+                "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                  {
+                    right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                    transformOrigin: isLangRTL(i18n.language)
+                      ? "right"
+                      : "left",
+                  },
+                "& legend": {
+                  textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                },
+              }}
+            >
+              <TextField
+                type={"text"}
+                label={t("edit_cat_label")}
+                className="w-full"
+                style={{
+                  marginBottom: "20px",
+                }}
+                variant="outlined"
+                size="small"
+                name="category"
+                value={categoryData?.category}
+                onChange={handleChange}
+                required
+              />
+            </Box>
+
+            <Box
+              sx={{
+                ...darkModeColors,
+                "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                  {
+                    right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                    transformOrigin: isLangRTL(i18n.language)
+                      ? "right"
+                      : "left",
+                  },
+                "& legend": {
+                  textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                },
+              }}
+            >
+              <TextField
+                type={"text"}
+                label={t("edit_cat_description_label")}
+                className="w-full"
+                style={{
+                  marginBottom: "20px",
+                }}
+                variant="outlined"
+                name="description"
+                size="small"
+                value={categoryData?.description}
+                onChange={handleChange}
+              />
+            </Box>
+
+            <Box sx={{ darkModeColors }}>
+              <IconButton
+                sx={{
+                  border: `1px solid  ${
+                    currentMode === "dark" ? "#fff" : "#000"
+                  }`,
+                  marginLeft: "5px",
+                }}
+                className="bg-btn-primary"
+                onClick={addCategory}
+              >
+                {btnloading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <FaCheck color="#fff" />
+                )}
+              </IconButton>
+            </Box>
+            <Box sx={{ darkModeColors }}>
+              <IconButton
+                sx={{
+                  border: `1px solid  ${
+                    currentMode === "dark" ? "#fff" : "#000"
+                  }`,
+                  marginLeft: "5px",
+                }}
+                className="border-primary"
+                disabled={btnloading && true}
+                onClick={() => setShowCatForm(false)}
+              >
+                <RxCross2 color={currentMode === "dark" ? "#fff" : "#000"} />
+              </IconButton>
+            </Box>
+          </>
+        ) : (
+          <button
+            onClick={() => setShowCatForm(true)}
+            className={`rounded
+                bg-primary w-fit h-fit p-3 my-4 z-10 text-white`}
+          >
+            {t("show_category_form")}
+          </button>
+        )}
+      </Box>
+
+      <Box
+        width={"100%"}
+        className={`${currentMode}-mode-datatable`}
+        sx={DataGridStyles}
+      >
+        <DataGrid
+          disableDensitySelector
+          autoHeight
+          //   onRowClick={handleRowClick}
+          disableSelectionOnClick
+          rowsPerPageOptions={[30, 50, 75, 100]}
+          pagination
+          loading={loading}
+          width="auto"
+          paginationMode="server"
+          rows={rows}
+          columns={columns}
+          componentsProps={{
+            toolbar: {
+              showQuickFilter: false,
+              printOptions: { disableToolbarButton: User?.role !== 1 },
+              csvOptions: { disableToolbarButton: User?.role !== 1 },
+              // value: searchText,
+              // onChange: HandleQuicSearch,
+            },
+          }}
+          // checkboxSelection
+          sx={{
+            boxShadow: 2,
+            "& .MuiDataGrid-cell:hover": {
+              cursor: "pointer",
+            },
+            "& .MuiDataGrid-cell[data-field='edit'] svg": {
+              color:
+                currentMode === "dark"
+                  ? "white !important"
+                  : "black !important",
+            },
+          }}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+          }
+        />
+      </Box>
+      {deleteCat && (
+        <>
+          <Dialog
+            sx={{
+              "& .MuiPaper-root": {
+                boxShadow: "none !important",
+              },
+              "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                {
+                  backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                },
+            }}
+            open={deleteCat}
+            onClose={(e) => setDeleteCat(false)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <IconButton
+              sx={{
+                position: "absolute",
+                right: 12,
+                top: 10,
+                color: (theme) => theme.palette.grey[500],
+              }}
+              onClick={() => setDeleteCat(false)}
+            >
+              <IoMdClose size={18} />
+            </IconButton>
+            <div className="px-10 py-5">
+              <div className="flex items-center mb-6  w-full">
+                <div className="bg-primary h-10 w-1 mr-2 rounded-full"></div>
+                <div>
+                  <h1 className="font-semibold pt-3 text-lg text-center">
+                    {t("ticket_cat_delete_cat")}
+                  </h1>
+                </div>
+              </div>
+
+              <h1 className="font-semibold my-3  ">
+                {t("want_to_delete", { DataName: deleteCat?.row?.category })}
+              </h1>
+
+              <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                <Button
+                  className={`bg-btn-primary text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-main-red-color shadow-none`}
+                  ripple={true}
+                  size="lg"
+                  onClick={(e) => deleteCategory(e, deleteCat)}
+                >
+                  {btnloading ? (
+                    <CircularProgress size={18} sx={{ color: "white" }} />
+                  ) : (
+                    <span className="text-white">
+                      {t("ticket_cat_delete_cat")}
+                    </span>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </Dialog>
+        </>
+      )}
+
+      {editCategory && (
+        <EditCategory
+          editModal={editCategory}
+          setEditCategory={setEditCategory}
+          fetchCategories={fetchCategories}
+        />
+      )}
+    </div>
+  );
+};
+
+export default AllCategories;

@@ -1,0 +1,84 @@
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useStateContext } from "../../context/ContextProvider";
+import { Box } from "@mui/material";
+
+import AllLeads from "../../Components/Leads/AllLeads";
+import Loader from "../../Components/Loader";
+import usePermission from "../../utils/usePermission";
+import axios from "../../axoisConfig";
+import { toast } from "react-toastify";
+import moment from "moment";
+import SourceAnimation from "../../Components/_elements/SourceAnimation";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
+
+const AllHotLeads = () => {
+  const {
+    currentMode,
+    setopenBackDrop,
+    pageState,
+    BACKEND_URL,
+    t, User,
+    themeBgImg } = useStateContext();
+  const location = useLocation();
+  const { hasPermission } = usePermission();
+  const lead_type2 = location.pathname.split("/")[2];
+  var lead_type = lead_type2.replace(/%20/g, " ");
+  const pathname2 = location.pathname.split("/")[1];
+  const [loading, setloading] = useState(true);
+  const token = localStorage.getItem("auth-token");
+
+  useEffect(() => {
+    setopenBackDrop(false);
+    setloading(false);
+    // eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    setopenBackDrop(false);
+    // eslint-disable-next-line
+  }, [lead_type]);
+
+  const Additional = () => {
+    return (
+      (hasPermission("leadSource_counts") || User.role === 1) && (
+        <SourceAnimation />
+      )
+    );
+  }
+
+  return (
+    <>
+      <div className="flex min-h-screen">
+        {loading ? (
+          <Loader />
+        ) : (
+          <div
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }`}
+          >
+            <HeadingTitle
+              title={`${t("fresh")} ${t("leads")}`}
+              subtitle={t(
+                "feedback_" +
+                lead_type?.toLowerCase()?.replaceAll(" ", "_")
+              )}
+              counter={pageState?.total}
+              additional={(hasPermission("leadSource_counts") || User.role === 1) ? (
+                <SourceAnimation />
+              ) : null}
+            />
+
+            <AllLeads
+              BACKEND_URL={BACKEND_URL}
+              lead_type={lead_type}
+              lead_origin={pathname2}
+              leadCategory="hot"
+            />
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default AllHotLeads;

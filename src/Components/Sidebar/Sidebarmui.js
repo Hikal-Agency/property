@@ -1,0 +1,3211 @@
+import React, { useEffect, useRef, useState } from "react";
+import { Avatar, Box, IconButton, ListItemIcon, Tooltip } from "@mui/material";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import {
+  Sidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  sidebarClasses,
+} from "react-pro-sidebar";
+
+import { toast } from "react-toastify";
+import ReactConfetti from "react-confetti";
+import useWindowSize from "react-use/lib/useWindowSize";
+import moment from "moment";
+import axios from "../../axoisConfig";
+import ringtone from "../../assets/new-message-ringtone.mp3";
+import notifRingtone from "../../assets/notification-ringtone.mp3";
+import { socket } from "../../Pages/App";
+import { useProSidebar } from "react-pro-sidebar";
+import { useStateContext } from "../../context/ContextProvider";
+import usePermission from "../../utils/usePermission";
+import ReminderToast from "./ReminderToast";
+import DealClosedAlert from "./DealClosedAlert";
+
+import { GiForkKnifeSpoon, GiHamburger } from "react-icons/gi";
+import { VscDebugDisconnect } from "react-icons/vsc";
+import { IoPeopleCircleSharp, IoPersonAddOutline } from "react-icons/io5";
+import { RiVisaLine } from "react-icons/ri";
+import {
+  BsFiles,
+  BsWrenchAdjustableCircle,
+  BsShopWindow,
+  BsCashCoin,
+  BsArrowLeftRight,
+  BsStopCircle,
+  BsCheck2Circle,
+  BsCalendarWeek,
+  BsBookmarkFill,
+  BsFileEarmarkBarGraph,
+  BsColumnsGap,
+  BsPeople,
+  BsPersonPlus,
+  BsWebcam,
+  BsFire,
+  BsLink45Deg,
+  BsShuffle,
+  BsSnow,
+  BsArchive,
+  BsPersonRolodex,
+  BsChatRightText,
+  BsSearch,
+  BsPatchCheck,
+  BsBookmarkStar,
+  BsBuildings,
+  BsLock,
+  BsTags,
+  BsGrid3X3Gap,
+  BsGift,
+  BsDashCircle,
+  BsBarChart,
+  BsMegaphone,
+  BsShare,
+  BsFacebook,
+  BsGeoAlt,
+  BsPerson,
+  BsCalendarCheck,
+  BsClockHistory,
+  BsList,
+  BsHeadset,
+  BsQuestionOctagon,
+  BsTicketPerforated,
+  BsGear,
+  BsBell,
+  BsWhatsapp,
+  BsChatText,
+  BsFileEarmarkText,
+  BsCameraVideo,
+  BsLayers,
+  BsPersonGear,
+} from "react-icons/bs";
+import { FaFacebookSquare, FaInbox, FaHistory } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+import { RiRadioButtonLine } from "react-icons/ri";
+import { GiQueenCrown } from "react-icons/gi";
+
+const Sidebarmui = () => {
+  const {
+    deviceType,
+    currentMode,
+    User,
+    isCollapsed,
+    setSelected,
+    setopenBackDrop,
+    BACKEND_URL,
+    isUserSubscribed,
+    setUser,
+    setIsUserSubscribed,
+    setSalesPerson,
+    setManagers,
+    setAppLoading,
+    fetchSidebarData,
+    setPermits,
+    setIsCollapsed,
+    sidebarData,
+    setUnreadNotifsCount,
+    setNotifIconAnimating,
+    getNotifCounts,
+    themeBgImg,
+    setUserCredits,
+    primaryColor,
+    setPrimaryColor,
+    t,
+    i18n,
+    isLangRTL,
+    blurDarkColor,
+    blurLightColor,
+    blurBlackColor,
+    blurWhiteColor,
+    setThemeBgImg,
+    timeZone,
+    setTimezone,
+    timeZones,
+    setTimezones,
+    pinnedZone,
+    setPinnedZone,
+    setFeedbackTheme,
+  } = useStateContext();
+  // console.log("timezone in sidebar: ", timeZone);
+
+  const [activeSidebarHeading, setActiveSidebarHeading] = useState(1);
+  const [newMessageReceived, setNewMessageReceived] = useState(false);
+  const [messagesCount, setMessagesCount] = useState(0);
+  const [blink, setBlink] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const ringtoneElem = useRef();
+  const notifRingtoneElem = useRef();
+  const { hasPermission } = usePermission();
+  const [dealClosedAnimation, setDealClosedAnimation] = useState({
+    isOpen: false,
+    data: {},
+  });
+  const [confetti, setConfetti] = useState(false);
+  const { collapseSidebar } = useProSidebar();
+  const [fadeOutConfetti, setFadeOutConfetti] = useState(false);
+  const [closeDealPopupFade, setCloseDealPopupFade] = useState(false);
+
+  const { screenWidth, screenHeight } = useWindowSize();
+
+  const [openedSubMenu, setOpenSubMenu] = useState({
+    menuIndex: 0,
+    linkIndex: 0,
+    sub: false,
+  });
+
+  const [animateProfilePic, setAnimateProfilePic] = useState(false);
+
+  const [showSidebar, setShowSidebar] = useState(false);
+  const sidebarRef = useRef(null);
+  const toggleSidebar = (value) => {
+    setShowSidebar(value);
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        toggleSidebar(false);
+      }
+    };
+
+    if (showSidebar) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showSidebar]);
+
+  console.log("DEVICE TYPE ===== ", deviceType);
+
+  const startDealCloseAnimation = (data) => {
+    console.log("deal_closed_data", data);
+    setConfetti(true);
+    setTimeout(() => {
+      setFadeOutConfetti(true);
+      setTimeout(() => {
+        setConfetti(false);
+        setFadeOutConfetti(false);
+      }, 500);
+    }, 8000);
+
+    setTimeout(() => {
+      setDealClosedAnimation({
+        ...dealClosedAnimation,
+        isOpen: true,
+        data,
+      });
+
+      setTimeout(() => {
+        setCloseDealPopupFade(true);
+        setTimeout(() => {
+          setDealClosedAnimation({
+            ...dealClosedAnimation,
+            isOpen: false,
+            data,
+          });
+          setCloseDealPopupFade(false);
+        }, 500);
+      }, 15000);
+    }, 3000);
+  };
+
+  const handleClickProfile = (e) => {
+    if (!e.target.closest(".view-image")) {
+      navigate("/profile");
+    }
+  };
+
+  const setOpenedSubMenu = ({ menuIndex, linkIndex, sub = false }) => {
+    if (sub) {
+      if (openedSubMenu?.sub) {
+        setOpenSubMenu({
+          menuIndex,
+          linkIndex,
+          sub: false,
+        });
+      } else {
+        setOpenSubMenu({
+          menuIndex,
+          linkIndex,
+          sub: true,
+        });
+      }
+    } else if (
+      openedSubMenu.menuIndex === menuIndex &&
+      openedSubMenu.linkIndex === linkIndex
+    ) {
+      setOpenSubMenu(0);
+    } else {
+      setOpenSubMenu({ menuIndex, linkIndex, sub: false });
+    }
+  };
+
+  const handleExpand = (e, obj, isMenuDeep = false) => {
+    if (isMenuDeep === true) {
+      if (!e.target.closest(".sub .ps-submenu-content")) {
+        setOpenedSubMenu(obj);
+      }
+    } else {
+      if (!e.target.closest(".ps-submenu-content")) {
+        setOpenedSubMenu(obj);
+      }
+    }
+  };
+
+  const handleExpandHeading = (e, headingIndex) => {
+    if (!e.target.closest(".ps-submenu-content")) {
+      if (headingIndex === activeSidebarHeading) {
+        setActiveSidebarHeading("");
+      } else {
+        setActiveSidebarHeading("");
+        setTimeout(() => {
+          setActiveSidebarHeading(headingIndex);
+        }, 0);
+      }
+
+      setOpenedSubMenu(0);
+    }
+  };
+
+  const FetchProfileData = async () => {
+    try {
+      const token = localStorage.getItem("auth-token");
+      axios
+        .get(`${BACKEND_URL}/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          console.log("User data is");
+          console.log(result.data);
+
+          console.log("permisson: ", result.data.roles.permissions);
+
+          const allPermissions = result.data.roles.permissions;
+
+          const permissionsArray = allPermissions.split(", ");
+          console.log("permisssions array:: ", permissionsArray);
+          const wordToExtract = String("dashboard");
+          const wordIndex = permissionsArray.indexOf(wordToExtract);
+
+          // TODO BECAUSE ALL NEW TABS WERE OPENING TO ATTENDANCE FOR OTHER USERS
+          if (wordIndex !== -1) {
+            const specificWord = permissionsArray[wordIndex];
+            console.log("specificWord: ", specificWord);
+          } else {
+            console.log("Word not found in the string.");
+
+            if (
+              result?.data?.user[0]?.role === 6 ||
+              result?.data?.user[0]?.role === 9
+            ) {
+              navigate("/attendance_self");
+            }
+
+            // if (result?.data?.user[0]?.role !== 1) {
+            //   // navigate("/attendance_self");
+            // }
+          }
+
+          const changeBodyDirection = (newDirection) => {
+            document.body.style.direction = newDirection;
+          };
+
+          const language = result.data?.user[0]?.language;
+          const timezone = result.data?.user[0]?.timezone;
+          setTimezone(timezone);
+
+          if (language) {
+            i18n.changeLanguage(language);
+            if (isLangRTL(language)) {
+              changeBodyDirection("rtl");
+            } else {
+              changeBodyDirection("ltr");
+            }
+          }
+
+          setUserCredits(result.data?.user[0]?.credits);
+          setPermits(allPermissions);
+
+          const bgColor = result.data?.user[0]?.theme;
+          if (!bgColor || bgColor === "default") {
+            setPrimaryColor("rgb(86, 141, 221)");
+          } else {
+            setPrimaryColor(bgColor);
+          }
+
+          const bgTheme = result.data?.user[0]?.backgroundImg;
+          if (bgTheme && bgTheme !== "default") {
+            setThemeBgImg(bgTheme);
+          }
+
+          const fbTheme = result.data?.user[0]?.feedback_theme;
+          if (fbTheme) {
+            setFeedbackTheme(fbTheme);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const FetchProfile = async (token) => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      // If user data is stored in local storage, parse and set it in state
+      setUser(JSON.parse(storedUser));
+      setIsUserSubscribed(checkUser(JSON.parse(storedUser)));
+      getAllLeadsMembers(JSON.parse(storedUser));
+      FetchProfileData();
+      socket.emit("add_user", { ...JSON.parse(storedUser), platform: "web" });
+    } else {
+      axios
+        .get(`${BACKEND_URL}/profile`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((result) => {
+          console.log("User data is");
+          console.log(result.data);
+
+          // Create a new object with only the specific fields you want to store
+          const user = {
+            permissions: result.data.roles.permissions,
+            addedBy: result.data.user[0].addedBy,
+            addedFor: result.data.user[0].addedFor,
+            agency: result.data.user[0].agency,
+            created_at: result.data.user[0].created_at,
+            creationDate: result.data.user[0].creationDate,
+            displayImg: result.data.user[0].profile_picture,
+            expiry_date: result.data.user[0].expiry_date,
+            credits: result.data.user[0].credits,
+            gender: result.data.user[0].gender,
+            id: result.data.user[0].id,
+            idExpiryDate: result.data.user[0].idExpiryDate,
+            isParent: result.data.user[0].isParent,
+            is_online: result.data.user[0].is_online,
+            joiningDate: result.data.user[0].joiningDate,
+            loginId: result.data.user[0].loginId,
+            loginStatus: result.data.user[0].loginStatus,
+            master: result.data.user[0].master,
+            nationality: result.data.user[0].nationality,
+            notes: result.data.user[0].notes,
+            old_password: result.data.user[0].old_password,
+
+            package_name: result.data.user[0].package_name,
+            plusSales: result.data.user[0].plusSales,
+            position: result.data.user[0].position,
+            profile_picture: result.data.user[0].profile_picture,
+            role: result.data.user[0].role,
+            status: result.data.user[0].status,
+            target: result.data.user[0].target,
+            uid: result.data.user[0].uid,
+            updated_at: result.data.user[0].updated_at,
+            userEmail: result.data.user[0].userEmail,
+            userContact: result.data.user[0].userContact,
+            userName: result.data.user[0].userName,
+            userType: result.data.user[0].userType,
+            is_alert: result.data.user[0].is_alert,
+            timezone: result.data.user[0].timezone,
+            pinned: result.data.user[0].pinned,
+          };
+
+          setTimezone(user?.timezone);
+          setPinnedZone(user?.pinned);
+          setUser(user);
+          setIsUserSubscribed(checkUser(user));
+          getAllLeadsMembers(user);
+
+          FetchProfileData();
+
+          socket.emit("add_user", {
+            ...user,
+            platform: "web",
+          });
+
+          localStorage.setItem("user", JSON.stringify(user));
+        })
+        .catch((err) => {
+          console.log("response:", err);
+          if (err.response?.status === 401) {
+            setopenBackDrop(false);
+            // setloading(false);
+
+            localStorage.removeItem("auth-token");
+            localStorage.removeItem("user");
+            localStorage.removeItem("leadsData");
+            navigate("/", {
+              state: {
+                error: "Please login to proceed.",
+                continueURL: location.pathname,
+              },
+            });
+            return;
+          }
+          toast.error("Sorry something went wrong. Kindly refresh the page.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        });
+    }
+  };
+
+  const getAllLeadsMembers = (user) => {
+    setAppLoading(true);
+    const token = localStorage.getItem("auth-token");
+    axios
+      .get(`${BACKEND_URL}/getTree`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        const managers = result?.data?.data?.filter(
+          (manager) => manager?.agency === 1
+        );
+        setManagers(managers || []);
+        const agents = {};
+        managers?.forEach((manager) => {
+          if (manager?.agents?.length > 0) {
+            agents[`manager-${manager?.id}`] = manager?.agents?.filter(
+              (agent) => agent?.agency === 1
+            );
+          }
+        });
+        setSalesPerson(agents || []);
+
+        console.log("Tree:", managers, agents);
+
+        setAppLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    console.log("User role 6===> ", User);
+
+    if (User?.role === 6) {
+      return;
+    }
+    fetchSidebarData();
+  }, [User]);
+
+  // useEffect(() => {
+  //   console.log("User role 6===> ", User);
+  //   if (User?.role === 6) {
+  //     return;
+  //   } else {
+  //     fetchSidebarData();
+  //   }
+
+  //   // const fetchDataInterval = setInterval(() => {
+  //   //   fetchSidebarData();
+  //   // }, 3600000); // 60000 milliseconds = 1 minute
+  //   // return () => clearInterval(fetchDataInterval);
+  // }, [User, fetchSidebarData]);
+
+  useEffect(() => {
+    // Fetch all timezones
+    const fetchedTimezones = moment.tz.names();
+    setTimezones(fetchedTimezones);
+  }, []);
+
+  useEffect(() => {
+    const setUnreadCount = async (isNoToast = false) => {
+      try {
+        const token = localStorage.getItem("auth-token");
+        const response = await axios.get(
+          `${BACKEND_URL}/unreadCount?user_id=${User?.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        const notifsCount = response.data.count || 0;
+        setUnreadNotifsCount(notifsCount);
+
+        if (isNoToast) {
+          setNotifIconAnimating(true);
+          setTimeout(() => {
+            setNotifIconAnimating(false);
+          }, 2000);
+        }
+        notifRingtoneElem?.current.play();
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (User?.id) {
+      getNotifCounts();
+
+      const notificationToastSettings = {
+        position: "top-right",
+        autoClose: 10000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      };
+      socket.on("notification_stripe", (data) => {
+        console.log("Stripe: ", data);
+      });
+
+      socket.on("notification_lead_assigned", (data) => {
+        toast(
+          <ReminderToast type="lead_assigned" leadName={data?.leadName} />,
+          {
+            position: "bottom-right",
+            autoClose: 30000,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: true,
+            closeButton: false,
+            draggable: false,
+            theme: "light",
+          }
+        );
+      });
+
+      socket.on("notification_reminder", (data) => {
+        console.log("Reminder: ", data);
+
+        toast(
+          <ReminderToast
+            type="reminder"
+            reminderTime="2023-08-19 01:25:00 PM"
+            leadName="Qasim"
+          />,
+          {
+            position: "bottom-right",
+            autoClose: 15000,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: true,
+            closeButton: false,
+            draggable: false,
+            theme: "light",
+          }
+        );
+      });
+
+      socket.on("deal_closed", (data) => {
+        startDealCloseAnimation(data);
+      });
+
+      socket.on("notification_lead_manager_assigned", (data) => {
+        // toast.success(
+        //   `Lead ${data?.leadName} has been assigned to ${data?.newManager} by ${data?.by}`,
+        //   notificationToastSettings
+        // );
+        setUnreadCount(true);
+      });
+
+      socket.on("notification_lead_agent_assigned", (data) => {
+        // toast.success(
+        //   `Lead ${data?.leadName} has been assigned to ${data?.newAgent} by ${data?.by}`,
+        //   notificationToastSettings
+        // );
+        setUnreadCount(true);
+      });
+
+      socket.on("notification_ticket_updated", (data) => {
+        toast.success(
+          `Status of ticket ${data?.ticketNumber} has been updated to ${data?.newStatus}`,
+          notificationToastSettings
+        );
+        setUnreadCount();
+      });
+
+      socket.on("notification_ticket_updated", (data) => {
+        toast.success(
+          `Status of ticket ${data?.ticketNumber} has been updated to ${data?.newStatus}`,
+          notificationToastSettings
+        );
+        setUnreadCount();
+      });
+
+      socket.on("notification_meeting_scheduled", (data) => {
+        toast.success(
+          `Countdown to victory! Your meeting with ${data?.leadName} is scheduled for ${data?.meetingDate} at ${data?.meetingTime}`,
+          notificationToastSettings
+        );
+        setUnreadCount();
+      });
+
+      socket.on("notification_lead_added", (data) => {
+        toast.success(
+          `Lead ${data?.leadName} has been assigned by ${data?.by}`,
+          notificationToastSettings
+        );
+        setUnreadCount();
+      });
+
+      socket.on("notification_feedback_updated", (data) => {
+        // toast.success(
+        //   `Feedback for ${data?.leadName} has been updated to ${data?.newFeedback} by ${data?.by}`,
+        //   notificationToastSettings
+        // );
+        setUnreadCount(true);
+      });
+
+      socket.on("notification_priority_updated", (data) => {
+        // toast.success(
+        //   `Priority for ${data?.leadName} has been updated to ${data?.newPriority} by ${data?.by}`,
+        //   notificationToastSettings
+        // );
+        setUnreadCount(true);
+      });
+
+      socket.on("notification_ticket_added", (data) => {
+        toast.success(
+          `The ticket ${data?.ticketNumber} for the ${data?.ticketCategory} category has been created successfully`,
+          notificationToastSettings
+        );
+        setUnreadCount();
+      });
+    }
+  }, [User]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth-token");
+    if (User?.id && User?.loginId) {
+      FetchProfile(token);
+    } else {
+      if (token) {
+        FetchProfile(token);
+      } else {
+        if (document.location.pathname !== "/fresh-logs") {
+          navigate("/", {
+            state: {
+              error: "Please login to proceed.",
+              continueURL: location.pathname,
+            },
+          });
+        }
+      }
+    }
+
+    // eslint-disable-next-line
+  }, []);
+
+  const checkUser = (user) => {
+    if (user?.id) {
+      const expiry = new Date(user?.expiry_date).getTime();
+      const now = new Date().getTime();
+
+      const isExpired = now > expiry;
+
+      if (user?.role === 1) {
+        return true;
+      } else {
+        return (
+          isExpired === false &&
+          user?.package_name?.length > 0 &&
+          user?.package_name !== "unsubscribed"
+        );
+      }
+    }
+  };
+  useEffect(() => {
+    if (!(User?.uid && User?.loginId)) {
+      const token = localStorage.getItem("auth-token");
+      if (token) {
+        const user = localStorage.getItem("user");
+        setUser(JSON.parse(user));
+        setIsUserSubscribed(checkUser(JSON.parse(user)));
+      } else {
+        if (document.location.pathname !== "/fresh-logs") {
+          navigate("/", {
+            state: {
+              error: "Something Went Wrong! Please Try Again",
+              continueURL: location.pathname,
+            },
+          });
+        }
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  let links = [
+    {
+      title: t("menu_dashboard"),
+      links: [
+        {
+          name: t("menu_dashboard"),
+          icon: <BsColumnsGap size={16} />,
+          pro: false,
+          link: "/dashboard",
+        },
+      ],
+    },
+    // LEADS
+    {
+      title: t("leads"),
+      icon: <BsPeople size={18} />,
+      pro: false,
+      links: [
+        {
+          name: t("menu_add_lead"),
+          icon: <BsPersonPlus size={18} />,
+          pro: false,
+          link: "/addlead",
+        },
+        // UNASSIGNED
+        {
+          name: t("menu_unassigned"),
+          icon: <BsStopCircle size={16} />,
+          pro: false,
+          submenu: [
+            {
+              name: t("menu_fresh"),
+              pro: false,
+              link: "/unassigned/fresh",
+              count: sidebarData?.UNASSIGNED?.fresh,
+            },
+            {
+              name: t("menu_thirdparty"),
+              pro: false,
+              count: sidebarData?.UNASSIGNED?.third_party,
+              link: "/unassigned/thirdpartyleads",
+            },
+            {
+              name: t("menu_cold"),
+              pro: false,
+              count: sidebarData?.UNASSIGNED?.cold,
+              link: "/unassigned/coldleads",
+            },
+            {
+              name: t("menu_archived"),
+              pro: false,
+              count: sidebarData?.UNASSIGNED?.warm,
+              link: "/unassigned/archive",
+            },
+            {
+              name: t("menu_personal"),
+              pro: false,
+              count: sidebarData?.UNASSIGNED?.personal,
+              link: "/unassigned/personalleads",
+            },
+            {
+              name: t("menu_live_call"),
+              pro: false,
+              count: sidebarData?.UNASSIGNED?.live,
+              link: "/unassigned/liveleads",
+            },
+          ],
+        },
+        // FRESH
+        {
+          name: t("menu_fresh"),
+          icon: <BsFire size={16} />,
+          pro: false,
+          submenu: [
+            {
+              name: t("feedback_all"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.hot,
+              link: "/freshleads/all",
+            },
+            {
+              name: t("feedback_new"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.new,
+              link: "/freshleads/new",
+              icon: <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />,
+              countColor: "#BEEDF1",
+            },
+            {
+              name: t("feedback_callback"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.callback,
+              link: "/freshleads/callback",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />,
+              countColor: "#FFED9A",
+            },
+            // FOLLOW UP
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.follow_up_short,
+              link: "/freshleads/follow up short term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />,
+              countColor: "#FFF799",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.follow_up_long,
+              link: "/freshleads/follow up long term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />,
+              countColor: "#FFDD99",
+            },
+            {
+              name: t("feedback_low_budget"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.low_budget,
+              link: "/freshleads/low budget",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />,
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.Meeting,
+              link: "/freshleads/meeting",
+              icon: <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />,
+              countColor: "#C6DF9C",
+            },
+            {
+              name: t("feedback_no_answer"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.no_answer,
+              link: "/freshleads/no answer",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />,
+              countColor: "#FFBEBD",
+            },
+            {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.switched_off,
+              link: "/freshleads/switched off",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />,
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.not_interested,
+              link: "/freshleads/not interested",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />,
+              countColor: "#F16C4D",
+            },
+            {
+              name: t("feedback_unreachable"),
+              pro: false,
+              count: sidebarData?.HotLeadsCount?.unreachable,
+              link: "/freshleads/unreachable",
+              icon: <BsBookmarkFill size={14} style={{ color: "#898989" }} />,
+              countColor: "#898989",
+            },
+          ],
+        },
+        // THIRD PARTY
+        {
+          name: t("menu_thirdparty"),
+          icon: <BsLink45Deg size={20} />,
+          pro: false,
+          submenu: [
+            {
+              name: t("feedback_all"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.all,
+              link: "/thirdpartyleads/all",
+            },
+            {
+              name: t("feedback_new"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.new,
+              link: "/thirdpartyleads/new",
+              icon: <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />,
+              countColor: "#BEEDF1",
+            },
+            {
+              name: t("feedback_callback"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.callback,
+              link: "/thirdpartyleads/callback",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />,
+              countColor: "#FFED9A",
+            },
+            // FOLLOW UP
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.follow_up_short,
+              link: "/thirdpartyleads/follow up short term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />,
+              countColor: "#FFF799",
+            },
+            {
+              name: t("feedback_follow_up_long"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.follow_up_long,
+              link: "/thirdpartyleads/follow up long term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />,
+              countColor: "#FFDD99",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
+            //   link: "/thirdpartyleads/follow up",
+            // },
+            {
+              name: t("feedback_low_budget"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.low_budget,
+              link: "/thirdpartyleads/low budget",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />,
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.Meeting,
+              link: "/thirdpartyleads/meeting",
+              icon: <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />,
+              countColor: "#C6DF9C",
+            },
+            {
+              name: t("feedback_no_answer"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.no_answer,
+              link: "/thirdpartyleads/no answer",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />,
+              countColor: "#FFBEBD",
+            },
+            {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.switched_off,
+              link: "/thirdpartyleads/switched off",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />,
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.not_interested,
+              link: "/thirdpartyleads/not interested",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />,
+              countColor: "#F16C4D",
+            },
+            {
+              name: t("feedback_unreachable"),
+              pro: false,
+              count: sidebarData?.ThirdPartyLeadsCount?.unreachable,
+              link: "/thirdpartyleads/unreachable",
+              icon: <BsBookmarkFill size={14} style={{ color: "#898989" }} />,
+              countColor: "#898989",
+            },
+          ],
+        },
+        // COLD
+        {
+          name: t("menu_cold"),
+          icon: <BsSnow size={16} />,
+          pro: false,
+          submenu: [
+            {
+              name: t("feedback_all"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.all,
+              link: "/coldleads/all",
+            },
+            {
+              name: t("menu_verified"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.verified, //TODO
+              link: "/coldleads/coldLeadsVerified",
+              icon: (
+                <RiRadioButtonLine size={16} style={{ color: "#40B74F" }} />
+              ),
+              countColor: "#008000",
+            },
+            {
+              name: t("menu_invalid"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.unverified, //TODO
+              link: "/coldleads/coldLeadsInvalid",
+              icon: (
+                <RiRadioButtonLine size={16} style={{ color: primaryColor }} />
+              ),
+              countColor: "#FF0000",
+            },
+            {
+              name: t("menu_not_checked"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.unchecked, //TODO
+              link: "/coldleads/coldLeadsNotChecked",
+              icon: (
+                <RiRadioButtonLine size={16} style={{ color: "#FFCF49" }} />
+              ),
+              countColor: "#FFA500",
+            },
+            {
+              name: t("feedback_new"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.new,
+              link: "/coldleads/new",
+              icon: <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />,
+              countColor: "#BEEDF1",
+            },
+            {
+              name: t("feedback_callback"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.callback,
+              link: "/coldleads/callback",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />,
+              countColor: "#FFED9A",
+            },
+            // FOLLOW UP
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.follow_up_short,
+              link: "/coldleads/follow up short term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />,
+              countColor: "#FFF799",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.follow_up_long,
+              link: "/coldleads/follow up long term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />,
+              countColor: "#FFDD99",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.ColdLeadsCount?.follow_up,
+            //   link: "/coldleads/follow up",
+            // },
+            {
+              name: t("feedback_low_budget"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.low_budget,
+              link: "/coldleads/low budget",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />,
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.Meeting,
+              link: "/coldleads/meeting",
+              icon: <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />,
+              countColor: "#C6DF9C",
+            },
+            {
+              name: t("feedback_no_answer"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.no_answer,
+              link: "/coldleads/no answer",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />,
+              countColor: "#FFBEBD",
+            },
+            {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.switched_off,
+              link: "/coldleads/switched off",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />,
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.not_interested,
+              link: "/coldleads/not interested",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />,
+              countColor: "#F16C4D",
+            },
+            {
+              name: t("feedback_unreachable"),
+              pro: false,
+              count: sidebarData?.ColdLeadsCount?.unreachable,
+              link: "/coldleads/unreachable",
+              icon: <BsBookmarkFill size={14} style={{ color: "#898989" }} />,
+              countColor: "#898989",
+            },
+          ],
+        },
+        // ARCHIVED
+        {
+          name: t("menu_archived"),
+          icon: <BsArchive size={16} />,
+          pro: false,
+          submenu: [
+            {
+              name: t("menu_all_leads"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.all,
+              link: "/archive/all",
+            },
+            {
+              name: t("feedback_new"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.new,
+              icon: <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />,
+              link: "/archive/new",
+            },
+            {
+              name: t("feedback_callback"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.callback,
+              link: "/archive/callback",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />,
+              countColor: "#FFED9A",
+            },
+            // FOLLOW UP
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.follow_up_short,
+              link: "/archive/follow up short term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />,
+              countColor: "#FFF799",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.follow_up_long,
+              link: "/archive/follow up long term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />,
+              countColor: "#FFDD99",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.WarmLeadCount?.follow_up,
+            //   link: "/archive/follow up",
+            // },
+            {
+              name: t("feedback_low_budget"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.low_budget,
+              link: "/archive/low budget",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />,
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.Meeting,
+              link: "/archive/meeting",
+              icon: <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />,
+              countColor: "#C6DF9C",
+            },
+            {
+              name: t("feedback_no_answer"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.no_answer,
+              link: "/archive/no answer",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />,
+              countColor: "#FFBEBD",
+            },
+            {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.switched_off,
+              link: "/archive/switched off",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />,
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.not_interested,
+              link: "/archive/not interested",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />,
+              countColor: "#F16C4D",
+            },
+            {
+              name: t("feedback_unreachable"),
+              pro: false,
+              count: sidebarData?.WarmLeadCount?.unreachable,
+              link: "/archive/unreachable",
+              icon: <BsBookmarkFill size={14} style={{ color: "#898989" }} />,
+              countColor: "#898989",
+            },
+          ],
+        },
+        // PERSONAL
+        {
+          name: t("menu_personal"),
+          icon: <BsPersonRolodex size={16} />,
+          pro: false,
+          submenu: [
+            {
+              name: t("feedback_all"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.all,
+              link: "/personalleads/all",
+            },
+            {
+              name: t("feedback_new"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.new,
+              link: "/personalleads/new",
+              icon: <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />,
+              countColor: "#BEEDF1",
+            },
+            {
+              name: t("feedback_callback"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.callback,
+              link: "/personalleads/callback",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />,
+              countColor: "#FFED9A",
+            },
+            // FOLLOW UP
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.follow_up_short,
+              link: "/personalleads/follow up short term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />,
+              countColor: "#FFF799",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.follow_up_long,
+              link: "/personalleads/follow up long term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />,
+              countColor: "#FFDD99",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.PersonalLeadsCount?.follow_up,
+            //   link: "/personalleads/follow up",
+            // },
+            {
+              name: t("feedback_low_budget"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.low_budget,
+              link: "/personalleads/low budget",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />,
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.Meeting,
+              link: "/personalleads/meeting",
+              icon: <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />,
+              countColor: "#C6DF9C",
+            },
+            {
+              name: t("feedback_no_answer"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.no_answer,
+              link: "/personalleads/no answer",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />,
+              countColor: "#FFBEBD",
+            },
+            {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.switched_off,
+              link: "/personalleads/switched off",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />,
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.not_interested,
+              link: "/personalleads/not interested",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />,
+              countColor: "#F16C4D",
+            },
+            {
+              name: t("feedback_unreachable"),
+              pro: false,
+              count: sidebarData?.PersonalLeadsCount?.unreachable,
+              link: "/personalleads/unreachable",
+              icon: <BsBookmarkFill size={14} style={{ color: "#898989" }} />,
+              countColor: "#898989",
+            },
+          ],
+        },
+        // LIVE
+        {
+          name: t("menu_live_call"),
+          icon: <BsWebcam size={18} />,
+          pro: false,
+          submenu: [
+            {
+              name: t("feedback_all"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.all,
+              link: "/liveleads/all",
+            },
+            {
+              name: t("feedback_new"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.new,
+              link: "/liveleads/new",
+              icon: <BsBookmarkFill size={14} style={{ color: "#BEEDF1" }} />,
+              countColor: "#BEEDF1",
+            },
+            {
+              name: t("feedback_callback"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.callback,
+              link: "/liveleads/callback",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFED9A" }} />,
+              countColor: "#FFED9A",
+            },
+            // FOLLOW UP
+            {
+              name: t("feedback_follow_up_short_term"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.follow_up_short,
+              link: "/liveleads/follow up short term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFF799" }} />,
+              countColor: "#FFF799",
+            },
+            {
+              name: t("feedback_follow_up_long_term"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.follow_up_long,
+              link: "/liveleads/follow up long term",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />,
+              countColor: "#FFDD99",
+            },
+            // {
+            //   name: t("feedback_follow_up"),
+            //   pro: false,
+            //   count: sidebarData?.LiveCallCount?.follow_up,
+            //   link: "/liveleads/follow up",
+            // },
+            {
+              name: t("feedback_low_budget"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.low_budget,
+              link: "/liveleads/low budget",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FDC68C" }} />,
+              countColor: "#FDC68C",
+            },
+            {
+              name: t("feedback_meeting"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.Meeting,
+              link: "/liveleads/meeting",
+              icon: <BsBookmarkFill size={14} style={{ color: "#C6DF9C" }} />,
+              countColor: "#C6DF9C",
+            },
+            {
+              name: t("feedback_no_answer"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.no_answer,
+              link: "/freshleads/no answer",
+              icon: <BsBookmarkFill size={14} style={{ color: "#FFBEBD" }} />,
+              countColor: "#FFBEBD",
+            },
+            {
+              name: t("feedback_switched_off"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.switched_off,
+              link: "/freshleads/switched off",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F7977A" }} />,
+              countColor: "#F7977A",
+            },
+            {
+              name: t("feedback_not_interested"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.not_interested,
+              link: "/freshleads/not interested",
+              icon: <BsBookmarkFill size={14} style={{ color: "#F16C4D" }} />,
+              countColor: "#F16C4D",
+            },
+            {
+              name: t("feedback_unreachable"),
+              pro: false,
+              count: sidebarData?.LiveCallCount?.unreachable,
+              link: "/freshleads/unreachable",
+              icon: <BsBookmarkFill size={14} style={{ color: "#898989" }} />,
+              countColor: "#898989",
+            },
+          ],
+        },
+        // RESHUFFLED
+        {
+          name: t("menu_reshuffled"),
+          icon: <BsShuffle size={16} />,
+          pro: false,
+          link: "/reshuffleleads",
+        },
+        // NOTES
+        {
+          name: t("menu_notes"),
+          icon: <BsChatRightText size={16} />,
+          pro: false,
+          link: "/leadnotes",
+        },
+        // SEARCH
+        {
+          name: t("menu_search"),
+          icon: <BsSearch size={16} />,
+          pro: false,
+          link: "/search",
+        },
+      ],
+    },
+    // DEALS
+    {
+      title: t("menu_deals"),
+      icon: <BsPatchCheck size={18} />,
+      pro: false,
+      links: [
+        {
+          name: t("menu_booked_deals"),
+          icon: <BsBookmarkStar size={16} />,
+          pro: false,
+          link: "/booked",
+        },
+        {
+          name: t("menu_closed_deals"),
+          icon: <BsLock size={16} />,
+          pro: false,
+          link: "/closedeals",
+        },
+      ],
+    },
+    // SECONDARY LISTINGS AND BUYERS
+    {
+      title: t("menu_secondary"),
+      icon: <BsBuildings size={18} />,
+      pro: false,
+      links: [
+        {
+          name: t("menu_listings"),
+          icon: <BsTags size={16} />,
+          pro: false,
+          link: "/secondaryListings",
+        },
+        {
+          name: t("menu_buyers"),
+          icon: <BsPeople size={16} />,
+          pro: false,
+          link: "/buyers/buyers",
+        },
+      ],
+    },
+    // APPS
+    {
+      title: t("menu_apps"),
+      icon: <BsGrid3X3Gap size={18} />,
+      pro: false,
+      links: [
+        // MEETINGS
+        {
+          name: t("menu_meetings"),
+          icon: <BsCalendarWeek size={16} />,
+          link: "/meetings",
+        },
+        {
+          name: t("menu_hikal_meet"),
+          icon: <BsCameraVideo size={16} />,
+          link: "/appointments",
+          pro: true,
+        },
+        // {
+        //   name: "Add Users",
+        //   icon: <FaUser />,
+        //   link: "/adminAuth/signup",
+        // },
+
+        // IP
+        {
+          name: t("menu_blocked_ips"),
+          icon: <BsDashCircle size={16} />,
+          pro: true,
+          link: "/blocked",
+        },
+        {
+          name: t("menu_reshuffled_request"),
+          icon: <BsShuffle size={16} />,
+          link: "/reshuffleRequest",
+        },
+        // REPORTS
+        {
+          name: t("menu_reports"),
+          icon: <BsFileEarmarkBarGraph size={16} />,
+          pro: false,
+          link: "/reports",
+        },
+        // OFFERS
+        {
+          name: t("menu_offers"),
+          icon: <BsGift size={16} />,
+          pro: false,
+          link: "/offers",
+        },
+        // PROPERTY PORTFOLIO
+        {
+          name: t("menu_property_portfolio"),
+          icon: <BsBuildings size={16} />,
+          link: "/propertyPortfolio",
+          pro: true,
+        },
+        // {
+        //   name: t("menu_clients"),
+        //   icon: <ImUsers size={16} />,
+        //   link: "/clients",
+        // },
+        // {
+        //   name: "Contacts",
+        //   icon: <MdContactPage size={16} />,
+        //   link: "/contacts",
+        // },
+
+        // NEWSLETTER
+        // {
+        //   name: t("menu_newsletter"),
+        //   icon: <BsEnvelopeAt size={16} />,
+        //   link: "/newsletter",
+        // },
+        // LEADERBOARD
+        {
+          name: t("menu_leaderboard"),
+          icon: <BsBarChart size={16} />,
+          pro: true,
+          link: "/leaderboard",
+        },
+        // USERS
+        {
+          name: t("menu_users"),
+          icon: <BsPeople size={16} />,
+          pro: false,
+          link: "/users",
+        },
+        // ROLES
+        {
+          name: t("menu_roles"),
+          icon: <BsPersonGear size={16} />,
+          pro: false,
+          link: "/roles",
+        },
+      ],
+    },
+    // TRANSACTION
+    {
+      title: t("menu_finance"),
+      icon: <BsBarChart size={18} />,
+      pro: true,
+      links: [
+        {
+          name: t("menu_transaction"),
+          icon: <BsArrowLeftRight size={16} />,
+          pro: true,
+          link: "/transactions",
+        },
+        {
+          name: t("menu_visa"),
+          icon: <RiVisaLine size={18} />,
+          pro: true,
+          link: "/visa",
+        },
+        {
+          name: t("menu_petty_cash"),
+          icon: <BsCashCoin size={16} />,
+          pro: true,
+          link: "/petty_cash",
+        },
+        {
+          name: t("menu_vendors"),
+          icon: <BsShopWindow size={16} />,
+          pro: true,
+          link: "/vendors",
+        },
+
+        {
+          name: t("menu_reports"),
+          icon: <BsFileEarmarkBarGraph size={16} />,
+          pro: true,
+          submenu: [
+            {
+              name: t("menu_statements"),
+              // icon: <FaHome size={16} />,
+              pro: true,
+              link: "/statements",
+            },
+            {
+              name: t("menu_commission_vat"),
+              // icon: <FaHome size={16} />,
+              pro: true,
+              link: "/commission_vat",
+            },
+          ],
+        },
+      ],
+    },
+    // SOCIAL MEDIA
+    // {
+    //   title: t("menu_social_media"),
+    //   icon: <BsShare size={18} />,
+    //   pro: true,
+    //   links: [
+    //     {
+    //       name: t("menu_facebook"),
+    //       // icon: <FaChartLine />,
+    //       icon: <BsFacebook size={16} />,
+    //       pro: true,
+    //       link: "/facebook",
+    //     },
+    //     // {
+    //     //   name: "campaigns",
+    //     //   icon: <FaFacebookSquare size={16} />,
+    //     //   link: "/campaigns",
+    //     // },
+    //     // { name: "Leads Bitcoin", icon: <GrBitcoin /> },
+    //   ],
+    // },
+    // LOCATION
+    {
+      title: t("menu_location"),
+      icon: <BsGeoAlt size={18} />,
+      pro: true,
+      links: [
+        {
+          name: t("menu_location_meetings"),
+          icon: <BsCalendarWeek size={16} />,
+          pro: true,
+          link: "/location/meetinglocation",
+        },
+        {
+          name: t("menu_location_live"),
+          icon: <BsPerson size={16} />,
+          pro: true,
+          link: "/location/userlocation",
+        },
+      ],
+    },
+    // ATTENDANCE
+    {
+      title: t("menu_attendance"),
+      icon: <BsCalendarCheck size={18} />,
+      pro: true,
+      links: [
+        {
+          name: t("menu_office_settings"),
+          icon: <BsClockHistory size={16} />,
+          pro: true,
+          link: "/attendance/officeSettings",
+        },
+        {
+          name: t("menu_employee_list"),
+          icon: <BsPeople size={16} />,
+          pro: true,
+          link: "/attendance/employeesList",
+        },
+        {
+          name: t("menu_my_attendance"),
+          icon: <BsPerson size={16} />,
+          pro: true,
+          link: "/attendance_self",
+        },
+        {
+          name: t("mark_attendance"),
+          icon: <BsCheck2Circle size={16} />,
+          pro: true,
+          link: "/attendance",
+        },
+      ],
+    },
+    // ONBOARDING
+    {
+      title: t("menu_cms"),
+      icon: <IoPeopleCircleSharp size={18} />,
+      pro: true,
+      links: [
+        {
+          name: t("menu_onboarding"),
+          icon: <IoPersonAddOutline size={16} />,
+          // pro: true,
+          link: "/onboarding",
+        },
+        {
+          name: t("menu_clientsList"),
+          icon: <FaHistory size={16} />,
+          // pro: true,
+          link: "/onboarding/clientsList",
+        },
+      ],
+    },
+    // OFFICE BOY
+    {
+      title: t("menu_taste_hub"),
+      icon: <GiForkKnifeSpoon size={18} />,
+      pro: true,
+      links: [
+        {
+          name: t("menu_menu"),
+          icon: <GiHamburger size={16} />,
+          // pro: true,
+          link: "/taste_hub/menu",
+        },
+        {
+          name: t("menu_order_history"),
+          icon: <BsPeople size={16} />,
+          // pro: true,
+          link: "/order_history",
+        },
+      ],
+    },
+    // MESSAGING
+    // {
+    //   title: t("menu_messaging"),
+    //   icon: <MdApps size={16} />,
+
+    //   links: [
+    //     {
+    //       name: t("menu_chat"),
+    //       icon: <BsCircleFill size={16} />,
+    //       link: "/chat",
+    //     },
+    //   ],
+    // },
+    // BILLINGS
+    // {
+    //   title: t("menu_billings"),
+    //   icon: <BsCashCoin size={18} />,
+    //   pro: false,
+    //   links: [
+    //     {
+    //       name: t("menu_payments"),
+    //       icon: <BsCashStack size={16} />,
+    //       pro: false,
+    //       link: "/marketing/payments",
+    //     },
+    //   ],
+    // },
+    // Editor
+    {
+      title: t("menu_editor"),
+      icon: <BsWrenchAdjustableCircle size={16} />,
+      pro: false,
+      links: [
+        // {
+        //   name: t("menu_page_builder"),
+        //   icon: <BsColumnsGap size={16} />,
+        //   pro: false,
+        //   link: "/editor",
+        // },
+        {
+          name: t("menu_template_list"),
+          icon: <BsFiles size={16} />,
+          pro: false,
+          link: "/templates",
+        },
+        {
+          name: t("Forms"),
+          icon: <BsFiles size={16} />,
+          pro: false,
+          link: "/forms",
+        },
+      ],
+    },
+    // SUPPORT
+    {
+      title: t("menu_support"),
+      icon: <BsHeadset size={20} />,
+      pro: false,
+      links: [
+        {
+          name: t("menu_qa"),
+          icon: <BsQuestionOctagon size={16} />,
+          pro: false,
+          submenu: [
+            {
+              name: t("menu_qa_form"),
+              link: "/trainer",
+            },
+            {
+              name: t("menu_qa_all"),
+              link: "/qa",
+            },
+          ],
+        },
+        {
+          name: t("menu_tickets"),
+          icon: <BsTicketPerforated size={16} />,
+          pro: false,
+          link: "/support",
+        },
+      ],
+    },
+    // MISC
+    {
+      title: t("menu_misc"),
+      icon: <BsGear size={18} />,
+      pro: false,
+      links: [
+        {
+          name: t("menu_integration"),
+          icon: <VscDebugDisconnect size={18} />,
+          pro: false,
+          link: "/integrations",
+        },
+        {
+          name: t("notifications"),
+          icon: <BsBell size={16} />,
+          pro: false,
+          submenu: [
+            // {
+            //   name: "Integration",
+            //   link: "/integrations",
+            // },
+            {
+              name: t("menu_notification_settings"),
+              pro: false,
+              link: "/notifications",
+            },
+            {
+              name: t("menu_notification_history"),
+              pro: false,
+              link: "/notificationsList",
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  if (isUserSubscribed !== null && isUserSubscribed === true) {
+    if (User?.role === 1) {
+      links.splice(5, 0, {
+        title: t("menu_marketing"),
+        icon: <BsMegaphone size={16} />,
+        pro: true,
+        links: [
+          {
+            name: t("menu_instances"),
+            icon: <BsLayers size={16} />,
+            pro: true,
+            link: "/instances",
+          },
+          {
+            name: t("menu_whatsapp"),
+            icon: <BsWhatsapp size={16} />,
+            pro: true,
+            link: "/marketing/chat",
+          },
+          {
+            name: t("menu_sms"),
+            icon: <BsChatText size={16} />,
+            pro: true,
+            link: "/marketing/contacts",
+          },
+          {
+            name: t("menu_templates"),
+            icon: <BsFileEarmarkText size={16} />,
+            pro: true,
+            link: "/marketing/templates",
+          },
+          {
+            name: t("menu_campaigns"),
+            icon: <BsMegaphone size={16} />,
+            pro: true,
+            link: "/marketing/messages",
+          },
+        ],
+      });
+    } else {
+      links.splice(5, 0, {
+        title: t("menu_marketing"),
+        icon: <BsMegaphone size={16} />,
+        pro: true,
+        links: [
+          {
+            name: t("menu_whatsapp"),
+            icon: <BsWhatsapp size={16} />,
+            pro: true,
+            link: "/marketing/chat",
+          },
+          {
+            name: t("menu_sms"),
+            icon: <BsChatText size={16} />,
+            pro: true,
+            link: "/marketing/contacts",
+          },
+          {
+            name: t("menu_templates"),
+            icon: <BsFileEarmarkText size={16} />,
+            pro: true,
+            link: "/marketing/templates",
+          },
+        ],
+      });
+    }
+  }
+
+  useEffect(() => {
+    const url = location.pathname?.replaceAll("%20", " ");
+    if (activeSidebarHeading !== 1) {
+      links?.forEach((link, linkIndex) => {
+        link?.links?.forEach((l, menuIndex) => {
+          if (l?.submenu) {
+            l?.submenu?.forEach((sub) => {
+              if (sub?.link === url) {
+                setActiveSidebarHeading(linkIndex);
+                setOpenSubMenu({
+                  menuIndex: menuIndex + 1,
+                  linkIndex,
+                  sub: false,
+                });
+                return;
+              }
+            });
+          } else {
+            if (url === l?.link) {
+              setActiveSidebarHeading(linkIndex);
+              return;
+            }
+          }
+        });
+      });
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const url = location.pathname?.replaceAll("%20", " ");
+
+    if (url !== "/dashboard") {
+      links?.forEach((link, linkIndex) => {
+        link?.links?.forEach((l, menuIndex) => {
+          if (l?.submenu) {
+            l?.submenu?.forEach((sub) => {
+              if (sub?.link === url) {
+                setActiveSidebarHeading(linkIndex);
+                setOpenSubMenu({
+                  menuIndex: menuIndex + 1,
+                  linkIndex,
+                  sub: false,
+                });
+                return;
+              }
+            });
+          } else {
+            if (url === l?.link) {
+              setActiveSidebarHeading(linkIndex);
+              return;
+            }
+          }
+        });
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    socket.on("chat_message-received", (data) => {
+      if (window.location.pathname !== "/chat") {
+        ringtoneElem.current.play();
+        setMessagesCount((prevCount) => prevCount + 1);
+        setBlink(true);
+        setTimeout(() => {
+          setBlink(false);
+        }, 500);
+        setNewMessageReceived(data?.to);
+      } else {
+        setMessagesCount(0);
+        setNewMessageReceived(false);
+      }
+    });
+  }, []);
+
+  const SidebarMenu = ({ currentMode, isLangRTL }) => {
+    return (
+      <Menu
+        menuItemStyles={{
+          button: ({ level, active, disabled }) => {
+            // only apply styles on first level elements of the tree
+            if (level === 0) {
+              return {
+                color: currentMode === "dark" ? "#ffffff" : "#000000",
+              };
+            }
+          },
+        }}
+      >
+        <Box
+          sx={{
+            // FOR DARK MODE MENU SETTINGS
+            "& .css-1mfnem1": {
+              borderRadius: "0px",
+            },
+            "& .css-1mfnem1:hover": {
+              backgroundColor: primaryColor,
+              color: "white",
+            },
+            // submenu containerr color
+            "& .css-z5rm24": {
+              backgroundColor: currentMode === "dark" && "#282B30",
+              borderRadius: "0px",
+            },
+            // Submenu count color
+            "& .css-1rnkhs0": {
+              color: currentMode === "dark" && "white",
+            },
+            // LIGHT MODE SETTINGS
+            "& .css-1ohfb25:hover": {
+              backgroundColor: primaryColor,
+              color: "white",
+              borderRadius: "0px",
+            },
+            "& .css-wx7wi4": {
+              width: "18px",
+              minWidth: "18px",
+            },
+            "& .ps-submenu-content .ps-menuitem-root .ps-menuitem-root .ps-menu-label":
+              {
+                display: "flex",
+                gap: "5px",
+                paddingRight: !isLangRTL(i18n?.language) && "10px",
+                paddingLeft: isLangRTL(i18n?.language) && "10px",
+                // color: !themeBgImg ? primaryColor : (currentMode === "dark" ? "#FFFFFF" : "#000000"),
+                // color: !themeBgImg
+                //   ? primaryColor
+                //   : currentMode === "dark"
+                //   ? "#FFFFFF"
+                //   : "#000000",
+              },
+            "& .ps-menu-button": {
+              fontWeight: "medium",
+              color: !themeBgImg
+                ? primaryColor
+                : currentMode === "dark"
+                ? "#FFFFFF"
+                : "#000000",
+              gap: "5px",
+            },
+            "& .ps-menu-button:hover": {
+              fontWeight: "medium",
+              color: !themeBgImg
+                ? primaryColor
+                : currentMode === "dark"
+                ? "#000000"
+                : "#FFFFFF",
+            },
+            "& .ps-menu-icon": {
+              marginRight: !isLangRTL(i18n.language) && "10px",
+              marginLeft: isLangRTL(i18n.language) && "10px",
+              // color:
+              //   currentMode === "dark"
+              //     ? "white"
+              //     : "black",
+            },
+          }}
+          className="py-1"
+        >
+          {links?.map((link, linkIndex) => {
+            let permittedLinksMoreThan0 = false;
+            for (let i = 0; i < link?.links.length; i++) {
+              const subMenu = link?.links[i]?.submenu;
+              if (subMenu) {
+                for (let k = 0; k < subMenu.length; k++) {
+                  const anotherSubMenu = subMenu[k]?.submenu;
+                  if (anotherSubMenu) {
+                    for (let l = 0; l < anotherSubMenu?.length; l++) {
+                      if (
+                        hasPermission(anotherSubMenu[l]?.link, true)
+                          ?.isPermitted
+                      ) {
+                        permittedLinksMoreThan0 = true;
+                        break;
+                      }
+                    }
+                  } else {
+                    if (hasPermission(subMenu[k]?.link, true).isPermitted) {
+                      permittedLinksMoreThan0 = true;
+                      break;
+                    }
+                  }
+                }
+              } else {
+                if (hasPermission(link?.links[i]?.link, true)?.isPermitted) {
+                  permittedLinksMoreThan0 = true;
+                  break;
+                }
+              }
+            }
+
+            if (
+              link?.links[0]?.link === "/dashboard" &&
+              User?.role !== 5 &&
+              hasPermission(link?.links[0]?.link, true)?.isPermitted
+            ) {
+              return (
+                <Link
+                  key={linkIndex}
+                  to={`${link?.links[0]?.link}`}
+                  onClick={() => {
+                    setopenBackDrop(true);
+                    setOpenSubMenu(0);
+                    setActiveSidebarHeading("");
+                  }}
+                >
+                  <Box
+                    sx={{
+                      // STYLING FOR LIGHT MODE
+                      "& .css-1mfnem1": {
+                        borderRadius: "0px",
+                      },
+                      "& .css-1mfnem1:hover": {
+                        backgroundColor: primaryColor,
+                        color: "white",
+                      },
+                      "& .css-1ogoo8i": {
+                        backgroundColor: primaryColor,
+                        color: "white",
+                      },
+                      // STYLING FOR DARK MODE
+                      "& .css-yktbuo": {
+                        backgroundColor: primaryColor,
+                        color: "white",
+                      },
+                      "& .css-yktbuo:hover": {
+                        backgroundColor: primaryColor,
+                        color: "white",
+                      },
+                      "& .css-1v6ithu": {
+                        // color: "white",
+                      },
+                    }}
+                    className="relative my-1"
+                  >
+                    <MenuItem
+                      active={
+                        link?.links[0]?.link ===
+                        window.location.pathname.replaceAll("%20", " ")
+                      }
+                    >
+                      <div
+                        className={`flex items-center ${
+                          isCollapsed ? "gap-4" : ""
+                        } rounded-lg text-base ${
+                          !isCollapsed ? "justify-center" : ""
+                        } `}
+                      >
+                        <span className={`${!isCollapsed && "text-xl"}`}>
+                          {link?.links[0]?.icon}
+                        </span>
+                        {isCollapsed && (
+                          <span
+                            className={`capitalize flex items-center gap-2`}
+                          >
+                            {link?.links[0]?.name}
+                            {link?.links[0].pro && (
+                              <div
+                                className={`${
+                                  themeBgImg
+                                    ? currentMode === "dark"
+                                      ? "bg-black"
+                                      : "bg-white"
+                                    : "bg-transparent"
+                                } p-1 rounded-full`}
+                              >
+                                <GiQueenCrown size={16} className="gold-grad" />
+                              </div>
+                            )}
+                          </span>
+                        )}
+                      </div>
+                    </MenuItem>
+                  </Box>
+                </Link>
+              );
+            }
+
+            if (permittedLinksMoreThan0) {
+              return (
+                <Box
+                  key={linkIndex}
+                  onClick={(e) => handleExpandHeading(e, linkIndex)}
+                  sx={{
+                    // icons css
+                    "& .css-wx7wi4": {
+                      opacity: "0.7",
+                    },
+                    "& .css-wx7wi4:hover": {
+                      transform: "rotate(20deg)",
+                      transition: "all 0.6s ease",
+                      opacity: "1",
+                    },
+                  }}
+                  // className={`${!themeBgImg
+                  //   && (currentMode === "dark" ? "bg-dark" : "bg-light")
+                  //   }`}
+                >
+                  {!isCollapsed ? (
+                    <Tooltip title={link?.title} placement="right">
+                      <Link
+                        key={linkIndex}
+                        onClick={() => {
+                          setopenBackDrop(true);
+                          setOpenSubMenu(0);
+                          setActiveSidebarHeading(linkIndex);
+                          collapseSidebar();
+                          setIsCollapsed(true);
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            // STYLING FOR LIGHT MODE
+                            "& .css-1mfnem1": {
+                              borderRadius: "0px",
+                            },
+                            "& .css-1mfnem1:hover": {
+                              backgroundColor: primaryColor,
+                              color: "white",
+                            },
+                            "& .css-1ogoo8i": {
+                              backgroundColor: primaryColor,
+                              color: "white",
+                            },
+                            // STYLING FOR DARK MODE
+                            "& .css-yktbuo": {
+                              backgroundColor: primaryColor,
+                              color: "white",
+                            },
+                            "& .css-yktbuo:hover": {
+                              backgroundColor: primaryColor,
+                              color: "white",
+                            },
+                            "& .css-1v6ithu": {
+                              // color: "white",
+                            },
+                          }}
+                          className={`relative py-1`}
+                        >
+                          <MenuItem
+                            active={
+                              link?.links[0]?.link ===
+                              window.location.pathname.replaceAll("%20", " ")
+                            }
+                          >
+                            <div className="flex my-1 h-[38px] items-center justify-center text-xl">
+                              {link?.icon}
+                            </div>
+                          </MenuItem>
+                        </Box>
+                      </Link>
+                    </Tooltip>
+                  ) : (
+                    <SubMenu
+                      icon={link?.icon}
+                      open={activeSidebarHeading === linkIndex}
+                      className={`top-level-dropdown`}
+                      // label={link?.title?.toUpperCase()}
+                      label={
+                        <span
+                          className={`uppercase capitalize flex items-center gap-2`}
+                        >
+                          {link.title}
+                          {link.pro && (
+                            <div
+                              className={`${
+                                themeBgImg
+                                  ? currentMode === "dark"
+                                    ? "bg-black"
+                                    : "bg-white"
+                                  : "bg-transparent"
+                              } p-1 rounded-full`}
+                            >
+                              <GiQueenCrown size={16} className="gold-grad" />
+                            </div>
+                          )}
+                        </span>
+                      }
+                    >
+                      {link.links.map((menu, index) => {
+                        if (
+                          hasPermission(menu?.link, true)?.isPermitted ||
+                          (menu?.submenu &&
+                            hasPermission(menu?.submenu[0]?.link, true)
+                              ?.isPermitted) ||
+                          (menu?.link === "/dashboard" && User?.role !== 5)
+                        ) {
+                          if (menu?.submenu) {
+                            return (
+                              <Box
+                                key={index}
+                                onClick={(e) => {
+                                  handleExpand(
+                                    e,
+                                    {
+                                      menuIndex: index + 1,
+                                      linkIndex,
+                                    },
+                                    true
+                                  );
+                                }}
+                                sx={{
+                                  // icons css
+                                  "&  .css-wx7wi4": {
+                                    opacity: "0.7",
+                                  },
+                                  "&  .css-wx7wi4:hover": {
+                                    transform: "rotate(20deg)",
+                                    transition: "all 0.6s ease",
+                                    opacity: "1",
+                                  },
+                                  // FOR DARK MODE MENU SETTINGS
+                                  "& .css-1mfnem1": {
+                                    borderRadius: "0px",
+                                  },
+                                  "& .css-1mfnem1:hover": {
+                                    backgroundColor: primaryColor,
+                                    color: "white",
+                                  },
+                                  // submenu containerr color
+                                  "& .css-z5rm24": {
+                                    backgroundColor:
+                                      currentMode === "dark" && "#1C1C1C",
+                                    borderRadius: "0px",
+                                  },
+                                  // Submenu count color
+                                  "& .css-1rnkhs0": {
+                                    color: currentMode === "dark" && "white",
+                                  },
+                                  // LIGHT MODE SETTINGS
+                                  "& .css-1ohfb25:hover": {
+                                    backgroundColor: primaryColor,
+                                    color: "white",
+                                    borderRadius: "0px",
+                                  },
+                                  "& .css-wx7wi4": {
+                                    width: "18px",
+                                    minWidth: "18px",
+                                  },
+                                  "& .ps-menu-label": {
+                                    color:
+                                      currentMode === "dark"
+                                        ? "white"
+                                        : "black",
+                                  },
+                                  "& .ps-menu-icon": {
+                                    marginRight:
+                                      !isLangRTL(i18n.language) && "10px",
+                                    marginLeft:
+                                      isLangRTL(i18n.language) && "10px",
+                                    // color:
+                                    //   currentMode === "dark"
+                                    //     ? "white"
+                                    //     : "black",
+                                  },
+                                  backgroundColor:
+                                    currentMode === "dark" ? "black" : "white",
+                                }}
+                                className={`py-1 sub`}
+                              >
+                                <SubMenu
+                                  // label={menu.name}
+                                  label={
+                                    <span
+                                      className={`capitalize flex items-center gap-2`}
+                                    >
+                                      {menu.name}
+                                      {menu.pro && (
+                                        <div
+                                          className={`${
+                                            themeBgImg
+                                              ? currentMode === "dark"
+                                                ? "bg-black"
+                                                : "bg-white"
+                                              : "bg-transparent"
+                                          } p-1 rounded-full`}
+                                        >
+                                          <GiQueenCrown
+                                            size={16}
+                                            className="gold-grad"
+                                          />
+                                        </div>
+                                      )}
+                                    </span>
+                                  }
+                                  icon={menu.icon}
+                                  open={
+                                    openedSubMenu.menuIndex === index + 1 &&
+                                    openedSubMenu.linkIndex === linkIndex
+                                  }
+                                >
+                                  {menu?.submenu.map((m, index) => {
+                                    return (
+                                      <Link key={index} to={`${m.link}`}>
+                                        <Box
+                                          sx={{
+                                            // STYLING FOR LIGHT MODE
+                                            "& .css-1mfnem1": {
+                                              borderRadius: "0px",
+                                            },
+                                            "& .css-1mfnem1:hover": {
+                                              backgroundColor: primaryColor,
+                                              color: "white",
+                                            },
+                                            "& .css-1ogoo8i": {
+                                              backgroundColor: primaryColor,
+                                              color: "white",
+                                            },
+                                            // STYLING FOR DARK MODE
+                                            "& .css-yktbuo": {
+                                              backgroundColor: primaryColor,
+                                              color: "white",
+                                            },
+                                            "& .css-1f8bwsm": {
+                                              minWidth: "10px !important",
+                                            },
+                                            "& .css-yktbuo:hover": {
+                                              backgroundColor: primaryColor,
+                                              color: "white",
+                                            },
+                                            "& .css-1v6ithu": {
+                                              color: "white",
+                                            },
+                                            "& .leads_counter": {
+                                              color: m?.countColor
+                                                ? m?.countColor
+                                                : currentMode === "dark"
+                                                ? "white"
+                                                : "black",
+                                              right:
+                                                !isLangRTL(i18n.language) &&
+                                                "3px",
+                                              left:
+                                                isLangRTL(i18n.language) &&
+                                                "3px",
+                                            },
+                                            "& .css-cveggr-MuiListItemIcon-root":
+                                              {
+                                                minWidth: "10px !important",
+                                              },
+                                            backgroundColor:
+                                              currentMode === "dark"
+                                                ? "#2B2830"
+                                                : "#EEEEEE",
+                                          }}
+                                          className={`relative py-1`}
+                                        >
+                                          <MenuItem
+                                            active={
+                                              m.link ===
+                                              window.location.pathname.replaceAll(
+                                                "%20",
+                                                " "
+                                              )
+                                            }
+                                            className={`flex`}
+                                          >
+                                            {m?.icon && (
+                                              <ListItemIcon
+                                                style={{
+                                                  minWidth: "23px !important",
+                                                  color:
+                                                    currentMode === "dark"
+                                                      ? "white !important"
+                                                      : "black !important",
+                                                }}
+                                              >
+                                                {m?.icon}
+                                              </ListItemIcon>
+                                            )}{" "}
+                                            <span
+                                              className={`flex items-center gap-2`}
+                                            >
+                                              {m?.name || ""}
+                                              {m.pro && (
+                                                <div
+                                                  className={`${
+                                                    themeBgImg
+                                                      ? currentMode === "dark"
+                                                        ? "bg-black"
+                                                        : "bg-white"
+                                                      : "bg-transparent"
+                                                  } p-1 rounded-full`}
+                                                >
+                                                  <GiQueenCrown
+                                                    size={16}
+                                                    className="gold-grad"
+                                                  />
+                                                </div>
+                                              )}
+                                            </span>
+                                          </MenuItem>
+                                          {m?.count != null && (
+                                            <span
+                                              className={`leads_counter block absolute ${
+                                                isLangRTL(i18n.language)
+                                                  ? "left-5"
+                                                  : "right-5"
+                                              }`}
+                                              style={{
+                                                top: "50%",
+                                                transform: "translateY(-50%)",
+                                              }}
+                                            >
+                                              {m?.count !== null &&
+                                              m?.count !== undefined
+                                                ? m?.count
+                                                : ""}
+                                            </span>
+                                          )}
+                                        </Box>
+                                      </Link>
+                                    );
+                                  })}
+                                </SubMenu>
+                              </Box>
+                            );
+                          } else {
+                            return (
+                              <Link
+                                key={index}
+                                to={`${menu.link}`}
+                                onClick={() => setopenBackDrop(true)}
+                              >
+                                <Box
+                                  sx={{
+                                    // STYLING FOR LIGHT MODE
+                                    "& .css-1mfnem1": {
+                                      borderRadius: "0px",
+                                    },
+                                    "& .css-1mfnem1:hover": {
+                                      backgroundColor: primaryColor,
+                                      color: "white",
+                                    },
+                                    "& .css-1ogoo8i": {
+                                      backgroundColor: primaryColor,
+                                      color: "white",
+                                    },
+                                    // STYLING FOR DARK MODE
+                                    "& .css-yktbuo": {
+                                      backgroundColor: primaryColor,
+                                      color: "white",
+                                    },
+                                    "& .css-yktbuo:hover": {
+                                      backgroundColor: primaryColor,
+                                      color: "white",
+                                    },
+                                    "& .css-1v6ithu": {
+                                      color: "white",
+                                    },
+                                    "& .leads_counter": {
+                                      color:
+                                        currentMode === "dark"
+                                          ? menu?.countColor
+                                          : "black",
+                                      right: !isLangRTL(i18n.language) && "3px",
+                                      left: isLangRTL(i18n.language) && "3px",
+                                    },
+                                    backgroundColor:
+                                      currentMode === "dark"
+                                        ? "black"
+                                        : "white",
+                                  }}
+                                  className={`relative py-1`}
+                                >
+                                  <MenuItem
+                                    active={
+                                      menu.link ===
+                                      window.location.pathname.replaceAll(
+                                        "%20",
+                                        " "
+                                      )
+                                    }
+                                  >
+                                    <div className="flex items-center gap-4 text-base">
+                                      <span
+                                        className={`${
+                                          !isCollapsed && "text-xl"
+                                        }`}
+                                        style={{
+                                          // icons css
+                                          "& .css-wx7wi4": {
+                                            display: "none !important",
+                                            opacity: "0.7",
+                                          },
+                                          "& .css-wx7wi4:hover": {
+                                            transform: "rotate(20deg)",
+                                            transition: "all 0.6s ease",
+                                            opacity: "1",
+                                          },
+                                        }}
+                                      >
+                                        {menu.icon}
+                                      </span>
+                                      {isCollapsed && (
+                                        <span
+                                          className={` capitalize flex items-center gap-2`}
+                                        >
+                                          {menu.name}
+                                          {menu.pro && (
+                                            <div
+                                              className={`${
+                                                themeBgImg
+                                                  ? currentMode === "dark"
+                                                    ? "bg-black"
+                                                    : "bg-white"
+                                                  : "bg-transparent"
+                                              } p-1 rounded-full`}
+                                            >
+                                              <GiQueenCrown
+                                                size={16}
+                                                className="gold-grad"
+                                              />
+                                            </div>
+                                          )}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </MenuItem>
+                                  {menu?.count !== null &&
+                                    menu?.count !== undefined && (
+                                      <span
+                                        className={`leads_counter block absolute ${
+                                          isLangRTL(i18n.language)
+                                            ? "left-5"
+                                            : "right-5"
+                                        }`}
+                                        style={{
+                                          top: "50%",
+                                          transform: "translateY(-50%)",
+                                        }}
+                                      >
+                                        {menu?.count !== null &&
+                                        menu?.count !== undefined
+                                          ? menu?.count
+                                          : ""}
+                                      </span>
+                                    )}
+                                </Box>
+                              </Link>
+                            );
+                          }
+                        }
+                      })}
+                    </SubMenu>
+                  )}
+                </Box>
+              );
+            }
+          })}
+        </Box>
+      </Menu>
+    );
+  };
+
+  return (
+    <>
+      <audio ref={ringtoneElem} className="hidden">
+        <source src={ringtone} type="audio/ogg" />
+        <source src={ringtone} type="audio/mpeg" />
+      </audio>
+      <audio ref={notifRingtoneElem} className="hidden">
+        <source src={notifRingtone} type="audio/ogg" />
+        <source src={notifRingtone} type="audio/mpeg" />
+      </audio>
+
+      {confetti && (
+        <ReactConfetti
+          className={fadeOutConfetti ? "fade-out-confetti" : ""}
+          tweenDuration={8000}
+          width={screenWidth}
+          height={screenHeight}
+        />
+      )}
+
+      {(deviceType === "mobile" || deviceType === "tablet") && (
+        <>
+          {!showSidebar && (
+            <div
+              className={`fixed top-10 shadow-xl bg-primary text-white py-2 px-4 ${
+                isLangRTL(i18n.language)
+                  ? "right-0 rounded-l-full"
+                  : "left-0 rounded-r-full"
+              }`}
+              style={{
+                zIndex: 101,
+              }}
+              onClick={(e) => toggleSidebar(true)}
+            >
+              <BsList size={20} />
+            </div>
+          )}
+          {showSidebar && (
+            <>
+              <div
+                ref={sidebarRef}
+                className={`fixed top-5 bottom-5 rounded-xl ${
+                  isLangRTL(i18n.language) ? "right-5" : "left-5"
+                }`}
+                style={{
+                  zIndex: 101,
+                }}
+              >
+                <div className="relative flex">
+                  <div
+                    className={`h-[95vh] w-[200px] ${
+                      currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black"
+                    }`}
+                  >
+                    {/* SIDEBAR */}
+                    <div>
+                      <div
+                        className="w-full h-[250px] flex flex-col items-center gap-4 border-b-2 border-primary"
+                        style={{
+                          zIndex: 1000,
+                        }}
+                      >
+                        {/* BRAND */}
+                        <div className={`flex w-full items-center h-[50px]`}>
+                          <Link
+                            to={
+                              // User?.role !== 5 ?
+                              "/dashboard"
+                              // : "/attendance/officeSettings"
+                            }
+                            className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                            onClick={() => {
+                              setSelected({
+                                name:
+                                  // User?.role !== 5 ?
+                                  "Dashboard",
+                                // : "Office Settings",
+                                index: 0,
+                              });
+                            }}
+                          >
+                            <div className="w-full flex items-center gap-2 p-2">
+                              <img
+                                height={40}
+                                width={40}
+                                className="h-[40px] w-[40px] p-1"
+                                src="/favicon.png"
+                                alt=""
+                              />
+                              <h1
+                                className={`font-bold overflow-hidden uppercase ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-black"
+                                }`}
+                              >
+                                HIKAL CRM
+                              </h1>
+                            </div>
+                          </Link>
+                        </div>
+
+                        {/* PROFILE  */}
+                        <div className="profile-section border-b-2 border-primary px-2 pb-5 mb-2">
+                          <div
+                            onClick={handleClickProfile}
+                            className="flex cursor-pointer flex-col items-center justify-center"
+                          >
+                            <Box
+                              className="relative"
+                              sx={{
+                                "&:hover .absolute": {
+                                  display: "flex",
+                                  background:
+                                    currentMode === "dark" ? "white" : "black",
+                                },
+                              }}
+                            >
+                              <img
+                                src={
+                                  User?.displayImg
+                                    ? User?.displayImg
+                                    : "/assets/user.png"
+                                }
+                                height={90}
+                                width={90}
+                                className={`rounded-md object-cover relative`}
+                                alt=""
+                              />
+                            </Box>
+                            <h1
+                              className={`my-2 font-bold text-lg text-center capitalize multiline-ellipsis line-clamp-2 ${
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-main-dark-bg"
+                              }`}
+                            >
+                              {User?.userName ? User?.userName : "-"}
+                            </h1>
+                            <span
+                              style={{
+                                background: primaryColor,
+                              }}
+                              className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
+                            >
+                              {User?.position || "-"}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* <div
+                      className={`${animateProfilePic ? "animate-profile-pic" : ""
+                        } fixed hidden top-0 ${isLangRTL(i18n.language) ? "right-0" : "left-0"
+                        } w-screen h-screen`}
+                      style={{
+                        backgroundColor: "rgba(0, 0, 0, 0.85)",
+                      }}
+                    >
+                      <IconButton
+                        sx={{
+                          position: "absolute",
+                          right: !isLangRTL(i18n.language) && "8%",
+                          left: isLangRTL(i18n.language) && "8%",
+                          top: "8%",
+                          color: "white",
+                        }}
+                        onClick={() => setAnimateProfilePic(false)}
+                      >
+                        <IoMdClose size={22} />
+                      </IconButton>
+                      <img
+                        src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
+                        height={60}
+                        width={60}
+                        className={`rounded-md pointer-events-none object-cover relative z-[10000] `}
+                        alt=""
+                      />
+                    </div> */}
+                      </div>
+
+                      {/* MODULES  */}
+                      <div
+                        className="sidebar-root mt-4 mb-4 text-base"
+                        style={{
+                          overflowY: "auto",
+                          height: "calc(92vh - 250px)",
+                        }}
+                      >
+                        <SidebarMenu
+                          currentMode={currentMode}
+                          isLangRTL={isLangRTL}
+                        />
+                      </div>
+                    </div>
+                    {/* SIDEBAR */}
+                  </div>
+                  <div
+                    className={`my-5 shadow-xl h-fit bg-primary text-white py-2 px-3 ${
+                      isLangRTL(i18n.language)
+                        ? "right-0 rounded-l-full"
+                        : "left-0 rounded-r-full"
+                    }`}
+                    style={{
+                      zIndex: 101,
+                    }}
+                    onClick={(e) => toggleSidebar(false)}
+                  >
+                    <BsList size={20} />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      )}
+
+      {deviceType === "desktop" && (
+        <Box
+          sx={{
+            "& .ps-sidebar-container": {
+              backgroundColor: themeBgImg
+                ? currentMode === "dark"
+                  ? blurDarkColor
+                  : blurLightColor
+                : currentMode === "dark"
+                ? "#282B30"
+                : "#EEEEEE",
+            },
+          }}
+          style={{ display: "flex", height: "100%" }}
+          className={`max-w-[200px] sticky top-0 ${
+            isLangRTL(i18n.language) ? "right-0" : "left-0"
+          }  `}
+        >
+          <Sidebar
+            rootStyles={{
+              [`.${sidebarClasses.container}`]: {
+                backgroundColor: themeBgImg
+                  ? currentMode === "dark"
+                    ? blurDarkColor
+                    : blurLightColor
+                  : currentMode === "dark"
+                  ? "#282B30"
+                  : "#EEEEEE",
+              },
+            }}
+            className={`h-screen sticky top-0 ${currentMode}-mode-sidebar`}
+          >
+            {/* ${currentMode}-mode-sidebar */}
+            <div>
+              <div
+                className="sidebar-top"
+                style={{
+                  position: !themeBgImg && "sticky",
+                  top: !themeBgImg && 0,
+                  background:
+                    !themeBgImg &&
+                    (currentMode === "dark" ? "#282B30" : "#EEEEEE"),
+                  zIndex: 1000,
+                }}
+              >
+                <div
+                  className={
+                    !themeBgImg &&
+                    (currentMode === "dark"
+                      ? "bg-dark-neu-nr"
+                      : "bg-light-neu-nr")
+                  }
+                >
+                  {/* HIKAL CRM  */}
+                  <div
+                    className={`flex ${
+                      isCollapsed ? "justify-between" : "justify-center"
+                    } w-full items-center h-[50px]`}
+                  >
+                    <Link
+                      to={
+                        User?.role === 5
+                          ? "/attendance/officeSettings"
+                          : User?.role === 9
+                          ? "/order_history"
+                          : "/dashboard"
+                      }
+                      className="items-center gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 "
+                      onClick={() => {
+                        setSelected({
+                          name:
+                            User?.role === 5
+                              ? "Office Settings"
+                              : User?.role === 9
+                              ? "Order History"
+                              : "Dashboard",
+                          index: 0,
+                        });
+                      }}
+                    >
+                      <div className="w-full flex items-center gap-2 p-2">
+                        <img
+                          height={40}
+                          width={40}
+                          className="h-[40px] w-[40px] p-1"
+                          src="/favicon.png"
+                          alt=""
+                        />
+                        {isCollapsed && (
+                          <h1
+                            className={`font-bold overflow-hidden uppercase ${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-black"
+                            }`}
+                          >
+                            HIKAL CRM
+                          </h1>
+                        )}
+                      </div>
+                    </Link>
+                  </div>
+                  {/* PROFILE  */}
+                  <div className="profile-section border-b-2 border-primary px-2 pb-5">
+                    {isCollapsed ? (
+                      <>
+                        <div
+                          // to={"/profile"}
+                          onClick={handleClickProfile}
+                          className="flex cursor-pointer flex-col items-center justify-center"
+                        >
+                          <Box
+                            className="relative"
+                            sx={{
+                              "&:hover .absolute": {
+                                display: "flex",
+                                background:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                            }}
+                          >
+                            <img
+                              src={
+                                User?.displayImg
+                                  ? User?.displayImg
+                                  : "/assets/user.png"
+                              }
+                              height={60}
+                              width={60}
+                              className={`${
+                                !themeBgImg &&
+                                (currentMode === "dark"
+                                  ? "bg-primary-dark-neu"
+                                  : "bg-primary-light-neu")
+                              } rounded-md object-cover relative`}
+                              alt=""
+                            />
+                            {/* 
+                        <div
+                          onClick={() =>
+                            setAnimateProfilePic(!animateProfilePic)
+                          }
+                          className={`absolute rounded-md z-[11111] view-image hidden top-0 left-0 w-full font-bold h-full flex-col justify-center items-center`}
+                        >
+                          <p
+                            className={`${
+                              currentMode === "dark"
+                                ? "text-black"
+                                : "text-white"
+                            }`}
+                          >
+                            View
+                          </p>
+                        </div> */}
+                          </Box>
+
+                          <h1
+                            className={`my-2 font-bold text-lg text-center capitalize ${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-main-dark-bg"
+                            }`}
+                          >
+                            {User?.userName ? User?.userName : "No username"}
+                          </h1>
+                          <span
+                            style={{
+                              background: primaryColor,
+                            }}
+                            className={`block rounded-sm shadow-sm uppercase px-2 py-1 text-sm text-white`}
+                          >
+                            {User?.position || ""}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div
+                        // to={"/profile"}
+                        onClick={handleClickProfile}
+                        className="flex justify-center"
+                      >
+                        <Avatar
+                          src={User?.displayImg}
+                          height={50}
+                          width={50}
+                          className="rounded-sm cursor-pointer"
+                          alt=""
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div
+                  className={`${
+                    animateProfilePic ? "animate-profile-pic" : ""
+                  } fixed hidden top-0 ${
+                    isLangRTL(i18n.language) ? "right-0" : "left-0"
+                  } w-screen h-screen`}
+                  style={{
+                    backgroundColor: "rgba(0, 0, 0, 0.85)",
+                  }}
+                >
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      right: !isLangRTL(i18n.language) && "8%",
+                      left: isLangRTL(i18n.language) && "8%",
+                      top: "8%",
+                      color: "white",
+                    }}
+                    onClick={() => setAnimateProfilePic(false)}
+                  >
+                    <IoMdClose size={22} />
+                  </IconButton>
+                  <img
+                    src={
+                      User?.displayImg ? User?.displayImg : "/assets/user.png"
+                    }
+                    height={60}
+                    width={60}
+                    className={`rounded-md pointer-events-none object-cover relative z-[10000] `}
+                    alt=""
+                  />
+                </div>
+              </div>
+
+              {/* MODULES  */}
+              <div className={`sidebar-root py-5 text-base`}>
+                <SidebarMenu currentMode={currentMode} isLangRTL={isLangRTL} />
+              </div>
+            </div>
+
+            {/* {animateProfile ? (
+            <div
+              className={`profile-pic-popout ${
+                animateProfile ? "animate-profile-pic" : ""
+              }`}
+            >
+              <img
+                src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
+                height={60}
+                width={60}
+                className={`rounded-md object-cover`}
+                alt=""
+              />
+            </div>
+          ) : (
+            <></>
+          )} */}
+          </Sidebar>
+        </Box>
+      )}
+
+      {dealClosedAnimation?.isOpen && (
+        <DealClosedAlert
+          className={closeDealPopupFade ? "fade-out-popup" : ""}
+          data={dealClosedAnimation?.data}
+        />
+      )}
+
+      {newMessageReceived === User?.loginId &&
+        location.pathname !== "/chat" && (
+          <div className={`message-received-float ${blink ? "animate" : ""}`}>
+            <Link
+              className="p-[12px]"
+              onClick={() => {
+                setNewMessageReceived(false);
+                setMessagesCount(0);
+              }}
+              to="/chat"
+            >
+              <FaInbox size={22} />
+            </Link>
+
+            <div className="border border-[#2B2830] bg-black p-1 w-[18px] h-[18px] rounded-full absolute top-0 left-0 flex justify-center items-center text-white">
+              {messagesCount}
+            </div>
+          </div>
+        )}
+    </>
+  );
+};
+export default Sidebarmui;

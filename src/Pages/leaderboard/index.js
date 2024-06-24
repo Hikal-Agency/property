@@ -1,0 +1,128 @@
+import React from "react";
+import { Box, Tab, Tabs } from "@mui/material";
+import { useState } from "react";
+import { useStateContext } from "../../context/ContextProvider";
+import CallLogBoard from "./calllogboard";
+import TargetBoard from "./targetboard";
+import Scoreboard from "./Scoredboard";
+import ClosedealsboardUpdated from "./closeddealsboardUpdated";
+import { Link } from "react-router-dom";
+import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
+
+const Leaderboard = () => {
+  const { currentMode, darkModeColors, themeBgImg, t } = useStateContext();
+  const [value, setValue] = useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const [tabValue, setTabValue] = useState(0);
+  const [loading] = useState(false);
+
+  return (
+    <>
+      <div className="min-h-screen">
+        <div
+          className={`w-full p-4 ${
+            !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")}
+            ${currentMode === "dark" ? "text-white" : "text-black"
+          }`}
+        >
+          <div className={`w-full flex items-center pb-3`}>
+            <div className="bg-primary h-10 w-1 rounded-full"></div>
+            <h1
+              className={`text-lg font-semibold mx-2 uppercase ${
+                currentMode === "dark" ? "text-white" : "text-black"
+              }`}
+            >
+              {t("leaderboard")}
+            </h1>
+          </div>
+          
+          {/* TABS */}
+          <div className="grid grid-cols-1">
+            <div className={``}>
+              <Box
+                sx={{
+                  ...darkModeColors,
+                  "& .MuiTabs-indicator": {
+                    height: "100%",
+                    borderRadius: "5px",
+                  },
+                  "& .Mui-selected": {
+                    color: "white !important",
+                    zIndex: "1",
+                  },
+                }}
+                className={`w-full rounded-md overflow-hidden ${
+                  !themeBgImg ? (currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]") : (currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light")
+                }`}
+              >
+                <div className="flex justify-between">
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    variant="standard"
+                    className="w-full px-1 m-1"
+                  >
+                    <Tab label={t("call_logs")} />
+                    <Tab label={t("menu_closed_deals")} />
+                    <Tab label={t("label_target")}/>
+                  </Tabs>
+                  <Link
+                    className="bg-primary w-[250px] text-white rounded-lg pl-2 py-3 font-semibold  flex items-center justify-center space-x-2"
+                    style={{ color: "#ffffff" }}
+                    to="/fresh-logs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>{t("call_logs_full_view")}</span>
+                    <BsFillArrowUpRightCircleFill />
+                  </Link>
+                </div>
+              </Box>
+              <div className="pb-5">
+                <TabPanel value={value} index={0}>
+                  <CallLogBoard
+                    isLoading={loading}
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <ClosedealsboardUpdated
+                    isLoading={loading}
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  <TargetBoard
+                    isLoading={loading}
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                  <Scoreboard
+                    isLoading={loading}
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                  />
+                </TabPanel>
+              </div>
+            </div>
+          </div>
+          {/* TABS END */}
+        </div>
+      </div>
+    </>
+  );
+
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return <div>{value === index && <div>{children}</div>}</div>;
+  }
+};
+
+export default Leaderboard;
