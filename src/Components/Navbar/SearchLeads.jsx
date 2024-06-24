@@ -1,17 +1,20 @@
-import { useState, useEffect } from "react";
-import { Box, CircularProgress, TextField, InputAdornment } from "@mui/material";
+import { useState, useEffect, useRef } from "react";
+import {
+  Box,
+  CircularProgress,
+  TextField,
+  InputAdornment,
+} from "@mui/material";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router";
 import { search } from "../../utils/axiosSearch";
-import { 
-  BsMic,
-  BsMicFill
-} from "react-icons/bs";
+import { BsMic, BsMicFill } from "react-icons/bs";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 const SearchLeads = () => {
+  const searchContainer = useRef(null);
   const {
     transcript,
     listening,
@@ -27,19 +30,8 @@ const SearchLeads = () => {
 
   const location = useLocation();
 
-  const clearSearchInput = () => {
-    setSearchResults(null);
-    setSearchTerm("");
-    setIsVoiceSearchState(false);
-  };
   useEffect(() => {
-    if (!browserSupportsSpeechRecognition) {
-      console.error("Browser doesn't support speech recognition.");
-    }
-  }, [browserSupportsSpeechRecognition]);
-
-  useEffect(() => {
-    if (isVoiceSearchState && transcript) {
+    if (isVoiceSearchState && transcript.length > 0) {
       // setSearchTerm(transcript);
       handleSearch({ target: { value: transcript } });
     }
@@ -48,12 +40,27 @@ const SearchLeads = () => {
 
   useEffect(() => {
     if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
       startListening();
     } else {
       SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
       resetTranscript();
     }
   }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setSearchResults(null);
+    setSearchTerm("");
+    // setIsVoiceSearchState(false);
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
 
   const startListening = () =>
     SpeechRecognition.startListening({ continuous: true });
@@ -111,7 +118,16 @@ const SearchLeads = () => {
   useEffect(() => {
     const cb = (e) => {
       if (!e.target.closest(".search-leads-container")) {
-        clearSearchInput();
+        if (e?.target?.parentNode?.id != "search_mic") {
+          if (e?.target?.id != "search_mic") {
+            console.log(
+              searchContainer?.current,
+              e?.target?.parentNode,
+              "click element"
+            );
+            clearSearchInput();
+          }
+        }
       }
     };
     document.body.addEventListener("click", cb);
@@ -135,15 +151,21 @@ const SearchLeads = () => {
               endAdornment: (
                 <InputAdornment position="end">
                   <div
-                    className={`${isVoiceSearchState ? "listening bg-primary" : ""
-                      } ${currentMode === "dark" ? "text-white" : "text-black"
-                      } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
-                    onClick={() => setIsVoiceSearchState(!isVoiceSearchState)}
+                    ref={searchContainer}
+                    className={`${
+                      isVoiceSearchState ? "listening bg-primary" : ""
+                    } ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                    onClick={() => {
+                      setIsVoiceSearchState(!isVoiceSearchState);
+                      console.log("mic is clicked...");
+                    }}
                   >
                     {isVoiceSearchState ? (
-                      <BsMicFill size={16} />
+                      <BsMicFill id="search_mic" size={16} />
                     ) : (
-                      <BsMic size={16} />
+                      <BsMic id="search_mic" size={16} />
                     )}
                   </div>
                 </InputAdornment>
@@ -161,8 +183,9 @@ const SearchLeads = () => {
         </Box>
         {searchResult?.data?.length > 0 && (
           <div
-            className={`absolute rounded shadow mt-1 p-3 w-[190px] ${currentMode === "dark" ? "bg-[#292828]" : "bg-white"
-              }`}
+            className={`absolute rounded shadow mt-1 p-3 w-[190px] ${
+              currentMode === "dark" ? "bg-[#292828]" : "bg-white"
+            }`}
             style={{
               overflow:
                 searchResult != null
@@ -189,8 +212,9 @@ const SearchLeads = () => {
                     },
                   }}
                   key={search?.id}
-                  className={`py-2 ${currentMode === "dark" ? "text-white" : "text-dark"
-                    } cursor-pointer`}
+                  className={`py-2 ${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  } cursor-pointer`}
                   onClick={(e) => handleNavigate(e, search)}
                 >
                   {search?.leadName}
