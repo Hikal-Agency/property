@@ -95,6 +95,7 @@ const BookedDeals = ({
   const { screenWidth, screenHeight } = useWindowSize();
 
   const token = localStorage.getItem("auth-token");
+
   const [singleLeadData, setsingleLeadData] = useState();
   const [filt, setFilt] = useState([]);
   const { hasPermission } = usePermission();
@@ -244,7 +245,9 @@ const BookedDeals = ({
           setFeedback(newFeedback);
           setreloadDataGrid(!reloadDataGrid);
           setDialogue(false);
+          console.log(newFeedback, "new Feed Back");
           if (newFeedback === "Closed Deal") {
+            console.log("deal_closed_data");
             socket.emit("notification_deal_close", {
               from: { id: User?.id },
               closedByName: User?.userName,

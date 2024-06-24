@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import moment from "moment";
+import { socket } from "../../Pages/App";
 import {
   Backdrop,
   CircularProgress,
@@ -10,7 +11,7 @@ import {
   Box,
   InputAdornment,
   FormControlLabel,
-  Checkbox
+  Checkbox,
 } from "@mui/material";
 import Select from "react-select";
 import {
@@ -29,9 +30,7 @@ import dayjs from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import {
-  BsPercent
-} from "react-icons/bs";
+import { BsPercent } from "react-icons/bs";
 
 const BookedDealsForm = ({
   BookedForm,
@@ -133,7 +132,7 @@ const BookedDealsForm = ({
       });
     }
   };
-  // CASHBACK 
+  // CASHBACK
   const toggleCashback = (value) => {
     setWithCashback(value);
     if (value === true) {
@@ -150,9 +149,13 @@ const BookedDealsForm = ({
   useEffect(() => {
     const {
       amount,
-      paid_percent, booking_amount, paid_amount,
-      discount_amount, discount_percent,
-      cashback_amount, cashback_percent,
+      paid_percent,
+      booking_amount,
+      paid_amount,
+      discount_amount,
+      discount_percent,
+      cashback_amount,
+      cashback_percent,
     } = closedDealData;
 
     if (updatedField === "amount" || updatedField === "paid_percent") {
@@ -249,7 +252,9 @@ const BookedDealsForm = ({
       if (!isNaN(sellingAmount) && !isNaN(discountPercent)) {
         let discountAmount = (sellingAmount * discountPercent) / 100;
         discountAmount =
-          discountAmount % 1 === 0 ? discountAmount.toFixed(0) : discountAmount.toFixed(2);
+          discountAmount % 1 === 0
+            ? discountAmount.toFixed(0)
+            : discountAmount.toFixed(2);
 
         console.log("DISCOUNT PERCENT = ", discountPercent);
         console.log("DISCOUNT AMOUNT = ", discountAmount);
@@ -283,7 +288,9 @@ const BookedDealsForm = ({
       if (!isNaN(sellingAmount) && !isNaN(cashbackPercent)) {
         let cashbackAmount = (sellingAmount * cashbackPercent) / 100;
         cashbackAmount =
-        cashbackAmount % 1 === 0 ? cashbackAmount.toFixed(0) : cashbackAmount.toFixed(2);
+          cashbackAmount % 1 === 0
+            ? cashbackAmount.toFixed(0)
+            : cashbackAmount.toFixed(2);
 
         console.log("CASHBACK PERCENT = ", cashbackPercent);
         console.log("CASHBACK AMOUNT = ", cashbackAmount);
@@ -299,7 +306,7 @@ const BookedDealsForm = ({
       if (!isNaN(sellingAmount) && !isNaN(cashbackAmount)) {
         let cashbackPercent = (cashbackAmount / sellingAmount) * 100 || 0;
         cashbackPercent =
-        cashbackPercent % 1 === 0
+          cashbackPercent % 1 === 0
             ? cashbackPercent.toFixed(0)
             : cashbackPercent.toFixed(2);
 
@@ -370,7 +377,17 @@ const BookedDealsForm = ({
           });
           return;
         }
-
+        socket.emit("notification_deal_close", {
+          from: { id: User?.id },
+          closedByName: User?.userName,
+          project: Feedback.project,
+          amount: closedDealData?.amount,
+          participants: [
+            Feedback?.assignedToSales,
+            User?.isParent,
+            Feedback?.assignedToManager,
+          ],
+        });
         handleClose();
         toast.success("Closed deal added successfully", {
           position: "top-right",
@@ -416,18 +433,21 @@ const BookedDealsForm = ({
       }}
     >
       <div
-        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${isClosing
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-          } w-[100vw] h-[100vh] flex items-start justify-end`}
+        } w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -438,13 +458,15 @@ const BookedDealsForm = ({
         </button>
         <div
           style={style}
-          className={` ${currentMode === "dark"
-            ? "bg-[#000000] text-white"
-            : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language)
+          className={` ${
+            currentMode === "dark"
+              ? "bg-[#000000] text-white"
+              : "bg-[#FFFFFF] text-black"
+          } ${
+            isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-            }
+          }
             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
           `}
         >
@@ -456,12 +478,14 @@ const BookedDealsForm = ({
             <>
               <div className="w-full flex items-center pb-5">
                 <div
-                  className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                    } bg-primary h-10 w-1 rounded-full my-1`}
+                  className={`${
+                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                  } bg-primary h-10 w-1 rounded-full my-1`}
                 ></div>
                 <h1
-                  className={`text-lg font-semibold ${currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
+                  className={`text-lg font-semibold ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
                   style={{
                     fontFamily: isArabic(Feedback?.feedback)
                       ? "Noto Kufi Arabic"
@@ -473,16 +497,16 @@ const BookedDealsForm = ({
                     <span className="text-sm bg-gray-500 text-white px-2 py-1 rounded-md font-bold">
                       {t(
                         "feedback_" +
-                        Feedback?.feedback
-                          ?.toLowerCase()
-                          ?.replaceAll(" ", "_")
+                          Feedback?.feedback
+                            ?.toLowerCase()
+                            ?.replaceAll(" ", "_")
                       )}
                     </span>{" "}
                     {t("to")}{" "}
                     <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
                       {t(
                         "feedback_" +
-                        newFeedback?.toLowerCase()?.replaceAll(" ", "_")
+                          newFeedback?.toLowerCase()?.replaceAll(" ", "_")
                       )}
                     </span>{" "}
                     ?
@@ -501,14 +525,14 @@ const BookedDealsForm = ({
                       sx={{
                         ...darkModeColors,
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
                         "& legend": {
                           textAlign: isLangRTL(i18n.language)
                             ? "right"
@@ -585,14 +609,14 @@ const BookedDealsForm = ({
                       sx={{
                         ...darkModeColors,
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
                         "& legend": {
                           textAlign: isLangRTL(i18n.language)
                             ? "right"
@@ -706,14 +730,14 @@ const BookedDealsForm = ({
                       sx={{
                         ...darkModeColors,
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
                         "& legend": {
                           textAlign: isLangRTL(i18n.language)
                             ? "right"
@@ -760,7 +784,7 @@ const BookedDealsForm = ({
                             />
                           )}
                           minDate={closedDealData?.booking_date}
-                        // maxDate={dayjs().startOf("day").toDate()}
+                          // maxDate={dayjs().startOf("day").toDate()}
                         />
                       </LocalizationProvider>
 
@@ -842,14 +866,14 @@ const BookedDealsForm = ({
                       sx={{
                         ...darkModeColors,
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
                         "& legend": {
                           textAlign: isLangRTL(i18n.language)
                             ? "right"
@@ -964,7 +988,11 @@ const BookedDealsForm = ({
 
                 {/* DISCOUNT */}
                 <div className="px-2">
-                  <h1 className={`text-center text-primary py-2 mb-5 uppercase font-semibold ${withDiscount && "border-b-2 border-primary"}`}>
+                  <h1
+                    className={`text-center text-primary py-2 mb-5 uppercase font-semibold ${
+                      withDiscount && "border-b-2 border-primary"
+                    }`}
+                  >
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -983,14 +1011,14 @@ const BookedDealsForm = ({
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
                           "& legend": {
                             textAlign: isLangRTL(i18n.language)
                               ? "right"
@@ -1064,7 +1092,11 @@ const BookedDealsForm = ({
 
                 {/* CASHBACK */}
                 <div className="px-2">
-                  <h1 className={`text-center text-primary py-2 mb-5 uppercase font-semibold ${withCashback && "border-b-2 border-primary"}`}>
+                  <h1
+                    className={`text-center text-primary py-2 mb-5 uppercase font-semibold ${
+                      withCashback && "border-b-2 border-primary"
+                    }`}
+                  >
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -1083,14 +1115,14 @@ const BookedDealsForm = ({
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
                           "& legend": {
                             textAlign: isLangRTL(i18n.language)
                               ? "right"
@@ -1220,7 +1252,6 @@ const BookedDealsForm = ({
                   </div>
                 </div> */}
               </div>
-
             </>
           )}
           <div className="px-4">
