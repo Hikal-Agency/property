@@ -640,6 +640,43 @@ const SingleTransactionModal = ({
                             })}
                         </div>
                       </div>
+                      {/* DEAL DETAILS */}
+                      {singleTrans?.deal && (
+                        <div className="col-span-1 gap-5">
+                          <div
+                            className={`text-primary text-center py-2 border-b-2 border-primary uppercase`}
+                          >
+                            {t("deal_detail")}
+                          </div>
+                          <div className="flex flex-col gap-4 p-5">
+                            {/* UNIT */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("unit")}:
+                              </p>
+                              <p>{singleTrans?.deal?.unit} </p>
+                            </div>
+                            {/* DEAL DATE */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("date")}:
+                              </p>
+                              <p>{singleTrans?.deal?.dealDate} </p>
+                            </div>
+
+                            {/* AMOUNT */}
+                            <div className="flex gap-3">
+                              <p className="font-bold capitalize">
+                                {t("amount")}:
+                              </p>
+                              <p>
+                                {singleTrans?.deal?.currency}{" "}
+                                <span>{singleTrans?.deal?.amount}</span>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {openEditModal && (

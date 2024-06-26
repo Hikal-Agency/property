@@ -1111,6 +1111,9 @@
     "funds":"Funds",
     "balance":"Balance",
     "bulk_assign": "Bulk Assign",
-    "upload_file": "Upload File"
+    "upload_file": "Upload File",
+
+
+    "deal_detail": "Deal Detail"
   
 } 
