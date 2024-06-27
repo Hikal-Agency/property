@@ -181,7 +181,7 @@ const Timeline = ({
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
               } 
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+             p-4 h-[100vh] w-[85vw] overflow-y-scroll border-primary
             `}
           >
             <div className={`w-full`}>

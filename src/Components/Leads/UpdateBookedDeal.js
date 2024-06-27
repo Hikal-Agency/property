@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { MdClose } from "react-icons/md";
 import {
+  currencies,
   enquiry_options,
   property_options,
   purpose_options,
@@ -26,6 +27,7 @@ import {
 import { selectStyles } from "../_elements/SelectStyles";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import HeadingTitle from "../_elements/HeadingTitle";
 
 const UpdateBookedDeal = ({
   LeadModelOpen,
@@ -76,7 +78,11 @@ const UpdateBookedDeal = ({
   const [LeadEmail, setLeadEmail] = useState("");
   const [LeadProject, setLeadProject] = useState("");
   const [booked_amount, setBookedAmount] = useState("");
+  const [sellingAmount, setSellingAmount] = useState("");
   const [booked_date, setBookedDate] = useState("");
+  const [developerName, setDeveloperName] = useState("");
+  const [currency, setCurrency] = useState("AED");
+  const [unit, setUnit] = useState("");
   //eslint-disable-next-line
   const [LeadNotes, setLeadNotes] = useState("");
 
@@ -164,6 +170,7 @@ const UpdateBookedDeal = ({
         setEnquiryType(result?.data?.data?.enquiryType);
         setLeadProject(result?.data?.data?.project);
         setBookedAmount(result?.data?.data?.booked_amount);
+        setSellingAmount(result?.data?.data?.amount);
         setForType(result?.data?.data?.leadFor);
         setLeadName(result?.data?.data?.leadName);
         setLeadContact(result?.data?.data?.leadContact?.replaceAll(" ", ""));
@@ -176,6 +183,9 @@ const UpdateBookedDeal = ({
         setManager(result?.data?.data?.assignedToManager);
         setSalesPerson2(result?.data?.data?.assignedToSales);
         setBookedDate(result?.data?.data?.booked_date);
+        setDeveloperName(result?.data?.data?.developer);
+        setCurrency(result?.data?.data?.currency);
+        setUnit(result?.data?.data?.unit);
         setloading(false);
       })
       .catch((err) => {
@@ -220,7 +230,11 @@ const UpdateBookedDeal = ({
     UpdateLeadData.append("enquiryType", EnquiryType);
     UpdateLeadData.append("leadType", PropertyType);
     UpdateLeadData.append("project", LeadProject);
+    UpdateLeadData.append("developer", developerName);
     UpdateLeadData.append("booked_amount", booked_amount);
+    UpdateLeadData.append("amount", sellingAmount);
+    UpdateLeadData.append("currency", currency);
+    UpdateLeadData.append("unit", unit);
     UpdateLeadData.append("leadFor", ForType);
     UpdateLeadData.append("booked_date", booked_date);
     // UpdateLeadData.append("language", LanguagePrefered);
@@ -290,23 +304,20 @@ const UpdateBookedDeal = ({
           } absolute top-1/2 left-1/2 p-4 rounded-md`}
         > */}
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -317,16 +328,14 @@ const UpdateBookedDeal = ({
           </button>
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              currentMode === "dark" &&
+            className={` ${currentMode === "dark"
+              ? "bg-dark text-white"
+              : "bg-light text-black"
+              } ${currentMode === "dark" &&
               (isLangRTL(i18n.language)
                 ? "border-r-2 border-primary"
                 : "border-l-2 border-primary")
-            }
+              }
              p-4 h-[100vh] w-[80vw] overflow-y-scroll 
             `}
           >
@@ -334,9 +343,8 @@ const UpdateBookedDeal = ({
               <div className="">
                 <CircularProgress size={20} />
                 <span
-                  className={`font-semibold text-lg ${
-                    currentMode === "dark" ? "text-white" : "text-dark"
-                  }`}
+                  className={`font-semibold text-lg ${currentMode === "dark" ? "text-white" : "text-dark"
+                    }`}
                 >
                   {" "}
                   Fetching your data
@@ -344,16 +352,7 @@ const UpdateBookedDeal = ({
               </div>
             ) : (
               <>
-                <div className="w-full flex items-center pb-3">
-                  <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-                  <h1
-                    className={`text-lg font-semibold ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    {t("update_booked_deal")}
-                  </h1>
-                </div>
+                <HeadingTitle title={t("update_booked_deal")} />
 
                 <form
                   onSubmit={(e) => {
@@ -361,219 +360,252 @@ const UpdateBookedDeal = ({
                     UpdateLeadFunc();
                   }}
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1 px-4 pt-4">
-                    <div>
-                      <Box sx={darkModeColors}>
+                  <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5">
+                    {/* PROJECT DETAILS */}
+                    <Box
+                      sx={darkModeColors}
+                      className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"} p-5`}
+                    >
+                      <h5 className="uppercase text-center font-semibold text-primary mb-6">
+                        {t("project_details")}
+                      </h5>
+                      {/* DEVELOPER */}
+                      <TextField
+                        id="Developer"
+                        type={"text"}
+                        label={t("form_developer_name")}
+                        className="w-full"
+                        variant="outlined"
+                        size="small"
+                        value={developerName}
+                        style={{
+                          marginBottom: "20px",
+                        }}
+                        onChange={(e) => setDeveloperName(e.target.value)}
+                      />
+                      {/* PROJECT NAME */}
+                      <TextField
+                        id="Project"
+                        type={"text"}
+                        label={t("label_project_name")}
+                        className="w-full"
+                        variant="outlined"
+                        size="small"
+                        value={LeadProject}
+                        style={{
+                          marginBottom: "20px",
+                        }}
+                        onChange={(e) => setLeadProject(e.target.value)}
+                      />
+                      {/* ENQUIRY TYPE  */}
+                      <Select
+                        id="enquiry"
+                        value={
+                          EnquiryType && EnquiryType !== "null"
+                            ? {
+                              value: enquiry_options(t).find(
+                                (option) => option?.value === EnquiryType
+                              ),
+                              label: enquiry_options(t).find(
+                                (option) => option.value === EnquiryType
+                              )?.label,
+                            }
+                            : null
+                        }
+                        onChange={ChangeEnquiryType}
+                        options={enquiry_options(t)}
+                        placeholder={t("label_enquiry")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      {/* PROPERTY TYPE  */}
+                      <Select
+                        id="property-type"
+                        value={
+                          PropertyType && PropertyType !== "null"
+                            ? {
+                              value: property_options(t).find(
+                                (option) => option.value === PropertyType
+                              ),
+                              label: property_options(t).find(
+                                (option) => option.value === PropertyType
+                              )?.label,
+                            }
+                            : null
+                        }
+                        onChange={ChangePropertyType}
+                        options={property_options(t)}
+                        placeholder={t("label_property")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                      {/* PURPOSE  */}
+                      <Select
+                        id="for"
+                        value={
+                          ForType && ForType !== "null"
+                            ? {
+                              value: purpose_options(t).find(
+                                (option) => option.value === ForType
+                              ),
+                              label: purpose_options(t).find(
+                                (option) => option.value === ForType
+                              )?.label,
+                            }
+                            : null
+                        }
+                        onChange={ChangeForType}
+                        options={purpose_options(t)}
+                        placeholder={t("label_purpose_of_enquiry")}
+                        className="w-full"
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                    </Box>
+                    {/* BOOKING DETAILS */}
+                    <Box
+                      sx={darkModeColors}
+                      className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"} p-5`}
+                    >
+                      <h5 className="uppercase text-center font-semibold text-primary mb-6">
+                        {t("booking_details")}
+                      </h5>
+                      {/* SELLING AMOUNT */}
+                      <div className="grid grid-cols-3">
+                        <Select
+                          id="currency"
+                          options={currencies(t)}
+                          value={currencies(t)?.find(
+                            (curr) =>
+                              curr.value === currency
+                          )}
+                          onChange={(e) => {
+                            setCurrency(e.value);
+                          }}
+                          placeholder={t("label_select_currency")}
+                          // className={`mb-5`}
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
                         <TextField
-                          id="Project"
+                          id="SellingAmount"
                           type={"number"}
-                          label="Booked Amount"
-                          className="w-full"
+                          label={t("selling_amount")}
+                          className="w-full col-span-2"
                           variant="outlined"
                           size="small"
-                          value={booked_amount}
+                          value={sellingAmount}
                           style={{
                             marginBottom: "20px",
                           }}
-                          onChange={(e) => setBookedAmount(e.target.value)}
+                          onChange={(e) => setSellingAmount(e.target.value)}
                         />
-
-                        <TextField
-                          id="Project"
-                          type={"text"}
-                          label="Project name"
-                          className="w-full"
-                          variant="outlined"
-                          size="small"
-                          value={LeadProject}
-                          style={{
-                            marginBottom: "20px",
+                      </div>
+                      {/* UNIT */}
+                      <TextField
+                        id="Unit"
+                        type={"text"}
+                        label={t("label_unit")}
+                        className="w-full"
+                        variant="outlined"
+                        size="small"
+                        value={unit}
+                        style={{
+                          marginBottom: "20px",
+                        }}
+                        onChange={(e) => setUnit(e.target.value)}
+                      />
+                      {/* BOOKING AMOUNT */}
+                      <div className="grid grid-cols-3">
+                        <Select
+                          id="currency"
+                          options={currencies(t)}
+                          value={currencies(t)?.find(
+                            (curr) =>
+                              curr.value === currency
+                          )}
+                          onChange={(e) => {
+                            setCurrency(e.value);
                           }}
-                          onChange={(e) => setLeadProject(e.target.value)}
-                        />
-
-                        {/* ENQUIRY TYPE  */}
-                        <Select
-                          id="enquiry"
-                          value={
-                            EnquiryType && EnquiryType !== "null"
-                              ? {
-                                  value: enquiry_options(t).find(
-                                    (option) => option?.value === EnquiryType
-                                  ),
-                                  label: enquiry_options(t).find(
-                                    (option) => option.value === EnquiryType
-                                  )?.label,
-                                }
-                              : null
-                          }
-                          onChange={ChangeEnquiryType}
-                          options={enquiry_options(t)}
-                          placeholder={t("label_enquiry")}
-                          className="w-full"
+                          placeholder={t("label_select_currency")}
+                          // className={`mb-5`}
                           menuPortalTarget={document.body}
                           styles={selectStyles(currentMode, primaryColor)}
                         />
+                      <TextField
+                        id="BookedAmount"
+                        type={"number"}
+                        label={t("booking_amount")}
+                        className="w-full col-span-2"
+                        variant="outlined"
+                        size="small"
+                        value={booked_amount}
+                        style={{
+                          marginBottom: "20px",
+                        }}
+                        onChange={(e) => setBookedAmount(e.target.value)}
+                      />
+                      </div>
+                      {/* BOOKING DATE */}
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          value={booked_date}
+                          label={t("booking_date")}
+                          views={["day", "month", "year"]}
+                          onChange={(newValue) => {
+                            const formattedDate = moment(newValue?.$d).format(
+                              "YYYY-MM-DD"
+                            );
 
-                        {/* <FormControl fullWidth variant="outlined" size="medium">
-                          <InputLabel id="">Enquiry for</InputLabel>
-                          <Select
-                            id="enquiry"
-                            value={EnquiryType}
-                            label="Enquiry for"
-                            onChange={ChangeEnquiryType}
-                            className="w-full"
-                            sx={{
-                              marginBottom: "1.35rem !important",
-                            }}
-                            displayEmpty
-                            required
-                            size="small"
-                          >
-                            <MenuItem value="" disabled>
-                              ---NONE---
-                            </MenuItem>
-                            <MenuItem value={"Studio"}>Studio</MenuItem>
-                            <MenuItem value={"1 Bedroom"}>1 Bedroom</MenuItem>
-                            <MenuItem value={"2 Bedrooms"}>2 Bedrooms</MenuItem>
-                            <MenuItem value={"3 Bedrooms"}>3 Bedrooms</MenuItem>
-                            <MenuItem value={"4 Bedrooms"}>4 Bedrooms</MenuItem>
-                            <MenuItem value={"5 Bedrooms"}>5 Bedrooms</MenuItem>
-                            <MenuItem value={"6 Bedrooms"}>6 Bedrooms</MenuItem>
-                            <MenuItem value={"Retail"}>Retail</MenuItem>
-                            <MenuItem value={"Other"}>Others</MenuItem>
-                          </Select>
-                        </FormControl> */}
-
-                        {/* PROPERTY TYPE  */}
-                        <Select
-                          id="property-type"
-                          value={
-                            PropertyType && PropertyType !== "null"
-                              ? {
-                                  value: property_options(t).find(
-                                    (option) => option.value === PropertyType
-                                  ),
-                                  label: property_options(t).find(
-                                    (option) => option.value === PropertyType
-                                  )?.label,
-                                }
-                              : null
-                          }
-                          onChange={ChangePropertyType}
-                          options={property_options(t)}
-                          placeholder={t("label_property")}
-                          className="w-full"
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
+                            setBookedDate(formattedDate);
+                          }}
+                          format="DD-MM-YYYY"
+                          renderInput={(params) => (
+                            <TextField
+                              sx={{
+                                "& input": {
+                                  color:
+                                    currentMode === "dark"
+                                      ? "white"
+                                      : "black",
+                                },
+                                "& .MuiSvgIcon-root": {
+                                  color:
+                                    currentMode === "dark"
+                                      ? "white"
+                                      : "black",
+                                },
+                                marginBottom: "15px",
+                              }}
+                              fullWidth
+                              size="small"
+                              {...params}
+                              onKeyDown={(e) => e.preventDefault()}
+                              readOnly={true}
+                            />
+                          )}
                         />
-                        {/* <FormControl fullWidth variant="outlined" size="medium">
-                          <InputLabel id="">Property type</InputLabel>
-                          <Select
-                            id="property-type"
-                            value={PropertyType}
-                            label="Property type"
-                            onChange={ChangePropertyType}
-                            className="w-full"
-                            displayEmpty
-                            required
-                            size="small"
-                            sx={{
-                              marginBottom: "1.35rem !important",
-                            }}
-                          >
-                            <MenuItem value="" disabled>
-                              ---NONE---
-                            </MenuItem>
-                            <MenuItem value={"Apartment"}>Apartment</MenuItem>
-                            <MenuItem value={"Villa"}>Villa</MenuItem>
-                            <MenuItem value={"penthouse"}>Penthouse</MenuItem>
-                            <MenuItem value={"mansion"}>Mansion</MenuItem>
-                            <MenuItem value={"Commercial"}>Commercial</MenuItem>
-                            <MenuItem value={"Townhouse"}>Townhouse</MenuItem>
-                          </Select>
-                        </FormControl> */}
-
-                        {/* PURPOSE  */}
-                        <Select
-                          id="for"
-                          value={
-                            ForType && ForType !== "null"
-                              ? {
-                                  value: purpose_options(t).find(
-                                    (option) => option.value === ForType
-                                  ),
-                                  label: purpose_options(t).find(
-                                    (option) => option.value === ForType
-                                  )?.label,
-                                }
-                              : null
-                          }
-                          onChange={ChangeForType}
-                          options={purpose_options(t)}
-                          placeholder={t("label_purpose_of_enquiry")}
-                          className="w-full"
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DatePicker
-                            value={booked_date}
-                            label={t("date")}
-                            views={["day", "month", "year"]}
-                            onChange={(newValue) => {
-                              const formattedDate = moment(newValue?.$d).format(
-                                "YYYY-MM-DD"
-                              );
-
-                              setBookedDate(formattedDate);
-                            }}
-                            format="DD-MM-YYYY"
-                            renderInput={(params) => (
-                              <TextField
-                                sx={{
-                                  "& input": {
-                                    color:
-                                      currentMode === "dark"
-                                        ? "white"
-                                        : "black",
-                                  },
-                                  "& .MuiSvgIcon-root": {
-                                    color:
-                                      currentMode === "dark"
-                                        ? "white"
-                                        : "black",
-                                  },
-                                  marginBottom: "15px",
-                                }}
-                                fullWidth
-                                size="small"
-                                {...params}
-                                onKeyDown={(e) => e.preventDefault()}
-                                readOnly={true}
-                              />
-                            )}
-                          />
-                        </LocalizationProvider>
-                      </Box>
-                    </div>
+                      </LocalizationProvider>
+                    </Box>
                   </div>
 
-                  <Button
-                    ripple={true}
-                    size="lg"
-                    type="submit"
+                  <button
+                    // ripple={true}
+                    // size="lg"
+                    // type="submit"
                     disabled={btnloading ? true : false}
+                    className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"} w-full my-5 p-3 text-white font-semibold uppercase`}
                   >
                     {btnloading ? (
                       <div className="flex items-center justify-center space-x-1">
                         <CircularProgress size={18} sx={{ color: "white" }} />
                       </div>
                     ) : (
-                      <span>Update Lead</span>
+                      <span>{t("update_booked_deal")}</span>
                     )}
-                  </Button>
+                  </button>
                 </form>
               </>
             )}

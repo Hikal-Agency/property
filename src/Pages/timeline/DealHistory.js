@@ -604,6 +604,9 @@ const DealHistory = ({
             className={` ${currentMode === "dark"
               ? "bg-dark text-white"
               : "bg-light text-black"
+              } ${isLangRTL(i18n.language)
+                ? currentMode === "dark" && " border-primary border-r-2"
+                : currentMode === "dark" && " border-primary border-l-2"
               } p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
