@@ -9,17 +9,23 @@ import Error from "../Error";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
 import AddCommissionModal from "./AddCommissionModal";
 
-import { BsCheck2All, BsFileEarmarkMedical } from "react-icons/bs";
 import { MdClose, MdDownload } from "react-icons/md";
 import { IoMdPerson } from "react-icons/io";
-import { FaPencilAlt } from "react-icons/fa";
 import OverlayFile from "../../Components/_elements/OverlayFile";
 import { over } from "lodash";
 import moment from "moment";
 import CommissionReqModal from "./ComissionReqModal";
 import ReceiptVoucher from "./ReceiptVoucher";
 import CommissionReceipt from "./CommissionReceipt";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 // import base64ToBlob from "../../utils/baseToBlob";
+
+import {
+  BsPen,
+  BsFiletypePdf,
+  BsDownload,
+  BsFillPersonFill
+} from "react-icons/bs";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -189,6 +195,29 @@ const CommissionModal = ({
     //eslint-disable-next-line
   }, [page]);
 
+  const Additional = () => {
+    return (
+      <>
+        {!invoiceModal && (
+          <>
+            <button
+              onClick={(e) => setCommReqModal(commissionModal)}
+              className="bg-btn-primary rounded-md py-2 px-4 mr-2 text-white uppercase"
+            >
+              {t("generate_tax_invoice")}
+            </button>
+            <button
+              onClick={(e) => handleOpenModal(e)}
+              className="bg-btn-primary rounded-md text-white uppercase  py-2 px-4"
+            >
+              {t("btn_add_commission")}
+            </button>
+          </>
+        )}
+      </>
+    )
+  }
+
   return (
     <>
       <Modal
@@ -205,23 +234,20 @@ const CommissionModal = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseCommissionModal}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -233,16 +259,14 @@ const CommissionModal = ({
 
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+            className={` ${currentMode === "dark"
+              ? "bg-dark text-white"
+              : "bg-light text-black"
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-            } 
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+              } 
+             p-5 h-[100vh] w-[85vw] overflow-y-scroll border-primary
             `}
           >
             <div className={`w-full`}>
@@ -250,362 +274,342 @@ const CommissionModal = ({
                 <Error />
               ) : (
                 <div className="">
-                  <div className="w-full flex items-center justify-between pb-3 ">
-                    <div className="flex items-center ">
-                      <div className="bg-primary h-10 w-1 rounded-full"></div>
-                      <h1
-                        className={`text-lg font-semibold mx-2 uppercase ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
-                      >
-                        {status?.field === "agent_comm_status"
-                          ? t("agent_comm")
-                          : status?.field === "manager_comm_status"
-                          ? t("manager_comm")
-                          : t("commission")}
-                      </h1>
+                  <HeadingTitle
+                    title={status?.field === "agent_comm_status"
+                      ? t("agent_comm")
+                      : status?.field === "manager_comm_status"
+                        ? t("manager_comm")
+                        : t("commission")}
+                    additional={<Additional />}
+                  />
+                  {loading ? (
+                    <div className="flex items-center justify-center w-full my-5">
+                      <h1 className="font-semibold text-lg">Loading..</h1>
                     </div>
-                    <div>
-                      {!invoiceModal && (
-                        <>
-                          <button
-                            onClick={(e) => setCommReqModal(commissionModal)}
-                            className="bg-btn-primary rounded-md py-2 px-4 mr-2 text-white"
-                          >
-                            {t("btn_commission_request")}
-                          </button>
-                          <button
-                            onClick={(e) => handleOpenModal(e)}
-                            className="bg-btn-primary rounded-md text-white font-semibold py-2 px-4"
-                          >
-                            {t("btn_add_commission")}
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </div>
+                  ) : (
+                    <>
+                      {data && data?.length > 0 ? (
+                        data?.map((data) => {
+                          return (
+                            <div className="my-5">
+                              <div
+                                className={`${currentMode === "dark"
+                                  ? "bg-dark-neu"
+                                  : "bg-light-neu"
+                                  } p-5 w-full relative`}
+                              >
+                                {/* AMOUNT  */}
+                                <div
+                                  className={`${isLangRTL(i18n.language)
+                                    ? "left-5"
+                                    : "right-5"
+                                    } ${data?.invoice_type.toLowerCase() ===
+                                      "income"
+                                      ? currentMode === "dark" ? "bg-green-dark-neu" : "bg-green-light-neu"
+                                      : currentMode === "dark" ? "bg-red-dark-neu" : "bg-red-light-neu"
+                                    } absolute top-5 p-2 text-white font-semibold rounded-sm`}
+                                >
+                                  {data?.invoice_type.toLowerCase() ===
+                                    "income" ? (
+                                    <>
+                                      {data?.currency} {data?.amount}
+                                    </>
+                                  ) : (
+                                    <>
+                                      - {data?.currency} {data?.amount}
+                                    </>
+                                  )}
+                                </div>
 
-                  <div>
-                    <div
-                      className={`${
-                        currentMode === "dark" ? "text-white" : "text-black"
-                      } p-4 `}
-                    >
-                      <div className="col-span-12 md:col-span-4 w-full">
-                        {loading ? (
-                          <div className="flex items-center justify-center w-full">
-                            <h1 className="font-semibold text-lg">Loading</h1>
-                          </div>
-                        ) : (
-                          <>
-                            {data && data?.length > 0 ? (
-                              data?.map((data) => {
-                                let user;
-                                if (
-                                  (data?.invoice_type ===
-                                    data?.invoice_type.toLowerCase()) ===
-                                  "expense"
-                                ) {
-                                  user = true;
-                                } else {
-                                  user = false;
-                                }
-
-                                console.log("user true or false: ", data?.user);
-                                return (
+                                {/* EDIT  */}
+                                {!invoiceModal && (
                                   <div
-                                    className={`${
-                                      currentMode === "dark"
-                                        ? "bg-[#1C1C1C]"
-                                        : "bg-[#EEEEEE]"
-                                    } p-4 rounded-xl shadow-sm card-hover mb-5 w-full relative`}
+                                    className={`flex flex-col space-y-3 absolute bottom-5 ${isLangRTL(i18n.language)
+                                      ? "left-5"
+                                      : "right-5"
+                                      }`}
                                   >
-                                    {/* AMOUNT  */}
-                                    <div
-                                      className={`absolute top-4 p-2 text-white font-semibold rounded-sm ${
-                                        isLangRTL(i18n.language)
-                                          ? "left-4"
-                                          : "right-4"
-                                      } ${
-                                        data?.invoice_type.toLowerCase() ===
-                                        "income"
-                                          ? "bg-green-600"
-                                          : "bg-red-600"
+                                    <button
+                                      className={`${currentMode === "dark"
+                                        ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                                        } rounded-full p-3`}
+                                      onClick={(e) =>
+                                        handleOpenModal(e, data)
                                       }
-                                    `}
                                     >
-                                      {data?.invoice_type.toLowerCase() ===
-                                      "income" ? (
-                                        <>
-                                          {data?.currency} {data?.amount}
-                                        </>
-                                      ) : (
-                                        <>
-                                          - {data?.currency} {data?.amount}
-                                        </>
-                                      )}
+                                      <BsPen
+                                        size={16}
+                                        color={"white"}
+                                      />
+                                    </button>
+                                    <button
+                                      className={`${currentMode === "dark"
+                                        ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                                        } rounded-full p-3`}
+                                      onClick={() => {
+                                        if (
+                                          data?.invoice_type === "Income"
+                                        ) {
+                                          setReceiptVoucher(data);
+                                        } else {
+                                          setCommissionReceipt(data);
+                                        }
+                                      }}
+                                    >
+                                      <BsDownload
+                                        size={16}
+                                        color={"white"}
+                                      />
+                                    </button>
+                                  </div>
+                                )}
+
+                                {/* GRID  */}
+                                <div className="gap-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                                  {/* COMMISSION DETAILS */}
+                                  <div
+                                    className={`${currentMode === "dark"
+                                      ? "bg-dark-neu"
+                                      : "bg-light-neu"
+                                      } p-5 w-full`}
+                                  >
+                                    <h3 className="text-sm text-primary font-semibold uppercase mb-5 text-center">
+                                      {t("commissions")}
+                                    </h3>
+                                    <div className="flex justify-between my-3">
+                                      <p>{t("date")}:</p>
+                                      <p className="font-semibold ml-2">
+                                        {moment(data?.date).format(
+                                          "YYYY-MM-DD"
+                                        )}
+                                      </p>
                                     </div>
 
-                                    {/* EDIT  */}
-                                    {!invoiceModal && (
-                                      <div
-                                        className={`flex flex-col space-y-3 absolute bottom-4 ${
-                                          isLangRTL(i18n.language)
-                                            ? "left-4"
-                                            : "right-4"
-                                        }`}
-                                      >
-                                        <button
-                                          className="bg-btn-primary rounded-full p-3 bottom-0 "
-                                          onClick={(e) =>
-                                            handleOpenModal(e, data)
-                                          }
-                                        >
-                                          <FaPencilAlt
-                                            size={16}
-                                            color={"white"}
-                                          />
-                                        </button>
-                                        <button
-                                          className="bg-btn-primary rounded-full p-3  bottom-5 "
-                                          onClick={() => {
-                                            if (
-                                              data?.invoice_type === "Income"
-                                            ) {
-                                              setReceiptVoucher(data);
-                                            } else {
-                                              setCommissionReceipt(data);
-                                            }
-                                          }}
-                                        >
-                                          <MdDownload
-                                            size={16}
-                                            color={"white"}
-                                          />
-                                        </button>
+                                    <div className="flex justify-between my-3">
+                                      <p>{t("claim")}:</p>
+                                      <p className="font-semibold ml-2">
+                                        {data?.claim}
+                                      </p>
+                                    </div>
+
+                                    <div className="flex justify-between my-3">
+                                      <p>{t("commission_perc")}:</p>
+                                      <p className="font-semibold ml-2">
+                                        {data?.comm_percent}
+                                      </p>
+                                    </div>
+
+                                    <div className="flex justify-between my-3">
+                                      <p>{t("vat_amount")}:</p>
+                                      <p className="font-semibold ml-2">
+                                        {data?.vat}
+                                      </p>
+                                    </div>
+
+                                    <div className="flex justify-between my-3">
+                                      <p>{t("status")}:</p>
+                                      <p className="font-semibold ml-2">
+                                        {data?.status}
+                                      </p>
+                                    </div>
+
+                                    <div className="flex justify-between my-3">
+                                      <p>{t("payment_source")}:</p>
+                                      <p className="font-semibold ml-2">
+                                        {data?.paid_by}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  {/* VENDOR DETAILS */}
+                                  {data?.vendor_id && (
+                                    <div
+                                      className={`${currentMode === "dark"
+                                        ? "bg-dark-neu"
+                                        : "bg-light-neu"
+                                        } p-5 w-full`}
+                                    >
+                                      <h3 className="text-sm text-primary font-semibold uppercase mb-5 text-center">
+                                        {t("vendor_details")}
+                                      </h3>
+                                      <div className="flex justify-between my-3">
+                                        <p>{t("name")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.vendor?.vendor_name}
+                                        </p>
                                       </div>
-                                    )}
-
-                                    {/* GRID  */}
-                                    <div className="gap-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                                      {/* COMMISSION DETAILS */}
-                                      <div
-                                        className={`${
-                                          currentMode === "dark"
-                                            ? "bg-[#000000]"
-                                            : "bg-[#ffffff]"
-                                        } rounded-md p-5 w-full`}
-                                      >
-                                        <h3 className="text-sm  font-semibold uppercase mb-6 mt-3 text-center">
-                                          {t("commissions")}
-                                        </h3>
-                                        <div className="flex justify-between my-3">
-                                          <p>{t("date")}:</p>
-                                          <p className="font-semibold ml-2">
-                                            {moment(data?.date).format(
-                                              "YYYY-MM-DD"
-                                            )}
-                                          </p>
-                                        </div>
-
-                                        <div className="flex justify-between  my-3">
-                                          <p>{t("claim")}:</p>
-                                          <p className="font-semibold ml-2">
-                                            {data?.claim}
-                                          </p>
-                                        </div>
-
-                                        <div className="flex justify-between  my-3">
-                                          <p>{t("commission_perc")}:</p>
-                                          <p className="font-semibold ml-2">
-                                            {data?.comm_percent}
-                                          </p>
-                                        </div>
-
-                                        <div className="flex justify-between  my-3">
-                                          <p>{t("vat_amount")}:</p>
-                                          <p className="font-semibold ml-2">
-                                            {data?.vat}
-                                          </p>
-                                        </div>
-
-                                        <div className="flex justify-between  my-3">
-                                          <p>{t("status")}:</p>
-                                          <p className="font-semibold ml-2">
-                                            {data?.status}
-                                          </p>
-                                        </div>
-
-                                        <div className="flex justify-between  my-3">
-                                          <p>{t("payment_source")}:</p>
-                                          <p className="font-semibold ml-2">
-                                            {data?.paid_by}
-                                          </p>
-                                        </div>
+                                      <div className="flex justify-between my-3">
+                                        <p>
+                                          {t("label_address")}
+                                          :
+                                        </p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.vendor?.address}
+                                        </p>
                                       </div>
-
-                                      {/* VENDOR/USER DETAILS */}
-                                      <div
-                                        className={`${
-                                          currentMode === "dark"
-                                            ? "bg-[#000000]"
-                                            : "bg-[#ffffff]"
-                                        } rounded-md p-5 w-full`}
-                                      >
-                                        <h3 className="text-sm font-semibold uppercase mb-6 mt-3 text-center">
-                                          {data?.invoice_type.toLowerCase() ===
-                                          "expense"
-                                            ? t("user_details")
-                                            : t("vendor_details")}
-                                        </h3>
-                                        <div className="flex justify-between  my-3">
-                                          <p>{t("name")}:</p>
-                                          <p className="font-semibold ml-2">
-                                            {user
-                                              ? data?.user?.userName
-                                              : data?.vendor?.vendor_name}
-                                          </p>
-                                        </div>
-
-                                        <div className="flex justify-between  my-3">
-                                          <p>
-                                            {user
-                                              ? t("label_position")
-                                              : t("label_address")}
-                                            :
-                                          </p>
-                                          <p className="font-semibold ml-2">
-                                            {user
-                                              ? data?.user?.position
-                                              : data?.vendor?.address}
-                                          </p>
-                                        </div>
-
-                                        <div className="flex justify-between  my-3">
-                                          <p>
-                                            {user
-                                              ? t("label_contact")
-                                              : t("po_box")}
-                                            :
-                                          </p>
-                                          <p className="font-semibold ml-2">
-                                            {user
-                                              ? data?.user?.userContact
-                                              : data?.vendor?.pobox}
-                                          </p>
-                                        </div>
-
-                                        <div className="flex justify-between  my-3">
-                                          <p>
-                                            {user ? t("label_email") : t("trn")}
-                                            :
-                                          </p>
-                                          <p className="font-semibold ml-2">
-                                            {user
-                                              ? data?.user?.userEmail
-                                              : data?.vendor?.trn}
-                                          </p>
-                                        </div>
+                                      <div className="flex justify-between  my-3">
+                                        <p>
+                                          {t("po_box")}
+                                          :
+                                        </p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.vendor?.pobox}
+                                        </p>
                                       </div>
-
-                                      {/* RECEIPTS  */}
-                                      <div
-                                        className="w-full p-4 items-center justify-center sm:col-span-2 md:col-span-2 lg:col-span-1 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-1"
-                                        onContextMenu={(e) =>
-                                          e.preventDefault()
-                                        }
-                                      >
-                                        {data?.receipt[0]?.temp_file && (
-                                          <div className="flex items-center justify-center">
-                                            {(() => {
-                                              const ext =
-                                                data?.receipt[0]?.image
-                                                  .split(".")
-                                                  .pop()
-                                                  .toLowerCase();
-                                              if (ext === "pdf") {
-                                                return (
-                                                  <div className="mb-3">
-                                                    <BsFileEarmarkMedical
-                                                      size={100}
-                                                      color={"#AAAAAA"}
-                                                      onClick={() =>
-                                                        handlePdfClick(`
-                                                        data:application/pdf;base64,
-                                                         ${data?.receipt[0]?.temp_file}`)
-                                                      }
-                                                    />
-                                                  </div>
-                                                );
-                                              } else {
-                                                return (
-                                                  <img
-                                                    className="mb-3"
-                                                    src={`data:image/${ext};base64, ${data?.receipt[0]?.temp_file}`}
-                                                    width="150px"
-                                                    height="150px"
-                                                    onClick={() =>
-                                                      handleImageClick(
-                                                        `data:image/${ext};base64, ${data?.receipt[0]?.temp_file}`
-                                                      )
-                                                    }
-                                                  />
-                                                );
-                                              }
-                                            })()}
-                                          </div>
-                                        )}
-                                        <p className="flex items-center justify-center gap-4 w-full">
-                                          <IoMdPerson size={14} />
-                                          <div>
-                                            {data?.added_by_name}
-                                            {"-"}
-                                            {datetimeLong(data?.created_at)}
-                                          </div>
+                                      <div className="flex justify-between  my-3">
+                                        <p>
+                                          {t("trn")}
+                                          :
+                                        </p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.vendor?.trn}
                                         </p>
                                       </div>
                                     </div>
+                                  )}
+                                  {data?.user_id && (
+                                    <div
+                                      className={`${currentMode === "dark"
+                                        ? "bg-dark-neu"
+                                        : "bg-light-neu"
+                                        } p-5 w-full`}
+                                    >
+                                      <h3 className="text-sm text-primary font-semibold uppercase mb-5 text-center">
+                                        {t("user_details")}
+                                      </h3>
+                                      <div className="flex justify-between my-3">
+                                        <p>{t("name")}:</p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.user?.userName}
+                                        </p>
+                                      </div>
+                                      <div className="flex justify-between my-3">
+                                        <p>
+                                          {t("label_position")}:
+                                        </p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.user?.position}
+                                        </p>
+                                      </div>
+                                      <div className="flex justify-between my-3">
+                                        <p>
+                                          {t("label_contact")}
+                                          :
+                                        </p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.user?.userContact}
+                                        </p>
+                                      </div>
+                                      <div className="flex justify-between my-3">
+                                        <p>
+                                          {t("label_email")}
+                                          :
+                                        </p>
+                                        <p className="font-semibold ml-2">
+                                          {data?.user?.userEmail}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {/* RECEIPTS  */}
+                                  <div
+                                    className={`w-full p-5 items-center justify-center ${(data?.vendor_id && data?.user_id) ? "lg:col-span-3" : "md:col-span-2 lg:col-span-1"
+                                      }`}
+                                    onContextMenu={(e) =>
+                                      e.preventDefault()
+                                    }
+                                  >
+                                    {data?.receipt[0]?.temp_file && (
+                                      <div className="flex items-center justify-center">
+                                        {(() => {
+                                          const ext =
+                                            data?.receipt[0]?.image
+                                              .split(".")
+                                              .pop()
+                                              .toLowerCase();
+                                          if (ext === "pdf") {
+                                            return (
+                                              <div className="mb-3">
+                                                <BsFiletypePdf
+                                                  size={100}
+                                                  color={"#AAAAAA"}
+                                                  onClick={() =>
+                                                    handlePdfClick(`
+                                                        data:application/pdf;base64,
+                                                         ${data?.receipt[0]?.temp_file}`)
+                                                  }
+                                                />
+                                              </div>
+                                            );
+                                          } else {
+                                            return (
+                                              <img
+                                                className="mb-3"
+                                                src={`data:image/${ext};base64, ${data?.receipt[0]?.temp_file}`}
+                                                width="150px"
+                                                height="150px"
+                                                onClick={() =>
+                                                  handleImageClick(
+                                                    `data:image/${ext};base64, ${data?.receipt[0]?.temp_file}`
+                                                  )
+                                                }
+                                              />
+                                            );
+                                          }
+                                        })()}
+                                      </div>
+                                    )}
+                                    <p className="flex items-center justify-center gap-4 w-full">
+                                      <BsFillPersonFill size={14} />
+                                      <div>
+                                        {data?.added_by_name}
+                                        {" - "}
+                                        {datetimeLong(data?.created_at)}
+                                      </div>
+                                    </p>
                                   </div>
-                                );
-                              })
-                            ) : (
-                              <div className="h-[300px] w-full flex items-center justify-center">
-                                <h1 className="text-lg font-bold capitalize">
-                                  {t("no_data_found")}
-                                </h1>
+                                </div>
                               </div>
-                            )}
-                          </>
-                        )}
-                      </div>
-                      {data && data?.length > 0 ? (
-                        <Stack spacing={2} marginTop={2}>
-                          <Pagination
-                            count={maxPage}
-                            color={
-                              currentMode === "dark" ? "primary" : "secondary"
-                            }
-                            onChange={(value) => setPage(value)}
-                            style={{ margin: "auto" }}
-                            page={page}
-                            sx={{
-                              "& .Mui-selected": {
-                                color: "white !important",
-                                backgroundColor: `${primaryColor} !important`,
-                                "&:hover": {
-                                  backgroundColor:
-                                    currentMode === "dark" ? "black" : "white",
-                                },
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <h1 className="text-lg font-bold capitalize">
+                          {t("no_data_found")}
+                        </h1>
+                      )}
+                    </>
+                  )}
+                  <div>
+                    {data && data?.length > 0 ? (
+                      <Stack spacing={2} marginTop={2}>
+                        <Pagination
+                          count={maxPage}
+                          color={
+                            currentMode === "dark" ? "primary" : "secondary"
+                          }
+                          onChange={(value) => setPage(value)}
+                          style={{ margin: "auto" }}
+                          page={page}
+                          sx={{
+                            "& .Mui-selected": {
+                              color: "white !important",
+                              backgroundColor: `${primaryColor} !important`,
+                              boxShadow: "0 0 10px rgba(119,119,119,0.4)",
+                              "&:hover": {
+                                backgroundColor:
+                                  currentMode === "dark" ? "black" : "white",
                               },
-                              "& .MuiPaginationItem-root": {
-                                color:
-                                  currentMode === "dark" ? "white" : "black",
-                              },
-                            }}
-                          />
-                        </Stack>
-                      ) : null}
-                    </div>
+                            },
+                            "& .MuiPaginationItem-root": {
+                              color:
+                                currentMode === "dark" ? "white" : "black",
+                            },
+                          }}
+                        />
+                      </Stack>
+                    ) : null}
                   </div>
                 </div>
               )}
