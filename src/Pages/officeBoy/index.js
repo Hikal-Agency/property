@@ -6,6 +6,7 @@ import MenuList from "../../Components/OfficeBoy_Comp/MenuList";
 import usePermission from "../../utils/usePermission";
 import { Button } from "@mui/material";
 import Inventory from "../../Components/OfficeBoy_Comp/Inventory";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const Menu = () => {
   const {
@@ -89,6 +90,23 @@ const Menu = () => {
     FetchMenu(token, currentPage);
   }, [currentPage, value]);
 
+  const Additional = () => {
+    return (
+      <>
+        {hasPermission("displayInventory") && (
+          <button
+            onClick={() => setOpenInventory(true)}
+            className={`${themeBgImg ? "bg-primary" : currentMode === "dark" 
+              ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+            } px-3 py-2 rounded-md uppercase text-white`}
+          >
+            {t("product_inventory")}
+          </button>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <div className="flex relative min-h-screen">
@@ -96,34 +114,14 @@ const Menu = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
-            }
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }
             ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
-            <div className="w-full flex justify-between items-center pb-3">
-              <div className="flex items-center">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {t("menu_menu")}
-                </h1>
-              </div>
-              {hasPermission("displayInventory") && (
-                <Button
-                  style={{
-                    background: `${primaryColor}`,
-                    color: "#fff",
-                  }}
-                  onClick={() => setOpenInventory(true)}
-                >
-                  {t("product_inventory")}
-                </Button>
-              )}
-            </div>
+            <HeadingTitle
+              title={t("menu_menu")}
+              additional={<Additional />}
+            />
 
             <MenuList
               user={"manager"}

@@ -159,9 +159,15 @@ const ReminderComponent = ({
 
           <div className="col-span-1 space-y-2">
             <Tooltip title="Mark as Complete" arrow>
-              <IconButton
-                style={{ backgroundColor: "#269144", color: "white" }}
-                className="rounded-full"
+              <button
+                style={{
+                  color: "white"
+                }}
+                className={`${!themeBgImg ? currentMode === "dark"
+                  ? "bg-green-dark-neu"
+                  : "bg-green-light-neu"
+                  : "bg-[#269144]"
+                  } rounded-full p-2`}
                 onClick={(event) => handleButtonClick(event, 1, reminder?.id)}
                 disabled={completeLoading}
               >
@@ -170,22 +176,28 @@ const ReminderComponent = ({
                 ) : (
                   <CheckIcon size={16} />
                 )}
-              </IconButton>
+              </button>
             </Tooltip>
 
             <Tooltip title="Cancel Reminder" arrow>
-              <IconButton
-                style={{ color: "white", backgroundColor: "#d0382c" }}
-                className="rounded-full"
-                onClick={(event) => handleButtonClick(event, 0, reminder?.id)}
-                disabled={cancleLoading}
+              <button
+                style={{
+                  color: "white"
+                }}
+                className={`${!themeBgImg ? currentMode === "dark"
+                  ? "bg-red-dark-neu"
+                  : "bg-red-light-neu"
+                  : "bg-[#d0382c]"
+                  } rounded-full p-2`}
+                onClick={(event) => handleButtonClick(event, 1, reminder?.id)}
+                disabled={completeLoading}
               >
-                {cancleLoading ? (
+                {completeLoading ? (
                   <CircularProgress color="inherit" size={16} />
                 ) : (
                   <CloseIcon size={16} />
                 )}
-              </IconButton>
+              </button>
             </Tooltip>
           </div>
 

@@ -14,7 +14,7 @@ const MenuList = ({
   setCurrentPage,
   setPageBeingScrolled,
 }) => {
-  const { currentMode, isArabic, primaryColor, t, themeBgImg } =
+  const { currentMode, isArabic, isLangRTL, i18n, t, themeBgImg } =
     useStateContext();
   const [openOrderModal, setOpenOrderModal] = useState({
     open: false,
@@ -53,102 +53,55 @@ const MenuList = ({
     };
   }, []);
 
-  const ribbonStyles = {
-    width: "100px",
-    height: "40px",
-    // filter: "grayscale(0) !important",
-    lineHeight: "52px",
-    position: "absolute",
-    top: "0",
-    right: "0",
-    color: "white",
-    zIndex: 2,
-    overflow: "hidden",
-    // transform: "rotate(45deg)",
-    // border: "1px dashed",
-    boxShadow: `0 0 0 3px ${primaryColor}, 0px 21px 5px -18px rgba(0,0,0,0.6)`,
-    background: primaryColor,
-    textAlign: "center",
-
-    "& .wrap": {
-      width: "100%",
-      height: "188px",
-      position: "absolute",
-      top: "-8px",
-      left: "8px",
-      overflow: "hidden",
-    },
-    "& .wrap:before, .wrap:after": {
-      content: "''",
-      position: "absolute",
-    },
-    "& .wrap:before": {
-      width: "40px",
-      height: "8px",
-      right: "100px",
-      background: "#4D6530",
-      borderRadius: "8px 8px 0px 0px",
-    },
-    "& .wrap:after": {
-      width: "8px",
-      height: "40px",
-      right: "0px",
-      top: "100px",
-      background: "#4D6530",
-      borderRadius: "0px 8px 8px 0px",
-    },
-  };
-
   return (
     <div className="relative">
-      <Box className="mt-1 p-5">
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 gap-x-3 gap-y-3 pb-4 text-center">
+      <Box className="">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 pb-5 text-center">
           {menu?.map((menu, index) => {
             return (
               <div
-                className={`card-hover cursor-pointer relative overflow-hidden rounded-lg shadow-sm offers-page-${
-                  menu?.page
-                } ${
-                  !themeBgImg
-                    ? currentMode === "dark"
-                      ? "bg-[#1c1c1c] text-white"
-                      : "bg-gray-100 text-black"
-                    : currentMode === "dark"
-                    ? "blur-bg-dark text-white"
-                    : "blur-bg-light text-black"
-                } `}
+                className={`${themeBgImg
+                  ? currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
+                  : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                  } cursor-pointer relative p-5 overflow-hidden offers-page-${menu?.page
+                  } ${currentMode === "dark"
+                    ? "text-white"
+                    : "text-black"
+                  } `}
                 onClick={() => setOpenOrderModal({ open: true, data: menu })}
               >
                 {menu?.itemPrice && menu?.itemPrice !== 0 ? (
-                  <Box sx={{ ...ribbonStyles }}>
-                    <div className="wrap">
+                  <div className={`${isLangRTL(i18n.language) ? "left-3" : "right-3"
+                    } ${themeBgImg
+                      ? "bg-primary"
+                      : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                    } absolute top-3 rounded-md text-white p-2`}>
+                    <p className="m-0">
                       {menu?.currency}
-                      <span className="ml-2">{menu?.itemPrice}</span>
-                    </div>
-                  </Box>
+                      {" "}
+                      {menu?.itemPrice}
+                    </p>
+                  </div>
                 ) : null}
 
-                <div className="p-5 h-full flex flex-col">
-                  <div className="my-1">
-                    {menu?.image_path ? (
-                      <img
-                        src={menu?.image_path}
-                        alt="menu"
-                        className="w-full object-cover h-[200px]"
-                      />
-                    ) : (
-                      <img
-                        src={imagePaths[0]}
-                        alt="menu"
-                        className="w-full h-[200px] object-cover"
-                      />
-                    )}
-                  </div>
+                <div className="h-full flex flex-col">
+                  {menu?.image_path ? (
+                    <img
+                      src={menu?.image_path}
+                      alt="menu"
+                      className="w-full object-cover h-[250px] lg:h-[200px] rounded-xl"
+                    />
+                  ) : (
+                    <img
+                      src={imagePaths[0]}
+                      alt="menu"
+                      className="w-full h-[250px] lg:h-[200px] object-cover rounded-xl"
+                    />
+                  )}
                   {/* MENU INFO  */}
-                  <p
-                    className={`${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    } text-center font-bold rounded-md my-3`}
+                  <h6
+                    className={`${currentMode === "dark" ? "text-white" : "text-black"
+                      } text-center mt-5 capitalize`}
                     style={{
                       fontFamily: isArabic(menu?.itemName)
                         ? "Noto Kufi Arabic"
@@ -156,7 +109,7 @@ const MenuList = ({
                     }}
                   >
                     {menu?.itemName}
-                  </p>
+                  </h6>
                 </div>
               </div>
             );

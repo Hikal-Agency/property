@@ -271,6 +271,9 @@
 .blur-bg-light-nr {
   position: relative;
 }
+.blur-bg-light {
+  border-radius: 10px;
+}
 .blur-bg-light::before {
   content: "";
   position: absolute;
@@ -302,6 +305,9 @@
 .blur-bg-dark,
 .blur-bg-dark-nr {
   position: relative;
+}
+.blur-bg-dark {
+  border-radius: 10px;
 }
 .blur-bg-dark,
 .blur-bg-dark-nr {
@@ -340,6 +346,9 @@
 .blur-bg-black-nr {
   position: relative;
 }
+.blur-bg-black {
+  border-radius: 10px;
+}
 .blur-bg-black::before {
   content: "";
   position: absolute;
@@ -373,6 +382,9 @@
 .blur-bg-white-nr {
   position: relative;
 }
+.blur-bg-white {
+  border-radius: 10px;
+}
 .blur-bg-white::before {
   content: "";
   position: absolute;
@@ -405,6 +417,9 @@
 .blur-bg-primary,
 .blur-bg-primary-nr {
   position: relative;
+}
+.blur-bg-primary {
+  border-radius: 10px;
 }
 .blur-bg-primary::before {
   content: "";
