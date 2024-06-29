@@ -28,6 +28,7 @@ import { BsDot } from "react-icons/bs";
 
 import { arrayUnion } from "firebase/firestore";
 import moment from "moment";
+import { load } from "../App";
 
 const RegisterAttendance = () => {
   const {
@@ -49,6 +50,13 @@ const RegisterAttendance = () => {
   const [dataLoading, setDataLoading] = useState(true);
   const [attendanceTime, setAttendanceTime] = useState(null);
   const [attendanceType, setAttendanceType] = useState(null);
+  const [attendanceLocation, setAttendanceLocation] = useState({
+    lat: null,
+    long: null,
+  });
+  let geocoder;
+
+  console.log("attendance location: ", attendanceLocation);
 
   function useQuery() {
     return new URLSearchParams(location.search);
@@ -67,12 +75,22 @@ const RegisterAttendance = () => {
   const MarkAttendance = async (status) => {
     console.log("status: ", status);
 
+    if (!attendanceLocation?.lat || !attendanceLocation?.long) {
+      toast.error(`kindly allow the location and refresh the browser.`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
     setLoading(true);
     try {
-      // const date = new Date();
-      // const day = ("0" + date.getDate()).slice(-2);
-      // const month = ("0" + (date.getMonth() + 1)).slice(-2);
-      // const year = date.getFullYear();
       const date = new Date().toLocaleString();
       const currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
       console.log("dateeeeeeeeeee: ", currentDateTime);
@@ -91,6 +109,8 @@ const RegisterAttendance = () => {
         attendanceType === "Check-in" ? "09:30 AM" : "06:30 PM"
       );
       AddAttendance.append("agency_id", User?.agency || 1);
+      AddAttendance.append("lat", attendanceLocation?.lat);
+      AddAttendance.append("lng", attendanceLocation?.long);
 
       const registerAttendance = await axios.post(
         `${BACKEND_URL}/attendance`,
@@ -294,6 +314,51 @@ const RegisterAttendance = () => {
       });
     }
   };
+
+  useEffect(() => {
+    const handleCurrentLocationClick = () => {
+      console.log("function called:::::::::::::::::::::::");
+      if (!window.google || !window.google.maps) {
+        console.error("Google Maps JavaScript API not loaded");
+        return;
+      }
+
+      const geocoder = new window.google.maps.Geocoder();
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log("position: ", position);
+          geocoder.geocode(
+            {
+              location: {
+                lat: Number(position.coords.latitude),
+                lng: Number(position.coords.longitude),
+              },
+            },
+            (results, status) => {
+              console.log("location result:: ", results);
+              if (status === "OK") {
+                setAttendanceLocation({
+                  lat: Number(position.coords.latitude),
+                  long: Number(position.coords.longitude),
+                  // addressText: results[0].formatted_address,
+                });
+              } else {
+                console.log("Getting address failed due to : ", status);
+              }
+            }
+          );
+        },
+        (error) => {
+          console.error("Error getting location: ", error);
+        }
+      );
+    };
+
+    if (load?.isLoaded) {
+      handleCurrentLocationClick();
+    }
+  }, []);
 
   useEffect(() => {
     console.log("attendnace page.");
