@@ -29,6 +29,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import jsPDF from "jspdf";
 import { fontSize } from "@mui/system";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const CommissionReceipt = ({
   commissionReceipt,
@@ -462,21 +463,18 @@ const CommissionReceipt = ({
       }}
     >
       <div
-        className={`${
-          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-        } ${
-          isClosing
+        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-        } w-[100vw] h-[100vh] flex items-start justify-end`}
+          } w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${
-            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-          }
+          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -487,16 +485,14 @@ const CommissionReceipt = ({
         </button>
         <div
           style={style}
-          className={` ${
-            currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-          } ${
-            isLangRTL(i18n.language)
+          className={` ${currentMode === "dark"
+            ? "bg-dark text-white"
+            : "bg-light text-black"
+            } ${isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-          }
-            p-4 h-[100vh] w-[80vw] overflow-y-scroll 
+            }
+            p-5 h-[100vh] w-[85vw] overflow-y-scroll 
           `}
         >
           {loading ? (
@@ -505,346 +501,340 @@ const CommissionReceipt = ({
             </div>
           ) : (
             <>
-              <div className="w-full flex items-center pb-5">
-                <div
-                  className={`${
-                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                  } bg-primary h-10 w-1 rounded-full my-1`}
-                ></div>
-                <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                  style={{
-                    fontFamily: isArabic(Feedback?.feedback)
-                      ? "Noto Kufi Arabic"
-                      : "inherit",
-                  }}
-                >
-                  <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("commission_voucher_heading")}
-                  </h1>
-                </h1>
-              </div>
+              <HeadingTitle
+                title={t("commission_voucher_heading")}
+              />
 
               <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5 p-5">
                 {/* PROJECT DETAILS  */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("project_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
+                  <div className="w-full pt-5"></div>
+                  {/* PROJECT NAME */}
+                  <TextField
+                    id="project"
+                    type={"text"}
+                    label={t("project")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commissionReceiptData?.project}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+
+                  {/* UNIT */}
+                  <TextField
+                    id="unit"
+                    type={"text"}
+                    label={t("unit")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commissionReceiptData?.unit}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+
+                  {/* VENDORS LIST */}
+                  <FormControl
+                    className={`${currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
+                    sx={{
+                      minWidth: "100%",
+                      // border: 1,
+                      borderRadius: 1,
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <TextField
+                      id="developer"
+                      select
+                      value={commissionReceiptData?.developer || "selected"}
+                      label={t("vendor")}
+                      onChange={(e) => {
+                        setCommRecData({
+                          ...commissionReceiptData,
+                          developer: e.target.value,
+                        });
+                      }}
+                      size="small"
+                      className="w-full border border-gray-300 rounded "
+                      displayEmpty
+                      required
                       sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
+                        // border: "1px solid #000000",
+                        height: "40px",
+
+                        "& .MuiSelect-select": {
+                          fontSize: 11,
                         },
                       }}
                     >
-                      {/* PROJECT NAME */}
-                      <TextField
-                        id="project"
-                        type={"text"}
-                        label={t("project")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commissionReceiptData?.project}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-
-                      {/* UNIT */}
-                      <TextField
-                        id="unit"
-                        type={"text"}
-                        label={t("unit")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commissionReceiptData?.unit}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-
-                      {/* VENDORS LIST */}
-                      <FormControl
-                        className={`${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
-                        sx={{
-                          minWidth: "100%",
-                          // border: 1,
-                          borderRadius: 1,
-                          marginBottom: "10px",
+                      <MenuItem selected value="selected">
+                        ---{t("select_vendor")}----
+                      </MenuItem>
+                      <MenuItem
+                        onKeyDown={(e) => {
+                          e.stopPropagation();
                         }}
                       >
                         <TextField
-                          id="developer"
-                          select
-                          value={commissionReceiptData?.developer || "selected"}
-                          label={t("vendor")}
-                          onChange={(e) => {
-                            setCommRecData({
-                              ...commissionReceiptData,
-                              developer: e.target.value,
-                            });
-                          }}
-                          size="small"
-                          className="w-full border border-gray-300 rounded "
-                          displayEmpty
-                          required
+                          placeholder={t("search_vendors")}
+                          ref={searchRef}
                           sx={{
-                            // border: "1px solid #000000",
-                            height: "40px",
-
-                            "& .MuiSelect-select": {
-                              fontSize: 11,
+                            "& input": {
+                              border: "0",
                             },
                           }}
-                        >
-                          <MenuItem selected value="selected">
-                            ---{t("select_vendor")}----
-                          </MenuItem>
-                          <MenuItem
-                            onKeyDown={(e) => {
-                              e.stopPropagation();
-                            }}
-                          >
-                            <TextField
-                              placeholder={t("search_vendors")}
-                              ref={searchRef}
-                              sx={{
-                                "& input": {
-                                  border: "0",
-                                },
-                              }}
-                              variant="standard"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                              }}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                if (value.length >= 3) {
-                                  fetchUsers(value);
-                                }
-                              }}
-                            />
-                          </MenuItem>
+                          variant="standard"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                          }}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (value.length >= 3) {
+                              fetchUsers(value);
+                            }
+                          }}
+                        />
+                      </MenuItem>
 
-                          {vendors?.map((vendor) => (
-                            <MenuItem value={vendor?.id}>
-                              {vendor?.vendor_name}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      </FormControl>
-                    </Box>
-                  </div>
-                </div>
+                      {vendors?.map((vendor) => (
+                        <MenuItem value={vendor?.id}>
+                          {vendor?.vendor_name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </FormControl>
+                </Box>
 
                 {/* DEVELOPER DETAILS  */}
-                <div
-                  className={`px-5 pt-5 \ rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("developer_detail")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
-                      }}
-                    >
-                      {/* TITLE  */}
-                      <Select
-                        id="title"
-                        options={title()}
-                        value={title(t)?.find(
-                          (curr) => curr.value === commissionReceiptData?.title
-                        )}
-                        onChange={(e) => {
-                          setCommRecData({
-                            ...commissionReceiptData,
-                            title: e.value,
-                          });
-                        }}
-                        placeholder={t("title")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
+                  <div className="w-full pt-5"></div>
+                  {/* TITLE  */}
+                  <Select
+                    id="title"
+                    options={title()}
+                    value={title(t)?.find(
+                      (curr) => curr.value === commissionReceiptData?.title
+                    )}
+                    onChange={(e) => {
+                      setCommRecData({
+                        ...commissionReceiptData,
+                        title: e.value,
+                      });
+                    }}
+                    placeholder={t("title")}
+                    className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
 
-                      {/* AGENT MANAGER USERNAMES  */}
-                      <Select
-                        id="user"
-                        options={users()}
-                        value={users()?.find(
-                          (user) => user.label === commissionReceiptData?.user
-                        )}
-                        onChange={(e) => {
-                          console.log("e::::::::: user: ", e);
-                          setCommRecData({
-                            ...commissionReceiptData,
-                            user: e.label,
-                          });
-                        }}
-                        placeholder={t("username")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
-                    </Box>
-                  </div>
-                </div>
+                  {/* AGENT MANAGER USERNAMES  */}
+                  <Select
+                    id="user"
+                    options={users()}
+                    value={users()?.find(
+                      (user) => user.label === commissionReceiptData?.user
+                    )}
+                    onChange={(e) => {
+                      console.log("e::::::::: user: ", e);
+                      setCommRecData({
+                        ...commissionReceiptData,
+                        user: e.label,
+                      });
+                    }}
+                    placeholder={t("username")}
+                    // className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                </Box>
 
                 {/* PAYMENT DETAILS */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("payment_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
+                  <div className="w-full pt-5"></div>
+                  {/* PAYMENT MODE  */}
+                  <Select
+                    id="payment_source"
+                    options={payment_source(t)?.map((payment) => ({
+                      value: payment.value,
+                      label: payment.label,
+                    }))}
+                    value={payment_source(t)?.filter(
+                      (pay_src) =>
+                        pay_src?.value ===
+                        commissionReceiptData?.payment_source
+                    )}
+                    onChange={(e) => {
+                      setCommRecData({
+                        ...commissionReceiptData,
+                        payment_source: e.value,
+                      });
+                    }}
+                    placeholder={t("payment_source")}
+                    className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+
+                  <div className="grid grid-cols-3">
+                    {/* CURRENCY  */}
+                    <Select
+                      id="currency"
+                      options={currencies(t)}
+                      value={currencies(t)?.find(
+                        (curr) =>
+                          curr.value === commissionReceiptData?.currency
+                      )}
+                      onChange={(e) => {
+                        setCommRecData({
+                          ...commissionReceiptData,
+                          currency: e.value,
+                        });
                       }}
-                    >
-                      {/* PAYMENT MODE  */}
-                      <Select
-                        id="payment_source"
-                        options={payment_source(t)?.map((payment) => ({
-                          value: payment.value,
-                          label: payment.label,
-                        }))}
-                        value={payment_source(t)?.filter(
-                          (pay_src) =>
-                            pay_src?.value ===
-                            commissionReceiptData?.payment_source
-                        )}
-                        onChange={(e) => {
-                          setCommRecData({
-                            ...commissionReceiptData,
-                            payment_source: e.value,
-                          });
-                        }}
-                        placeholder={t("payment_source")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
+                      placeholder={t("label_select_currency")}
+                      // className={`mb-5`}
+                      menuPortalTarget={document.body}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
 
-                      {/* CURRENCY  */}
-                      <Select
-                        id="currency"
-                        options={currencies(t)}
-                        value={currencies(t)?.find(
-                          (curr) =>
-                            curr.value === commissionReceiptData?.currency
-                        )}
-                        onChange={(e) => {
-                          setCommRecData({
-                            ...commissionReceiptData,
-                            currency: e.value,
-                          });
-                        }}
-                        placeholder={t("label_select_currency")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
-
-                      {/* AMOUNT  */}
-                      <TextField
-                        id="amount"
-                        type={"text"}
-                        label={t("label_amount")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commissionReceiptData?.amount}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    </Box>
+                    {/* AMOUNT  */}
+                    <TextField
+                      id="amount"
+                      type={"text"}
+                      label={t("label_amount")}
+                      className="w-full col-span-2"
+                      sx={{
+                        "&": {
+                          // marginBottom: "1.25rem !important",
+                          zIndex: 1,
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={commissionReceiptData?.amount}
+                      onChange={(e) => handleChange(e)}
+                    />
                   </div>
-                </div>
+                </Box>
               </div>
+
+              <button
+                // type="submit"
+                // size="medium"
+                style={{
+                  color: "white",
+                  fontFamily: fontFam,
+                }}
+                className={`${currentMode === "dark"
+                  ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                  } w-full text-white p-3 my-5 font-semibold`}
+                onClick={() => generatePDF(commissionReceiptData)}
+                disabled={btnloading ? true : false}
+              >
+                {btnloading ? (
+                  <CircularProgress
+                    size={23}
+                    sx={{ color: "white" }}
+                    className="text-white"
+                  />
+                ) : (
+                  <span>{t("create")}</span>
+                )}
+              </button>
             </>
           )}
-          <div className="px-4">
-            <Button
-              type="submit"
-              size="medium"
-              style={{
-                color: "white",
-                fontFamily: fontFam,
-              }}
-              className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-              onClick={() => generatePDF(commissionReceiptData)}
-              disabled={btnloading ? true : false}
-            >
-              {btnloading ? (
-                <CircularProgress
-                  size={23}
-                  sx={{ color: "white" }}
-                  className="text-white"
-                />
-              ) : (
-                <span>{t("create")}</span>
-              )}
-            </Button>
-          </div>
           <div className="p-5">
             {pdfUrl && !loading && (
               <iframe

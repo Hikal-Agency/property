@@ -10,6 +10,7 @@ import {
   Box,
   FormControl,
   MenuItem,
+  InputAdornment
 } from "@mui/material";
 import Select from "react-select";
 
@@ -25,6 +26,11 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import jsPDF from "jspdf";
 import { fontSize } from "@mui/system";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
+
+import {
+  BsPercent
+} from "react-icons/bs";
 
 const CommissionReqModal = ({
   commReqModal,
@@ -772,21 +778,18 @@ const CommissionReqModal = ({
       }}
     >
       <div
-        className={`${
-          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-        } ${
-          isClosing
+        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-        } w-[100vw] h-[100vh] flex items-start justify-end`}
+          } w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${
-            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-          }
+          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -797,16 +800,14 @@ const CommissionReqModal = ({
         </button>
         <div
           style={style}
-          className={` ${
-            currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-          } ${
-            isLangRTL(i18n.language)
+          className={` ${currentMode === "dark"
+            ? "bg-dark text-white"
+            : "bg-light text-black"
+            } ${isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-          }
-            p-4 h-[100vh] w-[80vw] overflow-y-scroll 
+            }
+            p-5 h-[100vh] w-[85vw] overflow-y-scroll 
           `}
         >
           {loading ? (
@@ -815,712 +816,801 @@ const CommissionReqModal = ({
             </div>
           ) : (
             <>
-              <div className="w-full flex items-center pb-5">
-                <div
-                  className={`${
-                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                  } bg-primary h-10 w-1 rounded-full my-1`}
-                ></div>
-                <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                  style={{
-                    fontFamily: isArabic(Feedback?.feedback)
-                      ? "Noto Kufi Arabic"
-                      : "inherit",
-                  }}
-                >
-                  <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("generate_comm_req")}
-                  </h1>
-                </h1>
-              </div>
+              <HeadingTitle
+                title={t("generate_comm_req")}
+              />
 
-              <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5 p-5">
+              <div className="grid md:grid-cols-2 sm:grid-cols-1 xl:grid-cols-3 gap-5">
                 {/* PROJECT DETAILS  */}
-                {/* <div className="px-4 flex flex-col gap-5">
-                  <h1 className="text-center uppercase font-semibold border-b-2 border-primary pb-3">
-                    {t("project_details")?.toUpperCase()}
-                  </h1> */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("project_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
+                  <div className="w-full pt-5"></div>
+                  {/* CLIENT NAME */}
+                  <TextField
+                    id="leadName"
+                    type={"text"}
+                    label={t("label_lead_name")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.leadName}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                  {/* PROJECT */}
+                  <TextField
+                    id="project"
+                    type={"text"}
+                    label={t("label_project_name")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.project}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                  {/* UNIT */}
+                  <TextField
+                    id="unit"
+                    type={"text"}
+                    label={t("unit")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.unit}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                  <div className="grid grid-cols-4">
+                    {/* CURRENCY */}
+                    <Select
+                      id="currency"
+                      options={currencies(t)}
+                      value={currencies(t)?.find(
+                        (curr) => curr.value === commReqData?.currency
+                      )}
+                      onChange={(e) => {
+                        setCommReqData({
+                          ...commReqData,
+                          currency: e.value,
+                        });
+                      }}
+                      placeholder={t("label_select_currency")}
+                      // className={`mb-5`}
+                      menuPortalTarget={document.body}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    {/* SELLING AMOUNT */}
+                    <TextField
+                      id="amount"
+                      type={"number"}
+                      label={t("selling_amount")}
+                      className="w-full col-span-3"
                       sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
+                        "&": {
+                          zIndex: 1,
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={commReqData?.amount}
+                      onChange={(e) => handleChange(e)}
+                      required
+                    />
+                  </div>
+                </Box>
+
+                {/* DEVELOPER DETAILS  */}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
+                >
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
+                    {t("developer_detail")?.toUpperCase()}
+                  </h1>
+                  <div className="w-full pt-5"></div>
+                  {/* VENDORS LIST */}
+                  <FormControl
+                    className={`${currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
+                    sx={{
+                      minWidth: "100%",
+                      // border: 1,
+                      borderRadius: 1,
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <TextField
+                      id="vendor_id"
+                      select
+                      value={commReqData?.vendor_id || "selected"}
+                      label={t("vendor")}
+                      onChange={(e) => {
+                        const singleVendor = vendors?.find(
+                          (ven) => ven?.id === e.target.value
+                        );
+                        console.log("singlevendor: ", singleVendor);
+                        setSingleVendor(singleVendor);
+                        setCommReqData({
+                          ...commReqData,
+                          vendor_id: e.target.value,
+                          // vendor_name: singleVendor?.vendor_name,
+                          // address: singleVendor?.address,
+                          // trn: singleVendor?.trn,
+                        });
+                      }}
+                      size="small"
+                      className="w-full border border-gray-300 rounded "
+                      displayEmpty
+                      required
+                      sx={{
+                        // border: "1px solid #000000",
+                        height: "40px",
+
+                        "& .MuiSelect-select": {
+                          fontSize: 11,
                         },
                       }}
                     >
-                      {/* CLIENT NAME */}
-                      <TextField
-                        id="leadName"
-                        type={"text"}
-                        label={t("label_lead_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.leadName}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                      {/* PROJECT */}
-                      <TextField
-                        id="project"
-                        type={"text"}
-                        label={t("label_project_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.project}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                      {/* UNIT */}
-                      <TextField
-                        id="unit"
-                        type={"text"}
-                        label={t("unit")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.unit}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                      <div className="grid grid-cols-4">
-                        {/* CURRENCY */}
-                        <Select
-                          id="currency"
-                          options={currencies(t)}
-                          value={currencies(t)?.find(
-                            (curr) => curr.value === commReqData?.currency
-                          )}
-                          onChange={(e) => {
-                            setCommReqData({
-                              ...commReqData,
-                              currency: e.value,
-                            });
-                          }}
-                          placeholder={t("label_select_currency")}
-                          className={`mb-5`}
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                        {/* SELLING AMOUNT */}
-                        <TextField
-                          id="amount"
-                          type={"number"}
-                          label={t("selling_amount")}
-                          className="w-full col-span-3"
-                          sx={{
-                            "&": {
-                              zIndex: 1,
-                            },
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={commReqData?.amount}
-                          onChange={(e) => handleChange(e)}
-                          required
-                        />
-                      </div>
-                    </Box>
-                  </div>
-                </div>
-
-                {/* DEVELOPER DETAILS  */}
-                <div
-                  className={`px-5 pt-5 \ rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
-                >
-                  <h1 className="text-center uppercase font-semibold">
-                    {t("developer_detail")?.toUpperCase()}
-                  </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
-                      }}
-                    >
-                      {/* VENDORS LIST */}
-                      <FormControl
-                        className={`${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
-                        sx={{
-                          minWidth: "100%",
-                          // border: 1,
-                          borderRadius: 1,
-                          marginBottom: "10px",
+                      <MenuItem selected value="selected">
+                        ---{t("select_vendor")}----
+                      </MenuItem>
+                      <MenuItem
+                        onKeyDown={(e) => {
+                          e.stopPropagation();
                         }}
                       >
                         <TextField
-                          id="vendor_id"
-                          select
-                          value={commReqData?.vendor_id || "selected"}
-                          label={t("vendor")}
-                          onChange={(e) => {
-                            const singleVendor = vendors?.find(
-                              (ven) => ven?.id === e.target.value
-                            );
-                            console.log("singlevendor: ", singleVendor);
-                            setSingleVendor(singleVendor);
-                            setCommReqData({
-                              ...commReqData,
-                              vendor_id: e.target.value,
-                              // vendor_name: singleVendor?.vendor_name,
-                              // address: singleVendor?.address,
-                              // trn: singleVendor?.trn,
-                            });
-                          }}
-                          size="small"
-                          className="w-full border border-gray-300 rounded "
-                          displayEmpty
-                          required
+                          placeholder={t("search_vendors")}
+                          ref={searchRef}
                           sx={{
-                            // border: "1px solid #000000",
-                            height: "40px",
-
-                            "& .MuiSelect-select": {
-                              fontSize: 11,
+                            "& input": {
+                              border: "0",
                             },
                           }}
-                        >
-                          <MenuItem selected value="selected">
-                            ---{t("select_vendor")}----
-                          </MenuItem>
-                          <MenuItem
-                            onKeyDown={(e) => {
-                              e.stopPropagation();
-                            }}
-                          >
-                            <TextField
-                              placeholder={t("search_vendors")}
-                              ref={searchRef}
-                              sx={{
-                                "& input": {
-                                  border: "0",
-                                },
-                              }}
-                              variant="standard"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                              }}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                if (value.length >= 3) {
-                                  fetchUsers(value);
-                                }
-                              }}
-                            />
-                          </MenuItem>
+                          variant="standard"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                          }}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (value.length >= 3) {
+                              fetchUsers(value);
+                            }
+                          }}
+                        />
+                      </MenuItem>
 
-                          {vendors?.map((vendor) => (
-                            <MenuItem value={vendor?.id}>
-                              {vendor?.vendor_name}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      </FormControl>
+                      {vendors?.map((vendor) => (
+                        <MenuItem value={vendor?.id}>
+                          {vendor?.vendor_name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </FormControl>
 
-                      {/* VENDOR NAME */}
-                      <TextField
-                        id="vendor_name"
-                        type={"text"}
-                        label={t("form_vendor_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        InputLabelProps={{ shrink: !!commReqData?.vendor_name }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.vendor_name}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
+                  {/* VENDOR NAME */}
+                  <TextField
+                    id="vendor_name"
+                    type={"text"}
+                    label={t("form_vendor_name")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    InputLabelProps={{ shrink: !!commReqData?.vendor_name }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.vendor_name}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
 
-                      {/* VENDOR ADDRESS */}
-                      <TextField
-                        id="address"
-                        type={"text"}
-                        label={t("label_address")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.address}
-                        InputLabelProps={{ shrink: !!commReqData?.address }}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
+                  {/* VENDOR ADDRESS */}
+                  <TextField
+                    id="address"
+                    type={"text"}
+                    label={t("label_address")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.address}
+                    InputLabelProps={{ shrink: !!commReqData?.address }}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
 
-                      {/* TRN */}
-                      <TextField
-                        id="trn"
-                        type={"text"}
-                        label={t("trn")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.trn}
-                        InputLabelProps={{ shrink: !!commReqData?.trn }}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                    </Box>
-                  </div>
-                </div>
+                  {/* TRN */}
+                  <TextField
+                    id="trn"
+                    type={"text"}
+                    label={t("trn")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        // marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.trn}
+                    InputLabelProps={{ shrink: !!commReqData?.trn }}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                </Box>
 
                 {/* COMMISSION DETAILS */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("commission_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
+                  <div className="w-full pt-5"></div>
+                  {/* BOOKING DATE  */}
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      value={commReqData?.date}
+                      label={t("date")}
+                      views={["day", "month", "year"]}
+                      onChange={(newValue) => {
+                        const formattedDate = moment(newValue?.$d).format(
+                          "YYYY-MM-DD"
+                        );
+
+                        setCommReqData((prev) => ({
+                          ...prev,
+                          date: formattedDate,
+                        }));
                       }}
-                    >
-                      {/* BOOKING DATE  */}
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={commReqData?.date}
-                          label={t("date")}
-                          views={["day", "month", "year"]}
-                          onChange={(newValue) => {
-                            const formattedDate = moment(newValue?.$d).format(
-                              "YYYY-MM-DD"
-                            );
-
-                            setCommReqData((prev) => ({
-                              ...prev,
-                              date: formattedDate,
-                            }));
+                      format="DD-MM-YYYY"
+                      renderInput={(params) => (
+                        <TextField
+                          sx={{
+                            "& input": {
+                              color:
+                                currentMode === "dark" ? "white" : "black",
+                            },
+                            "& .MuiSvgIcon-root": {
+                              color:
+                                currentMode === "dark" ? "white" : "black",
+                            },
+                            marginBottom: "15px",
                           }}
-                          format="DD-MM-YYYY"
-                          renderInput={(params) => (
-                            <TextField
-                              sx={{
-                                "& input": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                },
-                                "& .MuiSvgIcon-root": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                },
-                                marginBottom: "15px",
-                              }}
-                              fullWidth
-                              size="small"
-                              {...params}
-                              onKeyDown={(e) => e.preventDefault()}
-                              readOnly={true}
-                            />
-                          )}
-                          // maxDate={dayjs().startOf("day").toDate()}
+                          fullWidth
+                          size="small"
+                          {...params}
+                          onKeyDown={(e) => e.preventDefault()}
+                          readOnly={true}
                         />
-                      </LocalizationProvider>
+                      )}
+                    // maxDate={dayjs().startOf("day").toDate()}
+                    />
+                  </LocalizationProvider>
 
-                      {/* COMMISSION AMOUNT */}
-                      <TextField
-                        id="comm_amount"
-                        type={"number"}
-                        label={t("comm_amount")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.comm_amount}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* COMMISSION PERCENT */}
-                      <TextField
-                        id="comm_percent"
-                        type={"number"}
-                        label={t("comm_perc")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.comm_percent}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* VAT AMOUNT*/}
-                      <TextField
-                        id="vat"
-                        type={"number"}
-                        label={t("vat")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.vat}
-                        onChange={(e) => handleChange(e)}
-                      />
-
-                      {/* TOTAL AMOUNT*/}
-                      <TextField
-                        id="total_amount"
-                        type={"text"}
-                        label={t("total")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.total_amount}
-                        onChange={(e) => e.preventDefault()}
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                      />
-                    </Box>
+                  {/* COMMISSION AMOUNT */}
+                  <div className="grid grid-cols-4">
+                    {/* CURRENCY */}
+                    <Select
+                      id="currency"
+                      options={currencies(t)}
+                      value={currencies(t)?.find(
+                        (curr) => curr.value === commReqData?.currency
+                      )}
+                      onChange={(e) => {
+                        setCommReqData({
+                          ...commReqData,
+                          currency: e.value,
+                        });
+                      }}
+                      placeholder={t("label_select_currency")}
+                      // className={`mb-5`}
+                      menuPortalTarget={document.body}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    <TextField
+                      id="comm_amount"
+                      type={"number"}
+                      label={t("comm_amount")}
+                      className="w-full col-span-2"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                          zIndex: 1,
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={commReqData?.comm_amount}
+                      onChange={(e) => handleChange(e)}
+                    />
+                    {/* COMMISSION PERCENT */}
+                    <TextField
+                      id="comm_percent"
+                      type={"number"}
+                      // label={t("comm_perc")}
+                      className="w-full"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                          zIndex: 1,
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={commReqData?.comm_percent}
+                      onChange={(e) => handleChange(e)}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <BsPercent size={18} color={"#777777"} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
                   </div>
-                </div>
+                  {/* VAT AMOUNT*/}
+                  <div className="grid grid-cols-4">
+                    <Select
+                      id="currency"
+                      options={currencies(t)}
+                      value={currencies(t)?.find(
+                        (curr) => curr.value === commReqData?.currency
+                      )}
+                      onChange={(e) => {
+                        setCommReqData({
+                          ...commReqData,
+                          currency: e.value,
+                        });
+                      }}
+                      placeholder={t("label_select_currency")}
+                      // className={`mb-5`}
+                      menuPortalTarget={document.body}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    <TextField
+                      id="vat"
+                      type={"number"}
+                      label={t("vat")}
+                      className="w-full col-span-2"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                          zIndex: 1,
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={commReqData?.vat}
+                      onChange={(e) => handleChange(e)}
+                    />
+                    <TextField
+                      type={"number"}
+                      className="w-full"
+                      sx={{
+                        "&": {
+                          marginBottom: "1.25rem !important",
+                          zIndex: 1,
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={5}
+                      onChange={(e) => handleChange(e)}
+                      InputProps={{
+                        readOnly: true,
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <BsPercent size={18} color={"#777777"} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </div>
+                  {/* TOTAL AMOUNT*/}
+                  <div className="grid grid-cols-4">
+                    <Select
+                      id="currency"
+                      options={currencies(t)}
+                      value={currencies(t)?.find(
+                        (curr) => curr.value === commReqData?.currency
+                      )}
+                      onChange={(e) => {
+                        setCommReqData({
+                          ...commReqData,
+                          currency: e.value,
+                        });
+                      }}
+                      placeholder={t("label_select_currency")}
+                      // className={`mb-5`}
+                      menuPortalTarget={document.body}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    <TextField
+                      id="total_amount"
+                      type={"text"}
+                      label={t("total")}
+                      className="w-full col-span-3"
+                      sx={{
+                        "&": {
+                          // marginBottom: "1.25rem !important",
+                          zIndex: 1,
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={commReqData?.total_amount}
+                      onChange={(e) => e.preventDefault()}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </div>
+                </Box>
 
                 {/* COMPANY DETAILS */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("company_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
-                      }}
-                    >
-                      {/* COMPANY NAME  */}
-                      <TextField
-                        id="company"
-                        type={"text"}
-                        label={t("company_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.company}
-                        onChange={(e) => handleChange(e)}
-                      />
+                  <div className="w-full pt-5"></div>
+                  {/* COMPANY NAME  */}
+                  <TextField
+                    id="company"
+                    type={"text"}
+                    label={t("company_name")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.company}
+                    onChange={(e) => handleChange(e)}
+                  />
 
-                      {/* COMPANY TRN */}
-                      <TextField
-                        id="company_trn"
-                        type={"number"}
-                        label={t("trn")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.company_trn}
-                        onChange={(e) => handleChange(e)}
-                      />
+                  {/* COMPANY TRN */}
+                  <TextField
+                    id="company_trn"
+                    type={"number"}
+                    label={t("trn")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.company_trn}
+                    onChange={(e) => handleChange(e)}
+                  />
 
-                      {/* COMPANY EMAIL */}
-                      <TextField
-                        id="company_email"
-                        type={"text"}
-                        label={t("label_email")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.company_email}
-                        onChange={(e) => handleChange(e)}
-                      />
+                  {/* COMPANY EMAIL */}
+                  <TextField
+                    id="company_email"
+                    type={"text"}
+                    label={t("label_email")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.company_email}
+                    onChange={(e) => handleChange(e)}
+                  />
 
-                      {/* COMPANY TELEPHONE */}
-                      <TextField
-                        id="company_tele"
-                        type={"text"}
-                        label={t("company_tele")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.company_tele}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    </Box>
-                  </div>
-                </div>
+                  {/* COMPANY TELEPHONE */}
+                  <TextField
+                    id="company_tele"
+                    type={"text"}
+                    label={t("company_tele")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.company_tele}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </Box>
 
                 {/* BANK DETAILS */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("bank_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
-                      }}
-                    >
-                      {/* BANK NAME  */}
-                      <TextField
-                        id="bank_name"
-                        type={"text"}
-                        label={t("bank_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_name}
-                        onChange={(e) => handleChange(e)}
-                      />
+                  <div className="w-full pt-5"></div>
+                  {/* BANK NAME  */}
+                  <TextField
+                    id="bank_name"
+                    type={"text"}
+                    label={t("bank_name")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.bank_name}
+                    onChange={(e) => handleChange(e)}
+                  />
 
-                      {/* BANK ADDRESS */}
-                      <TextField
-                        id="bank_address"
-                        type={"text"}
-                        label={t("bank_address")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_address}
-                        onChange={(e) => handleChange(e)}
-                      />
+                  {/* BANK ADDRESS */}
+                  <TextField
+                    id="bank_address"
+                    type={"text"}
+                    label={t("bank_address")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.bank_address}
+                    onChange={(e) => handleChange(e)}
+                  />
 
-                      {/* BANK ACC NAME */}
-                      <TextField
-                        id="bank_acc_name"
-                        type={"text"}
-                        label={t("bank_acc_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_acc_name}
-                        onChange={(e) => handleChange(e)}
-                      />
+                  {/* BANK ACC NAME */}
+                  <TextField
+                    id="bank_acc_name"
+                    type={"text"}
+                    label={t("bank_acc_name")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.bank_acc_name}
+                    onChange={(e) => handleChange(e)}
+                  />
 
-                      {/* BANK ACC NO */}
-                      <TextField
-                        id="bank_acc_no"
-                        type={"number"}
-                        label={t("bank_acc_no")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_acc_no}
-                        onChange={(e) => handleChange(e)}
-                      />
+                  {/* BANK ACC NO */}
+                  <TextField
+                    id="bank_acc_no"
+                    type={"number"}
+                    label={t("bank_acc_no")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.bank_acc_no}
+                    onChange={(e) => handleChange(e)}
+                  />
 
-                      {/* BANK IBAN */}
-                      <TextField
-                        id="bank_iban"
-                        type={"text"}
-                        label={t("bank_iban")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_iban}
-                        onChange={(e) => handleChange(e)}
-                      />
+                  {/* BANK IBAN */}
+                  <TextField
+                    id="bank_iban"
+                    type={"text"}
+                    label={t("bank_iban")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.bank_iban}
+                    onChange={(e) => handleChange(e)}
+                  />
 
-                      {/* SWIFT CODE */}
-                      <TextField
-                        id="bank_swift_code"
-                        type={"text"}
-                        label={t("bank_swift_code")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={commReqData?.bank_swift_code}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    </Box>
-                  </div>
-                </div>
+                  {/* SWIFT CODE */}
+                  <TextField
+                    id="bank_swift_code"
+                    type={"text"}
+                    label={t("bank_swift_code")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        // marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={commReqData?.bank_swift_code}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </Box>
               </div>
+
+              <button
+                // type="submit"
+                // size="medium"
+                style={{
+                  color: "white",
+                  fontFamily: fontFam,
+                }}
+                className={`${currentMode === "dark"
+                  ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                  } w-full text-white p-3 my-5 uppercase font-semibold mb-3`}
+                onClick={GenerateRequest}
+                disabled={btnloading ? true : false}
+              >
+                {btnloading ? (
+                  <CircularProgress
+                    size={23}
+                    sx={{ color: "white" }}
+                    className="text-white"
+                  />
+                ) : (
+                  <span>{t("create")}</span>
+                )}
+              </button>
             </>
           )}
-          <div className="px-4">
-            <Button
-              type="submit"
-              size="medium"
-              style={{
-                color: "white",
-                fontFamily: fontFam,
-              }}
-              className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-              onClick={GenerateRequest}
-              disabled={btnloading ? true : false}
-            >
-              {btnloading ? (
-                <CircularProgress
-                  size={23}
-                  sx={{ color: "white" }}
-                  className="text-white"
-                />
-              ) : (
-                <span>{t("create")}</span>
-              )}
-            </Button>
-          </div>
-          <div className="p-5">
+
+          <div className="py-5">
             {pdfUrl && !loading && (
               <iframe
                 src={pdfUrl}

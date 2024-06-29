@@ -25,6 +25,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import jsPDF from "jspdf";
 import { fontSize } from "@mui/system";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const ReceiptVoucher = ({
   receiptVoucher,
@@ -335,21 +336,18 @@ const ReceiptVoucher = ({
       }}
     >
       <div
-        className={`${
-          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-        } ${
-          isClosing
+        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-        } w-[100vw] h-[100vh] flex items-start justify-end`}
+          } w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${
-            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-          }
+          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -360,16 +358,14 @@ const ReceiptVoucher = ({
         </button>
         <div
           style={style}
-          className={` ${
-            currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-          } ${
-            isLangRTL(i18n.language)
+          className={` ${currentMode === "dark"
+            ? "bg-dark text-white"
+            : "bg-light text-black"
+            } ${isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-          }
-            p-4 h-[100vh] w-[80vw] overflow-y-scroll 
+            }
+            p-5 h-[100vh] w-[85vw] overflow-y-scroll 
           `}
         >
           {loading ? (
@@ -378,291 +374,284 @@ const ReceiptVoucher = ({
             </div>
           ) : (
             <>
-              <div className="w-full flex items-center pb-5">
-                <div
-                  className={`${
-                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                  } bg-primary h-10 w-1 rounded-full my-1`}
-                ></div>
-                <h1
-                  className={`text-lg font-semibold ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                  style={{
-                    fontFamily: isArabic(Feedback?.feedback)
-                      ? "Noto Kufi Arabic"
-                      : "inherit",
-                  }}
-                >
-                  <h1 className="font-semibold pt-3 text-lg text-center">
-                    {t("receipt_voucher_heading")}
-                  </h1>
-                </h1>
-              </div>
+              <HeadingTitle
+                title={t("receipt_voucher_heading")}
+              />
 
               <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-5 p-5">
                 {/* PROJECT DETAILS  */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("project_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
+                  <div className="w-full pt-5"></div>
+                  {/* UNIT */}
+                  <TextField
+                    id="unit"
+                    type={"text"}
+                    label={t("unit")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={receiptVoucherData?.unit}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+
+                  <div className="grid grid-cols-3">
+                    {/* CURRENCY */}
+                    <Select
+                      id="currency"
+                      options={currencies(t)}
+                      value={currencies(t)?.find(
+                        (curr) =>
+                          curr.value === receiptVoucherData?.currency
+                      )}
+                      onChange={(e) => {
+                        setCommReqData({
+                          ...receiptVoucherData,
+                          currency: e.value,
+                        });
+                      }}
+                      placeholder={t("label_select_currency")}
+                      className={`mb-5`}
+                      menuPortalTarget={document.body}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    {/* SELLING AMOUNT */}
+                    <TextField
+                      id="amount"
+                      type={"number"}
+                      label={t("commission_amount")}
+                      className="w-full col-span-2"
                       sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
+                        "&": {
+                          zIndex: 1,
                         },
                       }}
-                    >
-                      {/* UNIT */}
-                      <TextField
-                        id="unit"
-                        type={"text"}
-                        label={t("unit")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={receiptVoucherData?.unit}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-
-                      <div className="grid grid-cols-3">
-                        {/* CURRENCY */}
-                        <Select
-                          id="currency"
-                          options={currencies(t)}
-                          value={currencies(t)?.find(
-                            (curr) =>
-                              curr.value === receiptVoucherData?.currency
-                          )}
-                          onChange={(e) => {
-                            setCommReqData({
-                              ...receiptVoucherData,
-                              currency: e.value,
-                            });
-                          }}
-                          placeholder={t("label_select_currency")}
-                          className={`mb-5`}
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                        {/* SELLING AMOUNT */}
-                        <TextField
-                          id="amount"
-                          type={"number"}
-                          label={t("commission_amount")}
-                          className="w-full col-span-2"
-                          sx={{
-                            "&": {
-                              zIndex: 1,
-                            },
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={receiptVoucherData?.amount}
-                          onChange={(e) => handleChange(e)}
-                          required
-                        />
-                      </div>
-                    </Box>
+                      variant="outlined"
+                      size="small"
+                      value={receiptVoucherData?.amount}
+                      onChange={(e) => handleChange(e)}
+                      required
+                    />
                   </div>
-                </div>
+                </Box>
 
                 {/* DEVELOPER DETAILS  */}
-                <div
-                  className={`px-5 pt-5 \ rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("developer_detail")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
-                      }}
-                    >
-                      {/* VENDOR NAME */}
-                      <TextField
-                        id="developer"
-                        type={"text"}
-                        label={t("label_dev_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        InputLabelProps={{
-                          shrink: !!receiptVoucherData?.developer,
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={receiptVoucherData?.developer}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                    </Box>
-                  </div>
-                </div>
+                  <div className="w-full pt-5"></div>
+                  {/* VENDOR NAME */}
+                  <TextField
+                    id="developer"
+                    type={"text"}
+                    label={t("label_dev_name")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    InputLabelProps={{
+                      shrink: !!receiptVoucherData?.developer,
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={receiptVoucherData?.developer}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                </Box>
 
                 {/* CHEQUE DETAILS */}
-                <div
-                  className={`px-5 pt-5 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
                 >
-                  <h1 className="text-center uppercase font-semibold">
+                  <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("cheque_details")?.toUpperCase()}
                   </h1>
-                  <hr className="my-4" />
-                  <div className="w-full">
-                    <Box
-                      sx={{
-                        ...darkModeColors,
+                  <div className="w-full pt-5"></div>
+
+                  {/* CHEQUE DATE */}
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      value={receiptVoucherData?.date}
+                      label={t("date")}
+                      views={["day", "month", "year"]}
+                      onChange={(newValue) => {
+                        const formattedDate = moment(newValue?.$d).format(
+                          "YYYY-MM-DD"
+                        );
+
+                        setCommReqData((prev) => ({
+                          ...prev,
+                          date: formattedDate,
+                        }));
                       }}
-                    >
-                      {/* CHEQUE DATE */}
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={receiptVoucherData?.date}
-                          label={t("date")}
-                          views={["day", "month", "year"]}
-                          onChange={(newValue) => {
-                            const formattedDate = moment(newValue?.$d).format(
-                              "YYYY-MM-DD"
-                            );
-
-                            setCommReqData((prev) => ({
-                              ...prev,
-                              date: formattedDate,
-                            }));
+                      format="DD-MM-YYYY"
+                      renderInput={(params) => (
+                        <TextField
+                          sx={{
+                            "& input": {
+                              color:
+                                currentMode === "dark" ? "white" : "black",
+                            },
+                            "& .MuiSvgIcon-root": {
+                              color:
+                                currentMode === "dark" ? "white" : "black",
+                            },
+                            marginBottom: "15px",
                           }}
-                          format="DD-MM-YYYY"
-                          renderInput={(params) => (
-                            <TextField
-                              sx={{
-                                "& input": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                },
-                                "& .MuiSvgIcon-root": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                },
-                                marginBottom: "15px",
-                              }}
-                              fullWidth
-                              size="small"
-                              {...params}
-                              onKeyDown={(e) => e.preventDefault()}
-                              readOnly={true}
-                            />
-                          )}
-                          // maxDate={dayjs().startOf("day").toDate()}
+                          fullWidth
+                          size="small"
+                          {...params}
+                          onKeyDown={(e) => e.preventDefault()}
+                          readOnly={true}
                         />
-                      </LocalizationProvider>
+                      )}
+                    // maxDate={dayjs().startOf("day").toDate()}
+                    />
+                  </LocalizationProvider>
 
-                      {/* CHEQUE NUMBER  */}
-                      <TextField
-                        id="cheque_number"
-                        type={"text"}
-                        label={t("cheque_number")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={receiptVoucherData?.cheque_number}
-                        onChange={(e) => handleChange(e)}
-                      />
+                  {/* CHEQUE NUMBER  */}
+                  <TextField
+                    id="cheque_number"
+                    type={"text"}
+                    label={t("cheque_number")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={receiptVoucherData?.cheque_number}
+                    onChange={(e) => handleChange(e)}
+                  />
 
-                      {/* BANK NAME  */}
-                      <TextField
-                        id="bank_name"
-                        type={"text"}
-                        label={t("bank_name")}
-                        className="w-full"
-                        sx={{
-                          "&": {
-                            marginBottom: "1.25rem !important",
-                            zIndex: 1,
-                          },
-                        }}
-                        variant="outlined"
-                        size="small"
-                        value={receiptVoucherData?.bank_name}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    </Box>
-                  </div>
-                </div>
+                  {/* BANK NAME  */}
+                  <TextField
+                    id="bank_name"
+                    type={"text"}
+                    label={t("bank_name")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                        zIndex: 1,
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={receiptVoucherData?.bank_name}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </Box>
               </div>
+
+              <button
+                // type="submit"
+                // size="medium"
+                style={{
+                  color: "white",
+                  fontFamily: fontFam,
+                }}
+                className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                  } w-full text-white p-3 my-5 font-semibold`}
+                onClick={() => generatePDF(receiptVoucherData)}
+                disabled={btnloading ? true : false}
+              >
+                {btnloading ? (
+                  <CircularProgress
+                    size={23}
+                    sx={{ color: "white" }}
+                    className="text-white"
+                  />
+                ) : (
+                  <span>{t("create")}</span>
+                )}
+              </button>
             </>
           )}
-          <div className="px-4">
-            <Button
-              type="submit"
-              size="medium"
-              style={{
-                color: "white",
-                fontFamily: fontFam,
-              }}
-              className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
-              onClick={() => generatePDF(receiptVoucherData)}
-              disabled={btnloading ? true : false}
-            >
-              {btnloading ? (
-                <CircularProgress
-                  size={23}
-                  sx={{ color: "white" }}
-                  className="text-white"
-                />
-              ) : (
-                <span>{t("create")}</span>
-              )}
-            </Button>
-          </div>
           <div className="p-5">
             {pdfUrl && !loading && (
               <iframe

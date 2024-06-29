@@ -37,6 +37,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { BsPercent } from "react-icons/bs";
 import jsPDF from "jspdf";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const AddCommissionModal = ({
   addCommissionModal,
@@ -95,13 +96,13 @@ const AddCommissionModal = ({
       status?.field === "agent_comm_status"
         ? newCommData?.salesId
         : status?.field === "manager_comm_status"
-        ? newCommData?.managerId
-        : null,
+          ? newCommData?.managerId
+          : null,
     deal_id: newCommData?.lid,
     vendor_id: commData?.vendor_id || null,
     invoice_type:
       status?.field === "agent_comm_status" ||
-      status?.field === "manager_comm_status"
+        status?.field === "manager_comm_status"
         ? "Expense"
         : "Income",
     date: commData?.date || null,
@@ -984,22 +985,19 @@ const AddCommissionModal = ({
       }}
     >
       <div
-        className={`${
-          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-        } ${
-          isClosing
+        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-        }
+          }
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${
-            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-          }
+          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -1010,16 +1008,14 @@ const AddCommissionModal = ({
         </button>
         <div
           style={style}
-          className={` ${
-            currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-          } ${
-            isLangRTL(i18n.language)
+          className={` ${currentMode === "dark"
+            ? "bg-dark text-white"
+            : "bg-light text-black"
+            } ${isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-          }
-            p-4 h-[100vh] w-[80vw] overflow-y-scroll 
+            }
+            p-5 h-[100vh] w-[85vw] overflow-y-scroll 
           `}
         >
           {pageLoading ? (
@@ -1028,534 +1024,657 @@ const AddCommissionModal = ({
             </div>
           ) : (
             <>
-              <div
-                className={`w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5`}
-              >
-                <div className="w-full flex items-center pb-3 ">
-                  <div
-                    className={`${
-                      isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                    } bg-primary h-10 w-1 rounded-full my-1`}
-                  ></div>
-                  <h1
-                    className={`text-lg font-semibold ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    <h1 className="font-semibold pt-3 text-lg text-center">
-                      {commData
-                        ? t("edit_commission")
-                        : t("commission_details")}
-                    </h1>
-                  </h1>
-                </div>
-              </div>
+              <HeadingTitle
+                title={commData
+                  ? t("edit_commission")
+                  : t("commission_details")}
+              />
 
               <div
-                className={`grid md:grid-cols-2 sm:grid-cols-1 ${
-                  commData ? "lg:grid-cols-2" : "lg:grid-cols-2 xl:grid-cols-3"
-                } ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                } gap-5 p-5`}
+                className={`grid md:grid-cols-2 sm:grid-cols-1 ${commData ? "lg:grid-cols-2" : "lg:grid-cols-2 xl:grid-cols-3"
+                  } ${currentMode === "dark" ? "text-white" : "text-black"
+                  } gap-5 my-5`}
               >
                 {/* Commission DETAILS  */}
-                <div className="px-2">
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
+                >
                   <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("commission_details")?.toUpperCase()}
                   </h1>
-                  <div className="w-full pt-5">
-                    <Box
+                  <div className="w-full pt-5"></div>
+                  {/* COMMISSION TYPE */}
+                  <Select
+                    options={commission_type(t, true)?.map((comm_type) => ({
+                      value: comm_type?.value,
+                      label: comm_type?.label,
+                    }))}
+                    value={commission_type(t, true)?.filter(
+                      (comm) => comm?.value === commissionData?.invoice_type
+                    )}
+                    onChange={(e) => {
+                      setCommissionData({
+                        ...commissionData,
+                        invoice_type: e.value,
+                      });
+                      setUpdatedField("invoice_type");
+                    }}
+                    placeholder={t("commission_type")}
+                    className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                    required
+                  />
+                  {/* DATE */}
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      value={commissionData?.date}
+                      label={t("date")}
+                      views={["day", "month", "year"]}
+                      onChange={(newValue) => {
+                        const formattedDate = moment(newValue?.$d).format(
+                          "YYYY-MM-DD"
+                        );
+
+                        setCommissionData((prev) => ({
+                          ...prev,
+                          date: formattedDate,
+                        }));
+                      }}
+                      format="DD-MM-YYYY"
+                      renderInput={(params) => (
+                        <TextField
+                          sx={{
+                            "& input": {
+                              color:
+                                currentMode === "dark" ? "white" : "black",
+                            },
+                            "& .MuiSvgIcon-root": {
+                              color:
+                                currentMode === "dark" ? "white" : "black",
+                            },
+                            marginBottom: "15px",
+                          }}
+                          fullWidth
+                          size="small"
+                          {...params}
+                          onKeyDown={(e) => e.preventDefault()}
+                          readOnly={true}
+                        />
+                      )}
+                    // maxDate={dayjs().startOf("day").toDate()}
+                    />
+                  </LocalizationProvider>
+                  {/* CLAIM */}
+                  <Select
+                    options={claim(t)?.map((claim) => ({
+                      value: claim.value,
+                      label: claim.label,
+                    }))}
+                    value={claim(t)?.filter(
+                      (claim) => claim?.value === commissionData?.claim
+                    )}
+                    onChange={(e) => {
+                      setCommissionData({
+                        ...commissionData,
+                        claim: e.value,
+                      });
+                    }}
+                    placeholder={t("claim")}
+                    className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                  {status?.field !== "comm_status" &&
+                    commissionData?.invoice_type !== "Income" ? (
+                    // VENDOR
+                    <FormControl
+                      className={`${currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
                       sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                        minWidth: "100%",
+                        borderRadius: 1,
+                        marginBottom: "10px",
                       }}
                     >
-                      {/* COMMISSION TYPE */}
-                      <Select
-                        options={commission_type(t, true)?.map((comm_type) => ({
-                          value: comm_type?.value,
-                          label: comm_type?.label,
-                        }))}
-                        value={commission_type(t, true)?.filter(
-                          (comm) => comm?.value === commissionData?.invoice_type
-                        )}
+                      <TextField
+                        id="vendor_id"
+                        select
+                        value={commissionData?.vendor_id || "selected"}
+                        label={t("vendor")}
                         onChange={(e) => {
+                          const singleVendor = vendor?.find(
+                            (ven) => ven?.id === e.target.value
+                          );
+                          console.log("singlevendor: ", singleVendor);
+                          setSingleVendor(singleVendor);
                           setCommissionData({
                             ...commissionData,
-                            invoice_type: e.value,
+
+                            vendor_id: e.target.value,
                           });
-                          setUpdatedField("invoice_type");
                         }}
-                        placeholder={t("commission_type")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
+                        size="small"
+                        className="w-full border border-gray-300 rounded"
+                        displayEmpty
                         required
-                      />
-                      {/* DATE */}
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={commissionData?.date}
-                          label={t("date")}
-                          views={["day", "month", "year"]}
-                          onChange={(newValue) => {
-                            const formattedDate = moment(newValue?.$d).format(
-                              "YYYY-MM-DD"
-                            );
+                        sx={{
+                          // border: "1px solid #000000",
+                          height: "40px",
+                          "& .MuiSelect-select": {
+                            fontSize: 11,
+                          },
+                        }}
+                      >
+                        <MenuItem selected value="selected">
+                          ---{t("select_vendor")}----
+                        </MenuItem>
+                        <MenuItem onKeyDown={(e) => e.stopPropagation()}>
+                          <TextField
+                            placeholder={t("search_vendors")}
+                            ref={searchRef}
+                            sx={{ "& input": { border: "0" } }}
+                            variant="standard"
+                            onChange={(e) => {
+                              e.preventDefault();
+                              const inputValue =
+                                searchRef.current.querySelector(
+                                  "input"
+                                ).value;
+                              if (inputValue) {
+                                fetchUsers(inputValue);
+                              }
+                            }}
+                            onClick={(event) => event.stopPropagation()}
+                          />
+                        </MenuItem>
+                        {vendor?.map((vendor) => (
+                          <MenuItem key={vendor?.id} value={vendor?.id}>
+                            {vendor?.vendor_name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </FormControl>
+                  ) : null}
+                  {/* VENDOR / USER */}
+                  {commissionData?.invoice_type === "Income" ? (
+                    // VENDOR
+                    <FormControl
+                      className={`${currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                      sx={{
+                        minWidth: "100%",
+                        borderRadius: 1,
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <TextField
+                        id="vendor_id"
+                        select
+                        value={commissionData?.vendor_id || "selected"}
+                        label={t("vendor")}
+                        onChange={(e) => {
+                          const singleVendor = vendor?.find(
+                            (ven) => ven?.id === e.target.value
+                          );
+                          console.log("singlevendor: ", singleVendor);
+                          setSingleVendor(singleVendor);
+                          setCommissionData({
+                            ...commissionData,
 
-                            setCommissionData((prev) => ({
-                              ...prev,
-                              date: formattedDate,
-                            }));
-                          }}
-                          format="DD-MM-YYYY"
-                          renderInput={(params) => (
-                            <TextField
-                              sx={{
-                                "& input": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                },
-                                "& .MuiSvgIcon-root": {
-                                  color:
-                                    currentMode === "dark" ? "white" : "black",
-                                },
-                                marginBottom: "15px",
-                              }}
-                              fullWidth
-                              size="small"
-                              {...params}
-                              onKeyDown={(e) => e.preventDefault()}
-                              readOnly={true}
-                            />
-                          )}
-                          // maxDate={dayjs().startOf("day").toDate()}
-                        />
-                      </LocalizationProvider>
-                      {/* CLAIM */}
+                            vendor_id: e.target.value,
+                          });
+                        }}
+                        size="small"
+                        className="w-full border border-gray-300 rounded"
+                        displayEmpty
+                        required
+                        sx={{
+                          // border: "1px solid #000000",
+                          height: "40px",
+                          "& .MuiSelect-select": {
+                            fontSize: 11,
+                          },
+                        }}
+                      >
+                        <MenuItem selected value="selected">
+                          ---{t("select_vendor")}----
+                        </MenuItem>
+                        <MenuItem onKeyDown={(e) => e.stopPropagation()}>
+                          <TextField
+                            placeholder={t("search_vendors")}
+                            ref={searchRef}
+                            sx={{ "& input": { border: "0" } }}
+                            variant="standard"
+                            onChange={(e) => {
+                              e.preventDefault();
+                              const inputValue =
+                                searchRef.current.querySelector(
+                                  "input"
+                                ).value;
+                              if (inputValue) {
+                                fetchUsers(inputValue);
+                              }
+                            }}
+                            onClick={(event) => event.stopPropagation()}
+                          />
+                        </MenuItem>
+                        {vendor?.map((vendor) => (
+                          <MenuItem key={vendor?.id} value={vendor?.id}>
+                            {vendor?.vendor_name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </FormControl>
+                  ) : commissionData?.invoice_type === "Expense" &&
+                    status?.field == "comm_status" ? (
+                    // USER
+                    <FormControl
+                      className={`${currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
+                      sx={{
+                        minWidth: "100%",
+                        borderRadius: 1,
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <TextField
+                        id="user_id"
+                        select
+                        value={commissionData?.user_id || "selected"}
+                        label={t("select_user")}
+                        onChange={(e) => {
+                          setCommissionData({
+                            ...commissionData,
+
+                            user_id: e.target.value,
+                          });
+                        }}
+                        size="small"
+                        className="w-full border border-gray-300 rounded"
+                        displayEmpty
+                        required
+                        sx={{
+                          height: "40px",
+                          "& .MuiSelect-select": {
+                            fontSize: 11,
+                          },
+                        }}
+                      >
+                        <MenuItem selected value="selected">
+                          ---{t("select_user")}----
+                        </MenuItem>
+                        <MenuItem onKeyDown={(e) => e.stopPropagation()}>
+                          <TextField
+                            placeholder={t("search_users")}
+                            ref={searchRef}
+                            sx={{ "& input": { border: "0" } }}
+                            variant="standard"
+                            onChange={(e) => {
+                              e.preventDefault();
+                              const inputValue =
+                                searchRef.current.querySelector(
+                                  "input"
+                                ).value;
+                              if (inputValue) {
+                                fetchUsers(inputValue, "user");
+                              }
+                            }}
+                            onClick={(event) => event.stopPropagation()}
+                          />
+                        </MenuItem>
+                        {user?.map((user) => (
+                          <MenuItem key={user?.id} value={user?.id}>
+                            {user?.userName}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </FormControl>
+                  ) : (
+                    <></>
+                  )}
+                  {/* AGENT MANAGER USERNAMES  */}
+                  {status?.field !== "comm_status" && (
+                    <>
+                      {/* TITLE  */}
                       <Select
-                        options={claim(t)?.map((claim) => ({
-                          value: claim.value,
-                          label: claim.label,
-                        }))}
-                        value={claim(t)?.filter(
-                          (claim) => claim?.value === commissionData?.claim
+                        id="title"
+                        options={title()}
+                        value={title(t)?.find(
+                          (curr) => curr.value === commissionData?.title
                         )}
                         onChange={(e) => {
                           setCommissionData({
                             ...commissionData,
-                            claim: e.value,
+                            title: e.value,
                           });
                         }}
-                        placeholder={t("claim")}
+                        placeholder={t("title")}
                         className={`mb-5`}
                         menuPortalTarget={document.body}
                         styles={selectStyles(currentMode, primaryColor)}
                       />
-                      {status?.field !== "comm_status" &&
-                      commissionData?.invoice_type !== "Income" ? (
-                        // VENDOR
-                        <FormControl
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                          sx={{
-                            minWidth: "100%",
-                            borderRadius: 1,
-                            marginBottom: "10px",
-                          }}
-                        >
-                          <TextField
-                            id="vendor_id"
-                            select
-                            value={commissionData?.vendor_id || "selected"}
-                            label={t("vendor")}
-                            onChange={(e) => {
-                              const singleVendor = vendor?.find(
-                                (ven) => ven?.id === e.target.value
-                              );
-                              console.log("singlevendor: ", singleVendor);
-                              setSingleVendor(singleVendor);
-                              setCommissionData({
-                                ...commissionData,
 
-                                vendor_id: e.target.value,
-                              });
-                            }}
-                            size="small"
-                            className="w-full border border-gray-300 rounded"
-                            displayEmpty
-                            required
-                            sx={{
-                              // border: "1px solid #000000",
-                              height: "40px",
-                              "& .MuiSelect-select": {
-                                fontSize: 11,
-                              },
-                            }}
-                          >
-                            <MenuItem selected value="selected">
-                              ---{t("select_vendor")}----
-                            </MenuItem>
-                            <MenuItem onKeyDown={(e) => e.stopPropagation()}>
-                              <TextField
-                                placeholder={t("search_vendors")}
-                                ref={searchRef}
-                                sx={{ "& input": { border: "0" } }}
-                                variant="standard"
-                                onChange={(e) => {
-                                  e.preventDefault();
-                                  const inputValue =
-                                    searchRef.current.querySelector(
-                                      "input"
-                                    ).value;
-                                  if (inputValue) {
-                                    fetchUsers(inputValue);
-                                  }
-                                }}
-                                onClick={(event) => event.stopPropagation()}
-                              />
-                            </MenuItem>
-                            {vendor?.map((vendor) => (
-                              <MenuItem key={vendor?.id} value={vendor?.id}>
-                                {vendor?.vendor_name}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        </FormControl>
-                      ) : null}
-                      {/* VENDOR / USER */}
-                      {commissionData?.invoice_type === "Income" ? (
-                        // VENDOR
-                        <FormControl
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                          sx={{
-                            minWidth: "100%",
-                            borderRadius: 1,
-                            marginBottom: "10px",
-                          }}
-                        >
-                          <TextField
-                            id="vendor_id"
-                            select
-                            value={commissionData?.vendor_id || "selected"}
-                            label={t("vendor")}
-                            onChange={(e) => {
-                              const singleVendor = vendor?.find(
-                                (ven) => ven?.id === e.target.value
-                              );
-                              console.log("singlevendor: ", singleVendor);
-                              setSingleVendor(singleVendor);
-                              setCommissionData({
-                                ...commissionData,
+                      <Select
+                        id="user_id"
+                        options={users()?.filter(
+                          (user) => user?.value !== null
+                        )}
+                        value={users()?.find(
+                          (user) => user.value === commissionData?.user_id
+                        )}
+                        onChange={(e) => {
+                          console.log("e::::::::: user: ", e);
+                          setCommissionData({
+                            ...commissionData,
+                            user_id: e.value,
+                          });
+                        }}
+                        placeholder={t("username")}
+                        className={`mb-5`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
+                      />
+                    </>
+                  )}
 
-                                vendor_id: e.target.value,
-                              });
-                            }}
-                            size="small"
-                            className="w-full border border-gray-300 rounded"
-                            displayEmpty
-                            required
-                            sx={{
-                              // border: "1px solid #000000",
-                              height: "40px",
-                              "& .MuiSelect-select": {
-                                fontSize: 11,
-                              },
-                            }}
-                          >
-                            <MenuItem selected value="selected">
-                              ---{t("select_vendor")}----
-                            </MenuItem>
-                            <MenuItem onKeyDown={(e) => e.stopPropagation()}>
-                              <TextField
-                                placeholder={t("search_vendors")}
-                                ref={searchRef}
-                                sx={{ "& input": { border: "0" } }}
-                                variant="standard"
-                                onChange={(e) => {
-                                  e.preventDefault();
-                                  const inputValue =
-                                    searchRef.current.querySelector(
-                                      "input"
-                                    ).value;
-                                  if (inputValue) {
-                                    fetchUsers(inputValue);
-                                  }
-                                }}
-                                onClick={(event) => event.stopPropagation()}
-                              />
-                            </MenuItem>
-                            {vendor?.map((vendor) => (
-                              <MenuItem key={vendor?.id} value={vendor?.id}>
-                                {vendor?.vendor_name}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        </FormControl>
-                      ) : commissionData?.invoice_type === "Expense" &&
-                        status?.field == "comm_status" ? (
-                        // USER
-                        <FormControl
-                          className={`${
-                            currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
-                          sx={{
-                            minWidth: "100%",
-                            borderRadius: 1,
-                            marginBottom: "10px",
-                          }}
-                        >
-                          <TextField
-                            id="user_id"
-                            select
-                            value={commissionData?.user_id || "selected"}
-                            label={t("select_user")}
-                            onChange={(e) => {
-                              setCommissionData({
-                                ...commissionData,
-
-                                user_id: e.target.value,
-                              });
-                            }}
-                            size="small"
-                            className="w-full border border-gray-300 rounded"
-                            displayEmpty
-                            required
-                            sx={{
-                              height: "40px",
-                              "& .MuiSelect-select": {
-                                fontSize: 11,
-                              },
-                            }}
-                          >
-                            <MenuItem selected value="selected">
-                              ---{t("select_user")}----
-                            </MenuItem>
-                            <MenuItem onKeyDown={(e) => e.stopPropagation()}>
-                              <TextField
-                                placeholder={t("search_users")}
-                                ref={searchRef}
-                                sx={{ "& input": { border: "0" } }}
-                                variant="standard"
-                                onChange={(e) => {
-                                  e.preventDefault();
-                                  const inputValue =
-                                    searchRef.current.querySelector(
-                                      "input"
-                                    ).value;
-                                  if (inputValue) {
-                                    fetchUsers(inputValue, "user");
-                                  }
-                                }}
-                                onClick={(event) => event.stopPropagation()}
-                              />
-                            </MenuItem>
-                            {user?.map((user) => (
-                              <MenuItem key={user?.id} value={user?.id}>
-                                {user?.userName}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        </FormControl>
-                      ) : (
-                        <></>
+                  {/* INVOICE */}
+                  {!commData && (
+                    <>
+                      {imagePreview && (
+                        <div className="mb-5 flex items-center justify-center ">
+                          <div className=" rounded-lg border">
+                            <img
+                              src={imagePreview}
+                              width="100px"
+                              height="100px"
+                            />
+                          </div>
+                        </div>
                       )}
-                      {/* AGENT MANAGER USERNAMES  */}
-                      {status?.field !== "comm_status" && (
-                        <>
-                          {/* TITLE  */}
-                          <Select
-                            id="title"
-                            options={title()}
-                            value={title(t)?.find(
-                              (curr) => curr.value === commissionData?.title
-                            )}
-                            onChange={(e) => {
-                              setCommissionData({
-                                ...commissionData,
-                                title: e.value,
-                              });
-                            }}
-                            placeholder={t("title")}
-                            className={`mb-5`}
-                            menuPortalTarget={document.body}
-                            styles={selectStyles(currentMode, primaryColor)}
+                      {pdfPreview && (
+                        <div className="flex flex-col justify-center items-center w-full gap-4">
+                          <BsFileEarmarkMedical
+                            size={100}
+                            color={"#AAAAAA"}
                           />
-
-                          <Select
-                            id="user_id"
-                            options={users()?.filter(
-                              (user) => user?.value !== null
-                            )}
-                            value={users()?.find(
-                              (user) => user.value === commissionData?.user_id
-                            )}
-                            onChange={(e) => {
-                              console.log("e::::::::: user: ", e);
-                              setCommissionData({
-                                ...commissionData,
-                                user_id: e.value,
-                              });
-                            }}
-                            placeholder={t("username")}
-                            className={`mb-5`}
-                            menuPortalTarget={document.body}
-                            styles={selectStyles(currentMode, primaryColor)}
-                          />
-                        </>
+                          <div className="">
+                            <p>File Selected </p>
+                          </div>
+                        </div>
                       )}
-
-                      {/* INVOICE */}
-                      {!commData && (
-                        <>
-                          {imagePreview && (
-                            <div className="mb-5 flex items-center justify-center ">
-                              <div className=" rounded-lg border">
-                                <img
-                                  src={imagePreview}
-                                  width="100px"
-                                  height="100px"
-                                />
-                              </div>
-                            </div>
-                          )}
-                          {pdfPreview && (
-                            <div className="flex flex-col justify-center items-center w-full gap-4">
-                              <BsFileEarmarkMedical
-                                size={100}
-                                color={"#AAAAAA"}
-                              />
-                              <div className="">
-                                <p>File Selected </p>
-                              </div>
-                            </div>
-                          )}
-                          <input
-                            accept="image/jpeg, image/png, image/jpg, image/gif, application/pdf"
-                            style={{ display: "none" }}
-                            id="contained-button-file"
-                            type="file"
-                            onChange={handleImgUpload}
-                          />
-                          <label htmlFor="contained-button-file">
-                            <Button
-                              variant="contained"
-                              size="medium"
-                              className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
-                              style={{
-                                color: "#ffffff",
-                                border: "1px solid white",
-                                fontFamily: fontFam,
-                              }}
-                              component="span" // Required so the button doesn't automatically submit form
-                              disabled={loading ? true : false}
-                              startIcon={
-                                loading ? null : (
-                                  <MdFileUpload className="mx-2" size={16} />
-                                )
-                              }
-                            >
-                              <span>{t("upload_invoice")}</span>
-                            </Button>
-                          </label>
-                        </>
-                      )}
-                    </Box>
-                  </div>
-                </div>
-
+                      <input
+                        accept="image/jpeg, image/png, image/jpg, image/gif, application/pdf"
+                        style={{ display: "none" }}
+                        id="contained-button-file"
+                        type="file"
+                        onChange={handleImgUpload}
+                      />
+                      <label htmlFor="contained-button-file">
+                        <Button
+                          variant="contained"
+                          size="medium"
+                          className="bg-btn-primary w-full text-white rounded-lg py-3 font-semibold my-3"
+                          style={{
+                            color: "#ffffff",
+                            border: "1px solid white",
+                            fontFamily: fontFam,
+                          }}
+                          component="span" // Required so the button doesn't automatically submit form
+                          disabled={loading ? true : false}
+                          startIcon={
+                            loading ? null : (
+                              <MdFileUpload className="mx-2" size={16} />
+                            )
+                          }
+                        >
+                          <span>{t("upload_invoice")}</span>
+                        </Button>
+                      </label>
+                    </>
+                  )}
+                </Box>
                 {/* PAYMENT DETAILS */}
-                <div className="px-2">
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                    {
+                      right: isLangRTL(i18n.language)
+                        ? "2.5rem"
+                        : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
+                    "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
+                    }
+                  }}
+                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  p-5`}
+                >
                   <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
                     {t("payment_details")?.toUpperCase()}
                   </h1>
-                  <div className="w-full pt-5">
-                    <Box
+                  <div className="w-full pt-5"></div>
+                  {/* PAYMENT STATUS */}
+                  <Select
+                    id="status"
+                    options={payment_status(t)?.map((status) => ({
+                      value: status?.value,
+                      label: status?.label,
+                    }))}
+                    value={payment_status(t)?.filter(
+                      (status) => status?.value === commissionData?.status
+                    )}
+                    onChange={(e) => {
+                      setCommissionData({
+                        ...commissionData,
+                        status: e.value,
+                      });
+                    }}
+                    placeholder={t("status")}
+                    className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                  {/* PAYMENT SOURCE */}
+                  <Select
+                    id="paid_by"
+                    options={payment_source(t)?.map((payment) => ({
+                      value: payment.value,
+                      label: payment.label,
+                    }))}
+                    value={payment_source(t)?.filter(
+                      (pay_src) =>
+                        pay_src?.value === commissionData?.paid_by
+                    )}
+                    onChange={(e) => {
+                      setCommissionData({
+                        ...commissionData,
+                        paid_by: e.value,
+                      });
+                    }}
+                    placeholder={t("payment_source")}
+                    className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                  {/* COMMISSION */}
+                  <div className="grid grid-cols-4">
+                    {/* CURRENCY */}
+                    <Select
+                      id="currency"
+                      options={currencies(t)}
+                      value={currencies(t)?.find(
+                        (curr) => curr.value === commissionData?.currency
+                      )}
+                      onChange={(e) => {
+                        setCommissionData({
+                          ...commissionData,
+                          currency: e.value,
+                        });
+                      }}
+                      placeholder={t("label_select_currency")}
+                      // className={`mb-5`}
+                      menuPortalTarget={document.body}
+                      styles={selectStyles(currentMode, primaryColor)}
+                    />
+                    {/* AMOUNT */}
+                    <TextField
+                      id="amount"
+                      type={"text"}
+                      label={t("commission_amount")}
+                      className="w-full col-span-2"
                       sx={{
-                        ...darkModeColors,
-                        "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        "& legend": {
-                          textAlign: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
+                        "&": {
+                          // marginBottom: "1.25rem !important",
+                          zIndex: 1,
                         },
                       }}
-                    >
-                      {/* PAYMENT STATUS */}
-                      <Select
-                        id="status"
-                        options={payment_status(t)?.map((status) => ({
-                          value: status?.value,
-                          label: status?.label,
-                        }))}
-                        value={payment_status(t)?.filter(
-                          (status) => status?.value === commissionData?.status
-                        )}
-                        onChange={(e) => {
-                          setCommissionData({
-                            ...commissionData,
-                            status: e.value,
-                          });
-                        }}
-                        placeholder={t("status")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
+                      variant="outlined"
+                      size="small"
+                      value={commissionData?.amount}
+                      onChange={handleChange}
+                      required
+                    />
+                    {/* PERCENTAGE */}
+                    <TextField
+                      id="comm_percent"
+                      type={"number"}
+                      // label={t("commission_perc")}
+                      className="w-full"
+                      sx={{
+                        "&": {
+                          // marginBottom: "1.25rem !important",
+                          zIndex: 1,
+                        },
+                      }}
+                      variant="outlined"
+                      size="small"
+                      value={commissionData?.comm_percent}
+                      onChange={handleChange}
+                      required
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <BsPercent size={18} color={"#777777"} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </div>
+                  {/* VAT TOGGLE */}
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="success"
+                        checked={includeVat}
+                        onChange={() => toggleVat(!includeVat)}
                       />
-                      {/* PAYMENT SOURCE */}
-                      <Select
-                        id="paid_by"
-                        options={payment_source(t)?.map((payment) => ({
-                          value: payment.value,
-                          label: payment.label,
-                        }))}
-                        value={payment_source(t)?.filter(
-                          (pay_src) =>
-                            pay_src?.value === commissionData?.paid_by
-                        )}
-                        onChange={(e) => {
-                          setCommissionData({
-                            ...commissionData,
-                            paid_by: e.value,
-                          });
-                        }}
-                        placeholder={t("payment_source")}
-                        className={`mb-5`}
-                        menuPortalTarget={document.body}
-                        styles={selectStyles(currentMode, primaryColor)}
-                      />
-                      {/* COMMISSION */}
+                    }
+                    label={t("including_vat")}
+                    className="font-semibold mb-5"
+                  />
+                  {includeVat && (
+                    <>
+                      {/* VAT */}
                       <div className="grid grid-cols-4">
                         {/* CURRENCY */}
                         <Select
                           id="currency"
                           options={currencies(t)}
                           value={currencies(t)?.find(
-                            (curr) => curr.value === commissionData?.currency
+                            (curr) =>
+                              curr.value === commissionData?.currency
+                          )}
+                          onChange={(e) => {
+                            setCommissionData({
+                              ...commissionData,
+                              currency: e.value,
+                            });
+                          }}
+                          placeholder={t("label_select_currency")}
+                          menuPortalTarget={document.body}
+                          styles={selectStyles(currentMode, primaryColor)}
+                        />
+                        {/* AMOUNT */}
+                        <TextField
+                          id="vat"
+                          type={"text"}
+                          label={t("vat_amount")}
+                          className="w-full col-span-2"
+                          sx={{
+                            "&": {
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={commissionData?.vat}
+                          onChange={handleChange}
+                          required
+                        />
+                        {/* PERCENT */}
+                        <TextField
+                          type={"number"}
+                          className="w-full"
+                          sx={{
+                            "&": {
+                              zIndex: 1,
+                            },
+                          }}
+                          variant="outlined"
+                          size="small"
+                          value={"5"}
+                          // onChange={handleChange}
+                          required
+                          InputProps={{
+                            readOnly: true,
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <BsPercent size={18} color={"#777777"} />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </div>
+                      {/* TOTAL AMOUNT */}
+                      <div className="grid grid-cols-4">
+                        {/* CURRENCY */}
+                        <Select
+                          id="currency"
+                          options={currencies(t)}
+                          value={currencies(t)?.find(
+                            (curr) =>
+                              curr.value === commissionData?.currency
                           )}
                           onChange={(e) => {
                             setCommissionData({
@@ -1570,10 +1689,10 @@ const AddCommissionModal = ({
                         />
                         {/* AMOUNT */}
                         <TextField
-                          id="amount"
+                          id="total_amount"
                           type={"text"}
-                          label={t("commission_amount")}
-                          className="w-full col-span-2"
+                          label={t("total_amount")}
+                          className="w-full col-span-3"
                           sx={{
                             "&": {
                               // marginBottom: "1.25rem !important",
@@ -1582,166 +1701,26 @@ const AddCommissionModal = ({
                           }}
                           variant="outlined"
                           size="small"
-                          value={commissionData?.amount}
+                          value={commissionData?.total_amount}
                           onChange={handleChange}
                           required
-                        />
-                        {/* PERCENTAGE */}
-                        <TextField
-                          id="comm_percent"
-                          type={"number"}
-                          // label={t("commission_perc")}
-                          className="w-full"
-                          sx={{
-                            "&": {
-                              // marginBottom: "1.25rem !important",
-                              zIndex: 1,
-                            },
-                          }}
-                          variant="outlined"
-                          size="small"
-                          value={commissionData?.comm_percent}
-                          onChange={handleChange}
-                          required
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <BsPercent size={18} color={"#777777"} />
-                              </InputAdornment>
-                            ),
-                          }}
                         />
                       </div>
-                      {/* VAT TOGGLE */}
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            color="success"
-                            checked={includeVat}
-                            onChange={() => toggleVat(!includeVat)}
-                          />
-                        }
-                        label={t("including_vat")}
-                        className="font-semibold mb-5"
-                      />
-                      {includeVat && (
-                        <>
-                          {/* VAT */}
-                          <div className="grid grid-cols-4">
-                            {/* CURRENCY */}
-                            <Select
-                              id="currency"
-                              options={currencies(t)}
-                              value={currencies(t)?.find(
-                                (curr) =>
-                                  curr.value === commissionData?.currency
-                              )}
-                              onChange={(e) => {
-                                setCommissionData({
-                                  ...commissionData,
-                                  currency: e.value,
-                                });
-                              }}
-                              placeholder={t("label_select_currency")}
-                              menuPortalTarget={document.body}
-                              styles={selectStyles(currentMode, primaryColor)}
-                            />
-                            {/* AMOUNT */}
-                            <TextField
-                              id="vat"
-                              type={"text"}
-                              label={t("vat_amount")}
-                              className="w-full col-span-2"
-                              sx={{
-                                "&": {
-                                  zIndex: 1,
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              value={commissionData?.vat}
-                              onChange={handleChange}
-                              required
-                            />
-                            {/* PERCENT */}
-                            <TextField
-                              type={"number"}
-                              className="w-full"
-                              sx={{
-                                "&": {
-                                  zIndex: 1,
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              value={"5"}
-                              // onChange={handleChange}
-                              required
-                              InputProps={{
-                                readOnly: true,
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <BsPercent size={18} color={"#777777"} />
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </div>
-                          {/* TOTAL AMOUNT */}
-                          <div className="grid grid-cols-4">
-                            {/* CURRENCY */}
-                            <Select
-                              id="currency"
-                              options={currencies(t)}
-                              value={currencies(t)?.find(
-                                (curr) =>
-                                  curr.value === commissionData?.currency
-                              )}
-                              onChange={(e) => {
-                                setCommissionData({
-                                  ...commissionData,
-                                  currency: e.value,
-                                });
-                              }}
-                              placeholder={t("label_select_currency")}
-                              // className={`mb-5`}
-                              menuPortalTarget={document.body}
-                              styles={selectStyles(currentMode, primaryColor)}
-                            />
-                            {/* AMOUNT */}
-                            <TextField
-                              id="total_amount"
-                              type={"text"}
-                              label={t("total_amount")}
-                              className="w-full col-span-3"
-                              sx={{
-                                "&": {
-                                  // marginBottom: "1.25rem !important",
-                                  zIndex: 1,
-                                },
-                              }}
-                              variant="outlined"
-                              size="small"
-                              value={commissionData?.total_amount}
-                              onChange={handleChange}
-                              required
-                            />
-                          </div>
-                        </>
-                      )}
-                    </Box>
-                  </div>
-                </div>
+                    </>
+                  )}
+                </Box>
               </div>
 
-              <Button
-                type="submit"
-                size="medium"
+              <button
+                // type="submit"
+                // size="medium"
                 style={{
                   color: "white",
                   fontFamily: fontFam,
                 }}
-                className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
+                className={`${currentMode === "dark"
+                  ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                  } w-full text-white p-3 font-semibold mb-3 `}
                 onClick={AddCommmission}
                 disabled={btnLoading ? true : false}
               >
@@ -1754,7 +1733,7 @@ const AddCommissionModal = ({
                 ) : (
                   <span>{commData ? t("edit_commission") : t("save")}</span>
                 )}
-              </Button>
+              </button>
             </>
           )}
           <div className="p-5">
@@ -1770,7 +1749,7 @@ const AddCommissionModal = ({
           </div>
         </div>
       </div>
-    </Modal>
+    </Modal >
   );
 };
 
