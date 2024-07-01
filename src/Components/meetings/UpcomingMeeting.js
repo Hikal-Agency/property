@@ -80,7 +80,9 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
                     </h2>
                     <p
                       style={{ cursor: "pointer" }}
-                      className={`bg-primary text-white rounded-full shadow-none p-2 mr-1 flex items-center timelineBtn`}
+                      className={`${themeBgImg ? "bg-primary shadow-none"
+                        : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                       } text-white rounded-full p-2 mr-1 flex items-center timelineBtn`}
                     >
                       <Tooltip title="View Timeline" arrow>
                         <button

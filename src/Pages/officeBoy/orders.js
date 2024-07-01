@@ -17,7 +17,7 @@ import {
 import usePermission from "../../utils/usePermission";
 import moment from "moment";
 import { datetimeAMPM } from "../../Components/_elements/formatDateTime";
-import { useLocation } from "react-router-dom";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const Orders = () => {
   const { currentMode, t, primaryColor, themeBgImg, BACKEND_URL, User } =
@@ -133,6 +133,10 @@ const Orders = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // const Additional = () => {
+
+  // }
+
   return (
     <>
       <div className="flex relative min-h-screen">
@@ -140,23 +144,12 @@ const Orders = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
+            className={`w-full p-5 mt-2 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
             }
             ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
-            <div className="w-full flex justify-between items-center pb-3">
-              <div className="flex items-center">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {t("order_history")}
-                </h1>
-              </div>
-            </div>
+            <HeadingTitle title={t("order_history")} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
               {row?.map((order, index) => {
@@ -184,23 +177,34 @@ const Orders = () => {
                   <div
                     key={index}
                     className={`${
-                      currentMode === "dark"
-                        ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black"
-                    } relative p-4 shadow-md rounded-xl h-full flex flex-col gap-4 justify-between`}
+                      themeBgImg
+                        ? currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black"
+                        : currentMode === "dark"
+                        ? "bg-dark-neu text-white"
+                        : "bg-light-neu text-black"
+                    } relative p-5 h-full flex flex-col gap-4 justify-between`}
                   >
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="flex items-center w-full gap-4">
-                        <div className="bg-primary w-4 h-4 rounded-full shadow-sm p-1"></div>
-                        <div className="font-semibold">
-                          {order?.itemName || order?.item?.itemName}
-                        </div>
+                    <div className="flex items-center gap-5">
+                      <div
+                        className={`${
+                          themeBgImg
+                            ? "bg-primary"
+                            : currentMode === "dark"
+                            ? "bg-primary-dark-neu"
+                            : "bg-primary-light-neu"
+                        } p-2 text-white rounded-md`}
+                      >
+                        {order?.amount !== 0 && (
+                          <div className="flex items-center">
+                            {order?.currency} {order?.amount}
+                          </div>
+                        )}
                       </div>
-                      {order?.amount !== 0 && (
-                        <div className="bg-primary text-white font-semibold rounded-md px-3 py-1 text-sm">
-                          {order?.currency} {order?.amount}
-                        </div>
-                      )}
+                      <div className="font-semibold capitalize">
+                        {order?.itemName || order?.item?.itemName}
+                      </div>
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                       {/* DETAILS */}
