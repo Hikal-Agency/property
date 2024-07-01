@@ -6,29 +6,21 @@ import { useStateContext } from "../../context/ContextProvider";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
 
-import {
-  BsCart4,
-  BsInfoLg,
-  BsPerson,
-  BsClockHistory
-} from "react-icons/bs";
-import {
-  GiSpoon
-} from "react-icons/gi";
+import { BsCart4, BsInfoLg, BsPerson, BsClockHistory } from "react-icons/bs";
+import { GiSpoon } from "react-icons/gi";
 import { order_status } from "../../Components/_elements/SelectOptions";
-import { renderStyles, renderStyles2, selectBgStyles } from "../../Components/_elements/SelectStyles";
+import {
+  renderStyles,
+  renderStyles2,
+  selectBgStyles,
+} from "../../Components/_elements/SelectStyles";
 import usePermission from "../../utils/usePermission";
 import moment from "moment";
 import { datetimeAMPM } from "../../Components/_elements/formatDateTime";
 
 const Orders = () => {
-  const {
-    currentMode,
-    t,
-    primaryColor,
-    themeBgImg,
-    BACKEND_URL
-  } = useStateContext();
+  const { currentMode, t, primaryColor, themeBgImg, BACKEND_URL, User } =
+    useStateContext();
 
   const { hasPermission } = usePermission();
   const [loading, setLoading] = useState(false);
@@ -40,8 +32,15 @@ const Orders = () => {
 
   const listOrders = async () => {
     setLoading(true);
+
+    let url;
+    if (hasPermission("my_orders")) {
+      url = `${BACKEND_URL}/orders`;
+    } else {
+      url = `${BACKEND_URL}/orders/filter?userId=${User?.id}`;
+    }
     try {
-      const listOrders = await axios.get(`${BACKEND_URL}/orders`, {
+      const listOrders = await axios.get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -140,16 +139,18 @@ const Orders = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${!themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
-              }
+            className={`w-full p-4 ${
+              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
+            }
             ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
             <div className="w-full flex justify-between items-center pb-3">
               <div className="flex items-center">
                 <div className="bg-primary h-10 w-1 rounded-full"></div>
                 <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
+                  className={`text-lg font-semibold mx-2 uppercase ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
                 >
                   {t("order_history")}
                 </h1>
@@ -161,33 +162,40 @@ const Orders = () => {
                 const status = order?.orderStatus?.toLowerCase();
                 let disableUpdate = false;
 
-                if (["delivered", "cancelled", "out of stock"].includes(status)) {
+                if (
+                  ["delivered", "cancelled", "out of stock"].includes(status)
+                ) {
                   disableUpdate = true;
                 }
                 let filteredOptions = order_status(t);
 
                 if (!hasPermission("order_status_out_of_stock")) {
                   filteredOptions = filteredOptions.filter(
-                    option => option.value.toLowerCase() !== 'out_of_stock'
+                    (option) => option.value.toLowerCase() !== "out_of_stock"
                   );
                 }
                 if (!hasPermission("order_cancel")) {
                   filteredOptions = filteredOptions.filter(
-                    option => option.value.toLowerCase() !== 'cancelled'
+                    (option) => option.value.toLowerCase() !== "cancelled"
                   );
                 }
                 return (
-                  <div key={index} className={`${currentMode === "dark" ? "blur-bg-dark text-white" : "blur-bg-light text-black"} relative p-4 shadow-md rounded-xl h-full flex flex-col gap-4 justify-between`}>
+                  <div
+                    key={index}
+                    className={`${
+                      currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black"
+                    } relative p-4 shadow-md rounded-xl h-full flex flex-col gap-4 justify-between`}
+                  >
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center w-full gap-4">
                         <div className="bg-primary w-4 h-4 rounded-full shadow-sm p-1"></div>
-                        <div className="font-semibold">
-                          {order?.itemName}
-                        </div>
+                        <div className="font-semibold">{order?.itemName}</div>
                       </div>
                       {order?.amount !== 0 && (
                         <div className="bg-primary text-white font-semibold rounded-md px-3 py-1 text-sm">
-                          {order?.currency} {" "} {order?.amount}
+                          {order?.currency} {order?.amount}
                         </div>
                       )}
                     </div>
@@ -214,16 +222,13 @@ const Orders = () => {
                         </div>
                         <div className="grid grid-cols-8 gap-2 items-center">
                           <BsInfoLg size={14} />
-                          <div className="col-span-7">
-                            {order?.notes}
-                          </div>
+                          <div className="col-span-7">{order?.notes}</div>
                         </div>
                         <div className="grid grid-cols-8 gap-2 items-center">
                           <BsPerson size={15} />
-                          <div className="col-span-7">
-                            {order?.userName}
-                          </div>
-                        </div><div className="grid grid-cols-8 gap-2 items-center">
+                          <div className="col-span-7">{order?.userName}</div>
+                        </div>
+                        <div className="grid grid-cols-8 gap-2 items-center">
                           <BsClockHistory size={15} />
                           <div className="col-span-7">
                             {datetimeAMPM(order?.created_at)}
@@ -231,15 +236,15 @@ const Orders = () => {
                         </div>
                       </div>
                       {/* IMAGE */}
-                      <div className="">
-                        {/* SPACE FOR IMAGE */}
-                      </div>
+                      <div className="">{/* SPACE FOR IMAGE */}</div>
                     </div>
                     <div className={``}>
                       <Select
                         id="status"
                         value={order_status(t)?.find(
-                          (option) => option?.value?.toLowerCase() === order.orderStatus.toLowerCase()
+                          (option) =>
+                            option?.value?.toLowerCase() ===
+                            order.orderStatus.toLowerCase()
                         )}
                         onChange={(e) => changeStatus(e, order)}
                         options={order_status(t)}
@@ -254,7 +259,6 @@ const Orders = () => {
                   </div>
                 );
               })}
-
             </div>
 
             {/* <OrderHistory
