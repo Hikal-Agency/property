@@ -259,7 +259,13 @@ const VisaTransaction = ({ pathname }) => {
       usersList?.filter((user) => user?.status === 1);
 
       setUser(usersList);
-      setVendors(vendorResponse?.data?.data?.data);
+      // setVendors(vendorResponse?.data?.data?.data);
+      const vendors = vendorResponse?.data?.data?.data;
+      const filterDevs = vendors?.filter(
+        (ven) => ven?.type?.toLowerCase() === "government"
+      );
+      console.log("filter devs: ", filterDevs);
+      setVendors(filterDevs);
     } catch (error) {
       setloading(false);
       console.error("Error fetching data:", error);
