@@ -96,13 +96,13 @@ const AddCommissionModal = ({
       status?.field === "agent_comm_status"
         ? newCommData?.salesId
         : status?.field === "manager_comm_status"
-          ? newCommData?.managerId
-          : null,
+        ? newCommData?.managerId
+        : null,
     deal_id: newCommData?.lid,
     vendor_id: commData?.vendor_id || null,
     invoice_type:
       status?.field === "agent_comm_status" ||
-        status?.field === "manager_comm_status"
+      status?.field === "manager_comm_status"
         ? "Expense"
         : "Income",
     date: commData?.date || null,
@@ -804,7 +804,12 @@ const AddCommissionModal = ({
         setUser(response?.data?.managers?.data);
         setPageLoading(false);
       } else {
-        setVendor(response?.data?.data?.data);
+        const vendors = response?.data?.data?.data;
+        const filterDevs = vendors?.filter(
+          (ven) => ven?.type?.toLowerCase() === "developer"
+        );
+        console.log("filter devs: ", filterDevs);
+        setVendor(filterDevs);
       }
     } catch (error) {
       console.log(error);
@@ -856,7 +861,12 @@ const AddCommissionModal = ({
         commissionData?.invoice_type === "Income" ||
         status?.field !== "comm_status"
       ) {
-        setVendor(vendorsList?.data?.data?.data);
+        const vendors = vendorsList?.data?.data?.data;
+        const filterDevs = vendors?.filter(
+          (ven) => ven?.type?.toLowerCase() === "developer"
+        );
+        console.log("filter devs: ", filterDevs);
+        setVendor(filterDevs);
       } else {
         setUser(vendorsList?.data?.managers?.data);
       }
@@ -985,19 +995,22 @@ const AddCommissionModal = ({
       }}
     >
       <div
-        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${isClosing
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-          }
+        }
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -1008,13 +1021,15 @@ const AddCommissionModal = ({
         </button>
         <div
           style={style}
-          className={` ${currentMode === "dark"
-            ? "bg-dark text-white"
-            : "bg-light text-black"
-            } ${isLangRTL(i18n.language)
+          className={` ${
+            currentMode === "dark"
+              ? "bg-dark text-white"
+              : "bg-light text-black"
+          } ${
+            isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-            }
+          }
             p-5 h-[100vh] w-[85vw] overflow-y-scroll 
           `}
         >
@@ -1025,39 +1040,39 @@ const AddCommissionModal = ({
           ) : (
             <>
               <HeadingTitle
-                title={commData
-                  ? t("edit_commission")
-                  : t("commission_details")}
+                title={
+                  commData ? t("edit_commission") : t("commission_details")
+                }
               />
 
               <div
-                className={`grid md:grid-cols-2 sm:grid-cols-1 ${commData ? "lg:grid-cols-2" : "lg:grid-cols-2 xl:grid-cols-3"
-                  } ${currentMode === "dark" ? "text-white" : "text-black"
-                  } gap-5 my-5`}
+                className={`grid md:grid-cols-2 sm:grid-cols-1 ${
+                  commData ? "lg:grid-cols-2" : "lg:grid-cols-2 xl:grid-cols-3"
+                } ${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                } gap-5 my-5`}
               >
                 {/* Commission DETAILS  */}
                 <Box
                   sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                    {
-                      right: isLangRTL(i18n.language)
-                        ? "2.5rem"
-                        : "inherit",
-                      transformOrigin: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                     "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
                     },
                     "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
-                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
-                    }
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830",
+                    },
                   }}
-                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  className={`${
+                    currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                  }
                   p-5`}
                 >
                   <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
@@ -1107,12 +1122,10 @@ const AddCommissionModal = ({
                         <TextField
                           sx={{
                             "& input": {
-                              color:
-                                currentMode === "dark" ? "white" : "black",
+                              color: currentMode === "dark" ? "white" : "black",
                             },
                             "& .MuiSvgIcon-root": {
-                              color:
-                                currentMode === "dark" ? "white" : "black",
+                              color: currentMode === "dark" ? "white" : "black",
                             },
                             marginBottom: "15px",
                           }}
@@ -1123,7 +1136,7 @@ const AddCommissionModal = ({
                           readOnly={true}
                         />
                       )}
-                    // maxDate={dayjs().startOf("day").toDate()}
+                      // maxDate={dayjs().startOf("day").toDate()}
                     />
                   </LocalizationProvider>
                   {/* CLAIM */}
@@ -1147,11 +1160,12 @@ const AddCommissionModal = ({
                     styles={selectStyles(currentMode, primaryColor)}
                   />
                   {status?.field !== "comm_status" &&
-                    commissionData?.invoice_type !== "Income" ? (
+                  commissionData?.invoice_type !== "Income" ? (
                     // VENDOR
                     <FormControl
-                      className={`${currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
                       sx={{
                         minWidth: "100%",
                         borderRadius: 1,
@@ -1199,9 +1213,7 @@ const AddCommissionModal = ({
                             onChange={(e) => {
                               e.preventDefault();
                               const inputValue =
-                                searchRef.current.querySelector(
-                                  "input"
-                                ).value;
+                                searchRef.current.querySelector("input").value;
                               if (inputValue) {
                                 fetchUsers(inputValue);
                               }
@@ -1221,8 +1233,9 @@ const AddCommissionModal = ({
                   {commissionData?.invoice_type === "Income" ? (
                     // VENDOR
                     <FormControl
-                      className={`${currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
                       sx={{
                         minWidth: "100%",
                         borderRadius: 1,
@@ -1270,9 +1283,7 @@ const AddCommissionModal = ({
                             onChange={(e) => {
                               e.preventDefault();
                               const inputValue =
-                                searchRef.current.querySelector(
-                                  "input"
-                                ).value;
+                                searchRef.current.querySelector("input").value;
                               if (inputValue) {
                                 fetchUsers(inputValue);
                               }
@@ -1291,8 +1302,9 @@ const AddCommissionModal = ({
                     status?.field == "comm_status" ? (
                     // USER
                     <FormControl
-                      className={`${currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
                       sx={{
                         minWidth: "100%",
                         borderRadius: 1,
@@ -1334,9 +1346,7 @@ const AddCommissionModal = ({
                             onChange={(e) => {
                               e.preventDefault();
                               const inputValue =
-                                searchRef.current.querySelector(
-                                  "input"
-                                ).value;
+                                searchRef.current.querySelector("input").value;
                               if (inputValue) {
                                 fetchUsers(inputValue, "user");
                               }
@@ -1415,10 +1425,7 @@ const AddCommissionModal = ({
                       )}
                       {pdfPreview && (
                         <div className="flex flex-col justify-center items-center w-full gap-4">
-                          <BsFileEarmarkMedical
-                            size={100}
-                            color={"#AAAAAA"}
-                          />
+                          <BsFileEarmarkMedical size={100} color={"#AAAAAA"} />
                           <div className="">
                             <p>File Selected </p>
                           </div>
@@ -1460,24 +1467,22 @@ const AddCommissionModal = ({
                   sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                    {
-                      right: isLangRTL(i18n.language)
-                        ? "2.5rem"
-                        : "inherit",
-                      transformOrigin: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                     "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
                     },
                     "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
-                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
-                    }
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830",
+                    },
                   }}
-                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  className={`${
+                    currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                  }
                   p-5`}
                 >
                   <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
@@ -1513,8 +1518,7 @@ const AddCommissionModal = ({
                       label: payment.label,
                     }))}
                     value={payment_source(t)?.filter(
-                      (pay_src) =>
-                        pay_src?.value === commissionData?.paid_by
+                      (pay_src) => pay_src?.value === commissionData?.paid_by
                     )}
                     onChange={(e) => {
                       setCommissionData({
@@ -1612,8 +1616,7 @@ const AddCommissionModal = ({
                           id="currency"
                           options={currencies(t)}
                           value={currencies(t)?.find(
-                            (curr) =>
-                              curr.value === commissionData?.currency
+                            (curr) => curr.value === commissionData?.currency
                           )}
                           onChange={(e) => {
                             setCommissionData({
@@ -1673,8 +1676,7 @@ const AddCommissionModal = ({
                           id="currency"
                           options={currencies(t)}
                           value={currencies(t)?.find(
-                            (curr) =>
-                              curr.value === commissionData?.currency
+                            (curr) => curr.value === commissionData?.currency
                           )}
                           onChange={(e) => {
                             setCommissionData({
@@ -1718,9 +1720,11 @@ const AddCommissionModal = ({
                   color: "white",
                   fontFamily: fontFam,
                 }}
-                className={`${currentMode === "dark"
-                  ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                  } w-full text-white p-3 font-semibold mb-3 `}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-primary-dark-neu"
+                    : "bg-primary-light-neu"
+                } w-full text-white p-3 font-semibold mb-3 `}
                 onClick={AddCommmission}
                 disabled={btnLoading ? true : false}
               >
@@ -1749,7 +1753,7 @@ const AddCommissionModal = ({
           </div>
         </div>
       </div>
-    </Modal >
+    </Modal>
   );
 };
 
