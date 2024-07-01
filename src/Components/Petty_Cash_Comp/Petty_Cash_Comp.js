@@ -31,6 +31,7 @@ import {
   BsQuestionLg,
 } from "react-icons/bs";
 import Petty_Cash_Form from "./Petty_Cash_Form";
+import TransactionFilters from "./TransactionFilters";
 
 const Petty_Cash_Comp = () => {
   const {
@@ -55,6 +56,32 @@ const Petty_Cash_Comp = () => {
   const [transactionsData, setTransData] = useState([]);
   const [maxTransData, setMaxTrans] = useState(0);
   const [transPage, setTransPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const [filtersData, setFilterData] = useState({
+    user_id: "",
+    invoice_type: "",
+    amount: "",
+    currency: "",
+    comm_percent: "",
+    country: "",
+    status: "",
+    paid_by: "",
+    vendor_id: "",
+    category: "",
+    date_range: "",
+  });
+
+  const handleClick = (event) => {
+    setOpen(!open);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setAnchorEl(null);
+  };
 
   const [singleTransModal, setSingleTransModal] = useState(null);
 
@@ -64,29 +91,24 @@ const Petty_Cash_Comp = () => {
 
   const token = localStorage.getItem("auth-token");
 
-  const [filters, setFilters] = useState({
-    currency: "",
-    country: "",
-    month: moment().format("MM"),
-    year: moment().format("YYYY"),
-  });
-
-  const clearFilters = () => {
-    setFilters({
-      currency: "",
-      country: "",
-      month: moment().format("MM"),
-      year: moment().format("YYYY"),
-    });
-  };
-
-  console.log("filter data:: ", filters);
-
   const fetchPettyCash = async () => {
     setloading(true);
 
     const paramsPettyCash = { type: "Fund" };
     const paramsInvoices = { is_petty_cash: 1 };
+
+    // Filter out empty values and construct query parameters
+    const activeFilters = Object.entries(filtersData).reduce(
+      (acc, [key, value]) => {
+        if (value !== "") acc[key] = value;
+        return acc;
+      },
+      {}
+    );
+    const queryParams =
+      Object.keys(activeFilters).length > 0
+        ? `&${new URLSearchParams(activeFilters).toString()}`
+        : "";
     try {
       const [pettyCashResponse, invoicesResponse] = await Promise.all([
         axios.get(`${BACKEND_URL}/pettycash?page=${pettyPage}`, {
@@ -96,7 +118,7 @@ const Petty_Cash_Comp = () => {
             Authorization: `Bearer ${token}`,
           },
         }),
-        axios.get(`${BACKEND_URL}/invoices?page=${transPage}`, {
+        axios.get(`${BACKEND_URL}/invoices?page=${transPage}${queryParams}`, {
           params: paramsInvoices,
           headers: {
             "Content-Type": "application/json",
@@ -135,10 +157,20 @@ const Petty_Cash_Comp = () => {
 
   useEffect(() => {
     fetchPettyCash();
-  }, [filters, transPage, pettyPage]);
+  }, [filtersData, transPage, pettyPage]);
 
   return (
     <div className={`pb-4 px-4`}>
+      <TransactionFilters
+        open={open}
+        setOpen={setOpen}
+        filtersData={filtersData}
+        setFilterData={setFilterData}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        handleClick={handleClick}
+        handleClose={handleClose}
+      />
       {availableData?.length > 0 && (
         <div className={`w-full flex p-4 overflow-x-auto mb-4`}>
           {availableData?.map(([country, currencies]) => (
