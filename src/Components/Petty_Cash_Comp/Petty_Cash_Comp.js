@@ -98,7 +98,9 @@ const Petty_Cash_Comp = () => {
       console.log("Invoices list:: ", invoicesResponse);
 
       setPettyCashData(pettyCashResponse?.data?.data?.data);
-      setAvailableData(pettyCashResponse?.data?.available);
+
+      const availData = Object.entries(pettyCashResponse?.data?.available);
+      setAvailableData(availData);
       setTransData(invoicesResponse?.data?.data?.data);
     } catch (error) {
       setloading(false);
@@ -125,9 +127,20 @@ const Petty_Cash_Comp = () => {
   return (
     <div className={`pb-4 px-4`}>
       {availableData?.length > 0 && (
-        <div className={`w-full p-4 overflow-x-auto`}>
-          {availableData?.map((avail) => (
-            <div></div>
+        <div className={`w-full flex p-4 overflow-x-auto mb-4`}>
+          {availableData?.map(([country, currencies]) => (
+            <div key={country} className="w-full flex space-x-3">
+              {Object.entries(currencies)?.map(([currency, amount]) => (
+                <div key={currency}>
+                  <p className="font-semibold">
+                    {country}:
+                    <span className="ml-2 font-normal">
+                      {currency} {amount}{" "}
+                    </span>
+                  </p>
+                </div>
+              ))}
+            </div>
           ))}
         </div>
       )}
