@@ -242,7 +242,7 @@ const Petty_Cash_Comp = () => {
                   <Pagination
                     count={maxPettyData}
                     color={currentMode === "dark" ? "primary" : "secondary"}
-                    onChange={(value) => setTransPage(value)}
+                    onChange={(value) => setPettyPage(value)}
                     style={{ margin: "auto" }}
                     page={pettyPage}
                     sx={{
