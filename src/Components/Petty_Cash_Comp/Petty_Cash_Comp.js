@@ -43,8 +43,11 @@ const Petty_Cash_Comp = () => {
 
   const [loading, setloading] = useState(true);
   const [pettyCashData, setPettyCashData] = useState([]);
+  const [availableData, setAvailableData] = useState([]);
   const [transactionsData, setTransData] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
+
+  console.log("availble data::: ", availableData);
 
   console.log("transactions data:", transactionsData);
 
@@ -95,6 +98,7 @@ const Petty_Cash_Comp = () => {
       console.log("Invoices list:: ", invoicesResponse);
 
       setPettyCashData(pettyCashResponse?.data?.data?.data);
+      setAvailableData(pettyCashResponse?.data?.available);
       setTransData(invoicesResponse?.data?.data?.data);
     } catch (error) {
       setloading(false);
@@ -120,6 +124,13 @@ const Petty_Cash_Comp = () => {
 
   return (
     <div className={`pb-4 px-4`}>
+      {availableData?.length > 0 && (
+        <div className={`w-full p-4 overflow-x-auto`}>
+          {availableData?.map((avail) => (
+            <div></div>
+          ))}
+        </div>
+      )}
       <div
         className={`w-full ${
           currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#eeeeee]"
