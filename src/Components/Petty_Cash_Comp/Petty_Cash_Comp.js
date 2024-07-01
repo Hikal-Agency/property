@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, TextField, CircularProgress } from "@mui/material";
+import {
+  Box,
+  TextField,
+  CircularProgress,
+  Stack,
+  Pagination,
+} from "@mui/material";
 
 import { useStateContext } from "../../context/ContextProvider";
 import dayjs from "dayjs";
@@ -43,8 +49,13 @@ const Petty_Cash_Comp = () => {
 
   const [loading, setloading] = useState(true);
   const [pettyCashData, setPettyCashData] = useState([]);
+  const [maxPettyData, setMaxPetty] = useState(0);
+  const [pettyPage, setPettyPage] = useState(1);
   const [availableData, setAvailableData] = useState([]);
   const [transactionsData, setTransData] = useState([]);
+  const [maxTransData, setMaxTrans] = useState(0);
+  const [transPage, setTransPage] = useState(1);
+
   const [singleTransModal, setSingleTransModal] = useState(null);
 
   console.log("availble data::: ", availableData);
@@ -78,14 +89,14 @@ const Petty_Cash_Comp = () => {
     const paramsInvoices = { is_petty_cash: 1 };
     try {
       const [pettyCashResponse, invoicesResponse] = await Promise.all([
-        axios.get(`${BACKEND_URL}/pettycash`, {
+        axios.get(`${BACKEND_URL}/pettycash?page=${pettyPage}`, {
           params: paramsPettyCash,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }),
-        axios.get(`${BACKEND_URL}/invoices`, {
+        axios.get(`${BACKEND_URL}/invoices?page=${transPage}`, {
           params: paramsInvoices,
           headers: {
             "Content-Type": "application/json",
@@ -98,10 +109,12 @@ const Petty_Cash_Comp = () => {
       console.log("Invoices list:: ", invoicesResponse);
 
       setPettyCashData(pettyCashResponse?.data?.data?.data);
+      setMaxPetty(pettyCashResponse?.data?.data?.last_page);
 
       const availData = Object.entries(pettyCashResponse?.data?.available);
       setAvailableData(availData);
       setTransData(invoicesResponse?.data?.data?.data);
+      setMaxTrans(invoicesResponse?.data?.data?.last_page);
     } catch (error) {
       setloading(false);
       console.error("Error fetching statements:", error);
@@ -122,7 +135,7 @@ const Petty_Cash_Comp = () => {
 
   useEffect(() => {
     fetchPettyCash();
-  }, [filters]);
+  }, [filters, transPage, pettyPage]);
 
   return (
     <div className={`pb-4 px-4`}>
@@ -224,6 +237,30 @@ const Petty_Cash_Comp = () => {
                   <h1>{t("no_data_found")}</h1>
                 </div>
               )}
+              {pettyCashData && pettyCashData?.length > 0 ? (
+                <Stack spacing={2} marginTop={2}>
+                  <Pagination
+                    count={maxPettyData}
+                    color={currentMode === "dark" ? "primary" : "secondary"}
+                    onChange={(value) => setTransPage(value)}
+                    style={{ margin: "auto" }}
+                    page={pettyPage}
+                    sx={{
+                      "& .Mui-selected": {
+                        color: "white !important",
+                        backgroundColor: `${primaryColor} !important`,
+                        "&:hover": {
+                          backgroundColor:
+                            currentMode === "dark" ? "black" : "white",
+                        },
+                      },
+                      "& .MuiPaginationItem-root": {
+                        color: currentMode === "dark" ? "white" : "black",
+                      },
+                    }}
+                  />
+                </Stack>
+              ) : null}
             </div>
           )}
         </Box>
@@ -250,7 +287,7 @@ const Petty_Cash_Comp = () => {
             ) : (
               <div className="flex flex-col gap-4">
                 <h3 className="text-primary mb-5 text-center font-semibold">
-                  {t("expense_amount")}
+                  {t("transactions")}
                 </h3>
                 {transactionsData && transactionsData?.length > 0 ? (
                   transactionsData?.map((trans) => {
@@ -335,6 +372,30 @@ const Petty_Cash_Comp = () => {
                     <h1>{t("no_data_found")}</h1>
                   </div>
                 )}
+                {transactionsData && transactionsData?.length > 0 ? (
+                  <Stack spacing={2} marginTop={2}>
+                    <Pagination
+                      count={maxTransData}
+                      color={currentMode === "dark" ? "primary" : "secondary"}
+                      onChange={(value) => setTransPage(value)}
+                      style={{ margin: "auto" }}
+                      page={transPage}
+                      sx={{
+                        "& .Mui-selected": {
+                          color: "white !important",
+                          backgroundColor: `${primaryColor} !important`,
+                          "&:hover": {
+                            backgroundColor:
+                              currentMode === "dark" ? "black" : "white",
+                          },
+                        },
+                        "& .MuiPaginationItem-root": {
+                          color: currentMode === "dark" ? "white" : "black",
+                        },
+                      }}
+                    />
+                  </Stack>
+                ) : null}
               </div>
             )}
           </Box>
