@@ -19,7 +19,7 @@ import moment from "moment";
 import { datetimeAMPM } from "../../Components/_elements/formatDateTime";
 import { useLocation } from "react-router-dom";
 
-const Orders = () => {
+const MyOrders = () => {
   const { currentMode, t, primaryColor, themeBgImg, BACKEND_URL, User } =
     useStateContext();
 
@@ -30,16 +30,15 @@ const Orders = () => {
   const [page, setPage] = useState(null);
   const [pageSize, setPageSize] = useState(null);
   const token = localStorage.getItem("auth-token");
+  const location = useLocation();
+
+  console.log("location: ", location);
 
   const listOrders = async () => {
     setLoading(true);
 
-    let url;
-    if (hasPermission("my_orders") && User?.role !== 1) {
-      url = `${BACKEND_URL}/order/filter?userId=${User?.id}`;
-    } else {
-      url = `${BACKEND_URL}/orders`;
-    }
+    let url = `${BACKEND_URL}/order/filter?userId=${User?.id}`;
+
     try {
       const listOrders = await axios.get(url, {
         headers: {
@@ -159,7 +158,7 @@ const Orders = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-              {row?.map((order, index) => {
+              {row.map((order, index) => {
                 const status = order?.orderStatus?.toLowerCase();
                 let disableUpdate = false;
 
@@ -192,9 +191,7 @@ const Orders = () => {
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center w-full gap-4">
                         <div className="bg-primary w-4 h-4 rounded-full shadow-sm p-1"></div>
-                        <div className="font-semibold">
-                          {order?.itemName || order?.item?.itemName}
-                        </div>
+                        <div className="font-semibold">{order?.itemName}</div>
                       </div>
                       {order?.amount !== 0 && (
                         <div className="bg-primary text-white font-semibold rounded-md px-3 py-1 text-sm">
@@ -280,4 +277,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default MyOrders;

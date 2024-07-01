@@ -1770,6 +1770,12 @@ const Sidebarmui = () => {
           // pro: true,
           link: "/order_history",
         },
+        {
+          name: t("menu_my_orders"),
+          icon: <BsPeople size={16} />,
+          // pro: true,
+          link: "/my_order",
+        },
       ],
     },
     // MESSAGING

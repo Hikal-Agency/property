@@ -92,6 +92,7 @@ import Vendors from "./vendors";
 import Statements from "./statements";
 import Commission_VAT from "./commission_vat";
 import Petty_Cash from "./Petty_Cash";
+import MyOrders from "./officeBoy/MyOrders";
 
 const libraries = ["places"];
 
@@ -226,6 +227,11 @@ const routes = [
     path: "/order_history",
     pageName: "Order History",
     element: <Orders />,
+  },
+  {
+    path: "/my_order",
+    pageName: "My Order",
+    element: <MyOrders />,
   },
   // {
   //   path: "/timeline/:id",
