@@ -149,7 +149,13 @@ const Orders = () => {
             }
             ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
-            <HeadingTitle title={t("order_history")} />
+            <HeadingTitle
+              title={
+                hasPermission("my_orders") && User?.role !== 1
+                  ? t("menu_my_orders")
+                  : t("order_history")
+              }
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
               {row?.map((order, index) => {

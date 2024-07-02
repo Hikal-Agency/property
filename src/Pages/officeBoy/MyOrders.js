@@ -152,7 +152,7 @@ const MyOrders = () => {
                     currentMode === "dark" ? "text-white" : "text-black"
                   }`}
                 >
-                  {t("order_history")}
+                  {t("menu_my_orders")}
                 </h1>
               </div>
             </div>
