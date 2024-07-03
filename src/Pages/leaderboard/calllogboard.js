@@ -1,16 +1,22 @@
 import React from "react";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs, TextField } from "@mui/material";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import Loader from "../../Components/Loader";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import moment from "moment";
+import dayjs from "dayjs";
 
 const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
-  const { currentMode, darkModeColors, BACKEND_URL, themeBgImg , t} = useStateContext();
+  const { currentMode, darkModeColors, BACKEND_URL, themeBgImg, t } =
+    useStateContext();
   const [callLogs, setCallLogs] = useState();
   const [noData, setNoData] = useState(false);
+  const [dateFilter, setDateFilter] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (event, newValue) => {
@@ -38,7 +44,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
         break;
     }
 
-    const apiUrl = "all-user-calls?period=" + period;
+    let apiUrl;
+
+    if (dateFilter) {
+      apiUrl = "all-user-calls?filterByDate=" + dateFilter;
+    } else {
+      apiUrl = "all-user-calls?period=" + period;
+    }
 
     try {
       const call_logs = await axios.get(`${BACKEND_URL}/${apiUrl}`, {
@@ -76,18 +88,50 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("auth-token");
+
     FetchCallLogs(token);
-  }, []);
+  }, [dateFilter]);
 
   return (
     <div>
-      <Box sx={darkModeColors} className="font-semibold">
+      <Box
+        sx={darkModeColors}
+        className="font-semibold flex space-x-2 items-center"
+      >
         <Tabs value={tabValue} onChange={handleChange} variant="standard">
           <Tab label={t("today")} />
           <Tab label={t("yesterday")} />
           <Tab label={t("this_month")} />
           <Tab label={t("last_month")} />
         </Tabs>
+
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label={t("date")}
+            value={dateFilter}
+            views={["year", "month", "day"]}
+            onChange={(newValue) => {
+              console.log(" date filter: ", newValue);
+
+              const formattedDate = moment(newValue?.$d).format("YYYY-MM-DD");
+
+              setDateFilter(formattedDate);
+            }}
+            format="yyyy-MM-dd"
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                onKeyDown={(e) => e.preventDefault()}
+                readOnly={true}
+                // fullWidth
+                size="small"
+                style={{ marginTop: "10px" }}
+              />
+            )}
+            minDate={dayjs().startOf("day").toDate()}
+            InputProps={{ required: true }}
+          />
+        </LocalizationProvider>
       </Box>
       <Box
         className="p-2"
@@ -110,13 +154,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     return (
                       <div
                         className={`${
-                          !themeBgImg 
-                          ? (currentMode === "dark"
-                          ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EEEEEE] text-black") 
-                          : (currentMode === "dark"
-                          ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black")
+                          !themeBgImg
+                            ? currentMode === "dark"
+                              ? "bg-[#1C1C1C] text-white"
+                              : "bg-[#EEEEEE] text-black"
+                            : currentMode === "dark"
+                            ? "blur-bg-dark text-white"
+                            : "blur-bg-light text-black"
                         } p-3 rounded-md shadow-md card-hover`}
                       >
                         <h6 className="font-bold px-2 mb-2">
@@ -125,13 +169,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              !themeBgImg 
-                              ? (currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black") 
-                              : (currentMode === "dark"
-                              ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              !themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                                : currentMode === "dark"
+                                ? "blur-bg-dark text-white"
+                                : "blur-bg-light text-black"
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -155,18 +199,17 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                                   </span>
                                 </h1>
                               </div>
-                        
                             </div>
                           </div>
                           <div
                             className={`${
-                              !themeBgImg 
-                              ? (currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black") 
-                              : (currentMode === "dark"
-                              ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              !themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                                : currentMode === "dark"
+                                ? "blur-bg-dark text-white"
+                                : "blur-bg-light text-black"
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -198,7 +241,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             <div>
                               <h1 className="font-semibold">
-                               {`${t("total")} ${t("leads")}`}&nbsp;
+                                {`${t("total")} ${t("leads")}`}&nbsp;
                                 <span className="font-bold float-right">
                                   {call?.unique_lead_contacts || 0}
                                 </span>
@@ -209,12 +252,9 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                       </div>
                     );
                   })}
-
-               
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center">
-           
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
@@ -239,13 +279,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     return (
                       <div
                         className={`${
-                          !themeBgImg 
-                          ? (currentMode === "dark"
-                          ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EEEEEE] text-black") 
-                          : (currentMode === "dark"
-                          ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black")
+                          !themeBgImg
+                            ? currentMode === "dark"
+                              ? "bg-[#1C1C1C] text-white"
+                              : "bg-[#EEEEEE] text-black"
+                            : currentMode === "dark"
+                            ? "blur-bg-dark text-white"
+                            : "blur-bg-light text-black"
                         } p-3 rounded-md shadow-md card-hover`}
                       >
                         <h6 className="font-bold px-2 mb-2">
@@ -254,17 +294,17 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              !themeBgImg 
-                              ? (currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black") 
-                              : (currentMode === "dark"
-                              ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              !themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                                : currentMode === "dark"
+                                ? "blur-bg-dark text-white"
+                                : "blur-bg-light text-black"
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm font-bold">
-                            {t("outgoing")}
+                              {t("outgoing")}
                             </h6>
                             <hr></hr>
                             <div className="block gap-3 mt-2">
@@ -284,18 +324,17 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                                   </span>
                                 </h1>
                               </div>
-                          
                             </div>
                           </div>
                           <div
                             className={`${
-                              !themeBgImg 
-                              ? (currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black") 
-                              : (currentMode === "dark"
-                              ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              !themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                                : currentMode === "dark"
+                                ? "blur-bg-dark text-white"
+                                : "blur-bg-light text-black"
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -327,7 +366,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             <div>
                               <h1 className="font-semibold">
-                              {`${t("total")} ${t("leads")}`}&nbsp;
+                                {`${t("total")} ${t("leads")}`}&nbsp;
                                 <span className="font-bold float-right">
                                   {call?.unique_lead_contacts || 0}
                                 </span>
@@ -338,11 +377,9 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                       </div>
                     );
                   })}
-                
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-                 
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
@@ -367,13 +404,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     return (
                       <div
                         className={`${
-                          !themeBgImg 
-                          ? (currentMode === "dark"
-                          ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EEEEEE] text-black") 
-                          : (currentMode === "dark"
-                          ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black")
+                          !themeBgImg
+                            ? currentMode === "dark"
+                              ? "bg-[#1C1C1C] text-white"
+                              : "bg-[#EEEEEE] text-black"
+                            : currentMode === "dark"
+                            ? "blur-bg-dark text-white"
+                            : "blur-bg-light text-black"
                         } p-3 rounded-md shadow-md card-hover`}
                       >
                         <h6 className="font-bold px-2 mb-2">
@@ -382,13 +419,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              !themeBgImg 
-                              ? (currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black") 
-                              : (currentMode === "dark"
-                              ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              !themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                                : currentMode === "dark"
+                                ? "blur-bg-dark text-white"
+                                : "blur-bg-light text-black"
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -424,13 +461,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              !themeBgImg 
-                              ? (currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black") 
-                              : (currentMode === "dark"
-                              ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              !themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                                : currentMode === "dark"
+                                ? "blur-bg-dark text-white"
+                                : "blur-bg-light text-black"
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-xs font-semibold uppercase">
@@ -440,7 +477,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                             <div className="block gap-3 mt-2">
                               <div>
                                 <h1 className="text-sm">
-                                 {t("received")?.toUpperCase()} &nbsp;
+                                  {t("received")?.toUpperCase()} &nbsp;
                                   <span className="font-bold text-primary float-right">
                                     {call.received || 0}
                                   </span>
@@ -462,7 +499,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             <div>
                               <h1 className="font-semibold">
-                              {`${t("total")} ${t("leads")}`}&nbsp;
+                                {`${t("total")} ${t("leads")}`}&nbsp;
                                 <span className="font-bold float-right">
                                   {call?.unique_lead_contacts || 0}
                                 </span>
@@ -473,11 +510,9 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                       </div>
                     );
                   })}
-            
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"
@@ -501,13 +536,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                     return (
                       <div
                         className={`${
-                          !themeBgImg 
-                          ? (currentMode === "dark"
-                          ? "bg-[#1C1C1C] text-white"
-                          : "bg-[#EEEEEE] text-black") 
-                          : (currentMode === "dark"
-                          ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black")
+                          !themeBgImg
+                            ? currentMode === "dark"
+                              ? "bg-[#1C1C1C] text-white"
+                              : "bg-[#EEEEEE] text-black"
+                            : currentMode === "dark"
+                            ? "blur-bg-dark text-white"
+                            : "blur-bg-light text-black"
                         } p-3 rounded-md shadow-md card-hover`}
                       >
                         <h6 className="font-bold px-2 mb-2">
@@ -516,13 +551,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                         <div className="grid gap-3">
                           <div
                             className={`${
-                              !themeBgImg 
-                              ? (currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black") 
-                              : (currentMode === "dark"
-                              ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              !themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                                : currentMode === "dark"
+                                ? "blur-bg-dark text-white"
+                                : "blur-bg-light text-black"
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -550,13 +585,13 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           </div>
                           <div
                             className={`${
-                              !themeBgImg 
-                              ? (currentMode === "dark"
-                              ? "bg-black text-white"
-                              : "bg-white text-black") 
-                              : (currentMode === "dark"
-                              ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              !themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-black text-white"
+                                  : "bg-white text-black"
+                                : currentMode === "dark"
+                                ? "blur-bg-dark text-white"
+                                : "blur-bg-light text-black"
                             } rounded-md p-2`}
                           >
                             <h6 className="text-center text-sm uppercase">
@@ -588,7 +623,7 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                           >
                             <div>
                               <h1 className="font-semibold">
-                              {`${t("total")} ${t("leads")}`}&nbsp;
+                                {`${t("total")} ${t("leads")}`}&nbsp;
                                 <span className="font-bold float-right">
                                   {call?.unique_lead_contacts || 0}
                                 </span>
@@ -599,11 +634,9 @@ const CallLogBoard = ({ tabValue, setTabValue, isLoading }) => {
                       </div>
                     );
                   })}
-              
               </div>
               {noData && (
                 <div className="flex flex-col items-center justify-center h-screen ">
-
                   <img
                     src="./no_data.png"
                     alt="No data Illustration"

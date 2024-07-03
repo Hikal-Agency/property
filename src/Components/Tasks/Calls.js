@@ -55,7 +55,7 @@ const Calls = ({
           </Tabs>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              label={t("label_meeting_date")}
+              label={t("date")}
               value={dateFilter}
               views={["year", "month", "day"]}
               onChange={(newValue) => {
