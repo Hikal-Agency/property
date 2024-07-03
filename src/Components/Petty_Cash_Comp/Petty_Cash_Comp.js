@@ -172,9 +172,24 @@ const Petty_Cash_Comp = () => {
         handleClose={handleClose}
       />
       {availableData?.length > 0 && (
-        <div className={`w-full flex p-4 overflow-x-auto mb-4`}>
+        <div
+          className={`w-full flex items-center space-x-1 p-4 overflow-x-auto mb-4`}
+        >
+          <div className="coin mr-2">
+            <div className="front ">
+              <div className="star"></div>
+              <div className="shapes"></div>
+            </div>
+            <div
+              className={`shadow ${
+                currentMode === "dark"
+                  ? "shadow-dark-mode"
+                  : "shadow-light-mode"
+              }`}
+            ></div>
+          </div>
           {availableData?.map(([country, currencies]) => (
-            <div key={country} className="w-full flex space-x-3">
+            <div key={country} className="w-full flex items-center space-x-3">
               {Object.entries(currencies)?.map(([currency, amount]) => (
                 <div key={currency}>
                   <p className="font-semibold">
