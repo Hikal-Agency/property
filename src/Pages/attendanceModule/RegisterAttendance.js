@@ -359,7 +359,7 @@ const RegisterAttendance = () => {
       console.log("loaded:::: ", load?.isLoaded);
       handleCurrentLocationClick();
     }
-  }, [attendanceLocation]);
+  }, []);
 
   useEffect(() => {
     console.log("attendnace page.");
