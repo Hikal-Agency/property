@@ -9,9 +9,15 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
-import { IoMdClose } from "react-icons/io";
+import { MdClose } from "react-icons/md";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
+import HeadingTitle from "../_elements/HeadingTitle";
+import {
+  BsPlus,
+  BsDash
+} from "react-icons/bs";
+import { areDayPropsEqual } from "@mui/x-date-pickers/internals";
 
 const style = {
   transform: "translate(-50%, -50%)",
@@ -19,7 +25,7 @@ const style = {
 };
 
 const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
-  const { currentMode, t, darkModeColors, BACKEND_URL } = useStateContext();
+  const { currentMode, t, darkModeColors, BACKEND_URL, themeBgImg, isLangRTL, i18n } = useStateContext();
   const [orderBtnLoading, setOrderBtnLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const token = localStorage.getItem("auth-token");
@@ -30,6 +36,8 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
   const [orderDetails, setOrderDetails] = useState({
     itemId: null,
     quantity: null,
+    sugar: null,
+    currency: "AED",
     amount: null,
     notes: null,
     orderStatus: null,
@@ -37,19 +45,109 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
 
   console.log("orderdetails:::: ", orderDetails);
 
-  const handleQuantity = (e) => {
-    console.log("quantity: ", e.target.value);
-    setShowError(false);
-    const quantity = e.target.value;
-    if (quantity < 1 || quantity > 10) {
-      setShowError(true);
+  // const handleQuantity = (e) => {
+  //   console.log("quantity: ", e.target.value);
+  //   setShowError(false);
+  //   const quantity = e.target.value;
+  //   if (quantity < 1 || quantity > 10) {
+  //     setShowError(true);
+  //   }
+  //   const totalAmount = quantity * orderDetails?.amount;
+  //   setOrderDetails({
+  //     ...orderDetails,
+  //     [e.target.name]: quantity,
+  //     amount: quantity != 0 ? totalAmount : data?.itemPrice,
+  //   });
+  // };
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value) && value >= 1 && value <= 10) {
+      setOrderDetails({
+        ...orderDetails,
+        quantity: value,
+        amount: value * data?.itemPrice,
+      });
+      setShowError(false);
+    } else if (e.target.value === "") {
+      setOrderDetails({
+        ...orderDetails,
+        quantity: "",
+        amount: data?.itemPrice,
+      });
     }
-    const totalAmount = quantity * orderDetails?.amount;
-    setOrderDetails({
-      ...orderDetails,
-      [e.target.name]: quantity,
-      amount: quantity != 0 ? totalAmount : data?.itemPrice,
+  };
+  const handleIncrement = () => {
+    setOrderDetails((prev) => {
+      const newQuantity = Math.min((prev.quantity || 0) + 1, 10);
+      return {
+        ...prev,
+        quantity: newQuantity,
+        amount: newQuantity * data?.itemPrice,
+      };
     });
+  };
+
+  const handleDecrement = () => {
+    setOrderDetails((prev) => {
+      const newQuantity = Math.max((prev.quantity || 0) - 1, 1);
+      return {
+        ...prev,
+        quantity: newQuantity,
+        amount: newQuantity * data?.itemPrice,
+      };
+    });
+  };
+
+  // SUGAR QUANTITY
+  const handleSugarChange = (e) => {
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value) && value >= 0 && value <= 10 && value % 0.5 === 0) {
+      setOrderDetails({
+        ...orderDetails,
+        sugar: value,
+      });
+      setShowError(false);
+    } else if (e.target.value === "") {
+      setOrderDetails({
+        ...orderDetails,
+        sugar: "",
+      });
+    }
+  };
+  const handleSugarIncrement = () => {
+    setOrderDetails((prev) => {
+      const newSugar = Math.min((prev.sugar || 0) + 0.5, 10);
+      return {
+        ...prev,
+        sugar: newSugar,
+      };
+    });
+  };
+
+  const handleSugarDecrement = () => {
+    setOrderDetails((prev) => {
+      const newSugar = Math.max((prev.sugar || 0) - 0.5, 0);
+      return {
+        ...prev,
+        sugar: newSugar,
+      };
+    });
+  };
+
+  const handleBlur = () => {
+    if (orderDetails.quantity === "") {
+      setOrderDetails((prev) => ({
+        ...prev,
+        quantity: 1,
+        amount: data?.itemPrice,
+      }));
+    }
+    if (orderDetails.sugar === "") {
+      setOrderDetails((prev) => ({
+        ...prev,
+        sugar: 0,
+      }));
+    }
   };
 
   const placeOrder = async () => {
@@ -89,6 +187,8 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
       setOrderDetails({
         itemId: "",
         quantity: "",
+        suagr: "",
+        currency: "AED",
         amount: "",
         notes: "",
         orderStatus: "",
@@ -132,13 +232,16 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
     if (data) {
       setOrderDetails({
         itemId: String(data?.id),
-        quantity: null,
+        quantity: 1,
+        sugar: null,
+        currency: String(data?.currency),
         amount: data?.itemPrice,
         notes: null,
         orderStatus: "pending",
       });
     }
   }, [data]);
+
   return (
     <Modal
       keepMounted
@@ -146,6 +249,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
       onClose={() =>
         setOpenOrderModal({
           open: false,
+          data: null,
         })
       }
       aria-labelledby="keep-mounted-modal-title"
@@ -158,112 +262,107 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
     >
       <div
         style={style}
-        className={`w-[calc(100%-20px)] md:w-[40%]  ${
-          currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-        } absolute top-1/2 left-1/2 p-5 pt-16 rounded-md`}
+        className={`w-[calc(100%-7%)] md:w-[450px] ${themeBgImg
+          ? currentMode === "dark" ? "bg-dark" : "bg-light"
+          : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+          } absolute top-1/2 left-1/2 p-5`}
       >
-        <div className="flex items-center justify-center">
-          {/* <IconButton
-            sx={{
-              position: "absolute",
-              right: 5,
-              top: 2,
-              cursor: "pointer",
-              color: (theme) => theme.palette.grey[500],
-            }}
-            onClick={() => {
-              console.log("clicked:: ");
-              setOpenOrderModal({
-                open: false,
-              });
-            }}
-          >
-            <IoMdClose size={18} />
-          </IconButton> */}
+        <div className="absolute top-2 right-2 bg-red-600 p-2 cursor-pointer text-white rounded-full">
           <button
             style={{
-              position: "absolute",
-              right: 5,
-              top: 2,
-              cursor: "pointer",
               zIndex: 9999,
             }}
             onClick={() => {
-              console.log("clicked:: ");
+              console.log("clicked:: ", openOrderModal);
               setOpenOrderModal({
                 open: false,
+                data: null,
               });
             }}
           >
-            <IoMdClose
-              size={18}
-              color={currentMode === "dark" ? "#ffffff" : "#000000"}
+            <MdClose
+              size={16}
             />
           </button>
-          <div
-            className="w-full flex items-center py-1 mb-2"
-            style={{
-              position: "absolute",
-              right: -3,
-              top: 2,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <div className="bg-primary h-10 w-1 rounded-full"></div>
-            <h1
-              className={`text-lg font-semibold mx-2 uppercase ${
-                currentMode === "dark" ? "text-white" : "text-black"
-              }`}
-            >
-              {data?.itemName}
-            </h1>
-          </div>
         </div>
-
-        <div className="px-5">
+        <div>
+          <HeadingTitle
+            title={data?.itemName}
+          />
           <Box sx={darkModeColors}>
-            <div className="flex justify-between space-x-4">
+            <div className="grid grid-cols-2 gap-5 mb-5">
+              {/* Quantity */}
               <TextField
-                type={"number"}
-                id="demo-helper-text-misaligned-no-helper"
+                type="number"
                 name="quantity"
                 placeholder={t("label_order_qty")}
                 label={t("label_order_qty")}
-                value={orderDetails?.quantity}
-                onChange={(e) => handleQuantity(e)}
+                value={orderDetails?.quantity || 1}
+                onChange={handleQuantityChange}
+                onBlur={handleBlur}
                 size="small"
                 className="w-full p-2"
-                displayEmpty
-                helperText={
-                  showError && "Quantity should be in limit of 1 - 10"
-                }
+                inputProps={{ min: 1, max: 10 }}
+                helperText={showError && "Quantity should be in limit of 1 - 10"}
                 FormHelperTextProps={{
                   sx: { color: currentMode === "dark" ? "#fff" : "#000" },
                 }}
-              />
-
-              <TextField
-                type={"number"}
-                name="amount"
-                placeholder={t("label_order_amount")}
-                label={t("label_order_amount")}
-                value={orderDetails?.amount}
-                size="small"
-                className="w-full p-2 "
-                disabled={true}
-                sx={{
-                  "& .MuiInputBase-input.Mui-disabled": {
-                    WebkitTextFillColor:
-                      currentMode === "dark" ? "#fff" : "#000",
-                  },
+                InputProps={{
+                  startAdornment: (
+                    <IconButton
+                      onClick={handleDecrement}
+                      disabled={orderDetails?.quantity <= 1}
+                    >
+                      <BsDash color={"#AAAAAA"} />
+                    </IconButton>
+                  ),
+                  endAdornment: (
+                    <IconButton onClick={handleIncrement} disabled={orderDetails?.quantity >= 10}>
+                      <BsPlus color={"#AAAAAA"} />
+                    </IconButton>
+                  ),
+                  inputProps: {
+                    style: { textAlign: 'center' }
+                  }
                 }}
-                InputLabelProps={{
-                  shrink: true, // Allow label to shrink when value is disabled
+              />
+              {/* SUGAR */}
+              <TextField
+                type="number"
+                name="sugar"
+                placeholder={t("sugar")}
+                label={t("spoon_of_sugar")}
+                value={orderDetails?.sugar || 0}
+                onChange={handleSugarChange}
+                onBlur={handleBlur}
+                size="small"
+                className="w-full p-2"
+                inputProps={{ min: 0, max: 10, step: 0.5 }}
+                helperText={showError && "Sugar should be in limit of 0 - 10"}
+                FormHelperTextProps={{
+                  sx: { color: currentMode === "dark" ? "#fff" : "#000" },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <IconButton
+                      onClick={handleSugarDecrement}
+                      disabled={orderDetails?.sugar <= 0}
+                    >
+                      <BsDash color={"#AAAAAA"} />
+                    </IconButton>
+                  ),
+                  endAdornment: (
+                    <IconButton onClick={handleSugarIncrement} disabled={orderDetails?.sugar >= 10}>
+                      <BsPlus color={"#AAAAAA"} />
+                    </IconButton>
+                  ),
+                  inputProps: {
+                    style: { textAlign: 'center' }
+                  }
                 }}
               />
             </div>
-          </Box>
-          <Box sx={darkModeColors}>
+            {/* NOTE */}
             <TextField
               type={"text"}
               id="Note"
@@ -287,25 +386,35 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
               displayEmpty
             />
           </Box>
+          {orderDetails?.amount !== 0 && (
+            <div className={`${currentMode === "dark"
+              ? "bg-dark-neu text-white" : "bg-light-neu text-black"
+              } my-5 p-3 text-center`}>
+              {orderDetails?.currency}
+              {" "}
+              {orderDetails?.amount}
+            </div>
+          )}
+
         </div>
 
-        <div className="action buttons mt-5 flex items-center justify-center w-full">
-          <Button
-            className={` text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none w-full`}
-            ripple="true"
-            size="lg"
-            style={{
-              color: "white",
-            }}
-            onClick={placeOrder}
-          >
-            {orderBtnLoading ? (
-              <CircularProgress size={18} sx={{ color: "blue" }} />
-            ) : (
-              <span>{t("order")}</span>
-            )}
-          </Button>
-        </div>
+        <button
+          className={`${currentMode === "dark"
+            ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+            } my-5 text-white p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed w-full`}
+          // ripple="true"
+          // size="lg"
+          style={{
+            color: "white",
+          }}
+          onClick={placeOrder}
+        >
+          {orderBtnLoading ? (
+            <CircularProgress size={18} sx={{ color: "blue" }} />
+          ) : (
+            <span>{t("order")}</span>
+          )}
+        </button>
       </div>
     </Modal>
   );
