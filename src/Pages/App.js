@@ -21,6 +21,7 @@ import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
 import { useJsApiLoader } from "@react-google-maps/api";
 // import TemplatesList from "./editor/TemplatesList";
+import FormsList from "./editor/FormsList";
 import TemplatesList from "./editor/TemplatesList";
 import Users from "./users";
 import Offers from "./offers";
@@ -93,6 +94,7 @@ import Statements from "./statements";
 import Commission_VAT from "./commission_vat";
 import Petty_Cash from "./Petty_Cash";
 import MyOrders from "./officeBoy/MyOrders";
+import LiveReminderNotifications,{LiveMeetingNotifications} from "../Components/dashboard/LiveReminderNotifications"
 
 const libraries = ["places"];
 
@@ -562,6 +564,10 @@ const routes = [
     path: "*",
     element: <Error />,
   },
+  {
+    path: "/forms",
+    element: <FormsList />,
+  },
 ];
 
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
@@ -667,6 +673,8 @@ function App() {
         </div>
         <Footer />
       </div>
+      <LiveReminderNotifications />
+      <LiveMeetingNotifications />
     </>
   );
 }

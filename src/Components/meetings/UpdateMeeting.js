@@ -81,11 +81,21 @@ const UpdateMeeting = ({
   };
 
   const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsClosing(false);
-      handleMeetingModalClose();
-    }, 1000);
+    // setIsClosing(true);
+    // setTimeout(() => {
+    //   setIsClosing(false);
+    //   handleMeetingModalClose();
+    // }, 1000);
+    return new Promise((resolve) => {
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsClosing(false);
+        handleMeetingModalClose();
+        setTimeout(()=>{
+          resolve();
+        },1000)
+      }, 1000);
+    });
   };
 
   useEffect(() => {
@@ -212,10 +222,11 @@ const UpdateMeeting = ({
           progress: undefined,
           theme: "light",
         });
+        await handleClose();
         FetchLeads(token);
-        setTimeout(() => {
-          handleMeetingModalClose();
-        }, 1000); // delay the modal closing by 1 second (1000 milliseconds)
+        // setTimeout(() => {
+        //   handleMeetingModalClose();
+        // }, 1000); // delay the modal closing by 1 second (1000 milliseconds)
       }
     } catch (error) {
       console.log("error in updating meeting: ", error);

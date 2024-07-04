@@ -5,7 +5,7 @@ import {
   PaginationItem,
   Stack,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Loader from "../Loader";
 import { useStateContext } from "../../context/ContextProvider";
 import { useState } from "react";
@@ -13,25 +13,26 @@ import ShowLocation from "./ShowLocation";
 import axios from "../../axoisConfig";
 import UpdateMeeting from "./UpdateMeeting";
 
-import { 
-  MdEdit,
-  MdLocationOn 
-} from "react-icons/md";
-import { 
+import { MdEdit, MdLocationOn } from "react-icons/md";
+import {
   BsBuildings,
   BsClock,
   BsFillBookmarkXFill,
   BsFillBookmarkStarFill,
-  BsFillBookmarkCheckFill
+  BsFillBookmarkCheckFill,
 } from "react-icons/bs";
-import { 
-  BiUser
-} from "react-icons/bi";
+import { BiUser } from "react-icons/bi";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { BsMic, BsMicFill } from "react-icons/bs";
+import { IoMdSearch } from "react-icons/io";
 
 const GridMeeting = ({ pageState, setpageState }) => {
   console.log("meetings state: ", pageState);
   const [loading, setLoading] = useState(false);
-  const { currentMode, BACKEND_URL, isArabic, primaryColor, themeBgImg } = useStateContext();
+  const { currentMode, BACKEND_URL, isArabic, primaryColor, themeBgImg } =
+    useStateContext();
   const [maxPage, setMaxPage] = useState(0);
   const [meetingLocation, setMeetingLocation] = useState(null);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
@@ -40,6 +41,69 @@ const GridMeeting = ({ pageState, setpageState }) => {
     open: false,
     id: null,
   });
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [searchRows, setSearchRows] = useState(pageState?.data);
+  const searchRef = useRef(null);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition("en");
+  useEffect(() => {
+    setSearchRows(pageState?.data);
+    setUserData(pageState?.data);
+  }, [pageState?.data]);
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
+  useEffect(() => {
+    if (isVoiceSearchState && transcript.length > 0) {
+      // setSearchTerm(transcript);
+      setSearchText(transcript);
+      handleSearchChange({ target: { value: transcript } });
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      handleSearchChange({ target: { value: "" } });
+      resetTranscript();
+      setSearchText("");
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const handleSearchChange = (e) => {
+    setSearchText(e?.target?.value);
+    console.log("i it called");
+    const searchResults = notesData?.filter((row) => {
+      return (
+        row?.meetingDate
+          ?.toString()
+          .toLowerCase()
+          .includes(e?.target?.value.toLowerCase()) ||
+        row?.meetingTime
+          ?.toLowerCase()
+          .includes(e?.target?.value.toLowerCase()) ||
+        row?.leadName?.toLowerCase().includes(e?.target?.value.toLowerCase()) ||
+        row?.project?.toLowerCase().includes(e?.target?.value.toLowerCase()) ||
+        row?.enquiryType
+          ?.toLowerCase()
+          .includes(e?.target?.value.toLowerCase()) ||
+        row?.meetingStatus
+          ?.toLowerCase()
+          .includes(e?.target?.value.toLowerCase()) ||
+        row?.meetingBy?.toLowerCase().includes(e?.target?.value.toLowerCase())
+      );
+    });
+    setSearchRows(searchResults);
+  };
 
   console.log("USERDATA: ", notesData);
 
@@ -109,7 +173,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
     setLoading(true);
 
     const { data, isLoading, page, pageSize, total, gridDataSize } = pageState;
-    setUserData(data);
+
     // setMaxPage(Math.ceil(total / pageSize));
     setMaxPage(gridDataSize);
 
@@ -159,31 +223,63 @@ const GridMeeting = ({ pageState, setpageState }) => {
         {loading ? (
           <Loader />
         ) : (
-          <div
-            className={`w-full`}
-          >
+          <div className={`w-full`}>
             <div className="">
               <div className="mt-5 md:mt-2">
+                <div className="flex justify-end w-full items-center mb-3 ">
+                  <div className="flex items-center border-b-[1px] border-b-black gap-2 mr-3">
+                    <div>
+                      <IoMdSearch size={22} />
+                    </div>
+                    <input
+                      ref={searchRef}
+                      type="text"
+                      className=" focus:outline-none h-full bg-transparent text-[12px]"
+                      placeholder="Search"
+                      onChange={handleSearchChange}
+                      value={searchText}
+                    />
+                    <div
+                      // ref={searchContainer}
+                      className={`${
+                        isVoiceSearchState ? "listening bg-primary" : ""
+                      } ${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                      onClick={() => {
+                        setIsVoiceSearchState(!isVoiceSearchState);
+                        console.log("mic is clicked...");
+                      }}
+                    >
+                      {isVoiceSearchState ? (
+                        <BsMicFill size={16} />
+                      ) : (
+                        <BsMic size={16} />
+                      )}
+                    </div>
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                   {notesData?.length > 0 &&
-                    notesData?.map((item, index) => {
+                    searchRows?.map((item, index) => {
                       const { mLat, mLong } = item;
                       return (
                         <div
                           key={index}
                           className={`${
-                            !themeBgImg ? (currentMode === "dark"
-                              ? "bg-[#1c1c1c] text-white"
-                              : "bg-[#EEEEEE] text-black")
-                            : (currentMode === "dark"
+                            !themeBgImg
+                              ? currentMode === "dark"
+                                ? "bg-[#1c1c1c] text-white"
+                                : "bg-[#EEEEEE] text-black"
+                              : currentMode === "dark"
                               ? "blur-bg-dark text-white"
-                              : "blur-bg-light text-black")
+                              : "blur-bg-light text-black"
                           } p-4 rounded-md `}
                         >
                           <div className="space-y-1 overflow-hidden">
                             <div className="flex items-center justify-between">
-                              <h1 
-                                className="font-bold" 
+                              <h1
+                                className="font-bold"
                                 style={{
                                   fontFamily: isArabic(item?.leadName)
                                     ? "Noto Kufi Arabic"
@@ -205,10 +301,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                     className="bg-btn-primary p-2"
                                     onClick={() => handleEditMeeting(item)}
                                   >
-                                    <MdEdit
-                                      color={"#FFFFFF"}
-                                      size={14}
-                                    />
+                                    <MdEdit color={"#FFFFFF"} size={14} />
                                   </IconButton>
                                 </Avatar>
                                 <Avatar
@@ -221,55 +314,86 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                     className="bg-btn-primary p-2"
                                     onClick={() => showLocation(mLat, mLong)}
                                   >
-                                    <MdLocationOn
-                                      color={"#FFFFFF"}
-                                      size={14}
-                                    />
+                                    <MdLocationOn color={"#FFFFFF"} size={14} />
                                   </IconButton>
                                 </Avatar>
                               </div>
                             </div>
 
-                            
                             <p className="flex items-center text-sm py-1">
-                              <BsBuildings size={16} className="mr-2" /> 
-                              <span className="mx-1">{item?.project === "null" ? "-" : item?.project}</span>
-                              <span className="mx-1">{item?.enquiryType === "null" ? "-" : item?.enquiryType}</span>
-                              <span className="mx-1">{item?.leadType === "null" ? "-" : item?.leadType}</span>
-                              <span className="mx-1">{item?.leadFor === "null" ? "-" : item?.leadFor}</span>
+                              <BsBuildings size={16} className="mr-2" />
+                              <span className="mx-1">
+                                {item?.project === "null" ? "-" : item?.project}
+                              </span>
+                              <span className="mx-1">
+                                {item?.enquiryType === "null"
+                                  ? "-"
+                                  : item?.enquiryType}
+                              </span>
+                              <span className="mx-1">
+                                {item?.leadType === "null"
+                                  ? "-"
+                                  : item?.leadType}
+                              </span>
+                              <span className="mx-1">
+                                {item?.leadFor === "null" ? "-" : item?.leadFor}
+                              </span>
                             </p>
                             <p className="flex items-center text-sm py-1">
-                              <BsClock size={16} className="mr-2" /> 
+                              <BsClock size={16} className="mr-2" />
                               <span className="mx-1">{item?.meetingDate}</span>
                               <span className="mx-1">{item?.meetingTime}</span>
                             </p>
                             <p className="flex items-center text-sm py-1">
-                              <BiUser size={16} className="mr-2" /> 
+                              <BiUser size={16} className="mr-2" />
                               <span className="mx-1">{item?.meetingBy}</span>
                             </p>
                             <p className="flex items-center text-sm py-1">
                               {item?.meetingStatus === "Cancelled" && (
                                 <>
-                                  <BsFillBookmarkXFill size={16} className="mr-2 text-primary" /> 
-                                  <span className="mx-1">{item?.meetingStatus}</span>
+                                  <BsFillBookmarkXFill
+                                    size={16}
+                                    className="mr-2 text-primary"
+                                  />
+                                  <span className="mx-1">
+                                    {item?.meetingStatus}
+                                  </span>
                                 </>
                               )}
                               {item?.meetingStatus === "Attended" && (
                                 <>
-                                  <BsFillBookmarkCheckFill size={16} className="mr-2" color="#238e41" /> 
-                                  <span className="mx-1">{item?.meetingStatus}</span>
+                                  <BsFillBookmarkCheckFill
+                                    size={16}
+                                    className="mr-2"
+                                    color="#238e41"
+                                  />
+                                  <span className="mx-1">
+                                    {item?.meetingStatus}
+                                  </span>
                                 </>
                               )}
                               {item?.meetingStatus === "Postponed" && (
                                 <>
-                                  <BsFillBookmarkStarFill size={16} className="mr-2" color="#f27f25" /> 
-                                  <span className="mx-1">{item?.meetingStatus}</span>
+                                  <BsFillBookmarkStarFill
+                                    size={16}
+                                    className="mr-2"
+                                    color="#f27f25"
+                                  />
+                                  <span className="mx-1">
+                                    {item?.meetingStatus}
+                                  </span>
                                 </>
                               )}
                               {item?.meetingStatus === "Pending" && (
                                 <>
-                                  <BsFillBookmarkStarFill size={16} className="mr-2" color="#ebc24d" /> 
-                                  <span className="mx-1">{item?.meetingStatus}</span>
+                                  <BsFillBookmarkStarFill
+                                    size={16}
+                                    className="mr-2"
+                                    color="#ebc24d"
+                                  />
+                                  <span className="mx-1">
+                                    {item?.meetingStatus}
+                                  </span>
                                 </>
                               )}
                             </p>
@@ -314,11 +438,11 @@ const GridMeeting = ({ pageState, setpageState }) => {
                             ? "white"
                             : "gray"
                           : undefined,
-                          // backgroundColor: isEllipsis
-                          // ? undefined
-                          // : currentMode === "dark"
-                          // ? "black"
-                          // : "white",
+                        // backgroundColor: isEllipsis
+                        // ? undefined
+                        // : currentMode === "dark"
+                        // ? "black"
+                        // : "white",
                         "&:hover": {
                           backgroundColor:
                             currentMode === "dark" ? "black" : "white",

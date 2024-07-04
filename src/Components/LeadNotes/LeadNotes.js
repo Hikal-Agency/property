@@ -6,33 +6,34 @@ import {
   GridToolbar,
   useGridApiContext,
   useGridSelector,
+  GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarExport,
 } from "@mui/x-data-grid";
-
 import axios from "../../axoisConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import NotesGrid from "./NotesGrid";
+
 import SingleLeadModal from "../../Pages/singlelead/SingleLeadModal";
-import {
-  AiOutlineTable,
-  AiOutlineAppstore,
-} from "react-icons/ai";
+import { AiOutlineTable, AiOutlineAppstore } from "react-icons/ai";
+import NotesTable from "./NotesTable";
 
 const LeadNotes = ({ pageState, setpageState }) => {
-  const { 
-    currentMode, 
-    BACKEND_URL, 
-    User, 
-    darkModeColors, 
-    isArabic, 
+  const {
+    currentMode,
+    BACKEND_URL,
+    User,
+    darkModeColors,
+    isArabic,
     primaryColor,
     blurDarkColor,
     blurLightColor,
     blurBlackColor,
     blurWhiteColor,
-    themeBgImg
+    themeBgImg,
   } = useStateContext();
-  const [searchText, setSearchText] = useState("");
   const [tabValue, setTabValue] = useState(0);
   const [value, setValue] = useState(0);
 
@@ -44,93 +45,6 @@ const LeadNotes = ({ pageState, setpageState }) => {
   const HandleQuicSearch = (e) => {
     console.log(e.target.value);
   };
-
-  const columns = [
-    {
-      field: "id",
-      headerName: "#",
-      minWidth: 20,
-      maxWidth: 50,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <strong>
-            {cellValues.formattedValue}
-          </strong>
-        )
-      }
-    },
-    {
-      field: "creationDate",
-      headerName: "Date",
-      minWidth: 70,
-      maxWidth: 90,
-      headerAlign: "center",
-      flex: 1,
-    },
-    {
-      field: "leadName",
-      headerName: "Lead name",
-      minWidth: 100,
-      headerAlign: "center",
-      flex: 1,
-      renderCell: (cellValues) => {
-        return <p style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>{cellValues?.formattedValue}</p>
-      }
-    },
-    {
-      field: "project",
-      headerName: "Project",
-      minWidth: 80,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full my-2">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
-              <p>{cellValues.row.project === "null" ? "-" : cellValues.row.project}</p>
-              <p>{cellValues.row.leadType === "null" ? "-" : cellValues.row.leadType}</p>
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "enquiryType",
-      headerName: "Property",
-      minWidth: 80,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full my-2">
-            <p className="text-center capitalize" style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>
-              <p>{cellValues.row.enquiryType === "null" ? "-" : cellValues.row.enquiryType}</p>
-              <p>{cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}</p>
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "leadNote",
-      headerName: "Note",
-      minWidth: 300,
-      flex: 1,
-      headerAlign: "center",
-      renderCell: (cellValues) => {
-        return <p style={{fontFamily: isArabic(cellValues?.formattedValue) ? "Noto Kufi Arabic" : "inherit"}}>{cellValues?.formattedValue}</p>
-      }
-    },
-    {
-      field: "userName",
-      headerName: "Added by",
-      minWidth: 100,
-      flex: 1,
-      headerAlign: "center",
-    },
-  ];
 
   const FetchLeads = async (token) => {
     setpageState((old) => ({
@@ -198,12 +112,6 @@ const LeadNotes = ({ pageState, setpageState }) => {
     // eslint-disable-next-line
   }, [pageState.page]);
 
-  // ROW CLICK FUNCTION
-  const handleRowClick = async (params) => {
-    // window.open(`/leadnotes/${params.row.leadId}`);
-    HandleSingleLead(params.row.leadId)
-  };
-
   const [singleLeadID, setSingleLeadID] = useState({});
   const [singleLeadModelOpen, setSingleLeadModelOpen] = useState(false);
 
@@ -236,7 +144,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
     },
 
     // Background color of header of data grid
-    "& .MuiDataGrid-columnHeaders": { // css-s3ulew-
+    "& .MuiDataGrid-columnHeaders": {
+      // css-s3ulew-
       border: "none",
       backgroundColor: primaryColor,
       color: currentMode === "dark" ? "white" : "white",
@@ -248,12 +157,14 @@ const LeadNotes = ({ pageState, setpageState }) => {
       overflowY: "inherit !important",
     },
     // DATATABLE BORDER - DARK
-    "& .MuiDataGrid-root": { //css-h0wcjk-
+    "& .MuiDataGrid-root": {
+      //css-h0wcjk-
       border: "none !important",
       boxShadow: "none !important",
     },
     // DATATABLE BORDER - LIGHT
-    "& .MuiDataGrid-root": { //css-hgxfug-
+    "& .MuiDataGrid-root": {
+      //css-hgxfug-
       border: "none !important",
       boxShadow: "none !important",
     },
@@ -266,16 +177,19 @@ const LeadNotes = ({ pageState, setpageState }) => {
       color: currentMode === "dark" ? "white" : "black",
     },
     // changing rows hover color
-    "& .MuiDataGrid-row:hover": { //css-1uhmucx-
+    "& .MuiDataGrid-row:hover": {
+      //css-1uhmucx-
       backgroundColor: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
       border: "none !important",
       boxShadow: "none !important",
     },
-    "& .MuiDataGrid-root": { //css-s3ulew-
+    "& .MuiDataGrid-root": {
+      //css-s3ulew-
       border: "none !important",
       boxShadow: "none !important",
     },
-    "& .MuiDataGrid-root": { //css-otzuo3-
+    "& .MuiDataGrid-root": {
+      //css-otzuo3-
       border: "none !important",
       boxShadow: "none !important",
     },
@@ -285,7 +199,7 @@ const LeadNotes = ({ pageState, setpageState }) => {
     // },
     // changing rows right border
     // "& .MuiDataGrid-cell": {
-      // borderRight: "1px solid rgb(240, 240, 240)",
+    // borderRight: "1px solid rgb(240, 240, 240)",
     // },
 
     // BACKGROUND COLOR OF FOOTER
@@ -298,14 +212,14 @@ const LeadNotes = ({ pageState, setpageState }) => {
     "& .MuiTablePagination-selectLabel": {
       color: currentMode === "dark" ? "white" : "black",
     },
-    "& .MuiTablePagination-select ": { 
+    "& .MuiTablePagination-select ": {
       color: currentMode === "dark" ? "white" : "black",
     },
-    "& .MuiSvgIcon-fontSizeMedium ": { 
+    "& .MuiSvgIcon-fontSizeMedium ": {
       color: currentMode === "dark" ? "white" : "black",
       // TODO: For Pagination SVG, white
     },
-    "& .MuiTablePagination-displayedRows": { 
+    "& .MuiTablePagination-displayedRows": {
       color: currentMode === "dark" ? "white" : "black",
     },
   };
@@ -321,8 +235,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
           sx={{
             "& .Mui-selected": {
               backgroundColor: `${primaryColor} !important`,
-                color: "white !important",
-                borderRadius: "50px !important",
+              color: "white !important",
+              borderRadius: "50px !important",
             },
           }}
           count={pageCount}
@@ -351,32 +265,28 @@ const LeadNotes = ({ pageState, setpageState }) => {
           },
         }}
         className={`rounded-xl overflow-hidden flex`}
-        style={{justifyContent: "flex-end"}}
+        style={{ justifyContent: "flex-end" }}
       >
-        <Tabs value={value} onClick={handleChange} variant="standard" >
+        <Tabs value={value} onClick={handleChange} variant="standard">
           <Tab
             icon={
-              // value === 0 ? 
-              (
-                <AiOutlineAppstore
-                  size={20}
-                  style={{
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  }}
-                />
-              )
+              // value === 0 ?
+              <AiOutlineAppstore
+                size={20}
+                style={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              />
             }
           />
           <Tab
             icon={
-              (
-                <AiOutlineTable
-                  size={20}
-                  style={{
-                    color: currentMode === "dark" ? "#ffffff" : "#000000",
-                  }}
-                />
-              )
+              <AiOutlineTable
+                size={20}
+                style={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              />
             }
           />
         </Tabs>
@@ -388,8 +298,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
             className={`${currentMode}-mode-datatable pb-20`}
             sx={DataGridStyles}
           >
-            <DataGrid
-            disableDensitySelector
+            {/* <DataGrid
+              disableDensitySelector
               initialState={{
                 columns: {
                   columnVisibilityModel: {
@@ -398,7 +308,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
                 },
               }}
               autoHeight
-              rows={pageState.data}
+              // rows={pageState.data}
+              rows={searchRows}
               onRowClick={handleRowClick}
               rowCount={pageState.total}
               loading={pageState.isLoading}
@@ -416,7 +327,8 @@ const LeadNotes = ({ pageState, setpageState }) => {
               }
               columns={columns}
               components={{
-                Toolbar: GridToolbar,
+                // Toolbar: GridToolbar,
+                Toolbar: CustomToolbar,
                 Pagination: CustomPagination,
               }}
               componentsProps={{
@@ -424,7 +336,6 @@ const LeadNotes = ({ pageState, setpageState }) => {
                   printOptions: { disableToolbarButton: User?.role !== 1 },
                   csvOptions: { disableToolbarButton: User?.role !== 1 },
                   showQuickFilter: true,
-                  value: searchText,
                   onChange: HandleQuicSearch,
                 },
               }}
@@ -443,6 +354,11 @@ const LeadNotes = ({ pageState, setpageState }) => {
               getRowClassName={(params) =>
                 params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
               }
+            /> */}
+            <NotesTable
+              HandleSingleLead={HandleSingleLead}
+              pageState={pageState}
+              setpageState={setpageState}
             />
           </Box>
         </TabPanel>
