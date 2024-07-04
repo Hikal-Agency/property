@@ -21,7 +21,7 @@ import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
 import { useJsApiLoader } from "@react-google-maps/api";
 // import TemplatesList from "./editor/TemplatesList";
-import FormsList from "./editor/FormsList";
+// import FormsList from "./editor/FormsList";
 import TemplatesList from "./editor/TemplatesList";
 import Users from "./users";
 import Offers from "./offers";
@@ -564,10 +564,10 @@ const routes = [
     path: "*",
     element: <Error />,
   },
-  {
-    path: "/forms",
-    element: <FormsList />,
-  },
+  // {
+  //   path: "/forms",
+  //   element: <FormsList />,
+  // },
 ];
 
 export const socket = io(process.env.REACT_APP_SOCKET_URL);
