@@ -72,26 +72,36 @@ const RegisterAttendance = () => {
 
   console.log("dateeeeeeeeeee: ", currentDateTime);
 
-  const MarkAttendance = async (status) => {
+  const MarkAttendance = (status) => {
     console.log("status: ", status);
 
-    if (!attendanceLocation?.lat || !attendanceLocation?.long) {
-      toast.error(`kindly allow the location and refresh the browser.`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return;
-    }
+    handleCurrentLocationClick((getLoc) => {
+      console.log("get loc:: ", getLoc);
 
-    setLoading(true);
-    try {
-      const date = new Date().toLocaleString();
+      if (!getLoc?.lat || !getLoc?.long) {
+        toast.error(
+          `${
+            getLoc?.message
+              ? getLoc.message
+              : " kindly allow the location and refresh the browser."
+          }`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+        return;
+      }
+
+      const attendanceLocation = getLoc;
+
+      setLoading(true);
       const currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
       console.log("dateeeeeeeeeee: ", currentDateTime);
 
@@ -112,48 +122,156 @@ const RegisterAttendance = () => {
       AddAttendance.append("lat", attendanceLocation?.lat);
       AddAttendance.append("lng", attendanceLocation?.long);
 
-      const registerAttendance = await axios.post(
-        `${BACKEND_URL}/attendance`,
-        AddAttendance,
-        {
+      axios
+        .post(`${BACKEND_URL}/attendance`, AddAttendance, {
           headers: {
-            "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
-        }
-      );
-
-      console.log("Document successfully written!", registerAttendance);
-      toast.success(`Successfully Checked-${status}`, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      navigate("/attendance_self");
-    } catch (error) {
-      console.error("Error writing document: ", error);
-
-      toast.error(error.response.data.data, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } finally {
-      setLoading(false);
-      setCheckoutLoading(false);
-      setCheckInLoading(false);
-    }
+        })
+        .then((registerAttendance) => {
+          console.log("attendance marked!", registerAttendance);
+          toast.success(`Successfully Checked-${status}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          navigate("/attendance_self");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+          toast.error(error.response.data.data, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+          setCheckoutLoading(false);
+          setCheckInLoading(false);
+        });
+    });
   };
+
+  // const MarkAttendance = async (status) => {
+  //   console.log("status: ", status);
+
+  //   const getLoc = await handleCurrentLocationClick();
+
+  //   console.log("get loc:: ", getLoc);
+
+  //   // if (!getLoc?.lat || !getLoc?.long) {
+  //   //   toast.error(
+  //   //     `${
+  //   //       getLoc?.message
+  //   //         ? message
+  //   //         : " kindly allow the location and refresh the browser."
+  //   //     }`,
+  //   //     {
+  //   //       position: "top-right",
+  //   //       autoClose: 3000,
+  //   //       hideProgressBar: false,
+  //   //       closeOnClick: true,
+  //   //       pauseOnHover: true,
+  //   //       draggable: true,
+  //   //       progress: undefined,
+  //   //       theme: "light",
+  //   //     }
+  //   //   );
+  //   //   return;
+  //   // }
+
+  //   if (!attendanceLocation?.lat || !attendanceLocation?.long) {
+  //     toast.error(`kindly allow the location and refresh the browser.`, {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //     return;
+  //   }
+
+  //   return;
+
+  //   setLoading(true);
+  //   try {
+  //     const date = new Date().toLocaleString();
+  //     const currentDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
+  //     console.log("dateeeeeeeeeee: ", currentDateTime);
+
+  //     const AddAttendance = new FormData();
+
+  //     const attendanceType = status === "in" ? "Check-in" : "Check-out";
+  //     status === "in" ? setCheckInLoading(true) : setCheckoutLoading(true);
+
+  //     AddAttendance.append("user_id", User?.id);
+  //     AddAttendance.append("check_datetime", currentDateTime);
+  //     AddAttendance.append("attendance_type", attendanceType);
+  //     AddAttendance.append("attendance_source", "QR");
+  //     AddAttendance.append(
+  //       "default_datetime",
+  //       attendanceType === "Check-in" ? "09:30 AM" : "06:30 PM"
+  //     );
+  //     AddAttendance.append("agency_id", User?.agency || 1);
+  //     AddAttendance.append("lat", attendanceLocation?.lat);
+  //     AddAttendance.append("lng", attendanceLocation?.long);
+
+  //     const registerAttendance = await axios.post(
+  //       `${BACKEND_URL}/attendance`,
+  //       AddAttendance,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Bearer " + token,
+  //         },
+  //       }
+  //     );
+
+  //     console.log("Document successfully written!", registerAttendance);
+  //     toast.success(`Successfully Checked-${status}`, {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //     navigate("/attendance_self");
+  //   } catch (error) {
+  //     console.error("Error writing document: ", error);
+
+  //     toast.error(error.response.data.data, {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "light",
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //     setCheckoutLoading(false);
+  //     setCheckInLoading(false);
+  //   }
+  // };
 
   const FetchProfile = async (token) => {
     const storedUser = localStorage.getItem("user");
@@ -315,51 +433,118 @@ const RegisterAttendance = () => {
     }
   };
 
-  useEffect(() => {
-    const handleCurrentLocationClick = () => {
-      console.log("function called:::::::::::::::::::::::");
-      if (!window.google || !window.google.maps) {
-        console.error("Google Maps JavaScript API not loaded");
-        return;
-      }
+  const handleCurrentLocationClick = (callback) => {
+    console.log("function called:::::::::::::::::::::::");
 
-      const geocoder = new window.google.maps.Geocoder();
-
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log("position: ", position);
-          geocoder.geocode(
-            {
-              location: {
-                lat: Number(position.coords.latitude),
-                lng: Number(position.coords.longitude),
-              },
-            },
-            (results, status) => {
-              console.log("location result:: ", results);
-              if (status === "OK") {
-                setAttendanceLocation({
-                  lat: Number(position.coords.latitude),
-                  long: Number(position.coords.longitude),
-                  // addressText: results[0].formatted_address,
-                });
-              } else {
-                console.log("Getting address failed due to : ", status);
-              }
-            }
-          );
-        },
-        (error) => {
-          console.error("Error getting location: ", error);
-        }
-      );
-    };
-
-    if (load?.isLoaded) {
-      console.log("loaded:::: ", load?.isLoaded);
-      handleCurrentLocationClick();
+    if (!window.google || !window.google.maps) {
+      console.error("Google Maps JavaScript API not loaded");
+      callback({
+        status: false,
+        message: "Google Maps JavaScript API not loaded",
+      });
+      return;
     }
-  }, []);
+
+    const geocoder = new window.google.maps.Geocoder();
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        console.log("position: ", position);
+        geocoder.geocode(
+          {
+            location: {
+              lat: Number(position.coords.latitude),
+              lng: Number(position.coords.longitude),
+            },
+          },
+          (results, status) => {
+            console.log("location result:: ", results);
+            if (status === "OK") {
+              const locationData = {
+                lat: Number(position.coords.latitude),
+                long: Number(position.coords.longitude),
+                // addressText: results[0].formatted_address,
+              };
+
+              setAttendanceLocation(locationData);
+              callback({ status: true, ...locationData });
+            } else {
+              console.log("Getting address failed due to: ", status);
+              callback({ status: false, lat: null, long: null });
+            }
+          }
+        );
+      },
+      (error) => {
+        console.error("Error getting location: ", error);
+        callback({
+          status: false,
+          lat: null,
+          long: null,
+          message: "Error getting location.",
+        });
+      }
+    );
+  };
+
+  // const handleCurrentLocationClick = () => {
+  //   console.log("function called:::::::::::::::::::::::");
+  //   if (!window.google || !window.google.maps) {
+  //     console.error("Google Maps JavaScript API not loaded");
+  //     return;
+  //   }
+
+  //   const geocoder = new window.google.maps.Geocoder();
+
+  //   navigator.geolocation.getCurrentPosition(
+  //     (position) => {
+  //       console.log("position: ", position);
+  //       geocoder.geocode(
+  //         {
+  //           location: {
+  //             lat: Number(position.coords.latitude),
+  //             lng: Number(position.coords.longitude),
+  //           },
+  //         },
+  //         (results, status) => {
+  //           console.log("location result:: ", results);
+  //           if (status === "OK") {
+  //             setAttendanceLocation({
+  //               lat: Number(position.coords.latitude),
+  //               long: Number(position.coords.longitude),
+  //               // addressText: results[0].formatted_address,
+  //             });
+
+  //             return {
+  //               status: true,
+  //               lat: Number(position.coords.latitude),
+  //               long: Number(position.coords.longitude),
+  //             };
+  //           } else {
+  //             console.log("Getting address failed due to : ", status);
+  //             return { status: false, lat: null, long: null };
+  //           }
+  //         }
+  //       );
+  //     },
+  //     (error) => {
+  //       console.error("Error getting location: ", error);
+  //       return {
+  //         status: false,
+  //         lat: null,
+  //         long: null,
+  //         message: "Error getting location.",
+  //       };
+  //     }
+  //   );
+  // };
+
+  // useEffect(() => {
+  //   if (load?.isLoaded) {
+  //     console.log("loaded:::: ", load?.isLoaded);
+  //     handleCurrentLocationClick();
+  //   }
+  // }, []);
 
   useEffect(() => {
     console.log("attendnace page.");
