@@ -239,7 +239,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
         itemId: String(data?.id),
         quantity: 1,
         sugar: null,
-        currency: String(data?.currency) || "AED",
+        currency: data?.currency || "AED",
         amount: data?.itemPrice || 0,
         notes: null,
         orderStatus: "pending",
