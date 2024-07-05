@@ -13,10 +13,7 @@ import { MdClose } from "react-icons/md";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import HeadingTitle from "../_elements/HeadingTitle";
-import {
-  BsPlus,
-  BsDash
-} from "react-icons/bs";
+import { BsPlus, BsDash } from "react-icons/bs";
 import { areDayPropsEqual } from "@mui/x-date-pickers/internals";
 
 const style = {
@@ -25,7 +22,15 @@ const style = {
 };
 
 const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
-  const { currentMode, t, darkModeColors, BACKEND_URL, themeBgImg, isLangRTL, i18n } = useStateContext();
+  const {
+    currentMode,
+    t,
+    darkModeColors,
+    BACKEND_URL,
+    themeBgImg,
+    isLangRTL,
+    i18n,
+  } = useStateContext();
   const [orderBtnLoading, setOrderBtnLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const token = localStorage.getItem("auth-token");
@@ -234,8 +239,8 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
         itemId: String(data?.id),
         quantity: 1,
         sugar: null,
-        currency: String(data?.currency),
-        amount: data?.itemPrice,
+        currency: String(data?.currency) || "AED",
+        amount: data?.itemPrice || 0,
         notes: null,
         orderStatus: "pending",
       });
@@ -262,10 +267,15 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
     >
       <div
         style={style}
-        className={`w-[calc(100%-7%)] md:w-[450px] ${themeBgImg
-          ? currentMode === "dark" ? "bg-dark" : "bg-light"
-          : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-          } absolute top-1/2 left-1/2 p-5`}
+        className={`w-[calc(100%-7%)] md:w-[450px] ${
+          themeBgImg
+            ? currentMode === "dark"
+              ? "bg-dark"
+              : "bg-light"
+            : currentMode === "dark"
+            ? "bg-dark-neu"
+            : "bg-light-neu"
+        } absolute top-1/2 left-1/2 p-5`}
       >
         <div className="absolute top-2 right-2 bg-red-600 p-2 cursor-pointer text-white rounded-full">
           <button
@@ -280,15 +290,11 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
               });
             }}
           >
-            <MdClose
-              size={16}
-            />
+            <MdClose size={16} />
           </button>
         </div>
         <div>
-          <HeadingTitle
-            title={data?.itemName}
-          />
+          <HeadingTitle title={data?.itemName} />
           <Box sx={darkModeColors}>
             <div className="grid grid-cols-2 gap-5 mb-5">
               {/* Quantity */}
@@ -303,7 +309,9 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                 size="small"
                 className="w-full p-2"
                 inputProps={{ min: 1, max: 10 }}
-                helperText={showError && "Quantity should be in limit of 1 - 10"}
+                helperText={
+                  showError && "Quantity should be in limit of 1 - 10"
+                }
                 FormHelperTextProps={{
                   sx: { color: currentMode === "dark" ? "#fff" : "#000" },
                 }}
@@ -317,13 +325,16 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                     </IconButton>
                   ),
                   endAdornment: (
-                    <IconButton onClick={handleIncrement} disabled={orderDetails?.quantity >= 10}>
+                    <IconButton
+                      onClick={handleIncrement}
+                      disabled={orderDetails?.quantity >= 10}
+                    >
                       <BsPlus color={"#AAAAAA"} />
                     </IconButton>
                   ),
                   inputProps: {
-                    style: { textAlign: 'center' }
-                  }
+                    style: { textAlign: "center" },
+                  },
                 }}
               />
               {/* SUGAR */}
@@ -352,13 +363,16 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
                     </IconButton>
                   ),
                   endAdornment: (
-                    <IconButton onClick={handleSugarIncrement} disabled={orderDetails?.sugar >= 10}>
+                    <IconButton
+                      onClick={handleSugarIncrement}
+                      disabled={orderDetails?.sugar >= 10}
+                    >
                       <BsPlus color={"#AAAAAA"} />
                     </IconButton>
                   ),
                   inputProps: {
-                    style: { textAlign: 'center' }
-                  }
+                    style: { textAlign: "center" },
+                  },
                 }}
               />
             </div>
@@ -387,21 +401,24 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
             />
           </Box>
           {orderDetails?.amount !== 0 && (
-            <div className={`${currentMode === "dark"
-              ? "bg-dark-neu text-white" : "bg-light-neu text-black"
-              } my-5 p-3 text-center`}>
-              {orderDetails?.currency}
-              {" "}
-              {orderDetails?.amount}
+            <div
+              className={`${
+                currentMode === "dark"
+                  ? "bg-dark-neu text-white"
+                  : "bg-light-neu text-black"
+              } my-5 p-3 text-center`}
+            >
+              {orderDetails?.currency || ""} {orderDetails?.amount}
             </div>
           )}
-
         </div>
 
         <button
-          className={`${currentMode === "dark"
-            ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-            } my-5 text-white p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed w-full`}
+          className={`${
+            currentMode === "dark"
+              ? "bg-primary-dark-neu"
+              : "bg-primary-light-neu"
+          } my-5 text-white p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed w-full`}
           // ripple="true"
           // size="lg"
           style={{
