@@ -158,120 +158,126 @@ const Orders = () => {
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-              {row?.map((order, index) => {
-                const status = order?.orderStatus?.toLowerCase();
-                let disableUpdate = false;
+              {row && row?.length > 1 ? (
+                row?.map((order, index) => {
+                  const status = order?.orderStatus?.toLowerCase();
+                  let disableUpdate = false;
 
-                if (
-                  ["delivered", "cancelled", "out of stock"].includes(status)
-                ) {
-                  disableUpdate = true;
-                }
-                let filteredOptions = order_status(t);
+                  if (
+                    ["delivered", "cancelled", "out of stock"].includes(status)
+                  ) {
+                    disableUpdate = true;
+                  }
+                  let filteredOptions = order_status(t);
 
-                if (!hasPermission("order_status_out_of_stock")) {
-                  filteredOptions = filteredOptions.filter(
-                    (option) => option.value.toLowerCase() !== "out_of_stock"
+                  if (!hasPermission("order_status_out_of_stock")) {
+                    filteredOptions = filteredOptions.filter(
+                      (option) => option.value.toLowerCase() !== "out_of_stock"
+                    );
+                  }
+                  if (!hasPermission("order_cancel")) {
+                    filteredOptions = filteredOptions.filter(
+                      (option) => option.value.toLowerCase() !== "cancelled"
+                    );
+                  }
+                  return (
+                    <div
+                      key={index}
+                      className={`${
+                        themeBgImg
+                          ? currentMode === "dark"
+                            ? "blur-bg-dark text-white"
+                            : "blur-bg-light text-black"
+                          : currentMode === "dark"
+                          ? "bg-dark-neu text-white"
+                          : "bg-light-neu text-black"
+                      } relative p-5 h-full flex flex-col gap-4 justify-between`}
+                    >
+                      <div className="flex items-center gap-5">
+                        <div
+                          className={`${
+                            themeBgImg
+                              ? "bg-primary"
+                              : currentMode === "dark"
+                              ? "bg-primary-dark-neu"
+                              : "bg-primary-light-neu"
+                          } p-2 text-white rounded-md`}
+                        >
+                          {order?.amount !== 0 && (
+                            <div className="flex items-center">
+                              {order?.currency} {order?.amount}
+                            </div>
+                          )}
+                        </div>
+                        <div className="font-semibold capitalize">
+                          {order?.itemName || order?.item?.itemName}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4">
+                        {/* DETAILS */}
+                        <div className="flex flex-col gap-2 col-span-2">
+                          <div className="grid grid-cols-8 gap-2 items-center">
+                            <BsCart4 size={16} />
+                            <div className="col-span-7">
+                              {order?.quantity} {t("quantity")}
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-8 gap-2 items-center">
+                            <GiSpoon size={15} />
+                            <div className="col-span-7">
+                              {order?.sugar && order?.sugar !== 0 ? (
+                                <span>
+                                  {order?.sugar} {t("spoon_of_sugar")}
+                                </span>
+                              ) : (
+                                <span>-</span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-8 gap-2 items-center">
+                            <BsInfoLg size={14} />
+                            <div className="col-span-7">{order?.notes}</div>
+                          </div>
+                          <div className="grid grid-cols-8 gap-2 items-center">
+                            <BsPerson size={15} />
+                            <div className="col-span-7">{order?.userName}</div>
+                          </div>
+                          <div className="grid grid-cols-8 gap-2 items-center">
+                            <BsClockHistory size={15} />
+                            <div className="col-span-7">
+                              {datetimeAMPM(order?.created_at)}
+                            </div>
+                          </div>
+                        </div>
+                        {/* IMAGE */}
+                        <div className="">{/* SPACE FOR IMAGE */}</div>
+                      </div>
+                      <div className={``}>
+                        <Select
+                          id="status"
+                          value={order_status(t)?.find(
+                            (option) =>
+                              option?.value?.toLowerCase() ===
+                              order.orderStatus.toLowerCase()
+                          )}
+                          onChange={(e) => changeStatus(e, order)}
+                          options={order_status(t)}
+                          placeholder={t("select_status")}
+                          className={`w-full`}
+                          menuPortalTarget={document.body}
+                          styles={renderStyles2(currentMode, primaryColor)}
+                          isDisabled={disableUpdate}
+                          isSearchable={false}
+                        />
+                      </div>
+                    </div>
                   );
-                }
-                if (!hasPermission("order_cancel")) {
-                  filteredOptions = filteredOptions.filter(
-                    (option) => option.value.toLowerCase() !== "cancelled"
-                  );
-                }
-                return (
-                  <div
-                    key={index}
-                    className={`${
-                      themeBgImg
-                        ? currentMode === "dark"
-                          ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black"
-                        : currentMode === "dark"
-                        ? "bg-dark-neu text-white"
-                        : "bg-light-neu text-black"
-                    } relative p-5 h-full flex flex-col gap-4 justify-between`}
-                  >
-                    <div className="flex items-center gap-5">
-                      <div
-                        className={`${
-                          themeBgImg
-                            ? "bg-primary"
-                            : currentMode === "dark"
-                            ? "bg-primary-dark-neu"
-                            : "bg-primary-light-neu"
-                        } p-2 text-white rounded-md`}
-                      >
-                        {order?.amount !== 0 && (
-                          <div className="flex items-center">
-                            {order?.currency} {order?.amount}
-                          </div>
-                        )}
-                      </div>
-                      <div className="font-semibold capitalize">
-                        {order?.itemName || order?.item?.itemName}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4">
-                      {/* DETAILS */}
-                      <div className="flex flex-col gap-2 col-span-2">
-                        <div className="grid grid-cols-8 gap-2 items-center">
-                          <BsCart4 size={16} />
-                          <div className="col-span-7">
-                            {order?.quantity} {t("quantity")}
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-8 gap-2 items-center">
-                          <GiSpoon size={15} />
-                          <div className="col-span-7">
-                            {order?.sugar && order?.sugar !== 0 ? (
-                              <span>
-                                {order?.sugar} {t("spoon_of_sugar")}
-                              </span>
-                            ) : (
-                              <span>-</span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-8 gap-2 items-center">
-                          <BsInfoLg size={14} />
-                          <div className="col-span-7">{order?.notes}</div>
-                        </div>
-                        <div className="grid grid-cols-8 gap-2 items-center">
-                          <BsPerson size={15} />
-                          <div className="col-span-7">{order?.userName}</div>
-                        </div>
-                        <div className="grid grid-cols-8 gap-2 items-center">
-                          <BsClockHistory size={15} />
-                          <div className="col-span-7">
-                            {datetimeAMPM(order?.created_at)}
-                          </div>
-                        </div>
-                      </div>
-                      {/* IMAGE */}
-                      <div className="">{/* SPACE FOR IMAGE */}</div>
-                    </div>
-                    <div className={``}>
-                      <Select
-                        id="status"
-                        value={order_status(t)?.find(
-                          (option) =>
-                            option?.value?.toLowerCase() ===
-                            order.orderStatus.toLowerCase()
-                        )}
-                        onChange={(e) => changeStatus(e, order)}
-                        options={order_status(t)}
-                        placeholder={t("select_status")}
-                        className={`w-full`}
-                        menuPortalTarget={document.body}
-                        styles={renderStyles2(currentMode, primaryColor)}
-                        isDisabled={disableUpdate}
-                        isSearchable={false}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+                })
+              ) : (
+                <h1 className="text-lg text-center w-full font-bold">
+                  {t("no_data_found")}
+                </h1>
+              )}
             </div>
 
             {/* <OrderHistory
