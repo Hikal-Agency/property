@@ -120,7 +120,7 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
         const base64Image = reader.result;
         setITemData({
           ...itemData,
-          image: base64Image,
+          image: file,
         });
       };
       reader.readAsDataURL(file);

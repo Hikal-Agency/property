@@ -41,7 +41,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
     itemPrice: editITem?.itemPrice || editModal?.itemPrice || 0,
     itemStatus: editITem?.itemStatus?.toLowerCase() || editModal?.itemStatus,
     notes: editITem?.notes || editModal?.notes || null,
-    // image: editITem?.image_pah || editModal?.image || null,
+    // image: editITem?.image_path || editModal?.image || null,
     currency: editITem?.currency,
   });
 
@@ -88,7 +88,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
       const base64Image = reader.result;
       setITemData({
         ...itemData,
-        image: base64Image,
+        image: file,
       });
     };
     reader.readAsDataURL(file);
