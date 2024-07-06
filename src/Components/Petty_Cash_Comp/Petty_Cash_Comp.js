@@ -59,6 +59,9 @@ const Petty_Cash_Comp = () => {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
+  console.log("transpage:", transPage);
+  console.log("petty Page:", pettyPage);
+
   const [filtersData, setFilterData] = useState({
     user_id: "",
     invoice_type: "",
@@ -293,7 +296,7 @@ const Petty_Cash_Comp = () => {
                   <Pagination
                     count={maxPettyData}
                     color={currentMode === "dark" ? "primary" : "secondary"}
-                    onChange={(value) => setPettyPage(value)}
+                    onChange={(e, value) => setPettyPage(value)}
                     style={{ margin: "auto" }}
                     page={pettyPage}
                     sx={{
@@ -428,7 +431,7 @@ const Petty_Cash_Comp = () => {
                     <Pagination
                       count={maxTransData}
                       color={currentMode === "dark" ? "primary" : "secondary"}
-                      onChange={(value) => setTransPage(value)}
+                      onChange={(e, value) => setTransPage(value)}
                       style={{ margin: "auto" }}
                       page={transPage}
                       sx={{

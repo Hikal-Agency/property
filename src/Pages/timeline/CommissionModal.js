@@ -24,7 +24,7 @@ import {
   BsPen,
   BsFiletypePdf,
   BsDownload,
-  BsFillPersonFill
+  BsFillPersonFill,
 } from "react-icons/bs";
 
 const style = {
@@ -215,8 +215,8 @@ const CommissionModal = ({
           </>
         )}
       </>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -234,20 +234,23 @@ const CommissionModal = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            }
+          }
         w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseCommissionModal}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-              }
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -259,13 +262,15 @@ const CommissionModal = ({
 
           <div
             style={style}
-            className={` ${currentMode === "dark"
-              ? "bg-dark text-white"
-              : "bg-light text-black"
-              } ${isLangRTL(i18n.language)
+            className={` ${
+              currentMode === "dark"
+                ? "bg-dark text-white"
+                : "bg-light text-black"
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-              } 
+            } 
              p-5 h-[100vh] w-[85vw] overflow-y-scroll border-primary
             `}
           >
@@ -275,11 +280,13 @@ const CommissionModal = ({
               ) : (
                 <div className="">
                   <HeadingTitle
-                    title={status?.field === "agent_comm_status"
-                      ? t("agent_comm")
-                      : status?.field === "manager_comm_status"
+                    title={
+                      status?.field === "agent_comm_status"
+                        ? t("agent_comm")
+                        : status?.field === "manager_comm_status"
                         ? t("manager_comm")
-                        : t("commission")}
+                        : t("commission")
+                    }
                     additional={<Additional />}
                   />
                   {loading ? (
@@ -293,24 +300,31 @@ const CommissionModal = ({
                           return (
                             <div className="my-5">
                               <div
-                                className={`${currentMode === "dark"
-                                  ? "bg-dark-neu"
-                                  : "bg-light-neu"
-                                  } p-5 w-full relative`}
+                                className={`${
+                                  currentMode === "dark"
+                                    ? "bg-dark-neu"
+                                    : "bg-light-neu"
+                                } p-5 w-full relative`}
                               >
                                 {/* AMOUNT  */}
                                 <div
-                                  className={`${isLangRTL(i18n.language)
-                                    ? "left-5"
-                                    : "right-5"
-                                    } ${data?.invoice_type.toLowerCase() ===
-                                      "income"
-                                      ? currentMode === "dark" ? "bg-green-dark-neu" : "bg-green-light-neu"
-                                      : currentMode === "dark" ? "bg-red-dark-neu" : "bg-red-light-neu"
-                                    } absolute top-5 p-2 text-white font-semibold rounded-sm`}
+                                  className={`${
+                                    isLangRTL(i18n.language)
+                                      ? "left-5"
+                                      : "right-5"
+                                  } ${
+                                    data?.invoice_type.toLowerCase() ===
+                                    "income"
+                                      ? currentMode === "dark"
+                                        ? "bg-green-dark-neu"
+                                        : "bg-green-light-neu"
+                                      : currentMode === "dark"
+                                      ? "bg-red-dark-neu"
+                                      : "bg-red-light-neu"
+                                  } absolute top-5 p-2 text-white font-semibold rounded-sm`}
                                 >
                                   {data?.invoice_type.toLowerCase() ===
-                                    "income" ? (
+                                  "income" ? (
                                     <>
                                       {data?.currency} {data?.amount}
                                     </>
@@ -324,42 +338,37 @@ const CommissionModal = ({
                                 {/* EDIT  */}
                                 {!invoiceModal && (
                                   <div
-                                    className={`flex flex-col space-y-3 absolute bottom-5 ${isLangRTL(i18n.language)
-                                      ? "left-5"
-                                      : "right-5"
-                                      }`}
+                                    className={`flex flex-col space-y-3 absolute bottom-5 ${
+                                      isLangRTL(i18n.language)
+                                        ? "left-5"
+                                        : "right-5"
+                                    }`}
                                   >
                                     <button
-                                      className={`${currentMode === "dark"
-                                        ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                        } rounded-full p-3`}
-                                      onClick={(e) =>
-                                        handleOpenModal(e, data)
-                                      }
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-primary-dark-neu"
+                                          : "bg-primary-light-neu"
+                                      } rounded-full p-3`}
+                                      onClick={(e) => handleOpenModal(e, data)}
                                     >
-                                      <BsPen
-                                        size={16}
-                                        color={"white"}
-                                      />
+                                      <BsPen size={16} color={"white"} />
                                     </button>
                                     <button
-                                      className={`${currentMode === "dark"
-                                        ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                        } rounded-full p-3`}
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-primary-dark-neu"
+                                          : "bg-primary-light-neu"
+                                      } rounded-full p-3`}
                                       onClick={() => {
-                                        if (
-                                          data?.invoice_type === "Income"
-                                        ) {
+                                        if (data?.invoice_type === "Income") {
                                           setReceiptVoucher(data);
                                         } else {
                                           setCommissionReceipt(data);
                                         }
                                       }}
                                     >
-                                      <BsDownload
-                                        size={16}
-                                        color={"white"}
-                                      />
+                                      <BsDownload size={16} color={"white"} />
                                     </button>
                                   </div>
                                 )}
@@ -368,10 +377,11 @@ const CommissionModal = ({
                                 <div className="gap-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                                   {/* COMMISSION DETAILS */}
                                   <div
-                                    className={`${currentMode === "dark"
-                                      ? "bg-dark-neu"
-                                      : "bg-light-neu"
-                                      } p-5 w-full`}
+                                    className={`${
+                                      currentMode === "dark"
+                                        ? "bg-dark-neu"
+                                        : "bg-light-neu"
+                                    } p-5 w-full`}
                                   >
                                     <h3 className="text-sm text-primary font-semibold uppercase mb-5 text-center">
                                       {t("commissions")}
@@ -424,10 +434,11 @@ const CommissionModal = ({
                                   {/* VENDOR DETAILS */}
                                   {data?.vendor_id && (
                                     <div
-                                      className={`${currentMode === "dark"
-                                        ? "bg-dark-neu"
-                                        : "bg-light-neu"
-                                        } p-5 w-full`}
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-dark-neu"
+                                          : "bg-light-neu"
+                                      } p-5 w-full`}
                                     >
                                       <h3 className="text-sm text-primary font-semibold uppercase mb-5 text-center">
                                         {t("vendor_details")}
@@ -439,28 +450,19 @@ const CommissionModal = ({
                                         </p>
                                       </div>
                                       <div className="flex justify-between my-3">
-                                        <p>
-                                          {t("label_address")}
-                                          :
-                                        </p>
+                                        <p>{t("label_address")}:</p>
                                         <p className="font-semibold ml-2">
                                           {data?.vendor?.address}
                                         </p>
                                       </div>
                                       <div className="flex justify-between  my-3">
-                                        <p>
-                                          {t("po_box")}
-                                          :
-                                        </p>
+                                        <p>{t("po_box")}:</p>
                                         <p className="font-semibold ml-2">
                                           {data?.vendor?.pobox}
                                         </p>
                                       </div>
                                       <div className="flex justify-between  my-3">
-                                        <p>
-                                          {t("trn")}
-                                          :
-                                        </p>
+                                        <p>{t("trn")}:</p>
                                         <p className="font-semibold ml-2">
                                           {data?.vendor?.trn}
                                         </p>
@@ -469,10 +471,11 @@ const CommissionModal = ({
                                   )}
                                   {data?.user_id && (
                                     <div
-                                      className={`${currentMode === "dark"
-                                        ? "bg-dark-neu"
-                                        : "bg-light-neu"
-                                        } p-5 w-full`}
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-dark-neu"
+                                          : "bg-light-neu"
+                                      } p-5 w-full`}
                                     >
                                       <h3 className="text-sm text-primary font-semibold uppercase mb-5 text-center">
                                         {t("user_details")}
@@ -484,27 +487,19 @@ const CommissionModal = ({
                                         </p>
                                       </div>
                                       <div className="flex justify-between my-3">
-                                        <p>
-                                          {t("label_position")}:
-                                        </p>
+                                        <p>{t("label_position")}:</p>
                                         <p className="font-semibold ml-2">
                                           {data?.user?.position}
                                         </p>
                                       </div>
                                       <div className="flex justify-between my-3">
-                                        <p>
-                                          {t("label_contact")}
-                                          :
-                                        </p>
+                                        <p>{t("label_contact")}:</p>
                                         <p className="font-semibold ml-2">
                                           {data?.user?.userContact}
                                         </p>
                                       </div>
                                       <div className="flex justify-between my-3">
-                                        <p>
-                                          {t("label_email")}
-                                          :
-                                        </p>
+                                        <p>{t("label_email")}:</p>
                                         <p className="font-semibold ml-2">
                                           {data?.user?.userEmail}
                                         </p>
@@ -514,20 +509,20 @@ const CommissionModal = ({
 
                                   {/* RECEIPTS  */}
                                   <div
-                                    className={`w-full p-5 items-center justify-center ${(data?.vendor_id && data?.user_id) ? "lg:col-span-3" : "md:col-span-2 lg:col-span-1"
-                                      }`}
-                                    onContextMenu={(e) =>
-                                      e.preventDefault()
-                                    }
+                                    className={`w-full p-5 items-center justify-center ${
+                                      data?.vendor_id && data?.user_id
+                                        ? "lg:col-span-3"
+                                        : "md:col-span-2 lg:col-span-1"
+                                    }`}
+                                    onContextMenu={(e) => e.preventDefault()}
                                   >
                                     {data?.receipt[0]?.temp_file && (
                                       <div className="flex items-center justify-center">
                                         {(() => {
-                                          const ext =
-                                            data?.receipt[0]?.image
-                                              .split(".")
-                                              .pop()
-                                              .toLowerCase();
+                                          const ext = data?.receipt[0]?.image
+                                            .split(".")
+                                            .pop()
+                                            .toLowerCase();
                                           if (ext === "pdf") {
                                             return (
                                               <div className="mb-3">
@@ -603,8 +598,7 @@ const CommissionModal = ({
                               },
                             },
                             "& .MuiPaginationItem-root": {
-                              color:
-                                currentMode === "dark" ? "white" : "black",
+                              color: currentMode === "dark" ? "white" : "black",
                             },
                           }}
                         />
