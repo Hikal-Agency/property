@@ -4,7 +4,7 @@ import { useStateContext } from "../../context/ContextProvider";
 import axios from "../../axoisConfig";
 import SingleLead from "../Leads/SingleLead";
 import ReminderComponent from "./ReminderComponent";
-
+import { socket } from "../../Pages/App";
 const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
   const { BACKEND_URL, User, themeBgImg } = useStateContext();
   const [btnLoading, setbtnLoading] = useState(false);
@@ -115,7 +115,7 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
       }
 
       setReminder(reminders.data.reminder.data);
-
+      socket.emit("get_all_reminders", reminders.data.reminder.data);
       console.log("Reminders: ", reminders.data.reminder.data);
     } catch (error) {
       console.log("Reminder error: ", error);

@@ -7,11 +7,15 @@ import "../../styles/animation.css";
 import { Tooltip } from "@mui/material";
 import { AiOutlineHistory } from "react-icons/ai";
 import Timeline from "../../Pages/timeline";
+import {socket} from "../../Pages/App"
+import axios from "../../axoisConfig";
+
 
 const UpcomingMeeting = ({ upcoming_meetings }) => {
-  const { currentMode, primaryColor, themeBgImg, t } = useStateContext();
+  const { currentMode, primaryColor, themeBgImg, t,BACKEND_URL } = useStateContext();
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [meetingNote, setMeetingNote] = useState(null);
+  const token = localStorage.getItem("auth-token");
   const [meetingLocation, setMeetingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -25,6 +29,19 @@ const UpcomingMeeting = ({ upcoming_meetings }) => {
   useEffect(() => {
     console.log("upcoming meetings are");
     console.log(upcoming_meetings);
+    // fetch meetings that are in future
+  axios
+  .get(`${BACKEND_URL}/meetings/future`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  }).then((result)=>{
+    console.log("future meetings are ",result)
+    socket.emit("get_all_meetings", result?.data);
+  }).catch((error)=>{
+    console.log("error ",error)
+  })
   }, []);
 
   const handleCardClick = (meeting) => {

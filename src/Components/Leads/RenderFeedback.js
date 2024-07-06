@@ -107,7 +107,7 @@ const RenderFeedback = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     // UpdateLeadData.append("lid", cellValues?.row?.leadId);
-    UpdateLeadData.append("id", cellValues?.row?.leadId);
+    UpdateLeadData.append("id", cellValues?.row?.leadId);   
     UpdateLeadData.append("feedback", newFeedback);
     if (newFeedback === "Meeting") {
       if (!meetingData.meetingDate || !meetingData.meetingTime) {
@@ -208,6 +208,21 @@ const RenderFeedback = ({ cellValues }) => {
             ),
             participants: [User?.isParent],
           });
+
+          axios
+      .get(`${BACKEND_URL}/meetings/future`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }).then((result)=>{
+        console.log("future meetings are ",result)
+        socket.emit("get_all_meetings",result?.data)
+      }).catch((error)=>{
+        console.log("error ",error)
+      })
+
+          
         } else {
           socket.emit("notification_feedback_update", {
             from: { id: User?.id, userName: User?.userName },

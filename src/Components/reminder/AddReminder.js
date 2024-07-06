@@ -7,7 +7,7 @@ import {
   Modal,
   TextField,
 } from "@mui/material";
-
+import { socket } from "../../Pages/App";
 import axios from "../../axoisConfig";
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
@@ -111,6 +111,27 @@ const AddReminder = ({
           progress: undefined,
           theme: "light",
         });
+
+        // fetching reminders after adding new reminder
+        const fetchRminders = async () => {
+          try {
+            const reminders = await axios.get(`${BACKEND_URL}/reminders`, {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+              params: {
+                reminder_status: "Pending",
+                user_id: User?.id,
+              },
+            });
+
+            socket.emit("get_all_reminders", reminders.data.reminder.data);
+          } catch (error) {
+            console.log("Reminder error: ", error);
+          }
+        };
+        fetchRminders();
         setbtnloading(false);
         handleLeadModelClose();
       })
@@ -450,7 +471,7 @@ const AddReminder = ({
               className={`min-w-fit w-full mt-5 text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
               ripple={true}
               size="lg"
-              style={{color: "white"}}
+              style={{ color: "white" }}
               type="submit"
               disabled={btnloading ? true : false}
             >
