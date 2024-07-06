@@ -952,12 +952,7 @@ const Sidebarmui = () => {
               icon: <BsBookmarkFill size={14} style={{ color: "#FFDD99" }} />,
               countColor: "#FFDD99",
             },
-            // {
-            //   name: t("feedback_follow_up"),
-            //   pro: false,
-            //   count: sidebarData?.ThirdPartyLeadsCount?.follow_up,
-            //   link: "/thirdpartyleads/follow up",
-            // },
+
             {
               name: t("feedback_low_budget"),
               pro: false,
