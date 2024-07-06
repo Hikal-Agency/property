@@ -41,7 +41,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
     itemPrice: editITem?.itemPrice || editModal?.itemPrice || 0,
     itemStatus: editITem?.itemStatus?.toLowerCase() || editModal?.itemStatus,
     notes: editITem?.notes || editModal?.notes || null,
-    image: editITem?.image_pah || editModal?.image || null,
+    // image: editITem?.image_pah || editModal?.image || null,
     currency: editITem?.currency,
   });
 
@@ -394,7 +394,7 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
                                   select
                                 >
                                   <MenuItem disabled selected value="">
-                                    {t("inventory_status")}
+                                    {t("label_select_currency")}
                                   </MenuItem>
                                   {currencies(t)?.map((currency) => (
                                     <MenuItem value={currency?.value}>

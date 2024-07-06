@@ -441,7 +441,7 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
                                   // )}
                                 >
                                   <MenuItem disabled selected value="">
-                                    {t("inventory_status")}
+                                    {t("label_select_currency")}
                                   </MenuItem>
                                   {currencies(t)?.map((currency) => (
                                     <MenuItem value={currency?.value}>
