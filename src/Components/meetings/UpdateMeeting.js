@@ -80,7 +80,7 @@ const UpdateMeeting = ({
     browserSupportsSpeechRecognition,
     resetTranscript,
   } = useSpeechRecognition("en");
-
+  //some comments
   useEffect(() => {
     if (isVoiceSearchState && transcript.length > 0) {
       // setSearchTerm(transcript);
