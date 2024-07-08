@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaGoogle } from "react-icons/fa";
 import { useGoogleSignIn } from "../context/GoogleAuthProvider";
 import { gapi } from "gapi-script";
-
+// some comments
 const Home = () => {
   let canvas = useRef();
   const navigate = useNavigate();
