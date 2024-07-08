@@ -16,6 +16,7 @@ import {
   IconButton,
   Button,
   CircularProgress,
+  InputAdornment,
 } from "@mui/material";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
@@ -28,7 +29,7 @@ import {
   BsCheck2All,
   BsPencil,
   BsX,
-  BsClipboard2Check
+  BsClipboard2Check,
 } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
 import { HiUser } from "react-icons/hi";
@@ -43,6 +44,10 @@ import OverlayFile from "../../Components/_elements/OverlayFile";
 import { Tooltip, dialog } from "@material-tailwind/react";
 import CommissionReqModal from "./ComissionReqModal";
 import { sendSMSNotif } from "./SendSMSNotif";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { BsMic, BsMicFill } from "react-icons/bs";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -92,6 +97,47 @@ const DealHistory = ({
 
   const [dealNote, setDealNote] = useState("");
   const [commReqModal, setCommReqModal] = useState(false);
+
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition("en");
+  //some comments
+  useEffect(() => {
+    if (isVoiceSearchState && transcript.length > 0) {
+      // setSearchTerm(transcript);
+      setDealNote(transcript);
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setDealNote("");
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
 
   const handleImageClick = (image) => {
     setOverlayContent(image);
@@ -577,20 +623,22 @@ const DealHistory = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            } w-[100vw] h-[100vh] flex items-start justify-end `}
+          } w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseDealHistory}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language)
-              ? "rounded-r-full" : "rounded-l-full"
-              } bg-primary w-fit h-fit p-3 my-4 z-10`}
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            } bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
               size={18}
@@ -601,13 +649,15 @@ const DealHistory = ({
 
           <div
             style={style}
-            className={` ${currentMode === "dark"
-              ? "bg-dark text-white"
-              : "bg-light text-black"
-              } ${isLangRTL(i18n.language)
+            className={` ${
+              currentMode === "dark"
+                ? "bg-dark text-white"
+                : "bg-light text-black"
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-              } p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
+            } p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
             <div className={`w-full`}>
@@ -619,8 +669,9 @@ const DealHistory = ({
                     <div className="flex items-center ">
                       <div className="bg-primary h-10 w-1 rounded-full"></div>
                       <h1
-                        className={`text-lg font-semibold mx-2 uppercase ${currentMode === "dark" ? "text-white" : "text-black"
-                          }`}
+                        className={`text-lg font-semibold mx-2 uppercase ${
+                          currentMode === "dark" ? "text-white" : "text-black"
+                        }`}
                       >
                         {t("deal_history")}
                       </h1>
@@ -638,8 +689,9 @@ const DealHistory = ({
                   </div>
                   <div>
                     <div
-                      className={`${currentMode === "dark" ? "text-white" : "text-black"
-                        } px-4`}
+                      className={`${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      } px-4`}
                     >
                       {/* STATUS */}
                       <div className="w-full mb-5">
@@ -659,10 +711,11 @@ const DealHistory = ({
                                 }
                                 return (
                                   <div
-                                    className={`${currentMode === "dark"
-                                      ? "bg-dark-neu"
-                                      : "bg-light-neu"
-                                      } items-center justify-between flex flex-col h-full w-full gap-4 relative`}
+                                    className={`${
+                                      currentMode === "dark"
+                                        ? "bg-dark-neu"
+                                        : "bg-light-neu"
+                                    } items-center justify-between flex flex-col h-full w-full gap-4 relative`}
                                   >
                                     {/* STATUS TICK */}
                                     <div className="flex w-full justify-end p-2">
@@ -672,24 +725,22 @@ const DealHistory = ({
                                           color={"#16a34a"}
                                         />
                                       ) : (
-                                        <BsX
-                                          size={18}
-                                          color={"#DA1F26"}
-                                        />
+                                        <BsX size={18} color={"#DA1F26"} />
                                       )}
                                     </div>
                                     {/* STATUS TEXT */}
                                     <div
-                                      className={`w-full items-center text-center justify-center ${status?.type === "commission" &&
+                                      className={`w-full items-center text-center justify-center ${
+                                        status?.type === "commission" &&
                                         hasPermission("add_commission")
-                                        ? "cursor-pointer"
-                                        : null
-                                        } `}
+                                          ? "cursor-pointer"
+                                          : null
+                                      } `}
                                       onClick={
                                         status?.type === "commission" &&
-                                          hasPermission("add_commission")
+                                        hasPermission("add_commission")
                                           ? () =>
-                                            handleCommissionModalOpen(status)
+                                              handleCommissionModalOpen(status)
                                           : undefined
                                       }
                                     >
@@ -699,14 +750,15 @@ const DealHistory = ({
                                     </div>
                                     {/* BUTTON OR TEXT */}
                                     <div className="p-2 w-full">
-                                      {status?.value === false ?
-                                        (status?.perm === true ? (
+                                      {status?.value === false ? (
+                                        status?.perm === true ? (
                                           hasPermission("add_commission") && (
                                             <div
-                                              className={`p-2 w-full text-white text-center uppercase ${currentMode === "dark"
-                                                ? "bg-red-dark-neu"
-                                                : "bg-red-light-neu"
-                                                }`}
+                                              className={`p-2 w-full text-white text-center uppercase ${
+                                                currentMode === "dark"
+                                                  ? "bg-red-dark-neu"
+                                                  : "bg-red-light-neu"
+                                              }`}
                                             >
                                               <Tooltip title="Mark">
                                                 <button
@@ -722,10 +774,11 @@ const DealHistory = ({
                                           )
                                         ) : (
                                           <div
-                                            className={`p-2 w-full text-white text-center uppercase ${currentMode === "dark"
-                                              ? "bg-red-dark-neu"
-                                              : "bg-red-light-neu"
-                                              }`}
+                                            className={`p-2 w-full text-white text-center uppercase ${
+                                              currentMode === "dark"
+                                                ? "bg-red-dark-neu"
+                                                : "bg-red-light-neu"
+                                            }`}
                                           >
                                             <Tooltip title="Mark">
                                               <button
@@ -738,16 +791,18 @@ const DealHistory = ({
                                               </button>
                                             </Tooltip>
                                           </div>
-                                        )) : (
-                                          <div
-                                            className={`${currentMode === "dark"
+                                        )
+                                      ) : (
+                                        <div
+                                          className={`${
+                                            currentMode === "dark"
                                               ? "bg-dark-neu"
                                               : "bg-light-neu"
-                                              } p-2 w-full rounded-b-xl text-green-600 text-center uppercase`}
-                                          >
-                                            {status?.status}
-                                          </div>
-                                        )}
+                                          } p-2 w-full rounded-b-xl text-green-600 text-center uppercase`}
+                                        >
+                                          {status?.status}
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 );
@@ -873,10 +928,11 @@ const DealHistory = ({
                               ) : (
                                 <button
                                   onClick={(e) => setCommReqModal(LeadData)}
-                                  className={`${currentMode === "dark"
-                                    ? "bg-primary-dark-neu"
-                                    : "bg-primary-light-neu"
-                                    } rounded-md py-2 px-4 mr-2 text-white`}
+                                  className={`${
+                                    currentMode === "dark"
+                                      ? "bg-primary-dark-neu"
+                                      : "bg-primary-light-neu"
+                                  } rounded-md py-2 px-4 mr-2 text-white`}
                                 >
                                   {t("generate_tax_invoice")}
                                 </button>
@@ -893,10 +949,11 @@ const DealHistory = ({
                                   </h3>
                                   <div>
                                     <button
-                                      className={`${currentMode === "dark"
-                                        ? "bg-primary-dark-neu"
-                                        : "bg-primary-light-neu"
-                                        } rounded-full p-1`}
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-primary-dark-neu"
+                                          : "bg-primary-light-neu"
+                                      } rounded-full p-1`}
                                       onClick={handleTransactionModalOpen}
                                     >
                                       <BsPlus color="white" size={16} />
@@ -906,19 +963,21 @@ const DealHistory = ({
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
                                   {transactions?.map((spa) => (
                                     <div
-                                      className={`${currentMode === "dark"
-                                        ? "bg-dark-neu"
-                                        : "bg-light-neu"
-                                        } w-full mb-4 relative`}
+                                      className={`${
+                                        currentMode === "dark"
+                                          ? "bg-dark-neu"
+                                          : "bg-light-neu"
+                                      } w-full mb-4 relative`}
                                     >
                                       {/* EDIT BUTTON */}
                                       {/* {(hasPermission("deal_spa") || User?.role === 1) && ( */}
                                       <div className="absolute bottom-2 right-2">
                                         <button
-                                          className={`${currentMode === "dark"
-                                            ? "bg-primary-dark-neu"
-                                            : "bg-primary-light-neu"
-                                            } text-white rounded-full p-2`}
+                                          className={`${
+                                            currentMode === "dark"
+                                              ? "bg-primary-dark-neu"
+                                              : "bg-primary-light-neu"
+                                          } text-white rounded-full p-2`}
                                           onClick={(e) =>
                                             handleTransactionModalOpen(3, spa)
                                           }
@@ -933,10 +992,11 @@ const DealHistory = ({
                                       </div>
                                       {/* DETAILS */}
                                       <div
-                                        className={`p-4 grid ${spa?.temp_file === null
-                                          ? "grid-cols-1"
-                                          : "grid-cols-2"
-                                          } justify-between gap-4`}
+                                        className={`p-4 grid ${
+                                          spa?.temp_file === null
+                                            ? "grid-cols-1"
+                                            : "grid-cols-2"
+                                        } justify-between gap-4`}
                                       >
                                         {/* TEXT */}
                                         <div className="flex flex-col gap-4">
@@ -1048,13 +1108,47 @@ const DealHistory = ({
                                 value={dealNote}
                                 onChange={(e) => setDealNote(e.target.value)}
                                 required
+                                InputProps={{
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <div
+                                        // ref={searchContainer}
+                                        className={`${
+                                          isVoiceSearchState
+                                            ? "listening bg-primary"
+                                            : ""
+                                        } ${
+                                          currentMode === "dark"
+                                            ? "text-white"
+                                            : "text-black"
+                                        } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                                        onClick={() => {
+                                          setIsVoiceSearchState(
+                                            !isVoiceSearchState
+                                          );
+                                          console.log("mic is clicked...");
+                                        }}
+                                      >
+                                        {isVoiceSearchState ? (
+                                          <BsMicFill
+                                            id="search_mic"
+                                            size={16}
+                                          />
+                                        ) : (
+                                          <BsMic id="search_mic" size={16} />
+                                        )}
+                                      </div>
+                                    </InputAdornment>
+                                  ),
+                                }}
                               />
                             </Box>
                             <button
-                              className={`${currentMode === "dark"
-                                ? "bg-primary-dark-neu"
-                                : "bg-primary-light-neu"
-                                } text-white uppercase rounded-md px-4 py-2`}
+                              className={`${
+                                currentMode === "dark"
+                                  ? "bg-primary-dark-neu"
+                                  : "bg-primary-light-neu"
+                              } text-white uppercase rounded-md px-4 py-2`}
                               onClick={() => addDealNote()}
                             >
                               {t("ticket_add_note_label")}
@@ -1074,17 +1168,19 @@ const DealHistory = ({
                                   (timeline, index) => (
                                     <React.Fragment key={index}>
                                       <div
-                                        className={`${isLangRTL(i18n.language)
-                                          ? "ml-3"
-                                          : "mr-3"
-                                          } col-start-1 col-end-3 md:mx-auto relative`}
+                                        className={`${
+                                          isLangRTL(i18n.language)
+                                            ? "ml-3"
+                                            : "mr-3"
+                                        } col-start-1 col-end-3 md:mx-auto relative`}
                                       >
                                         <div className="h-full w-6 flex items-center justify-center">
                                           <div
-                                            className={`${currentMode === "dark"
-                                              ? "bg-dark-neu"
-                                              : "bg-light-neu"
-                                              } h-full rounded-md px-2 py-1 text-sm`}
+                                            className={`${
+                                              currentMode === "dark"
+                                                ? "bg-dark-neu"
+                                                : "bg-light-neu"
+                                            } h-full rounded-md px-2 py-1 text-sm`}
                                             style={{
                                               width: "min-content",
                                               whiteSpace: "nowrap",
@@ -1105,22 +1201,25 @@ const DealHistory = ({
                                             {item.note && (
                                               <>
                                                 <div
-                                                  className={`${isLangRTL(i18n.language)
-                                                    ? "ml-3"
-                                                    : "mr-3"
-                                                    } col-start-1 col-end-3 md:mx-auto relative`}
+                                                  className={`${
+                                                    isLangRTL(i18n.language)
+                                                      ? "ml-3"
+                                                      : "mr-3"
+                                                  } col-start-1 col-end-3 md:mx-auto relative`}
                                                 >
                                                   <div className="h-full w-6 flex items-center justify-center">
                                                     <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
                                                   </div>
                                                   <div
-                                                    className={`${isLangRTL(i18n.language)
-                                                      ? "-mr-3"
-                                                      : "-ml-3"
-                                                      } ${currentMode === "dark"
+                                                    className={`${
+                                                      isLangRTL(i18n.language)
+                                                        ? "-mr-3"
+                                                        : "-ml-3"
+                                                    } ${
+                                                      currentMode === "dark"
                                                         ? "bg-primary-dark-neu"
                                                         : "bg-primary-light-neu"
-                                                      } absolute top-1/2 -mt-5 text-center rounded-full p-3`}
+                                                    } absolute top-1/2 -mt-5 text-center rounded-full p-3`}
                                                   >
                                                     <BsClipboard2Check
                                                       className="text-white"
@@ -1129,10 +1228,11 @@ const DealHistory = ({
                                                   </div>
                                                 </div>
                                                 <div
-                                                  className={`${currentMode === "dark"
-                                                    ? "bg-dark-neu"
-                                                    : "bg-light-neu"
-                                                    } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                  className={`${
+                                                    currentMode === "dark"
+                                                      ? "bg-dark-neu"
+                                                      : "bg-light-neu"
+                                                  } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                                 >
                                                   {/* ADDED BY  */}
                                                   <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
@@ -1183,7 +1283,10 @@ const DealHistory = ({
                                 sx={{
                                   "& .Mui-selected": {
                                     color: "white !important",
-                                    boxShadow: currentMode === "dark" ? "0 0 10px rgba(238, 238, 238, 0.3)" : "rgba(38, 38, 38, 0.3)",
+                                    boxShadow:
+                                      currentMode === "dark"
+                                        ? "0 0 10px rgba(238, 238, 238, 0.3)"
+                                        : "rgba(38, 38, 38, 0.3)",
                                     backgroundColor: `${primaryColor} !important`,
                                     "&:hover": {
                                       backgroundColor:
@@ -1249,9 +1352,9 @@ const DealHistory = ({
                       boxShadow: "none !important",
                     },
                     "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                    {
-                      // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
-                    },
+                      {
+                        // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                      },
                   }}
                   open={DialogueVal}
                   onClose={(e) => setDialogue(false)}
@@ -1270,10 +1373,11 @@ const DealHistory = ({
                     <IoMdClose size={18} />
                   </IconButton>
                   <div
-                    className={`px-10 py-5 ${currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-white text-black"
-                      }`}
+                    className={`px-10 py-5 ${
+                      currentMode === "dark"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-white text-black"
+                    }`}
                   >
                     <div className="flex flex-col justify-center items-center">
                       <IoIosAlert size={50} className="text-primary text-2xl" />
@@ -1305,10 +1409,11 @@ const DealHistory = ({
                         onClick={() => setDialogue(false)}
                         ripple={true}
                         variant="outlined"
-                        className={`shadow-none p-3 rounded-md text-sm  ${currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-black border-black"
-                          }`}
+                        className={`shadow-none p-3 rounded-md text-sm  ${
+                          currentMode === "dark"
+                            ? "text-white border-white"
+                            : "text-black border-black"
+                        }`}
                       >
                         {t("cancel")}
                       </Button>

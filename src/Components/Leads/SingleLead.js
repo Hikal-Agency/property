@@ -11,6 +11,7 @@ import {
   Button,
   Tooltip,
   Box,
+  InputAdornment,
 } from "@mui/material";
 
 import { useStateContext } from "../../context/ContextProvider";
@@ -42,6 +43,10 @@ import {
   BsPhone,
 } from "react-icons/bs";
 import HeadingTitle from "../_elements/HeadingTitle";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { BsMic, BsMicFill } from "react-icons/bs";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -89,6 +94,46 @@ const SingleLead = ({
   const handleCloseRequestModel = () => {
     setOpen(false);
   };
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition("en");
+  //some comments
+  useEffect(() => {
+    if (isVoiceSearchState && transcript.length > 0) {
+      // setSearchTerm(transcript);
+      setAddNoteTxt(transcript);
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setAddNoteTxt("");
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
 
   const notes = LeadData?.notes;
   let displayText;
@@ -518,19 +563,22 @@ const SingleLead = ({
       }}
     >
       <div
-        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${isClosing
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-          }
+        }
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -541,13 +589,15 @@ const SingleLead = ({
         </button>
         <div
           style={style}
-          className={` ${currentMode === "dark"
-            ? "bg-dark text-white"
-            : "bg-light text-black"
-            } ${isLangRTL(i18n.language)
+          className={` ${
+            currentMode === "dark"
+              ? "bg-dark text-white"
+              : "bg-light text-black"
+          } ${
+            isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-            }
+          }
             p-4 h-[100vh] w-[85vw] overflow-y-scroll 
           `}
         >
@@ -558,19 +608,18 @@ const SingleLead = ({
           ) : (
             <>
               <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5">
-                <HeadingTitle
-                  title={LeadData?.leadName}
-                />
+                <HeadingTitle title={LeadData?.leadName} />
 
                 <div className="w-full flex justify-end items-center">
                   {/* CALL  */}
                   <Tooltip title="Call" arrow>
                     <p
                       style={{ cursor: "pointer" }}
-                      className={`${currentMode === "dark"
-                        ? "text-[#FFFFFF] bg-dark-neu"
-                        : "text-[#1C1C1C] bg-light-neu"
-                        } hover:bg-green-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
+                      className={`${
+                        currentMode === "dark"
+                          ? "text-[#FFFFFF] bg-dark-neu"
+                          : "text-[#1C1C1C] bg-light-neu"
+                      } hover:bg-green-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
                     >
                       <CallButton
                         phone={LeadData?.leadContact?.replaceAll(" ", "")}
@@ -580,19 +629,20 @@ const SingleLead = ({
 
                   {/* EMAIL  */}
                   {LeadData?.leadEmail === "" ||
-                    LeadData?.leadEmail === "null" ||
-                    LeadData?.leadEmail === "undefined" ||
-                    LeadData?.leadEmail === "-" ||
-                    LeadData?.leadEmail === null ||
-                    LeadData?.leadEmail === undefined ? (
+                  LeadData?.leadEmail === "null" ||
+                  LeadData?.leadEmail === "undefined" ||
+                  LeadData?.leadEmail === "-" ||
+                  LeadData?.leadEmail === null ||
+                  LeadData?.leadEmail === undefined ? (
                     <></>
                   ) : (
                     <p
                       style={{ cursor: "pointer" }}
-                      className={`${currentMode === "dark"
-                        ? "text-[#FFFFFF] bg-dark-neu"
-                        : "text-[#1C1C1C] bg-light-neu"
-                        } hover:bg-blue-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
+                      className={`${
+                        currentMode === "dark"
+                          ? "text-[#FFFFFF] bg-dark-neu"
+                          : "text-[#1C1C1C] bg-light-neu"
+                      } hover:bg-blue-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
                     >
                       <Tooltip title="Send Mail" arrow>
                         <EmailButton email={LeadData?.leadEmail} />
@@ -603,10 +653,11 @@ const SingleLead = ({
                   {/* EDIT  */}
                   <p
                     style={{ cursor: "pointer" }}
-                    className={`${currentMode === "dark"
-                      ? "text-[#FFFFFF] bg-dark-neu"
-                      : "text-[#1C1C1C] bg-light-neu"
-                      } hover:bg-teal-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
+                    className={`${
+                      currentMode === "dark"
+                        ? "text-[#FFFFFF] bg-dark-neu"
+                        : "text-[#1C1C1C] bg-light-neu"
+                    } hover:bg-teal-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
                   >
                     <Tooltip title="Update Details" arrow>
                       <button onClick={() => HandleEditFunc(LeadData)}>
@@ -620,10 +671,11 @@ const SingleLead = ({
                     <p
                       style={{ cursor: "pointer" }}
                       disabled={deleteloading ? true : false}
-                      className={`${currentMode === "dark"
-                        ? "text-[#FFFFFF] bg-dark-neu"
-                        : "text-[#1C1C1C] bg-light-neu"
-                        } hover:bg-[#DA1F26] hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
+                      className={`${
+                        currentMode === "dark"
+                          ? "text-[#FFFFFF] bg-dark-neu"
+                          : "text-[#1C1C1C] bg-light-neu"
+                      } hover:bg-[#DA1F26] hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
                     >
                       <Tooltip title="Delete Lead" arrow>
                         <button
@@ -648,10 +700,11 @@ const SingleLead = ({
                   <p
                     style={{ cursor: "pointer" }}
                     disabled={deleteloading ? true : false}
-                    className={`${currentMode === "dark"
-                      ? "text-[#FFFFFF] bg-dark-neu"
-                      : "text-[#1C1C1C] bg-light-neu"
-                      } hover:bg-purple-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
+                    className={`${
+                      currentMode === "dark"
+                        ? "text-[#FFFFFF] bg-dark-neu"
+                        : "text-[#1C1C1C] bg-light-neu"
+                    } hover:bg-purple-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
                   >
                     <Tooltip title="Add Listing" arrow>
                       <button onClick={handleOpenListingModal}>
@@ -666,16 +719,17 @@ const SingleLead = ({
 
                   {/* RESHUFFLED REQUEST  */}
                   {User?.role === 1 ||
-                    LeadData?.transferRequest === 1 ||
-                    LeadData?.transferRequest === 1 ? (
+                  LeadData?.transferRequest === 1 ||
+                  LeadData?.transferRequest === 1 ? (
                     <></>
                   ) : hasPermission("reshuffle_button") ? (
                     <p
                       style={{ cursor: "pointer" }}
-                      className={`${currentMode === "dark"
-                        ? "text-[#FFFFFF] bg-dark-neu"
-                        : "text-[#1C1C1C] bg-light-neu"
-                        } hover:bg-yellow-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
+                      className={`${
+                        currentMode === "dark"
+                          ? "text-[#FFFFFF] bg-dark-neu"
+                          : "text-[#1C1C1C] bg-light-neu"
+                      } hover:bg-yellow-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
                     >
                       <Tooltip title="Request for Reshuffle" arrow>
                         {/* <button onClick={(e) => handleRequest(e, LeadData)}> */}
@@ -692,10 +746,11 @@ const SingleLead = ({
                       <p
                         style={{ cursor: "pointer" }}
                         disabled={deleteloading ? true : false}
-                        className={`${currentMode === "dark"
-                          ? "text-[#FFFFFF] bg-dark-neu"
-                          : "text-[#1C1C1C] bg-light-neu"
-                          } hover:bg-red-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-[#FFFFFF] bg-dark-neu"
+                            : "text-[#1C1C1C] bg-light-neu"
+                        } hover:bg-red-600 hover:text-white rounded-full p-1.5 mx-1 flex items-center`}
                       >
                         <button onClick={() => HandleBlockIP(LeadData)}>
                           <BiBlock
@@ -713,9 +768,13 @@ const SingleLead = ({
                     target="_blank"
                     className="mx-2"
                   >
-                    <button className={`${currentMode === "dark"
-                      ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                      } text-white rounded-md p-2`}>
+                    <button
+                      className={`${
+                        currentMode === "dark"
+                          ? "bg-primary-dark-neu"
+                          : "bg-primary-light-neu"
+                      } text-white rounded-md p-2`}
+                    >
                       {t("view_lead_details")?.toUpperCase()}
                     </button>
                   </Link>
@@ -726,10 +785,11 @@ const SingleLead = ({
                 {/* USER DETAILS  */}
                 <div
                   className={`p-4 
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-dark-neu text-white"
                       : "bg-light-neu text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("user_details")?.toUpperCase()}
@@ -744,11 +804,11 @@ const SingleLead = ({
                       <BsEnvelopeAt size={16} className="text-primary" />
                       <div className="col-span-7">
                         {LeadData?.leadEmail === "" ||
-                          LeadData?.leadEmail === "null" ||
-                          LeadData?.leadEmail === "undefined" ||
-                          LeadData?.leadEmail === "-" ||
-                          LeadData?.leadEmail === null ||
-                          LeadData?.leadEmail === undefined
+                        LeadData?.leadEmail === "null" ||
+                        LeadData?.leadEmail === "undefined" ||
+                        LeadData?.leadEmail === "-" ||
+                        LeadData?.leadEmail === null ||
+                        LeadData?.leadEmail === undefined
                           ? "-"
                           : LeadData?.leadEmail}
                       </div>
@@ -767,10 +827,11 @@ const SingleLead = ({
                 {/* PROJECT DETAILS  */}
                 <div
                   className={`p-4
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-dark-neu text-white"
                       : "bg-light-neu text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("enquiry_details")?.toUpperCase()}
@@ -808,10 +869,11 @@ const SingleLead = ({
                 {/* STATUS  */}
                 <div
                   className={`sm:col-span-1 md:col-span-2 p-4 text-center
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-dark-neu text-white"
                       : "bg-light-neu text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase flex items-center justify-center">
                     <BsBookmarkFill size={16} className="mx-2 text-primary" />
@@ -819,18 +881,18 @@ const SingleLead = ({
                     <span className="mx-2 font-semibold">
                       {t(
                         "feedback_" +
-                        LeadData?.feedback
-                          ?.toLowerCase()
-                          ?.replaceAll(" ", "_")
+                          LeadData?.feedback
+                            ?.toLowerCase()
+                            ?.replaceAll(" ", "_")
                       ) ?? "---"}
                     </span>
                   </h1>
                   <hr className="my-4" />
                   <div className="w-full">
                     {LeadData?.notes === null ||
-                      LeadData?.notes === "" ||
-                      LeadData?.notes === "null" ||
-                      LeadData?.notes === "-" ? (
+                    LeadData?.notes === "" ||
+                    LeadData?.notes === "null" ||
+                    LeadData?.notes === "-" ? (
                       <></>
                     ) : (
                       <div class="flex items-center gap-5 my-4 md:px-5">
@@ -864,8 +926,8 @@ const SingleLead = ({
                       <div className="">
                         {t("last_updated_on")}{" "}
                         {LeadData?.lastEdited === "" ||
-                          LeadData?.lastEdited === null ||
-                          LeadData?.lastEdited === "-"
+                        LeadData?.lastEdited === null ||
+                        LeadData?.lastEdited === "-"
                           ? "-"
                           : datetimeLong(LeadData?.lastEdited)}
                       </div>
@@ -891,8 +953,8 @@ const SingleLead = ({
 
                     {/* IP AND DEVICE  */}
                     {LeadData?.ip === null ||
-                      LeadData?.ip === "" ||
-                      LeadData?.ip === "-" ? (
+                    LeadData?.ip === "" ||
+                    LeadData?.ip === "-" ? (
                       <></>
                     ) : (
                       <div class="flex items-center gap-5 my-4 md:px-5">
@@ -925,10 +987,11 @@ const SingleLead = ({
                   <div className="w-full my-4">
                     {lastNote ? (
                       <div
-                        className={`${currentMode === "dark"
-                          ? "text-white bg-dark-neu"
-                          : "text-black bg-light-neu"
-                          } flex items-center my-2 gap-5 w-full`}
+                        className={`${
+                          currentMode === "dark"
+                            ? "text-white bg-dark-neu"
+                            : "text-black bg-light-neu"
+                        } flex items-center my-2 gap-5 w-full`}
                       >
                         <div className="p-3 text-center text-sm">
                           <div className="mb-1">{lastNoteAddedBy}</div>
@@ -960,14 +1023,14 @@ const SingleLead = ({
                       sx={{
                         ...darkModeColors,
                         "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                        {
-                          right: isLangRTL(i18n.language)
-                            ? "2.5rem"
-                            : "inherit",
-                          transformOrigin: isLangRTL(i18n.language)
-                            ? "right"
-                            : "left",
-                        },
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
                         "& legend": {
                           textAlign: isLangRTL(i18n.language)
                             ? "right"
@@ -999,14 +1062,44 @@ const SingleLead = ({
                           required
                           value={AddNoteTxt}
                           onChange={(e) => setAddNoteTxt(e.target.value)}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <div
+                                  // ref={searchContainer}
+                                  className={`${
+                                    isVoiceSearchState
+                                      ? "listening bg-primary"
+                                      : ""
+                                  } ${
+                                    currentMode === "dark"
+                                      ? "text-white"
+                                      : "text-black"
+                                  } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                                  onClick={() => {
+                                    setIsVoiceSearchState(!isVoiceSearchState);
+                                    console.log("mic is clicked...");
+                                  }}
+                                >
+                                  {isVoiceSearchState ? (
+                                    <BsMicFill id="search_mic" size={16} />
+                                  ) : (
+                                    <BsMic id="search_mic" size={16} />
+                                  )}
+                                </div>
+                              </InputAdornment>
+                            ),
+                          }}
                         />
 
                         <button
                           disabled={addNoteloading ? true : false}
                           // type="submit"
-                          className={`${currentMode === "dark"
-                            ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                            } my-4 disabled:opacity-50 disabled:cursor-not-allowed w-full p-3 text-white text-md font-bold uppercase`}
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-primary-dark-neu"
+                              : "bg-primary-light-neu"
+                          } my-4 disabled:opacity-50 disabled:cursor-not-allowed w-full p-3 text-white text-md font-bold uppercase`}
                         >
                           {addNoteloading ? (
                             <CircularProgress
@@ -1054,8 +1147,9 @@ const SingleLead = ({
                 >
                   <div
                     style={style}
-                    className={`w-[calc(100%-20px)] md:w-[40%]  ${currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-                      } absolute top-1/2 left-1/2 p-5 pt-16 rounded-xl shadow-sm`}
+                    className={`w-[calc(100%-20px)] md:w-[40%]  ${
+                      currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+                    } absolute top-1/2 left-1/2 p-5 pt-16 rounded-xl shadow-sm`}
                   >
                     <div className="flex flex-col justify-center items-center">
                       <IoIosAlert
@@ -1063,8 +1157,9 @@ const SingleLead = ({
                         className="text-main-red-color text-2xl"
                       />
                       <h1
-                        className={`font-semibold pt-3 text-lg ${currentMode === "dark" ? "text-white" : "text-dark"
-                          }`}
+                        className={`font-semibold pt-3 text-lg ${
+                          currentMode === "dark" ? "text-white" : "text-dark"
+                        }`}
                       >
                         Do you really want to send reshuffle request?
                       </h1>
@@ -1088,10 +1183,11 @@ const SingleLead = ({
                         onClick={handleCloseRequestModel}
                         ripple="true"
                         variant="outlined"
-                        className={`shadow-none  rounded-xl shadow-sm text-sm  ${currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-main-red-color border-main-red-color"
-                          }`}
+                        className={`shadow-none  rounded-xl shadow-sm text-sm  ${
+                          currentMode === "dark"
+                            ? "text-white border-white"
+                            : "text-main-red-color border-main-red-color"
+                        }`}
                       >
                         Cancel
                       </Button>

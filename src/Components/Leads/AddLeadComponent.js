@@ -4,6 +4,7 @@ import {
   CircularProgress,
   Box,
   Typography,
+  InputAdornment,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
@@ -15,6 +16,10 @@ import usePermission from "../../utils/usePermission";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import "react-phone-number-input/style.css";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { BsMic, BsMicFill } from "react-icons/bs";
 
 import PhoneInput, {
   formatPhoneNumberIntl,
@@ -41,6 +46,26 @@ const AddLeadComponent = ({
 }) => {
   const [loading, setloading] = useState(false);
   const [pageloading, setpageloading] = useState(true);
+  const [Manager2, setManager2] = useState([]);
+  const [PropertyType, setPropertyType] = useState("");
+  const [EnquiryType, setEnquiryType] = useState("");
+  const [ForType, setForType] = useState("");
+  const [LanguagePrefered, setLanguagePrefered] = useState("");
+  const [LeadStatus, setLeadStatus] = useState("");
+  const [LeadSource, setLeadSource] = useState(
+    noSourceDropdown ? "Secondary" : ""
+  );
+  const [LeadCategory, setLeadCategory] = useState("0");
+  const [Manager, setManager] = useState("");
+  const [SalesPerson2, setSalesPerson2] = useState("");
+  const [LeadName, setLeadName] = useState("");
+  const [LeadContact, setLeadContact] = useState("");
+  const [LeadEmail, setLeadEmail] = useState();
+  const [emailError, setEmailError] = useState(false);
+  const [LeadProject, setLeadProject] = useState("");
+  const [LeadNotes, setLeadNotes] = useState("");
+  const [value, setValue] = useState();
+  const [error, setError] = useState(false);
   const { hasPermission } = usePermission();
   const {
     currentMode,
@@ -56,6 +81,47 @@ const AddLeadComponent = ({
     isLangRTL,
     i18n,
   } = useStateContext();
+
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition("en");
+
+  useEffect(() => {
+    if (isVoiceSearchState && transcript.length > 0) {
+      // setSearchTerm(transcript);
+      setLeadNotes(transcript);
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setLeadNotes("");
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
 
   const ChangeLeadSource = (selectedOption) => {
     setLeadSource(selectedOption.value);
@@ -97,26 +163,6 @@ const AddLeadComponent = ({
   // ------------------------
   // console.log("Salesperson: ", SalesPerson);
   // console.log("MAnagers: ", Managers);
-  const [Manager2, setManager2] = useState([]);
-  const [PropertyType, setPropertyType] = useState("");
-  const [EnquiryType, setEnquiryType] = useState("");
-  const [ForType, setForType] = useState("");
-  const [LanguagePrefered, setLanguagePrefered] = useState("");
-  const [LeadStatus, setLeadStatus] = useState("");
-  const [LeadSource, setLeadSource] = useState(
-    noSourceDropdown ? "Secondary" : ""
-  );
-  const [LeadCategory, setLeadCategory] = useState("0");
-  const [Manager, setManager] = useState("");
-  const [SalesPerson2, setSalesPerson2] = useState("");
-  const [LeadName, setLeadName] = useState("");
-  const [LeadContact, setLeadContact] = useState("");
-  const [LeadEmail, setLeadEmail] = useState();
-  const [emailError, setEmailError] = useState(false);
-  const [LeadProject, setLeadProject] = useState("");
-  const [LeadNotes, setLeadNotes] = useState("");
-  const [value, setValue] = useState();
-  const [error, setError] = useState(false);
 
   console.log("lead category:::: ", LeadCategory);
 
@@ -391,30 +437,30 @@ const AddLeadComponent = ({
                 sx={{
                   ...darkModeColors,
                   "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                  {
-                    right: isLangRTL(i18n.language)
-                      ? "2.5rem"
-                      : "inherit",
-                    transformOrigin: isLangRTL(i18n.language)
-                      ? "right"
-                      : "left",
-                  },
+                    {
+                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
                   "& legend": {
                     textAlign: isLangRTL(i18n.language) ? "right" : "left",
                   },
                 }}
-                className={`${themeBgImg
-                  ? (currentMode === "dark"
-                    ? "blur-bg-dark shadow-sm"
-                    : "blur-bg-light shadow-sm")
-                  : (currentMode === "dark"
+                className={`${
+                  themeBgImg
+                    ? currentMode === "dark"
+                      ? "blur-bg-dark shadow-sm"
+                      : "blur-bg-light shadow-sm"
+                    : currentMode === "dark"
                     ? "bg-dark-neu"
-                    : "bg-light-neu")
-                  } p-5`}
+                    : "bg-light-neu"
+                } p-5`}
               >
                 <h4
-                  className={`${currentMode === "dark" ? `text-white` : "text-black"
-                    } text-center uppercase font-semibold pb-5`}
+                  className={`${
+                    currentMode === "dark" ? `text-white` : "text-black"
+                  } text-center uppercase font-semibold pb-5`}
                 >
                   {t("agent_details")}
                 </h4>
@@ -429,11 +475,11 @@ const AddLeadComponent = ({
                       String(Manager) === "1" || !Manager || Manager === "0"
                         ? null
                         : {
-                          label: Managers.find(
-                            (manager) => manager.id === Manager
-                          )?.userName,
-                          value: Manager,
-                        }
+                            label: Managers.find(
+                              (manager) => manager.id === Manager
+                            )?.userName,
+                            value: Manager,
+                          }
                     }
                     isDisabled={User?.role === 3}
                     onChange={ChangeManager}
@@ -478,28 +524,24 @@ const AddLeadComponent = ({
                     id="SalesPerson"
                     options={
                       User.role === 1
-                        ? SalesPerson[`manager-${Manager}`]?.map(
-                          (agent) => ({
+                        ? SalesPerson[`manager-${Manager}`]?.map((agent) => ({
                             value: agent?.id,
                             label: agent?.userName,
-                          })
-                        )
-                        : SalesPerson[`manager-${User?.id}`]?.map(
-                          (agent) => ({
+                          }))
+                        : SalesPerson[`manager-${User?.id}`]?.map((agent) => ({
                             value: agent?.id,
                             label: agent?.userName,
-                          })
-                        )
+                          }))
                     }
                     // value={SalesPerson2}
                     value={
                       SalesPerson2
                         ? {
-                          label: SalesPerson[`manager-${Manager}`]?.find(
-                            (agent) => agent?.id === SalesPerson2
-                          )?.userName,
-                          value: SalesPerson2,
-                        }
+                            label: SalesPerson[`manager-${Manager}`]?.find(
+                              (agent) => agent?.id === SalesPerson2
+                            )?.userName,
+                            value: SalesPerson2,
+                          }
                         : null
                     }
                     onChange={ChangeSalesPerson}
@@ -559,6 +601,30 @@ const AddLeadComponent = ({
                   size="small"
                   value={LeadNotes}
                   onChange={(e) => setLeadNotes(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <div
+                          // ref={searchContainer}
+                          className={`${
+                            isVoiceSearchState ? "listening bg-primary" : ""
+                          } ${
+                            currentMode === "dark" ? "text-white" : "text-black"
+                          } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                          onClick={() => {
+                            setIsVoiceSearchState(!isVoiceSearchState);
+                            console.log("mic is clicked...");
+                          }}
+                        >
+                          {isVoiceSearchState ? (
+                            <BsMicFill id="search_mic" size={16} />
+                          ) : (
+                            <BsMic id="search_mic" size={16} />
+                          )}
+                        </div>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
 
                 {User?.role === 7 && (
@@ -570,8 +636,7 @@ const AddLeadComponent = ({
                       className="w-full"
                       sx={{
                         marginBottom: "1.25rem !important",
-                        color:
-                          currentMode === "dark" ? "#ffffff" : "#000000",
+                        color: currentMode === "dark" ? "#ffffff" : "#000000",
                         pointerEvents: "none",
                       }}
                       variant="outlined"
@@ -609,30 +674,30 @@ const AddLeadComponent = ({
                 sx={{
                   ...darkModeColors,
                   "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                  {
-                    right: isLangRTL(i18n.language)
-                      ? "2.5rem"
-                      : "inherit",
-                    transformOrigin: isLangRTL(i18n.language)
-                      ? "right"
-                      : "left",
-                  },
+                    {
+                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
                   "& legend": {
                     textAlign: isLangRTL(i18n.language) ? "right" : "left",
                   },
                 }}
-                className={`${themeBgImg
-                  ? (currentMode === "dark"
-                    ? "blur-bg-dark shadow-sm"
-                    : "blur-bg-light shadow-sm")
-                  : (currentMode === "dark"
+                className={`${
+                  themeBgImg
+                    ? currentMode === "dark"
+                      ? "blur-bg-dark shadow-sm"
+                      : "blur-bg-light shadow-sm"
+                    : currentMode === "dark"
                     ? "bg-dark-neu"
-                    : "bg-light-neu")
-                  } p-5`}
+                    : "bg-light-neu"
+                } p-5`}
               >
                 <h4
-                  className={`${currentMode === "dark" ? `text-white` : "text-black"
-                    } text-center uppercase font-semibold pb-5`}
+                  className={`${
+                    currentMode === "dark" ? `text-white` : "text-black"
+                  } text-center uppercase font-semibold pb-5`}
                 >
                   {t("project_details")}
                 </h4>
@@ -773,30 +838,30 @@ const AddLeadComponent = ({
                 sx={{
                   ...darkModeColors,
                   "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                  {
-                    right: isLangRTL(i18n.language)
-                      ? "2.5rem"
-                      : "inherit",
-                    transformOrigin: isLangRTL(i18n.language)
-                      ? "right"
-                      : "left",
-                  },
+                    {
+                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                      transformOrigin: isLangRTL(i18n.language)
+                        ? "right"
+                        : "left",
+                    },
                   "& legend": {
                     textAlign: isLangRTL(i18n.language) ? "right" : "left",
                   },
                 }}
-                className={`${themeBgImg
-                  ? (currentMode === "dark"
-                    ? "blur-bg-dark shadow-sm"
-                    : "blur-bg-light shadow-sm")
-                  : (currentMode === "dark"
+                className={`${
+                  themeBgImg
+                    ? currentMode === "dark"
+                      ? "blur-bg-dark shadow-sm"
+                      : "blur-bg-light shadow-sm"
+                    : currentMode === "dark"
                     ? "bg-dark-neu"
-                    : "bg-light-neu")
-                  } p-5`}
+                    : "bg-light-neu"
+                } p-5`}
               >
                 <h4
-                  className={`${currentMode === "dark" ? `text-white` : "text-black"
-                    } text-center font-semibold uppercase pb-5`}
+                  className={`${
+                    currentMode === "dark" ? `text-white` : "text-black"
+                  } text-center font-semibold uppercase pb-5`}
                 >
                   {t("lead_details")}
                 </h4>
@@ -829,19 +894,21 @@ const AddLeadComponent = ({
                   })} mb-5`}
                   size="small"
                   style={{
-                    background: `${!themeBgImg
-                      ? currentMode === "dark"
-                        ? "#000000"
-                        : "#FFFFFF"
-                      : "transparent"
+                    background: `${
+                      !themeBgImg
+                        ? currentMode === "dark"
+                          ? "#000000"
+                          : "#FFFFFF"
+                        : "transparent"
                       // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
-                      }`,
+                    }`,
                     "& .PhoneInputCountryIconImg": {
                       color: "#fff",
                     },
                     color: currentMode === "dark" ? "white" : "black",
-                    border: `1px solid ${currentMode === "dark" ? "#EEEEEE" : "#666666"
-                      }`,
+                    border: `1px solid ${
+                      currentMode === "dark" ? "#EEEEEE" : "#666666"
+                    }`,
                     borderRadius: "5px",
                     outline: "none",
                   }}
@@ -1000,14 +1067,15 @@ const AddLeadComponent = ({
             </div>
 
             <button
-              className={`${themeBgImg
-                ? currentMode === "dark"
-                  ? "blur-bg-primary"
-                  : "blur-bg-primary"
-                : currentMode === "dark"
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-primary"
+                    : "blur-bg-primary"
+                  : currentMode === "dark"
                   ? "bg-primary-dark-neu"
                   : "bg-primary-light-neu"
-                } w-full text-white uppercase py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed`}
+              } w-full text-white uppercase py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed`}
               // ripple={true}
               // size="lg"
               // type="submit"
@@ -1023,8 +1091,8 @@ const AddLeadComponent = ({
                 <span>{t("button_add_new_lead")}</span>
               )}
             </button>
-          </form >
-        </div >
+          </form>
+        </div>
       )}
     </>
   );

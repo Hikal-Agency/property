@@ -7,6 +7,7 @@ import {
   IconButton,
   MenuItem,
   // Select,
+  InputAdornment,
   TextField,
 } from "@mui/material";
 import Select from "react-select";
@@ -34,6 +35,10 @@ import {
 import { currencies, feedback_options } from "../_elements/SelectOptions.js";
 
 import { BsBookmarkCheck } from "react-icons/bs";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { BsMic, BsMicFill } from "react-icons/bs";
 
 const RenderFeedback = ({ cellValues }) => {
   const {
@@ -64,10 +69,13 @@ const RenderFeedback = ({ cellValues }) => {
   const [DialogueVal, setDialogue] = useState(false);
   const [booked_amount, setBookedAmount] = useState();
   const [booked_date, setBookedDate] = useState(null);
+  const [meetingNotes, setMeetingNotes] = useState("");
   const [meetingData, setMeetingData] = useState({
     meetingDate: null,
     meetingTime: null,
+    meetingNotes: null,
   });
+
   const [meetingLocation, setMeetingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -83,6 +91,54 @@ const RenderFeedback = ({ cellValues }) => {
     setnewFeedback(e.value);
     setDialogue(true);
   };
+
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition("en");
+
+  useEffect(() => {
+    if (isVoiceSearchState && transcript.length > 0) {
+      setMeetingData({
+        ...meetingData,
+        notes: transcript,
+      });
+      setMeetingNotes(transcript);
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setMeetingData({
+      ...meetingData,
+      notes: "",
+    });
+    setMeetingNotes("");
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
 
   console.log("Render Feedback===> ", cellValues?.row?.feedback);
 
@@ -107,7 +163,7 @@ const RenderFeedback = ({ cellValues }) => {
     const token = localStorage.getItem("auth-token");
     const UpdateLeadData = new FormData();
     // UpdateLeadData.append("lid", cellValues?.row?.leadId);
-    UpdateLeadData.append("id", cellValues?.row?.leadId);   
+    UpdateLeadData.append("id", cellValues?.row?.leadId);
     UpdateLeadData.append("feedback", newFeedback);
     if (newFeedback === "Meeting") {
       if (!meetingData.meetingDate || !meetingData.meetingTime) {
@@ -210,19 +266,19 @@ const RenderFeedback = ({ cellValues }) => {
           });
 
           axios
-      .get(`${BACKEND_URL}/meetings/future`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }).then((result)=>{
-        console.log("future meetings are ",result)
-        socket.emit("get_all_meetings",result?.data)
-      }).catch((error)=>{
-        console.log("error ",error)
-      })
-
-          
+            .get(`${BACKEND_URL}/meetings/future`, {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+            })
+            .then((result) => {
+              console.log("future meetings are ", result);
+              socket.emit("get_all_meetings", result?.data);
+            })
+            .catch((error) => {
+              console.log("error ", error);
+            });
         } else {
           socket.emit("notification_feedback_update", {
             from: { id: User?.id, userName: User?.userName },
@@ -293,9 +349,12 @@ const RenderFeedback = ({ cellValues }) => {
         <Select
           id="feedback"
           options={feedback_options(t)}
-          value={feedback_options(t).find(
-            (option) => option.value === Feedback
-          ) || { value: Feedback, label: Feedback }}
+          value={
+            feedback_options(t).find((option) => option.value === Feedback) || {
+              value: Feedback,
+              label: Feedback,
+            }
+          }
           onChange={ChangeFeedback}
           placeholder={t("label_feedback")}
           className={`w-full`}
@@ -306,9 +365,12 @@ const RenderFeedback = ({ cellValues }) => {
         <Select
           id="feedback"
           options={feedback_options(t)}
-          value={feedback_options(t).find(
-            (option) => option.value === Feedback
-          ) || { value: Feedback, label: Feedback }}
+          value={
+            feedback_options(t).find((option) => option.value === Feedback) || {
+              value: Feedback,
+              label: Feedback,
+            }
+          }
           onChange={ChangeFeedback}
           placeholder={t("label_feedback")}
           className={`w-full`}
@@ -526,13 +588,43 @@ const RenderFeedback = ({ cellValues }) => {
                         variant="outlined"
                         name="text"
                         size="small"
+                        value={meetingNotes}
                         onChange={(e) => {
                           setMeetingData({
                             ...meetingData,
                             notes: e.target.value,
                           });
+                          setMeetingNotes(e?.target?.value);
                         }}
                         required
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <div
+                                // ref={searchContainer}
+                                className={`${
+                                  isVoiceSearchState
+                                    ? "listening bg-primary"
+                                    : ""
+                                } ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-black"
+                                } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                                onClick={() => {
+                                  setIsVoiceSearchState(!isVoiceSearchState);
+                                  console.log("mic is clicked...");
+                                }}
+                              >
+                                {isVoiceSearchState ? (
+                                  <BsMicFill id="search_mic" size={16} />
+                                ) : (
+                                  <BsMic id="search_mic" size={16} />
+                                )}
+                              </div>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                       {/* LOCATION  */}
                       <LocationPicker
