@@ -8,6 +8,7 @@ import {
   IconButton,
   MenuItem,
   Box,
+  InputAdornment,
 } from "@mui/material";
 import Select from "react-select";
 import axios from "../../axoisConfig";
@@ -25,6 +26,10 @@ import { MdAccessTime } from "react-icons/md";
 import moment from "moment";
 import { MdClose } from "react-icons/md";
 import { selectStyles } from "../_elements/SelectStyles";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { BsMic, BsMicFill } from "react-icons/bs";
 
 const UpdateMeeting = ({
   meetingModalOpen,
@@ -67,6 +72,47 @@ const UpdateMeeting = ({
     lng: 0,
     addressText: "",
   });
+
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition("en");
+
+  useEffect(() => {
+    if (isVoiceSearchState && transcript.length > 0) {
+      // setSearchTerm(transcript);
+      setMeetingNotes(transcript);
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setMeetingNotes("");
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
   // const style = {
   //   transform: "translate(-50%, -50%)",
   //   boxShadow: 24,
@@ -91,9 +137,9 @@ const UpdateMeeting = ({
       setTimeout(() => {
         setIsClosing(false);
         handleMeetingModalClose();
-        setTimeout(()=>{
+        setTimeout(() => {
           resolve();
-        },1000)
+        }, 1000);
       }, 1000);
     });
   };
@@ -488,6 +534,32 @@ const UpdateMeeting = ({
                         setMeetingNotes(e.target.value);
                       }}
                       required
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <div
+                              // ref={searchContainer}
+                              className={`${
+                                isVoiceSearchState ? "listening bg-primary" : ""
+                              } ${
+                                currentMode === "dark"
+                                  ? "text-white"
+                                  : "text-black"
+                              } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                              onClick={() => {
+                                setIsVoiceSearchState(!isVoiceSearchState);
+                                console.log("mic is clicked...");
+                              }}
+                            >
+                              {isVoiceSearchState ? (
+                                <BsMicFill id="search_mic" size={16} />
+                              ) : (
+                                <BsMic id="search_mic" size={16} />
+                              )}
+                            </div>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                     {meetingLocation.lat && meetingLocation.lng && (
                       <LocationPicker

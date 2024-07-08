@@ -14,13 +14,23 @@ const LiveReminderNotifications = () => {
     socket.on("five_minute_reminder_notification", (data) => {
       setIsLiveReminderNotification({ isOpen: true, data: data });
     });
+    socket.on("current_time", (data) => {
+      console.log(data, "current time in server");
+    });
   }, []);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return; // Prevent closing on clickaway
+    }
+    setIsLiveReminderNotification({ data: {}, isOpen: false });
+  };
 
   return (
     <Snackbar
       open={isLiveReminderNotification?.isOpen}
-      autoHideDuration={9000}
-      onClose={() => setIsLiveReminderNotification({ data: {}, isOpen: false })}
+      autoHideDuration={null}
+      onClose={handleClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
     >
       <div className="w-[380px]  shadow-2xl rounded-lg p-5 text-[14px]  flex flex-col gap-3 relative">
@@ -38,9 +48,14 @@ const LiveReminderNotifications = () => {
 
             <p>You have reminder after 5 minutes</p>
           </div>
-           <div className="flex ml-[52px]"><span className="mr-3">Note:</span> <p>{isLiveReminderNotification?.data?.reminder_note}</p></div>
+          <div className="flex ml-[52px]">
+            <span className="mr-3">Note:</span>{" "}
+            <p>{isLiveReminderNotification?.data?.reminder_note}</p>
+          </div>
           <div className="ml-[52px]">
-            <span className="mr-3">Time:</span>{isLiveReminderNotification?.data?.reminder_date},{isLiveReminderNotification?.data?.reminder_time}
+            <span className="mr-3">Time:</span>
+            {isLiveReminderNotification?.data?.reminder_date},
+            {isLiveReminderNotification?.data?.reminder_time}:00
           </div>
 
           <div className="flex justify-end">
@@ -74,11 +89,18 @@ export const LiveMeetingNotifications = () => {
     });
   }, []);
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return; // Prevent closing on clickaway
+    }
+    setIsLiveMeetingNotification({ data: {}, isOpen: false });
+  };
+
   return (
     <Snackbar
       open={isLiveMeetingNotification?.isOpen}
-      autoHideDuration={9000}
-      onClose={() => setIsLiveMeetingNotification({ data: {}, isOpen: false })}
+      autoHideDuration={null}
+      onClose={handleClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
     >
       <div className="w-[380px]  shadow-2xl rounded-lg p-5 text-[14px]  flex flex-col gap-3 relative">
@@ -95,19 +117,20 @@ export const LiveMeetingNotifications = () => {
             </div>
             <p>You have a meeting after 30 minutes</p>
           </div>
-            <p className="ml-[52px]"><span className="mr-3">Location:</span> {isLiveMeetingNotification?.data?.meetingLocation}</p>
+          <p className="ml-[52px]">
+            <span className="mr-3">Location:</span>{" "}
+            {isLiveMeetingNotification?.data?.meetingLocation}
+          </p>
           <div className="ml-[52px] flex gap-2">
-           <span className="mr-3"> Time: </span>
+            <span className="mr-3"> Time: </span>
             {isLiveMeetingNotification?.data?.meetingDate},
-            {isLiveMeetingNotification?.data?.meetingTime}
+            {isLiveMeetingNotification?.data?.meetingTime}:00
           </div>
 
           <div className="flex justify-end">
             <button
               className="text-white  bg-[#26A6FE] px-3 py-2 rounded-lg"
-              onClick={() =>
-                setIsLiveMeetingNotification({ data: {}, isOpen: false })
-              }
+              onClick={handleClose}
             >
               Close
             </button>

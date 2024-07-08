@@ -5,10 +5,10 @@ import { AiOutlineHistory } from "react-icons/ai";
 import {
   TextField,
   CircularProgress,
-
   Tooltip,
   Modal,
-  Backdrop
+  Backdrop,
+  InputAdornment,
 } from "@mui/material";
 
 import axios from "../../axoisConfig";
@@ -16,29 +16,27 @@ import Error404 from "../Error";
 import usePermission from "../../utils/usePermission";
 import { useStateContext } from "../../context/ContextProvider";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
+import { BsMic, BsMicFill } from "react-icons/bs";
+
 import Timeline from "../timeline";
 
-import {
-  BiBed
-} from "react-icons/bi";
+import { BiBed } from "react-icons/bi";
 import {
   BsTelephone,
   BsEnvelopeAt,
   BsType,
-  BsBuildings, BsBookmarkFill,
+  BsBuildings,
+  BsBookmarkFill,
   BsChatLeftText,
   BsPersonPlus,
   BsPersonGear,
-  BsHouseGear
+  BsHouseGear,
 } from "react-icons/bs";
-import {
-  MdClose
-} from "react-icons/md";
-import {
-  VscCallOutgoing,
-  VscMail
-} from "react-icons/vsc";
-
+import { MdClose } from "react-icons/md";
+import { VscCallOutgoing, VscMail } from "react-icons/vsc";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 const style = {
   transform: "translate(0%, 0%)",
   boxShadow: 24,
@@ -47,7 +45,7 @@ const style = {
 const SingleLeadModal = ({
   singleLeadModelOpen,
   handleCloseSingleLeadModel,
-  LeadID
+  LeadID,
 }) => {
   const [loading, setloading] = useState(true);
   const [LeadData, setLeadData] = useState({});
@@ -56,6 +54,46 @@ const SingleLeadModal = ({
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [timelinePopup, setTimelinePopup] = useState({ isOpen: false });
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition("en");
+
+  useEffect(() => {
+    if (isVoiceSearchState && transcript.length > 0) {
+      // setSearchTerm(transcript);
+      setAddNoteTxt(transcript);
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setAddNoteTxt("");
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
 
   const {
     currentMode,
@@ -66,7 +104,7 @@ const SingleLeadModal = ({
     isArabic,
     t,
     isLangRTL,
-    i18n
+    i18n,
   } = useStateContext();
 
   const { hasPermission } = usePermission();
@@ -78,7 +116,7 @@ const SingleLeadModal = ({
       setIsClosing(false);
       handleCloseSingleLeadModel();
     }, 1000);
-  }
+  };
 
   const lid = LeadID;
 
@@ -199,7 +237,10 @@ const SingleLeadModal = ({
 
   // Replace last 4 digits with "*"
   const stearics =
-    LeadData?.leadContact?.replaceAll(" ", "")?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) + "****";
+    LeadData?.leadContact
+      ?.replaceAll(" ", "")
+      ?.slice(0, LeadData?.leadContact?.replaceAll(" ", "")?.length - 4) +
+    "****";
   let contact;
 
   if (hasPermission("number_masking")) {
@@ -259,12 +300,24 @@ const SingleLeadModal = ({
           timeout: 500,
         }}
       >
-        <div className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"} ${isClosing ? (isLangRTL(i18n.language) ? "modal-close-left" : "modal-close-right") : ""}
-        w-[100vw] h-[100vh] flex items-start justify-end `}>
+        <div
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
+              ? isLangRTL(i18n.language)
+                ? "modal-close-left"
+                : "modal-close-right"
+              : ""
+          }
+        w-[100vw] h-[100vh] flex items-start justify-end `}
+        >
           <button
             // onClick={handleCloseTimelineModel}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"}
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -280,7 +333,11 @@ const SingleLeadModal = ({
               currentMode === "dark"
                 ? "bg-[#000000] text-white"
                 : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) ? (currentMode === "dark" && " border-primary border-r-2") : (currentMode === "dark" && " border-primary border-l-2")} 
+            } ${
+              isLangRTL(i18n.language)
+                ? currentMode === "dark" && " border-primary border-r-2"
+                : currentMode === "dark" && " border-primary border-l-2"
+            } 
              p-4 h-[100vh] w-[80vw] overflow-y-scroll border-primary
             `}
           >
@@ -290,8 +347,10 @@ const SingleLeadModal = ({
               <div>
                 <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5">
                   <div className="w-full flex items-center pb-3 ">
-                    <div className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"}
-                    bg-primary w-fit rounded-md my-1 py-1 px-2 text-white flex items-center justify-center`}>
+                    <div
+                      className={`${isLangRTL(i18n.language) ? "ml-2" : "mr-2"}
+                    bg-primary w-fit rounded-md my-1 py-1 px-2 text-white flex items-center justify-center`}
+                    >
                       {LeadData?.id}
                     </div>
                     <h1
@@ -471,7 +530,12 @@ const SingleLeadModal = ({
                     className={`sm:col-span-1 md:col-span-2 lg:col-span-1 p-4`}
                   >
                     <h1 className="text-center uppercase flex items-center justify-center">
-                      <BsBookmarkFill size={16} className={`text-primary ${isLangRTL(i18n.language) ? "ml-2" : "mr-2"}`} />
+                      <BsBookmarkFill
+                        size={16}
+                        className={`text-primary ${
+                          isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                        }`}
+                      />
                       {t("label_feedback")?.toUpperCase()}
                       <span className="mx-2 font-semibold">
                         {t(
@@ -542,7 +606,11 @@ const SingleLeadModal = ({
                 </div>
 
                 <div className="px-4 pb-4">
-                  <div className={`my-4 rounded-xl p-4 shadow-sm ${currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"}`}>
+                  <div
+                    className={`my-4 rounded-xl p-4 shadow-sm ${
+                      currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#EEEEEE]"
+                    }`}
+                  >
                     <form
                       className="my-5"
                       onSubmit={(e) => {
@@ -568,6 +636,34 @@ const SingleLeadModal = ({
                         minRows={2}
                         value={AddNoteTxt}
                         onChange={(e) => setAddNoteTxt(e.target.value)}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <div
+                                // ref={searchContainer}
+                                className={`${
+                                  isVoiceSearchState
+                                    ? "listening bg-primary"
+                                    : ""
+                                } ${
+                                  currentMode === "dark"
+                                    ? "text-white"
+                                    : "text-black"
+                                } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                                onClick={() => {
+                                  setIsVoiceSearchState(!isVoiceSearchState);
+                                  console.log("mic is clicked...");
+                                }}
+                              >
+                                {isVoiceSearchState ? (
+                                  <BsMicFill id="search_mic" size={16} />
+                                ) : (
+                                  <BsMic id="search_mic" size={16} />
+                                )}
+                              </div>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                       <button
                         disabled={addNoteloading ? true : false}
@@ -589,9 +685,7 @@ const SingleLeadModal = ({
                   </div>
                 </div>
 
-                <div
-                  className={`p-4`}
-                >
+                <div className={`p-4`}>
                   <h1
                     className={` ${
                       currentMode === "dark" ? "text-white" : "text-dark"
@@ -615,9 +709,7 @@ const SingleLeadModal = ({
                           } border-2 flex items-center my-2 gap-5 w-full rounded-xl shadow-sm`}
                         >
                           <div className="p-3 text-center text-sm">
-                            <div className="mb-1">
-                              {row?.userName}
-                            </div>
+                            <div className="mb-1">{row?.userName}</div>
                             <div className="mt-1 text-[#AAAAAA]">
                               {datetimeLong(row?.creationDate)}
                             </div>
@@ -638,7 +730,6 @@ const SingleLeadModal = ({
                       ))}
                     </>
                   )}
-
                 </div>
               </div>
             )}
@@ -646,7 +737,9 @@ const SingleLeadModal = ({
             {timelinePopup?.isOpen && (
               <Timeline
                 timelineModelOpen={timelinePopup?.isOpen}
-                handleCloseTimelineModel={() => setTimelinePopup({ isOpen: false })}
+                handleCloseTimelineModel={() =>
+                  setTimelinePopup({ isOpen: false })
+                }
                 LeadData={{ leadId: LeadData?.id }}
               />
             )}
