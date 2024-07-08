@@ -6,10 +6,11 @@ import {
   IconButton,
   Modal,
   TextField,
+  InputAdornment,
 } from "@mui/material";
 import { socket } from "../../Pages/App";
 import axios from "../../axoisConfig";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
@@ -17,7 +18,10 @@ import "react-phone-number-input/style.css";
 import dayjs from "dayjs";
 import { BsCalendarDate, BsClock, BsPen } from "react-icons/bs";
 import { AiOutlineMail } from "react-icons/ai";
-
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { BsMic, BsMicFill } from "react-icons/bs";
 import {
   DatePicker,
   LocalizationProvider,
@@ -55,6 +59,47 @@ const AddReminder = ({
   const [reminderTime, setReminderTime] = useState(null);
   const [reminderTimeValue, setTimeValue] = useState({});
 
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition("en");
+  //some comments
+  useEffect(() => {
+    if (isVoiceSearchState && transcript.length > 0) {
+      // setSearchTerm(transcript);
+      setReminderNotes(transcript);
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setReminderNotes("");
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
+
   console.log("reminder:: ", reminderDate);
 
   const [error, setError] = useState(false);
@@ -82,6 +127,15 @@ const AddReminder = ({
     const creationDate = new Date();
     const AddReminderData = new FormData();
     AddReminderData.append("reminder_note", ReminderNotes);
+    // AddReminderData.append(
+    //   "reminder_time",
+    //   new Date(reminderTimeValue).toLocaleTimeString("en-US", {
+    //     hour12: false,
+    //     timeZone: "Asia/Dubai",
+    //     hour: "2-digit",
+    //     minute: "2-digit",
+    //   })
+    // );
     AddReminderData.append("reminder_time", reminderTime);
     AddReminderData.append("reminder_date", reminderDate);
     AddReminderData.append("email", ReminderEmail);
@@ -212,11 +266,37 @@ const AddReminder = ({
                     required
                     value={ReminderNotes}
                     onChange={(e) => setReminderNotes(e.target.value)}
+                    // InputProps={{
+                    //   endAdornment: (
+                    //     <IconButton>
+                    //       <BsPen size={16} color={"#AAAAAA"} />
+                    //     </IconButton>
+                    //   ),
+                    // }}
                     InputProps={{
                       endAdornment: (
-                        <IconButton>
-                          <BsPen size={16} color={"#AAAAAA"} />
-                        </IconButton>
+                        <InputAdornment position="end">
+                          <div
+                            // ref={searchContainer}
+                            className={`${
+                              isVoiceSearchState ? "listening bg-primary" : ""
+                            } ${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-black"
+                            } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                            onClick={() => {
+                              setIsVoiceSearchState(!isVoiceSearchState);
+                              console.log("mic is clicked...");
+                            }}
+                          >
+                            {isVoiceSearchState ? (
+                              <BsMicFill id="search_mic" size={16} />
+                            ) : (
+                              <BsMic id="search_mic" size={16} />
+                            )}
+                          </div>
+                        </InputAdornment>
                       ),
                     }}
                   />
