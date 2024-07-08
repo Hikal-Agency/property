@@ -70,6 +70,8 @@ const SearchLeads = () => {
     document.location.href = `/lead/${search?.leadId || search?.id}`;
   };
 
+  console.log("search response:: ", searchResult);
+
   const handleSearch = async (e) => {
     const searchWord = e.target.value;
     if (!e.target.value) {
@@ -87,6 +89,8 @@ const SearchLeads = () => {
         // {},
         token
       );
+
+      console.log("search res:: ", postSearch);
 
       if (postSearch?.data !== "No Data") {
         console.log("settted:::::: ");
@@ -139,7 +143,7 @@ const SearchLeads = () => {
 
   return (
     <div>
-      <div class="search-leads-container">
+      <div class="search-leads-container relative">
         <Box sx={darkModeColors} className="flex items-center gap-2">
           <TextField
             type="text"
@@ -181,7 +185,7 @@ const SearchLeads = () => {
             <MdMic color={"#AAAAAA"} size={18} />
           </div> */}
         </Box>
-        {searchResult?.data?.length > 0 && (
+        {searchResult?.length > 0 && (
           <div
             className={`absolute rounded shadow mt-1 p-3 w-[190px] ${
               currentMode === "dark" ? "bg-[#292828]" : "bg-white"
@@ -202,8 +206,8 @@ const SearchLeads = () => {
             }}
           >
             {searchLoading === false ? (
-              searchResult?.data &&
-              searchResult?.data?.map((search) => (
+              searchResult &&
+              searchResult?.map((search) => (
                 <Box
                   sx={{
                     "&:hover": {
