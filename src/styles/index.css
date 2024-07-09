@@ -532,7 +532,7 @@ aside.ps-sidebar-root {
   position: sticky !important;
   top: 0 !important;
   z-index: 10 !important;
-  min-height: 45px !important;
+  /* min-height: 45px !important; */
   /* font-size: 12px !important; */
 
   font-family: var(--font-family);
@@ -749,9 +749,11 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .MuiDataGrid-columnHeaders {
-  max-height: 45px;
-  height: 45px;
+  /* max-height: 45px; */
+  /* height: 45px; */
   line-height: 45px;
+  white-space: pre-wrap !important;
+  text-wrap: wrap;
 }
 /* 
 .MuiDataGrid-cell {
@@ -904,6 +906,11 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .MuiDataGrid-cell[data-field="leadName"] {
+  white-space: pre-wrap !important;
+  text-wrap: wrap;
+}
+
+.MuiDataGrid-cell {
   white-space: pre-wrap !important;
   text-wrap: wrap;
 }

@@ -88,7 +88,7 @@ const AddLeadComponent = ({
     listening,
     browserSupportsSpeechRecognition,
     resetTranscript,
-  } = useSpeechRecognition("en");
+  } = useSpeechRecognition();
 
   useEffect(() => {
     if (isVoiceSearchState && transcript.length > 0) {
@@ -121,7 +121,17 @@ const AddLeadComponent = ({
   }, [browserSupportsSpeechRecognition]);
 
   const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true });
+    SpeechRecognition.startListening({
+      continuous: true,
+      language:
+        i18n?.language == "pk"
+          ? "ur"
+          : i18n?.language == "cn"
+          ? "zh"
+          : i18n?.language == "in"
+          ? "hi"
+          : i18n?.language,
+    });
 
   const ChangeLeadSource = (selectedOption) => {
     setLeadSource(selectedOption.value);

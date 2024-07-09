@@ -49,6 +49,7 @@ const AddReminder = ({
     setSalesPerson: setAllSalesPersons,
     SalesPerson: AllSalesPersons,
     formatNum,
+    i18n,
   } = useStateContext();
   const [value, setValue] = useState();
   const [loading, setloading] = useState(true);
@@ -65,7 +66,7 @@ const AddReminder = ({
     listening,
     browserSupportsSpeechRecognition,
     resetTranscript,
-  } = useSpeechRecognition("en");
+  } = useSpeechRecognition();
   //some comments
   useEffect(() => {
     if (isVoiceSearchState && transcript.length > 0) {
@@ -98,7 +99,17 @@ const AddReminder = ({
   }, [browserSupportsSpeechRecognition]);
 
   const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true });
+    SpeechRecognition.startListening({
+      continuous: true,
+      language:
+        i18n?.language == "pk"
+          ? "ur"
+          : i18n?.language == "cn"
+          ? "zh"
+          : i18n?.language == "in"
+          ? "hi"
+          : i18n?.language,
+    });
 
   console.log("reminder:: ", reminderDate);
 
@@ -127,16 +138,16 @@ const AddReminder = ({
     const creationDate = new Date();
     const AddReminderData = new FormData();
     AddReminderData.append("reminder_note", ReminderNotes);
-    // AddReminderData.append(
-    //   "reminder_time",
-    //   new Date(reminderTimeValue).toLocaleTimeString("en-US", {
-    //     hour12: false,
-    //     timeZone: "Asia/Dubai",
-    //     hour: "2-digit",
-    //     minute: "2-digit",
-    //   })
-    // );
-    AddReminderData.append("reminder_time", reminderTime);
+    AddReminderData.append(
+      "reminder_time",
+      new Date(reminderTimeValue).toLocaleTimeString("en-US", {
+        hour12: false,
+        timeZone: "Asia/Dubai",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    );
+    // AddReminderData.append("reminder_time", reminderTime);
     AddReminderData.append("reminder_date", reminderDate);
     AddReminderData.append("email", ReminderEmail);
     AddReminderData.append("leadName", LeadData?.leadName);

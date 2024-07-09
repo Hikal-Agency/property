@@ -40,42 +40,12 @@ import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Timeline from "../../Pages/timeline";
 
-import {
-  FaSnapchatGhost,
-  FaFacebookF,
-  FaTiktok,
-  FaRegComments,
-  FaUser,
-  FaWhatsapp,
-  FaYoutube,
-  FaTwitter,
-} from "react-icons/fa";
 import { AiOutlineEdit, AiOutlineHistory } from "react-icons/ai";
 import {
-  BsPersonCircle,
-  BsSnow2,
-  BsShieldX,
-  BsShieldCheck,
-  BsShieldMinus,
-} from "react-icons/bs";
-import {
   BiSearch,
-  BiImport,
-  BiArchive,
-  BiMessageRoundedDots,
 } from "react-icons/bi";
 import { IoIosAlert, IoMdClose } from "react-icons/io";
-import { FcGoogle } from "react-icons/fc";
-import { GiMagnifyingGlass } from "react-icons/gi";
-import { MdCampaign } from "react-icons/md";
-import {
-  RxCheckCircled,
-  RxCrossCircled,
-  RxQuestionMarkCircled,
-} from "react-icons/rx";
-import { TbWorldWww } from "react-icons/tb";
 import moment from "moment";
-import DeleteLeadModel from "./DeleteLead";
 import BookedDealsForm from "./BookedDealsForm";
 import {
   pageStyles,
@@ -141,6 +111,7 @@ const BookedDeals = ({
     primaryColor,
     t,
     feedbackTheme,
+    getUserById
   } = useStateContext();
   const [LeadToDelete, setLeadToDelete] = useState();
   const [pageRange, setPageRange] = useState();
@@ -399,9 +370,9 @@ const BookedDeals = ({
                   boxShadow: "none !important",
                 },
                 "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                  {
-                    backgroundColor: "rgba(0, 0, 0, 0.6) !important",
-                  },
+                {
+                  backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                },
               }}
               open={DialogueVal}
               onClose={(e) => setDialogue(false)}
@@ -428,18 +399,18 @@ const BookedDeals = ({
                       <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                         {Feedback
                           ? t(
-                              "feedback_" +
-                                Feedback?.toLowerCase()?.replaceAll(" ", "_")
-                            )
+                            "feedback_" +
+                            Feedback?.toLowerCase()?.replaceAll(" ", "_")
+                          )
                           : t("no_feedback")}
                       </span>{" "}
                       {t("to")}{" "}
                       <span className="text-sm bg-gray-400 px-2 py-1 rounded-md font-bold">
                         {newFeedback
                           ? t(
-                              "feedback_" +
-                                newFeedback?.toLowerCase()?.replaceAll(" ", "_")
-                            )
+                            "feedback_" +
+                            newFeedback?.toLowerCase()?.replaceAll(" ", "_")
+                          )
                           : t("no_feedback")}
                       </span>{" "}
                       ?
@@ -515,11 +486,10 @@ const BookedDeals = ({
                       onClick={() => setDialogue(false)}
                       ripple={true}
                       variant="outlined"
-                      className={`shadow-none px-3 rounded-md text-sm  ${
-                        currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-primary border-primary"
-                      }`}
+                      className={`shadow-none px-3 rounded-md text-sm  ${currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-primary border-primary"
+                        }`}
                     >
                       {t("cancel")}
                     </Button>
@@ -579,10 +549,12 @@ const BookedDeals = ({
   // };
 
   const columns = [
+    // # 
     {
       field: "id",
       headerName: "#",
-      minWidth: 40,
+      // minWidth: 40,
+      width: 50,
       headerAlign: "center",
       flex: 1,
       renderCell: (cellValues) => {
@@ -593,38 +565,38 @@ const BookedDeals = ({
         );
       },
     },
-
+    // LEAD NAME 
     {
       field: "leadName",
       headerAlign: "center",
       headerName: t("label_lead_name"),
       minWidth: 100,
+      // width: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="w-full ">
-            <p
-              style={{
-                fontFamily: isArabic(cellValues?.formattedValue)
-                  ? "Noto Kufi Arabic"
-                  : "inherit",
-              }}
-            >
-              {cellValues?.formattedValue}
-            </p>
-          </div>
+          <p
+            style={{
+              fontFamily: isArabic(cellValues?.formattedValue)
+                ? "Noto Kufi Arabic"
+                : "inherit",
+            }}
+          >
+            {cellValues?.formattedValue}
+          </p>
         );
       },
     },
+    // CONTACT 
     {
       field: "leadContact",
       headerName: t("label_contact"),
       minWidth: 100,
+      // width: 100,
       headerAlign: "center",
       flex: 1,
       renderCell: (params) => {
         const contactNumber = params.getValue(params.id, "leadContact");
-        // const countryCode = `(+${contactNumber.slice(0, 1)} ${contactNumber.slice(1, 3)})`;
 
         // Replace last 4 digits with "*"
         const stearics =
@@ -633,85 +605,96 @@ const BookedDeals = ({
             ?.slice(0, contactNumber?.replaceAll(" ", "")?.length - 4) + "****";
         let finalNumber;
 
-        if (hasPermission("number_masking")) {
-          if (User?.role === 1) {
-            finalNumber = contactNumber?.replaceAll(" ", "");
-          } else {
-            finalNumber = `${stearics}`;
-          }
-        } else {
+        // if (hasPermission("number_masking")) {
+        if (User?.role === 1) {
           finalNumber = contactNumber?.replaceAll(" ", "");
+        } else {
+          finalNumber = `${stearics}`;
         }
+        // } else {
+        // finalNumber = contactNumber?.replaceAll(" ", "");
+        // }
 
         return <span>{finalNumber}</span>;
       },
     },
+    // PROJECT 
     {
       field: "project",
       headerName: t("label_project"),
       headerAlign: "center",
       minWidth: 80,
+      // width: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div
+          <p
             style={{
               fontFamily: isArabic(cellValues?.formattedValue)
                 ? "Noto Kufi Arabic"
                 : "inherit",
             }}
-            className="flex flex-col"
           >
-            <p>
-              {cellValues.row.project === "null" ? "-" : cellValues.row.project}
-            </p>
-            <p>
-              {cellValues.row.leadFor === "null" ? "-" : cellValues.row.leadFor}
-            </p>
-          </div>
+            {cellValues.formattedValue === "null" ? "-" : cellValues.formattedValue}
+          </p>
         );
       },
     },
+    // ENQUIRY 
     {
       headerAlign: "center",
       field: "leadType",
       headerName: t("label_property"),
       minWidth: 80,
+      // width: 80,
       flex: 1,
       renderCell: (cellValues) => {
         return (
-          <div className="flex flex-col">
-            <p>
-              {cellValues.row.enquiryType === "null"
-                ? "-"
-                : cellValues.row.enquiryType}
-            </p>
-            <p>
-              {cellValues.row.leadType === "null"
-                ? "-"
-                : cellValues.row.leadType}
-            </p>
-          </div>
+          <p>
+            {cellValues.row.enquiryType === "null"
+              ? "-"
+              : cellValues.row.enquiryType}
+          </p>
         );
       },
     },
+    // MANAGER 
     {
       headerAlign: "center",
       field: "assignedToManager",
       headerName: t("label_manager"),
       minWidth: 120,
+      // width: 100,
       flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
+      // renderCell: (cellValues) => <RenderManagers cellValues={cellValues} />,
+      renderCell: (cellValues) => {
+        const manager = getUserById(cellValues.row.assignedToManager);
+        return (
+          <p>
+            {manager && manager.userName}
+          </p>
+        );
+      },
+
     },
+    // AGENT 
     {
       headerAlign: "center",
       field: "assignedToSales",
       headerName: t("label_agent"),
       minWidth: 120,
+      // width: 100,
       flex: 1,
       hideable: false,
-      renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+      // renderCell: (cellValues) => <RenderSalesperson cellValues={cellValues} />,
+      renderCell: (cellValues) => {
+        const agent = getUserById(cellValues.row.assignedToSales);
+        return (
+          <p>
+            {agent && agent.userName}
+          </p>
+        );
+      },
     },
     {
       field: "feedback",
@@ -719,18 +702,15 @@ const BookedDeals = ({
       headerName: t("label_feedback"),
       minWidth: 120,
       flex: 1,
-
       hideable: false,
       renderCell: (cellValues) => <RenderFeedback cellValues={cellValues} />,
     },
     {
-      field: "priority",
-      headerName: t("label_priority"),
-      minWidth: 90,
+      field: "unit",
+      headerName: t("label_unit"),
+      minWidth: 70,
       headerAlign: "center",
       flex: 1,
-      hideable: false,
-      renderCell: (cellValues) => <RenderPriority cellValues={cellValues} />,
     },
     {
       field: "booked_date",
@@ -742,8 +722,8 @@ const BookedDeals = ({
         return (
           <div className="flex items-center justify-center">
             {cellValues.row.booked_amount === null ||
-            cellValues.row.booked_amount === "null" ||
-            cellValues.row.booked_amount === "" ? (
+              cellValues.row.booked_amount === "null" ||
+              cellValues.row.booked_amount === "" ? (
               <>-</>
             ) : (
               <>{cellValues.row.booked_date}</>
@@ -755,18 +735,22 @@ const BookedDeals = ({
     {
       field: "booked_amount",
       headerAlign: "center",
-      headerName: t("label_amount_aed"),
-      minWidth: 90,
+      headerName: t("booking_amount"),
+      minWidth: 100,
       flex: 1,
       renderCell: (cellValues) => {
         return (
           <div className="flex items-center justify-center">
             {cellValues.row.booked_amount === null ||
-            cellValues.row.booked_amount === "null" ||
-            cellValues.row.booked_amount === "" ? (
+              cellValues.row.booked_amount === "null" ||
+              cellValues.row.booked_amount === "" ? (
               <>-</>
             ) : (
-              <>{cellValues.row.booked_amount}</>
+              <>
+                {cellValues.row.currency}
+                {" "}
+                {cellValues.row.booked_amount}
+              </>
             )}
           </div>
         );
@@ -788,9 +772,9 @@ const BookedDeals = ({
 
     {
       field: "leadSource",
-      headerName: t("lead_source"),
+      headerName: t("label_source"),
       flex: 1,
-      minWidth: 40,
+      minWidth: 50,
       headerAlign: "center",
       renderCell: (cellValues) => renderSourceIcons(cellValues, currentMode),
     },
@@ -820,11 +804,10 @@ const BookedDeals = ({
           >
             <p
               style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+              className={`${currentMode === "dark"
+                ? "text-[#FFFFFF] bg-[#262626]"
+                : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Edit Booked Deal" arrow>
                 <button onClick={() => HandleEditFunc(cellValues)}>
@@ -836,11 +819,10 @@ const BookedDeals = ({
             {cellValues.row.leadId !== null && (
               <p
                 style={{ cursor: "pointer" }}
-                className={`${
-                  currentMode === "dark"
-                    ? "text-[#FFFFFF] bg-[#262626]"
-                    : "text-[#1C1C1C] bg-[#EEEEEE]"
-                } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+                className={`${currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+                  } hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
               >
                 <Tooltip title="View Timeline" arrow>
                   <button onClick={() => HandleViewTimeline(cellValues)}>
@@ -887,8 +869,8 @@ const BookedDeals = ({
           id:
             pageState.page > 1
               ? pageState.page * pageState.pageSize -
-                (pageState.pageSize - 1) +
-                index
+              (pageState.pageSize - 1) +
+              index
               : index + 1,
           creationDate: row?.creationDate,
           leadName: row?.leadName || "-",
@@ -1075,8 +1057,8 @@ const BookedDeals = ({
           id:
             pageState.page > 1
               ? pageState.page * pageState.pageSize -
-                (pageState.pageSize - 1) +
-                index
+              (pageState.pageSize - 1) +
+              index
               : index + 1,
           leadId: row?.id,
           creationDate: row?.creationDate,

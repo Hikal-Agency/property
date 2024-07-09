@@ -100,7 +100,7 @@ const SingleLead = ({
     listening,
     browserSupportsSpeechRecognition,
     resetTranscript,
-  } = useSpeechRecognition("en");
+  } = useSpeechRecognition();
   //some comments
   useEffect(() => {
     if (isVoiceSearchState && transcript.length > 0) {
@@ -133,7 +133,17 @@ const SingleLead = ({
   }, [browserSupportsSpeechRecognition]);
 
   const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true });
+    SpeechRecognition.startListening({
+      continuous: true,
+      language:
+        i18n?.language == "pk"
+          ? "ur"
+          : i18n?.language == "cn"
+          ? "zh"
+          : i18n?.language == "in"
+          ? "hi"
+          : i18n?.language,
+    });
 
   const notes = LeadData?.notes;
   let displayText;
