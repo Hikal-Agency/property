@@ -4,6 +4,7 @@ import moment from "moment";
 import axios from "../axoisConfig";
 import { toast } from "react-toastify";
 import { positions } from "@mui/system";
+import Users from "../Pages/users";
 
 const StateContext = createContext();
 
@@ -70,6 +71,29 @@ export const ContextProvider = ({ children }) => {
   const [blurLightColor, setBlurLightColor] = useState("rgba(238,238,238,0.5)");
   const [blurWhiteColor, setBlurWhiteColor] = useState("rgba(255,255,255,0.5)");
   const [blurBlackColor, setBlurBlackColor] = useState("rgba(0,0,0,0.5)");
+
+  const [allUsers, setAllUsers] = useState([]);
+  const fetchAllUsers = async () => {
+    const token = localStorage.getItem("auth-token");
+    try {
+      const response = await axios.get(`${BACKEND_URL}/allUsers?agency=1`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      // console.log("ALL USERS === ", response.data.users);
+      setAllUsers(response.data.users);
+    } catch (error) {
+      console.error('Error fetching users: ', error);
+    }
+  };
+  const getUserById = (id) => {
+    return allUsers.find(user => user.id === id);
+  };
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
 
   const [deviceType, setDeviceType] = useState("desktop");
   const handleResize = () => {
@@ -857,6 +881,9 @@ export const ContextProvider = ({ children }) => {
         setValue,
         deviceType,
         setDeviceType,
+        allUsers,
+        setAllUsers,
+        getUserById,
         phoneNumber,
       }}
     >
