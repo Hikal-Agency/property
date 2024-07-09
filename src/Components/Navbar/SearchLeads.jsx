@@ -20,15 +20,17 @@ const SearchLeads = () => {
     listening,
     browserSupportsSpeechRecognition,
     resetTranscript,
-  } = useSpeechRecognition("en");
+  } = useSpeechRecognition();
   const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
 
-  const { BACKEND_URL, currentMode, darkModeColors } = useStateContext();
+  const { BACKEND_URL, currentMode, darkModeColors, i18n } = useStateContext();
   const [searchTerm, setSearchTerm] = useState(null);
   const [searchResult, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
 
   const location = useLocation();
+
+  console.log(i18n, "language code");
 
   useEffect(() => {
     if (isVoiceSearchState && transcript.length > 0) {
@@ -63,7 +65,17 @@ const SearchLeads = () => {
   }, [browserSupportsSpeechRecognition]);
 
   const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true });
+    SpeechRecognition.startListening({
+      continuous: true,
+      language:
+        i18n?.language == "pk"
+          ? "ur"
+          : i18n?.language == "cn"
+          ? "zh"
+          : i18n?.language == "in"
+          ? "hi"
+          : i18n?.language,
+    });
 
   const handleNavigate = (e, search) => {
     clearSearchInput();

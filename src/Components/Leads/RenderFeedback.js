@@ -52,6 +52,7 @@ const RenderFeedback = ({ cellValues }) => {
     primaryColor,
     darkModeColors,
     feedbackTheme,
+    i18n,
   } = useStateContext();
 
   console.log("DT FEEDBACK THEME =========== ", feedbackTheme);
@@ -98,7 +99,7 @@ const RenderFeedback = ({ cellValues }) => {
     listening,
     browserSupportsSpeechRecognition,
     resetTranscript,
-  } = useSpeechRecognition("en");
+  } = useSpeechRecognition();
 
   useEffect(() => {
     if (isVoiceSearchState && transcript.length > 0) {
@@ -138,7 +139,17 @@ const RenderFeedback = ({ cellValues }) => {
   }, [browserSupportsSpeechRecognition]);
 
   const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true });
+    SpeechRecognition.startListening({
+      continuous: true,
+      language:
+        i18n?.language == "pk"
+          ? "ur"
+          : i18n?.language == "cn"
+          ? "zh"
+          : i18n?.language == "in"
+          ? "hi"
+          : i18n?.language,
+    });
 
   console.log("Render Feedback===> ", cellValues?.row?.feedback);
 

@@ -112,7 +112,17 @@ const UpdateMeeting = ({
   }, [browserSupportsSpeechRecognition]);
 
   const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true });
+    SpeechRecognition.startListening({
+      continuous: true,
+      language:
+        i18n?.language == "pk"
+          ? "ur"
+          : i18n?.language == "cn"
+          ? "zh"
+          : i18n?.language == "in"
+          ? "hi"
+          : i18n?.language,
+    });
   // const style = {
   //   transform: "translate(-50%, -50%)",
   //   boxShadow: 24,
@@ -225,7 +235,12 @@ const UpdateMeeting = ({
       meetingData.append("meetingStatus", meetingStatus);
       meetingData.append(
         "meetingTime",
-        meetingTime || meetingData?.meetingTime
+        new Date(meetingTimeValue).toLocaleTimeString("en-US", {
+          hour12: false,
+          timeZone: "Asia/Dubai",
+          hour: "2-digit",
+          minute: "2-digit",
+        }) || meetingData?.meetingTime
       );
       meetingData.append(
         "meetingDate",
