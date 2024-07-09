@@ -240,7 +240,11 @@ const Orders = () => {
                           </div>
                           <div className="grid grid-cols-8 gap-2 items-center">
                             <BsPerson size={15} />
-                            <div className="col-span-7">{order?.userName}</div>
+                            <div className="col-span-7">
+                              {hasPermission("my_orders") && User?.role !== 1
+                                ? User?.userName
+                                : order?.userName}
+                            </div>
                           </div>
                           <div className="grid grid-cols-8 gap-2 items-center">
                             <BsClockHistory size={15} />
