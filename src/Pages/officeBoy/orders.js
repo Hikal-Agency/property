@@ -47,7 +47,6 @@ const Orders = () => {
           Authorization: "Bearer " + token,
         },
       });
-      // console.log("list item::::: ", listOrders);
       setRow(listOrders?.data?.data);
       setTotal(listOrders?.data?.data?.meta?.total);
       setPageSize(listOrders?.data?.data?.meta?.per_page);
