@@ -2343,8 +2343,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {
-            // selectedRows.length > 0 && hasPermission("leads_bulk_update") &&
+          {selectedRows.length > 0 && hasPermission("leads_bulk_update") && (
             <MuiButton
               size="small"
               sx={{
@@ -2374,9 +2373,8 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
               <AiFillEdit size={20} />{" "}
               <span style={{ paddingLeft: "5px" }}>{t("bulk_assign")}</span>
             </MuiButton>
-          }
-          {
-            // selectedRows.length > 0 && hasPermission("leads_bulk_delete") &&
+          )}
+          {selectedRows.length > 0 && hasPermission("leads_bulk_delete") && (
             <MuiButton
               size="small"
               sx={{
@@ -2408,7 +2406,7 @@ const Search = ({ lead_type, lead_origin, leadCategory, DashboardData }) => {
                 {t("table_bulk_delete")}
               </span>
             </MuiButton>
-          }
+          )}
           <label htmlFor="bulkImport">
             <MuiButton
               onClick={() => bulkImportRef.current.click()}
