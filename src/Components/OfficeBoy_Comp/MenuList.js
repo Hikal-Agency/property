@@ -68,7 +68,7 @@ const MenuList = ({
                     ? "text-white"
                     : "text-black"
                   } `}
-                onClick={() => setOpenOrderModal({ open: true, data: menu })}
+                onClick={menu?.itemStatus === "available" ? () => setOpenOrderModal({ open: true, data: menu }) : undefined}
               >
                 {menu?.itemPrice && menu?.itemPrice !== 0 ? (
                   <div className={`${isLangRTL(i18n.language) ? "left-3" : "right-3"
@@ -89,13 +89,13 @@ const MenuList = ({
                     <img
                       src={menu?.image_path}
                       alt="menu"
-                      className="w-full object-cover h-[250px] lg:h-[200px] rounded-xl"
+                      className={`w-full object-cover h-[250px] lg:h-[200px] rounded-xl ${menu?.itemStatus !== "available" && "grayscale"}`}
                     />
                   ) : (
                     <img
                       src={imagePaths[0]}
                       alt="menu"
-                      className="w-full h-[250px] lg:h-[200px] object-cover rounded-xl"
+                      className={`w-full object-cover h-[250px] lg:h-[200px] rounded-xl ${menu?.itemStatus !== "available" && "grayscale"}`}
                     />
                   )}
                   {/* MENU INFO  */}
@@ -111,6 +111,14 @@ const MenuList = ({
                     {menu?.itemName}
                   </h6>
                 </div>
+                {menu?.itemStatus !== "available" && (
+                  <div className="absolute w-full h-full top-0 left-0 flex items-center justify-center font-semibold uppercase"
+                  style={{
+                    background: "rgba(0,0,0,0.5)"
+                  }}>
+                    OUT OF STOCK
+                  </div>
+                )}
               </div>
             );
           })}
