@@ -4,6 +4,7 @@ import { socket } from "../../Pages/App";
 import { IoIosNotifications } from "react-icons/io";
 import Snackbar from "@mui/material/Snackbar";
 import reminderImage from "./stopwatch.png";
+import notificationRingTone from "../../assets/notification-ringtone.mp3";
 const LiveReminderNotifications = () => {
   const [isLiveReminderNotification, setIsLiveReminderNotification] = useState({
     isOpen: false,
@@ -13,6 +14,8 @@ const LiveReminderNotifications = () => {
   useEffect(() => {
     socket.on("five_minute_reminder_notification", (data) => {
       setIsLiveReminderNotification({ isOpen: true, data: data });
+      const newSound = new Audio(notificationRingTone);
+      newSound.play();
     });
     socket.on("current_time", (data) => {
       console.log(data, "current time in server");
@@ -85,6 +88,8 @@ export const LiveMeetingNotifications = () => {
   useEffect(() => {
     socket.on("thirty_minute_meeting_notification", (data) => {
       setIsLiveMeetingNotification({ isOpen: true, data: data });
+      const newSound = new Audio(notificationRingTone);
+      newSound.play();
       // alert("notification is occured");
     });
   }, []);

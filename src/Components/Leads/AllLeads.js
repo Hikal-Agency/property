@@ -2443,11 +2443,19 @@ const AllLeads = ({
                 left:
                   User?.role === 1
                     ? isLangRTL(i18n?.language)
-                      ? "950px"
+                      ? "auto"
                       : "340px"
                     : isLangRTL(i18n?.language)
-                    ? "1135px"
+                    ? "auto"
                     : "250px",
+                right:
+                  User?.role === 1
+                    ? isLangRTL(i18n?.language)
+                      ? "235px"
+                      : "auto"
+                    : isLangRTL(i18n?.language)
+                    ? "135px"
+                    : "auto",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -2464,7 +2472,22 @@ const AllLeads = ({
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: isLangRTL(i18n?.language) ? "1050px" : "455px",
+                left:
+                  User?.role === 1
+                    ? isLangRTL(i18n?.language)
+                      ? "auto"
+                      : "455px"
+                    : isLangRTL(i18n?.language)
+                    ? "auto"
+                    : "355px",
+                right:
+                  User?.role == 1
+                    ? isLangRTL(i18n?.language)
+                      ? "335px"
+                      : "auto"
+                    : isLangRTL(i18n?.language)
+                    ? "235px"
+                    : "auto",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -2485,11 +2508,20 @@ const AllLeads = ({
                 left:
                   User?.role === 1
                     ? isLangRTL(i18n?.language)
-                      ? "1135px"
+                      ? "auto"
                       : "230px"
                     : isLangRTL(i18n?.language)
-                    ? "1235px"
+                    ? "auto"
                     : "150px",
+
+                right:
+                  User?.role == 1
+                    ? isLangRTL(i18n?.language)
+                      ? "140px"
+                      : "auto"
+                    : isLangRTL(i18n?.language)
+                    ? "40px"
+                    : "auto",
               }}
               variant="text"
             >
