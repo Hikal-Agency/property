@@ -211,23 +211,33 @@ const DashboardPanel = ({ setloading }) => {
               {/* FRESH LEADS */}
               <Link
                 to={"/freshleads/all"}
-                className={`${themeBgImg
-                  ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                  : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                  } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                className={`${
+                  themeBgImg
+                    ? currentMode === "dark"
+                      ? "blur-bg-black"
+                      : "blur-bg-white"
+                    : currentMode === "dark"
+                    ? "bg-dark-neu"
+                    : "bg-light-neu"
+                } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
                 onClick={() => setopenBackDrop(true)}
               >
                 <p
-                  className={`${!themeBgImg
-                    ? "text-primary"
-                    : currentMode === "dark"
+                  className={`${
+                    !themeBgImg
+                      ? "text-primary"
+                      : currentMode === "dark"
                       ? "text-white"
                       : "text-black"
-                    } text-[16px] break-words font-bold`}
+                  } text-[16px] break-words font-bold`}
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
-                <p className={currentMode === "dark" ? "text-white" : "text-black"}>
+                <p
+                  className={
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }
+                >
                   {t("fresh")} {t("leads")}
                 </p>
               </Link>
@@ -237,24 +247,31 @@ const DashboardPanel = ({ setloading }) => {
                   <Link
                     key={index}
                     to={item?.link}
-                    className={`${themeBgImg
-                      ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                      : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                      } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                    className={`${
+                      themeBgImg
+                        ? currentMode === "dark"
+                          ? "blur-bg-black"
+                          : "blur-bg-white"
+                        : currentMode === "dark"
+                        ? "bg-dark-neu"
+                        : "bg-light-neu"
+                    } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
                   >
                     <p
-                      className={`${!themeBgImg
-                        ? "text-primary"
-                        : currentMode === "dark"
+                      className={`${
+                        !themeBgImg
+                          ? "text-primary"
+                          : currentMode === "dark"
                           ? "text-white"
                           : "text-black"
-                        } text-[16px] break-words font-bold`}
+                      } text-[16px] break-words font-bold`}
                     >
                       <CountUp end={item.amount} duration={3} />
                     </p>
                     <p
-                      className={` ${currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
+                      className={` ${
+                        currentMode === "dark" ? "text-white" : "text-black"
+                      }`}
                     >
                       {item?.title}
                     </p>
@@ -267,13 +284,20 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ x: 120 }}
               transition={{ duration: 0.6 }}
               animate={{ x: [-20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center w-full">
-                <h6 className="font-semibold uppercase pb-3">{t("performance")}</h6>
+                <h2 className="font-semibold uppercase pb-3">
+                  {t("performance")}
+                </h2>
                 <CombinationChart />
               </div>
             </motion.div>
@@ -282,13 +306,18 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ y: -120 }}
               transition={{ duration: 0.7 }}
               animate={{ y: [20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold uppercase pb-3">{t("sales")}</h6>
+                <h2 className="font-semibold uppercase pb-3">{t("sales")}</h2>
                 <SalesAmountChartAdmin />
               </div>
             </motion.div>
@@ -297,15 +326,20 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ y: -120 }}
               transition={{ duration: 0.8 }}
               animate={{ y: [20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold uppercase pb-3">{`${t("closed")} ${t(
-                  "projects"
-                )}`}</h6>
+                <h2 className="font-semibold uppercase pb-3">{`${t(
+                  "closed"
+                )} ${t("projects")}`}</h2>
                 <BarChartProjectAdmin
                   total_projects={DashboardData?.total_projects}
                 />
@@ -327,23 +361,33 @@ const DashboardPanel = ({ setloading }) => {
               {/* FRESH LEADS */}
               <Link
                 to={"/freshleads/all"}
-                className={`${themeBgImg
-                  ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                  : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                  } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                className={`${
+                  themeBgImg
+                    ? currentMode === "dark"
+                      ? "blur-bg-black"
+                      : "blur-bg-white"
+                    : currentMode === "dark"
+                    ? "bg-dark-neu"
+                    : "bg-light-neu"
+                } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
                 onClick={() => setopenBackDrop(true)}
               >
                 <p
-                  className={`${!themeBgImg
-                    ? "text-primary"
-                    : currentMode === "dark"
+                  className={`${
+                    !themeBgImg
+                      ? "text-primary"
+                      : currentMode === "dark"
                       ? "text-white"
                       : "text-black"
-                    } text-[16px] break-words font-bold`}
+                  } text-[16px] break-words font-bold`}
                 >
                   <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
                 </p>
-                <p className={` ${currentMode === "dark" ? "text-white" : "text-black"}`}>
+                <p
+                  className={` ${
+                    currentMode === "dark" ? "text-white" : "text-black"
+                  }`}
+                >
                   {t("fresh")} {t("leads")}
                 </p>
               </Link>
@@ -353,26 +397,30 @@ const DashboardPanel = ({ setloading }) => {
                   <Link
                     to={item?.link}
                     key={index}
-                    className={`${themeBgImg
-                      ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                      : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                      } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                    className={`${
+                      themeBgImg
+                        ? currentMode === "dark"
+                          ? "blur-bg-black"
+                          : "blur-bg-white"
+                        : currentMode === "dark"
+                        ? "bg-dark-neu"
+                        : "bg-light-neu"
+                    } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
                     onClick={() => setopenBackDrop(true)}
                   >
                     <div>
                       <p
-                        className={`${!themeBgImg
-                          ? "text-primary"
-                          : currentMode === "dark"
+                        className={`${
+                          !themeBgImg
+                            ? "text-primary"
+                            : currentMode === "dark"
                             ? "text-white"
                             : "text-black"
-                          } text-[16px] break-words font-bold`}
+                        } text-[16px] break-words font-bold`}
                       >
                         <CountUp end={item.amount} duration={3} />
                       </p>
-                      <p>
-                        {item?.title}
-                      </p>
+                      <p>{item?.title}</p>
                     </div>
                   </Link>
                 );
@@ -383,13 +431,20 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ y: -120 }}
               transition={{ duration: 0.6 }}
               animate={{ y: [20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex flex-col gap-2 md:hidden lg:flex 2xl:hidden`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex flex-col gap-2 md:hidden lg:flex 2xl:hidden`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold uppercase pb-3">{t("performance")}</h6>
+                <h2 className="font-semibold uppercase pb-3">
+                  {t("performance")}
+                </h2>
                 <CombinationChart />
               </div>
             </motion.div>
@@ -400,13 +455,20 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ y: -120 }}
               transition={{ duration: 0.6 }}
               animate={{ y: [20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex-col gap-2 hidden md:flex lg:hidden 2xl:flex`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex-col gap-2 hidden md:flex lg:hidden 2xl:flex`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold uppercase pb-3">{t("performance")}</h6>
+                <h2 className="font-semibold uppercase pb-3">
+                  {t("performance")}
+                </h2>
                 <CombinationChart />
               </div>
             </motion.div>
@@ -415,13 +477,18 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ y: -120 }}
               transition={{ duration: 0.7 }}
               animate={{ y: [20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold uppercase pb-3">{t("sales")}</h6>
+                <h2 className="font-semibold uppercase pb-3">{t("sales")}</h2>
                 {saleschart_loading ? (
                   <div className="flex items-center space-x-2">
                     <CircularProgress size={20} /> <span>Loading</span>
@@ -436,13 +503,20 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ y: -120 }}
               transition={{ duration: 0.7 }}
               animate={{ y: [20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold uppercase pb-3">{t("monthly_target")}</h6>
+                <h2 className="font-semibold uppercase pb-3">
+                  {t("monthly_target")}
+                </h2>
                 <DoughnutChart
                   target={DashboardData?.user?.target}
                   target_reached={DashboardData?.target_reached}
@@ -455,15 +529,20 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ y: -120 }}
               transition={{ duration: 0.7 }}
               animate={{ y: [20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold uppercase pb-3">{`${t("project")} ${t(
-                  "chart"
-                )}`}</h6>
+                <h2 className="font-semibold uppercase pb-3">{`${t(
+                  "project"
+                )} ${t("chart")}`}</h2>
                 <BarChartProject
                   total_projects={DashboardData?.total_projects}
                 />
@@ -486,23 +565,36 @@ const DashboardPanel = ({ setloading }) => {
                 {/* FRESH LEADS */}
                 <Link
                   to={"/freshleads/all"}
-                  className={`${themeBgImg
-                    ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                    : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                    } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                  className={`${
+                    themeBgImg
+                      ? currentMode === "dark"
+                        ? "blur-bg-black"
+                        : "blur-bg-white"
+                      : currentMode === "dark"
+                      ? "bg-dark-neu"
+                      : "bg-light-neu"
+                  } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
                   onClick={() => setopenBackDrop(true)}
                 >
                   <p
-                    className={`${!themeBgImg
-                      ? "text-primary"
-                      : currentMode === "dark"
+                    className={`${
+                      !themeBgImg
+                        ? "text-primary"
+                        : currentMode === "dark"
                         ? "text-white"
                         : "text-black"
-                      } text-[16px] break-words font-bold`}
+                    } text-[16px] break-words font-bold`}
                   >
-                    <CountUp end={DashboardData?.lead_status?.hot} duration={3} />
+                    <CountUp
+                      end={DashboardData?.lead_status?.hot}
+                      duration={3}
+                    />
                   </p>
-                  <p className={` ${currentMode === "dark" ? "text-white" : "text-black"}`}>
+                  <p
+                    className={` ${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
                     {t("fresh")} {t("leads")}
                   </p>
                 </Link>
@@ -512,26 +604,30 @@ const DashboardPanel = ({ setloading }) => {
                     <Link
                       to={item.link}
                       key={index}
-                      className={`${themeBgImg
-                        ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                        : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                        } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
+                      className={`${
+                        themeBgImg
+                          ? currentMode === "dark"
+                            ? "blur-bg-black"
+                            : "blur-bg-white"
+                          : currentMode === "dark"
+                          ? "bg-dark-neu"
+                          : "bg-light-neu"
+                      } p-5 w-full h-full cursor-pointer flex flex-col items-center justify-center gap-2`}
                       onClick={() => setopenBackDrop(true)}
                     >
                       <div>
                         <p
-                          className={`${!themeBgImg
-                            ? "text-primary"
-                            : currentMode === "dark"
+                          className={`${
+                            !themeBgImg
+                              ? "text-primary"
+                              : currentMode === "dark"
                               ? "text-white"
                               : "text-black"
-                            } text-[16px] break-words font-bold`}
+                          } text-[16px] break-words font-bold`}
                         >
                           <CountUp end={item.amount} duration={3} />
                         </p>
-                        <p>
-                          {item?.title}
-                        </p>
+                        <p>{item?.title}</p>
                       </div>
                     </Link>
                   );
@@ -543,8 +639,11 @@ const DashboardPanel = ({ setloading }) => {
                   transition={{ duration: 0.6 }}
                   initial={{ y: -120 }}
                   animate={{ y: [20, 30, 0] }}
-                  className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                    } h-full w-full justify-between items-center px-10 py-7 text-center`}
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-primary-dark-neu"
+                      : "bg-primary-light-neu"
+                  } h-full w-full justify-between items-center px-10 py-7 text-center`}
                 >
                   <div>
                     <p className={`text-sm font-semibold text-white `}>
@@ -559,8 +658,11 @@ const DashboardPanel = ({ setloading }) => {
                   transition={{ duration: 0.7 }}
                   initial={{ y: -120 }}
                   animate={{ y: [20, 30, 0] }}
-                  className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                    } h-full w-full justify-between items-center px-10 py-7 text-center`}
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-primary-dark-neu"
+                      : "bg-primary-light-neu"
+                  } h-full w-full justify-between items-center px-10 py-7 text-center`}
                 >
                   <div>
                     <p className={`text-sm font-semibold text-white`}>
@@ -578,13 +680,20 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ y: -120 }}
               transition={{ duration: 0.6 }}
               animate={{ y: [20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
-                <h6 className="font-semibold uppercase pb-3">{t("label_target")}</h6>
+                <h2 className="font-semibold uppercase pb-3">
+                  {t("label_target")}
+                </h2>
                 <DoughnutChart
                   className="p-2"
                   target_reached={DashboardData?.target_reached}
@@ -597,10 +706,15 @@ const DashboardPanel = ({ setloading }) => {
               initial={{ y: -120 }}
               transition={{ duration: 0.7 }}
               animate={{ y: [20, 30, 0] }}
-              className={`${themeBgImg
-                ? (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-                : (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
+              className={`${
+                themeBgImg
+                  ? currentMode === "dark"
+                    ? "blur-bg-black"
+                    : "blur-bg-white"
+                  : currentMode === "dark"
+                  ? "bg-dark-neu"
+                  : "bg-light-neu"
+              } p-5 w-full h-full cursor-pointer flex flex-col gap-2`}
             >
               <div className="justify-between items-center">
                 <h6 className="font-semibold uppercase pb-3">{t("project")}</h6>
@@ -613,18 +727,23 @@ const DashboardPanel = ({ setloading }) => {
         </>
       ) : (
         <></>
-      )
-      }
+      )}
 
       {/* 3RD ROW [REVENUE, TOTAL SALES] */}
-      <div className={`${User?.role === 7 && "xl:hidden"
-        } flex grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-5 pb-5`}>
+      <div
+        className={`${
+          User?.role === 7 && "xl:hidden"
+        } flex grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-5 pb-5`}
+      >
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
-          className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-            } h-full w-full justify-between items-center px-10 py-7 text-center`}
+          className={`${
+            currentMode === "dark"
+              ? "bg-primary-dark-neu"
+              : "bg-primary-light-neu"
+          } h-full w-full justify-between items-center px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white `}>
@@ -639,8 +758,11 @@ const DashboardPanel = ({ setloading }) => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
-          className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-            } h-full w-full justify-between items-center px-10 py-7 text-center`}
+          className={`${
+            currentMode === "dark"
+              ? "bg-primary-dark-neu"
+              : "bg-primary-light-neu"
+          } h-full w-full justify-between items-center px-10 py-7 text-center`}
         >
           <div>
             <p className={`text-sm font-semibold text-white`}>
@@ -661,9 +783,9 @@ const DashboardPanel = ({ setloading }) => {
           viewport={{ margin: "-70px" }}
           className={`h-fit py-2 pb-5`}
         >
-          <h4 className="font-semibold pt-3 uppercase">
+          <h2 className="font-semibold pt-3 uppercase">
             {`${t("upcoming")} ${t("meetings")}`}
-          </h4>
+          </h2>
           <UpcomingMeeting
             upcoming_meetings={DashboardData?.upcoming_meetings}
           />
@@ -676,12 +798,13 @@ const DashboardPanel = ({ setloading }) => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ margin: "-70px" }}
-          className={`${currentMode === "dark" ? "text-white " : "text-black"
-            } h-fit`}
+          className={`${
+            currentMode === "dark" ? "text-white " : "text-black"
+          } h-fit`}
         >
-          <h4 id="reminders" className="font-semibold pt-3">
+          <h2 id="reminders" className="font-semibold pt-3">
             {t("reminders")?.toUpperCase()}
-          </h4>
+          </h2>
           <Reminder
             reminder={reminder}
             setReminder={setReminder}
@@ -696,19 +819,20 @@ const DashboardPanel = ({ setloading }) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ margin: "-70px" }}
-        className={`${themeBgImg
-          ? currentMode === "dark"
-            ? "blur-bg-black"
-            : "blur-bg-white"
-          : currentMode === "dark"
+        className={`${
+          themeBgImg
+            ? currentMode === "dark"
+              ? "blur-bg-black"
+              : "blur-bg-white"
+            : currentMode === "dark"
             ? "bg-dark-neu"
             : "bg-light-neu"
-          } grid grid-cols-1 pb-5 my-5`}
+        } grid grid-cols-1 pb-5 my-5`}
       >
         <Task />
       </motion.div>
       {/* 5TH ROW END [TODO + SHORTCUTS] */}
-    </div >
+    </div>
   );
 };
 

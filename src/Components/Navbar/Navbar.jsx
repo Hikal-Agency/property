@@ -4,11 +4,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { MdStars } from "react-icons/md";
 
-import {
-  Tooltip,
-  Button,
-  Badge,
-} from "@mui/material";
+import { Tooltip, Button, Badge } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
 
@@ -28,7 +24,7 @@ import {
   BsClock,
   BsClockFill,
   BsApple,
-  BsAndroid2
+  BsAndroid2,
 } from "react-icons/bs";
 import { GoCommentDiscussion } from "react-icons/go";
 import {
@@ -61,6 +57,7 @@ const NavButton = ({
     onMouseEnter={customFunc}
     style={{ color }}
     className="relative text-xl rounded-full p-3 hover:bg-light-gray"
+    aria-label={title}
   >
     <span
       style={{ background: dotColor }}
@@ -97,7 +94,7 @@ const Navbar = () => {
     isLangRTL,
     getLangDetails,
     darkModeColors,
-    deviceType
+    deviceType,
   } = useStateContext();
   const colorMode = useContext(ColorModeContext);
   const { collapseSidebar } = useProSidebar();
@@ -260,7 +257,7 @@ const Navbar = () => {
       await axios.post(
         `${BACKEND_URL}/updateuser/${User.id}`,
         JSON.stringify({
-          backgroundImg: "default"
+          backgroundImg: "default",
         }),
         {
           headers: {
@@ -269,9 +266,9 @@ const Navbar = () => {
           },
         }
       );
-      console.log('Background image updated in database successfully');
+      console.log("Background image updated in database successfully");
     } catch (error) {
-      console.error('Error updating background image in database:', error);
+      console.error("Error updating background image in database:", error);
     }
   };
 
@@ -291,6 +288,7 @@ const Navbar = () => {
   }, [getLangDetails]);
 
   const saveLangInProfile = async (code) => {
+    console.log(code, "language code");
     const token = localStorage.getItem("auth-token");
     try {
       await axios.post(
@@ -357,533 +355,27 @@ const Navbar = () => {
         </Tooltip>
       </div>
 
-      {(deviceType === "mobile" || deviceType === "tablet") && (<div
-        className={` ${themeBgImg
-          ? currentMode === "dark"
-            ? "blur-bg-dark-nr"
-            : "blur-bg-light-nr"
-          : currentMode === "dark"
-            ? "bg-dark-neu"
-            : "bg-light-neu"
-          } flex justify-end items-center p-2 relative w-full`}
-        style={{
-          position: "fixed",
-          top: 0,
-          zIndex: "20",
-          boxShadow:
-            currentMode !== "dark"
-              ? "0 2px 4px rgba(0, 0, 0, 0.1)"
-              : "0 2px 4px rgba(255, 255, 255, 0.1)",
-        }}
-      >
-        <div className="flex items-center">
-          {/* UPGRADE  */}
-          {isUserSubscribed !== null && [
-            isUserSubscribed === false ? (
-              <Button
-                variant="contained"
-                className="bg-btn-primary"
-                sx={{
-                  mx: 2,
-                  "& svg": {
-                    color: "white",
-                  },
-                }}
-              >
-                <Link to="/marketing/payments" className="flex gap-2 items-center">
-                  <MdStars size={18} />
-                  <span className="mt-[2px]">{t("upgrade")}</span>
-                </Link>
-              </Button>
-            ) : (
-              <></>
-            ),
-          ]}
-
-          {/* MEETINGS  */}
-          <NavButton
-            title="Meetings"
-            handleClose={handleClose}
-            dotColor={currentMode === "dark" ? "#ffffff" : primaryColor}
-            customFunc={(event) => handleClick(event, "Meetings")}
-            color={currentMode === "dark" ? "#ffffff" : "#333333"}
-            icon={
-              currNavBtn === "Meetings" ? (
-                <BsCalendarEventFill size={16} />
-              ) : (
-                <BsCalendarEvent size={16} />
-              )
-            }
-          />
-          {/* NOTIFICATIONS  */}
-          <NavButton
-            handleClose={handleClose}
-            title="Notification"
-            // dotColor={currentMode === "dark" ? "#ffffff" : "#DA1F26"}
-            customFunc={(event) => handleClick(event, "Notifications")}
-            color={currentMode === "dark" ? "#ffffff" : "#333333"}
-            icon={
-              <Badge
-                className={notifIconAnimating ? "animate-notif-icon" : ""}
-                badgeContent={unreadNotifsCount}
-                sx={{
-                  "& .MuiBadge-badge": {
-                    background: primaryColor,
-                    color: "white",
-                  },
-                }}
-              >
-                <BsBell size={16} />
-              </Badge>
-            }
-          />
-          {/* CLOCK  */}
-          <NavButton
-            handleClose={handleClose}
-            title="Clock"
-            // color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
-            customFunc={(event) => handleClick(event, "Clock")}
-            color={currentMode === "dark" ? "#ffffff" : "#333333"}
-            icon={
-              currNavBtn === "Clock" ? (
-                <BsClockFill size={16} />
-              ) : (
-                <BsClock size={16} />
-              )
-            }
-          />
-          {/* THEME  */}
-          {/* {!themeBgImg && */}
-          <Tooltip
-            title={currentMode === "dark" ? "Light mode" : "Dark mode"}
-            arrow
-            placement="bottom"
-          >
-            <button
-              type="button"
-              onClick={changeMode}
-              className={`relative text-xl rounded-full p-3 hover:bg-light-gray ${currentMode === "dark" ? "text-white" : " text-primary"
-                }`}
-            >
-              {currentMode === "dark" ? (
-                <MdOutlineLightMode size={16} color="#dcb511" />
-              ) : (
-                <MdDarkMode size={16} color={primaryColor} />
-              )}
-            </button>
-          </Tooltip>
-          {/* } */}
-          {/* PROFILE  */}
-          <Tooltip title="Profile" arrow placement="bottom">
-            <div
-              className={`bg-primary text-white mx-1 p-2 flex items-center gap-2 cursor-pointer hover:bg-light-gray rounded-xl shadow-sm card-hover`}
-              onClick={(event) => {
-                if (currNavBtn === "Profile") {
-                  handleClose();
-                } else {
-                  handleClick(event, "Profile");
-                }
-              }}
-            >
-              <img
-                height={40}
-                width={40}
-                className="rounded-full w-8 h-8 object-cover"
-                src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
-                alt="user-profile"
-              />
-              {deviceType === "tablet" && (
-                <p className="display-block">
-                  <span className={`font-bold`}>{getDisplayName(User?.userName)}</span>
-                </p>
-              )}
-              <MdKeyboardArrowDown size={14} className={``} />
-            </div>
-          </Tooltip>
-          {/* LANG  */}
-          <Tooltip title="Language" arrow placement="bottom">
-            <div
-              className="mx-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-              onClick={(event) => {
-                if (currNavBtn === "Language") {
-                  handleClose();
-                } else {
-                  handleClick(event, "Language");
-                }
-              }}
-            >
-              <img
-                className="rounded-sm h-6 w-8 border"
-                src={langFlag}
-                alt=""
-              />
-              {/* <MdKeyboardArrowDown
-                className={`${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              /> */}
-            </div>
-          </Tooltip>
-          <Menu
-            className="hide-scrollbar navbar-menu-backdrop"
-            hideBackdrop={false}
-            onClick={handleClose}
-            onMouseLeave={handleClose}
-            anchorEl={anchorElem}
-            open={open}
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                "& .MuiList-root .clock-div": {
-                  border: "none !important",
-                  background: "transparent !important",
-                },
-                mt: 2,
-                pl: !isLangRTL(i18n.language) && 0.6,
-                pr: isLangRTL(i18n.language) && 0.6,
-                py: 0.4,
-                overflowY: "scroll",
-                filter:
-                  currentMode === "dark"
-                    ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
-                    : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
-                // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
-                background:
-                  currentMode === "dark"
-                    ? "rgb(28 28 28 / 0.9)"
-                    : "rgb(238 238 238 / 0.9)",
-                color: currentMode === "dark" ? "#ffffff" : "black",
-                minWidth: currNavBtn === "Language" ? 100 : 300,
-                maxWidth: currNavBtn === "Language" ? 180 : 350,
-                borderRadius: "10px",
-                // "& .MuiAvatar-root": {
-                //   width: 32,
-                //   height: 32,
-                //   // ml: -0.5,
-                //   mx: 1,
-                // },
-                "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
-                {
-                  padding: "0 !important",
-                },
-              },
-            }}
-            transformOrigin={{ horizontal: "center", vertical: "top" }}
-            anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-          >
-            {currNavBtn ? (
-              currNavBtn === "Notifications" ? (
-                // <NotificationsMenu />
-                <NotificationsMenuUpdated
-                  handleClose={handleClose}
-                  setCurrNavBtn={setCurrNavBtn}
-                />
-              ) : currNavBtn === "Clock" ? (
-                <Clock handleClose={handleClose} />
-              ) : currNavBtn === "Meetings" ? (
-                <UpcomingMeetingsMenu />
-              ) : currNavBtn === "Profile" ? (
-                <div className="px-2">
-                  <div
-                    className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-3 p-4 rounded-xl shadow-sm w-full`}
-                  >
-                    <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
-                      <div className="flex items-center justify-start">
-                        <Avatar
-                          src={User?.displayImg}
-                          className="inline-block"
-                        />
-                        <div className="flex justify-between items-center w-full h-full">
-                          <div className="mx-1 space-y-1">
-                            <p className="font-semibold">{User?.userName}</p>
-                            <p className="text-xs capitalize">
-                              {User?.position}
-                            </p>
-                          </div>
-                          <div
-                            style={{
-                              borderColor: primaryColor,
-                            }}
-                            className={`text-sm rounded-full border px-2 py-1`}
-                          >
-                            {t("profile")}
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-
-                  <ColorSchemeMenuItem />
-
-                  {/* DOWNLOAD MOBILE APP  */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {/* iOS  */}
-                    <div
-                      className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-primary" : "bg-primary"
-                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                    >
-                      {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
-                      <div className="flex items-center justify-start">
-                        <div className={`p-1 rounded-full mr-2`}>
-                          <BsApple size={18} color={"#FFFFFF"} />
-                        </div>
-                        <div className="flex justify-between items-center w-full h-full text-white">
-                          <div className="flex items-center">
-                            <p className="font-semibold mx-1 mr-2">
-                              Hikal CRM
-                              <br />
-                              iOS
-                            </p>
-                          </div>
-                          <VscLock
-                            size={14}
-                            color={"#FFFFFF"}
-                            className="mr-2"
-                          />
-                        </div>
-                      </div>
-                      {/* </Link> */}
-                    </div>
-
-                    {/* ANDROID  */}
-                    <div
-                      className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-primary" : "bg-primary"
-                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                    >
-                      {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
-                      <div className="flex items-center justify-start">
-                        <div className={`p-1 rounded-full mr-2`}>
-                          <BsAndroid2 size={18} color={"#FFFFFF"} />
-                        </div>
-                        <div className="flex justify-between items-center w-full h-full text-white">
-                          <div className="flex items-center">
-                            <p className="font-semibold mx-1 mr-2">
-                              Hikal CRM
-                              <br />
-                              Android
-                            </p>
-                          </div>
-                          <VscLock
-                            size={14}
-                            color={"#FFFFFF"}
-                            className="mr-2"
-                          />
-                        </div>
-                      </div>
-                      {/* </Link> */}
-                    </div>
-                  </div>
-
-                  {/* LOGIN HISTORY  */}
-                  {/* <div
-                    className={`cursor-pointer card-hover ${
-                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                  >
-                    <div className="flex items-center justify-start">
-                      <div
-                        className={`${
-                          currentMode === "dark"
-                            ? "bg-[#1C1C1C]"
-                            : "bg-[#EEEEEE]"
-                        } p-2 rounded-full mr-2`}
-                      >
-                        <VscHistory size={18} color={"#AAAAAA"} />
-                      </div>
-                      <div className="flex justify-between items-center w-full h-full">
-                        <div className="flex items-center">
-                          <p className="font-semibold mx-1 mr-2">
-                            {t("login_history")}
-                          </p>
-                          <VscLock
-                            size={14}
-                            color={primaryColor}
-                            className="mr-2"
-                          />
-                        </div>
-                        <div
-                          style={{
-                            background: primaryColor,
-                            fontSize: "0.5rem",
-                          }}
-                          className="rounded-full text-white px-2 py-1 font-bold"
-                        >
-                          {t("soon")?.toUpperCase()}
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
-
-                  {/* CHANGE PASSWORD  */}
-                  <div
-                    className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                  >
-                    <Link
-                      to={"/changepassword"}
-                      onClick={() => setopenBackDrop(true)}
-                    >
-                      <div className="flex items-center justify-start">
-                        <div
-                          className={`${currentMode === "dark"
-                            ? "bg-[#1C1C1C]"
-                            : "bg-[#EEEEEE]"
-                            } p-2 rounded-full mr-2`}
-                        >
-                          <VscShield size={18} color={"#AAAAAA"} />
-                        </div>
-                        <p className="mx-1 mr-2 font-semibold">
-                          {t("change_password")}
-                        </p>
-                      </div>
-                    </Link>
-                  </div>
-
-                  {/* IF SUBSCRIBED, UNSUBCRIBE  */}
-                  {User?.role !== 1 && isUserSubscribed && (
-                    <div
-                      className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                      onClick={UnsubscribeUser}
-                    >
-                      {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
-                      <div className="flex items-center justify-start">
-                        <div
-                          className={`${currentMode === "dark"
-                            ? "bg-[#1C1C1C]"
-                            : "bg-[#EEEEEE]"
-                            } p-2 rounded-full mr-2`}
-                        >
-                          <VscExclude size={18} color={"#AAAAAA"} />
-                        </div>
-                        <p className="mx-1 mr-2 font-semibold">
-                          {t("unsubscribe_package")}
-                        </p>
-                        <VscLock
-                          size={14}
-                          color={primaryColor}
-                          className="mr-2"
-                        />
-                      </div>
-                      {/* </Link> */}
-                    </div>
-                  )}
-
-                  {/* LOGOUT  */}
-                  <div
-                    className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                      } p-3 rounded-xl shadow-sm w-full`}
-                    onClick={LogoutUser}
-                  >
-                    <div className="flex items-center justify-start">
-                      <div
-                        className={`${currentMode === "dark"
-                          ? "bg-[#1C1C1C]"
-                          : "bg-[#EEEEEE]"
-                          } p-2 rounded-full mr-2`}
-                      >
-                        <VscSignOut size={18} color={"#AAAAAA"} />
-                      </div>
-                      <p className="mx-1 mr-2 font-semibold">{t("log_out")}</p>
-                    </div>
-                  </div>
-                </div>
-              ) : currNavBtn === "Language" ? (
-                <div className="px-2">
-                  {langs?.map((lang) => (
-                    <button
-                      className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
-                      onClick={(e) => {
-                        i18n.changeLanguage(lang.code);
-                        saveLangInProfile(lang.code);
-                        if (isLangRTL(lang.code)) {
-                          changeBodyDirection("rtl");
-                        } else {
-                          changeBodyDirection("ltr");
-                        }
-                      }}
-                    >
-                      <div className="grid grid-cols-2 gap-5">
-                        <div className="text-start">
-                          <img
-                            className="rounded-sm h-6 w-8 border"
-                            src={lang.flag}
-                            alt=""
-                          />
-                        </div>
-                        <div
-                          className="text-end"
-                          style={{
-                            fontFamily: lang?.font,
-                            // fontSize: lang?.size
-                          }}
-                        >
-                          {lang.title}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <></>
-              )
-            ) : (
-              <></>
-            )}
-          </Menu>
-        </div>
-      </div>
-      )}
-
-      {deviceType === "desktop" && (
+      {(deviceType === "mobile" || deviceType === "tablet") && (
         <div
-          className={` ${themeBgImg
-            ? currentMode === "dark"
-              ? "blur-bg-dark-nr"
-              : "blur-bg-light-nr"
-            : currentMode === "dark"
-              ? "bg-dark-neu-nr"
-              : "bg-light-neu-nr"
-            } flex justify-between items-center p-2 relative`}
+          className={` ${
+            themeBgImg
+              ? currentMode === "dark"
+                ? "blur-bg-dark-nr"
+                : "blur-bg-light-nr"
+              : currentMode === "dark"
+              ? "bg-dark-neu"
+              : "bg-light-neu"
+          } flex justify-end items-center p-2 relative w-full`}
           style={{
             position: "fixed",
             top: 0,
-            left: isLangRTL(i18n.language) ? "0" : !isCollapsed ? 80 : 200,
-            right: isLangRTL(i18n.language) ? (!isCollapsed ? 80 : 200) : 0,
             zIndex: "20",
-            // backgroundColor: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
             boxShadow:
               currentMode !== "dark"
                 ? "0 2px 4px rgba(0, 0, 0, 0.1)"
                 : "0 2px 4px rgba(255, 255, 255, 0.1)",
           }}
         >
-          {/* BREADCRUMB  */}
-          <div className="flex items-center">
-            <div
-              onClick={() => {
-                collapseSidebar();
-                setIsCollapsed(!isCollapsed);
-              }}
-              className="flex items-center rounded-lg pl-1 cursor-pointer"
-            >
-              <button
-                type="button"
-                style={{
-                  color: currentMode === "dark" ? "white" : primaryColor,
-                }}
-                // style={{ color: currentColor }}
-                className={`relative text-xl rounded-full hover:bg-light-gray mr-4`}
-              >
-                <span className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2" />
-                <AiOutlineMenu />
-              </button>
-            </div>
-            <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
-          </div>
-
           <div className="flex items-center">
             {/* UPGRADE  */}
             {isUserSubscribed !== null && [
@@ -898,8 +390,11 @@ const Navbar = () => {
                     },
                   }}
                 >
-                  <Link to="/marketing/payments" className="flex items-center">
-                    <MdStars className="mx-2" size={18} />
+                  <Link
+                    to="/marketing/payments"
+                    className="flex gap-2 items-center"
+                  >
+                    <MdStars size={18} />
                     <span className="mt-[2px]">{t("upgrade")}</span>
                   </Link>
                 </Button>
@@ -908,8 +403,6 @@ const Navbar = () => {
               ),
             ]}
 
-            {/* search */}
-            <SearchLeads />
             {/* MEETINGS  */}
             <NavButton
               title="Meetings"
@@ -932,6 +425,7 @@ const Navbar = () => {
               // dotColor={currentMode === "dark" ? "#ffffff" : "#DA1F26"}
               customFunc={(event) => handleClick(event, "Notifications")}
               color={currentMode === "dark" ? "#ffffff" : "#333333"}
+              aria-label="Notifications list"
               icon={
                 <Badge
                   className={notifIconAnimating ? "animate-notif-icon" : ""}
@@ -972,8 +466,9 @@ const Navbar = () => {
               <button
                 type="button"
                 onClick={changeMode}
-                className={`relative text-xl rounded-full p-3 hover:bg-light-gray ${currentMode === "dark" ? "text-white" : " text-primary"
-                  }`}
+                className={`relative text-xl rounded-full p-3 hover:bg-light-gray ${
+                  currentMode === "dark" ? "text-white" : " text-primary"
+                }`}
               >
                 {currentMode === "dark" ? (
                   <MdOutlineLightMode size={16} color="#dcb511" />
@@ -996,15 +491,19 @@ const Navbar = () => {
                 }}
               >
                 <img
-                  height={50}
-                  width={50}
-                  className="rounded-full w-10 h-10 object-cover"
+                  height={40}
+                  width={40}
+                  className="rounded-full w-8 h-8 object-cover"
                   src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
                   alt="user-profile"
                 />
-                <p className="display-block">
-                  <span className={`font-bold`}>{getDisplayName(User?.userName)}</span>
-                </p>
+                {deviceType === "tablet" && (
+                  <p className="display-block">
+                    <span className={`font-bold`}>
+                      {getDisplayName(User?.userName)}
+                    </span>
+                  </p>
+                )}
                 <MdKeyboardArrowDown size={14} className={``} />
               </div>
             </Tooltip>
@@ -1019,11 +518,12 @@ const Navbar = () => {
                     handleClick(event, "Language");
                   }
                 }}
+                role="button"
               >
                 <img
                   className="rounded-sm h-6 w-8 border"
                   src={langFlag}
-                  alt=""
+                  alt={i18n?.language}
                 />
                 {/* <MdKeyboardArrowDown
                 className={`${
@@ -1071,9 +571,9 @@ const Navbar = () => {
                   //   mx: 1,
                   // },
                   "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
-                  {
-                    padding: "0 !important",
-                  },
+                    {
+                      padding: "0 !important",
+                    },
                 },
               }}
               transformOrigin={{ horizontal: "center", vertical: "top" }}
@@ -1093,10 +593,14 @@ const Navbar = () => {
                 ) : currNavBtn === "Profile" ? (
                   <div className="px-2">
                     <div
-                      className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                        } mb-3 p-4 rounded-xl shadow-sm w-full`}
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-4 rounded-xl shadow-sm w-full`}
                     >
-                      <Link to={"/profile"} onClick={() => setopenBackDrop(true)}>
+                      <Link
+                        to={"/profile"}
+                        onClick={() => setopenBackDrop(true)}
+                      >
                         <div className="flex items-center justify-start">
                           <Avatar
                             src={User?.displayImg}
@@ -1128,8 +632,9 @@ const Navbar = () => {
                     <div className="grid grid-cols-2 gap-2">
                       {/* iOS  */}
                       <div
-                        className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-primary" : "bg-primary"
-                          } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark" ? "bg-primary" : "bg-primary"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
                       >
                         {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
                         <div className="flex items-center justify-start">
@@ -1156,8 +661,9 @@ const Navbar = () => {
 
                       {/* ANDROID  */}
                       <div
-                        className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-primary" : "bg-primary"
-                          } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark" ? "bg-primary" : "bg-primary"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
                       >
                         {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
                         <div className="flex items-center justify-start">
@@ -1225,8 +731,9 @@ const Navbar = () => {
 
                     {/* CHANGE PASSWORD  */}
                     <div
-                      className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
                     >
                       <Link
                         to={"/changepassword"}
@@ -1234,10 +741,11 @@ const Navbar = () => {
                       >
                         <div className="flex items-center justify-start">
                           <div
-                            className={`${currentMode === "dark"
-                              ? "bg-[#1C1C1C]"
-                              : "bg-[#EEEEEE]"
-                              } p-2 rounded-full mr-2`}
+                            className={`${
+                              currentMode === "dark"
+                                ? "bg-[#1C1C1C]"
+                                : "bg-[#EEEEEE]"
+                            } p-2 rounded-full mr-2`}
                           >
                             <VscShield size={18} color={"#AAAAAA"} />
                           </div>
@@ -1251,17 +759,21 @@ const Navbar = () => {
                     {/* IF SUBSCRIBED, UNSUBCRIBE  */}
                     {User?.role !== 1 && isUserSubscribed && (
                       <div
-                        className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                          } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark"
+                            ? "bg-[#000000]"
+                            : "bg-[#FFFFFF]"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
                         onClick={UnsubscribeUser}
                       >
                         {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
                         <div className="flex items-center justify-start">
                           <div
-                            className={`${currentMode === "dark"
-                              ? "bg-[#1C1C1C]"
-                              : "bg-[#EEEEEE]"
-                              } p-2 rounded-full mr-2`}
+                            className={`${
+                              currentMode === "dark"
+                                ? "bg-[#1C1C1C]"
+                                : "bg-[#EEEEEE]"
+                            } p-2 rounded-full mr-2`}
                           >
                             <VscExclude size={18} color={"#AAAAAA"} />
                           </div>
@@ -1280,20 +792,24 @@ const Navbar = () => {
 
                     {/* LOGOUT  */}
                     <div
-                      className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                        } p-3 rounded-xl shadow-sm w-full`}
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } p-3 rounded-xl shadow-sm w-full`}
                       onClick={LogoutUser}
                     >
                       <div className="flex items-center justify-start">
                         <div
-                          className={`${currentMode === "dark"
-                            ? "bg-[#1C1C1C]"
-                            : "bg-[#EEEEEE]"
-                            } p-2 rounded-full mr-2`}
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
+                          } p-2 rounded-full mr-2`}
                         >
                           <VscSignOut size={18} color={"#AAAAAA"} />
                         </div>
-                        <p className="mx-1 mr-2 font-semibold">{t("log_out")}</p>
+                        <p className="mx-1 mr-2 font-semibold">
+                          {t("log_out")}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -1301,8 +817,546 @@ const Navbar = () => {
                   <div className="px-2">
                     {langs?.map((lang) => (
                       <button
-                        className={`cursor-pointer card-hover ${currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
-                          } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark"
+                            ? "bg-[#000000]"
+                            : "bg-[#FFFFFF]"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                        onClick={(e) => {
+                          i18n.changeLanguage(lang.code);
+                          saveLangInProfile(lang.code);
+                          if (isLangRTL(lang.code)) {
+                            changeBodyDirection("rtl");
+                          } else {
+                            changeBodyDirection("ltr");
+                          }
+                        }}
+                      >
+                        <div className="grid grid-cols-2 gap-5">
+                          <div className="text-start">
+                            <img
+                              className="rounded-sm h-6 w-8 border"
+                              src={lang.flag}
+                              alt=""
+                            />
+                          </div>
+                          <div
+                            className="text-end"
+                            style={{
+                              fontFamily: lang?.font,
+                              // fontSize: lang?.size
+                            }}
+                          >
+                            {lang.title}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <></>
+                )
+              ) : (
+                <></>
+              )}
+            </Menu>
+          </div>
+        </div>
+      )}
+
+      {deviceType === "desktop" && (
+        <div
+          className={` ${
+            themeBgImg
+              ? currentMode === "dark"
+                ? "blur-bg-dark-nr"
+                : "blur-bg-light-nr"
+              : currentMode === "dark"
+              ? "bg-dark-neu-nr"
+              : "bg-light-neu-nr"
+          } flex justify-between items-center p-2 relative`}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: isLangRTL(i18n.language) ? "0" : !isCollapsed ? 80 : 200,
+            right: isLangRTL(i18n.language) ? (!isCollapsed ? 80 : 200) : 0,
+            zIndex: "20",
+            // backgroundColor: !themeBgImg && (currentMode === "dark" ? "black" : "white"),
+            boxShadow:
+              currentMode !== "dark"
+                ? "0 2px 4px rgba(0, 0, 0, 0.1)"
+                : "0 2px 4px rgba(255, 255, 255, 0.1)",
+          }}
+        >
+          {/* BREADCRUMB  */}
+          <div className="flex items-center">
+            <div
+              onClick={() => {
+                collapseSidebar();
+                setIsCollapsed(!isCollapsed);
+              }}
+              className="flex items-center rounded-lg pl-1 cursor-pointer"
+            >
+              <button
+                type="button"
+                style={{
+                  color: currentMode === "dark" ? "white" : primaryColor,
+                }}
+                // style={{ color: currentColor }}
+                className={`relative text-xl rounded-full hover:bg-light-gray mr-4`}
+                aria-label="menu-icon-toggle"
+              >
+                <span className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2" />
+                <AiOutlineMenu />
+              </button>
+            </div>
+            <BreadCrumb allroutes={allRoutes} currentMode={currentMode} />
+          </div>
+
+          <div className="flex items-center">
+            {/* UPGRADE  */}
+            {isUserSubscribed !== null && [
+              isUserSubscribed === false ? (
+                <Button
+                  variant="contained"
+                  className="bg-btn-primary"
+                  sx={{
+                    mx: 2,
+                    "& svg": {
+                      color: "white",
+                    },
+                  }}
+                >
+                  <Link to="/marketing/payments" className="flex items-center">
+                    <MdStars className="mx-2" size={18} />
+                    <span className="mt-[2px]">{t("upgrade")}</span>
+                  </Link>
+                </Button>
+              ) : (
+                <></>
+              ),
+            ]}
+
+            {/* search */}
+            <SearchLeads />
+            {/* MEETINGS  */}
+            <NavButton
+              title="Meetings"
+              handleClose={handleClose}
+              dotColor={currentMode === "dark" ? "#ffffff" : primaryColor}
+              customFunc={(event) => handleClick(event, "Meetings")}
+              color={currentMode === "dark" ? "#ffffff" : "#333333"}
+              aria-label="upcoming Meetings list"
+              icon={
+                currNavBtn === "Meetings" ? (
+                  <BsCalendarEventFill size={16} />
+                ) : (
+                  <BsCalendarEvent size={16} />
+                )
+              }
+            />
+            {/* NOTIFICATIONS  */}
+            <NavButton
+              handleClose={handleClose}
+              title="Notification"
+              // dotColor={currentMode === "dark" ? "#ffffff" : "#DA1F26"}
+              customFunc={(event) => handleClick(event, "Notifications")}
+              color={currentMode === "dark" ? "#ffffff" : "#333333"}
+              aria-label="Notifications list"
+              icon={
+                <Badge
+                  className={notifIconAnimating ? "animate-notif-icon" : ""}
+                  badgeContent={unreadNotifsCount}
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      background: primaryColor,
+                      color: "white",
+                    },
+                  }}
+                >
+                  <BsBell size={16} />
+                </Badge>
+              }
+            />
+            {/* CLOCK  */}
+            <NavButton
+              handleClose={handleClose}
+              title="Clock"
+              // color={currentMode === "dark" ? "#ffffff" : LightIconsColor}
+              customFunc={(event) => handleClick(event, "Clock")}
+              color={currentMode === "dark" ? "#ffffff" : "#333333"}
+              icon={
+                currNavBtn === "Clock" ? (
+                  <BsClockFill size={16} />
+                ) : (
+                  <BsClock size={16} />
+                )
+              }
+            />
+            {/* THEME  */}
+            {/* {!themeBgImg && */}
+            <Tooltip
+              title={currentMode === "dark" ? "Light mode" : "Dark mode"}
+              arrow
+              placement="bottom"
+            >
+              <button
+                type="button"
+                onClick={changeMode}
+                className={`relative text-xl rounded-full p-3 hover:bg-light-gray ${
+                  currentMode === "dark" ? "text-white" : " text-primary"
+                }`}
+              >
+                {currentMode === "dark" ? (
+                  <MdOutlineLightMode size={16} color="#dcb511" />
+                ) : (
+                  <MdDarkMode size={16} color={primaryColor} />
+                )}
+              </button>
+            </Tooltip>
+            {/* } */}
+            {/* PROFILE  */}
+            <Tooltip title="Profile" arrow placement="bottom">
+              <div
+                className={`bg-primary text-white mx-1 p-2 flex items-center gap-2 cursor-pointer hover:bg-light-gray rounded-xl shadow-sm card-hover`}
+                onClick={(event) => {
+                  if (currNavBtn === "Profile") {
+                    handleClose();
+                  } else {
+                    handleClick(event, "Profile");
+                  }
+                }}
+              >
+                <img
+                  height={50}
+                  width={50}
+                  className="rounded-full w-10 h-10 object-cover"
+                  src={User?.displayImg ? User?.displayImg : "/assets/user.png"}
+                  alt="user-profile"
+                />
+                <p className="display-block">
+                  <span className={`font-bold`}>
+                    {getDisplayName(User?.userName)}
+                  </span>
+                </p>
+                <MdKeyboardArrowDown size={14} className={``} />
+              </div>
+            </Tooltip>
+            {/* LANG  */}
+            <Tooltip title="Language" arrow placement="bottom">
+              <div
+                className="mx-2 flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+                onClick={(event) => {
+                  if (currNavBtn === "Language") {
+                    handleClose();
+                  } else {
+                    handleClick(event, "Language");
+                  }
+                }}
+                role="button"
+              >
+                <img
+                  className="rounded-sm h-6 w-8 border"
+                  src={langFlag}
+                  alt={i18n?.language}
+                />
+                {/* <MdKeyboardArrowDown
+                className={`${
+                  currentMode === "dark" ? "text-white" : "text-black"
+                }`}
+              /> */}
+              </div>
+            </Tooltip>
+            <Menu
+              className="hide-scrollbar navbar-menu-backdrop"
+              hideBackdrop={false}
+              onClick={handleClose}
+              onMouseLeave={handleClose}
+              anchorEl={anchorElem}
+              open={open}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  "& .MuiList-root .clock-div": {
+                    border: "none !important",
+                    background: "transparent !important",
+                  },
+                  mt: 2,
+                  pl: !isLangRTL(i18n.language) && 0.6,
+                  pr: isLangRTL(i18n.language) && 0.6,
+                  py: 0.4,
+                  overflowY: "scroll",
+                  filter:
+                    currentMode === "dark"
+                      ? "drop-shadow(1px 1px 6px rgb(238 238 238 / 0.3))"
+                      : "drop-shadow(1px 1px 6px rgb(28 28 28 / 0.3))",
+                  // background: currentMode === "dark" ? "#1C1C1C" : "#EEEEEE",
+                  background:
+                    currentMode === "dark"
+                      ? "rgb(28 28 28 / 0.9)"
+                      : "rgb(238 238 238 / 0.9)",
+                  color: currentMode === "dark" ? "#ffffff" : "black",
+                  minWidth: currNavBtn === "Language" ? 100 : 300,
+                  maxWidth: currNavBtn === "Language" ? 180 : 350,
+                  borderRadius: "10px",
+                  // "& .MuiAvatar-root": {
+                  //   width: 32,
+                  //   height: 32,
+                  //   // ml: -0.5,
+                  //   mx: 1,
+                  // },
+                  "& .css-qwh1ly-MuiContainer-root, .css-khd9l5-MuiContainer-root":
+                    {
+                      padding: "0 !important",
+                    },
+                },
+              }}
+              transformOrigin={{ horizontal: "center", vertical: "top" }}
+              anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+            >
+              {currNavBtn ? (
+                currNavBtn === "Notifications" ? (
+                  // <NotificationsMenu />
+                  <NotificationsMenuUpdated
+                    handleClose={handleClose}
+                    setCurrNavBtn={setCurrNavBtn}
+                  />
+                ) : currNavBtn === "Clock" ? (
+                  <Clock handleClose={handleClose} />
+                ) : currNavBtn === "Meetings" ? (
+                  <UpcomingMeetingsMenu />
+                ) : currNavBtn === "Profile" ? (
+                  <div className="px-2">
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-4 rounded-xl shadow-sm w-full`}
+                    >
+                      <Link
+                        to={"/profile"}
+                        onClick={() => setopenBackDrop(true)}
+                      >
+                        <div className="flex items-center justify-start">
+                          <Avatar
+                            src={User?.displayImg}
+                            className="inline-block"
+                          />
+                          <div className="flex justify-between items-center w-full h-full">
+                            <div className="mx-1 space-y-1">
+                              <p className="font-semibold">{User?.userName}</p>
+                              <p className="text-xs capitalize">
+                                {User?.position}
+                              </p>
+                            </div>
+                            <div
+                              style={{
+                                borderColor: primaryColor,
+                              }}
+                              className={`text-sm rounded-full border px-2 py-1`}
+                            >
+                              {t("profile")}
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+
+                    <ColorSchemeMenuItem />
+
+                    {/* DOWNLOAD MOBILE APP  */}
+                    <div className="grid grid-cols-2 gap-2">
+                      {/* iOS  */}
+                      <div
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark" ? "bg-primary" : "bg-primary"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                      >
+                        {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
+                        <div className="flex items-center justify-start">
+                          <div className={`p-1 rounded-full mr-2`}>
+                            <BsApple size={18} color={"#FFFFFF"} />
+                          </div>
+                          <div className="flex justify-between items-center w-full h-full text-white">
+                            <div className="flex items-center">
+                              <p className="font-semibold mx-1 mr-2">
+                                Hikal CRM
+                                <br />
+                                iOS
+                              </p>
+                            </div>
+                            <VscLock
+                              size={14}
+                              color={"#FFFFFF"}
+                              className="mr-2"
+                            />
+                          </div>
+                        </div>
+                        {/* </Link> */}
+                      </div>
+
+                      {/* ANDROID  */}
+                      <div
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark" ? "bg-primary" : "bg-primary"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                      >
+                        {/* <Link to={"/profile"} onClick={() => setopenBackDrop(true)}> */}
+                        <div className="flex items-center justify-start">
+                          <div className={`p-1 rounded-full mr-2`}>
+                            <BsAndroid2 size={18} color={"#FFFFFF"} />
+                          </div>
+                          <div className="flex justify-between items-center w-full h-full text-white">
+                            <div className="flex items-center">
+                              <p className="font-semibold mx-1 mr-2">
+                                Hikal CRM
+                                <br />
+                                Android
+                              </p>
+                            </div>
+                            <VscLock
+                              size={14}
+                              color={"#FFFFFF"}
+                              className="mr-2"
+                            />
+                          </div>
+                        </div>
+                        {/* </Link> */}
+                      </div>
+                    </div>
+
+                    {/* LOGIN HISTORY  */}
+                    {/* <div
+                    className={`cursor-pointer card-hover ${
+                      currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                    } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                  >
+                    <div className="flex items-center justify-start">
+                      <div
+                        className={`${
+                          currentMode === "dark"
+                            ? "bg-[#1C1C1C]"
+                            : "bg-[#EEEEEE]"
+                        } p-2 rounded-full mr-2`}
+                      >
+                        <VscHistory size={18} color={"#AAAAAA"} />
+                      </div>
+                      <div className="flex justify-between items-center w-full h-full">
+                        <div className="flex items-center">
+                          <p className="font-semibold mx-1 mr-2">
+                            {t("login_history")}
+                          </p>
+                          <VscLock
+                            size={14}
+                            color={primaryColor}
+                            className="mr-2"
+                          />
+                        </div>
+                        <div
+                          style={{
+                            background: primaryColor,
+                            fontSize: "0.5rem",
+                          }}
+                          className="rounded-full text-white px-2 py-1 font-bold"
+                        >
+                          {t("soon")?.toUpperCase()}
+                        </div>
+                      </div>
+                    </div>
+                  </div> */}
+
+                    {/* CHANGE PASSWORD  */}
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                    >
+                      <Link
+                        to={"/changepassword"}
+                        onClick={() => setopenBackDrop(true)}
+                      >
+                        <div className="flex items-center justify-start">
+                          <div
+                            className={`${
+                              currentMode === "dark"
+                                ? "bg-[#1C1C1C]"
+                                : "bg-[#EEEEEE]"
+                            } p-2 rounded-full mr-2`}
+                          >
+                            <VscShield size={18} color={"#AAAAAA"} />
+                          </div>
+                          <p className="mx-1 mr-2 font-semibold">
+                            {t("change_password")}
+                          </p>
+                        </div>
+                      </Link>
+                    </div>
+
+                    {/* IF SUBSCRIBED, UNSUBCRIBE  */}
+                    {User?.role !== 1 && isUserSubscribed && (
+                      <div
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark"
+                            ? "bg-[#000000]"
+                            : "bg-[#FFFFFF]"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                        onClick={UnsubscribeUser}
+                      >
+                        {/* <Link to={"/changepassword"} onClick={() => setopenBackDrop(true)}> */}
+                        <div className="flex items-center justify-start">
+                          <div
+                            className={`${
+                              currentMode === "dark"
+                                ? "bg-[#1C1C1C]"
+                                : "bg-[#EEEEEE]"
+                            } p-2 rounded-full mr-2`}
+                          >
+                            <VscExclude size={18} color={"#AAAAAA"} />
+                          </div>
+                          <p className="mx-1 mr-2 font-semibold">
+                            {t("unsubscribe_package")}
+                          </p>
+                          <VscLock
+                            size={14}
+                            color={primaryColor}
+                            className="mr-2"
+                          />
+                        </div>
+                        {/* </Link> */}
+                      </div>
+                    )}
+
+                    {/* LOGOUT  */}
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } p-3 rounded-xl shadow-sm w-full`}
+                      onClick={LogoutUser}
+                    >
+                      <div className="flex items-center justify-start">
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
+                          } p-2 rounded-full mr-2`}
+                        >
+                          <VscSignOut size={18} color={"#AAAAAA"} />
+                        </div>
+                        <p className="mx-1 mr-2 font-semibold">
+                          {t("log_out")}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : currNavBtn === "Language" ? (
+                  <div className="px-2">
+                    {langs?.map((lang) => (
+                      <button
+                        className={`cursor-pointer card-hover ${
+                          currentMode === "dark"
+                            ? "bg-[#000000]"
+                            : "bg-[#FFFFFF]"
+                        } mb-3 p-3 rounded-xl shadow-sm w-full`}
                         onClick={(e) => {
                           i18n.changeLanguage(lang.code);
                           saveLangInProfile(lang.code);

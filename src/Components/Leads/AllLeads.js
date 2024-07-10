@@ -553,7 +553,10 @@ const AllLeads = ({
                   className={`text-white bg-primary rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
                 >
                   <Tooltip title="Send Link" arrow>
-                    <button onClick={() => HandleSendMeetLinkBtn(cellValues)}>
+                    <button
+                      aria-label="send link"
+                      onClick={() => HandleSendMeetLinkBtn(cellValues)}
+                    >
                       <SiGooglemeet size={16} />
                     </button>
                   </Tooltip>
@@ -604,7 +607,10 @@ const AllLeads = ({
                 style={{ cursor: "pointer" }}
                 className={` bg-primary text-white hover:bg-[#ec8d00] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center reminderBtn`}
               >
-                <button onClick={() => HandleReminderBtn(cellValues)}>
+                <button
+                  aria-label="reminder button"
+                  onClick={() => HandleReminderBtn(cellValues)}
+                >
                   <BsAlarm size={16} />
                 </button>
               </p>
@@ -628,7 +634,10 @@ const AllLeads = ({
               className={` bg-primary text-white hover:bg-[#6a5acd] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn`}
             >
               <Tooltip title="View Timeline" arrow>
-                <button onClick={() => HandleViewTimeline(cellValues)}>
+                <button
+                  aria-label="view timeline"
+                  onClick={() => HandleViewTimeline(cellValues)}
+                >
                   <AiOutlineHistory size={16} />
                 </button>
               </Tooltip>
@@ -669,7 +678,11 @@ const AllLeads = ({
     };
 
     return (
-      <button className="call-button" onClick={handlePhoneClick}>
+      <button
+        className="call-button"
+        aria-label="call button"
+        onClick={handlePhoneClick}
+      >
         <VscCallOutgoing size={16} />
       </button>
     );
@@ -682,7 +695,11 @@ const AllLeads = ({
     };
 
     return (
-      <button className="email-button" onClick={handleEmailClick}>
+      <button
+        className="email-button"
+        aria-label="email button"
+        onClick={handleEmailClick}
+      >
         <RiMailSendLine size={16} />
       </button>
     );
@@ -2094,6 +2111,7 @@ const AllLeads = ({
 
           <Select
             id="select-page-size-label"
+            aria-label="select page size"
             value={{ label: pageState.pageSize, value: pageState.pageSize }}
             onChange={handleRangeChange}
             options={[14, 30, 50, 75, 100].map((size) => ({
@@ -2422,7 +2440,14 @@ const AllLeads = ({
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: User?.role === 1 ? "340px" : "250px",
+                left:
+                  User?.role === 1
+                    ? isLangRTL(i18n?.language)
+                      ? "950px"
+                      : "340px"
+                    : isLangRTL(i18n?.language)
+                    ? "1135px"
+                    : "250px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -2439,7 +2464,7 @@ const AllLeads = ({
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: "455px",
+                left: isLangRTL(i18n?.language) ? "1050px" : "455px",
                 zIndex: "5 !important",
               }}
               variant="text"
@@ -2457,7 +2482,14 @@ const AllLeads = ({
               size="small"
               sx={{
                 ...bulkUpdateBtnStyles,
-                left: User?.role === 1 ? "230px" : "150px",
+                left:
+                  User?.role === 1
+                    ? isLangRTL(i18n?.language)
+                      ? "1135px"
+                      : "230px"
+                    : isLangRTL(i18n?.language)
+                    ? "1235px"
+                    : "150px",
               }}
               variant="text"
             >
@@ -2482,6 +2514,7 @@ const AllLeads = ({
             } z-[2]`}
           >
             <TextField
+              aria-label="search leads"
               placeholder={t("search")}
               ref={searchRef}
               sx={{
@@ -2495,7 +2528,7 @@ const AllLeads = ({
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <IconButton sx={{ padding: 0 }}>
+                    <IconButton aria-label="search icon" sx={{ padding: 0 }}>
                       <ImSearch size={16} />
                     </IconButton>
                   </InputAdornment>

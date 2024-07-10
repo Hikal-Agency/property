@@ -358,6 +358,7 @@ const RenderFeedback = ({ cellValues }) => {
     >
       {feedbackTheme === "renderStyles" ? (
         <Select
+          aria-label="select feedback"
           id="feedback"
           options={feedback_options(t)}
           value={
@@ -374,6 +375,7 @@ const RenderFeedback = ({ cellValues }) => {
         />
       ) : (
         <Select
+          aria-label="select feedback"
           id="feedback"
           options={feedback_options(t)}
           value={
@@ -787,6 +789,7 @@ const RenderFeedback = ({ cellValues }) => {
                     />
                     {/* CURRENCY  */}
                     <Select
+                      aria-label="select currency"
                       id="currency"
                       options={currencies(t)}
                       value={currencies(t).find(

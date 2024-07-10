@@ -634,6 +634,24 @@ const SingleLeadModal = ({
                           "& input": {
                             fontFamily: "Noto Kufi Arabic",
                           },
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                              textAlign: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
                         }}
                         id="note"
                         type={"text"}
