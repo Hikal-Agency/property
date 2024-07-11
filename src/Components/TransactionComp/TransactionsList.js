@@ -249,23 +249,22 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
         sx={{
           ...darkModeColors,
           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+          {
+            right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+            transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+          },
           "& legend": {
             textAlign: isLangRTL(i18n.language) ? "right" : "left",
           },
         }}
-        className={`p-5 ${
-          themeBgImg
-            ? currentMode === "dark"
-              ? "blur-bg-black"
-              : "blur-bg-white"
-            : currentMode === "dark"
+        className={`p-5 ${themeBgImg
+          ? currentMode === "dark"
+            ? "blur-bg-black"
+            : "blur-bg-white"
+          : currentMode === "dark"
             ? "bg-dark-neu"
             : "bg-light-neu"
-        }`}
+          }`}
       >
         {loading ? (
           <div className="flex items-center justify-center">
@@ -289,7 +288,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                       <p
                         className={`${themeBgImg ? "bg-primary"
                           : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                        } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
+                          } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
                         style={{ zIndex: 1 }}
                       >
                         {date}
@@ -304,9 +303,8 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                       onClick={() => setSingleTransModal(trans)}
                     >
                       <div
-                        className={`${
-                          isLangRTL(i18n.language) ? "pl-5" : "pr-5"
-                        } grid grid-cols-12 gap-5`}
+                        className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                          } grid grid-cols-12 gap-5`}
                       >
                         {/* DATE */}
                         <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
@@ -318,7 +316,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                             className={`${themeBgImg
                               ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
                               : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-                            } w-fit h-fit p-3`}
+                              } w-fit h-fit p-3`}
                             style={{ zIndex: 1 }}
                           >
                             {trans?.category.toLowerCase() === "commission" ? (
@@ -370,11 +368,10 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                             {deviceType === "mobile" && (
                               <div className="flex flex-col items-end">
                                 <p
-                                  className={`font-semibold ${
-                                    trans?.invoice_type == "Income"
-                                      ? "text-green-600"
-                                      : "text-red-600"
-                                  } `}
+                                  className={`font-semibold ${trans?.invoice_type == "Income"
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                    } `}
                                 >
                                   {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
                                   {trans?.currency}{" "}
@@ -393,11 +390,10 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                         {deviceType !== "mobile" && (
                           <div className="col-span-3 md:col-span-2 pb-5 flex flex-col items-end gap-2">
                             <p
-                              className={`font-semibold ${
-                                trans?.invoice_type == "Income"
-                                  ? "text-green-600"
-                                  : "text-red-600"
-                              } `}
+                              className={`font-semibold ${trans?.invoice_type == "Income"
+                                ? "text-green-600"
+                                : "text-red-600"
+                                } `}
                             >
                               {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
                               {trans?.currency}{" "}

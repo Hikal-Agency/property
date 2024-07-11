@@ -96,7 +96,7 @@ const CreateAppointment = () => {
         ) : (
           <div
             className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
             }`}
           >
             <div className="mt-3">
@@ -123,7 +123,7 @@ const CreateAppointment = () => {
                     height: "165px",
                     // minWidth: "300px !important",
                   }}
-                  className="my-5 p-5 lg:col-span-3"
+                  className={`my-5 p-5 lg:col-span-3`}
                 >
                   <div>
                     <h1 className="font-bold text-4xl ">

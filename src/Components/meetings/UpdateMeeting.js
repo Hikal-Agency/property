@@ -30,6 +30,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { BsMic, BsMicFill } from "react-icons/bs";
+import HeadingTitle from "../_elements/HeadingTitle";
 
 const UpdateMeeting = ({
   meetingModalOpen,
@@ -118,10 +119,10 @@ const UpdateMeeting = ({
         i18n?.language == "pk"
           ? "ur"
           : i18n?.language == "cn"
-          ? "zh"
-          : i18n?.language == "in"
-          ? "hi"
-          : i18n?.language,
+            ? "zh"
+            : i18n?.language == "in"
+              ? "hi"
+              : i18n?.language,
     });
   // const style = {
   //   transform: "translate(-50%, -50%)",
@@ -204,11 +205,11 @@ const UpdateMeeting = ({
 
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline":
-      {
-        color: currentMode === "dark" ? "white !important" : "black !important",
-        fontSize: "0.9rem",
-        fontWeight: "500",
-      },
+    {
+      color: currentMode === "dark" ? "white !important" : "black !important",
+      fontSize: "0.9rem",
+      fontWeight: "500",
+    },
     "& .MuiOutlinedInput-notchedOutline": {
       borderColor:
         currentMode === "dark" ? "white !important" : "black !important",
@@ -322,23 +323,20 @@ const UpdateMeeting = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -349,28 +347,20 @@ const UpdateMeeting = ({
           </button>
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+            className={` ${currentMode === "dark"
+                ? "bg-dark text-white"
+                : "bg-light text-black"
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && "border-r-2 border-primary"
                 : currentMode === "dark" && "border-l-2 border-primary"
-            }
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll
+              }
+             p-5 h-[100vh] w-[85vw] overflow-y-scroll
             `}
           >
-            <div className="w-full flex items-center pb-3">
-              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-              <h1
-                className={`text-lg font-semibold ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                {t("update_meeting_details")}
-              </h1>
-            </div>
+            <HeadingTitle
+              title={t("update_meeting_details")}
+            />
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -427,8 +417,8 @@ const UpdateMeeting = ({
                         onChange={(newValue) => {
                           setMeetingTime(
                             formatNum(newValue?.$d?.getHours()) +
-                              ":" +
-                              formatNum(newValue?.$d?.getMinutes())
+                            ":" +
+                            formatNum(newValue?.$d?.getMinutes())
                           );
                           setMeetingTimeValue(newValue);
                         }}
@@ -554,13 +544,11 @@ const UpdateMeeting = ({
                           <InputAdornment position="end">
                             <div
                               // ref={searchContainer}
-                              className={`${
-                                isVoiceSearchState ? "listening bg-primary" : ""
-                              } ${
-                                currentMode === "dark"
+                              className={`${isVoiceSearchState ? "listening bg-primary" : ""
+                                } ${currentMode === "dark"
                                   ? "text-white"
                                   : "text-black"
-                              } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                                } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
                               onClick={() => {
                                 setIsVoiceSearchState(!isVoiceSearchState);
                                 console.log("mic is clicked...");
@@ -587,11 +575,12 @@ const UpdateMeeting = ({
               </div>
 
               <div className="p-4">
-                <Button
-                  className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none  bg-btn-primary`}
-                  ripple={true}
-                  size="lg"
-                  type="submit"
+                <button
+                  className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                  } min-w-fit w-full text-white p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
+                  // ripple={true}
+                  // size="lg"
+                  // type="submit"
                   disabled={btnloading ? true : false}
                 >
                   {btnloading ? (
@@ -601,7 +590,7 @@ const UpdateMeeting = ({
                   ) : (
                     <span> {t("btn_update_meeting")}</span>
                   )}
-                </Button>
+                </button>
               </div>
             </form>
           </div>

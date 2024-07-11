@@ -12,6 +12,8 @@ import Loader from "../../Components/Loader";
 import { MdClose } from "react-icons/md";
 
 import usePermission from "../../utils/usePermission";
+import HeadingTitle from "../_elements/HeadingTitle";
+import TransactionsList from "./TransactionsList";
 
 const TransactionsListModal = ({
   setTransactionsListModal,
@@ -131,6 +133,8 @@ const TransactionsListModal = ({
     fetchTransactions();
   }, [filters]);
 
+
+
   return (
     <>
       {/* <div
@@ -152,23 +156,20 @@ const TransactionsListModal = ({
         }}
       >
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
           w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseTimelineModel}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -180,15 +181,13 @@ const TransactionsListModal = ({
 
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#1C1C1C] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${
-              isLangRTL(i18n.language)
+            className={` ${currentMode === "dark"
+              ? "bg-dark text-white"
+              : "bg-light text-black"
+              } ${isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-            } p-4 h-[100vh] w-[80vw] overflow-y-scroll `}
+              } p-5 h-[100vh] w-[85vw] overflow-y-scroll `}
           >
             {loading ? (
               <Loader />
@@ -198,123 +197,112 @@ const TransactionsListModal = ({
                   <Error404 />
                 ) : (
                   <div className="w-full">
-                    <div className="w-full flex justify-between items-center pb-3">
-                      <div className="flex items-center gap-3">
-                        <h1
-                          className={`font-semibold text-white bg-primary py-2 px-3 rounded-md`}
-                        >
-                          {t("transaction_details")}
-                        </h1>
-                      </div>
-                    </div>
+                    <HeadingTitle
+                      title={t("transaction_details")}
+                    />
 
-                    <div className="">
-                      <div
-                        className={`rounded-xl w-full my-3  shadow-sm ${
-                          currentMode === "dark" ? "bg-black" : "bg-[#EEEEEE]"
-                        } p-4`}
+                    <div className="p-5">
+                      <Box
+                        sx={{
+                          ...darkModeColors,
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                          {
+                            right: isLangRTL(i18n.language)
+                              ? "2.5rem"
+                              : "inherit",
+                            transformOrigin: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
+                          },
+                        }}
+                        className="p-2"
                       >
-                        <Box
-                          sx={{
-                            ...darkModeColors,
-                            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                              {
-                                right: isLangRTL(i18n.language)
-                                  ? "2.5rem"
-                                  : "inherit",
-                                transformOrigin: isLangRTL(i18n.language)
-                                  ? "right"
-                                  : "left",
-                              },
-                            "& legend": {
-                              textAlign: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
-                          }}
-                          className="p-2"
-                        >
-                          {loading ? (
-                            <div className="flex items-center justify-center">
-                              <CircularProgress />
-                            </div>
-                          ) : (
-                            <div className="h-[600px] overflow-y-scroll ">
-                              {transactionsData &&
-                              transactionsData?.length > 0 ? (
-                                transactionsData?.map((trans) => {
-                                  let user;
-                                  if (
-                                    trans?.category?.toLowerCase() === "salary"
-                                  ) {
-                                    user = true;
-                                  } else {
-                                    user = false;
-                                  }
+                        {loading ? (
+                          <div className="flex items-center justify-center">
+                            <CircularProgress />
+                          </div>
+                        ) : (
+                          <div className="">
+                            {/* <TransactionsList filtersData={transactionsData} /> */}
 
-                                  return (
-                                    <>
-                                      <div
-                                        className="mb-9 mx-3 cursor-pointer"
-                                        // onClick={() =>
-                                        //   setSingleTransModal(trans)
-                                        // }
-                                      >
-                                        <p>{trans?.date}</p>
-                                        <div className="flex items-center justify-between my-3">
-                                          <div>
-                                            <div className="flex flex-col">
-                                              <div className="flex items-center mb-1">
-                                                <span className="border rounded-md p-3 mr-3">
-                                                  {user ? (
-                                                    <FaUser />
-                                                  ) : (
-                                                    <FaHome size={20} />
-                                                  )}
-                                                </span>
+                            {transactionsData &&
+                              transactionsData?.length > 0 ? (
+                              transactionsData?.map((trans) => {
+                                let user;
+                                if (
+                                  trans?.category?.toLowerCase() === "salary"
+                                ) {
+                                  user = true;
+                                } else {
+                                  user = false;
+                                }
+
+                                return (
+                                  <>
+                                    <div
+                                      className="mb-9 mx-3 cursor-pointer"
+                                    // onClick={() =>
+                                    //   setSingleTransModal(trans)
+                                    // }
+                                    >
+                                      <p>{trans?.date}</p>
+                                      <div className="flex items-center justify-between my-3">
+                                        <div>
+                                          <div className="flex flex-col">
+                                            <div className="flex items-center mb-1">
+                                              <span className="border rounded-md p-3 mr-3">
                                                 {user ? (
-                                                  <p>{trans?.user?.userName}</p>
+                                                  <FaUser />
                                                 ) : (
-                                                  <p>
-                                                    {trans?.vendor?.type} -{" "}
-                                                    {trans?.vendor?.vendor_name}
-                                                  </p>
+                                                  <FaHome size={20} />
                                                 )}
-                                                <p></p>
-                                              </div>
-                                              <p className="text-sm self-start pl-[calc(20px+2rem)]">
-                                                {trans?.category}
-                                              </p>
+                                              </span>
+                                              {user ? (
+                                                <p>{trans?.user?.userName}</p>
+                                              ) : (
+                                                <p>
+                                                  {trans?.vendor?.type} -{" "}
+                                                  {trans?.vendor?.vendor_name}
+                                                </p>
+                                              )}
+                                              <p></p>
                                             </div>
-                                          </div>
-                                          <div>
-                                            <p
-                                              className={`font-semibold ${
-                                                trans?.invoice_type == "Income"
-                                                  ? "text-green-600"
-                                                  : "text-red-600"
-                                              } `}
-                                            >
-                                              {trans?.invoice_type === "Income"
-                                                ? "+"
-                                                : "-"}{" "}
-                                              {trans?.currency} {trans?.amount}
+                                            <p className="text-sm self-start pl-[calc(20px+2rem)]">
+                                              {trans?.category}
                                             </p>
                                           </div>
                                         </div>
+                                        <div>
+                                          <p
+                                            className={`font-semibold ${trans?.invoice_type == "Income"
+                                              ? "text-green-600"
+                                              : "text-red-600"
+                                              } `}
+                                          >
+                                            {trans?.invoice_type === "Income"
+                                              ? "+"
+                                              : "-"}{" "}
+                                            {trans?.currency} {trans?.amount}
+                                          </p>
+                                        </div>
                                       </div>
-                                    </>
-                                  );
-                                })
-                              ) : (
-                                <div>
-                                  <h1>{t("no_data_found")}</h1>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </Box>
-                      </div>
+                                    </div>
+                                  </>
+                                );
+                              })
+                            ) : (
+                              <div>
+                                <h1>{t("no_data_found")}</h1>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </Box>
                     </div>
                   </div>
                 )}
