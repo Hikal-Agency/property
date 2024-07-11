@@ -34,6 +34,7 @@ import PhoneInput, {
   isPossiblePhoneNumber,
 } from "react-phone-number-input";
 import classNames from "classnames";
+import HeadingTitle from "../_elements/HeadingTitle";
 
 const AddVendor = ({
   openVendorModal,
@@ -229,22 +230,19 @@ const AddVendor = ({
       }}
     >
       <div
-        className={`${
-          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-        } ${
-          isClosing
+        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-        }
+          }
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${
-            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-          }
+          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -255,16 +253,14 @@ const AddVendor = ({
         </button>
         <div
           style={style}
-          className={` ${
-            currentMode === "dark"
-              ? "bg-[#000000] text-white"
-              : "bg-[#FFFFFF] text-black"
-          } ${
-            isLangRTL(i18n.language)
+          className={` ${currentMode === "dark"
+              ? "bg-dark text-white"
+              : "bg-light text-black"
+            } ${isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-          }
-            p-4 h-[100vh] w-[80vw] overflow-y-scroll 
+            }
+            p-4 h-[100vh] w-[85vw] overflow-y-scroll 
           `}
         >
           {loading ? (
@@ -273,32 +269,18 @@ const AddVendor = ({
             </div>
           ) : (
             <>
-              <div className="w-full grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-5">
-                <div className="w-full flex items-center pb-3 ">
-                  <div
-                    className={`${
-                      isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                    } bg-primary h-10 w-1 rounded-full my-1`}
-                  ></div>
-                  <h1
-                    className={`text-lg font-semibold ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    {edit ? t("update_vendor") : t("add_vendor")}
-                  </h1>
-                </div>
-              </div>
+              <HeadingTitle
+                title={edit ? t("update_vendor") : t("add_vendor")}
+              />
 
-              <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5 p-10">
+              <div className="grid md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
                 {/* Vendor DETAILS  */}
                 <div
-                  className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                  className={`p-5
+                  ${currentMode === "dark"
+                      ? "bg-dark-neu text-white"
+                      : "bg-light-neu text-black"
+                    }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("vendor_details")?.toUpperCase()}
@@ -425,12 +407,11 @@ const AddVendor = ({
 
                 {/* Person to contact  */}
                 <div
-                  className={`p-4 rounded-xl shadow-sm card-hover
-                  ${
-                    currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black"
-                  }`}
+                  className={`p-5
+                  ${currentMode === "dark"
+                      ? "bg-dark-neu text-white"
+                      : "bg-light-neu text-black"
+                    }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("person_to_contact")?.toUpperCase()}
@@ -468,21 +449,19 @@ const AddVendor = ({
                         })} mb-5`}
                         size="small"
                         style={{
-                          background: `${
-                            !themeBgImg
+                          background: `${!themeBgImg
                               ? currentMode === "dark"
                                 ? "#000000"
                                 : "#FFFFFF"
                               : "transparent"
                             // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
-                          }`,
+                            }`,
                           "& .PhoneInputCountryIconImg": {
                             color: "#fff",
                           },
                           color: currentMode === "dark" ? "white" : "black",
-                          border: `1px solid ${
-                            currentMode === "dark" ? "#EEEEEE" : "#666666"
-                          }`,
+                          border: `1px solid ${currentMode === "dark" ? "#EEEEEE" : "#666666"
+                            }`,
                           borderRadius: "5px",
                           outline: "none",
                         }}
@@ -537,14 +516,16 @@ const AddVendor = ({
               </div>
             </>
           )}
-          <Button
-            type="submit"
-            size="medium"
+          <button
+            // type="submit"
+            // size="medium"
             style={{
               color: "white",
               fontFamily: fontFam,
             }}
-            className="bg-btn-primary w-full text-white rounded-lg py-4 font-semibold mb-3 shadow-md hover:-mt-1 hover:mb-1"
+            className={`${currentMode === "dark" 
+              ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+            } w-full text-white p-3 font-semibold uppercase mb-5`}
             onClick={AddTransaction}
             disabled={btnloading ? true : false}
           >
@@ -557,7 +538,7 @@ const AddVendor = ({
             ) : (
               <span>{edit ? t("update_vendor") : t("btn_add")}</span>
             )}
-          </Button>
+          </button>
         </div>
       </div>
     </Modal>

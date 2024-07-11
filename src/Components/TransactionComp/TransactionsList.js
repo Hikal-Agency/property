@@ -328,7 +328,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                             ) : trans?.category.toLowerCase() === "purchase" ? (
                               <BsCart4 size={16} color={"#AAAAAA"} />
                             ) : trans?.category.toLowerCase() === "visa" ? (
-                              <RiVisaLine size={20} color={"#AAAAAA"} />
+                              <RiVisaLine size={16} color={"#AAAAAA"} />
                             ) : trans?.category.toLowerCase() ===
                               "maintenance" ? (
                               <BsTools size={16} color={"#AAAAAA"} />

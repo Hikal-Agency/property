@@ -7,6 +7,7 @@ import Loader from "../../Components/Loader";
 import VendorsList from "../../Components/VendorsComp/VendorsList";
 import { Button } from "@mui/base";
 import AddVendor from "../../Components/VendorsComp/AddVendor";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const currentDate = dayjs();
 
@@ -33,6 +34,19 @@ const Vendors = ({ isLoading }) => {
     // eslint-disable-next-line
   }, []);
 
+  const Additional = () => {
+    return (
+      <button
+        className={`${themeBgImg ? "bg-primary shadow-md"
+          : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+         } p-2 px-5 text-white rounded-md uppercase`}
+        onClick={HandleOpenModel}
+      >
+        {t("add_vendor")}
+      </button>
+    );
+  }
+
   return (
     <>
       <div className="flex relative min-h-screen">
@@ -40,36 +54,17 @@ const Vendors = ({ isLoading }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
-            }
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }
                 ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
-            <div className="w-full flex justify-between items-center">
-              <div className="w-full flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {t("vendor")}
-                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto ml-2">
-                    {pageState?.total}
-                  </span>
-                </h1>
-              </div>
-              <div>
-                <Button
-                  className="bg-btn-primary w-40 text-white px-7 py-2 rounded-md mr-2 "
-                  onClick={HandleOpenModel}
-                >
-                  {t("add_vendor")}
-                </Button>
-              </div>
-            </div>
+            <HeadingTitle
+              title={t("vendor")}
+              counter={pageState?.total}
+              additional={<Additional />}
+            />
 
-            <div className="mt-3 pb-3">
+            <div className="mt-1 pb-5">
               <VendorsList />
             </div>
           </div>

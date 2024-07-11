@@ -54,12 +54,12 @@ body {
 /* GREEN */
 .bg-green-dark-neu {
   border-radius: 10px;
-  background: #16a34a;
+  background: #007c00;
   box-shadow: 5px 5px 10px #111111, -5px -5px 10px #444444;
 }
 .bg-green-light-neu {
   border-radius: 10px;
-  background: #16a34a;
+  background: #007c00;
   box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
 }
 /* RED */

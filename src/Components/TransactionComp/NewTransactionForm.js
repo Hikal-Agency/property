@@ -940,32 +940,35 @@ const NewTransactionForm = ({
                   onChange={handleImgUpload}
                 />
                 <label htmlFor="contained-button-file">
-                  <Button
-                    variant="contained"
-                    size="medium"
-                    className="bg-btn-primary w-max text-white rounded-lg py-3 font-semibold my-3 w-full"
+                  <button
+                    // variant="contained"
+                    // size="medium"
+                    className={`${themeBgImg ? "bg-primary rounded-xl shadow-md"
+                      : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                     } w-max text-white p-3 font-semibold my-3 w-full flex gap-3`}
                     style={{
                       color: "#ffffff",
-                      border: "1px solid white",
                       fontFamily: fontFam,
                       marginBottom: "20px",
                       width: "100%",
                     }}
                     component="span" // Required so the button doesn't automatically submit form
                     disabled={loading ? true : false}
-                    startIcon={<MdFileUpload className="mx-2" size={16} />}
                   >
+                    <MdFileUpload size={16} />
                     <span>{t("upload_invoice")}</span>
-                  </Button>
+                  </button>
                 </label>
               </>
             )}
           </div>
         </div>
-        <Button
-          variant="contained"
-          size="lg"
-          className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+        <button
+          // variant="contained"
+          // size="lg"
+          className={`${themeBgImg ? "bg-primary rounded-xl shadow-md"
+            : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+          } w-full text-white p-3 font-semibold my-3`}
           style={{
             color: "#ffffff",
           }}
@@ -978,7 +981,7 @@ const NewTransactionForm = ({
               {edit ? t("btn_edit_transaction") : t("btn_new_transaction")}
             </span>
           )}
-        </Button>
+        </button>
       </Box>
     </>
   );

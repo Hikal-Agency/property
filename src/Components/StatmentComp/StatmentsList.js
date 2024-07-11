@@ -142,14 +142,15 @@ const StatmentsList = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
             }}
+            className="flex gap-3"
           >
             <Select
               options={currencies(t)?.map((curr) => ({
@@ -159,6 +160,7 @@ const StatmentsList = () => {
               value={currencies(t)?.filter(
                 (curr) => curr?.value === filters?.currency
               )}
+              className="min-w-[100px]"
               onChange={(e) => {
                 setFilters({
                   ...filters,
@@ -166,25 +168,10 @@ const StatmentsList = () => {
                 });
               }}
               placeholder={t("label_currency")}
-              className={`mb-5`}
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
               required
             />
-          </Box>
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            }}
-          >
             <Select
               options={countries_list(t)?.map((country) => ({
                 value: country?.value,
@@ -193,6 +180,7 @@ const StatmentsList = () => {
               value={countries_list(t)?.filter(
                 (country) => country?.value === filters?.country
               )}
+              className="min-w-[100px]"
               onChange={(e) => {
                 setFilters({
                   ...filters,
@@ -200,25 +188,10 @@ const StatmentsList = () => {
                 });
               }}
               placeholder={t("label_country")}
-              className={`mb-5`}
               menuPortalTarget={document.body}
               styles={selectStyles(currentMode, primaryColor)}
               required
             />
-          </Box>
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            }}
-          >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 value={dayjs(`${filters?.year}-${filters?.month}-01`)}
@@ -247,6 +220,7 @@ const StatmentsList = () => {
                       },
                       marginBottom: "20px",
                     }}
+                    className="min-w-[100px]"
                     fullWidth
                     size="small"
                     {...params}
@@ -257,17 +231,16 @@ const StatmentsList = () => {
                 maxDate={dayjs().startOf("day").toDate()}
               />
             </LocalizationProvider>
-          </Box>
-
-          <div className="mb-4">
             <button
-              className="bg-btn-primary p-4 mt-0 rounded-full"
+              className={`${themeBgImg ? "bg-primary shadow-md"
+                : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                } p-3 mt-0 mb-5 rounded-full h-fit w-fit`}
               onClick={() => setPDFModal(true)}
             >
               {" "}
               <BsDownload size={16} color={"#FFFFFF"} />
             </button>
-          </div>
+          </Box>
         </div>
       </div>
       {/* DATA */}
@@ -288,46 +261,46 @@ const StatmentsList = () => {
               return (
                 <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div
-                    className={`p-4 pb-5 h-fit rounded-xl shadow-sm ${
-                      themeBgImg
-                        ? currentMode === "dark"
-                          ? "blur-bg-dark text-white"
-                          : "blur-bg-light text-black"
-                        : currentMode === "dark"
-                        ? "bg-[#1C1C1C] text-white"
-                        : "bg-[#EEEEEE] text-black"
-                    }`}
+                    className={`p-5 pb-5 h-fit ${themeBgImg
+                      ? currentMode === "dark"
+                        ? "blur-bg-dark text-white"
+                        : "blur-bg-light text-black"
+                      : currentMode === "dark"
+                        ? "bg-dark-neu text-white"
+                        : "bg-light-neu text-black"
+                      }`}
                   >
                     <div className="flex justify-between items-center gap-4 pb-5">
                       {/* CURRENCY */}
                       <div className="flex gap-2 items-center">
                         <div className="bg-primary h-10 w-1 rounded-full"></div>
                         <h1
-                          className={`text-lg font-semibold uppercase text-primary`}
+                          className={`font-semibold uppercase`}
                         >
                           {stats?.currency}
                         </h1>
                       </div>
                       {/* TRANSACTIONS */}
                       <button
-                        className="bg-btn-primary rounded-md text-white py-2 px-4 w-max"
+                        className={`${themeBgImg ? "bg-primary shadow-md"
+                          : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                          } rounded-md text-white py-2 px-4 w-max uppercase`}
                         onClick={() => setTransactionsListModal(true)}
                       >
                         {t("btn_view_transactions")}
                       </button>
                     </div>
-                    <div className="grid grid-cols-2 gap-5 mb-2">
+                    <div className="grid grid-cols-2 gap-5 mb-5">
                       {/* INCOME */}
                       <div
-                        className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${
-                          themeBgImg
-                            ? currentMode === "dark"
-                              ? "blur-bg-dark"
-                              : "blur-bg-white"
-                            : currentMode === "dark"
-                            ? "bg-[#1C1C1C]"
-                            : "bg-[#EEEEEE]"
-                        }`}
+                        className={`w-full p-5 flex flex-col justify-center gap-4 ${themeBgImg
+                          ? currentMode === "dark"
+                            ? "blur-bg-dark shadow-sm"
+                            : "blur-bg-white shadow-sm"
+                          : currentMode === "dark"
+                            ? "bg-dark-neu"
+                            : "bg-light-neu"
+                          }`}
                       >
                         <p className="text-center">{t("income_amount")}</p>
                         <p className={`text-center text-xl font-semibold`}>
@@ -336,15 +309,14 @@ const StatmentsList = () => {
                       </div>
                       {/* EXPENSE */}
                       <div
-                        className={`rounded-xl shadow-sm w-full p-5 flex flex-col justify-center gap-4 ${
-                          themeBgImg
-                            ? currentMode === "dark"
-                              ? "blur-bg-dark"
-                              : "blur-bg-white"
-                            : currentMode === "dark"
-                            ? "bg-[#1C1C1C]"
-                            : "bg-[#EEEEEE]"
-                        }`}
+                        className={`w-full p-5 flex flex-col justify-center gap-4 ${themeBgImg
+                          ? currentMode === "dark"
+                            ? "blur-bg-dark shadow-sm"
+                            : "blur-bg-white shadow-sm"
+                          : currentMode === "dark"
+                            ? "bg-dark-neu"
+                            : "bg-light-neu"
+                          }`}
                       >
                         <p className="text-center">{t("expense_amount")}</p>
                         <p className={`text-center text-xl font-semibold`}>
@@ -353,54 +325,42 @@ const StatmentsList = () => {
                       </div>
                     </div>
                     <div
-                      className={`rounded-xl shadow-sm ${
-                        currentMode === "dark"
-                          ? loss
-                            ? "bg-[#DA1F26]"
-                            : "bg-[#269144]"
-                          : loss
-                          ? "bg-[#E8C4C4]"
-                          : "bg-[#D3E6D5]"
-                      } w-full p-5 flex flex-col items-center justify-center gap-4 relative`}
+                      className={`text-white ${themeBgImg
+                        ? loss
+                          ? (currentMode === "dark" ? "bg-[#DA1F26] text-white" : "bg-[#f7caca] text-black")
+                          : (currentMode === "dark" ? "bg-[#007c00] text-white" : "bg-[#9fca9d] text-black")
+                        : loss
+                          ? (currentMode === "dark" ? "bg-red-dark-neu" : "bg-red-light-neu")
+                          : (currentMode === "dark" ? "bg-green-dark-neu" : "bg-green-light-neu")
+                        } ${themeBgImg && "rounded-xl shadow-md"
+                        } w-full`}
                     >
-                      <p className="text-center">{stats?.output}</p>
-                      <p
-                        className={`text-center text-xl font-bold ${
-                          currentMode === "dark"
-                            ? loss
-                              ? "text-[#E8C4C4]"
-                              : "text-[#D3E6D5]"
-                            : loss
-                            ? "text-[#DA1F26]"
-                            : "text-[#269144]"
-                        }`}
-                      >
-                        {stats?.currency} {stats?.profit_loss?.toFixed(2)}
-                      </p>
-                      <div
-                        className={`absolute text-sm top-0 p-2 ${
-                          isLangRTL(i18n.langguage)
-                            ? "left-0 rounded-tl-xl"
-                            : "right-0 rounded-tr-xl"
-                        } ${
-                          currentMode === "dark"
-                            ? "bg-black text-white"
-                            : "bg-white text-black"
-                        } bg-black`}
-                      >
-                        {stats?.percent
-                          ? parseFloat(stats?.percent).toFixed(1) + " " + "%"
-                          : ""}
+                      <div className="flex flex-col items-center justify-center gap-4 p-5 relative">
+                        <p className="text-center uppercase">{stats?.output}</p>
+                        <p
+                          className={`text-center text-xl font-bold`}
+                        >
+                          {stats?.currency} {stats?.profit_loss?.toFixed(2)}
+                        </p>
+                        <div
+                          className={`absolute text-sm top-0 p-2 ${isLangRTL(i18n.langguage)
+                            ? "left-0"
+                            : "right-0"
+                            }`}
+                        >
+                          {stats?.percent
+                            ? parseFloat(stats?.percent).toFixed(1) + " " + "%"
+                            : ""}
+                        </div>
                       </div>
                     </div>
                   </div>
                   {/* CHART */}
                   <div
-                    className={`${
-                      themeBgImg && currentMode === "dark"
-                        ? "blur-bg-dark"
-                        : "blur-bg-light"
-                    }`}
+                    className={`${themeBgImg && currentMode === "dark"
+                      ? "blur-bg-dark"
+                      : "blur-bg-light"
+                      }`}
                   >
                     <StatmentsCharts stats={stats} />
                   </div>

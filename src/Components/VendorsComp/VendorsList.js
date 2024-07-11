@@ -36,7 +36,7 @@ import {
   vendors_search_filter,
 } from "../../Components/_elements/SelectOptions";
 
-const VendorsList = ({}) => {
+const VendorsList = ({ }) => {
   const [loading, setLoading] = useState(false);
   const {
     currentMode,
@@ -240,15 +240,14 @@ const VendorsList = ({}) => {
                         onChange={handleSearchCriteriaChange}
                         options={vendors_search_filter(t)}
                         placeholder={t("label_select")}
-                        className={`w-full p-0 ${
-                          !themeBgImg
+                        className={`w-full p-0 ${!themeBgImg
                             ? currentMode === "dark"
                               ? "bg-[#333333]"
                               : "bg-[#DDDDDD]"
                             : currentMode === "dark"
-                            ? "blur-bg-dark"
-                            : "blur-bg-light"
-                        } `}
+                              ? "blur-bg-dark"
+                              : "blur-bg-light"
+                          } `}
                         menuPortalTarget={document.body}
                         styles={selectBgStyles(
                           currentMode,
@@ -271,8 +270,8 @@ const VendorsList = ({}) => {
                   value={
                     filters?.type
                       ? vendor_type(t).find(
-                          (option) => option.value === filters?.type
-                        )
+                        (option) => option.value === filters?.type
+                      )
                       : null
                   }
                   onChange={(selectedOption) =>
@@ -314,8 +313,8 @@ const VendorsList = ({}) => {
                   value={
                     filters?.country
                       ? countries_list(t).find(
-                          (option) => option.value === filters?.country
-                        )
+                        (option) => option.value === filters?.country
+                      )
                       : null
                   }
                   onChange={(selectedOption) =>
@@ -369,101 +368,98 @@ const VendorsList = ({}) => {
           </>
         ) : (
           <div className={`w-full`}>
-            <div className="px-5">
-              <div className="mt-5 md:mt-2">
-                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-5">
-                  {vendorsData?.map((item, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className={`${
-                          !themeBgImg
-                            ? currentMode === "dark"
-                              ? "bg-[#1c1c1c] text-white"
-                              : "bg-[#EEEEEE] text-black"
-                            : currentMode === "dark"
-                            ? "blur-bg-dark text-white"
-                            : "blur-bg-light text-black"
-                        } rounded-xl relative shadow-sm card-hover text-sm border-primary border-b-2 p-4`}
-                      >
-                        {/* TITLE COUNTRY AND ACTIONS  */}
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="flex items-center gap-4">
-                            <div className="bg-primary py-1 px-2 rounded-md">
-                              <p className="text-white uppercase font-semibold">
-                                {item?.country}
-                              </p>
-                            </div>
-                            <p className="font-semibold">{item?.vendor_name}</p>
+            <div className="mt-5 md:mt-2">
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-5">
+                {vendorsData?.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={`${!themeBgImg
+                          ? currentMode === "dark"
+                            ? "bg-dark-neu text-white"
+                            : "bg-light-neu text-black"
+                          : currentMode === "dark"
+                            ? "blur-bg-dark text-white border-primary border-b-2"
+                            : "blur-bg-light text-black border-primary border-b-2"
+                        } relative p-5`}
+                    >
+                      {/* TITLE COUNTRY AND ACTIONS  */}
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                          <div className="bg-primary py-1 px-2 rounded-md">
+                            <p className="text-white uppercase font-semibold">
+                              {item?.country}
+                            </p>
                           </div>
-                          <div className="gap-4 flex items-center">
-                            {item?.type && (
-                              <p className="text-primary font-semibold">
-                                {item?.type}
-                              </p>
-                            )}
-                            <button
-                              className={`border bg-primary rounded-full p-2`}
-                              onClick={() => handleEditModal(item)}
-                            >
-                              <BsPencil size={16} color={"white"} />
-                            </button>
+                          <p className="font-semibold">{item?.vendor_name}</p>
+                        </div>
+                        <div className="gap-4 flex items-center">
+                          {item?.type && (
+                            <p className="text-primary font-semibold">
+                              {item?.type}
+                            </p>
+                          )}
+                          <button
+                            className={`border bg-primary rounded-full p-2`}
+                            onClick={() => handleEditModal(item)}
+                          >
+                            <BsPencil size={16} color={"white"} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* DETAILS */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="p-4 flex flex-col gap-4">
+                          {/* ADDRESS  */}
+                          <div className="grid grid-cols-7 gap-2">
+                            <BsPinMap size={16} />
+                            <p className="col-span-6 break-all">
+                              {item?.address}
+                            </p>
+                          </div>
+                          {/* POBOX */}
+                          <div className="grid grid-cols-7 gap-2">
+                            <BsMailbox size={16} />
+                            <p className="col-span-6 break-all">
+                              {item?.pobox}
+                            </p>
+                          </div>
+                          {/* TRN */}
+                          <div className="grid grid-cols-7 gap-2">
+                            <BsShieldCheck size={16} />
+                            <p className="col-span-6 break-all">
+                              {item?.trn}
+                            </p>
                           </div>
                         </div>
-
-                        {/* DETAILS */}
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="p-4 flex flex-col gap-4">
-                            {/* ADDRESS  */}
-                            <div className="grid grid-cols-7 gap-2">
-                              <BsPinMap size={16} />
-                              <p className="col-span-6 break-all">
-                                {item?.address}
-                              </p>
-                            </div>
-                            {/* POBOX */}
-                            <div className="grid grid-cols-7 gap-2">
-                              <BsMailbox size={16} />
-                              <p className="col-span-6 break-all">
-                                {item?.pobox}
-                              </p>
-                            </div>
-                            {/* TRN */}
-                            <div className="grid grid-cols-7 gap-2">
-                              <BsShieldCheck size={16} />
-                              <p className="col-span-6 break-all">
-                                {item?.trn}
-                              </p>
-                            </div>
+                        <div className="p-4 flex flex-col gap-4">
+                          {/* USER  */}
+                          <div className="grid grid-cols-7 gap-2">
+                            <BsPerson size={16} />
+                            <p className="col-span-6 break-all">
+                              {item?.person_to_contact}
+                            </p>
                           </div>
-                          <div className="p-4 flex flex-col gap-4">
-                            {/* USER  */}
-                            <div className="grid grid-cols-7 gap-2">
-                              <BsPerson size={16} />
-                              <p className="col-span-6 break-all">
-                                {item?.person_to_contact}
-                              </p>
-                            </div>
-                            {/* CONTACT */}
-                            <div className="grid grid-cols-7 gap-2">
-                              <BsTelephone size={16} />
-                              <p className="col-span-6 break-all">
-                                {item?.contact}
-                              </p>
-                            </div>
-                            {/* EMAIL */}
-                            <div className="grid grid-cols-7 gap-2">
-                              <BsEnvelope size={16} />
-                              <p className="col-span-6 break-all">
-                                {item?.email}
-                              </p>
-                            </div>
+                          {/* CONTACT */}
+                          <div className="grid grid-cols-7 gap-2">
+                            <BsTelephone size={16} />
+                            <p className="col-span-6 break-all">
+                              {item?.contact}
+                            </p>
+                          </div>
+                          {/* EMAIL */}
+                          <div className="grid grid-cols-7 gap-2">
+                            <BsEnvelope size={16} />
+                            <p className="col-span-6 break-all">
+                              {item?.email}
+                            </p>
                           </div>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

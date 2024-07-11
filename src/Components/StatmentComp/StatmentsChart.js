@@ -93,7 +93,7 @@ const StatmentsCharts = ({ stats }) => {
           title: {
             text: "Income",
             style: {
-              color: primaryColor,
+              color: "#269144",
             },
           },
         },
@@ -114,7 +114,7 @@ const StatmentsCharts = ({ stats }) => {
           title: {
             text: "Expense",
             style: {
-              color: "#020202",
+              color: "#DA1F26",
             },
           },
         },
