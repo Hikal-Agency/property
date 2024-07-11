@@ -484,7 +484,7 @@ const UpdateMeeting = ({
                       id="meeting-status"
                       value={{
                         value: meetingStatus,
-                        label: t(`status_${meetingStatus.toLowerCase()}`),
+                        label: t(`status_${meetingStatus?.toLowerCase()}`),
                       }}
                       onChange={(selectedOption) => {
                         setMeetingStatus(selectedOption.value);

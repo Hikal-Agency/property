@@ -214,6 +214,7 @@ const GridMeeting = ({ pageState, setpageState }) => {
     setOpenEditModal({
       open: true,
       id: meeting.meetingId,
+      data: meeting,
     });
   };
 
