@@ -41,8 +41,9 @@ const Menu = () => {
     setopenBackDrop(false);
     // eslint-disable-next-line
   }, []);
+  const token = localStorage.getItem("auth-token");
 
-  const FetchMenu = async (token, page = 1) => {
+  const FetchMenu = async (page = 1) => {
     if (page > 1) {
       setbtnloading(true);
     }
@@ -86,8 +87,7 @@ const Menu = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("auth-token");
-    FetchMenu(token, currentPage);
+    FetchMenu(currentPage);
   }, [currentPage, value]);
 
   const Additional = () => {
@@ -96,8 +96,12 @@ const Menu = () => {
         {hasPermission("displayInventory") && (
           <button
             onClick={() => setOpenInventory(true)}
-            className={`${themeBgImg ? "bg-primary" : currentMode === "dark" 
-              ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+            className={`${
+              themeBgImg
+                ? "bg-primary"
+                : currentMode === "dark"
+                ? "bg-primary-dark-neu"
+                : "bg-primary-light-neu"
             } px-3 py-2 rounded-md uppercase text-white`}
           >
             {t("product_inventory")}
@@ -105,7 +109,7 @@ const Menu = () => {
         )}
       </>
     );
-  }
+  };
 
   return (
     <>
@@ -114,14 +118,12 @@ const Menu = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
-              }
+            className={`w-full p-5 mt-2 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+            }
             ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
-            <HeadingTitle
-              title={t("menu_menu")}
-              additional={<Additional />}
-            />
+            <HeadingTitle title={t("menu_menu")} additional={<Additional />} />
 
             <MenuList
               user={"manager"}
@@ -133,11 +135,13 @@ const Menu = () => {
               currentPage={currentPage}
               menu={menu}
               setCurrentPage={setCurrentPage}
+              FetchMenu={FetchMenu}
             />
             {openInventory && (
               <Inventory
                 openInventory={openInventory}
                 setOpenInventory={setOpenInventory}
+                FetchMenu={FetchMenu}
               />
             )}
           </div>

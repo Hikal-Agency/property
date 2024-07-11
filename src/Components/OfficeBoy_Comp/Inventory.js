@@ -30,7 +30,7 @@ const style = {
   boxShadow: 24,
 };
 
-const Inventory = ({ openInventory, setOpenInventory }) => {
+const Inventory = ({ openInventory, setOpenInventory, FetchMenu }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [openAddItem, setOpenAddItem] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -449,6 +449,7 @@ const Inventory = ({ openInventory, setOpenInventory }) => {
               openAddItem={openAddItem}
               setOpenAddItem={setOpenAddItem}
               listITems={listITems}
+              FetchMenu={FetchMenu}
             />
           )}
 

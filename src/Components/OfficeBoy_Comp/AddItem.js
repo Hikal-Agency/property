@@ -29,7 +29,7 @@ const style = {
   boxShadow: 24,
 };
 
-const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
+const AddItem = ({ openAddItem, setOpenAddItem, listITems, FetchMenu }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [itemData, setITemData] = useState({
@@ -171,6 +171,7 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems }) => {
       setLoading(false);
       listITems();
       setOpenAddItem(false);
+      FetchMenu();
 
       toast.success(`New Item Added.`, {
         position: "top-right",
