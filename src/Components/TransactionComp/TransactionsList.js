@@ -68,7 +68,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [maxPage, setMaxPage] = useState(0);
 
-  console.log("vat data:", vatData);
+  // console.log("vat data:", vatData);
 
   const token = localStorage.getItem("auth-token");
   const [vendors, setVendors] = useState([]);
@@ -98,8 +98,8 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
         }),
       ]);
 
-      console.log("vendors list:: ", vendorResponse);
-      console.log("users list:: ", userResponse);
+      // console.log("vendors list:: ", vendorResponse);
+      // console.log("users list:: ", userResponse);
 
       let usersList = userResponse?.data?.managers?.data;
 
@@ -139,7 +139,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
           Authorization: "Bearer " + token,
         },
       });
-      console.log("Users: ", response);
+      // console.log("Users: ", response);
 
       if (type === "user") {
         setUser(response?.data?.managers?.data);
@@ -150,7 +150,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
       setUserLoading(false);
     } catch (error) {
       setUserLoading(false);
-      console.log(error);
+      // console.log(error);
       toast.error("Unable to fetch users.", {
         position: "top-right",
         autoClose: 3000,
@@ -179,28 +179,45 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
           ? `&${new URLSearchParams(activeFilters).toString()}`
           : "";
 
-      console.log("activeFilters:: ", activeFilters);
-      console.log("queryParams:: ", queryParams);
+      // console.log("activeFilters:: ", activeFilters);
+      // console.log("queryParams:: ", queryParams);
 
       let url;
       if (visa) {
         url = `${BACKEND_URL}/invoices?page=${page}&category=Visa`;
+        const response = await axios.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        // console.log("transactions list:: ", response);
+
+        setVAT(response?.data?.vat);
+        setMaxPage(response?.data?.data?.last_page);
+        setTransactionsData(response?.data?.data?.data);
       } else {
         url = `${BACKEND_URL}/invoices?page=${page}${queryParams}`;
+        const response = await axios.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        // console.log("transactions list:: ", response);
+
+        setVAT(response?.data?.vat);
+        setMaxPage(response?.data?.data?.last_page);
+        setTransactionsData(response?.data?.data?.data);
       }
 
-      const response = await axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      console.log("transactions list:: ", response);
-
-      setVAT(response?.data?.vat);
-      setMaxPage(response?.data?.data?.last_page);
-      setTransactionsData(response?.data?.data?.data);
+      if (filtersData) {
+        setVAT(filtersData?.data?.vat);
+        setMaxPage(filtersData?.data?.data?.last_page);
+        setTransactionsData(filtersData?.data?.data?.data);
+      }
 
       await fetchVendor();
     } catch (error) {
@@ -236,7 +253,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
     moment(b).diff(moment(a))
   );
 
-  console.log("sorted DAtes: ", sortedDates);
+  // console.log("sorted DAtes: ", sortedDates);
 
   useEffect(() => {
     fetchTransactions();
@@ -422,7 +439,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                 count={maxPage}
                 color={currentMode === "dark" ? "primary" : "secondary"}
                 onChange={(e, value) => {
-                  console.log("page vaule", value);
+                  // console.log("page vaule", value);
                   setPage(value);
                 }}
                 style={{ margin: "auto" }}

@@ -97,7 +97,8 @@ const TransactionsListModal = ({
       });
 
       console.log("transactions list:: ", response);
-      setTransactionsData(response?.data?.data?.data);
+      // setTransactionsData(response?.data?.data?.data);
+      setTransactionsData(response);
     } catch (error) {
       setloading(false);
       console.error("Error fetching statements:", error);
@@ -228,9 +229,9 @@ const TransactionsListModal = ({
                           </div>
                         ) : (
                           <div className="">
-                            {/* <TransactionsList filtersData={transactionsData} /> */}
+                            <TransactionsList filtersData={transactionsData} />
 
-                            {transactionsData &&
+                            {/* {transactionsData &&
                               transactionsData?.length > 0 ? (
                               transactionsData?.map((trans) => {
                                 let user;
@@ -299,7 +300,7 @@ const TransactionsListModal = ({
                               <div>
                                 <h1>{t("no_data_found")}</h1>
                               </div>
-                            )}
+                            )} */}
                           </div>
                         )}
                       </Box>
