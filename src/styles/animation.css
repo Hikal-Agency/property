@@ -450,6 +450,79 @@
   box-shadow: 0 0 10px rgba(136, 136, 136, 0.2);
 }
 
+/* GREEN */
+.blur-bg-green,
+.blur-bg-green-nr {
+  position: relative;
+}
+.blur-bg-green {
+  border-radius: 10px;
+}
+.blur-bg-green::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: #007c00;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  /* border-radius: 0.75rem; */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(136, 136, 136, 0.2);
+}
+.blur-bg-green-nr::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: #007c00;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(136, 136, 136, 0.2);
+}
+
+/* RED */
+.blur-bg-red,
+.blur-bg-red-nr {
+  position: relative;
+}
+.blur-bg-red {
+  border-radius: 10px;
+}
+.blur-bg-red::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: #DA1F26;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(136, 136, 136, 0.2);
+}
+.blur-bg-red-nr::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: #DA1F26;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(136, 136, 136, 0.2);
+}
+
 /* booked deals slide */
 .modal-open-right-booked {
   animation: slideFromRightBooked 1s ease-in-out forwards; /* Animation duration and easing */

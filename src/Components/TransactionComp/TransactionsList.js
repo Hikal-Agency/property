@@ -257,14 +257,14 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
             textAlign: isLangRTL(i18n.language) ? "right" : "left",
           },
         }}
-        className={`p-5 rounded-xl shadow-md ${
+        className={`p-5 ${
           themeBgImg
             ? currentMode === "dark"
               ? "blur-bg-black"
               : "blur-bg-white"
             : currentMode === "dark"
-            ? "bg-black"
-            : "bg-white"
+            ? "bg-dark-neu"
+            : "bg-light-neu"
         }`}
       >
         {loading ? (
@@ -276,109 +276,6 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
             <h3 className="text-primary mb-5 text-center font-semibold">
               {t("transactions")}
             </h3>
-            {/* {transactionsData && transactionsData?.length > 0 ? (
-              transactionsData?.map((trans) => {
-                return (
-                  <>
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => setSingleTransModal(trans)}
-                    >
-                      <div className="grid grid-cols-12 gap-5">
-                        <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
-                          <div
-                            className="h-full w-1 bg-primary absolute top-0 rounded-full"
-                            style={{
-                              transformX: "translate(-50%, -50%)"
-                            }}
-                          ></div>
-                          <p
-                            className="mb-4 font-semibold text-sm px-2 py-1 bg-primary text-white rounded-md"
-                            style={{
-                              zIndex: 1,
-                            }}
-                          >
-                            {moment(trans?.date).format("YYYY-MM-DD")}
-                          </p>
-                          <div className={`${currentMode === "dark" ? "bg-black" : "bg-white"
-                            } border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3`}
-                            style={{
-                              zIndex: 1,
-                            }}
-                          >
-                            {trans?.category === "Commission" ? (
-                              <BsBuildings size={16} color={"#AAAAAA"} />
-                            ) : trans?.category === "Salary" ? (
-                              <BsCalendarCheck size={16} color={"#AAAAAA"} />
-                            ) : trans?.category === "Purchase" ? (
-                              <BsCart4 size={16} color={"#AAAAAA"} />
-                            ) : (
-                              <BsQuestionLg size={16} color={"#AAAAAA"} />
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-span-8 md:col-span-8 mt-5 py-5 flex flex-col gap-2">
-                          {trans?.vendor_id && (
-                            <div className="flex">
-                              {trans?.vendor?.type}{" - "}{trans?.vendor?.vendor_name}
-                            </div>
-                          )}
-                          {trans?.user_id && (
-                            <div className="flex">
-                              {trans?.user?.userName}
-                            </div>
-                          )}
-                          <div className="flex items-center justify-between gap-5">
-                            <div className="flex gap-1 text-sm">
-                              <p
-                                className={
-                                  trans?.status === "Paid"
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                }
-                              >
-                                {trans?.status}
-                              </p>
-                              <p> - {trans?.category}</p>
-                            </div>
-                            {deviceType === "mobile" && (
-                              <div className="flex justify-end wifull">
-                                <p
-                                  className={`font-semibold ${trans?.invoice_type == "Income"
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                    } `}
-                                >
-                                  {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
-                                  {trans?.currency} {formatNoIntl(trans?.amount)}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        {deviceType !== "mobile" && (
-                          <div className="col-span-3 md:col-span-2 mt-5 py-5 flex flex-col items-end">
-                            <p
-                              className={`font-semibold text-lg ${trans?.invoice_type == "Income"
-                                ? "text-green-600"
-                                : "text-red-600"
-                                } `}
-                            >
-                              {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
-                              {trans?.currency} {formatNoIntl(trans?.amount)}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </>
-                );
-              })
-            ) : (
-              <div>
-                <h1>{t("no_data_found")}</h1>
-              </div>
-            )} */}
 
             {transactionsData && transactionsData.length > 0 ? (
               sortedDates.map((date) => (
@@ -390,7 +287,9 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                         style={{ transform: "translateX(-50%)" }}
                       ></div>
                       <p
-                        className="mb-4 font-semibold text-sm px-2 py-1 bg-primary text-white rounded-md w-fit"
+                        className={`${themeBgImg ? "bg-primary"
+                          : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                        } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
                         style={{ zIndex: 1 }}
                       >
                         {date}
@@ -416,9 +315,10 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                             style={{ transform: "translateX(-50%)" }}
                           ></div>
                           <div
-                            className={`${
-                              currentMode === "dark" ? "bg-black" : "bg-white"
-                            } border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3`}
+                            className={`${themeBgImg
+                              ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
+                              : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                            } w-fit h-fit p-3`}
                             style={{ zIndex: 1 }}
                           >
                             {trans?.category.toLowerCase() === "commission" ? (
@@ -428,7 +328,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                             ) : trans?.category.toLowerCase() === "purchase" ? (
                               <BsCart4 size={16} color={"#AAAAAA"} />
                             ) : trans?.category.toLowerCase() === "visa" ? (
-                              <RiVisaLine size={20} color={"#AAAAAA"} />
+                              <RiVisaLine size={16} color={"#AAAAAA"} />
                             ) : trans?.category.toLowerCase() ===
                               "maintenance" ? (
                               <BsTools size={16} color={"#AAAAAA"} />
@@ -503,7 +403,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                               {trans?.currency}{" "}
                               {formatNoIntl(trans?.total_amount)}
                             </p>
-                            {(trans?.vat !== 0 || trans?.vat !== null) && (
+                            {(trans?.vat !== 0 && trans?.vat !== null && trans?.vat !== "0") && (
                               <p className="text-sm">
                                 {t("vat")}: {trans?.currency} {trans?.vat}
                               </p>

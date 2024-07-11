@@ -1040,7 +1040,11 @@ const SingleLead = ({
                             transformOrigin: isLangRTL(i18n.language)
                               ? "right"
                               : "left",
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
                           },
+
                         "& legend": {
                           textAlign: isLangRTL(i18n.language)
                             ? "right"

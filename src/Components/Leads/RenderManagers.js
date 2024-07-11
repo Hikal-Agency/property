@@ -201,6 +201,7 @@ const RenderManagers = ({ cellValues }) => {
     >
       <Select
         id="manager"
+        aria-label="select manager"
         value={
           String(manager2) === "1" || !manager2 || manager2 === "0"
             ? null

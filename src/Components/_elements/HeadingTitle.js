@@ -17,9 +17,7 @@ const HeadingTitle = ({
             <div className="flex items-center gap-2">
                 <div className="bg-primary h-8 w-1 rounded-full"></div>
                 <h1
-                    className={`text-lg font-semibold uppercase ${!themeBgImg
-                        ? "text-primary"
-                        : currentMode === "dark"
+                    className={`text-lg font-semibold uppercase ${currentMode === "dark"
                             ? "text-white"
                             : "text-black"
                         }`}

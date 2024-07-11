@@ -86,7 +86,7 @@ const Task = () => {
           }`}
         >
           <div className="flex justify-between items-center">
-            <h4 className="font-semibold uppercase p-5">{t("summary")}</h4>
+            <h2 className="font-semibold uppercase p-5">{t("summary")}</h2>
             <Tabs
               value={value}
               onChange={handleChange}

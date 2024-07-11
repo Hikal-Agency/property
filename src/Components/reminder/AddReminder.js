@@ -50,6 +50,7 @@ const AddReminder = ({
     SalesPerson: AllSalesPersons,
     formatNum,
     i18n,
+    isLangRTL,
   } = useStateContext();
   const [value, setValue] = useState();
   const [loading, setloading] = useState(true);
@@ -261,7 +262,23 @@ const AddReminder = ({
           >
             <div className="reminder grid grid-cols-1 md:grid-cols-1 sm:grid-cols-1 gap-5">
               <div className="space-y-5">
-                <Box sx={darkModeColors}>
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                        textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                      },
+
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                    },
+                  }}
+                >
                   <TextField
                     id="LeadName"
                     type={"text"}
@@ -538,6 +555,24 @@ const AddReminder = ({
                           },
                           "&:focus": {
                             border: "",
+                          },
+                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                              textAlign: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
+
+                          "& legend": {
+                            textAlign: isLangRTL(i18n.language)
+                              ? "right"
+                              : "left",
                           },
                         }}
                         onKeyDown={(e) => e.preventDefault()}

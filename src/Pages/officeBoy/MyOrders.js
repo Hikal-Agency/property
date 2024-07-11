@@ -18,6 +18,7 @@ import usePermission from "../../utils/usePermission";
 import moment from "moment";
 import { datetimeAMPM } from "../../Components/_elements/formatDateTime";
 import { useLocation } from "react-router-dom";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const MyOrders = () => {
   const { currentMode, t, primaryColor, themeBgImg, BACKEND_URL, User } =
@@ -139,23 +140,13 @@ const MyOrders = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
-            }
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }
             ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
-            <div className="w-full flex justify-between items-center pb-3">
-              <div className="flex items-center">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {t("menu_my_orders")}
-                </h1>
-              </div>
-            </div>
+            <HeadingTitle
+              title={t("menu_my_orders")}
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
               {row && row?.length > 1 ? (
@@ -183,11 +174,14 @@ const MyOrders = () => {
                   return (
                     <div
                       key={index}
-                      className={`${
-                        currentMode === "dark"
+                      className={`${themeBgImg
+                        ? currentMode === "dark"
                           ? "blur-bg-dark text-white"
                           : "blur-bg-light text-black"
-                      } relative p-4 shadow-md rounded-xl h-full flex flex-col gap-4 justify-between`}
+                        : currentMode === "dark"
+                          ? "bg-dark-neu text-white"
+                          : "bg-light-neu text-black"
+                        } relative p-4 h-full flex flex-col gap-4 justify-between`}
                     >
                       <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center w-full gap-4">

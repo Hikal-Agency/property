@@ -467,15 +467,16 @@ const AddLeadComponent = ({
                     : "bg-light-neu"
                 } p-5`}
               >
-                <h4
+                <h2
                   className={`${
                     currentMode === "dark" ? `text-white` : "text-black"
                   } text-center uppercase font-semibold pb-5`}
                 >
                   {t("agent_details")}
-                </h4>
+                </h2>
                 {hasPermission("addlead_manager_dropdown") && (
                   <Select
+                    aria-label="select Manager"
                     id="Manager"
                     options={Managers.map((person) => ({
                       value: person.id,
@@ -531,6 +532,7 @@ const AddLeadComponent = ({
 
                 {hasPermission("addlead_agent_dropdown") && (
                   <Select
+                    aria-label="select sales person"
                     id="SalesPerson"
                     options={
                       User.role === 1
@@ -598,6 +600,7 @@ const AddLeadComponent = ({
 
                 <TextField
                   id="notes"
+                  aria-label="notes"
                   type={"text"}
                   label={t("label_note")}
                   className="w-full"
@@ -641,6 +644,7 @@ const AddLeadComponent = ({
                   <>
                     <TextField
                       id="Manager"
+                      aria-label="manager"
                       type="text"
                       label={t("label_manager")}
                       className="w-full"
@@ -663,6 +667,7 @@ const AddLeadComponent = ({
                     />
                     <TextField
                       id="Salesperson"
+                      aria-label="sales person"
                       label={t("label_agent")}
                       type="text"
                       className="w-full"
@@ -704,15 +709,16 @@ const AddLeadComponent = ({
                     : "bg-light-neu"
                 } p-5`}
               >
-                <h4
+                <h2
                   className={`${
                     currentMode === "dark" ? `text-white` : "text-black"
                   } text-center uppercase font-semibold pb-5`}
                 >
                   {t("project_details")}
-                </h4>
+                </h2>
                 <TextField
                   id="Project"
+                  aria-label="project"
                   type={"text"}
                   label={t("project")}
                   className="w-full"
@@ -730,6 +736,7 @@ const AddLeadComponent = ({
                 {/* ENQUIRY TYPE  */}
                 <Select
                   id="enquiry"
+                  aria-label="select enquiry"
                   options={enquiry_options(t)}
                   value={enquiry_options(t).find(
                     (option) => option.value === EnquiryType
@@ -772,6 +779,7 @@ const AddLeadComponent = ({
                 {/* PROPERTY TYPE  */}
                 <Select
                   id="property-type"
+                  aria-label="select property type"
                   options={property_options(t)}
                   value={property_options(t).find(
                     (option) => option.value === PropertyType
@@ -811,6 +819,7 @@ const AddLeadComponent = ({
                 {/* PURPOSE OF ENQUIRY  */}
                 <Select
                   id="for"
+                  aria-label="select purpose of enquiry"
                   options={purpose_options(t)}
                   value={purpose_options(t).find(
                     (option) => option.value === ForType
@@ -868,15 +877,16 @@ const AddLeadComponent = ({
                     : "bg-light-neu"
                 } p-5`}
               >
-                <h4
+                <h2
                   className={`${
                     currentMode === "dark" ? `text-white` : "text-black"
                   } text-center font-semibold uppercase pb-5`}
                 >
                   {t("lead_details")}
-                </h4>
+                </h2>
                 <TextField
                   id="LeadName"
+                  aria-label="Lead Name"
                   type={"text"}
                   label={t("label_lead_name")}
                   className="w-full"
@@ -893,6 +903,7 @@ const AddLeadComponent = ({
                 />
                 <PhoneInput
                   placeholder={t("label_contact_number")}
+                  aria-label="contact number"
                   value={value}
                   onChange={(value) => setValue(value)}
                   onKeyUp={handleContact}
@@ -935,6 +946,7 @@ const AddLeadComponent = ({
                 )}
                 <TextField
                   id="LeadEmailAddress"
+                  aria-label="lead email address"
                   type={"email"}
                   label={t("label_email_address")}
                   className="w-full"
@@ -954,6 +966,7 @@ const AddLeadComponent = ({
                 {/* LANGUAGE  */}
                 <Select
                   id="LanguagePrefered"
+                  aria-label="select preferred Language"
                   options={language_options}
                   value={language_options.find(
                     (option) => option.value === LanguagePrefered
@@ -999,6 +1012,7 @@ const AddLeadComponent = ({
                   !noSourceDropdown && (
                     <Select
                       id="LeadSource"
+                      aria-label="select Lead source"
                       options={source_options(t)}
                       value={source_options(t).find(
                         (option) => option.value === LeadSource
@@ -1064,6 +1078,7 @@ const AddLeadComponent = ({
 
                 <Select
                   id="LeadCategory"
+                  aria-label="select lead category"
                   options={lead_options(t)}
                   value={lead_options(t).find(
                     (option) => option.value === LeadCategory

@@ -1,9 +1,5 @@
 import { Button } from "@material-tailwind/react";
-import {
-  Box,
-  CircularProgress,
-  Dialog, IconButton
-} from "@mui/material";
+import { Box, CircularProgress, Dialog, IconButton } from "@mui/material";
 // import Select from "@mui/material/Select";
 import Select, { components } from "react-select";
 import { socket } from "../../Pages/App";
@@ -49,13 +45,13 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
   console.log("agents list: ", SalesPerson);
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium,& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline ":
-    {
-      color: currentMode === "dark" ? "white" : "black",
-      // borderColor: currentMode === "dark" ? "white" : "black",
-      border: "none",
-      fontSize: "12px",
-      fontWeight: "400",
-    },
+      {
+        color: currentMode === "dark" ? "white" : "black",
+        // borderColor: currentMode === "dark" ? "white" : "black",
+        border: "none",
+        fontSize: "12px",
+        fontWeight: "400",
+      },
     "& .MuiOutlinedInput-notchedOutline": {
       // borderColor: currentMode === "dark" ? "white" : "black",
       border: "none",
@@ -291,17 +287,24 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
       ) : (
         <Select
           id="SalesPerson"
+          aria-label="select sales person"
           value={
-            SalesPerson2 || SalesPerson2 !== "0" || SalesPerson !== "1" || SalesPerson2 !== null || SalesPerson2 !== "null"
+            SalesPerson2 ||
+            SalesPerson2 !== "0" ||
+            SalesPerson !== "1" ||
+            SalesPerson2 !== null ||
+            SalesPerson2 !== "null"
               ? {
-                label: SalesPersonsList.find(
-                  (salesperson) => salesperson.id === SalesPerson2
-                )?.userName
-                  || allAgents.find(
-                    (salesperson) => salesperson.id === cellValues?.row?.assignedToSales
-                  )?.userName,
-                value: SalesPerson2,
-              }
+                  label:
+                    SalesPersonsList.find(
+                      (salesperson) => salesperson.id === SalesPerson2
+                    )?.userName ||
+                    allAgents.find(
+                      (salesperson) =>
+                        salesperson.id === cellValues?.row?.assignedToSales
+                    )?.userName,
+                  value: SalesPerson2,
+                }
               : null
           }
           onChange={ChangeSalesPerson}
@@ -310,18 +313,19 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
               label: "---", //"---" + t("label_manager") + "---",
               value: null,
             },
-            ...(SalesPersonsList?.filter((person) => person?.role === 7)?.map((salesperson) => ({
-              label: salesperson.userName,
-              value: salesperson.id,
-            })) ?? []),
+            ...(SalesPersonsList?.filter((person) => person?.role === 7)?.map(
+              (salesperson) => ({
+                label: salesperson.userName,
+                value: salesperson.id,
+              })
+            ) ?? []),
           ]}
-
           placeholder={
             !SalesPerson2 ||
-              SalesPerson2 === "0" ||
-              SalesPerson === "1" ||
-              SalesPerson2 === null ||
-              SalesPerson2 === "null"
+            SalesPerson2 === "0" ||
+            SalesPerson === "1" ||
+            SalesPerson2 === null ||
+            SalesPerson2 === "null"
               ? "Agent"
               : t("label_sales_agent")
           }
@@ -390,9 +394,9 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
                 boxShadow: "none !important",
               },
               "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-              {
-                // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
-              },
+                {
+                  // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                },
             }}
             open={Dialogue}
             onClose={(e) => setDialogue(false)}
@@ -411,10 +415,11 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
               <IoMdClose size={18} />
             </IconButton>
             <div
-              className={`px-10 py-5 ${currentMode === "dark"
-                ? "bg-[#1C1C1C] text-white"
-                : "bg-white text-black"
-                }`}
+              className={`px-10 py-5 ${
+                currentMode === "dark"
+                  ? "bg-[#1C1C1C] text-white"
+                  : "bg-white text-black"
+              }`}
             >
               <div className="flex flex-col justify-center items-center">
                 <BsPersonCheck size={50} className="text-primary text-2xl" />
@@ -448,10 +453,11 @@ const RenderSalesperson = ({ cellValues, lead_origin }) => {
                   onClick={() => setDialogue(false)}
                   ripple={true}
                   variant="outlined"
-                  className={`shadow-none p-3 rounded-md text-sm  ${currentMode === "dark"
-                    ? "text-white border-white"
-                    : "text-black border-black"
-                    }`}
+                  className={`shadow-none p-3 rounded-md text-sm  ${
+                    currentMode === "dark"
+                      ? "text-white border-white"
+                      : "text-black border-black"
+                  }`}
                 >
                   Cancel
                 </Button>

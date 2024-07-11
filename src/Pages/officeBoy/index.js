@@ -47,7 +47,7 @@ const Menu = () => {
       setbtnloading(true);
     }
     try {
-      const all_menu = await axios.get(`${BACKEND_URL}/items?page=${page}`, {
+      const all_menu = await axios.get(`${BACKEND_URL}/items?&page=${page}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,

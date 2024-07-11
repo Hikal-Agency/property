@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 
 import Loader from "../../Components/Loader";
 import StatmentsList from "../../Components/StatmentComp/StatmentsList";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const Statements = ({ isLoading }) => {
   const {
@@ -35,25 +36,16 @@ const Statements = ({ isLoading }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
+            className={`w-full p-5 mt-2 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
             }
                 ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
-            <div className="w-full flex justify-between items-center">
-              <div className="w-full flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {t("menu_statements")}
-                </h1>
-              </div>
-            </div>
+            <HeadingTitle 
+            title={t("menu_statements")}
+            />
 
-            <div className="pb-3">
+            <div className="pb-5">
               <StatmentsList />
             </div>
           </div>

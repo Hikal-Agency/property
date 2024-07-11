@@ -29,9 +29,15 @@ import {
   BsCalendarCheck,
   BsCart4,
   BsQuestionLg,
+  BsTools,
+  BsMegaphone
 } from "react-icons/bs";
+import { RiVisaLine } from "react-icons/ri";
 import Petty_Cash_Form from "./Petty_Cash_Form";
 import TransactionFilters from "./TransactionFilters";
+import Coin from "../_elements/Coin";
+import TransactionsList from "../TransactionComp/TransactionsList";
+import { formatNoIntl } from "../_elements/FormatNoIntl";
 
 const Petty_Cash_Comp = () => {
   const {
@@ -39,7 +45,7 @@ const Petty_Cash_Comp = () => {
     darkModeColors,
     formatNum,
     BACKEND_URL,
-    User,
+    deviceType,
     t,
     primaryColor,
     themeBgImg,
@@ -162,6 +168,37 @@ const Petty_Cash_Comp = () => {
     fetchPettyCash();
   }, [filtersData, transPage, pettyPage]);
 
+  const groupTransactionsByDate = (transactionsData) => {
+    return transactionsData.reduce((acc, transaction) => {
+      const date = moment(transaction.date).format("YYYY-MM-DD");
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(transaction);
+      return acc;
+    }, {});
+  };
+  const groupedTransactions = groupTransactionsByDate(transactionsData);
+  const sortedDates = Object.keys(groupedTransactions).sort((a, b) =>
+    moment(b).diff(moment(a))
+  );
+
+  const groupPettyCashByDate = (pettyCashData) => {
+    return pettyCashData.reduce((acc, pettycash) => {
+      const date = moment(pettycash.date).format("YYYY-MM-DD");
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(pettycash);
+      return acc;
+    }, {});
+  };
+  const groupedFunds = groupPettyCashByDate(pettyCashData);
+  const sortedFundDates = Object.keys(groupedFunds).sort((a, b) =>
+    moment(b).diff(moment(a))
+  );
+
+
   return (
     <div className={`pb-4 px-4`}>
       <TransactionFilters
@@ -176,21 +213,9 @@ const Petty_Cash_Comp = () => {
       />
       {availableData?.length > 0 && (
         <div
-          className={`w-full flex items-center space-x-1 p-4 overflow-x-auto mb-4`}
+          className={`w-full flex items-center gap-4 p-4 overflow-x-auto mb-4`}
         >
-          <div className="coin mr-2">
-            <div className="front ">
-              <div className="star"></div>
-              <div className="shapes"></div>
-            </div>
-            <div
-              className={`shadow ${
-                currentMode === "dark"
-                  ? "shadow-dark-mode"
-                  : "shadow-light-mode"
-              }`}
-            ></div>
-          </div>
+          <Coin />
           {availableData?.map(([country, currencies]) => (
             <div key={country} className="w-full flex items-center space-x-3">
               {Object.entries(currencies)?.map(([currency, amount]) => (
@@ -198,7 +223,7 @@ const Petty_Cash_Comp = () => {
                   <p className="font-semibold">
                     {country}:
                     <span className="ml-2 font-normal">
-                      {currency} {amount}{" "}
+                      {currency}{" "}{amount.toFixed(2)}{" "}
                     </span>
                   </p>
                 </div>
@@ -208,35 +233,35 @@ const Petty_Cash_Comp = () => {
         </div>
       )}
       <div
-        className={`w-full ${
-          themeBgImg
-            ? currentMode === "dark"
-              ? "blur-bg-black"
-              : "blur-bg-white"
-            : currentMode === "dark"
+        className={`w-full ${themeBgImg
+          ? currentMode === "dark"
+            ? "blur-bg-black"
+            : "blur-bg-white"
+          : currentMode === "dark"
             ? "bg-dark-neu"
             : "bg-light-neu"
-        } my-5 p-5`}
+          } my-5 p-5`}
       >
         <Petty_Cash_Form fetchPettyCash={fetchPettyCash} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 my-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-5">
         <Box
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
           }}
-          className={`${
-            currentMode === "dark" ? "bg-[#1C1C1C]" : "bg-[#eeeeee]"
-          }`}
+          className={`${themeBgImg ?
+            currentMode === "dark" ? "blur-bg-black" : "blur-bg-light"
+            : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+            } p-4`}
         >
           {loading ? (
             <div className="flex items-center justify-center">
@@ -248,44 +273,71 @@ const Petty_Cash_Comp = () => {
                 {t("funds")}
               </h3>
               {pettyCashData && pettyCashData?.length > 0 ? (
-                pettyCashData?.map((petty) => {
-                  return (
-                    <>
-                      <div
-                        className={` rounded-xl p-4 ${
-                          themeBgImg && currentMode === "dark"
-                            ? "blur-bg-dark"
-                            : "blur-bg-light"
-                        }`}
-                        // onClick={() => setSingleTransModal(petty)}
-                      >
-                        <p className="mb-3 font-semibold text-sm">
-                          {moment(petty?.date).format("YYYY-MM-DD")}
+                sortedFundDates?.map((date) => (
+                  <div key={date}>
+                    <div className="grid grid-cols-12 gap-5">
+                      <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
+                        <div
+                          className="h-full w-1 bg-primary absolute top-0"
+                          style={{ transform: "translateX(-50%)" }}
+                        ></div>
+                        <p
+                          className={`${themeBgImg ? "bg-primary"
+                            : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                            } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
+                          style={{ zIndex: 1 }}
+                        >
+                          {date}
                         </p>
-                        <div className="flex justify-between gap-4">
-                          <div className="flex gap-4">
-                            <div className="border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3">
+                      </div>
+                      <div className="col-span-9 md:col-span-10"></div>
+                    </div>
+                    {groupedFunds[date]?.map((petty) => (
+                      <div
+                        key={petty?.id}
+                        className="cursor-pointer"
+                      >
+                        <div
+                          className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                            } grid grid-cols-12 gap-5`}
+                        >
+                          <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
+                            <div
+                              className="h-full w-1 bg-primary absolute top-0"
+                              style={{ transform: "translateX(-50%)" }}
+                            ></div>
+                            <div
+                              className={`${themeBgImg
+                                ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
+                                : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                                } w-fit h-fit p-3`}
+                              style={{ zIndex: 1 }}
+                            >
                               <BsCash size={16} color={"#AAAAAA"} />
                             </div>
-                            <div className="flex flex-col">
-                              <p>{petty?.fund_by_name}</p>
-                              <div className="flex gap-1 text-sm">
-                                {/* <p className={`text-green-600`}>
-                                  {petty?.currency} {petty?.petty_cash_amount}
-                                </p> */}
-                              </div>
+                          </div>
+                          {/* DETAILS */}
+                          <div className={`col-span-9 md:col-span-8 pb-6 flex gap-3 py-4`}>
+                            {deviceType === "mobile" && (
+                              <p className={`font-semibold text-green-600`}>
+                                {petty?.currency} {petty?.fund_amount}
+                              </p>
+                            )}
+                            <p>{petty?.fund_by_name}</p>
+                          </div>
+                          {/* AMOUNT */}
+                          {deviceType !== "mobile" && (
+                            <div className="col-span-3 md:col-span-2 pb-5 flex flex-col items-end gap-2 py-4">
+                              <p className={`font-semibold text-green-600`}>
+                                {petty?.currency} {petty?.fund_amount}
+                              </p>
                             </div>
-                          </div>
-                          <div>
-                            <p className={`font-semibold text-lg `}>
-                              {petty?.currency} {petty?.fund_amount}
-                            </p>
-                          </div>
+                          )}
                         </div>
                       </div>
-                    </>
-                  );
-                })
+                    ))}
+                  </div>
+                ))
               ) : (
                 <div>
                   <h1>{t("no_data_found")}</h1>
@@ -324,15 +376,18 @@ const Petty_Cash_Comp = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
             }}
-            className="p-2"
+            className={`${themeBgImg ?
+              currentMode === "dark" ? "blur-bg-black" : "blur-bg-light"
+              : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+              } p-4`}
           >
             {loading ? (
               <div className="flex items-center justify-center">
@@ -343,53 +398,81 @@ const Petty_Cash_Comp = () => {
                 <h3 className="text-primary mb-5 text-center font-semibold">
                   {t("transactions")}
                 </h3>
-                {transactionsData && transactionsData?.length > 0 ? (
-                  transactionsData?.map((trans) => {
-                    let user;
-                    if (trans?.user_id) {
-                      user = true;
-                    } else {
-                      user = false;
-                    }
-
-                    return (
-                      <>
+                {transactionsData && transactionsData.length > 0 ? (
+                  sortedDates.map((date) => (
+                    <div key={date}>
+                      <div className="grid grid-cols-12 gap-5">
+                        <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
+                          <div
+                            className="h-full w-1 bg-primary absolute top-0"
+                            style={{ transform: "translateX(-50%)" }}
+                          ></div>
+                          <p
+                            className={`${themeBgImg ? "bg-primary"
+                              : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                              } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
+                            style={{ zIndex: 1 }}
+                          >
+                            {date}
+                          </p>
+                        </div>
+                        <div className="col-span-9 md:col-span-10"></div>
+                      </div>
+                      {groupedTransactions[date]?.map((trans) => (
                         <div
-                          className={`cursor-pointer rounded-xl p-4 ${
-                            themeBgImg && currentMode === "dark"
-                              ? "blur-bg-dark"
-                              : "blur-bg-light"
-                          }`}
+                          key={trans?.id}
+                          className="cursor-pointer"
                           onClick={() => setSingleTransModal(trans)}
                         >
-                          <p className="mb-3 font-semibold text-sm">
-                            {moment(trans?.date).format("YYYY-MM-DD")}
-                          </p>
-                          <div className="flex justify-between gap-4">
-                            <div className="flex gap-4">
-                              <div className="border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3">
-                                {trans?.category?.toLowerCase() ===
-                                "commission" ? (
+                          <div
+                            className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                              } grid grid-cols-12 gap-5`}
+                          >
+                            <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
+                              <div
+                                className="h-full w-1 bg-primary absolute top-0"
+                                style={{ transform: "translateX(-50%)" }}
+                              ></div>
+                              <div
+                                className={`${themeBgImg
+                                  ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
+                                  : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                                  } w-fit h-fit p-3`}
+                                style={{ zIndex: 1 }}
+                              >
+                                {trans?.category.toLowerCase() === "commission" ? (
                                   <BsBuildings size={16} color={"#AAAAAA"} />
-                                ) : trans?.category?.toLowerCase() ===
-                                  "salary" ? (
-                                  <BsCalendarCheck
-                                    size={16}
-                                    color={"#AAAAAA"}
-                                  />
-                                ) : trans?.category?.toLowerCase() ===
-                                  "purchase" ? (
+                                ) : trans?.category.toLowerCase() === "salary" ? (
+                                  <BsCalendarCheck size={16} color={"#AAAAAA"} />
+                                ) : trans?.category.toLowerCase() === "purchase" ? (
                                   <BsCart4 size={16} color={"#AAAAAA"} />
+                                ) : trans?.category.toLowerCase() === "visa" ? (
+                                  <RiVisaLine size={16} color={"#AAAAAA"} />
+                                ) : trans?.category.toLowerCase() ===
+                                  "maintenance" ? (
+                                  <BsTools size={16} color={"#AAAAAA"} />
+                                ) : trans?.category.toLowerCase() === "borrow" ? (
+                                  <BsCash size={16} color={"#AAAAAA"} />
+                                ) : trans?.category.toLowerCase() ===
+                                  "campaigns" ? (
+                                  <BsMegaphone size={16} color={"#AAAAAA"} />
                                 ) : (
                                   <BsQuestionLg size={16} color={"#AAAAAA"} />
                                 )}
                               </div>
-                              <div className="flex flex-col">
-                                <p>
-                                  {user
-                                    ? trans?.user?.userName
-                                    : trans?.vendor?.vendor_name}
-                                </p>
+                            </div>
+                            {/* DETAILS */}
+                            <div className="col-span-9 md:col-span-8 pb-6 flex flex-col gap-2">
+                              {trans?.vendor_id && (
+                                <div className="flex">
+                                  {trans?.vendor?.type} -{" "}
+                                  {trans?.vendor?.vendor_name}
+                                </div>
+                              )}
+                              {trans.user_id && (
+                                <div className="flex">{trans.user.userName}</div>
+                              )}
+                              <div className="flex items-center justify-between gap-5">
                                 <div className="flex gap-1 text-sm">
                                   <p
                                     className={
@@ -403,24 +486,52 @@ const Petty_Cash_Comp = () => {
                                   <p> - {trans?.category}</p>
                                 </div>
                               </div>
+                              {/* AMOUNT FOR MOBILE */}
+                              {deviceType === "mobile" && (
+                                <div className="flex gap-3">
+                                  <p
+                                    className={`font-semibold ${trans?.invoice_type == "Income"
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                      } `}
+                                  >
+                                    {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                                    {trans?.currency}{" "}
+                                    {formatNoIntl(trans?.total_amount)}
+                                  </p>
+                                  {(trans?.vat !== 0 && trans?.vat !== null) && (
+                                    <p className="text-sm">
+                                      {t("vat")}: {trans?.currency} {trans?.vat}
+                                    </p>
+                                  )}
+                                </div>
+                              )}
                             </div>
-                            <div>
-                              <p
-                                className={`font-semibold text-lg ${
-                                  trans?.invoice_type == "Income"
+                            {/* AMOUNT */}
+                            {deviceType !== "mobile" && (
+                              <div className="col-span-3 md:col-span-2 pb-5 flex flex-col items-end gap-2">
+                                <p
+                                  className={`font-semibold ${trans?.invoice_type == "Income"
                                     ? "text-green-600"
                                     : "text-red-600"
-                                } `}
-                              >
-                                {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
-                                {trans?.currency} {trans?.amount}
-                              </p>
-                            </div>
+                                    } text-end `}
+                                >
+                                  {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                                  {trans?.currency}{" "}
+                                  {formatNoIntl(trans?.total_amount)}
+                                </p>
+                                {(trans?.vat !== 0 && trans?.vat !== null && trans?.vat !== "0") && (
+                                  <p className="text-sm text-end">
+                                    {t("vat")}: {trans?.currency} {trans?.vat}
+                                  </p>
+                                )}
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </>
-                    );
-                  })
+                      ))}
+                    </div>
+                  ))
                 ) : (
                   <div>
                     <h1>{t("no_data_found")}</h1>
@@ -454,14 +565,14 @@ const Petty_Cash_Comp = () => {
             )}
           </Box>
         </div>
-      </div>
+      </div >
       {singleTransModal && (
         <SingleTransactionModal
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
         />
       )}
-    </div>
+    </div >
   );
 };
 
