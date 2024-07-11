@@ -38,10 +38,8 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems, FetchMenu }) => {
     itemStatus: "available",
     notes: null,
     image: null,
-    currency: null,
+    currency: "AED",
   });
-
-  console.log("currencies:: ", currencies);
 
   console.log("ITem Data:::: ", itemData);
 
@@ -59,6 +57,14 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems, FetchMenu }) => {
     blurLightColor,
     themeBgImg,
   } = useStateContext();
+
+  console.log("currencies:: ", currencies(t));
+
+  console.log(
+    "currencies compared:: ",
+    currencies(t).find((option) => option.value === itemData?.currency)
+  );
+
   const [isClosing, setIsClosing] = useState(false);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("auth-token");
@@ -413,15 +419,17 @@ const AddItem = ({ openAddItem, setOpenAddItem, listITems, FetchMenu }) => {
                                 }}
                               >
                                 <TextField
-                                  value={currencies(t).find(
-                                    (option) =>
-                                      option.value === itemData?.currency
-                                  )}
+                                  value={
+                                    currencies(t).find(
+                                      (option) =>
+                                        option.value === itemData?.currency
+                                    )?.label
+                                  }
                                   name="currency"
                                   onChange={handleChange}
-                                  options={currencies}
-                                  label={t("label_select_currency")}
-                                  // placeholder={t("label_select_currency")}
+                                  options={currencies(t)}
+                                  // label={t("label_select_currency")}
+                                  placeholder={t("label_select_currency")}
                                   className={`w-full p-0 ${
                                     !themeBgImg
                                       ? currentMode === "dark"
