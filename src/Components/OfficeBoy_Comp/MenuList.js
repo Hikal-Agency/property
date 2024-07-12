@@ -60,26 +60,37 @@ const MenuList = ({
           {menu?.map((menu, index) => {
             return (
               <div
-                className={`${themeBgImg
-                  ? currentMode === "dark" ? "blur-bg-dark" : "blur-bg-light"
-                  : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-                  } cursor-pointer relative p-5 overflow-hidden offers-page-${menu?.page
-                  } ${currentMode === "dark"
-                    ? "text-white"
-                    : "text-black"
-                  } `}
-                onClick={menu?.itemStatus === "available" ? () => setOpenOrderModal({ open: true, data: menu }) : undefined}
+                className={`${
+                  themeBgImg
+                    ? currentMode === "dark"
+                      ? "blur-bg-dark"
+                      : "blur-bg-light"
+                    : currentMode === "dark"
+                    ? "bg-dark-neu"
+                    : "bg-light-neu"
+                } cursor-pointer relative p-5 overflow-hidden offers-page-${
+                  menu?.page
+                } ${currentMode === "dark" ? "text-white" : "text-black"} `}
+                onClick={
+                  menu?.itemStatus?.toLowerCase() === "available"
+                    ? () => setOpenOrderModal({ open: true, data: menu })
+                    : undefined
+                }
               >
                 {menu?.itemPrice && menu?.itemPrice !== 0 ? (
-                  <div className={`${isLangRTL(i18n.language) ? "left-3" : "right-3"
-                    } ${themeBgImg
-                      ? "bg-primary"
-                      : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                    } absolute top-3 rounded-md text-white p-2`}>
+                  <div
+                    className={`${
+                      isLangRTL(i18n.language) ? "left-3" : "right-3"
+                    } ${
+                      themeBgImg
+                        ? "bg-primary"
+                        : currentMode === "dark"
+                        ? "bg-primary-dark-neu"
+                        : "bg-primary-light-neu"
+                    } absolute top-3 rounded-md text-white p-2`}
+                  >
                     <p className="m-0">
-                      {menu?.currency}
-                      {" "}
-                      {menu?.itemPrice}
+                      {menu?.currency} {menu?.itemPrice}
                     </p>
                   </div>
                 ) : null}
@@ -89,19 +100,26 @@ const MenuList = ({
                     <img
                       src={menu?.image_path}
                       alt="menu"
-                      className={`w-full object-cover h-[250px] lg:h-[200px] rounded-xl ${menu?.itemStatus !== "available" && "grayscale"}`}
+                      className={`w-full object-cover h-[250px] lg:h-[200px] rounded-xl ${
+                        menu?.itemStatus?.toLowerCase() !== "available" &&
+                        "grayscale"
+                      }`}
                     />
                   ) : (
                     <img
                       src={imagePaths[0]}
                       alt="menu"
-                      className={`w-full object-cover h-[250px] lg:h-[200px] rounded-xl ${menu?.itemStatus !== "available" && "grayscale"}`}
+                      className={`w-full object-cover h-[250px] lg:h-[200px] rounded-xl ${
+                        menu?.itemStatus?.toLowerCase() !== "available" &&
+                        "grayscale"
+                      }`}
                     />
                   )}
                   {/* MENU INFO  */}
                   <h6
-                    className={`${currentMode === "dark" ? "text-white" : "text-black"
-                      } text-center mt-5 capitalize`}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    } text-center mt-5 capitalize`}
                     style={{
                       fontFamily: isArabic(menu?.itemName)
                         ? "Noto Kufi Arabic"
@@ -111,11 +129,13 @@ const MenuList = ({
                     {menu?.itemName}
                   </h6>
                 </div>
-                {menu?.itemStatus !== "available" && (
-                  <div className="absolute w-full h-full top-0 left-0 flex items-center justify-center font-semibold uppercase"
-                  style={{
-                    background: "rgba(0,0,0,0.5)"
-                  }}>
+                {menu?.itemStatus?.toLowerCase() !== "available" && (
+                  <div
+                    className="absolute w-full h-full top-0 left-0 flex items-center justify-center font-semibold uppercase"
+                    style={{
+                      background: "rgba(0,0,0,0.5)",
+                    }}
+                  >
                     OUT OF STOCK
                   </div>
                 )}
