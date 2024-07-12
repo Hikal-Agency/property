@@ -11,6 +11,7 @@ import LocationPicker from "./LocationPicker";
 import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
 import { MdClose } from "react-icons/md";
+import HeadingTitle from "../_elements/HeadingTitle";
 
 const ShowLocation = ({
   isModalOpened,
@@ -62,23 +63,20 @@ const ShowLocation = ({
           } absolute top-1/2 left-1/2 p-4 rounded-md`}
         > */}
         <div
-          className={`${
-            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${
-            isClosing
+          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+            } ${isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-          }
+            }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${
-              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+              }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -90,26 +88,18 @@ const ShowLocation = ({
 
           <div
             style={style}
-            className={` ${
-              currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
-            } ${isLangRTL(i18n.language) 
-              ? (currentMode === "dark" && "border-r-2 border-primary") 
-              : (currentMode === "dark" && "border-l-2 border-primary")}
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll
+            className={` ${currentMode === "dark"
+                ? "bg-dark text-white"
+                : "bg-light text-black"
+              } ${isLangRTL(i18n.language)
+                ? (currentMode === "dark" && "border-r-2 border-primary")
+                : (currentMode === "dark" && "border-l-2 border-primary")}
+             p-5 h-[100vh] w-[85vw] overflow-y-scroll
             `}
           >
-            <div className="w-full flex items-center pb-3">
-              <div className="bg-primary h-10 w-1 rounded-full mr-2 my-1"></div>
-              <h1
-                className={`text-lg font-semibold ${
-                  currentMode === "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                {t("meeting_details")}
-              </h1>
-            </div>
+            <HeadingTitle
+              title={t("meeting_details")}
+            />
 
             <Box sx={darkModeColors} className="w-full p-4">
               <FormControl fullWidth>
@@ -133,7 +123,7 @@ const ShowLocation = ({
                   readOnly={true}
                 />
               </FormControl>
-              
+
               {meetingLocation && [
                 meetingLocation.lat && meetingLocation.lng ? (
                   <LocationPicker

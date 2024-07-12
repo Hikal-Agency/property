@@ -24,6 +24,7 @@ import GridMeeting from "../../Components/meetings/GridMeeting";
 import UpdateMeeting from "../../Components/meetings/UpdateMeeting";
 import ShowLocation from "../../Components/meetings/ShowLocation";
 import Timeline from "../timeline";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const Meetings = () => {
   const [loading, setloading] = useState(true);
@@ -165,7 +166,7 @@ const Meetings = () => {
           meetingNote: row?.meetingNote || "No Notes",
         }));
 
-        
+
 
         setpageState((old) => ({
           ...old,
@@ -181,18 +182,18 @@ const Meetings = () => {
         console.log(err);
       });
 
-      // fetch meetings that are in future
-      axios
+    // fetch meetings that are in future
+    axios
       .get(`${BACKEND_URL}/meetings/future`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
-      }).then((result)=>{
-        console.log("future meetings are ",result)
+      }).then((result) => {
+        console.log("future meetings are ", result)
         socket.emit("get_all_meetings", result?.data);
-      }).catch((error)=>{
-        console.log("error ",error)
+      }).catch((error) => {
+        console.log("error ", error)
       })
   };
 
@@ -277,7 +278,51 @@ const Meetings = () => {
   //   },
   // };
 
- 
+  const Additional = () => {
+    return (
+      <Box
+        sx={{
+          ...darkModeColors,
+          "& .MuiTabs-indicator": {
+            borderRadius: "5px",
+          },
+          "& .Mui-selected": {
+            color: "white",
+            zIndex: "1",
+          },
+          "& .MuiSvgIcon-root": {
+            // Customize icon styles here
+            color: primaryColor,
+          },
+        }}
+        className={`rounded-md overflow-hidden`}
+      >
+        <Tabs value={value} onClick={handleChange} variant="standard">
+          <Tab
+            icon={
+              <AiOutlineTable
+                size={22}
+                style={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              />
+            }
+          />
+          <Tab
+            icon={
+              <AiOutlineAppstore
+                size={22}
+                style={{
+                  color: currentMode === "dark" ? "#ffffff" : "#000000",
+                }}
+              />
+            }
+          />
+        </Tabs>
+      </Box>
+    );
+  }
+
   return (
     <>
       <div className="flex min-h-screen">
@@ -285,68 +330,16 @@ const Meetings = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg && (currentMode === "dark" ? "bg-black" : "bg-white")
-            }`}
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              }`}
           >
-            <div className="flex justify-between">
-              <div className="flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {t("menu_meetings")}{" "}
-                  <span className="bg-primary text-white px-3 py-1 rounded-sm my-auto">
-                    {pageState?.total}
-                  </span>
-                </h1>
-              </div>
+            <HeadingTitle
+              title={t("menu_meetings")}
+              counter={pageState?.total}
+              additional={<Additional />}
+            />
 
-              <Box
-                sx={{
-                  ...darkModeColors,
-                  "& .MuiTabs-indicator": {
-                    borderRadius: "5px",
-                  },
-                  "& .Mui-selected": {
-                    color: "white",
-                    zIndex: "1",
-                  },
-                  "& .MuiSvgIcon-root": {
-                    // Customize icon styles here
-                    color: primaryColor,
-                  },
-                }}
-                className={`rounded-md overflow-hidden`}
-              >
-                <Tabs value={value} onClick={handleChange} variant="standard">
-                  <Tab
-                    icon={
-                      <AiOutlineTable
-                        size={22}
-                        style={{
-                          color: currentMode === "dark" ? "#ffffff" : "#000000",
-                        }}
-                      />
-                    }
-                  />
-                  <Tab
-                    icon={
-                      <AiOutlineAppstore
-                        size={22}
-                        style={{
-                          color: currentMode === "dark" ? "#ffffff" : "#000000",
-                        }}
-                      />
-                    }
-                  />
-                </Tabs>
-              </Box>
-            </div>
-
-            <div className="mt-3 pb-3">
+            <div className="mt-1 pb-5">
               <TabPanel value={value} index={0}>
                 <Box
                   width={"100%"}

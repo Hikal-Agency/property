@@ -68,7 +68,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [maxPage, setMaxPage] = useState(0);
 
-  console.log("vat data:", vatData);
+  // console.log("vat data:", vatData);
 
   const token = localStorage.getItem("auth-token");
   const [vendors, setVendors] = useState([]);
@@ -98,8 +98,8 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
         }),
       ]);
 
-      console.log("vendors list:: ", vendorResponse);
-      console.log("users list:: ", userResponse);
+      // console.log("vendors list:: ", vendorResponse);
+      // console.log("users list:: ", userResponse);
 
       let usersList = userResponse?.data?.managers?.data;
 
@@ -139,7 +139,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
           Authorization: "Bearer " + token,
         },
       });
-      console.log("Users: ", response);
+      // console.log("Users: ", response);
 
       if (type === "user") {
         setUser(response?.data?.managers?.data);
@@ -150,7 +150,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
       setUserLoading(false);
     } catch (error) {
       setUserLoading(false);
-      console.log(error);
+      // console.log(error);
       toast.error("Unable to fetch users.", {
         position: "top-right",
         autoClose: 3000,
@@ -179,28 +179,45 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
           ? `&${new URLSearchParams(activeFilters).toString()}`
           : "";
 
-      console.log("activeFilters:: ", activeFilters);
-      console.log("queryParams:: ", queryParams);
+      // console.log("activeFilters:: ", activeFilters);
+      // console.log("queryParams:: ", queryParams);
 
       let url;
       if (visa) {
         url = `${BACKEND_URL}/invoices?page=${page}&category=Visa`;
+        const response = await axios.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        // console.log("transactions list:: ", response);
+
+        setVAT(response?.data?.vat);
+        setMaxPage(response?.data?.data?.last_page);
+        setTransactionsData(response?.data?.data?.data);
       } else {
         url = `${BACKEND_URL}/invoices?page=${page}${queryParams}`;
+        const response = await axios.get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        // console.log("transactions list:: ", response);
+
+        setVAT(response?.data?.vat);
+        setMaxPage(response?.data?.data?.last_page);
+        setTransactionsData(response?.data?.data?.data);
       }
 
-      const response = await axios.get(url, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      console.log("transactions list:: ", response);
-
-      setVAT(response?.data?.vat);
-      setMaxPage(response?.data?.data?.last_page);
-      setTransactionsData(response?.data?.data?.data);
+      if (filtersData) {
+        setVAT(filtersData?.data?.vat);
+        setMaxPage(filtersData?.data?.data?.last_page);
+        setTransactionsData(filtersData?.data?.data?.data);
+      }
 
       await fetchVendor();
     } catch (error) {
@@ -236,7 +253,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
     moment(b).diff(moment(a))
   );
 
-  console.log("sorted DAtes: ", sortedDates);
+  // console.log("sorted DAtes: ", sortedDates);
 
   useEffect(() => {
     fetchTransactions();
@@ -249,23 +266,22 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
         sx={{
           ...darkModeColors,
           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+          {
+            right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+            transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+          },
           "& legend": {
             textAlign: isLangRTL(i18n.language) ? "right" : "left",
           },
         }}
-        className={`p-5 ${
-          themeBgImg
-            ? currentMode === "dark"
-              ? "blur-bg-black"
-              : "blur-bg-white"
-            : currentMode === "dark"
+        className={`p-5 ${themeBgImg
+          ? currentMode === "dark"
+            ? "blur-bg-black"
+            : "blur-bg-white"
+          : currentMode === "dark"
             ? "bg-dark-neu"
             : "bg-light-neu"
-        }`}
+          }`}
       >
         {loading ? (
           <div className="flex items-center justify-center">
@@ -289,7 +305,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                       <p
                         className={`${themeBgImg ? "bg-primary"
                           : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                        } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
+                          } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
                         style={{ zIndex: 1 }}
                       >
                         {date}
@@ -304,9 +320,8 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                       onClick={() => setSingleTransModal(trans)}
                     >
                       <div
-                        className={`${
-                          isLangRTL(i18n.language) ? "pl-5" : "pr-5"
-                        } grid grid-cols-12 gap-5`}
+                        className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                          } grid grid-cols-12 gap-5`}
                       >
                         {/* DATE */}
                         <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
@@ -318,7 +333,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                             className={`${themeBgImg
                               ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
                               : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-                            } w-fit h-fit p-3`}
+                              } w-fit h-fit p-3`}
                             style={{ zIndex: 1 }}
                           >
                             {trans?.category.toLowerCase() === "commission" ? (
@@ -370,11 +385,10 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                             {deviceType === "mobile" && (
                               <div className="flex flex-col items-end">
                                 <p
-                                  className={`font-semibold ${
-                                    trans?.invoice_type == "Income"
-                                      ? "text-green-600"
-                                      : "text-red-600"
-                                  } `}
+                                  className={`font-semibold ${trans?.invoice_type == "Income"
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                    } `}
                                 >
                                   {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
                                   {trans?.currency}{" "}
@@ -393,11 +407,10 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                         {deviceType !== "mobile" && (
                           <div className="col-span-3 md:col-span-2 pb-5 flex flex-col items-end gap-2">
                             <p
-                              className={`font-semibold ${
-                                trans?.invoice_type == "Income"
-                                  ? "text-green-600"
-                                  : "text-red-600"
-                              } `}
+                              className={`font-semibold ${trans?.invoice_type == "Income"
+                                ? "text-green-600"
+                                : "text-red-600"
+                                } `}
                             >
                               {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
                               {trans?.currency}{" "}
@@ -426,7 +439,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                 count={maxPage}
                 color={currentMode === "dark" ? "primary" : "secondary"}
                 onChange={(e, value) => {
-                  console.log("page vaule", value);
+                  // console.log("page vaule", value);
                   setPage(value);
                 }}
                 style={{ margin: "auto" }}
