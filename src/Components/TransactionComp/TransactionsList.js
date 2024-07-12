@@ -47,6 +47,7 @@ import NewTransactionForm from "./NewTransactionForm";
 import { formatNoIntl } from "../_elements/FormatNoIntl";
 
 const TransactionsList = ({ filtersData, visa, callApi }) => {
+  console.log("filters:: ", filtersData);
   const {
     currentMode,
     darkModeColors,
@@ -67,6 +68,8 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
   const [vatData, setVAT] = useState([]);
   const [singleTransModal, setSingleTransModal] = useState(null);
   const [maxPage, setMaxPage] = useState(0);
+
+  console.log("trans data:: ", transactionsData);
 
   // console.log("vat data:", vatData);
 
@@ -192,7 +195,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
           },
         });
 
-        // console.log("transactions list:: ", response);
+        console.log("transactions list:: ", response);
 
         setVAT(response?.data?.vat);
         setMaxPage(response?.data?.data?.last_page);
@@ -213,11 +216,12 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
         setTransactionsData(response?.data?.data?.data);
       }
 
-      if (filtersData) {
-        setVAT(filtersData?.data?.vat);
-        setMaxPage(filtersData?.data?.data?.last_page);
-        setTransactionsData(filtersData?.data?.data?.data);
-      }
+      // if (filtersData && !visa) {
+      //   console.log("I am filter data");
+      //   setVAT(filtersData?.data?.vat);
+      //   setMaxPage(filtersData?.data?.data?.last_page);
+      //   setTransactionsData(filtersData?.data?.data?.data);
+      // }
 
       await fetchVendor();
     } catch (error) {
@@ -239,7 +243,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
   };
 
   const groupTransactionsByDate = (transactions) => {
-    return transactions.reduce((acc, transaction) => {
+    return transactions?.reduce((acc, transaction) => {
       const date = moment(transaction.date).format("YYYY-MM-DD");
       if (!acc[date]) {
         acc[date] = [];
@@ -249,7 +253,10 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
     }, {});
   };
   const groupedTransactions = groupTransactionsByDate(transactionsData);
-  const sortedDates = Object.keys(groupedTransactions).sort((a, b) =>
+
+  console.log("grouped trans:: ", groupedTransactions);
+
+  const sortedDates = Object.keys(groupedTransactions)?.sort((a, b) =>
     moment(b).diff(moment(a))
   );
 
@@ -266,22 +273,23 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
         sx={{
           ...darkModeColors,
           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-          {
-            right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-            transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-          },
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
           "& legend": {
             textAlign: isLangRTL(i18n.language) ? "right" : "left",
           },
         }}
-        className={`p-5 ${themeBgImg
-          ? currentMode === "dark"
-            ? "blur-bg-black"
-            : "blur-bg-white"
-          : currentMode === "dark"
+        className={`p-5 ${
+          themeBgImg
+            ? currentMode === "dark"
+              ? "blur-bg-black"
+              : "blur-bg-white"
+            : currentMode === "dark"
             ? "bg-dark-neu"
             : "bg-light-neu"
-          }`}
+        }`}
       >
         {loading ? (
           <div className="flex items-center justify-center">
@@ -294,7 +302,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
             </h3>
 
             {transactionsData && transactionsData.length > 0 ? (
-              sortedDates.map((date) => (
+              sortedDates?.map((date) => (
                 <div key={date}>
                   <div className="grid grid-cols-12 gap-5">
                     <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
@@ -303,9 +311,13 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                         style={{ transform: "translateX(-50%)" }}
                       ></div>
                       <p
-                        className={`${themeBgImg ? "bg-primary"
-                          : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                          } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
+                        className={`${
+                          themeBgImg
+                            ? "bg-primary"
+                            : currentMode === "dark"
+                            ? "bg-primary-dark-neu"
+                            : "bg-primary-light-neu"
+                        } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
                         style={{ zIndex: 1 }}
                       >
                         {date}
@@ -320,8 +332,9 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                       onClick={() => setSingleTransModal(trans)}
                     >
                       <div
-                        className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
-                          } grid grid-cols-12 gap-5`}
+                        className={`${
+                          isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                        } grid grid-cols-12 gap-5`}
                       >
                         {/* DATE */}
                         <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
@@ -330,10 +343,15 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                             style={{ transform: "translateX(-50%)" }}
                           ></div>
                           <div
-                            className={`${themeBgImg
-                              ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
-                              : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-                              } w-fit h-fit p-3`}
+                            className={`${
+                              themeBgImg
+                                ? currentMode === "dark"
+                                  ? "blur-bg-black border border-[#AAAAAA]"
+                                  : "blur-bg-white border border-[#AAAAAA]"
+                                : currentMode === "dark"
+                                ? "bg-dark-neu"
+                                : "bg-light-neu"
+                            } w-fit h-fit p-3`}
                             style={{ zIndex: 1 }}
                           >
                             {trans?.category.toLowerCase() === "commission" ? (
@@ -385,10 +403,11 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                             {deviceType === "mobile" && (
                               <div className="flex flex-col items-end">
                                 <p
-                                  className={`font-semibold ${trans?.invoice_type == "Income"
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                    } `}
+                                  className={`font-semibold ${
+                                    trans?.invoice_type == "Income"
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  } `}
                                 >
                                   {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
                                   {trans?.currency}{" "}
@@ -407,20 +426,23 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
                         {deviceType !== "mobile" && (
                           <div className="col-span-3 md:col-span-2 pb-5 flex flex-col items-end gap-2">
                             <p
-                              className={`font-semibold ${trans?.invoice_type == "Income"
-                                ? "text-green-600"
-                                : "text-red-600"
-                                } `}
+                              className={`font-semibold ${
+                                trans?.invoice_type == "Income"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              } `}
                             >
                               {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
                               {trans?.currency}{" "}
                               {formatNoIntl(trans?.total_amount)}
                             </p>
-                            {(trans?.vat !== 0 && trans?.vat !== null && trans?.vat !== "0") && (
-                              <p className="text-sm">
-                                {t("vat")}: {trans?.currency} {trans?.vat}
-                              </p>
-                            )}
+                            {trans?.vat !== 0 &&
+                              trans?.vat !== null &&
+                              trans?.vat !== "0" && (
+                                <p className="text-sm">
+                                  {t("vat")}: {trans?.currency} {trans?.vat}
+                                </p>
+                              )}
                           </div>
                         )}
                       </div>
