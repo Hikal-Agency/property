@@ -79,6 +79,12 @@ import {
   BsLayers,
   BsPersonGear,
 } from "react-icons/bs";
+import {
+  MdOutlineRealEstateAgent,
+  MdOutlineAccountBalance,
+} from "react-icons/md";
+import { BiCustomize } from "react-icons/bi";
+import { SiFormstack } from "react-icons/si";
 import { FaFacebookSquare, FaInbox, FaHistory } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { RiRadioButtonLine } from "react-icons/ri";
@@ -355,7 +361,8 @@ const Sidebarmui = () => {
   };
 
   const FetchProfile = async (token) => {
-    const storedUser = localStorage.getItem("user");
+    // const storedUser = localStorage.getItem("user");
+    const storedUser = false;
 
     if (storedUser) {
       // If user data is stored in local storage, parse and set it in state
@@ -416,6 +423,7 @@ const Sidebarmui = () => {
             is_alert: result.data.user[0].is_alert,
             timezone: result.data.user[0].timezone,
             pinned: result.data.user[0].pinned,
+            is_2FA_Verified: result?.data?.user[0]?.is_2FA_Verified,
           };
 
           setTimezone(user?.timezone);
@@ -430,6 +438,7 @@ const Sidebarmui = () => {
             ...user,
             platform: "web",
           });
+          console.log(user, "localstorage user");
 
           localStorage.setItem("user", JSON.stringify(user));
         })
@@ -1815,6 +1824,12 @@ const Sidebarmui = () => {
           pro: false,
           link: "/templates",
         },
+        {
+          name: t("forms"),
+          icon: <SiFormstack size={16} />,
+          pro: false,
+          link: "/forms",
+        },
       ],
     },
     // SUPPORT
@@ -1878,6 +1893,12 @@ const Sidebarmui = () => {
               link: "/notificationsList",
             },
           ],
+        },
+        {
+          name: "Fieds Customizations",
+          pro: false,
+          icon: <BiCustomize size={16} />,
+          link: "/fieldCustomizations",
         },
       ],
     },

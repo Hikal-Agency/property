@@ -28,18 +28,18 @@ const LeadNotesPage = (props) => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
-              }`}
+            className={`w-full p-5 mt-2 ${ !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+            }`}
           >
-            <HeadingTitle
-              title={t("lead_notes")}
-              counter={pageState?.total}
-            />
+            <HeadingTitle 
+            title={t("lead_notes")} 
+            counter={pageState?.total}
+             />
 
             <LeadNotes
-              pageState={pageState}
-              setpageState={setpageState}
-            />
+             pageState={pageState} 
+             setpageState={setpageState} 
+             />
           </div>
         )}
       </div>

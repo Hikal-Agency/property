@@ -228,54 +228,22 @@ const GridMeeting = ({ pageState, setpageState }) => {
           <div className={`w-full`}>
             <div className="">
               <div className="mt-5 md:mt-2">
-                <div className="flex justify-end w-full items-center mb-3">
-                  <div className={`${currentMode === "dark"
-                    ? "border-b-white" : "border-b-black"
-                    } flex items-center border-b-[1px] gap-2 mr-3`}>
-                    <div>
-                      <IoMdSearch size={22} color={currentMode === "dark" ? "#FFFFFF" : "#000000"} />
-                    </div>
-                    <input
-                      ref={searchRef}
-                      type="text"
-                      className=" focus:outline-none h-full bg-transparent text-[12px]"
-                      placeholder="Search"
-                      onChange={handleSearchChange}
-                      value={searchText}
-                    />
-                    <div
-                      // ref={searchContainer}
-                      className={`${isVoiceSearchState ? "listening bg-primary" : ""
-                        } ${currentMode === "dark" ? "text-white" : "text-black"
-                        } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
-                      onClick={() => {
-                        setIsVoiceSearchState(!isVoiceSearchState);
-                        console.log("mic is clicked...");
-                      }}
-                    >
-                      {isVoiceSearchState ? (
-                        <BsMicFill size={16} />
-                      ) : (
-                        <BsMic size={16} />
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 pb-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 pb-3">
                   {notesData?.length > 0 &&
                     searchRows?.map((item, index) => {
                       const { mLat, mLong } = item;
                       return (
                         <div
                           key={index}
-                          className={`${!themeBgImg
-                            ? currentMode === "dark"
-                              ? "bg-dark-neu text-white"
-                              : "bg-light-neu text-black"
-                            : currentMode === "dark"
+                          className={`${
+                            !themeBgImg
+                              ? currentMode === "dark"
+                                ? "bg-dark-neu text-white"
+                                : "bg-light-neu text-black"
+                              : currentMode === "dark"
                               ? "blur-bg-dark text-white"
                               : "blur-bg-light text-black"
-                            } p-5`}
+                          } p-5`}
                         >
                           <div className="space-y-1 overflow-hidden">
                             <div className="flex items-center justify-between">
@@ -293,9 +261,13 @@ const GridMeeting = ({ pageState, setpageState }) => {
                               <div className="flex items-center gap-3">
                                 <Tooltip title="Edit Meeting Details" arrow>
                                   <button
-                                    className={`${themeBgImg ? "bg-primary shadow-md"
-                                      : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                      } p-2 rounded-full`}
+                                    className={`${
+                                      themeBgImg
+                                        ? "bg-primary shadow-md"
+                                        : currentMode === "dark"
+                                        ? "bg-primary-dark-neu"
+                                        : "bg-primary-light-neu"
+                                    } p-2 rounded-full`}
                                     onClick={() => handleEditMeeting(item)}
                                   >
                                     <MdEdit color={"#FFFFFF"} size={14} />
@@ -303,9 +275,13 @@ const GridMeeting = ({ pageState, setpageState }) => {
                                 </Tooltip>
                                 <Tooltip title="Show Location" arrow>
                                   <button
-                                    className={`${themeBgImg ? "bg-primary shadow-md"
-                                      : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                      } p-2 rounded-full`}
+                                    className={`${
+                                      themeBgImg
+                                        ? "bg-primary shadow-md"
+                                        : currentMode === "dark"
+                                        ? "bg-primary-dark-neu"
+                                        : "bg-primary-light-neu"
+                                    } p-2 rounded-full`}
                                     onClick={() => showLocation(mLat, mLong)}
                                   >
                                     <MdLocationOn color={"#FFFFFF"} size={14} />

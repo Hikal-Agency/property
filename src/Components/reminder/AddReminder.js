@@ -31,6 +31,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 import moment from "moment";
+import LanguageDetectModal from "../_elements/LanguageDetectModal";
 
 const AddReminder = ({
   LeadModelOpen,
@@ -60,7 +61,8 @@ const AddReminder = ({
   const [reminderDate, setReminderDate] = useState(null);
   const [reminderTime, setReminderTime] = useState(null);
   const [reminderTimeValue, setTimeValue] = useState({});
-
+  const [language, setLanguage] = useState("en");
+  const [languageModal, setLanguageModal] = useState(false);
   const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
   const {
     transcript,
@@ -102,14 +104,15 @@ const AddReminder = ({
   const startListening = () =>
     SpeechRecognition.startListening({
       continuous: true,
-      language:
-        i18n?.language == "pk"
-          ? "ur"
-          : i18n?.language == "cn"
-          ? "zh"
-          : i18n?.language == "in"
-          ? "hi"
-          : i18n?.language,
+      // language:
+      //   i18n?.language == "pk"
+      //     ? "ur"
+      //     : i18n?.language == "cn"
+      //     ? "zh"
+      //     : i18n?.language == "in"
+      //     ? "hi"
+      //     : i18n?.language,
+      language: language,
     });
 
   console.log("reminder:: ", reminderDate);
@@ -314,7 +317,11 @@ const AddReminder = ({
                                 : "text-black"
                             } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
                             onClick={() => {
-                              setIsVoiceSearchState(!isVoiceSearchState);
+                              if (isVoiceSearchState) {
+                                setIsVoiceSearchState(false);
+                              } else {
+                                setLanguageModal(true);
+                              }
                               console.log("mic is clicked...");
                             }}
                           >
@@ -612,6 +619,15 @@ const AddReminder = ({
           </form>
         </div>
       </Modal>
+      {languageModal && (
+        <LanguageDetectModal
+          setIsVoiceSearchState={setIsVoiceSearchState}
+          setLanguageModal={setLanguageModal}
+          setLanguage={setLanguage}
+          languageModal={languageModal}
+          language={language}
+        />
+      )}
     </>
   );
 };

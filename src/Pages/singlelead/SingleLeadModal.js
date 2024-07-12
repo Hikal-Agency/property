@@ -37,6 +37,7 @@ import { VscCallOutgoing, VscMail } from "react-icons/vsc";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import LanguageDetectModal from "../../Components/_elements/LanguageDetectModal";
 const style = {
   transform: "translate(0%, 0%)",
   boxShadow: 24,
@@ -55,6 +56,8 @@ const SingleLeadModal = ({
   const [addNoteloading, setaddNoteloading] = useState(false);
   const [timelinePopup, setTimelinePopup] = useState({ isOpen: false });
   const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [languageModal, setLanguageModal] = useState(false);
   const {
     transcript,
     listening,
@@ -95,14 +98,15 @@ const SingleLeadModal = ({
   const startListening = () =>
     SpeechRecognition.startListening({
       continuous: true,
-      language:
-        i18n?.language == "pk"
-          ? "ur"
-          : i18n?.language == "cn"
-          ? "zh"
-          : i18n?.language == "in"
-          ? "hi"
-          : i18n?.language,
+      // language:
+      //   i18n?.language == "pk"
+      //     ? "ur"
+      //     : i18n?.language == "cn"
+      //     ? "zh"
+      //     : i18n?.language == "in"
+      //     ? "hi"
+      //     : i18n?.language,
+      language: language,
     });
 
   const {
@@ -679,7 +683,11 @@ const SingleLeadModal = ({
                                     : "text-black"
                                 } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
                                 onClick={() => {
-                                  setIsVoiceSearchState(!isVoiceSearchState);
+                                  if (isVoiceSearchState) {
+                                    setIsVoiceSearchState(false);
+                                  } else {
+                                    setLanguageModal(true);
+                                  }
                                   console.log("mic is clicked...");
                                 }}
                               >
@@ -774,6 +782,15 @@ const SingleLeadModal = ({
           </div>
         </div>
       </Modal>
+      {languageModal && (
+        <LanguageDetectModal
+          setIsVoiceSearchState={setIsVoiceSearchState}
+          setLanguageModal={setLanguageModal}
+          setLanguage={setLanguage}
+          languageModal={languageModal}
+          language={language}
+        />
+      )}
     </>
   );
 };
