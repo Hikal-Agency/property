@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import Loader from "../../Components/Loader";
 import StatmentsList from "../../Components/StatmentComp/StatmentsList";
 import Commission_VAT_List from "../../Components/Commission_VAT_Comp/Commission_VAT_List";
+import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const Commission_VAT = ({ isLoading }) => {
   const {
@@ -37,24 +38,14 @@ const Commission_VAT = ({ isLoading }) => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-4 ${
-              !themeBgImg & (currentMode === "dark" ? "bg-black" : "bg-white")
-            } ${currentMode === "dark" ? "text-white" : "text-black"}`}
+            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+              } ${currentMode === "dark" ? "text-white" : "text-black"}`}
           >
-            <div className="w-full flex justify-between items-center">
-              <div className="w-full flex items-center pb-3">
-                <div className="bg-primary h-10 w-1 rounded-full"></div>
-                <h1
-                  className={`text-lg font-semibold mx-2 uppercase ${
-                    currentMode === "dark" ? "text-white" : "text-black"
-                  }`}
-                >
-                  {t("title_commission_vat")}
-                </h1>
-              </div>
-            </div>
+            <HeadingTitle
+              title={t("title_commission_vat")}
+            />
 
-            <div className="mt-3 pb-3">
+            <div className="mt-1 pb-5">
               <Commission_VAT_List />
             </div>
           </div>
