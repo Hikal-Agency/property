@@ -31,7 +31,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { BsMic, BsMicFill } from "react-icons/bs";
 import HeadingTitle from "../_elements/HeadingTitle";
-
+import LanguageDetectModal from "../_elements/LanguageDetectModal";
 const UpdateMeeting = ({
   meetingModalOpen,
   handleMeetingModalClose,
@@ -67,6 +67,8 @@ const UpdateMeeting = ({
   const [meetingDateValue, setMeetingDateValue] = useState(
     meetingData?.meetingDate
   );
+  const [language, setLanguage] = useState("en");
+  const [languageModal, setLanguageModal] = useState(false);
   const [meetingNotes, setMeetingNotes] = useState(meetingData?.meetingNote);
   const [meetingLocation, setMeetingLocation] = useState({
     lat: 0,
@@ -115,14 +117,15 @@ const UpdateMeeting = ({
   const startListening = () =>
     SpeechRecognition.startListening({
       continuous: true,
-      language:
-        i18n?.language == "pk"
-          ? "ur"
-          : i18n?.language == "cn"
-            ? "zh"
-            : i18n?.language == "in"
-              ? "hi"
-              : i18n?.language,
+      // language:
+      //   i18n?.language == "pk"
+      //     ? "ur"
+      //     : i18n?.language == "cn"
+      //     ? "zh"
+      //     : i18n?.language == "in"
+      //     ? "hi"
+      //     : i18n?.language,
+      language: language,
     });
   // const style = {
   //   transform: "translate(-50%, -50%)",
@@ -205,11 +208,11 @@ const UpdateMeeting = ({
 
   const SelectStyles = {
     "& .MuiInputBase-root, & .MuiSvgIcon-fontSizeMedium, & .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline":
-    {
-      color: currentMode === "dark" ? "white !important" : "black !important",
-      fontSize: "0.9rem",
-      fontWeight: "500",
-    },
+      {
+        color: currentMode === "dark" ? "white !important" : "black !important",
+        fontSize: "0.9rem",
+        fontWeight: "500",
+      },
     "& .MuiOutlinedInput-notchedOutline": {
       borderColor:
         currentMode === "dark" ? "white !important" : "black !important",
@@ -323,20 +326,23 @@ const UpdateMeeting = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            }
+          }
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
             // onClick={handleLeadModelClose}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-              }
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -347,19 +353,19 @@ const UpdateMeeting = ({
           </button>
           <div
             style={style}
-            className={` ${currentMode === "dark"
+            className={` ${
+              currentMode === "dark"
                 ? "bg-dark text-white"
                 : "bg-light text-black"
-              } ${isLangRTL(i18n.language)
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && "border-r-2 border-primary"
                 : currentMode === "dark" && "border-l-2 border-primary"
-              }
+            }
              p-5 h-[100vh] w-[85vw] overflow-y-scroll
             `}
           >
-            <HeadingTitle
-              title={t("update_meeting_details")}
-            />
+            <HeadingTitle title={t("update_meeting_details")} />
 
             <form
               onSubmit={(e) => {
@@ -417,8 +423,8 @@ const UpdateMeeting = ({
                         onChange={(newValue) => {
                           setMeetingTime(
                             formatNum(newValue?.$d?.getHours()) +
-                            ":" +
-                            formatNum(newValue?.$d?.getMinutes())
+                              ":" +
+                              formatNum(newValue?.$d?.getMinutes())
                           );
                           setMeetingTimeValue(newValue);
                         }}
@@ -544,13 +550,19 @@ const UpdateMeeting = ({
                           <InputAdornment position="end">
                             <div
                               // ref={searchContainer}
-                              className={`${isVoiceSearchState ? "listening bg-primary" : ""
-                                } ${currentMode === "dark"
+                              className={`${
+                                isVoiceSearchState ? "listening bg-primary" : ""
+                              } ${
+                                currentMode === "dark"
                                   ? "text-white"
                                   : "text-black"
-                                } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                              } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
                               onClick={() => {
-                                setIsVoiceSearchState(!isVoiceSearchState);
+                                if (isVoiceSearchState) {
+                                  setIsVoiceSearchState(false);
+                                } else {
+                                  setLanguageModal(true);
+                                }
                                 console.log("mic is clicked...");
                               }}
                             >
@@ -576,7 +588,10 @@ const UpdateMeeting = ({
 
               <div className="p-4">
                 <button
-                  className={`${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                  className={`${
+                    currentMode === "dark"
+                      ? "bg-primary-dark-neu"
+                      : "bg-primary-light-neu"
                   } min-w-fit w-full text-white p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
                   // ripple={true}
                   // size="lg"
@@ -596,6 +611,15 @@ const UpdateMeeting = ({
           </div>
         </div>
       </Modal>
+      {languageModal && (
+        <LanguageDetectModal
+          setIsVoiceSearchState={setIsVoiceSearchState}
+          setLanguageModal={setLanguageModal}
+          setLanguage={setLanguage}
+          languageModal={languageModal}
+          language={language}
+        />
+      )}
     </>
   );
 };

@@ -48,6 +48,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { BsMic, BsMicFill } from "react-icons/bs";
+import LanguageDetectModal from "../../Components/_elements/LanguageDetectModal";
 
 const style = {
   transform: "translate(0%, 0%)",
@@ -87,6 +88,8 @@ const DealHistory = ({
   const [maxPage, setMaxPage] = useState(0);
   const [DialogueVal, setDialogue] = useState(false);
   const [page, setPage] = useState(1);
+  const [language, setLanguage] = useState("en");
+  const [languageModal, setLanguageModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -139,14 +142,15 @@ const DealHistory = ({
   const startListening = () =>
     SpeechRecognition.startListening({
       continuous: true,
-      language:
-        i18n?.language == "pk"
-          ? "ur"
-          : i18n?.language == "cn"
-          ? "zh"
-          : i18n?.language == "in"
-          ? "hi"
-          : i18n?.language,
+      // language:
+      //   i18n?.language == "pk"
+      //     ? "ur"
+      //     : i18n?.language == "cn"
+      //     ? "zh"
+      //     : i18n?.language == "in"
+      //     ? "hi"
+      //     : i18n?.language,
+      language: language,
     });
 
   const handleImageClick = (image) => {
@@ -1133,9 +1137,11 @@ const DealHistory = ({
                                             : "text-black"
                                         } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
                                         onClick={() => {
-                                          setIsVoiceSearchState(
-                                            !isVoiceSearchState
-                                          );
+                                          if (isVoiceSearchState) {
+                                            setIsVoiceSearchState(false);
+                                          } else {
+                                            setLanguageModal(true);
+                                          }
                                           console.log("mic is clicked...");
                                         }}
                                       >
@@ -1463,6 +1469,15 @@ const DealHistory = ({
           )}
         </div>
       </Modal>
+      {languageModal && (
+        <LanguageDetectModal
+          setIsVoiceSearchState={setIsVoiceSearchState}
+          setLanguageModal={setLanguageModal}
+          setLanguage={setLanguage}
+          languageModal={languageModal}
+          language={language}
+        />
+      )}
     </>
   );
 };

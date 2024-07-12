@@ -5,10 +5,15 @@ import { useStateContext } from "../../context/ContextProvider";
 import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const Booked = () => {
-
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, BACKEND_URL, pageState, t, themeBgImg } =
-    useStateContext();
+  const {
+    currentMode,
+    setopenBackDrop,
+    BACKEND_URL,
+    pageState,
+    t,
+    themeBgImg,
+  } = useStateContext();
 
   console.log("Booked State: ", pageState);
 
@@ -24,19 +29,16 @@ const Booked = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
-              }`}
+            className={`w-full p-5 mt-2 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+            }`}
           >
             <HeadingTitle
               title={`${t("booked")} ${t("deals")}`}
               counter={pageState?.total}
             />
 
-            <BookedDeals
-              BACKEND_URL={BACKEND_URL}
-              lead_type={"booked"}
-            />
-
+            <BookedDeals BACKEND_URL={BACKEND_URL} lead_type={"booked"} />
           </div>
         )}
       </div>

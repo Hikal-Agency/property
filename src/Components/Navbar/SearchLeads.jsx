@@ -5,6 +5,7 @@ import {
   TextField,
   InputAdornment,
 } from "@mui/material";
+
 import { toast } from "react-toastify";
 import { useStateContext } from "../../context/ContextProvider";
 import { useLocation, useNavigate } from "react-router";
@@ -13,6 +14,7 @@ import { BsMic, BsMicFill } from "react-icons/bs";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import LanguageDetectModal from "../_elements/LanguageDetectModal";
 const SearchLeads = () => {
   const searchContainer = useRef(null);
   const {
@@ -27,6 +29,8 @@ const SearchLeads = () => {
   const [searchTerm, setSearchTerm] = useState(null);
   const [searchResult, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [languageModal, setLanguageModal] = useState(false);
 
   const location = useLocation();
 
@@ -67,14 +71,15 @@ const SearchLeads = () => {
   const startListening = () =>
     SpeechRecognition.startListening({
       continuous: true,
-      language:
-        i18n?.language == "pk"
-          ? "ur"
-          : i18n?.language == "cn"
-          ? "zh"
-          : i18n?.language == "in"
-          ? "hi"
-          : i18n?.language,
+      // language:
+      //   i18n?.language == "pk"
+      //     ? "ur"
+      //     : i18n?.language == "cn"
+      //     ? "zh"
+      //     : i18n?.language == "in"
+      //     ? "hi"
+      //     : i18n?.language,
+      language: language,
     });
 
   const handleNavigate = (e, search) => {
@@ -174,7 +179,11 @@ const SearchLeads = () => {
                       currentMode === "dark" ? "text-white" : "text-black"
                     } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
                     onClick={() => {
-                      setIsVoiceSearchState(!isVoiceSearchState);
+                      if (isVoiceSearchState) {
+                        setIsVoiceSearchState(false);
+                      } else {
+                        setLanguageModal(true);
+                      }
                       console.log("mic is clicked...");
                     }}
                   >
@@ -244,6 +253,15 @@ const SearchLeads = () => {
           </div>
         )}
       </div>
+      {languageModal && (
+        <LanguageDetectModal
+          languageModal={languageModal}
+          setLanguageModal={setLanguageModal}
+          setLanguage={setLanguage}
+          language={language}
+          setIsVoiceSearchState={setIsVoiceSearchState}
+        />
+      )}
     </div>
   );
 };

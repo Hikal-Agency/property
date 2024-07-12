@@ -125,39 +125,6 @@ const NotesGrid = ({ pageState, setpageState }) => {
         ) : (
           <div className={`w-full`}>
             <div className="mt-5 md:mt-2">
-              <div className="flex justify-end w-full items-center mb-3 ">
-                <div className="flex items-center border-b-[1px] border-b-black gap-2 mr-3">
-                  <div>
-                    <IoMdSearch size={22} />
-                  </div>
-                  <input
-                    ref={searchRef}
-                    type="text"
-                    className=" focus:outline-none h-full bg-transparent text-[12px]"
-                    placeholder="Search"
-                    onChange={handleSearchChange}
-                    value={searchText}
-                  />
-                  <div
-                    // ref={searchContainer}
-                    className={`${
-                      isVoiceSearchState ? "listening bg-primary" : ""
-                    } ${
-                      currentMode === "dark" ? "text-white" : "text-black"
-                    } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
-                    onClick={() => {
-                      setIsVoiceSearchState(!isVoiceSearchState);
-                      console.log("mic is clicked...");
-                    }}
-                  >
-                    {isVoiceSearchState ? (
-                      <BsMicFill size={16} />
-                    ) : (
-                      <BsMic size={16} />
-                    )}
-                  </div>
-                </div>
-              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                 {notesData?.length > 0 &&
                   searchRows?.map((item, index) => {

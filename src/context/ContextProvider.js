@@ -85,11 +85,11 @@ export const ContextProvider = ({ children }) => {
       // console.log("ALL USERS === ", response.data.users);
       setAllUsers(response.data.users);
     } catch (error) {
-      console.error('Error fetching users: ', error);
+      console.error("Error fetching users: ", error);
     }
   };
   const getUserById = (id) => {
-    return allUsers.find(user => user.id === id);
+    return allUsers.find((user) => user.id === id);
   };
   useEffect(() => {
     fetchAllUsers();
@@ -729,8 +729,9 @@ export const ContextProvider = ({ children }) => {
           userName: result.data.user[0].userName,
           userType: result.data.user[0].userType,
           is_alert: result.data.user[0].is_alert,
+          is_2FA_Verified: result?.data?.user[0]?.is_2FA_Verified,
         };
-
+        console.log(user);
         setUser(user);
       });
   };

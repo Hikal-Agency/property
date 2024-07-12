@@ -520,8 +520,8 @@ const NotesTable = ({ pageState, setpageState, HandleSingleLead }) => {
       }
       columns={columns}
       components={{
-        // Toolbar: GridToolbar,
-        Toolbar: CustomToolbar,
+        Toolbar: GridToolbar,
+        // Toolbar: CustomToolbar,
         Pagination: CustomPagination,
       }}
       componentsProps={{

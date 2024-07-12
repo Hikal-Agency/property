@@ -7,8 +7,7 @@ import NotificationsGridComponent from "../../Components/notificationsUi/Notific
 
 const Notifications = () => {
   const [loading, setloading] = useState(true);
-  const { currentMode, setopenBackDrop, t, themeBgImg } =
-    useStateContext();
+  const { currentMode, setopenBackDrop, t, themeBgImg } = useStateContext();
 
   const [pageState, setpageState] = useState({
     isLoading: false,

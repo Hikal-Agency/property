@@ -327,6 +327,7 @@ const RegisterAttendance = () => {
             userEmail: result.data.user[0].userEmail,
             userName: result.data.user[0].userName,
             userType: result.data.user[0].userType,
+            is_2FA_Verified: result?.data?.user[0]?.is_2FA_Verified,
           };
 
           setUser(user);

@@ -38,6 +38,7 @@ import {
   lead_options,
 } from "../_elements/SelectOptions";
 import HeadingTitle from "../_elements/HeadingTitle";
+import LanguageDetectModal from "../_elements/LanguageDetectModal";
 
 const AddLeadComponent = ({
   handleCloseAddLeadModal,
@@ -66,6 +67,8 @@ const AddLeadComponent = ({
   const [LeadNotes, setLeadNotes] = useState("");
   const [value, setValue] = useState();
   const [error, setError] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [languageModal, setLanguageModal] = useState(false);
   const { hasPermission } = usePermission();
   const {
     currentMode,
@@ -123,14 +126,15 @@ const AddLeadComponent = ({
   const startListening = () =>
     SpeechRecognition.startListening({
       continuous: true,
-      language:
-        i18n?.language == "pk"
-          ? "ur"
-          : i18n?.language == "cn"
-          ? "zh"
-          : i18n?.language == "in"
-          ? "hi"
-          : i18n?.language,
+      // language:
+      //   i18n?.language == "pk"
+      //     ? "ur"
+      //     : i18n?.language == "cn"
+      //     ? "zh"
+      //     : i18n?.language == "in"
+      //     ? "hi"
+      //     : i18n?.language,
+      language: language,
     });
 
   const ChangeLeadSource = (selectedOption) => {
@@ -625,7 +629,11 @@ const AddLeadComponent = ({
                             currentMode === "dark" ? "text-white" : "text-black"
                           } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
                           onClick={() => {
-                            setIsVoiceSearchState(!isVoiceSearchState);
+                            if (isVoiceSearchState) {
+                              setIsVoiceSearchState(false);
+                            } else {
+                              setLanguageModal(true);
+                            }
                             console.log("mic is clicked...");
                           }}
                         >
@@ -1117,6 +1125,15 @@ const AddLeadComponent = ({
               )}
             </button>
           </form>
+          {languageModal && (
+            <LanguageDetectModal
+              setIsVoiceSearchState={setIsVoiceSearchState}
+              setLanguageModal={setLanguageModal}
+              setLanguage={setLanguage}
+              languageModal={languageModal}
+              language={language}
+            />
+          )}
         </div>
       )}
     </>

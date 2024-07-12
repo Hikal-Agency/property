@@ -535,8 +535,8 @@ const TableMeeting = ({
         }
         columns={columns}
         components={{
-          // Toolbar: GridToolbar,
-          Toolbar: CustomToolbar,
+          Toolbar: GridToolbar,
+          // Toolbar: CustomToolbar,
           Pagination: CustomPagination,
         }}
         componentsProps={{

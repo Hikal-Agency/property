@@ -47,6 +47,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { BsMic, BsMicFill } from "react-icons/bs";
+import LanguageDetectModal from "../_elements/LanguageDetectModal";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -89,6 +90,8 @@ const SingleLead = ({
     isOpened: false,
   });
   const [deleteloading, setdeleteloading] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [languageModal, setLanguageModal] = useState(false);
   const handleCloseListingModal = () => setListingModalOpen(false);
 
   const handleCloseRequestModel = () => {
@@ -135,14 +138,15 @@ const SingleLead = ({
   const startListening = () =>
     SpeechRecognition.startListening({
       continuous: true,
-      language:
-        i18n?.language == "pk"
-          ? "ur"
-          : i18n?.language == "cn"
-          ? "zh"
-          : i18n?.language == "in"
-          ? "hi"
-          : i18n?.language,
+      // language:
+      //   i18n?.language == "pk"
+      //     ? "ur"
+      //     : i18n?.language == "cn"
+      //     ? "zh"
+      //     : i18n?.language == "in"
+      //     ? "hi"
+      //     : i18n?.language,
+      language: language,
     });
 
   const notes = LeadData?.notes;
@@ -1091,7 +1095,11 @@ const SingleLead = ({
                                       : "text-black"
                                   } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
                                   onClick={() => {
-                                    setIsVoiceSearchState(!isVoiceSearchState);
+                                    if (isVoiceSearchState) {
+                                      setIsVoiceSearchState(false);
+                                    } else {
+                                      setLanguageModal(true);
+                                    }
                                     console.log("mic is clicked...");
                                   }}
                                 >
@@ -1221,6 +1229,15 @@ const SingleLead = ({
           )}
         </div>
       </div>
+      {languageModal && (
+        <LanguageDetectModal
+          setIsVoiceSearchState={setIsVoiceSearchState}
+          setLanguageModal={setLanguageModal}
+          setLanguage={setLanguage}
+          languageModal={languageModal}
+          language={language}
+        />
+      )}
     </Modal>
   );
 };
