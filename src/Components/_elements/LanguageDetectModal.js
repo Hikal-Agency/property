@@ -45,6 +45,14 @@ const languages = [
     name: "Hindi",
     code: "hi",
   },
+  {
+    name: "Russian",
+    code: "ru",
+  },
+  {
+    name: "Hebrew",
+    code: "he",
+  },
 ];
 
 const LanguageDetectModal = ({
