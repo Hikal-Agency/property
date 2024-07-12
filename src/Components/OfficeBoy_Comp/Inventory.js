@@ -96,7 +96,11 @@ const Inventory = ({ openInventory, setOpenInventory, FetchMenu }) => {
     try {
       const updateStatus = await axios.post(
         `${BACKEND_URL}/items/${value?.id}`,
-        JSON.stringify({ itemStatus: newValue, itemName: value?.itemName }),
+        JSON.stringify({
+          itemStatus: newValue,
+          itemName: value?.itemName,
+          itemPrice: value?.itemPrice,
+        }),
         {
           headers: {
             "Content-Type": "application/json",
@@ -120,6 +124,7 @@ const Inventory = ({ openInventory, setOpenInventory, FetchMenu }) => {
       setLoading(false);
 
       listITems();
+      FetchMenu();
     } catch (error) {
       setLoading(false);
       console.log("error:::: ", error);
