@@ -15,15 +15,22 @@ import { toast } from "react-toastify";
 import { BsDownload } from "react-icons/bs";
 import { countries_list, currencies } from "../_elements/SelectOptions";
 import { selectStyles } from "../_elements/SelectStyles";
-import TransactionsListModal from "../TransactionComp/TransactionsListModal";
+import Comm_VAT_PDF from "./Comm_VAT_PDF";
 
 import {
   BsBuildings,
   BsCalendarCheck,
   BsCart4,
   BsQuestionLg,
+  BsTools,
+  BsCash,
+  BsMegaphone
 } from "react-icons/bs";
-import Comm_VAT_PDF from "./Comm_VAT_PDF";
+import {
+  RiVisaLine
+} from "react-icons/ri";
+import { formatNoIntl } from "../_elements/FormatNoIntl";
+
 
 const Commission_VAT_List = () => {
   const {
@@ -38,6 +45,7 @@ const Commission_VAT_List = () => {
     fontFam,
     isLangRTL,
     i18n,
+    deviceType
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
@@ -108,6 +116,8 @@ const Commission_VAT_List = () => {
       console.log("commission vat list:: ", response);
       setCommVATData(response?.data?.data);
       setTransData(response?.data?.data?.[0]?.invoices);
+
+      console.log("TRANS === ", response?.data?.data?.[0]?.invoices);
     } catch (error) {
       setloading(false);
       console.error("Error fetching statements:", error);
@@ -131,44 +141,34 @@ const Commission_VAT_List = () => {
   }, [filters]);
 
   return (
-    <div className={`pb-4 px-4`}>
-      <div className="flex items-center justify-end gap-4">
-        {/* <Box
-          sx={{
-            ...darkModeColors,
-            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            "& legend": {
-              textAlign: isLangRTL(i18n.language) ? "right" : "left",
-            },
-          }}
-          className={`p-4 `}
-        > */}
-        <div className="mb-5 ">
-          <button
-            className="bg-btn-primary py-2 px-4 text-white rounded-md"
-            onClick={clearFilters}
-          >
-            {t("clear_all")}
-          </button>
-        </div>
+    <div className={`pb-5`}>
+      <div className="flex items-center justify-end">
         <Box
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+            {
+              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+            },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
           }}
+          className="flex gap-3"
         >
+          <div className="mb-5">
+            <button
+              className={`${themeBgImg ? "bg-primary shadow-md"
+                : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                } p-3 mb-5 rounded-md min-w-[80px] text-white uppercase`}
+              onClick={clearFilters}
+            >
+              {t("clear_all")}
+            </button>
+          </div>
           <Select
+            className="min-w-[100px]"
             options={currencies(t)?.map((curr) => ({
               value: curr?.value,
               label: curr?.label,
@@ -183,26 +183,12 @@ const Commission_VAT_List = () => {
               });
             }}
             placeholder={t("label_currency")}
-            className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
             required
           />
-        </Box>
-        <Box
-          sx={{
-            ...darkModeColors,
-            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            "& legend": {
-              textAlign: isLangRTL(i18n.language) ? "right" : "left",
-            },
-          }}
-        >
           <Select
+            className="min-w-[100px]"
             options={countries_list(t)?.map((country) => ({
               value: country?.value,
               label: country?.label,
@@ -217,25 +203,10 @@ const Commission_VAT_List = () => {
               });
             }}
             placeholder={t("label_country")}
-            className={`mb-5`}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
             required
           />
-        </Box>
-        <Box
-          sx={{
-            ...darkModeColors,
-            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            "& legend": {
-              textAlign: isLangRTL(i18n.language) ? "right" : "left",
-            },
-          }}
-        >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               value={dayjs(`${filters?.year}-${filters?.month}-01`)}
@@ -259,8 +230,9 @@ const Commission_VAT_List = () => {
                     "& .MuiSvgIcon-root": {
                       color: currentMode === "dark" ? "white" : "black",
                     },
-                    marginBottom: "20px",
+                    // marginBottom: "20px",
                   }}
+                  className="min-w-[100px]"
                   fullWidth
                   size="small"
                   {...params}
@@ -271,21 +243,20 @@ const Commission_VAT_List = () => {
               maxDate={dayjs().startOf("day").toDate()}
             />
           </LocalizationProvider>
+          <div className="mb-5 ">
+            <button
+              className={`${themeBgImg ? "bg-primary shadow-md"
+                : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                } p-3 mb-5 rounded-full`}
+              onClick={() => setPDFModal(true)}
+            >
+              <BsDownload size={16} color={"#FFFFFF"} />
+            </button>
+          </div>
         </Box>
-
-        <div className="mb-4">
-          <button
-            className="bg-btn-primary p-4 mt-0 rounded-full"
-            onClick={() => setPDFModal(true)}
-          >
-            {" "}
-            <BsDownload size={16} color={"#FFFFFF"} />
-          </button>
-        </div>
-        {/* </Box> */}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
         {loading ? (
           <div className="flex items-center justify-center">
             <CircularProgress />
@@ -295,9 +266,13 @@ const Commission_VAT_List = () => {
             {comm_vat_data && comm_vat_data?.length > 0 ? (
               comm_vat_data?.map((comm_vat) => {
                 return (
-                  <div className="bg-primary p-4 rounded-xl shadow-sm mb-5">
+                  <div className={`${themeBgImg ?
+                    currentMode === "dark" ? "blur-bg-black" : "blur-bg-white"
+                    : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                    } ${themeBgImg && "rounded-xl shadow-md"
+                    } p-5 mb-5`}>
                     <h1
-                      className={`text-2xl font-bold mx-2 uppercase text-white text-center mb-4`}
+                      className={`text-2xl font-bold mx-2 uppercase text-center mb-4`}
                     >
                       {comm_vat?.year}
                     </h1>
@@ -305,37 +280,41 @@ const Commission_VAT_List = () => {
                       {comm_vat?.vat && comm_vat?.vat?.length > 0 ? (
                         comm_vat?.vat?.map((vat) => (
                           <div
-                            className={`${
+                            className={`${themeBgImg ?
                               currentMode === "dark"
-                                ? "bg-[#1c1c1c] text-white"
-                                : "bg-[#eeeeee] text-black"
-                            } p-5 rounded-xl flex flex-col items-center justify-center gap-4`}
+                                ? "blur-bg-black text-white"
+                                : "blur-bg-white text-black"
+                              : currentMode === "dark"
+                                ? "bg-dark-neu text-white"
+                                : "bg-light-neu text-black"
+                              } p-5 rounded-xl flex flex-col items-center justify-center gap-4`}
                           >
-                            <div className="w-full text-xl font-bold mx-2 uppercase text-center">
-                              {vat?.currency}
-                            </div>
                             <div
-                              className={`w-full rounded-xl shadow-sm p-5 ${
-                                currentMode === "dark"
-                                  ? "bg-black text-white"
-                                  : "bg-white text-black"
-                              }`}
+                              className={`w-full p-5 ${themeBgImg
+                                ? currentMode === "dark"
+                                  ? "bg-primary"
+                                  : "bg-primary"
+                                : currentMode === "dark"
+                                  ? "bg-primary-dark-neu"
+                                  : "bg-primary-light-neu"
+                                } ${themeBgImg && "rounded-xl shadow-md"
+                                } text-white`}
                             >
-                              <div
-                                className={`w-full text-center text-primary text-2xl font-bold mb-3`}
-                              >
-                                {vat?.currency} {vat?.vat}
-                              </div>
-                              <p className={`text-center text-sm`}>
+                              <p className={`text-center text-sm mb-2`}>
                                 {t("vat_amount")}
                               </p>
+                              <div
+                                className={`w-full text-center text-2xl font-bold`}
+                              >
+                                {vat?.currency} {vat?.vat.toFixed(2)}
+                              </div>
                             </div>
                             <p className={`text-center text-sm my-3`}>
                               {t("vat_calculated_for") +
                                 " " +
                                 vat?.currency +
                                 " " +
-                                vat?.amount +
+                                vat?.amount.toFixed(2) +
                                 " " +
                                 t("from") +
                                 " " +
@@ -365,120 +344,153 @@ const Commission_VAT_List = () => {
         )}
 
         {/* transactions list */}
-        <div>
-          <Box
-            sx={{
-              ...darkModeColors,
-              "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                {
-                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-                },
-              "& legend": {
-                textAlign: isLangRTL(i18n.language) ? "right" : "left",
-              },
-            }}
-            className="p-2"
-          >
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <CircularProgress />
-              </div>
-            ) : (
-              <div className="flex flex-col gap-4">
-                {transactionsData && transactionsData?.length > 0 ? (
-                  transactionsData?.map((trans) => {
-                    // let user;
-                    // if (trans?.invoice?.category?.toLowerCase() === "salary") {
-                    //   user = true;
-                    // } else {
-                    //   user = false;
-                    // }
-                    let user;
-                    if (trans?.invoice?.user_id) {
-                      user = true;
-                    } else {
-                      user = false;
-                    }
-
-                    return (
-                      <>
+        <Box
+          sx={{ darkModeColors }}
+          className={`p-5 ${themeBgImg
+            ? currentMode === "dark"
+              ? "blur-bg-black"
+              : "blur-bg-white"
+            : currentMode === "dark"
+              ? "bg-dark-neu"
+              : "bg-light-neu"
+            }`}
+        >
+          {loading ? (
+            <div className="flex items-center justify-center">
+              <CircularProgress />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {transactionsData && transactionsData.length > 0 ? (
+                transactionsData.map((trans) => (
+                  <div
+                    key={trans}
+                    className="cursor-pointer"
+                    onClick={() => setSingleTransModal(trans)}
+                  >
+                    {/* DATE */}
+                    <p
+                      className={`${themeBgImg ? "bg-primary"
+                        : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+                        } font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
+                      style={{ zIndex: 1 }}
+                    >
+                      {trans?.invoice?.date}
+                    </p>
+                    <div
+                      className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                        } grid grid-cols-12 gap-5`}
+                    >
+                      <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
                         <div
-                          className={`cursor-pointer rounded-xl p-4 ${
-                            themeBgImg && currentMode === "dark"
-                              ? "blur-bg-dark"
-                              : "blur-bg-light"
-                          }`}
-                          onClick={() => setSingleTransModal(trans)}
+                          className={`${themeBgImg
+                            ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
+                            : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                            } w-fit h-fit p-3 mt-5`}
+                          style={{ zIndex: 1 }}
                         >
-                          <p className="mb-3 font-semibold text-sm">
-                            {moment(trans?.invoice?.date).format("YYYY-MM-DD")}
-                          </p>
-                          <div className="flex justify-between gap-4">
-                            <div className="flex gap-4">
-                              <div className="border w-fit h-fit border-[#AAAAAA] shadow-sm rounded-md p-3">
-                                {trans?.invoice?.category === "Commission" ? (
-                                  <BsBuildings size={16} color={"#AAAAAA"} />
-                                ) : trans?.invoice?.category === "Salary" ? (
-                                  <BsCalendarCheck
-                                    size={16}
-                                    color={"#AAAAAA"}
-                                  />
-                                ) : trans?.invoice?.category === "Purchase" ? (
-                                  <BsCart4 size={16} color={"#AAAAAA"} />
-                                ) : (
-                                  <BsQuestionLg size={16} color={"#AAAAAA"} />
-                                )}
-                              </div>
-                              <div className="flex flex-col">
-                                <p>
-                                  {user
-                                    ? trans?.user?.userName
-                                    : trans?.vendor?.vendor_name}
-                                </p>
-                                <div className="flex gap-1 text-sm">
-                                  <p
-                                    className={
-                                      trans?.invoice?.status === "Paid"
-                                        ? "text-green-600"
-                                        : "text-red-600"
-                                    }
-                                  >
-                                    {trans?.invoice?.status}
-                                  </p>
-                                  <p> - {trans?.invoice?.category}</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div>
-                              <p
-                                className={`font-semibold text-lg ${
-                                  trans?.invoice?.invoice_type == "Income"
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                } `}
-                              >
-                                {trans?.invoice?.invoice_type === "Income"
-                                  ? "+"
-                                  : "-"}{" "}
-                                {trans?.invoice?.currency}{" "}
-                                {trans?.invoice?.amount}
-                              </p>
-                            </div>
-                          </div>
+                          {trans?.invoice?.category.toLowerCase() === "commission" ? (
+                            <BsBuildings size={16} color={"#AAAAAA"} />
+                          ) : trans?.invoice?.category.toLowerCase() === "salary" ? (
+                            <BsCalendarCheck size={16} color={"#AAAAAA"} />
+                          ) : trans?.invoice?.category.toLowerCase() === "purchase" ? (
+                            <BsCart4 size={16} color={"#AAAAAA"} />
+                          ) : trans?.invoice?.category.toLowerCase() === "visa" ? (
+                            <RiVisaLine size={16} color={"#AAAAAA"} />
+                          ) : trans?.invoice?.category.toLowerCase() ===
+                            "maintenance" ? (
+                            <BsTools size={16} color={"#AAAAAA"} />
+                          ) : trans?.invoice?.category.toLowerCase() === "borrow" ? (
+                            <BsCash size={16} color={"#AAAAAA"} />
+                          ) : trans?.invoice?.category.toLowerCase() === "campaigns" ? (
+                            <BsMegaphone size={16} color={"#AAAAAA"} />
+                          ) : (
+                            <BsQuestionLg size={16} color={"#AAAAAA"} />
+                          )}
                         </div>
-                      </>
-                    );
-                  })
-                ) : (
-                  <div>
-                    <h1>{t("no_data_found")}</h1>
+                        <div
+                          className="h-full w-1 bg-primary absolute top-0"
+                          style={{ transform: "translateX(-50%)" }}
+                        ></div>
+                      </div>
+                      {/* DETAILS */}
+                      <div className="col-span-9 md:col-span-8 pb-6 flex flex-col gap-2 mt-5">
+                        {trans?.invoice?.vendor_id && (
+                          <div className="flex">
+                            {/* {trans?.vendor?.type} - {" "} */}
+                            {trans?.vendor?.vendor_name}
+                          </div>
+                        )}
+                        {trans?.invoice?.user_id && (
+                          <div className="flex">{trans?.user?.userName}</div>
+                        )}
+                        <div className="flex items-center justify-between gap-5">
+                          <div className="flex gap-1 text-sm">
+                            <p
+                              className={
+                                trans?.invoice?.status === "Paid"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }
+                            >
+                              {trans?.invoice?.status}
+                            </p>
+                            <p> - {trans?.invoice?.category}</p>
+                          </div>
+                          {/* AMOUNT FOR MOBILE */}
+                          {deviceType === "mobile" && (
+                            <div className="flex flex-col items-end">
+                              <p
+                                className={`font-semibold ${trans?.invoice?.invoice_type == "Income"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                                  } `}
+                              >
+                                {trans?.invoice?.invoice_type === "Income" ? "+" : "-"}{" "}
+                                {trans?.invoice?.currency}{" "}
+                                {formatNoIntl(trans?.invoice?.total_amount)}
+                              </p>
+                              {(trans?.invoice?.vat !== 0 || trans?.invoice?.vat !== null) && (
+                                <p className="text-sm">
+                                  {t("vat")}: {trans?.invoice?.currency} {trans?.invoice?.vat}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      {/* AMOUNT */}
+                      {deviceType !== "mobile" && (
+                        <div className="col-span-3 md:col-span-2 pb-5 mt-5 flex flex-col items-end text-end gap-2">
+                          <p
+                            className={`font-semibold ${trans?.invoice?.invoice_type == "Income"
+                              ? "text-green-600"
+                              : "text-red-600"
+                              } `}
+                          >
+                            {trans?.invoice?.invoice_type === "Income" ? "+" : "-"}{" "}
+                            {trans?.invoice?.currency}{" "}
+                            {formatNoIntl(trans?.invoice?.total_amount)}
+                          </p>
+                          {(trans?.invoice?.vat !== 0 && trans?.invoice?.vat !== null && trans?.invoice?.vat !== "0") && (
+                            <p className="text-sm">
+                              {t("vat")}: {trans?.invoice?.currency} {trans?.invoice?.vat}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
-            )}
-          </Box>
-        </div>
+                ))
+              ) : (
+                <div>
+                  <h1>{t("no_data_found")}</h1>
+                </div>
+              )}
+            </div>
+          )}
+        </Box>
+
       </div>
       {singleTransModal && (
         <SingleTransactionModal

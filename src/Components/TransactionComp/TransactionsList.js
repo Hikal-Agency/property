@@ -209,7 +209,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
           },
         });
 
-        // console.log("transactions list:: ", response);
+        console.log("transactions list:: ", response);
 
         setVAT(response?.data?.vat);
         setMaxPage(response?.data?.data?.last_page);
