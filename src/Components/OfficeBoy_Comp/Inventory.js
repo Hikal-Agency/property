@@ -169,6 +169,7 @@ const Inventory = ({ openInventory, setOpenInventory, FetchMenu }) => {
 
       console.log("list item::::: ", deleteItem);
 
+      FetchMenu();
       setBtnLoading(false);
       setDeleteModal(false);
     } catch (error) {
