@@ -385,7 +385,7 @@ const DealHistory = ({
           theme: "light",
         });
 
-        if (type === "commission") {
+        if (type === "commission" && toUpdate === "comm_status") {
           const sendSMS = await sendSMSNotif(
             t,
             BACKEND_URL,
