@@ -65,6 +65,8 @@ const LanguageDetectModal = ({
   const { darkModeColors, currentMode, User, BACKEND_URL, t, primaryColor } =
     useStateContext();
 
+  console.log("i am the error:::::::");
+
   return (
     <Modal
       keepMounted
