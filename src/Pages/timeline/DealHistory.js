@@ -385,7 +385,7 @@ const DealHistory = ({
           theme: "light",
         });
 
-        if (type === "commission") {
+        if (type === "commission" && toUpdate === "comm_status") {
           const sendSMS = await sendSMSNotif(
             t,
             BACKEND_URL,
@@ -439,82 +439,6 @@ const DealHistory = ({
       });
     }
   };
-
-  // const updateStatus = async (toUpdate) => {
-  //   setBtnLoading(true);
-  //   const token = localStorage.getItem("auth-token");
-  //   const updatedData = { [toUpdate]: 1 };
-
-  //   axios
-  //     .post(`${BACKEND_URL}/editdeal/${LeadData?.lid}`, updatedData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       console.log("Deal updated successfully.");
-  //       console.log(result);
-  //       if (result.status === 200) {
-  //         setBtnLoading(false);
-  //         setDialogue(false);
-  //         toast.success("Status updated successfully.", {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-
-  //         const sendSMS = sendSMSNotif(t, BACKEND_URL, LeadData);
-
-  //         console.log("sendsms:: ", sendSMS);
-  //         if (sendSMS.success) {
-  //           console.log("message sent: ", sendSMS.message);
-  //         } else {
-  //           console.log("message not sent", sendSMS.message);
-  //           toast.error("Unable to send the sms notification.", {
-  //             position: "top-right",
-  //             autoClose: 3000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           });
-  //         }
-
-  //         (async () => {
-  //           await fetchLeadsData(LeadData?.lid);
-  //           console.log("fetchLeadsData running");
-  //           FetchLeads(token);
-  //         })();
-  //         // handleClose();
-  //       } else {
-  //         setBtnLoading(false);
-  //         throw new Error("Error in marking the status.");
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       setBtnLoading(false);
-  //       if (err.response) {
-  //         console.log(err.response.data);
-  //         console.log(err.response.status);
-  //         console.log(err.response.headers);
-  //         toast.error("Error in Marking the status.", {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       }
-  //     });
-  // };
 
   const token = localStorage.getItem("auth-token");
 
