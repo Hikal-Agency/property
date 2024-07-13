@@ -355,47 +355,52 @@ const RenderFeedback = ({ cellValues }) => {
   // }, []);
 
   return (
-    <Box
-      className={`renderDD w-full h-full flex items-center justify-center `}
-      sx={SelectStyles}
-    >
-      {feedbackTheme === "renderStyles" ? (
-        <Select
-          aria-label="select feedback"
-          id="feedback"
-          options={feedback_options(t)}
-          value={
-            feedback_options(t).find((option) => option.value === Feedback) || {
-              value: Feedback,
-              label: Feedback,
+    <>
+      <Box
+        className={`renderDD w-full h-full flex items-center justify-center `}
+        sx={SelectStyles}
+      >
+        {feedbackTheme === "renderStyles" ? (
+          <Select
+            aria-label="select feedback"
+            id="feedback"
+            options={feedback_options(t)}
+            value={
+              feedback_options(t).find(
+                (option) => option.value === Feedback
+              ) || {
+                value: Feedback,
+                label: Feedback,
+              }
             }
-          }
-          onChange={ChangeFeedback}
-          placeholder={t("label_feedback")}
-          className={`w-full`}
-          menuPortalTarget={document.body}
-          styles={renderStyles(currentMode, primaryColor)}
-        />
-      ) : (
-        <Select
-          aria-label="select feedback"
-          id="feedback"
-          options={feedback_options(t)}
-          value={
-            feedback_options(t).find((option) => option.value === Feedback) || {
-              value: Feedback,
-              label: Feedback,
+            onChange={ChangeFeedback}
+            placeholder={t("label_feedback")}
+            className={`w-full`}
+            menuPortalTarget={document.body}
+            styles={renderStyles(currentMode, primaryColor)}
+          />
+        ) : (
+          <Select
+            aria-label="select feedback"
+            id="feedback"
+            options={feedback_options(t)}
+            value={
+              feedback_options(t).find(
+                (option) => option.value === Feedback
+              ) || {
+                value: Feedback,
+                label: Feedback,
+              }
             }
-          }
-          onChange={ChangeFeedback}
-          placeholder={t("label_feedback")}
-          className={`w-full`}
-          menuPortalTarget={document.body}
-          styles={renderStyles2(currentMode, primaryColor)}
-        />
-      )}
+            onChange={ChangeFeedback}
+            placeholder={t("label_feedback")}
+            className={`w-full`}
+            menuPortalTarget={document.body}
+            styles={renderStyles2(currentMode, primaryColor)}
+          />
+        )}
 
-      {/* <FormControl
+        {/* <FormControl
         className={`${currentMode === "dark" ? "text-white" : "text-black"}`}
         sx={{ m: 1, minWidth: 80, border: 1, borderRadius: 1 }}
       >
@@ -450,370 +455,399 @@ const RenderFeedback = ({ cellValues }) => {
         </Select>
       </FormControl> */}
 
-      {DialogueVal && (
-        <>
-          <Dialog
-            sx={{
-              "& .MuiPaper-root": {
-                boxShadow: "none !important",
-              },
-              "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
-                {
-                  // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
-                },
-            }}
-            open={DialogueVal}
-            onClose={(e) => setDialogue(false)}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-            className="relative"
-          >
-            <IconButton
+        {DialogueVal && (
+          <>
+            <Dialog
               sx={{
-                position: "absolute",
-                right: 12,
-                top: 10,
-                color: (theme) => theme.palette.grey[500],
+                "& .MuiPaper-root": {
+                  boxShadow: "none !important",
+                },
+                "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                  {
+                    // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                  },
               }}
-              onClick={() => setDialogue(false)}
+              open={DialogueVal}
+              onClose={(e) => setDialogue(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              className="relative"
             >
-              <IoMdClose size={18} />
-            </IconButton>
-            <div
-              className={`px-10 py-5 ${
-                currentMode === "dark"
-                  ? "bg-[#1C1C1C] text-white"
-                  : "bg-white text-black"
-              }`}
-            >
-              {/* FEEDBACK  */}
-              <div className="flex flex-col justify-center items-center">
-                <BsBookmarkCheck size={50} className="text-primary text-2xl" />
-                <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
-                  {t("want_to_change_feedback")} {t("from")}{" "}
-                  <span className="text-sm bg-gray-600 text-white px-2 py-1 rounded-md font-bold">
-                    {Feedback
-                      ? t(
-                          "feedback_" +
-                            Feedback?.toLowerCase()?.replaceAll(" ", "_")
-                        )
-                      : t("no_feedback")}
-                  </span>{" "}
-                  {t("to")}{" "}
-                  <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
-                    {newFeedback
-                      ? t(
-                          "feedback_" +
-                            newFeedback?.toLowerCase()?.replaceAll(" ", "_")
-                        )
-                      : t("no_feedback")}
-                  </span>{" "}
-                  ?
-                </h1>
-              </div>
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  right: 12,
+                  top: 10,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+                onClick={() => setDialogue(false)}
+              >
+                <IoMdClose size={18} />
+              </IconButton>
+              <div
+                className={`px-10 py-5 ${
+                  currentMode === "dark"
+                    ? "bg-[#1C1C1C] text-white"
+                    : "bg-white text-black"
+                }`}
+              >
+                {/* FEEDBACK  */}
+                <div className="flex flex-col justify-center items-center">
+                  <BsBookmarkCheck
+                    size={50}
+                    className="text-primary text-2xl"
+                  />
+                  <h1 className="font-semibold pt-3 mb-3 text-lg text-center">
+                    {t("want_to_change_feedback")} {t("from")}{" "}
+                    <span className="text-sm bg-gray-600 text-white px-2 py-1 rounded-md font-bold">
+                      {Feedback
+                        ? t(
+                            "feedback_" +
+                              Feedback?.toLowerCase()?.replaceAll(" ", "_")
+                          )
+                        : t("no_feedback")}
+                    </span>{" "}
+                    {t("to")}{" "}
+                    <span className="text-sm bg-primary text-white px-2 py-1 rounded-md font-bold">
+                      {newFeedback
+                        ? t(
+                            "feedback_" +
+                              newFeedback?.toLowerCase()?.replaceAll(" ", "_")
+                          )
+                        : t("no_feedback")}
+                    </span>{" "}
+                    ?
+                  </h1>
+                </div>
 
-              {/* MEETING  */}
-              {newFeedback === "Meeting" ? (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    UpdateFeedback(cellValues);
-                  }}
-                >
-                  <div className="flex flex-col justify-center items-center gap-4 mt-4">
-                    <Box sx={darkModeColors}>
+                {/* MEETING  */}
+                {newFeedback === "Meeting" ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      UpdateFeedback(cellValues);
+                    }}
+                  >
+                    <div className="flex flex-col justify-center items-center gap-4 mt-4">
+                      <Box sx={darkModeColors}>
+                        {/* DATE  */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DatePicker
+                            label={t("label_meeting_date")}
+                            value={meetingData.meetingDate}
+                            views={["year", "month", "day"]}
+                            onChange={(newValue) => {
+                              console.log("meeting date: ", newValue);
+
+                              const formattedDate = moment(newValue?.$d).format(
+                                "YYYY-MM-DD"
+                              );
+
+                              setMeetingData({
+                                ...meetingData,
+                                meetingDate: formattedDate,
+                              });
+                            }}
+                            format="yyyy-MM-dd"
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                onKeyDown={(e) => e.preventDefault()}
+                                readOnly={true}
+                                fullWidth
+                                size="small"
+                                style={{ marginBottom: "20px" }}
+                              />
+                            )}
+                            minDate={dayjs().startOf("day").toDate()}
+                            InputProps={{ required: true }}
+                          />
+                        </LocalizationProvider>
+                        {/* TIME  */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <MobileTimePicker
+                            // ampm={false}
+                            label={t("label_meeting_time")}
+                            format="hh:mm A"
+                            value={meetingData.meetingTime}
+                            onChange={(newValue) => {
+                              setMeetingData({
+                                ...meetingData,
+                                meetingTime: newValue,
+                              });
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                fullWidth
+                                size="small"
+                                style={{ marginBottom: "20px" }}
+                                InputProps={{
+                                  endAdornment: (
+                                    <IconButton>
+                                      <MdAccessTime color={"#AAAAAA"} />
+                                    </IconButton>
+                                  ),
+                                }}
+                              />
+                            )}
+                            InputProps={{ required: true }}
+                          />
+                        </LocalizationProvider>
+                        {/* NOTE  */}
+                        <TextField
+                          id="text"
+                          type={"text"}
+                          multiline
+                          minRows={1}
+                          maxRows={5}
+                          sx={{
+                            "& input": {
+                              fontFamily: "Noto Kufi Arabic",
+                            },
+                          }}
+                          label={t("label_meeting_notes")}
+                          className="w-full"
+                          style={{ marginBottom: "20px" }}
+                          variant="outlined"
+                          name="text"
+                          size="small"
+                          value={meetingNotes}
+                          onChange={(e) => {
+                            setMeetingData({
+                              ...meetingData,
+                              notes: e.target.value,
+                            });
+                            setMeetingNotes(e?.target?.value);
+                          }}
+                          required
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <div
+                                  // ref={searchContainer}
+                                  className={`${
+                                    isVoiceSearchState
+                                      ? "listening bg-primary"
+                                      : ""
+                                  } ${
+                                    currentMode === "dark"
+                                      ? "text-white"
+                                      : "text-black"
+                                  } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                                  onClick={() => {
+                                    if (isVoiceSearchState) {
+                                      setIsVoiceSearchState(false);
+                                    } else {
+                                      setLanguageModal(true);
+                                    }
+                                    console.log("mic is clicked...");
+                                  }}
+                                >
+                                  {isVoiceSearchState ? (
+                                    <BsMicFill id="search_mic" size={16} />
+                                  ) : (
+                                    <BsMic id="search_mic" size={16} />
+                                  )}
+                                </div>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                        {/* LOCATION  */}
+                        <LocationPicker
+                          meetingLocation={meetingLocation}
+                          currLocByDefault={true}
+                          setMeetingLocation={setMeetingLocation}
+                        />
+                      </Box>
+                    </div>
+                    <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                      <Button
+                        className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                        ripple={true}
+                        size="lg"
+                        type="submit"
+                      >
+                        {btnloading ? (
+                          <CircularProgress size={16} sx={{ color: "white" }} />
+                        ) : (
+                          <span>{t("confirm")}</span>
+                        )}
+                      </Button>
+
+                      <Button
+                        onClick={() => setDialogue(false)}
+                        ripple={true}
+                        variant="outlined"
+                        className={`shadow-none px-2 rounded-md text-sm  ${
+                          currentMode === "dark"
+                            ? "text-white border-white"
+                            : "text-primary border-primary"
+                        }`}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                ) : // BOKKED
+                newFeedback === "Booked" ? (
+                  <>
+                    <Box sx={darkModeColors} className="my-5">
                       {/* DATE  */}
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          label={t("label_meeting_date")}
-                          value={meetingData.meetingDate}
+                          label={t("booking_date")}
+                          value={booked_date}
                           views={["year", "month", "day"]}
-                          onChange={(newValue) => {
-                            console.log("meeting date: ", newValue);
-
-                            const formattedDate = moment(newValue?.$d).format(
-                              "YYYY-MM-DD"
-                            );
-
-                            setMeetingData({
-                              ...meetingData,
-                              meetingDate: formattedDate,
-                            });
+                          onChange={(selectedDate) => {
+                            console.log("selected Date: ", selectedDate);
+                            const formattedDate = moment(
+                              selectedDate?.$d
+                            ).format("YYYY-MM-DD");
+                            setBookedDate(formattedDate);
                           }}
-                          format="yyyy-MM-dd"
+                          format="YYYY-MM-DD"
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              onKeyDown={(e) => e.preventDefault()}
+                              // onKeyDown={(e) => e.preventDefault()}
                               readOnly={true}
                               fullWidth
                               size="small"
-                              style={{ marginBottom: "20px" }}
-                            />
-                          )}
-                          minDate={dayjs().startOf("day").toDate()}
-                          InputProps={{ required: true }}
-                        />
-                      </LocalizationProvider>
-                      {/* TIME  */}
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <MobileTimePicker
-                          // ampm={false}
-                          label={t("label_meeting_time")}
-                          format="hh:mm A"
-                          value={meetingData.meetingTime}
-                          onChange={(newValue) => {
-                            setMeetingData({
-                              ...meetingData,
-                              meetingTime: newValue,
-                            });
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              fullWidth
-                              size="small"
-                              style={{ marginBottom: "20px" }}
-                              InputProps={{
-                                endAdornment: (
-                                  <IconButton>
-                                    <MdAccessTime color={"#AAAAAA"} />
-                                  </IconButton>
-                                ),
+                              style={{
+                                marginBottom: "10px",
                               }}
                             />
                           )}
+                          maxDate={dayjs().startOf("day").toDate()}
                           InputProps={{ required: true }}
                         />
                       </LocalizationProvider>
-                      {/* NOTE  */}
+                      {/* BOOKED AMOUNT  */}
                       <TextField
-                        id="text"
-                        type={"text"}
-                        multiline
-                        minRows={1}
-                        maxRows={5}
+                        id="booked_amount"
+                        type={"number"}
                         sx={{
                           "& input": {
                             fontFamily: "Noto Kufi Arabic",
                           },
                         }}
-                        label={t("label_meeting_notes")}
+                        label="Booked Amount "
                         className="w-full"
-                        style={{ marginBottom: "20px" }}
+                        style={{
+                          marginBottom: "10px",
+                          marginTop: "10px",
+                        }}
                         variant="outlined"
-                        name="text"
+                        name="booked_amount"
                         size="small"
-                        value={meetingNotes}
+                        value={booked_amount}
                         onChange={(e) => {
-                          setMeetingData({
-                            ...meetingData,
-                            notes: e.target.value,
-                          });
-                          setMeetingNotes(e?.target?.value);
+                          setBookedAmount(e.target.value);
                         }}
                         required
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <div
-                                // ref={searchContainer}
-                                className={`${
-                                  isVoiceSearchState
-                                    ? "listening bg-primary"
-                                    : ""
-                                } ${
-                                  currentMode === "dark"
-                                    ? "text-white"
-                                    : "text-black"
-                                } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
-                                onClick={() => {
-                                  if (isVoiceSearchState) {
-                                    setIsVoiceSearchState(false);
-                                  } else {
-                                    setLanguageModal(true);
-                                  }
-                                  console.log("mic is clicked...");
-                                }}
-                              >
-                                {isVoiceSearchState ? (
-                                  <BsMicFill id="search_mic" size={16} />
-                                ) : (
-                                  <BsMic id="search_mic" size={16} />
-                                )}
-                              </div>
-                            </InputAdornment>
-                          ),
-                        }}
                       />
-                      {/* LOCATION  */}
-                      <LocationPicker
-                        meetingLocation={meetingLocation}
-                        currLocByDefault={true}
-                        setMeetingLocation={setMeetingLocation}
+                      {/* UNIT  */}
+                      <TextField
+                        id="unit"
+                        type={"text"}
+                        sx={{
+                          "& input": {
+                            fontFamily: "Noto Kufi Arabic",
+                          },
+                        }}
+                        label="Unit "
+                        className="w-full"
+                        style={{
+                          marginBottom: "10px",
+                          marginTop: "10px",
+                        }}
+                        variant="outlined"
+                        name="unit"
+                        size="small"
+                        value={otherBookedData?.unit}
+                        onChange={(e) => {
+                          setOtherBookedData({
+                            ...otherBookedData,
+                            unit: e.target.value,
+                          });
+                        }}
+                        required
+                      />
+                      {/* AMOUNT  */}
+                      <TextField
+                        id="amount"
+                        type={"number"}
+                        sx={{
+                          "& input": {
+                            fontFamily: "Noto Kufi Arabic",
+                          },
+                        }}
+                        label="Selling Amount "
+                        className="w-full"
+                        style={{
+                          marginBottom: "10px",
+                          marginTop: "10px",
+                        }}
+                        variant="outlined"
+                        name="amount"
+                        size="small"
+                        value={otherBookedData?.amount}
+                        onChange={(e) => {
+                          setOtherBookedData({
+                            ...otherBookedData,
+                            amount: e.target.value,
+                          });
+                        }}
+                        required
+                      />
+                      {/* CURRENCY  */}
+                      <Select
+                        aria-label="select currency"
+                        id="currency"
+                        options={currencies(t)}
+                        value={currencies(t).find(
+                          (option) => option.value === otherBookedData?.currency
+                        )}
+                        onChange={(e) => {
+                          setOtherBookedData({
+                            ...otherBookedData,
+                            currency: e.value,
+                          });
+                        }}
+                        placeholder={t("label_currency")}
+                        className={`w-full`}
+                        menuPortalTarget={document.body}
+                        styles={selectStyles(currentMode, primaryColor)}
                       />
                     </Box>
-                  </div>
-                  <div className="action buttons mt-5 flex items-center justify-center space-x-2">
-                    <Button
-                      className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
-                      ripple={true}
-                      size="lg"
-                      type="submit"
-                    >
-                      {btnloading ? (
-                        <CircularProgress size={16} sx={{ color: "white" }} />
-                      ) : (
-                        <span>{t("confirm")}</span>
-                      )}
-                    </Button>
-
-                    <Button
-                      onClick={() => setDialogue(false)}
-                      ripple={true}
-                      variant="outlined"
-                      className={`shadow-none px-2 rounded-md text-sm  ${
-                        currentMode === "dark"
-                          ? "text-white border-white"
-                          : "text-primary border-primary"
-                      }`}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </form>
-              ) : // BOKKED
-              newFeedback === "Booked" ? (
-                <>
-                  <Box sx={darkModeColors} className="my-5">
-                    {/* DATE  */}
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label={t("booking_date")}
-                        value={booked_date}
-                        views={["year", "month", "day"]}
-                        onChange={(selectedDate) => {
-                          console.log("selected Date: ", selectedDate);
-                          const formattedDate = moment(selectedDate?.$d).format(
-                            "YYYY-MM-DD"
-                          );
-                          setBookedDate(formattedDate);
-                        }}
-                        format="YYYY-MM-DD"
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            // onKeyDown={(e) => e.preventDefault()}
-                            readOnly={true}
-                            fullWidth
-                            size="small"
-                            style={{
-                              marginBottom: "10px",
-                            }}
-                          />
+                    <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                      <Button
+                        className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                        ripple={true}
+                        size="lg"
+                        onClick={() => UpdateFeedback(cellValues)}
+                      >
+                        {btnloading ? (
+                          <CircularProgress size={16} sx={{ color: "white" }} />
+                        ) : (
+                          <span>Confirm</span>
                         )}
-                        maxDate={dayjs().startOf("day").toDate()}
-                        InputProps={{ required: true }}
-                      />
-                    </LocalizationProvider>
-                    {/* BOOKED AMOUNT  */}
-                    <TextField
-                      id="booked_amount"
-                      type={"number"}
-                      sx={{
-                        "& input": {
-                          fontFamily: "Noto Kufi Arabic",
-                        },
-                      }}
-                      label="Booked Amount "
-                      className="w-full"
-                      style={{
-                        marginBottom: "10px",
-                        marginTop: "10px",
-                      }}
-                      variant="outlined"
-                      name="booked_amount"
-                      size="small"
-                      value={booked_amount}
-                      onChange={(e) => {
-                        setBookedAmount(e.target.value);
-                      }}
-                      required
-                    />
-                    {/* UNIT  */}
-                    <TextField
-                      id="unit"
-                      type={"text"}
-                      sx={{
-                        "& input": {
-                          fontFamily: "Noto Kufi Arabic",
-                        },
-                      }}
-                      label="Unit "
-                      className="w-full"
-                      style={{
-                        marginBottom: "10px",
-                        marginTop: "10px",
-                      }}
-                      variant="outlined"
-                      name="unit"
-                      size="small"
-                      value={otherBookedData?.unit}
-                      onChange={(e) => {
-                        setOtherBookedData({
-                          ...otherBookedData,
-                          unit: e.target.value,
-                        });
-                      }}
-                      required
-                    />
-                    {/* AMOUNT  */}
-                    <TextField
-                      id="amount"
-                      type={"number"}
-                      sx={{
-                        "& input": {
-                          fontFamily: "Noto Kufi Arabic",
-                        },
-                      }}
-                      label="Selling Amount "
-                      className="w-full"
-                      style={{
-                        marginBottom: "10px",
-                        marginTop: "10px",
-                      }}
-                      variant="outlined"
-                      name="amount"
-                      size="small"
-                      value={otherBookedData?.amount}
-                      onChange={(e) => {
-                        setOtherBookedData({
-                          ...otherBookedData,
-                          amount: e.target.value,
-                        });
-                      }}
-                      required
-                    />
-                    {/* CURRENCY  */}
-                    <Select
-                      aria-label="select currency"
-                      id="currency"
-                      options={currencies(t)}
-                      value={currencies(t).find(
-                        (option) => option.value === otherBookedData?.currency
-                      )}
-                      onChange={(e) => {
-                        setOtherBookedData({
-                          ...otherBookedData,
-                          currency: e.value,
-                        });
-                      }}
-                      placeholder={t("label_currency")}
-                      className={`w-full`}
-                      menuPortalTarget={document.body}
-                      styles={selectStyles(currentMode, primaryColor)}
-                    />
-                  </Box>
+                      </Button>
+
+                      <Button
+                        onClick={() => setDialogue(false)}
+                        ripple={true}
+                        variant="outlined"
+                        className={`shadow-none p-3 rounded-md text-sm text-[#da1f26]  border-[#da1f26]   py-3                       
+                      `}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </>
+                ) : (
                   <div className="action buttons mt-5 flex items-center justify-center space-x-2">
                     <Button
                       className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
@@ -832,46 +866,21 @@ const RenderFeedback = ({ cellValues }) => {
                       onClick={() => setDialogue(false)}
                       ripple={true}
                       variant="outlined"
-                      className={`shadow-none p-3 rounded-md text-sm text-[#da1f26]  border-[#da1f26]   py-3                       
-                      `}
+                      className={`shadow-none p-3 rounded-md text-sm  ${
+                        currentMode === "dark"
+                          ? "text-white border-white"
+                          : "text-primary border-primary"
+                      }`}
                     >
                       Cancel
                     </Button>
                   </div>
-                </>
-              ) : (
-                <div className="action buttons mt-5 flex items-center justify-center space-x-2">
-                  <Button
-                    className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
-                    ripple={true}
-                    size="lg"
-                    onClick={() => UpdateFeedback(cellValues)}
-                  >
-                    {btnloading ? (
-                      <CircularProgress size={16} sx={{ color: "white" }} />
-                    ) : (
-                      <span>Confirm</span>
-                    )}
-                  </Button>
-
-                  <Button
-                    onClick={() => setDialogue(false)}
-                    ripple={true}
-                    variant="outlined"
-                    className={`shadow-none p-3 rounded-md text-sm  ${
-                      currentMode === "dark"
-                        ? "text-white border-white"
-                        : "text-primary border-primary"
-                    }`}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              )}
-            </div>
-          </Dialog>
-        </>
-      )}
+                )}
+              </div>
+            </Dialog>
+          </>
+        )}
+      </Box>
       {languageModal && (
         <LanguageDetectModal
           setIsVoiceSearchState={setIsVoiceSearchState}
@@ -881,7 +890,7 @@ const RenderFeedback = ({ cellValues }) => {
           language={language}
         />
       )}
-    </Box>
+    </>
   );
 };
 
