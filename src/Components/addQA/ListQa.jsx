@@ -1,4 +1,3 @@
-
 import { HiBars3BottomLeft } from "react-icons/hi2";
 import { useStateContext } from "../../context/ContextProvider";
 import React, { useState, useEffect } from "react";
@@ -15,10 +14,12 @@ import {
 } from "@mui/material";
 import { BsChevronCompactDown } from "react-icons/bs";
 import { FaFileDownload } from "react-icons/fa";
-import Pagination from "@mui/material/Pagination";
+// import Pagination from "@mui/material/Pagination";
+import { Pagination, Stack } from "@mui/material";
 
 const ListQa = ({ pageState, setpageState }) => {
-  const { currentMode, themeBgImg, BACKEND_URL, primaryColor, t } = useStateContext();
+  const { currentMode, themeBgImg, BACKEND_URL, primaryColor, t } =
+    useStateContext();
   const [row, setRow] = useState([]);
   const [exportData, setExportData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,16 +40,23 @@ const ListQa = ({ pageState, setpageState }) => {
 
   const getSummaryBgClass = () => {
     return currentMode === "dark"
-      ? (themeBgImg ? "blur-bg-dark text-white" : "bg-[#1C1C1C] text-white")
-      : (themeBgImg ? "blur-bg-light text-gray-800" : "bg-[#EEEEEE] text-gray-800");
+      ? themeBgImg
+        ? "blur-bg-dark text-white"
+        : "bg-[#1C1C1C] text-white"
+      : themeBgImg
+      ? "blur-bg-light text-gray-800"
+      : "bg-[#EEEEEE] text-gray-800";
   };
 
   const getDetailBgClass = () => {
     return currentMode === "dark"
-      ? (themeBgImg ? "blur-bg-dark text-white" : "bg-[#1C1C1C] text-white")
-      : (themeBgImg ? "blur-bg-light text-gray-800" : "bg-[#EEEEEE] text-gray-800");
+      ? themeBgImg
+        ? "blur-bg-dark text-white"
+        : "bg-[#1C1C1C] text-white"
+      : themeBgImg
+      ? "blur-bg-light text-gray-800"
+      : "bg-[#EEEEEE] text-gray-800";
   };
-
 
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
@@ -108,7 +116,6 @@ const ListQa = ({ pageState, setpageState }) => {
     FetchQA(token, currentPage);
   }, [currentPage]);
 
-
   return (
     <div>
       {loading ? (
@@ -122,7 +129,7 @@ const ListQa = ({ pageState, setpageState }) => {
               <CSVLink data={exportData} headers={headers}>
                 <Button
                   className="bg-btn-primary text-white rounded-lg py-3 font-semibold mb-5"
-                  style={{color: "#ffffff" }}
+                  style={{ color: "#ffffff" }}
                   onClick={getExportData}
                   sx={{ marginBottom: "10px" }}
                 >
@@ -170,23 +177,23 @@ const ListQa = ({ pageState, setpageState }) => {
             </Accordion>
           ))}
 
-  
           <Pagination
             count={data?.links?.last_page}
             page={currentPage}
             onChange={handlePageChange}
-            color="secondary"
+            // color="secondary"
+            color={currentMode === "dark" ? "primary" : "secondary"}
             className={{ ul: classes.ul }}
             sx={{
               "& .Mui-selected": {
-                color: "white",
+                color: "white !important",
                 backgroundColor: `${primaryColor} !important`,
                 "&:hover": {
                   backgroundColor: currentMode === "dark" ? "black" : "white",
                 },
               },
               "& .MuiPaginationItem-root": {
-                color: "white",
+                color: currentMode === "dark" ? "white" : "black",
               },
             }}
           />
@@ -205,4 +212,3 @@ const ListQa = ({ pageState, setpageState }) => {
 };
 
 export default ListQa;
-

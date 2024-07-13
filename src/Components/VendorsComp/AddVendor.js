@@ -195,9 +195,10 @@ const AddVendor = ({
         });
         setBtnLoading(false);
         handleClose();
-        if (edit) {
-          fetchVendors();
-        }
+        fetchVendors();
+        // if (edit) {
+        //   fetchVendors();
+        // }
       })
       .catch((err) => {
         setBtnLoading(false);
@@ -230,19 +231,22 @@ const AddVendor = ({
       }}
     >
       <div
-        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${isClosing
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-          }
+        }
       w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -253,13 +257,15 @@ const AddVendor = ({
         </button>
         <div
           style={style}
-          className={` ${currentMode === "dark"
+          className={` ${
+            currentMode === "dark"
               ? "bg-dark text-white"
               : "bg-light text-black"
-            } ${isLangRTL(i18n.language)
+          } ${
+            isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-            }
+          }
             p-4 h-[100vh] w-[85vw] overflow-y-scroll 
           `}
         >
@@ -277,10 +283,11 @@ const AddVendor = ({
                 {/* Vendor DETAILS  */}
                 <div
                   className={`p-5
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-dark-neu text-white"
                       : "bg-light-neu text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("vendor_details")?.toUpperCase()}
@@ -408,10 +415,11 @@ const AddVendor = ({
                 {/* Person to contact  */}
                 <div
                   className={`p-5
-                  ${currentMode === "dark"
+                  ${
+                    currentMode === "dark"
                       ? "bg-dark-neu text-white"
                       : "bg-light-neu text-black"
-                    }`}
+                  }`}
                 >
                   <h1 className="text-center uppercase font-semibold">
                     {t("person_to_contact")?.toUpperCase()}
@@ -449,19 +457,21 @@ const AddVendor = ({
                         })} mb-5`}
                         size="small"
                         style={{
-                          background: `${!themeBgImg
+                          background: `${
+                            !themeBgImg
                               ? currentMode === "dark"
                                 ? "#000000"
                                 : "#FFFFFF"
                               : "transparent"
                             // : (currentMode === "dark" ? blurDarkColor : blurLightColor)
-                            }`,
+                          }`,
                           "& .PhoneInputCountryIconImg": {
                             color: "#fff",
                           },
                           color: currentMode === "dark" ? "white" : "black",
-                          border: `1px solid ${currentMode === "dark" ? "#EEEEEE" : "#666666"
-                            }`,
+                          border: `1px solid ${
+                            currentMode === "dark" ? "#EEEEEE" : "#666666"
+                          }`,
                           borderRadius: "5px",
                           outline: "none",
                         }}
@@ -523,8 +533,10 @@ const AddVendor = ({
               color: "white",
               fontFamily: fontFam,
             }}
-            className={`${currentMode === "dark" 
-              ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+            className={`${
+              currentMode === "dark"
+                ? "bg-primary-dark-neu"
+                : "bg-primary-light-neu"
             } w-full text-white p-3 font-semibold uppercase mb-5`}
             onClick={AddTransaction}
             disabled={btnloading ? true : false}
