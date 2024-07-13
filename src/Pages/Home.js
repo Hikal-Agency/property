@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaGoogle } from "react-icons/fa";
 import { useGoogleSignIn } from "../context/GoogleAuthProvider";
 import { gapi } from "gapi-script";
+import TwoStepAuth from "./auth/TwoStepAuth";
 // some comments
 const Home = () => {
   let canvas = useRef();
@@ -27,6 +28,9 @@ const Home = () => {
   const [loading, setloading] = useState(false);
   const [openBackDrop, setOpenBackDrop] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
+  const [user, setUser] = useState({});
+  const [isTwoStepVerification, setisTwoStepVerification] = useState(false);
+  const [tokenForTwoAuth, setTokenForTwoAuth] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -37,6 +41,36 @@ const Home = () => {
     gapiLoaded,
     tokenClient,
   } = useGoogleSignIn();
+
+  useEffect(() => {
+    if (user?.userEmail) {
+      if (true) {
+        (async () => {
+          const res = await sendCodeForTwoFA();
+          setisTwoStepVerification(true);
+        })();
+      } else {
+        // localStorage.setItem("auth-token", token);
+        // document.location.href =
+        //   result.data.data.role === 5
+        //     ? "/attendance/officeSettings"
+        //     : result.data.data.role === 6
+        //     ? "/attendance_self"
+        //     : location?.state?.continueURL || "/dashboard";
+        // toast.success("Login Successfull", {
+        //   position: "top-right",
+        //   autoClose: 3000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "light",
+        // });
+        // console.log("Login completed successfully");
+      }
+    }
+  }, [user]);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
@@ -189,6 +223,24 @@ const Home = () => {
   //     });
   //   }
   // };
+  async function sendCodeForTwoFA() {
+    let bodyFormData = new FormData();
+    bodyFormData.append("userEmail", user?.userEmail);
+    try {
+      await axios.post(`${BACKEND_URL}/send_email_otp_request`, bodyFormData);
+    } catch (error) {
+      toast.error("Can't send code to user", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
 
   const LoginUser = async () => {
     setloading(true);
@@ -198,34 +250,67 @@ const Home = () => {
     // eslint-disable-next-line
     await axios
       .post(`${BACKEND_URL}/login`, bodyFormData)
-      .then((result) => {
+      .then(async (result) => {
         setOpenBackDrop(true);
         if (result.data.success && result.data.data.token) {
           const token = result.data.data.token;
+          setTokenForTwoAuth(token);
 
-          localStorage.setItem("auth-token", token);
-          // window.postMessage(
-          //   { type: "userLoggedIn", data: token },
-          //   window.origin
-          // );
+          const ReFetchProfile = async () => {
+            try {
+              const profile = await axios.get(`${BACKEND_URL}/profile`, {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + token,
+                },
+              });
+              // setUserEmail(profile.data.user[0].userEmail);
+              console.log(
+                !(profile?.data.user[0]?.is_2FA_Verified == 0),
+                "verified "
+              );
+              if (
+                !(profile?.data.user[0]?.is_2FA_Verified == 0) &&
+                profile?.data.user[0]?.is_2FA_Verified
+              ) {
+                setUser(profile?.data.user[0]);
+              } else {
+                localStorage.setItem("auth-token", token);
+                document.location.href =
+                  result.data.data.role === 5
+                    ? "/attendance/officeSettings"
+                    : result.data.data.role === 6
+                    ? "/attendance_self"
+                    : location?.state?.continueURL || "/dashboard";
+                toast.success("Login Successfull", {
+                  position: "top-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                });
+                console.log("Login completed successfully");
+              }
 
-          document.location.href =
-            result.data.data.role === 5
-              ? "/attendance/officeSettings"
-              : result.data.data.role === 6
-              ? "/attendance_self"
-              : location?.state?.continueURL || "/dashboard";
-          toast.success("Login Successfull", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          console.log("Login completed successfully");
+              console.log(profile?.data.user[0], "user");
+            } catch (error) {
+              toast.error("can't fetch profile", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            }
+          };
+
+          await ReFetchProfile();
         }
       })
       .catch((err) => {
@@ -357,139 +442,140 @@ const Home = () => {
         <div
           className={`LoginWrapper md:h-min w-screen flex items-center justify-center `}
         >
-          <div className="flex min-h-screen mb-5 items-center justify-center mt-5 pl-3">
-            <div className="w-[calc(100vw-50px)]  pb-40 md:max-w-[500px] space-y-4 md:space-y-6 bg-white pt-8 relative px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
-              {errorMsg && (
-                <div className="flex flex-col items-center text-center p-5 bg-[#d4edda] font-bold text-lg">
-                  {errorMsg}
+          {!isTwoStepVerification ? (
+            <div className="flex min-h-screen mb-5 items-center justify-center mt-5 pl-3">
+              <div className="w-[calc(100vw-50px)]  pb-40 md:max-w-[500px] space-y-4 md:space-y-6 bg-white pt-8 relative px-5 md:px-10 rounded-sm md:rounded-md z-[5]">
+                {errorMsg && (
+                  <div className="flex flex-col items-center text-center p-5 bg-[#d4edda] font-bold text-lg">
+                    {errorMsg}
+                  </div>
+                )}
+                <div>
+                  <Link to={"/"} className="cursor-pointer">
+                    <img
+                      className="mx-auto h-[100px] w-auto"
+                      src="/assets/blackLogo.png"
+                      alt=""
+                    />
+                  </Link>
+                  <h2 className="mt-6 text-center text-xl font-bold text-[#1c1c1c]">
+                    Sign in to your account
+                  </h2>
                 </div>
-              )}
-              <div>
-                <Link to={"/"} className="cursor-pointer">
-                  <img
-                    className="mx-auto h-[100px] w-auto"
-                    src="/assets/blackLogo.png"
-                    alt=""
-                  />
-                </Link>
-                <h2 className="mt-6 text-center text-xl font-bold text-[#1c1c1c]">
-                  Sign in to your account
-                </h2>
-              </div>
-              <div>
-                <Backdrop
-                  sx={{
-                    color: "#fff",
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                  }}
-                  open={openBackDrop}
-                >
-                  <div className="flex items-center justify-center space-x-2">
-                    <CircularProgress sx={{ color: "white" }} />
+                <div>
+                  <Backdrop
+                    sx={{
+                      color: "#fff",
+                      zIndex: (theme) => theme.zIndex.drawer + 1,
+                    }}
+                    open={openBackDrop}
+                  >
+                    <div className="flex items-center justify-center space-x-2">
+                      <CircularProgress sx={{ color: "white" }} />
 
-                    <h1 className="font-semibold text-lg">
-                      Redirecting you to the New World of Real Estate! Please
-                      wait a while.
-                    </h1>
-                  </div>
-                </Backdrop>
-                <form
-                  className="mt-8 space-y-6"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    LoginUser();
-                  }}
-                >
-                  <input type="hidden" name="remember" defaultValue="true" />
-                  <div className="-space-y-px rounded-md">
-                    <div>
-                      <TextField
-                        id="email"
-                        type={"text"}
-                        label="Login ID"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.email}
-                        onChange={(e) => {
-                          setformdata({ ...formdata, email: e.target.value });
-                        }}
-                      />
+                      <h1 className="font-semibold text-lg">
+                        Redirecting you to the New World of Real Estate! Please
+                        wait a while.
+                      </h1>
                     </div>
-
-                    <div className="pt-5 space-y-6">
-                      <TextField
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        label="Password"
-                        className="w-full"
-                        variant="outlined"
-                        size="medium"
-                        required
-                        value={formdata?.password}
-                        onChange={(e) => {
-                          setformdata({
-                            ...formdata,
-                            password: e.target.value,
-                          });
-                        }}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                              >
-                                {showPassword ? (
-                                  <FaEye size={18} />
-                                ) : (
-                                  <FaEye size={18} />
-                                )}
-                              </IconButton>
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <button
-                      disabled={loading ? true : false}
-                      type="submit"
-                      className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
-                    >
-                      {loading ? (
-                        <CircularProgress
-                          sx={{ color: "white" }}
-                          size={25}
-                          className="text-white"
+                  </Backdrop>
+                  <form
+                    className="mt-8 space-y-6"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      LoginUser();
+                    }}
+                  >
+                    <input type="hidden" name="remember" defaultValue="true" />
+                    <div className="-space-y-px rounded-md">
+                      <div>
+                        <TextField
+                          id="email"
+                          type={"text"}
+                          label="Login ID"
+                          className="w-full"
+                          variant="outlined"
+                          size="medium"
+                          required
+                          value={formdata?.email}
+                          onChange={(e) => {
+                            setformdata({ ...formdata, email: e.target.value });
+                          }}
                         />
-                      ) : (
-                        <span>Sign in</span>
-                      )}
-                    </button>
+                      </div>
 
-                    <hr />
-                    <p className="text-center mt-3">Or Login With Google</p>
-
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      sx={{
-                        marginTop: "5px",
-                      }}
-                    >
-                      <IconButton
-                        onClick={handleGoogleLogin}
-                        sx={{ borderRadius: "100%", border: "1px solid " }}
+                      <div className="pt-5 space-y-6">
+                        <TextField
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          label="Password"
+                          className="w-full"
+                          variant="outlined"
+                          size="medium"
+                          required
+                          value={formdata?.password}
+                          onChange={(e) => {
+                            setformdata({
+                              ...formdata,
+                              password: e.target.value,
+                            });
+                          }}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={handleClickShowPassword}
+                                  onMouseDown={handleMouseDownPassword}
+                                  edge="end"
+                                >
+                                  {showPassword ? (
+                                    <FaEye size={18} />
+                                  ) : (
+                                    <FaEye size={18} />
+                                  )}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <button
+                        disabled={loading ? true : false}
+                        type="submit"
+                        className="disabled:opacity-50 disabled:cursor-not-allowed group relative flex w-full justify-center rounded-md border border-transparent bg-main-red-color py-3 px-4 text-white hover:bg-main-red-color-2 focus:outline-none focus:ring-2 focus:ring-main-red-color-2 focus:ring-offset-2 text-md font-bold uppercase"
                       >
-                        <FaGoogle />
-                      </IconButton>
-                    </Box>
+                        {loading ? (
+                          <CircularProgress
+                            sx={{ color: "white" }}
+                            size={25}
+                            className="text-white"
+                          />
+                        ) : (
+                          <span>Sign in</span>
+                        )}
+                      </button>
 
-                    {/* <div className="absolute bottom-0 pl-5 py-5 left-0 right-0 flex items-center justify-between bg-main-red-color">
+                      <hr />
+                      <p className="text-center mt-3">Or Login With Google</p>
+
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        sx={{
+                          marginTop: "5px",
+                        }}
+                      >
+                        <IconButton
+                          onClick={handleGoogleLogin}
+                          sx={{ borderRadius: "100%", border: "1px solid " }}
+                        >
+                          <FaGoogle />
+                        </IconButton>
+                      </Box>
+
+                      {/* <div className="absolute bottom-0 pl-5 py-5 left-0 right-0 flex items-center justify-between bg-main-red-color">
                       <a
                         href="/assets/app-release.apk"
                         download
@@ -505,27 +591,35 @@ const Home = () => {
                         alt=""
                       />
                     </div> */}
-                    <div className="absolute bottom-0 pl-5 py-5 left-0 right-0 flex items-center justify-between bg-main-red-color">
-                      <a
-                        href="/assets/app-release.apk"
-                        download
-                        className="text-white text-sm font-bold cursor-pointer mr-4"
-                      >
-                        DOWNLOAD THE APP NOW
-                      </a>
-                      <img
-                        className="absolute -top-[40px] right-[12px]"
-                        src={`${process.env.PUBLIC_URL}/assets/mockup.png`}
-                        width={140}
-                        height={140}
-                        alt=""
-                      />
+                      <div className="absolute bottom-0 pl-5 py-5 left-0 right-0 flex items-center justify-between bg-main-red-color">
+                        <a
+                          href="/assets/app-release.apk"
+                          download
+                          className="text-white text-sm font-bold cursor-pointer mr-4"
+                        >
+                          DOWNLOAD THE APP NOW
+                        </a>
+                        <img
+                          className="absolute -top-[40px] right-[12px]"
+                          src={`${process.env.PUBLIC_URL}/assets/mockup.png`}
+                          width={140}
+                          height={140}
+                          alt=""
+                        />
+                      </div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <TwoStepAuth
+              user={user}
+              token={tokenForTwoAuth}
+              setisTwoStepVerification={setisTwoStepVerification}
+              sendCodeForTwoFA={sendCodeForTwoFA}
+            />
+          )}
         </div>
       </div>
     </>

@@ -15,6 +15,8 @@ import BreadCrumb from "./BreadCrumb";
 import UpcomingMeetingsMenu from "./UpcomingMeetingsMenu";
 import Clock from "./Clock";
 import NotificationsMenuUpdated from "./NotificationsMenuUpdated";
+import { GrSecure } from "react-icons/gr";
+import Switch from "@mui/material/Switch";
 
 import { AiOutlineMenu } from "react-icons/ai";
 import {
@@ -118,7 +120,59 @@ const Navbar = () => {
 
   const [open, setOpen] = useState(false);
   const [loading, setloading] = useState(true);
+  const [isTwoFA, setIsTwoFA] = useState(
+    User?.is_2FA_Verified == 0 || !User?.is_2FA_Verified ? false : true
+  );
   const navigate = useNavigate();
+
+  console.log(User, "user");
+
+  useEffect(() => {
+    setIsTwoFA(
+      User?.is_2FA_Verified == "0" || !User?.is_2FA_Verified ? false : true
+    );
+  }, [User]);
+
+  const updateTwoFAStatus = async (isVerified) => {
+    try {
+      await axios.post(
+        `${BACKEND_URL}/is_2FA_Verified`,
+        JSON.stringify({
+          is_2FA_Verified: isVerified ? 1 : 0,
+          userEmail: User.userEmail,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      toast.success("Two FA Updated Successfull", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      console.log("Background image updated in database successfully");
+    } catch (error) {
+      toast.error("Can't updated Two FA", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      console.error("Error updating background image in database:", error);
+    }
+  };
 
   const handleClick = (event, navBtn) => {
     setCurrNavBtn(navBtn);
@@ -756,6 +810,39 @@ const Navbar = () => {
                       </Link>
                     </div>
 
+                    {/*  for two step verfication */}
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                    >
+                      <div className="flex items-center justify-start">
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
+                          } p-2 rounded-full mr-2`}
+                        >
+                          <GrSecure size={18} color={"#AAAAAA"} />
+                        </div>
+                        <div className="flex-1 flex items-center justify-between">
+                          <p className="mx-1 mr-2 font-semibold">
+                            {t("Two Step Verification")}
+                          </p>
+                          <div className="">
+                            <Switch
+                              onChange={(e) => {
+                                setIsTwoFA(e?.target?.checked);
+                                updateTwoFAStatus(e?.target?.checked);
+                              }}
+                              checked={isTwoFA}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     {/* IF SUBSCRIBED, UNSUBCRIBE  */}
                     {User?.role !== 1 && isUserSubscribed && (
                       <div
@@ -1070,7 +1157,7 @@ const Navbar = () => {
             <Menu
               className="hide-scrollbar navbar-menu-backdrop"
               hideBackdrop={false}
-              onClick={handleClose}
+              // onClick={handleClose}
               onMouseLeave={handleClose}
               anchorEl={anchorElem}
               open={open}
@@ -1289,6 +1376,38 @@ const Navbar = () => {
                           </p>
                         </div>
                       </Link>
+                    </div>
+                    {/* for 2 step verification */}
+                    <div
+                      className={`cursor-pointer card-hover ${
+                        currentMode === "dark" ? "bg-[#000000]" : "bg-[#FFFFFF]"
+                      } mb-3 p-3 rounded-xl shadow-sm w-full`}
+                    >
+                      <div className="flex items-center justify-start">
+                        <div
+                          className={`${
+                            currentMode === "dark"
+                              ? "bg-[#1C1C1C]"
+                              : "bg-[#EEEEEE]"
+                          } p-2 rounded-full mr-2`}
+                        >
+                          <GrSecure size={18} color={"#AAAAAA"} />
+                        </div>
+                        <div className="flex-1 justify-between flex items-center">
+                          <p className="mx-1 mr-2 font-semibold">
+                            {t("Two Step Verification")}
+                          </p>
+                          <div className="">
+                            <Switch
+                              onChange={(e) => {
+                                setIsTwoFA(e?.target?.checked);
+                                updateTwoFAStatus(e?.target?.checked);
+                              }}
+                              checked={isTwoFA}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     {/* IF SUBSCRIBED, UNSUBCRIBE  */}
