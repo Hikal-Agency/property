@@ -195,9 +195,10 @@ const AddVendor = ({
         });
         setBtnLoading(false);
         handleClose();
-        if (edit) {
-          fetchVendors();
-        }
+        fetchVendors();
+        // if (edit) {
+        //   fetchVendors();
+        // }
       })
       .catch((err) => {
         setBtnLoading(false);

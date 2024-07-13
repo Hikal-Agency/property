@@ -195,6 +195,7 @@ const Vendors = ({ isLoading }) => {
           <AddVendor
             openVendorModal={openVendorModal}
             setOpenVendorModal={setOpenVendorModal}
+            fetchVendors={fetchVendors}
           />
         )}
       </div>

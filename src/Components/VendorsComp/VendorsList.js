@@ -69,8 +69,7 @@ const VendorsList = ({
     blurDarkColor,
     blurLightColor,
   } = useStateContext();
-  // const [maxPage, setMaxPage] = useState(0);
-  // const [vendorsData, setVendorsData] = useState([]);
+
   const [openModel, setOpenModel] = useState(false);
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [singleUser, setSingleUserData] = useState({});
@@ -80,50 +79,12 @@ const VendorsList = ({
   const [currentPage, setCurrentPage] = useState();
   const token = localStorage.getItem("auth-token");
   const { hasPermission } = usePermission();
-  // const [filters, setFilters] = useState({
-  //   type: null,
-  //   country: null,
-  //   vendor_name: null,
-  //   person_to_contact: null,
-  //   email: null,
-  //   contact: null,
-  // });
 
   console.log("vendors data: ", vendorsData);
 
   const isFilterApplied = Object.values(filters).some(
     (value) => value !== null
   );
-
-  // const [searchCriteria, setSearchCriteria] = useState("");
-  // const [searchQuery, setSearchQuery] = useState("");
-
-  // const handleSearchCriteriaChange = (event) => {
-  //   setSearchCriteria(event.value);
-  // };
-
-  // console.log("search query: ", searchQuery);
-  // const handleSearchQueryChange = (event) => {
-  //   const value = event.target.value;
-
-  //   setSearchQuery(value);
-  // };
-
-  // const clearFilter = (e) => {
-  //   e.preventDefault();
-
-  //   setFilters({
-  //     type: null,
-  //     country: null,
-  //     vendor_name: null,
-  //     person_to_contact: null,
-  //     email: null,
-  //     contact: null,
-  //   });
-
-  //   setSearchQuery("");
-  //   setSearchCriteria("");
-  // };
 
   const [openVendorModal, setOpenVendorModal] = useState(false);
   const handleCloseEditModal = () => setOpenVendorModal(false);
@@ -136,62 +97,6 @@ const VendorsList = ({
     setpageState({ ...pageState, page: value });
     // setCurrentPage();
   };
-
-  // const fetchVendors = async () => {
-  //   setLoading(true);
-
-  //   let url = `${BACKEND_URL}/vendors?page=${pageState.page}`;
-
-  //   if (filters?.type) url += `&type=${filters?.type}`;
-  //   if (filters?.country) url += `&country=${filters?.country}`;
-
-  //   if (searchCriteria === "vendor_name") url += `&vendor_name=${searchQuery}`;
-  //   if (searchCriteria === "person_to_contact")
-  //     url += `&person_to_contact=${searchQuery}`;
-  //   if (searchCriteria === "email") url += `&email=${searchQuery}`;
-  //   if (searchCriteria === "contact") url += `&contact=${searchQuery}`;
-
-  //   try {
-  //     const response = await axios.get(url, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     });
-
-  //     console.log("fetched vendors:: ", response);
-  //     setVendorsData(response.data?.data?.data);
-  //     setMaxPage(response.data?.data?.last_page);
-  //     setpageState((old) => ({
-  //       ...old,
-  //       isLoading: false,
-  //       pageSize: response?.data?.managers?.per_page,
-  //       total: response?.data?.data?.total,
-  //     }));
-  //   } catch (error) {
-  //     console.error("Error fetching users:", error);
-  //     toast.error("Unable to fetch vendors.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchVendors();
-  // }, [pageState.page, filters]);
-  // useEffect(() => {
-  //   if (searchQuery.length >= 3) {
-  //     fetchVendors();
-  //   }
-  // }, [searchQuery]);
 
   return (
     <>
