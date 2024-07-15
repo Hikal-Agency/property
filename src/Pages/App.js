@@ -442,12 +442,12 @@ const routes = [
     element: <Statistics />,
   },
   {
-    path: "/attendance/officeSettings",
+    path: "/officeSettings",
     pageName: "Office Settings",
     element: <OfficeSettings />,
   },
   {
-    path: "/attendance/employeesList",
+    path: "/employeesList",
     pageName: "Employees",
     element: <Employees />,
   },

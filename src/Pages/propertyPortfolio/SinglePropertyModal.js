@@ -714,7 +714,7 @@ const SinglePropertyModal = ({
                 {documentModal && (
                   <PropertyDocModal
                     documentModal={documentModal}
-                    handleClose={() => setDocumentModal(false)}
+                    setDocumentModal={setDocumentModal}
                     allDocs={allDocs}
                     setAllDocs={setAllDocs}
                     project={project}

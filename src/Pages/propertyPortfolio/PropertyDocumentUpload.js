@@ -20,6 +20,7 @@ const style = {
 };
 
 const PropertyDocModal = ({
+  setDocumentModal,
   FetchProperty,
   documentModal,
   handleClose,
@@ -35,6 +36,12 @@ const PropertyDocModal = ({
 
   const [projectData, setprojectData] = useState({});
   const [listingLocation, setListingLocation] = useState({});
+
+  handleClose = () => {
+    setAllDocs([]);
+
+    setDocumentModal(false);
+  };
 
   useEffect(() => {
     if (update) {
@@ -112,8 +119,8 @@ const PropertyDocModal = ({
         })
         .then((result) => {
           setbtnloading(false);
-          console.log("image uploaded :: ", result);
-          toast.success("Image uploaded successfuly", {
+          console.log("document uploaded :: ", result);
+          toast.success("Document uploaded successfuly", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -243,7 +250,7 @@ const PropertyDocModal = ({
                 <CircularProgress size={18} sx={{ color: "white" }} />
               </div>
             ) : (
-              <span>{allDocs?.length === 0 ? "Upload" : "Select"}</span>
+              <span>{allDocs?.length === 0 ? "Select" : "Upload"}</span>
             )}
           </Button>
         </div>

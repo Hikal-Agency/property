@@ -129,7 +129,7 @@ const Home = () => {
 
           document.location.href =
             getUserDetail?.data?.userData?.role === 5
-              ? "/attendance/officeSettings"
+              ? "/officeSettings"
               : getUserDetail?.data?.userData?.role === 6
               ? "/attendance_self"
               : location?.state?.continueURL || "/dashboard";
@@ -278,7 +278,7 @@ const Home = () => {
                 localStorage.setItem("auth-token", token);
                 document.location.href =
                   result.data.data.role === 5
-                    ? "/attendance/officeSettings"
+                    ? "/officeSettings"
                     : result.data.data.role === 6
                     ? "/attendance_self"
                     : location?.state?.continueURL || "/dashboard";

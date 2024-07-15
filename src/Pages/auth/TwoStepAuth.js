@@ -50,7 +50,7 @@ const TwoStepAuth = ({
       if (res.data.status) {
         document.location.href =
           user.role === 5
-            ? "/attendance/officeSettings"
+            ? "/officeSettings"
             : user.role === 6
             ? "/attendance_self"
             : location?.state?.continueURL || "/dashboard";

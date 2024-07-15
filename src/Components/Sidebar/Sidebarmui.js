@@ -1708,13 +1708,13 @@ const Sidebarmui = () => {
           name: t("menu_office_settings"),
           icon: <BsClockHistory size={16} />,
           pro: true,
-          link: "/attendance/officeSettings",
+          link: "/officeSettings",
         },
         {
           name: t("menu_employee_list"),
           icon: <BsPeople size={16} />,
           pro: true,
-          link: "/attendance/employeesList",
+          link: "/employeesList",
         },
         {
           name: t("menu_my_attendance"),
@@ -3006,7 +3006,7 @@ const Sidebarmui = () => {
                     <Link
                       to={
                         User?.role === 5
-                          ? "/attendance/officeSettings"
+                          ? "/officeSettings"
                           : User?.role === 9
                           ? "/order_history"
                           : "/dashboard"
