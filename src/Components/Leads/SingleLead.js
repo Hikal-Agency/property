@@ -169,6 +169,9 @@ const SingleLead = ({
 
   const handleClose = () => {
     setIsClosing(true);
+    setAddNoteTxt("");
+    setIsVoiceSearchState(false);
+    SpeechRecognition.stopListening();
     setTimeout(() => {
       setIsClosing(false);
       handleLeadModelClose();
