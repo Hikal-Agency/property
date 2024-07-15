@@ -500,6 +500,7 @@ const SinglePropertyModal = ({
                           />
                           <div className="flex flex-wrap gap-2">
                             {project?.bedrooms &&
+                              Array.isArray(project?.bedrooms) &&
                               project?.bedrooms !== null &&
                               project?.bedrooms.length > 0 &&
                               project?.bedrooms?.map((bed, index) => (
