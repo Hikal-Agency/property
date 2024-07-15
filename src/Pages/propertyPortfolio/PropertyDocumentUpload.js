@@ -28,6 +28,7 @@ const PropertyDocModal = ({
   setAllDocs,
   project,
   update,
+  setProject,
 }) => {
   const { currentMode, BACKEND_URL, User } = useStateContext();
   const documentsInputRef = useRef(null);
@@ -130,6 +131,8 @@ const PropertyDocModal = ({
             progress: undefined,
             theme: "light",
           });
+
+          setProject({ ...result?.data?.project });
           handleClose();
           FetchProperty();
         })

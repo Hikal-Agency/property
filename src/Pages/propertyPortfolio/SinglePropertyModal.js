@@ -48,7 +48,7 @@ const SinglePropertyModal = ({
   setloading,
 }) => {
   console.log("single property data::: ", openModal);
-  let project = openModal?.project;
+  const [project, setProject] = useState(openModal?.project);
   // const [loading, setloading] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [listData, setListingData] = useState({});
@@ -718,6 +718,7 @@ const SinglePropertyModal = ({
                     allDocs={allDocs}
                     setAllDocs={setAllDocs}
                     project={project}
+                    setProject={setProject}
                     update="update"
                     FetchProperty={FetchProperty}
                   />
