@@ -99,7 +99,14 @@ export default function MultiStepForm() {
           const labelProps = {};
           if (isStepOptional(index)) {
             labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
+              <Typography
+                variant="caption"
+                className={`${
+                  currentMode === "dark" ? "text-whtie" : "text-black"
+                }`}
+              >
+                Optional
+              </Typography>
             );
           }
           if (isStepSkipped(index)) {
@@ -107,7 +114,14 @@ export default function MultiStepForm() {
           }
           return (
             <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+              <StepLabel
+                {...labelProps}
+                sx={{
+                  color: currentMode === "dark" ? "text-white" : "text-black",
+                }}
+              >
+                {label}
+              </StepLabel>
             </Step>
           );
         })}
@@ -140,11 +154,11 @@ export default function MultiStepForm() {
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            {isStepOptional(activeStep) && (
+            {/* {isStepOptional(activeStep) && (
               <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
                 Skip
               </Button>
-            )}
+            )} */}
 
             <Button onClick={handleNext}>
               {activeStep === steps.length - 1 ? "Finish" : "Next"}

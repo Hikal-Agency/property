@@ -386,7 +386,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
   };
 
   useEffect(() => {
-    getDevelopers();
+    // getDevelopers();
   }, []);
 
   const options = enquiry_options(t);
