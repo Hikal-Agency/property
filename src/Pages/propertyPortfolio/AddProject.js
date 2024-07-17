@@ -35,6 +35,7 @@ import {
   enquiry_options,
   project_status_options,
 } from "../../Components/_elements/SelectOptions";
+import MultiStepForm from "./MultiStepForm";
 
 const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
   const {
@@ -470,7 +471,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                     </div>
 
                     <div className={`w-full p-4`}>
-                      <Box
+                      {/* <Box
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
@@ -488,86 +489,11 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                               : "left",
                           },
                         }}
-                      >
-                        <TextField
-                          id="ProjectName"
-                          type={"text"}
-                          label={t("project_form_name")}
-                          value={projectData?.projectName}
-                          name="projectName"
-                          onChange={handleChange}
-                          className="w-full"
-                          sx={{
-                            marginBottom: "20px !important",
-                          }}
-                          variant="outlined"
-                          size="small"
-                          required
-                        />
-                        <Select
-                          id="Developer"
-                          value={{
-                            value: projectData?.developer_id,
-                            label: projectData?.developer_id
-                              ? developer.find(
-                                  (dev) => dev.id === projectData?.developer_id
-                                )?.developerName || ""
-                              : t("form_developer_name"),
-                          }}
-                          onChange={(selectedOption) => {
-                            handleChange({
-                              target: {
-                                name: "developer_id",
-                                value: selectedOption.value,
-                              },
-                            });
-                          }}
-                          options={developer.map((dev) => ({
-                            value: dev.id,
-                            label: dev.developerName,
-                          }))}
-                          className="w-full"
-                          placeholder={t("form_developer_name")}
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                        <TextField
-                          id="PriceRange"
-                          type="text"
-                          label={t("form_project_priceRange")}
-                          className="w-full"
-                          value={projectData?.price}
-                          name="price"
-                          onChange={handleChange}
-                          sx={{
-                            marginBottom: "20px !important",
-                          }}
-                          variant="outlined"
-                          size="small"
-                        />
-                        <Select
-                          id="Availability"
-                          value={project_status_options(t).find(
-                            (option) =>
-                              option.value === projectData?.projectStatus
-                          )}
-                          onChange={(selectedOption) => {
-                            handleChange({
-                              target: {
-                                name: "projectStatus",
-                                value: selectedOption.value,
-                              },
-                            });
-                          }}
-                          options={project_status_options(t)}
-                          className="w-full"
-                          placeholder={t("form_project_status")}
-                          menuPortalTarget={document.body}
-                          styles={selectStyles(currentMode, primaryColor)}
-                        />
-                      </Box>
+                      > */}
+                      <MultiStepForm />
+                      {/* </Box> */}
 
-                      <div className="mt-4">
+                      {/* <div className="mt-4">
                         <Button
                           className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
                           ripple={true}
@@ -591,7 +517,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                             </span>
                           )}
                         </Button>
-                      </div>
+                      </div> */}
                     </div>
                   </form>
                 </div>
