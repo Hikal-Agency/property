@@ -136,7 +136,7 @@ const Clock = ({ handleClose }) => {
 
   return (
     <div
-      // onMouseLeave={handleClose}
+      onMouseLeave={handleClose}
       style={{
         // margin: 0,
         // padding: "0.5rem 0.5rem",

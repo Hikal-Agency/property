@@ -61,7 +61,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   const fetchNotifications = async (page) => {
     try {
       setLoading(true);
-      
+
       const url = `${BACKEND_URL}/allnotifications?page=${page}&isRead=0`;
 
       const response = await axios.get(url, {
@@ -139,7 +139,9 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
   const loadMore = async () => {
     try {
       setBtnLoading(true);
-      const url = `${BACKEND_URL}/allnotifications?page=${currPage+1}&isRead=0`;
+      const url = `${BACKEND_URL}/allnotifications?page=${
+        currPage + 1
+      }&isRead=0`;
 
       const response = await axios.get(url, {
         headers: {
@@ -147,7 +149,7 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
         },
       });
 
-      setCurrPage((page) =>page + 1);
+      setCurrPage((page) => page + 1);
       setBtnLoading(false);
 
       const filteredNotifications = response?.data?.notification?.data;
@@ -158,16 +160,16 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div
       onClick={handleAvoidClose}
-      // onMouseLeave={handleClose}
-      sx={{ 
+      onMouseLeave={handleClose}
+      sx={{
         maxHeight: 500,
-        width: 350, 
-        // position: "relative" 
+        width: 350,
+        // position: "relative"
       }}
       className="p-3"
     >
@@ -215,15 +217,22 @@ const NotificationsMenuUpdated = ({ setCurrNavBtn, handleClose }) => {
             })}
 
             <di v className="pt-3 flex justify-center">
-              <button onClick={loadMore} disabled={currPage >= lastPage} className="text-primary bg-transparent hover:bg-[#AAAAAA] hover:text-white font-semibold rounded-xl shadow-sm p-2">
-                {btnLoading ? <CircularProgress size={18} style={{color: "black"}}/> : <span>Load more</span>}
+              <button
+                onClick={loadMore}
+                disabled={currPage >= lastPage}
+                className="text-primary bg-transparent hover:bg-[#AAAAAA] hover:text-white font-semibold rounded-xl shadow-sm p-2"
+              >
+                {btnLoading ? (
+                  <CircularProgress size={18} style={{ color: "black" }} />
+                ) : (
+                  <span>Load more</span>
+                )}
               </button>
             </di>
-            
-          </>     
+          </>
         ) : (
           <h1 className="text-center">No Unread Notifications</h1>
-        ))}     
+        ))}
     </div>
   );
 };
