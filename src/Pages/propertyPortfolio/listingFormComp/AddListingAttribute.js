@@ -3,6 +3,8 @@ import { useStateContext } from "../../../context/ContextProvider";
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { selectStyles } from "../../../Components/_elements/SelectStyles";
 import Select from "react-select";
+import axios from "../../../axoisConfig";
+import { toast } from "react-toastify";
 
 const AddListingAttribute = () => {
   const {
@@ -17,8 +19,93 @@ const AddListingAttribute = () => {
     i18n,
     fontFam,
   } = useStateContext();
+  const token = localStorage.getItem("auth-token");
 
   const [btnLoading, setBtnLoading] = useState(false);
+  const [listingAttr, setListingAttr] = useState({
+    name: "",
+    listing_type_id: 11,
+    area: "",
+    bedroom: "",
+    bathroom: "",
+    garage: "",
+    gallery: "",
+  });
+
+  const handleChange = (e) => {
+    setListingAttr((prevListingAttr) => ({
+      ...prevListingAttr,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  const AddListAttr = () => {
+    setBtnLoading(true);
+
+    axios
+      .post(`${BACKEND_URL}/listing-attributes`, listingAttr, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("listing attr added : ", result);
+        setBtnLoading(false);
+
+        toast.success("Listing Attribute added successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setListingAttr({
+          name: "",
+          listing_type_id: "",
+          area: "",
+          bedroom: "",
+          bathroom: "",
+          garage: "",
+          gallery: "",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        setBtnLoading(false);
+        console.log(err);
+        const errors = err.response?.data?.errors;
+
+        if (errors) {
+          const errorMessages = Object.values(errors).flat().join(" ");
+          toast.error(`Errors: ${errorMessages}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else {
+          toast.error("Something Went Wrong! Please Try Again", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      });
+  };
 
   return (
     <div className="my-4">
@@ -50,13 +137,13 @@ const AddListingAttribute = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.projectLocation}
+            value={listingAttr?.name}
             name="projectLocation"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
           <TextField
-            id="Project"
+            id="area"
             type={"text"}
             label={t("form_project_area")}
             className="w-full"
@@ -65,14 +152,14 @@ const AddListingAttribute = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.area}
+            value={listingAttr?.area}
             name="area"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
 
           <TextField
-            id="LeadEmailAddress"
+            id="bathroom"
             type={"text"}
             label={t("bathroom")}
             className="w-full"
@@ -81,13 +168,13 @@ const AddListingAttribute = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.tourLink}
+            value={listingAttr?.bathroom}
             name="tourLink"
-            // onChange={handleChange}
+            onChange={handleChange}
           />
 
           <TextField
-            id="LeadEmailAddress"
+            id="gallery"
             type={"text"}
             label={t("gallery")}
             className="w-full"
@@ -96,9 +183,9 @@ const AddListingAttribute = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.tourLink}
+            value={listingAttr?.gallery}
             name="tourLink"
-            // onChange={handleChange}
+            onChange={handleChange}
           />
         </Box>
         <Box
@@ -138,7 +225,7 @@ const AddListingAttribute = () => {
             styles={selectStyles(currentMode, primaryColor)}
           />
           <TextField
-            id="Project"
+            id="bedroom"
             type={"text"}
             label={t("bedroom")}
             className="w-full"
@@ -147,13 +234,13 @@ const AddListingAttribute = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.projectLocation}
+            value={listingAttr?.bedroom}
             name="projectLocation"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
           <TextField
-            id="Project"
+            id="garage"
             type={"text"}
             label={t("garage")}
             className="w-full"
@@ -162,9 +249,9 @@ const AddListingAttribute = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.area}
+            value={listingAttr?.garage}
             name="area"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
 
@@ -178,6 +265,7 @@ const AddListingAttribute = () => {
             size="lg"
             type="submit"
             disabled={btnLoading ? true : false}
+            onClick={AddListAttr}
           >
             {btnLoading ? (
               <CircularProgress

@@ -103,11 +103,11 @@ const AddListingType = () => {
         </h4>{" "}
         <div className="flex items-center justify-center space-x-3">
           <TextField
-            id="ProjectName"
+            id="name"
             type={"text"}
             label={t("label_listing_type")}
             value={name}
-            name="projectName"
+            name="name"
             onChange={(e) => setName(e.target.value)}
             //   className="w-full"
 
