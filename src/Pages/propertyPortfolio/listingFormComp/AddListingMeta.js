@@ -1,7 +1,324 @@
-import React from "react";
-
+import {
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  TextField,
+} from "@mui/material";
+import React, { useState } from "react";
+import { useStateContext } from "../../../context/ContextProvider";
+import Select from "react-select";
+import { selectStyles } from "../../../Components/_elements/SelectStyles";
 const AddListingMeta = () => {
-  return <div>AddListingMeta</div>;
+  const {
+    darkModeColors,
+    currentMode,
+    User,
+    BACKEND_URL,
+    isArabic,
+    primaryColor,
+    t,
+    isLangRTL,
+    i18n,
+    fontFam,
+  } = useStateContext();
+
+  const [btnLoading, setBtnLoading] = useState(false);
+
+  return (
+    <div className="my-4">
+      <h4 className={`text-primary text-center font-semibold pb-5`}>
+        {t("heading_listing_meta_tag")}
+      </h4>
+
+      <div className="grid sm:grid-cols-1   md:grid-cols-2 lg:grid-cols-2 gap-3">
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+        >
+          <Select
+            id="Developer"
+            // value={{
+            //   value: projectData?.developer_id,
+            //   label: projectData?.developer_id
+            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
+            //         ?.developerName || ""
+            //     : t("form_developer_name"),
+            // }}
+            // onChange={(selectedOption) => {
+            //   handleChange({
+            //     target: { name: "developer_id", value: selectedOption.value },
+            //   });
+            // }}
+            // options={developer.map((dev) => ({
+            //   value: dev.id,
+            //   label: dev.developerName,
+            // }))}
+            className="w-full"
+            placeholder={t("menu_listings")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          <TextField
+            id="name"
+            type={"text"}
+            label={t("description")}
+            className="w-full"
+            sx={{
+              marginBottom: "20px !important",
+            }}
+            variant="outlined"
+            size="small"
+            // value={projectData?.projectLocation}
+            name="projectLocation"
+            // onChange={handleChange}
+            required
+          />
+          <Select
+            id="Developer"
+            // value={{
+            //   value: projectData?.developer_id,
+            //   label: projectData?.developer_id
+            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
+            //         ?.developerName || ""
+            //     : t("form_developer_name"),
+            // }}
+            // onChange={(selectedOption) => {
+            //   handleChange({
+            //     target: { name: "developer_id", value: selectedOption.value },
+            //   });
+            // }}
+            // options={developer.map((dev) => ({
+            //   value: dev.id,
+            //   label: dev.developerName,
+            // }))}
+            className="w-full"
+            placeholder={t("label_banner")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          <Select
+            id="Developer"
+            // value={{
+            //   value: projectData?.developer_id,
+            //   label: projectData?.developer_id
+            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
+            //         ?.developerName || ""
+            //     : t("form_developer_name"),
+            // }}
+            // onChange={(selectedOption) => {
+            //   handleChange({
+            //     target: { name: "developer_id", value: selectedOption.value },
+            //   });
+            // }}
+            // options={developer.map((dev) => ({
+            //   value: dev.id,
+            //   label: dev.developerName,
+            // }))}
+            className="w-full"
+            placeholder={t("label_promo_video")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          <Select
+            id="Developer"
+            // value={{
+            //   value: projectData?.developer_id,
+            //   label: projectData?.developer_id
+            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
+            //         ?.developerName || ""
+            //     : t("form_developer_name"),
+            // }}
+            // onChange={(selectedOption) => {
+            //   handleChange({
+            //     target: { name: "developer_id", value: selectedOption.value },
+            //   });
+            // }}
+            // options={developer.map((dev) => ({
+            //   value: dev.id,
+            //   label: dev.developerName,
+            // }))}
+            className="w-full"
+            placeholder={t("label_meta_title")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          <Select
+            id="Developer"
+            // value={{
+            //   value: projectData?.developer_id,
+            //   label: projectData?.developer_id
+            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
+            //         ?.developerName || ""
+            //     : t("form_developer_name"),
+            // }}
+            // onChange={(selectedOption) => {
+            //   handleChange({
+            //     target: { name: "developer_id", value: selectedOption.value },
+            //   });
+            // }}
+            // options={developer.map((dev) => ({
+            //   value: dev.id,
+            //   label: dev.developerName,
+            // }))}
+            className="w-full"
+            placeholder={t("label_cano")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+        </Box>
+        <Box
+          sx={{
+            ...darkModeColors,
+            "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
+            "& legend": {
+              textAlign: isLangRTL(i18n.language) ? "right" : "left",
+            },
+          }}
+        >
+          <TextField
+            id="Project"
+            type={"text"}
+            label={t("label_slug")}
+            className="w-full"
+            sx={{
+              marginBottom: "20px !important",
+            }}
+            variant="outlined"
+            size="small"
+            // value={projectData?.area}
+            name="area"
+            // onChange={handleChange}
+            required
+          />
+          <TextField
+            id="Project"
+            type={"text"}
+            label={t("label_meta_desc")}
+            className="w-full"
+            sx={{
+              marginBottom: "20px !important",
+            }}
+            variant="outlined"
+            size="small"
+            // value={projectData?.area}
+            name="area"
+            // onChange={handleChange}
+            required
+          />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                // value={permission?.id}
+                // onClick={handleClick}
+                // checked={checked}
+                name="permissionCheckbox"
+                fullWidth
+                inputProps={{ "aria-label": "controlled" }}
+                style={{
+                  color: currentMode === "dark" ? "#fff" : "#000",
+                }}
+              />
+            }
+            label={t("label_is_featured")}
+          />
+
+          <label htmlFor="contained-button-file">
+            <Button
+              variant="contained"
+              size="lg"
+              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
+              // onClick={() =>
+              //   setSelectImagesModal({
+              //     isOpen: true,
+              //   })
+              // }
+              style={{
+                fontFamily: fontFam,
+                color: "#ffffff",
+                marginBottom: "10px",
+              }}
+              component="span"
+              // disabled={loading ? true : false}
+              // startIcon={loading ? null : <MdFileUpload />}
+            >
+              <span>{t("label_additional_images")}</span>
+            </Button>
+            {/* <p className="text-primary mt-2 italic">
+              {allImages?.length > 0
+                ? `${allImages?.length} images selected.`
+                : null}
+            </p> */}
+          </label>
+
+          <label htmlFor="contained-button-file">
+            <Button
+              variant="contained"
+              size="lg"
+              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
+              // onClick={() =>
+              //   setSelectImagesModal({
+              //     isOpen: true,
+              //   })
+              // }
+              style={{
+                fontFamily: fontFam,
+                color: "#ffffff",
+                marginBottom: "10px",
+              }}
+              component="span"
+              // disabled={loading ? true : false}
+              // startIcon={loading ? null : <MdFileUpload />}
+            >
+              <span>{t("label_additional_images")}</span>
+            </Button>
+            {/* <p className="text-primary mt-2 italic">
+              {allImages?.length > 0
+                ? `${allImages?.length} images selected.`
+                : null}
+            </p> */}
+          </label>
+
+          <Button
+            className={`min-w-fit text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
+            ripple={true}
+            style={{
+              fontFamily: fontFam,
+              background: `${primaryColor}`,
+            }}
+            size="lg"
+            type="submit"
+            disabled={btnLoading ? true : false}
+          >
+            {btnLoading ? (
+              <CircularProgress
+                size={20}
+                sx={{ color: "white" }}
+                className="text-white"
+              />
+            ) : (
+              <span className="text-white">{t("submit")}</span>
+            )}
+          </Button>
+        </Box>
+      </div>
+    </div>
+  );
 };
 
 export default AddListingMeta;

@@ -471,53 +471,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
                     </div>
 
                     <div className={`w-full p-4`}>
-                      {/* <Box
-                        sx={{
-                          ...darkModeColors,
-                          "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                            {
-                              right: isLangRTL(i18n.language)
-                                ? "2.5rem"
-                                : "inherit",
-                              transformOrigin: isLangRTL(i18n.language)
-                                ? "right"
-                                : "left",
-                            },
-                          "& legend": {
-                            textAlign: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
-                        }}
-                      > */}
                       <MultiStepForm />
-                      {/* </Box> */}
-
-                      {/* <div className="mt-4">
-                        <Button
-                          className={`min-w-fit w-full text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
-                          ripple={true}
-                          style={{
-                            fontFamily: fontFam,
-                            background: `${primaryColor}`,
-                          }}
-                          size="lg"
-                          type="submit"
-                          disabled={btnLoading ? true : false}
-                        >
-                          {btnLoading ? (
-                            <CircularProgress
-                              size={20}
-                              sx={{ color: "white" }}
-                              className="text-white"
-                            />
-                          ) : (
-                            <span className="text-white">
-                              {t("submit_project_btn")}
-                            </span>
-                          )}
-                        </Button>
-                      </div> */}
                     </div>
                   </form>
                 </div>

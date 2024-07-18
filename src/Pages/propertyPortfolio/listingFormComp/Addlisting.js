@@ -120,6 +120,29 @@ const Addlisting = () => {
             //   label: dev.developerName,
             // }))}
             className="w-full"
+            placeholder={t("label_city")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          <Select
+            id="Developer"
+            // value={{
+            //   value: projectData?.developer_id,
+            //   label: projectData?.developer_id
+            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
+            //         ?.developerName || ""
+            //     : t("form_developer_name"),
+            // }}
+            // onChange={(selectedOption) => {
+            //   handleChange({
+            //     target: { name: "developer_id", value: selectedOption.value },
+            //   });
+            // }}
+            // options={developer.map((dev) => ({
+            //   value: dev.id,
+            //   label: dev.developerName,
+            // }))}
+            className="w-full"
             placeholder={t("status")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}

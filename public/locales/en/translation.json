@@ -1125,7 +1125,7 @@
     "heading_listing_attr": "Add Listing Attribute",
     "heading_listing_attr_type": "Add Listing Attribute Type",
     "heading_add_listing": "Add Listing ",
-    "heading_listing_meta_tag": "Listings Meta Tag ",
+    "heading_listing_meta_tag": "Listings Meta Data ",
     "bathroom": "Bathroom ",
     "bedroom": "Bedroom ",
     "garage": "Garage ",
@@ -1136,7 +1136,17 @@
     "label_price": "Longitude ",
     "label_nearby": "Near By ",
     "label_list_attr": "Listing Attribue ",
-    "label_list_attr_type": "Listing Attribue Type"
+    "label_list_attr_type": "Listing Attribue Type",
+    "label_banner": "Banner", 
+    "label_promo_video": "Promo Video", 
+    "label_meta_title": "Meta Title",
+    "label_cano": "Canonical",
+    "label_slug": "Slug",
+    "label_built_year": "Built Year",
+    "label_additional_images": "Additional Images",
+    "label_is_featured": "Featured",
+    "label_meta_desc": "Meta Description",
+    "label_og_img": "OG Image"
 
   
 } 
