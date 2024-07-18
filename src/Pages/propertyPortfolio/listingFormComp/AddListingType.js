@@ -1,6 +1,8 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useStateContext } from "../../../context/ContextProvider";
+import { toast } from "react-toastify";
+import axios from "../../../axoisConfig";
 
 const AddListingType = () => {
   const {
@@ -15,8 +17,71 @@ const AddListingType = () => {
     i18n,
     fontFam,
   } = useStateContext();
+  const token = localStorage.getItem("auth-token");
 
   const [btnLoading, setBtnLoading] = useState(false);
+
+  const [name, setName] = useState("");
+
+  const AddListType = () => {
+    setBtnLoading(true);
+
+    if (!name) {
+      setBtnLoading(false);
+      toast.error("Kindly fill the field.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      return;
+    }
+
+    axios
+      .post(
+        `${BACKEND_URL}/listing-types`,
+        { name: name },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((result) => {
+        setBtnLoading(false);
+        setName("");
+        toast.success("Listing type added successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      })
+      .catch((err) => {
+        setBtnLoading(false);
+        console.log(err);
+        toast.error("Something Went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
 
   return (
     <div className="my-4">
@@ -41,9 +106,9 @@ const AddListingType = () => {
             id="ProjectName"
             type={"text"}
             label={t("label_listing_type")}
-            //   value={projectData?.projectName}
+            value={name}
             name="projectName"
-            //   onChange={handleChange}
+            onChange={(e) => setName(e.target.value)}
             //   className="w-full"
 
             variant="outlined"
@@ -59,6 +124,7 @@ const AddListingType = () => {
             }}
             size="lg"
             type="submit"
+            onClick={AddListType}
             disabled={btnLoading ? true : false}
           >
             {btnLoading ? (
