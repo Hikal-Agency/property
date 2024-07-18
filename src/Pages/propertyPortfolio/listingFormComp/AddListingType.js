@@ -68,7 +68,7 @@ const AddListingType = () => {
                 className="text-white"
               />
             ) : (
-              <span className="text-white">{t("submit_project_btn")}</span>
+              <span className="text-white">{t("submit")}</span>
             )}
           </Button>
         </div>

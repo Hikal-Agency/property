@@ -1121,7 +1121,22 @@
     "menu_my_orders": "My Orders",
 
 
-    "heading_listing_type": "Add Listings Type"
+    "heading_listing_type": "Add Listings Type",
+    "heading_listing_attr": "Add Listing Attribute",
+    "heading_listing_attr_type": "Add Listing Attribute Type",
+    "heading_add_listing": "Add Listing ",
+    "heading_listing_meta_tag": "Listings Meta Tag ",
+    "bathroom": "Bathroom ",
+    "bedroom": "Bedroom ",
+    "garage": "Garage ",
+    "gallery": "Gallery ",
+    "form_label_amenities": "Amenities ",
+    "form_label_lat": "Latitude ",
+    "form_label_long": "Longitude ",
+    "label_price": "Longitude ",
+    "label_nearby": "Near By ",
+    "label_list_attr": "Listing Attribue ",
+    "label_list_attr_type": "Listing Attribue Type"
 
   
 } 

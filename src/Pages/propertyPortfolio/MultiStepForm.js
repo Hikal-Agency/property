@@ -15,11 +15,7 @@ import {
   AddListingType,
 } from "./listingFormComp";
 
-const steps = [
-  "Select campaign settings",
-  "Create an ad group",
-  "Create an ad",
-];
+const steps = [1, 2, 3, 4, 5];
 
 export default function MultiStepForm() {
   const [activeStep, setActiveStep] = useState(0);
