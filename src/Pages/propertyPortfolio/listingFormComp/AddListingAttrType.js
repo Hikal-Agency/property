@@ -3,6 +3,8 @@ import { useStateContext } from "../../../context/ContextProvider";
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { selectStyles } from "../../../Components/_elements/SelectStyles";
 import Select from "react-select";
+import { toast } from "react-toastify";
+import axios from "../../../axoisConfig";
 
 const AddListingAttrType = () => {
   const {
@@ -17,8 +19,94 @@ const AddListingAttrType = () => {
     i18n,
     fontFam,
   } = useStateContext();
+  const token = localStorage.getItem("auth-token");
 
   const [btnLoading, setBtnLoading] = useState(false);
+  const [listingAttrType, setListingAttrType] = useState({
+    name: "",
+    listing_attribute_id: 3,
+    type: "",
+    price: "",
+    amenities: "",
+    near_by: "",
+    latitude: "",
+    longitude: "",
+  });
+
+  const handleChange = (e) => {
+    setListingAttrType((prevListingAttr) => ({
+      ...prevListingAttr,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  const AddListAttrType = () => {
+    setBtnLoading(true);
+
+    axios
+      .post(`${BACKEND_URL}/listing-attribute-types`, listingAttrType, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("listing attr added : ", result);
+        setBtnLoading(false);
+
+        toast.success("Listing Attribute added successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setListingAttrType({
+          name: "",
+          listing_type_id: "",
+          area: "",
+          bedroom: "",
+          bathroom: "",
+          garage: "",
+          gallery: "",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        setBtnLoading(false);
+        console.log(err);
+        const errors = err.response?.data?.errors;
+
+        if (errors) {
+          const errorMessages = Object.values(errors).flat().join(" ");
+          toast.error(`Errors: ${errorMessages}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else {
+          toast.error("Something Went Wrong! Please Try Again", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      });
+  };
 
   return (
     <div className="my-4">
@@ -50,13 +138,13 @@ const AddListingAttrType = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.projectLocation}
+            value={listingAttrType?.name}
             name="projectLocation"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
           <TextField
-            id="Project"
+            id="type"
             type={"text"}
             label={t("type")}
             className="w-full"
@@ -65,14 +153,14 @@ const AddListingAttrType = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.area}
+            value={listingAttrType?.type}
             name="area"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
 
           <TextField
-            id="LeadEmailAddress"
+            id="amenities"
             type={"text"}
             label={t("form_label_amenities")}
             className="w-full"
@@ -81,13 +169,13 @@ const AddListingAttrType = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.tourLink}
+            value={listingAttrType?.amenities}
             name="tourLink"
-            // onChange={handleChange}
+            onChange={handleChange}
           />
 
           <TextField
-            id="LeadEmailAddress"
+            id="gallery"
             type={"text"}
             label={t("gallery")}
             className="w-full"
@@ -96,13 +184,13 @@ const AddListingAttrType = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.tourLink}
+            value={listingAttrType?.gallery}
             name="tourLink"
-            // onChange={handleChange}
+            onChange={handleChange}
           />
 
           <TextField
-            id="LeadEmailAddress"
+            id="latitude"
             type={"text"}
             label={t("form_label_lat")}
             className="w-full"
@@ -111,9 +199,9 @@ const AddListingAttrType = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.tourLink}
+            value={listingAttrType?.latitude}
             name="tourLink"
-            // onChange={handleChange}
+            onChange={handleChange}
           />
         </Box>
         <Box
@@ -153,7 +241,7 @@ const AddListingAttrType = () => {
             styles={selectStyles(currentMode, primaryColor)}
           />
           <TextField
-            id="Project"
+            id="price"
             type={"text"}
             label={t("label_price")}
             className="w-full"
@@ -162,13 +250,13 @@ const AddListingAttrType = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.projectLocation}
+            value={listingAttrType?.price}
             name="projectLocation"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
           <TextField
-            id="Project"
+            id="near_by"
             type={"text"}
             label={t("label_nearby")}
             className="w-full"
@@ -177,13 +265,13 @@ const AddListingAttrType = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.area}
+            value={listingAttrType?.near_by}
             name="area"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
           <TextField
-            id="Project"
+            id="longitude"
             type={"text"}
             label={t("form_label_long")}
             className="w-full"
@@ -192,9 +280,9 @@ const AddListingAttrType = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.area}
+            value={listingAttrType?.longitude}
             name="area"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
 
@@ -208,6 +296,7 @@ const AddListingAttrType = () => {
             size="lg"
             type="submit"
             disabled={btnLoading ? true : false}
+            onClick={AddListAttrType}
           >
             {btnLoading ? (
               <CircularProgress
