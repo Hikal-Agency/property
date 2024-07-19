@@ -76,6 +76,7 @@ const PropertyPortfolio = () => {
   };
 
   const FetchProperty = async () => {
+    setLoading(true);
     await axios
       .get(`${BACKEND_URL}/dev-with-projects`, {
         headers: {
@@ -84,10 +85,13 @@ const PropertyPortfolio = () => {
         },
       })
       .then((result) => {
+
         setDevProData(result.data?.data?.developers);
+        setLoading(false)
         console.log("projects list :: ", result.data?.data?.developers);
       })
       .catch((err) => {
+        setLoading(false)
         toast.error("Something went wrong kindly force refresh the page.", {
           position: "top-right",
           autoClose: 3000,
