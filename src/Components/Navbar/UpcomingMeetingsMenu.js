@@ -43,10 +43,10 @@ const UpcomingMeetingsMenu = ({ handleClose }) => {
   return (
     <>
       <div
-        // onMouseLeave={handleClose}
-        sx={{ 
-          maxHeight: 500, 
-          width: 350 
+        onMouseLeave={handleClose}
+        sx={{
+          maxHeight: 500,
+          width: 350,
         }}
         className="p-3"
       >

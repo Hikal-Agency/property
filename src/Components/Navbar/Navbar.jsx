@@ -57,6 +57,7 @@ const NavButton = ({
   <button
     type="button"
     onMouseEnter={customFunc}
+    // onMouseLeave={handleClose}
     style={{ color }}
     className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     aria-label={title}
@@ -643,7 +644,7 @@ const Navbar = () => {
                 ) : currNavBtn === "Clock" ? (
                   <Clock handleClose={handleClose} />
                 ) : currNavBtn === "Meetings" ? (
-                  <UpcomingMeetingsMenu />
+                  <UpcomingMeetingsMenu handleClose={handleClose} />
                 ) : currNavBtn === "Profile" ? (
                   <div className="px-2">
                     <div
@@ -832,6 +833,11 @@ const Navbar = () => {
                           </p>
                           <div className="">
                             <Switch
+                              sx={{
+                                "& .MuiSwitch-track": {
+                                  backgroundColor: "gray", // track color when unchecked
+                                },
+                              }}
                               onChange={(e) => {
                                 setIsTwoFA(e?.target?.checked);
                                 updateTwoFAStatus(e?.target?.checked);
@@ -1211,7 +1217,7 @@ const Navbar = () => {
                 ) : currNavBtn === "Clock" ? (
                   <Clock handleClose={handleClose} />
                 ) : currNavBtn === "Meetings" ? (
-                  <UpcomingMeetingsMenu />
+                  <UpcomingMeetingsMenu handleClose={handleClose} />
                 ) : currNavBtn === "Profile" ? (
                   <div className="px-2">
                     <div
@@ -1399,6 +1405,11 @@ const Navbar = () => {
                           </p>
                           <div className="">
                             <Switch
+                              sx={{
+                                "& .MuiSwitch-track": {
+                                  backgroundColor: "gray", // track color when unchecked
+                                },
+                              }}
                               onChange={(e) => {
                                 setIsTwoFA(e?.target?.checked);
                                 updateTwoFAStatus(e?.target?.checked);
