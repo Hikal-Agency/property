@@ -54,7 +54,7 @@ const AddListingAttrType = () => {
         console.log("listing attr added : ", result);
         setBtnLoading(false);
 
-        toast.success("Listing Attribute added successfully.", {
+        toast.success("Listing Attribute type added successfully.", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -67,12 +67,13 @@ const AddListingAttrType = () => {
 
         setListingAttrType({
           name: "",
-          listing_type_id: "",
-          area: "",
-          bedroom: "",
-          bathroom: "",
-          garage: "",
-          gallery: "",
+          listing_attribute_id: 3,
+          type: "",
+          price: "",
+          amenities: "",
+          near_by: "",
+          latitude: "",
+          longitude: "",
         });
       })
       .catch((err) => {

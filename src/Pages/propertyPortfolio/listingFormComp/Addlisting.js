@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useStateContext } from "../../../context/ContextProvider";
 import Select from "react-select";
 import { selectStyles } from "../../../Components/_elements/SelectStyles";
+import { toast } from "react-toastify";
+import axios from "../../../axoisConfig";
 
 const Addlisting = () => {
   const {
@@ -18,7 +20,99 @@ const Addlisting = () => {
     fontFam,
   } = useStateContext();
 
+  const token = localStorage.getItem("auth-token");
+
   const [btnLoading, setBtnLoading] = useState(false);
+  const [listingData, setlistingData] = useState({
+    title: "",
+    meta_tags_for_listings_id: 2,
+    listing_type_id: 2,
+    user_id: 3,
+    listing_attribute_id: 3,
+    listing_arrtibute_type_id: 3,
+    country_id: 1,
+    state_id: 2,
+    city_id: 2,
+    short_description: "",
+    thumbnail: "",
+    status: 1,
+  });
+
+  const handleChange = (e) => {
+    setlistingData((prevListingAttr) => ({
+      ...prevListingAttr,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  const AddListings = () => {
+    setBtnLoading(true);
+
+    axios
+      .post(`${BACKEND_URL}/new-listings`, listingData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("listing  added : ", result);
+        setBtnLoading(false);
+
+        toast.success("New List added successfully.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setlistingData({
+          name: "",
+          listing_attribute_id: 3,
+          type: "",
+          price: "",
+          amenities: "",
+          near_by: "",
+          latitude: "",
+          longitude: "",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        setBtnLoading(false);
+        console.log(err);
+        const errors = err.response?.data?.errors;
+
+        if (errors) {
+          const errorMessages = Object.values(errors).flat().join(" ");
+          toast.error(`Errors: ${errorMessages}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else {
+          toast.error("Something Went Wrong! Please Try Again", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      });
+  };
 
   return (
     <div className="my-4">
@@ -232,7 +326,7 @@ const Addlisting = () => {
           />
 
           <TextField
-            id="Project"
+            id="short_description"
             type={"text"}
             label={t("description")}
             className="w-full"
@@ -241,9 +335,9 @@ const Addlisting = () => {
             }}
             variant="outlined"
             size="small"
-            // value={projectData?.area}
+            value={listingData?.short_description}
             name="area"
-            // onChange={handleChange}
+            onChange={handleChange}
             required
           />
 
@@ -257,6 +351,7 @@ const Addlisting = () => {
             size="lg"
             type="submit"
             disabled={btnLoading ? true : false}
+            onClick={AddListings}
           >
             {btnLoading ? (
               <CircularProgress
