@@ -1,9 +1,32 @@
 import { useEffect, useState } from "react";
 import moment from "moment/moment";
+import { selectStyles } from "./_elements/SelectStyles";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import { Pagination, Tooltip } from "@mui/material";
+import {
+  Pagination,
+  Tooltip,
+  FormGroup,
+  RadioGroup,
+  Radio,
+  TextField,
+  Button,
+  FormLabel,
+  FormControl,
+  FormControlLabel,
+} from "@mui/material";
 import Select from "react-select";
 import { Box, maxWidth } from "@mui/system";
+import { BsFilterCircle } from "react-icons/bs";
+import { DatePicker } from "@mui/x-date-pickers";
+
+import {
+  BsBuildings,
+  BsQuestionLg,
+  BsCart4,
+  BsCalendarCheck,
+} from "react-icons/bs";
 import {
   DataGrid,
   gridPageCountSelector,
@@ -28,10 +51,13 @@ import DealHistory from "../Pages/timeline/DealHistory";
 import usePermission from "../utils/usePermission";
 
 import { BsCheck2, BsX } from "react-icons/bs";
+import { source_options } from "./_elements/SelectOptions";
 
 const Closedeals = ({ pageState, setpageState }) => {
   // eslint-disable-next-line
   const [singleLeadData, setsingleLeadData] = useState();
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const {
     currentMode,
     DataGridStyles,
@@ -40,6 +66,9 @@ const Closedeals = ({ pageState, setpageState }) => {
     isArabic,
     primaryColor,
     t,
+    isLangRTL,
+    i18n,
+    darkModeColors,
   } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -50,10 +79,26 @@ const Closedeals = ({ pageState, setpageState }) => {
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const [dealHisotryModel, setDealHistoryModel] = useState(false);
+  const [managers, setManagers] = useState([]);
+  const [agents, setAgents] = useState([]);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
+
   const handleUpdateLeadModelClose = () => {
     setUpdateLeadModelOpen(false);
   };
+  const [filtersData, setFiltersData] = useState({
+    leadSource: null,
+    agentAssigned: null,
+    managerAssigned: null,
+    unit: "",
+    leadName: "",
+    startDate: null,
+    endDate: null,
+    pdc_status: "",
+    spa_status: "",
+    invoice_status: "",
+    comm_status: "",
+  });
 
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
@@ -827,9 +872,626 @@ const Closedeals = ({ pageState, setpageState }) => {
       </>
     );
   }
+  const handleClick = (event) => {
+    setOpen(!open);
+    setAnchorEl(event.currentTarget);
+  };
+
+  useEffect(() => {
+    const getManagers = async () => {
+      const token = localStorage?.getItem("auth-token");
+      try {
+        const res = await axios.get(`${BACKEND_URL}/managers`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+        setManagers(res?.data?.managers);
+        console.log(res, "response of manager");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const getAgents = async () => {
+      let token = localStorage?.getItem("auth-token");
+      try {
+        const res = await axios.get(`${BACKEND_URL}/agents?isParent=132`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        setAgents(res?.data?.agents?.data);
+        console.log("agents", res?.data?.agents);
+      } catch (error) {
+        console.log("agents can't be fetched error", error);
+      }
+    };
+
+    getManagers();
+    getAgents();
+  }, []);
+  const handleDateRange = (newValue, type) => {
+    const formattedDate = moment(newValue?.$d).format("YYYY-MM-DD");
+
+    if (type === "start") {
+      setFiltersData((filtersData) => ({
+        ...filtersData,
+        startDate: formattedDate,
+      }));
+    } else {
+      setFiltersData((filtersData) => ({
+        ...filtersData,
+        endDate: formattedDate,
+      }));
+    }
+  };
+
+  useEffect(() => {
+    const filterItems = async () => {
+      let token = localStorage?.getItem("auth-token");
+      setpageState((old) => ({
+        ...old,
+        isLoading: true,
+      }));
+
+      try {
+        const filterParams = (params) => {
+          return Object.fromEntries(
+            Object.entries(params).filter(
+              ([_, value]) => value !== null && value !== ""
+            )
+            // .map(([key, value]) => {
+            //   const validKeys = [
+            //     "pdc_status",
+            //     "comm_status",
+            //     "invoice_status",
+            //     "spa_status",
+            //   ];
+            //   if (validKeys.includes(key) && value == 0) {
+            //     return [key, "null"];
+            //   }
+            //   return [key, value];
+            // })
+          );
+        };
+
+        const result = await axios?.get(
+          `${BACKEND_URL}/closedDeals`,
+
+          {
+            params: filterParams({
+              managerAssigned: filtersData?.managerAssigned?.value,
+              agentAssigned: filtersData?.agentAssigned?.value,
+              unit: filtersData?.unit,
+              startDate: filtersData?.startDate,
+              endDate: filtersData?.endDate,
+              leadName: filtersData?.leadName,
+              leadSource: filtersData?.leadSource?.value,
+              pdc_status: filtersData?.pdc_status,
+              spa_status: filtersData?.spa_status,
+              invoice_status: filtersData?.invoice_status,
+              comm_status: filtersData?.comm_status,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+        if (result?.data.message == "Success") {
+          let rowsDataArray = "";
+          if (result.data.leads.current_page > 1) {
+            const theme_values = Object.values(result.data.leads.data);
+            rowsDataArray = theme_values;
+          } else {
+            rowsDataArray = result.data.leads.data;
+          }
+
+          let rowsdata = rowsDataArray.map((row, index) => ({
+            id:
+              pageState.page > 1
+                ? pageState.page * pageState.pageSize -
+                  (pageState.pageSize - 1) +
+                  index
+                : index + 1,
+            dealDate: row?.dealDate || "-",
+            leadName: row?.leadName || "-",
+            userName: row?.userName ? row?.userName : "-",
+            project: row?.project || "-",
+            enquiryType: row?.enquiryType || "-",
+            leadType: row?.leadType || "-",
+            otp:
+              row?.otp === "No OTP" || row?.otp === "No OTP Used"
+                ? "No OTP Used"
+                : row?.otp || "No OTP Used",
+            leadSource: row?.leadSource || "-",
+            amount: row?.amount || "-",
+            lid: row?.id,
+            leadId: row?.leadId,
+            unit: row?.unit,
+            currency: row?.currency,
+            booking_date: row?.booking_date,
+            booking_amount: row?.booking_amount,
+            spa_status: row?.spa_status,
+            invoice_status: row?.invoice_status,
+            comm_status: row?.comm_status,
+            agent_comm_status: row?.agent_comm_status,
+            manager_comm_status: row?.manager_comm_status,
+            pdc_status: row?.pdc_status,
+            comm_percent: row?.comm_percent || 0,
+            comm_amount: row?.comm_amount || 0,
+            vat: row?.vat || 0,
+            agent_comm_percent: row?.agent_comm_percent || 0,
+            agent_comm_amount: row?.agent_comm_amount || 0,
+            manager_comm_percent: row?.manager_comm_percent || 5,
+            manager_comm_amount: row?.manager_comm_amount || 0,
+            managerId: row?.managerId,
+            salesId: row?.salesId,
+            closedBy: row?.closedBy,
+            discount_amount: row?.discount_amount || 0,
+            discount_percent: row?.discount_percent || 0,
+            cashback_amount: row?.cashback_amount || 0,
+            cashback_percent: row?.cashback_percent || 0,
+            passport: row?.passport,
+            tax_invoice: row?.tax_invoice || null,
+          }));
+
+          setpageState((old) => ({
+            ...old,
+            isLoading: false,
+            data: rowsdata,
+            from: result.data.leads.from,
+            to: result.data.leads.to,
+            pageSize: result.data.leads.per_page,
+            total: result.data.leads.total,
+          }));
+        }
+
+        console.log(result, "response of closed deals");
+      } catch (error) {
+        console.log("error occured while fetching closed deals api", error);
+      } finally {
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+        }));
+      }
+    };
+    filterItems();
+  }, [filtersData]);
 
   return (
     <div className="pb-10">
+      <div
+        className={`fixed top-20 flex flex-col items-end ${
+          isLangRTL(i18n.language) ? "left-0" : "right-0"
+        }`}
+        style={{
+          zIndex: 10,
+        }}
+      >
+        <button
+          onClick={(e) => {
+            handleClick(e);
+          }}
+          sx={{
+            zIndex: "40",
+            "& svg path": {
+              stroke: "white !important",
+            },
+            color: "white",
+          }}
+          className={`w-fit bg-primary text-white py-2 px-3 ${
+            isLangRTL(i18n.language)
+              ? "left-0 rounded-r-full"
+              : "right-0 rounded-l-full"
+          }`}
+        >
+          {open ? (
+            <div className="flex items-center">
+              <BsX size={18} color={"white"} />
+            </div>
+          ) : (
+            <div className="flex items-center">
+              <BsFilterCircle size={18} color={"white"} />
+            </div>
+          )}
+        </button>
+        {open && (
+          <div
+            className={`p-2 mx-2 my-2 rounded-xl ${
+              currentMode === "dark"
+                ? "blur-bg-black text-white"
+                : "blur-bg-white text-black"
+            }`}
+          >
+            <div
+              className="overflow-y-scroll hide-scrollbar p-2"
+              style={{
+                minWidth: "200px",
+                minHeight: "150px",
+                maxWidth: "100%",
+                maxHeight: "80vh",
+              }}
+            >
+              <h3 className="text-primary text-center font-semibold mb-5">
+                {` ${t("btn_filters")}`}
+              </h3>
+              <div className="flex flex-col w-full mb-4">
+                {/* CATEGORY */}
+                {hasPermission("search_agent_filter") && (
+                  <Select
+                    id="agentAssigned"
+                    options={agents?.map((agent) => ({
+                      value: agent.id,
+                      label: agent.userName,
+                    }))}
+                    value={filtersData?.agentAssigned}
+                    onChange={(e) => {
+                      setFiltersData((filtersData) => ({
+                        ...filtersData,
+                        agentAssigned: e,
+                      }));
+                    }}
+                    placeholder={t("Agent Assigned")}
+                    // className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                )}
+                {hasPermission("search_manager_filter") && (
+                  <Select
+                    id="Manager Assigned"
+                    options={managers?.map((manager) => ({
+                      value: manager.id,
+                      label: manager?.userName,
+                    }))}
+                    value={filtersData?.managerAssigned}
+                    onChange={(e) => {
+                      setFiltersData((filtersData) => ({
+                        ...filtersData,
+                        managerAssigned: e,
+                      }));
+                    }}
+                    placeholder={t("Manager Assigned")}
+                    // className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                )}
+                {hasPermission("search_leadSource_filter") && (
+                  <Select
+                    id="Lead Source"
+                    options={source_options(t)}
+                    value={filtersData?.leadSource}
+                    onChange={(e) => {
+                      setFiltersData({
+                        ...filtersData,
+                        leadSource: {
+                          label: e?.label,
+                          value: e?.value?.toLowerCase(),
+                        },
+                      });
+                    }}
+                    placeholder={t("Lead Source")}
+                    // className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                )}
+
+                <Box
+                  sx={{
+                    ...darkModeColors,
+                    "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
+                    "& legend": {
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
+                    },
+                  }}
+                >
+                  <TextField
+                    id="unit-filter"
+                    aria-label="unit filter"
+                    type={"number"}
+                    label={t("Unit")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={filtersData?.unit}
+                    onChange={(e) =>
+                      setFiltersData((filtersData) => ({
+                        ...filtersData,
+                        unit: e?.target?.value,
+                      }))
+                    }
+                  />
+                  <TextField
+                    id="LeadName"
+                    aria-label="Lead Name"
+                    type={"text"}
+                    label={t("label_lead_name")}
+                    className="w-full"
+                    sx={{
+                      "&": {
+                        marginBottom: "1.25rem !important",
+                      },
+                    }}
+                    variant="outlined"
+                    size="small"
+                    value={filtersData?.leadName}
+                    onChange={(e) =>
+                      setFiltersData((filtersData) => ({
+                        ...filtersData,
+                        leadName: e?.target?.value,
+                      }))
+                    }
+                  />
+                  <div className="grid grid-cols-2 gap-4 items-center">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        value={filtersData?.startDate}
+                        label={t("start_date")}
+                        views={["day", "month", "year"]}
+                        onChange={(val) => handleDateRange(val, "start")}
+                        format="DD-MM-YYYY"
+                        renderInput={(params) => (
+                          <TextField
+                            sx={{
+                              "& input": {
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                              "& .MuiSvgIcon-root": {
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                              // "& .MuiOutlinedInput-notchedOutline": {
+                              //   borderColor:
+                              //     fieldErrors?.date === true &&
+                              //     "#DA1F26 !important",
+                              // },
+                              marginBottom: "20px",
+                            }}
+                            fullWidth
+                            size="small"
+                            {...params}
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        value={filtersData?.endDate}
+                        label={t("end_date")}
+                        views={["day", "month", "year"]}
+                        minDate={
+                          filtersData?.startDate && filtersData?.startDate
+                        }
+                        onChange={(val) => handleDateRange(val)}
+                        format="DD-MM-YYYY"
+                        renderInput={(params) => (
+                          <TextField
+                            sx={{
+                              "& input": {
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                              "& .MuiSvgIcon-root": {
+                                color:
+                                  currentMode === "dark" ? "white" : "black",
+                              },
+                              // "& .MuiOutlinedInput-notchedOutline": {
+                              //   borderColor:
+                              //     fieldErrors?.date === true &&
+                              //     "#DA1F26 !important",
+                              // },
+                              marginBottom: "20px",
+                            }}
+                            fullWidth
+                            size="small"
+                            {...params}
+                            onKeyDown={(e) => e.preventDefault()}
+                            readOnly={true}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                </Box>
+
+                <FormControl
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <FormLabel id="demo-controlled-radio-buttons-group">
+                    PDC Status
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                    value={filtersData?.pdc_status}
+                    onChange={(e) =>
+                      setFiltersData((filtersData) => ({
+                        ...filtersData,
+                        pdc_status: e?.target?.value,
+                      }))
+                    }
+                    row
+                  >
+                    <FormControlLabel
+                      value={1}
+                      control={<Radio />}
+                      label="Marked"
+                    />
+                    <FormControlLabel
+                      value={2}
+                      control={<Radio />}
+                      label="Pending"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <FormControl
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <FormLabel id="demo-controlled-radio-buttons-group">
+                    SPA Status
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                    value={filtersData?.spa_status}
+                    onChange={(e) =>
+                      setFiltersData((filtersData) => ({
+                        ...filtersData,
+                        spa_status: e?.target?.value,
+                      }))
+                    }
+                    row
+                  >
+                    <FormControlLabel
+                      value={1}
+                      control={<Radio />}
+                      label="Marked"
+                    />
+                    <FormControlLabel
+                      value={2}
+                      control={<Radio />}
+                      label="Pending"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <FormControl
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <FormLabel id="demo-controlled-radio-buttons-group">
+                    Invoice Status
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                    value={filtersData?.invoice_status}
+                    onChange={(e) =>
+                      setFiltersData((filtersData) => ({
+                        ...filtersData,
+                        invoice_status: e?.target?.value,
+                      }))
+                    }
+                    row
+                  >
+                    <FormControlLabel
+                      value={1}
+                      control={<Radio />}
+                      label="Marked"
+                    />
+                    <FormControlLabel
+                      value={2}
+                      control={<Radio />}
+                      label="Pending"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <FormControl
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <FormLabel id="demo-controlled-radio-buttons-group">
+                    Commission Status
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                    value={filtersData?.comm_status}
+                    onChange={(e) =>
+                      setFiltersData((filtersData) => ({
+                        ...filtersData,
+                        comm_status: e?.target?.value,
+                      }))
+                    }
+                    row
+                  >
+                    <FormControlLabel
+                      value={1}
+                      control={<Radio />}
+                      label="Marked"
+                    />
+                    <FormControlLabel
+                      value={2}
+                      control={<Radio />}
+                      label="Pending"
+                    />
+                  </RadioGroup>
+                </FormControl>
+
+                {/* CLEAR BUTTON */}
+                <Button
+                  variant="contained"
+                  size="lg"
+                  className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3"
+                  style={{
+                    // backgroundColor: "#111827",
+                    color: "#ffffff",
+                    // border: "1px solid #DA1F26",
+                  }}
+                  // component="span"
+                  // disabled={setBtnLoading ? true : false}
+                  onClick={() => {
+                    setFiltersData({
+                      leadSource: null,
+                      agentAssigned: null,
+                      managerAssigned: null,
+                      unit: "",
+                      leadName: "",
+                      startDate: null,
+                      endDate: null,
+                      pdc_status: "",
+                      spa_status: "",
+                      invoice_status: "",
+                      comm_status: "",
+                    });
+                  }}
+                >
+                  <span>{t("clear_all")}</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
       <Box
         className={`closed-datatable ${currentMode}-mode-datatable`}
         sx={{

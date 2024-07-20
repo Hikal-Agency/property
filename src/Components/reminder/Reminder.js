@@ -113,9 +113,19 @@ const Reminder = ({ reminder, setReminder, visible, setVisible }) => {
       } else {
         setVisible(false);
       }
+      const futureReminders = await axios?.get(
+        `${BACKEND_URL}/reminders/future`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      socket.emit("get_all_reminders", futureReminders?.data.data);
 
       setReminder(reminders.data.reminder.data);
-      socket.emit("get_all_reminders", reminders.data.reminder.data);
+      // socket.emit("get_all_reminders", reminders.data.reminder.data);
       console.log("Reminders: ", reminders.data.reminder.data);
     } catch (error) {
       console.log("Reminder error: ", error);
