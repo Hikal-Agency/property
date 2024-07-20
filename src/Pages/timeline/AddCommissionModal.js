@@ -900,7 +900,7 @@ const AddCommissionModal = ({
   }, [status?.field !== "comm_status"]);
 
   const AddCommmission = () => {
-    // setBtnLoading(true);
+    setBtnLoading(true);
 
     const token = localStorage.getItem("auth-token");
 
