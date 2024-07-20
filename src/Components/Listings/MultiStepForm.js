@@ -20,20 +20,16 @@ const steps = [1, 2, 3, 4, 5];
 export default function MultiStepForm() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
-  const [column, setColumn] = [
-    {
-      list_type: [],
-      list_attribute: [],
-      list_attr_type: [],
-    },
-  ];
-  const [data, setData] = [
-    {
-      list_type: [],
-      list_attribute: [],
-      list_attr_type: [],
-    },
-  ];
+  const [column, setColumn] = useState({
+    list_type: [],
+    list_attribute: [],
+    list_attr_type: [],
+  });
+  const [data, setData] = useState({
+    list_type: [],
+    list_attribute: [],
+    list_attr_type: [],
+  });
   const {
     darkModeColors,
     currentMode,

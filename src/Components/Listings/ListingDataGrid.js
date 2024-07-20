@@ -3,8 +3,9 @@ import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { toast } from "react-toastify";
+import axios from "../../axoisConfig";
 
-const ListingDataGrid = ({ data, setData, column, setColumn }) => {
+const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
   const {
     currentMode,
     DataGridStyles,
@@ -19,13 +20,17 @@ const ListingDataGrid = ({ data, setData, column, setColumn }) => {
   const token = localStorage.getItem("auth-token");
   const [last_page, setLastPage] = useState(null);
   const [total, setTotal] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const FetchData = async (page = 1) => {
+  console.log("datagrid:: ", data);
+
+  const FetchData = async () => {
     setLoading(true);
-    if (page > 1) {
-      setbtnloading(true);
-    }
+    // if (page > 1) {
+    //   setbtnloading(true);
+    // }
     let url;
     if (type === "list_type") url = `${BACKEND_URL}/listing-types?page=${page}`;
 
@@ -40,28 +45,24 @@ const ListingDataGrid = ({ data, setData, column, setColumn }) => {
       console.log("all listings: ", listingsData);
       let listings = listingsData?.data?.data?.data || [];
 
-      if (page > 1) {
-        setData((prevData) => {
-          return [
-            ...prevData,
-            ...listings?.map((listing) => ({
-              ...listing,
-              page: page,
-            })),
-          ];
-        });
+      let rowsDataArray = "";
+      if (listingsData?.data?.data?.current_page > 1) {
+        const theme_values = Object.values(listings);
+        rowsDataArray = theme_values;
       } else {
-        setData(() => {
-          return [
-            ...listings?.map((listing) => ({
-              ...listing,
-              page: page,
-            })),
-          ];
-        });
+        rowsDataArray = listings;
       }
+
+      let rowsData = rowsDataArray?.map((row, index) => ({
+        id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
+        name: row?.name,
+      }));
+
+      setData({ ...data, list_type: rowsData });
+
       setLoading(false);
-      setLastPage(listingsData?.data?.last_page);
+      setLastPage(listingsData?.data?.data?.last_page);
+      setPageSize(listingsData?.data?.data?.per_page);
       setTotal(listingsData?.data?.data?.total);
     } catch (error) {
       console.log("listings not fetched. ", error);
@@ -93,20 +94,20 @@ const ListingDataGrid = ({ data, setData, column, setColumn }) => {
           disableDensitySelector
           autoHeight
           disableSelectionOnClick
-          //   rows={pageState.data}
-          // columns={columns}
+          rows={data?.list_type}
+          columns={column}
           //   columns={columns?.filter((c) =>
           //     hasPermission("users_col_" + c?.field)
           //   )}
-          //   rowCount={pageState.total}
-          //   loading={pageState.isLoading}
+          rowCount={total}
+          loading={loading}
           rowsPerPageOptions={[30, 50, 75, 100]}
           pagination
           // width="auto"
           getRowHeight={() => "auto"}
           paginationMode="server"
-          //   page={pageState.page - 1}
-          //   pageSize={pageState.pageSize}
+          page={page - 1}
+          pageSize={pageSize}
           componentsProps={{
             toolbar: {
               printOptions: {
@@ -118,18 +119,16 @@ const ListingDataGrid = ({ data, setData, column, setColumn }) => {
               showQuickFilter: true,
             },
           }}
-          //   onPageChange={(newPage) => {
-          //     setpageState((old) => ({
-          //       ...old,
-          //       page: newPage + 1,
-          //     }));
-          //   }}
-          //   onPageSizeChange={(newPageSize) =>
-          //     setpageState((old) => ({
-          //       ...old,
-          //       pageSize: newPageSize,
-          //     }))
-          //   }
+          onPageChange={(newPage) =>
+            setPage(() => ({
+              page: newPage + 1,
+            }))
+          }
+          onPageSizeChange={(newPageSize) =>
+            setPageSize(() => ({
+              pageSize: newPageSize,
+            }))
+          }
           sx={{
             boxShadow: 2,
             "& .MuiDataGrid-cell:hover": {
