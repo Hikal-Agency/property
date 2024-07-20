@@ -940,12 +940,17 @@ const NewTransactionForm = ({
                   onChange={handleImgUpload}
                 />
                 <label htmlFor="contained-button-file">
-                  <button
-                    // variant="contained"
-                    // size="medium"
-                    className={`${themeBgImg ? "bg-primary rounded-xl shadow-md"
-                      : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                     } w-max text-white p-3 font-semibold my-3 w-full flex gap-3`}
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    // className={`${
+                    //   themeBgImg
+                    //     ? "bg-primary rounded-xl shadow-md"
+                    //     : currentMode === "dark"
+                    //     ? "bg-primary-dark-neu"
+                    //     : "bg-primary-light-neu"
+                    // } w-max text-white p-3 font-semibold my-3 w-full flex gap-3`}
+                    className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
                     style={{
                       color: "#ffffff",
                       fontFamily: fontFam,
@@ -957,7 +962,7 @@ const NewTransactionForm = ({
                   >
                     <MdFileUpload size={16} />
                     <span>{t("upload_invoice")}</span>
-                  </button>
+                  </Button>
                 </label>
               </>
             )}
@@ -966,8 +971,12 @@ const NewTransactionForm = ({
         <button
           // variant="contained"
           // size="lg"
-          className={`${themeBgImg ? "bg-primary rounded-xl shadow-md"
-            : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
+          className={`${
+            themeBgImg
+              ? "bg-primary rounded-xl shadow-md"
+              : currentMode === "dark"
+              ? "bg-primary-dark-neu"
+              : "bg-primary-light-neu"
           } w-full text-white p-3 font-semibold my-3`}
           style={{
             color: "#ffffff",
