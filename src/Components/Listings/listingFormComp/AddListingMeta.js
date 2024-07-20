@@ -16,6 +16,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import moment from "moment";
 import dayjs from "dayjs";
+import AddImageModal from "../../../Pages/listings/AddImageModal";
 const AddListingMeta = () => {
   const {
     darkModeColors,
@@ -32,20 +33,31 @@ const AddListingMeta = () => {
   const token = localStorage.getItem("auth-token");
 
   const [btnLoading, setBtnLoading] = useState(false);
+  const [allImages, setAllImages] = useState([]);
   const [listingMeta, setListingMeta] = useState({
+    listing_id: 1,
     slug: "",
     long_description: "",
     year_build_in: "",
     promo_video: "",
-    is_featured: "",
+    is_featured: 0,
     meta_title: "",
     meta_keywords: "",
     meta_description: "",
     og_title: "",
     og_description: "",
-    json_ld: "",
+    json_ld: "1",
     canonical: "",
     banner: "",
+    additional_gallery: [],
+    og_image: "",
+  });
+
+  console.log("listingMeta: ", listingMeta);
+
+  const [selectImagesModal, setSelectImagesModal] = useState({
+    isOpen: false,
+    gallery: null,
   });
 
   const handleChange = (e) => {
@@ -58,15 +70,22 @@ const AddListingMeta = () => {
   const AddListMeta = () => {
     setBtnLoading(true);
 
+    const listingMetaData = {
+      ...listingMeta,
+      additional_gallery: allImages,
+    };
+
+    console.log("sending meta data:: ", listingMetaData);
+
     axios
-      .post(`${BACKEND_URL}/listing-attribute-types`, listingMeta, {
+      .post(`${BACKEND_URL}/meta-tags-for-listings`, listingMetaData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
-        console.log("listing attr added : ", result);
+        console.log("listing ,eta added : ", result);
         setBtnLoading(false);
 
         toast.success("Listing Meta added successfully.", {
@@ -81,14 +100,21 @@ const AddListingMeta = () => {
         });
 
         setListingMeta({
-          name: "",
-          listing_attribute_id: 3,
-          type: "",
-          price: "",
-          amenities: "",
-          near_by: "",
-          latitude: "",
-          longitude: "",
+          slug: "",
+          long_description: "",
+          year_build_in: "",
+          promo_video: "",
+          is_featured: "",
+          meta_title: "",
+          meta_keywords: "",
+          meta_description: "",
+          og_title: "",
+          og_description: "",
+          json_ld: "",
+          canonical: "",
+          banner: "",
+          additional_gallery: [],
+          og_image: "",
         });
       })
       .catch((err) => {
@@ -228,16 +254,27 @@ const AddListingMeta = () => {
             onChange={handleChange}
             required
           />
-          <label htmlFor="contained-button-file">
+
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="banner-image-file"
+            type="file"
+            name="picture"
+            onChange={(e) => {
+              console.log("event of og image: ", e);
+
+              setListingMeta({
+                ...listingMeta,
+                banner: e.target.files,
+              });
+            }}
+          />
+          <label htmlFor="banner-image-file">
             <Button
               variant="contained"
               size="lg"
               className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
-              // onClick={() =>
-              //   setSelectImagesModal({
-              //     isOpen: true,
-              //   })
-              // }
               style={{
                 fontFamily: fontFam,
                 color: "#ffffff",
@@ -249,11 +286,9 @@ const AddListingMeta = () => {
             >
               <span>{t("label_banner")}</span>
             </Button>
-            {/* <p className="text-primary mt-2 italic">
-              {allImages?.length > 0
-                ? `${allImages?.length} images selected.`
-                : null}
-            </p> */}
+            <p className="text-primary mt-2 italic">
+              {listingMeta?.banner ? `banner image selected.` : null}
+            </p>
           </label>
         </Box>
         <Box
@@ -299,13 +334,58 @@ const AddListingMeta = () => {
             onChange={handleChange}
             required
           />
+          <TextField
+            id="meta_keywords"
+            type={"text"}
+            label={t("label_meta_keywords")}
+            className="w-full"
+            sx={{
+              marginBottom: "20px !important",
+            }}
+            variant="outlined"
+            size="small"
+            value={listingMeta?.meta_keywords}
+            name="area"
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            id="og_title"
+            type={"text"}
+            label={t("label_og_title")}
+            className="w-full"
+            sx={{
+              marginBottom: "20px !important",
+            }}
+            variant="outlined"
+            size="small"
+            value={listingMeta?.og_title}
+            name="area"
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            id="og_description"
+            type={"text"}
+            label={t("label_og_desc")}
+            className="w-full"
+            sx={{
+              marginBottom: "20px !important",
+            }}
+            variant="outlined"
+            size="small"
+            value={listingMeta?.og_description}
+            name="area"
+            onChange={handleChange}
+            required
+          />
 
           <FormControlLabel
             control={
               <Checkbox
                 value={listingMeta?.is_featured}
-                onClick={handleChange}
-                // checked={checked}
+                onChange={handleChange}
+                checked={listingMeta?.is_featured}
                 name="permissionCheckbox"
                 id="is_featured"
                 fullWidth
@@ -356,11 +436,12 @@ const AddListingMeta = () => {
               variant="contained"
               size="lg"
               className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
-              // onClick={() =>
-              //   setSelectImagesModal({
-              //     isOpen: true,
-              //   })
-              // }
+              onClick={() =>
+                setSelectImagesModal({
+                  isOpen: true,
+                  gallery: true,
+                })
+              }
               style={{
                 fontFamily: fontFam,
                 color: "#ffffff",
@@ -372,23 +453,34 @@ const AddListingMeta = () => {
             >
               <span>{t("label_additional_images")}</span>
             </Button>
-            {/* <p className="text-primary mt-2 italic">
+            <p className="text-primary mt-2 italic">
               {allImages?.length > 0
                 ? `${allImages?.length} images selected.`
                 : null}
-            </p> */}
+            </p>
           </label>
 
-          <label htmlFor="contained-button-file">
+          <input
+            accept="image/*"
+            style={{ display: "none" }}
+            id="og-image-file"
+            type="file"
+            name="picture"
+            // onChange={handleImgUpload}
+            onChange={(e) => {
+              console.log("event of og image: ", e);
+
+              setListingMeta({
+                ...listingMeta,
+                og_image: e.target.files,
+              });
+            }}
+          />
+          <label htmlFor="og-image-file">
             <Button
               variant="contained"
               size="lg"
               className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
-              // onClick={() =>
-              //   setSelectImagesModal({
-              //     isOpen: true,
-              //   })
-              // }
               style={{
                 fontFamily: fontFam,
                 color: "#ffffff",
@@ -400,11 +492,9 @@ const AddListingMeta = () => {
             >
               <span>{t("label_og_img")}</span>
             </Button>
-            {/* <p className="text-primary mt-2 italic">
-              {allImages?.length > 0
-                ? `${allImages?.length} images selected.`
-                : null}
-            </p> */}
+            <p className="text-primary mt-2 italic">
+              {listingMeta?.og_image ? `og image selected.` : null}
+            </p>
           </label>
 
           <Button
@@ -418,6 +508,7 @@ const AddListingMeta = () => {
             type="submit"
             disabled={btnLoading ? true : false}
             sx={{ marginTop: "20px" }}
+            onClick={AddListMeta}
           >
             {btnLoading ? (
               <CircularProgress
@@ -430,6 +521,14 @@ const AddListingMeta = () => {
             )}
           </Button>
         </Box>
+        {selectImagesModal?.isOpen && (
+          <AddImageModal
+            selectImagesModal={selectImagesModal}
+            handleClose={() => setSelectImagesModal({ isOpen: false })}
+            allImages={allImages}
+            setAllImages={setAllImages}
+          />
+        )}
       </div>
     </div>
   );

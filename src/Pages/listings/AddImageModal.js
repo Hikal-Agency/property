@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Modal,
   Backdrop,
@@ -24,6 +24,8 @@ const AddImageModal = ({
   allImages,
   setAllImages,
 }) => {
+  console.log("select images modal: ", selectImagesModal);
+
   const { currentMode, BACKEND_URL } = useStateContext();
 
   const imagesInputRef = useRef(null);
@@ -33,6 +35,7 @@ const AddImageModal = ({
   console.log("all images in child: ", allImages);
 
   const handleSelectImages = (e) => {
+    console.log("image event : ", e);
     e.preventDefault();
     const selectedFiles = [...e.target.files];
 
@@ -63,85 +66,6 @@ const AddImageModal = ({
     setAllImages(updatedImages);
     setImagePreviews(updatedPreviews);
   };
-
-  //   const handleUploadImages = async () => {
-  //     try {
-  //       setbtnloading(true);
-
-  //       // Simulate image uploading delay (remove this in production)
-  //       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  //       // const options = {
-  //       //   maxSizeMB: 1,
-  //       //   maxWidthOrHeight: 1920,
-  //       // };
-
-  //       const ImageData = new FormData();
-  //       ImageData.append("id", selectImagesModal?.listingId);
-
-  //       // allImages?.forEach((image) => {
-  //       //   ImageData.append("img_name", image);
-  //       // })
-
-  //       allImages?.forEach((image, index) => {
-  //         ImageData.append(`img_name[${index}]`, image);
-  //       });
-
-  //       const token = localStorage.getItem("auth-token");
-  //       await axios
-  //         .post(
-  //           `${BACKEND_URL}/listings/${selectImagesModal?.listingId}`,
-  //           ImageData,
-  //           {
-  //             headers: {
-  //               "Content-Type": "multipart/form-data",
-  //               Authorization: "Bearer " + token,
-  //             },
-  //           }
-  //         )
-  //         .then((result) => {
-  //           setbtnloading(false);
-  //           toast.success("Image uploaded successfuly", {
-  //             position: "top-right",
-  //             autoClose: 3000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           });
-  //           handleClose();
-  //         })
-  //         .catch((err) => {
-  //           console.log(err);
-  //           setbtnloading(false);
-  //           toast.error("Something went wrong! Please Try Again", {
-  //             position: "top-right",
-  //             autoClose: 3000,
-  //             hideProgressBar: false,
-  //             closeOnClick: true,
-  //             pauseOnHover: true,
-  //             draggable: true,
-  //             progress: undefined,
-  //             theme: "light",
-  //           });
-  //         });
-  //     } catch (error) {
-  //       console.error(error);
-  //       setbtnloading(false);
-  //       toast.error("Something went wrong! Please try again", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     }
-  //   };
 
   const handleAddMoreImages = () => {
     if (allImages.length < 10) {

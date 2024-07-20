@@ -1146,7 +1146,10 @@
     "label_additional_images": "Additional Images",
     "label_is_featured": "Featured",
     "label_meta_desc": "Meta Description",
-    "label_og_img": "OG Image"
+    "label_og_img": "OG Image",
+    "label_og_title": "OG Title",
+    "label_og_desc": "OG Description",
+    "label_meta_keywords": "Meta Keywords"
 
   
 } 

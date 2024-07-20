@@ -33,374 +33,53 @@ import {
   project_status_options,
 } from "../../Components/_elements/SelectOptions";
 import MultiStepForm from "./MultiStepForm";
+import HeadingTitle from "../_elements/HeadingTitle";
 
-const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
+const style = {
+  transform: "translate(0%, 0%)",
+  boxShadow: 24,
+};
+
+const AddNewListingModal = ({
+  LeadData,
+  setListingModalOpen,
+  handleCloseListingModal,
+}) => {
+  console.log("set listing modal open: ", setListingModalOpen);
   const {
-    darkModeColors,
     currentMode,
+    darkModeColors,
     User,
     BACKEND_URL,
-    isArabic,
-    primaryColor,
     t,
     isLangRTL,
     i18n,
+    primaryColor,
     fontFam,
   } = useStateContext();
 
-  const [allImages, setAllImages] = useState([]);
-  const [allDocs, setAllDocs] = useState([]);
-
-  console.log("imagesss:: ", allImages);
-
-  const [listingLocation, setListingLocation] = useState({
-    lat: 0,
-    lng: 0,
-    addressText: "",
-  });
-
-  const [documentModal, setDocumentModal] = useState(false);
-
-  const [selectImagesModal, setSelectImagesModal] = useState({
-    isOpen: false,
-    listingId: null,
-  });
-
-  const [projectData, setprojectData] = useState({
-    projectName: null,
-    developer_id: null,
-    price: null,
-    projectLocation: null,
-    area: null,
-    tourLink: null,
-    projectStatus: null,
-    bedrooms: [],
-    city: null,
-    country: null,
-    location: null,
-    addedBy: User?.id,
-    images: [],
-  });
-
-  const [btnLoading, setBtnLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [developer, setDeveloper] = useState([]);
-  const token = localStorage.getItem("auth-token");
-
   const [isClosing, setIsClosing] = useState(false);
-
-  const handleBeds = (value) => {
-    setprojectData((prev) => {
-      if (prev.bedrooms.includes(value)) {
-        // Remove the value from the array if already selected
-        return {
-          ...prev,
-          bedrooms: prev.bedrooms.filter((item) => item !== value),
-        };
-      } else {
-        // Add the value to the array if not selected
-        return { ...prev, bedrooms: [...prev.bedrooms, value] };
-      }
-    });
-  };
-
-  const handleChange = (e) => {
-    const data = e.target.value;
-    const name = e.target.name;
-
-    console.log("data,name:: ", data, name);
-
-    setprojectData((prev) => ({
-      ...prev,
-      [name]: data,
-    }));
-  };
 
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
-      setOpenAddProject(false);
+      handleCloseListingModal();
     }, 1000);
   };
-
-  const style = {
-    transform: "translate(0%, 0%)",
-    boxShadow: 24,
-  };
-
-  const getDevelopers = () => {
-    setLoading(true);
-    const token = localStorage.getItem("auth-token");
-
-    axios
-      .get(`${BACKEND_URL}/dev-with-projects`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("Result: ");
-        console.log("Result: ", result);
-        setDeveloper(result?.data?.data?.developers);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-        toast.error("Unable to fetch developers.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-  };
-
-  console.log("Project data::: ", projectData);
-  // const AddDeveloper = () => {
-  //   setBtnLoading(true);
-
-  //   if (
-  //     !projectData?.projectName ||
-  //     !projectData?.projectLocation ||
-  //     !projectData?.area ||
-  //     !projectData?.developer_id
-  //   ) {
-  //     setBtnLoading(false);
-  //     toast.error("Kindly fill all the required fields.", {
-  //       position: "top-right",
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-
-  //     return;
-  //   }
-
-  //   projectData["latLong"] = [listingLocation?.lat, listingLocation?.lng].join(
-  //     ","
-  //   );
-  //   projectData["location"] = listingLocation?.addressText;
-
-  //   // if (allImages?.length > 0)
-  //   //   allImages?.forEach((image, index) => {
-  //   //     console.log("i am image: ", image);
-  //   //     // LeadData.append(`img_name[${index}]`, image);
-  //   //   });
-
-  //   if (allImages?.length > 0) {
-  //     projectData["images"] = [...allImages];
-  //     console.log("all images sending :", [...allImages]);
-  //   }
-
-  //   axios
-  //     .post(`${BACKEND_URL}/projects`, projectData, {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       console.log("Result: ");
-  //       console.log("Result: ", result);
-  //       setBtnLoading(false);
-  //       setprojectData({
-  //         projectName: "",
-  //         developer_id: "",
-  //         price: "",
-  //         projectLocation: "",
-  //         area: "",
-  //         tourLink: "",
-  //         projectStatus: "",
-  //         bedrooms: "",
-  //         city: "",
-  //         country: "",
-  //         location: "",
-  //         addedBy: User?.id,
-  //       });
-  //       toast.success("Project added successfully.", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-
-  //       setOpenAddProject(false);
-  //       FetchProperty(token);
-  //     })
-  //     .catch((err) => {
-  //       setBtnLoading(false);
-  //       console.log(err);
-  //       toast.error("Soemthing Went Wrong! Please Try Again", {
-  //         position: "top-right",
-  //         autoClose: 3000,
-  //         hideProgressBar: false,
-  //         closeOnClick: true,
-  //         pauseOnHover: true,
-  //         draggable: true,
-  //         progress: undefined,
-  //         theme: "light",
-  //       });
-  //     });
-  // };
-
-  const AddDeveloper = () => {
-    setBtnLoading(true);
-
-    if (
-      !projectData?.projectName ||
-      !projectData?.projectLocation ||
-      !projectData?.area ||
-      !projectData?.developer_id
-    ) {
-      setBtnLoading(false);
-      toast.error("Kindly fill all the required fields.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      return;
-    }
-
-    projectData["latLong"] = [listingLocation?.lat, listingLocation?.lng].join(
-      ","
-    );
-    projectData["location"] = listingLocation?.addressText;
-
-    // Create a FormData object to handle file uploads
-    const formData = new FormData();
-    if (allImages?.length > 0) {
-      // Append each image to the FormData object
-      allImages.forEach((image, index) => {
-        formData.append(`images[${index}]`, image);
-      });
-    }
-
-    if (allDocs?.length > 0) {
-      // Append each document to the FormData object
-      allDocs.forEach((doc, index) => {
-        formData.append(`documents[${index}]`, doc);
-      });
-    }
-
-    Object.entries(projectData).forEach(([key, value]) => {
-      // Check if the value is an array (e.g., bedrooms)
-      if (Array.isArray(value)) {
-        // Loop through the array and append each value separately
-        value.forEach((item, index) => {
-          formData.append(`${key}[${index}]`, item);
-        });
-      } else {
-        // Append non-array values directly
-        formData.append(key, value);
-      }
-    });
-
-    // formData.append("projectName", projectData?.projectName);
-    // formData.append("developer_id", projectData?.developer_id);
-    // formData.append("price", projectData?.price);
-    // formData.append("projectLocation", projectData?.projectLocation);
-    // formData.append("area", projectData?.area);
-    // formData.append("tourLink", projectData?.tourLink);
-    // formData.append("projectStatus", projectData?.projectStatus);
-    // formData.append("bedrooms", projectData?.bedrooms);
-    // formData.append("city", projectData?.city);
-    // formData.append("country", projectData?.country);
-    // formData.append("addedBy", projectData?.addedBy);
-    // formData.append("location", projectData?.location);
-
-    axios
-      .post(`${BACKEND_URL}/projects`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setBtnLoading(false);
-        setprojectData({
-          projectName: "",
-          developer_id: "",
-          price: "",
-          projectLocation: "",
-          area: "",
-          tourLink: "",
-          projectStatus: "",
-          bedrooms: "",
-          city: "",
-          country: "",
-          location: "",
-          addedBy: User?.id,
-        });
-        toast.success("Project added successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-
-        setOpenAddProject(false);
-        FetchProperty(token);
-      })
-      .catch((err) => {
-        setBtnLoading(false);
-        console.log(err);
-        toast.error("Something Went Wrong! Please Try Again", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      });
-  };
-
-  useEffect(() => {
-    // getDevelopers();
-  }, []);
-
-  const options = enquiry_options(t);
 
   return (
     <>
       <Modal
         keepMounted
-        open={openAddProject}
-        onClose={handleClose}
+        open={setListingModalOpen}
+        onClose={() => handleCloseListingModal()}
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
-        openAfterTransition
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
-          timeout: 1000,
+          timeout: 500,
         }}
       >
         <div
@@ -416,6 +95,7 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
         w-[100vw] h-[100vh] flex items-start justify-end`}
         >
           <button
+            // onClick={handleLeadModelClose}
             onClick={handleClose}
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
@@ -432,53 +112,58 @@ const AddProject = ({ openAddProject, setOpenAddProject, FetchProperty }) => {
             style={style}
             className={` ${
               currentMode === "dark"
-                ? "bg-[#000000] text-white"
-                : "bg-[#FFFFFF] text-black"
+                ? "bg-dark text-white"
+                : "bg-light text-black"
             } ${
               isLangRTL(i18n.language)
-                ? currentMode === "dark" && " border-primary border-r-2"
-                : currentMode === "dark" && " border-primary border-l-2"
+                ? currentMode === "dark" && "border-r-2 border-primary"
+                : currentMode === "dark" && "border-l-2 border-primary"
             }
-             p-4 h-[100vh] w-[80vw] overflow-y-scroll 
+             p-5 h-[100vh] w-[85vw] overflow-y-scroll
             `}
           >
-            {loading ? (
-              <div className="flex justify-center">
-                <CircularProgress />
-              </div>
-            ) : (
-              <>
-                <div className="w-full">
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      AddDeveloper();
-                    }}
-                    disabled={loading ? true : false}
-                  >
-                    <div className="w-full flex items-center pb-3">
-                      <div className="bg-primary h-10 w-1 rounded-full"></div>
-                      <h1
-                        className={`text-lg font-semibold mx-2 ${
-                          currentMode === "dark" ? "text-white" : "text-black"
-                        }`}
-                      >
-                        {t("add_project_modal")}
-                      </h1>
-                    </div>
+            <HeadingTitle title={t("btn_add_new_listing")} />
 
-                    <div className={`w-full p-4`}>
-                      <MultiStepForm />
-                    </div>
-                  </form>
-                </div>
-              </>
-            )}
+            <div className={`w-full p-4`}>
+              <MultiStepForm />
+            </div>
+
+            {/* <Box
+                sx={darkModeColors}
+                className="w-full grid grid-cols-1 gap-5 my-5"
+              >
+                <ListingLocation
+                  listingLocation={listingLocation}
+                  currLocByDefault={true}
+                  setListingLocation={setListingLocation}
+                  city={city}
+                  setCity={setCity}
+                  country={country}
+                  setCountry={setCountry}
+                  required
+                />
+              </Box> */}
           </div>
+          {/* {selectImagesModal?.isOpen && (
+            <AddImageModal
+              selectImagesModal={selectImagesModal}
+              handleClose={() => setSelectImagesModal({ isOpen: false })}
+              allImages={allImages}
+              setAllImages={setAllImages}
+            />
+          )}
+          {documentModal && (
+            <AddDocumentModal
+              documentModal={documentModal}
+              handleClose={() => setDocumentModal(false)}
+              allDocs={allDocs}
+              setAllDocs={setAllDocs}
+            />
+          )} */}
         </div>
       </Modal>
     </>
   );
 };
 
-export default AddProject;
+export default AddNewListingModal;
