@@ -273,14 +273,15 @@ const SingleTransactionModal = ({
               onChange={handleImgUpload}
             />
             <label htmlFor="invoice-file">
-              <button
-                // variant="contained"
-                // size="medium"
-                className={`${
-                  currentMode === "dark"
-                    ? "bg-primary-dark-neu"
-                    : "bg-primary-light-neu"
-                } w-full text-white p-3 font-semibold uppercase`}
+              <Button
+                variant="contained"
+                size="medium"
+                // className={`${
+                //   currentMode === "dark"
+                //     ? "bg-primary-dark-neu"
+                //     : "bg-primary-light-neu"
+                // } w-full text-white p-3 font-semibold uppercase`}
+                className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
                 style={{
                   // color: "#ffffff",
                   // border: "1px solid white",
@@ -297,7 +298,7 @@ const SingleTransactionModal = ({
                     <span>{t("upload_invoice")}</span>
                   </div>
                 )}
-              </button>
+              </Button>
             </label>
           </div>
         )}
