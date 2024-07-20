@@ -184,18 +184,28 @@ const AddReminder = ({
         // fetching reminders after adding new reminder
         const fetchRminders = async () => {
           try {
-            const reminders = await axios.get(`${BACKEND_URL}/reminders`, {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-              },
-              params: {
-                reminder_status: "Pending",
-                user_id: User?.id,
-              },
-            });
+            // const reminders = await axios.get(`${BACKEND_URL}/reminders`, {
+            //   headers: {
+            //     "Content-Type": "application/json",
+            //     Authorization: "Bearer " + token,
+            //   },
+            //   params: {
+            //     reminder_status: "Pending",
+            //     user_id: User?.id,
+            //   },
+            // });
+            const futureReminders = await axios?.get(
+              `${BACKEND_URL}/reminders/future`,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + token,
+                },
+              }
+            );
+            console.log(futureReminders?.data?.data, "future reminders");
 
-            socket.emit("get_all_reminders", reminders.data.reminder.data);
+            socket.emit("get_all_reminders", futureReminders?.data?.data);
           } catch (error) {
             console.log("Reminder error: ", error);
           }
