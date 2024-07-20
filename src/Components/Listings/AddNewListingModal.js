@@ -144,22 +144,6 @@ const AddNewListingModal = ({
                 />
               </Box> */}
           </div>
-          {/* {selectImagesModal?.isOpen && (
-            <AddImageModal
-              selectImagesModal={selectImagesModal}
-              handleClose={() => setSelectImagesModal({ isOpen: false })}
-              allImages={allImages}
-              setAllImages={setAllImages}
-            />
-          )}
-          {documentModal && (
-            <AddDocumentModal
-              documentModal={documentModal}
-              handleClose={() => setDocumentModal(false)}
-              allDocs={allDocs}
-              setAllDocs={setAllDocs}
-            />
-          )} */}
         </div>
       </Modal>
     </>

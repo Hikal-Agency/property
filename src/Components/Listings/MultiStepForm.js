@@ -20,6 +20,20 @@ const steps = [1, 2, 3, 4, 5];
 export default function MultiStepForm() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
+  const [column, setColumn] = [
+    {
+      list_type: [],
+      list_attribute: [],
+      list_attr_type: [],
+    },
+  ];
+  const [data, setData] = [
+    {
+      list_type: [],
+      list_attribute: [],
+      list_attr_type: [],
+    },
+  ];
   const {
     darkModeColors,
     currentMode,
@@ -134,10 +148,33 @@ export default function MultiStepForm() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
-          {activeStep === 0 && <AddListingType />}
-          {activeStep === 1 && <AddListingAttribute />}
-          {activeStep === 2 && <AddListingAttrType />}
+          {activeStep === 0 && (
+            <AddListingType
+              data={data}
+              setData={setData}
+              column={column}
+              setColumn={setColumn}
+              type="list_type"
+            />
+          )}
+          {activeStep === 1 && (
+            <AddListingAttribute
+              data={data}
+              setData={setData}
+              column={column}
+              setColumn={setColumn}
+              type="list_attr"
+            />
+          )}
+          {activeStep === 2 && (
+            <AddListingAttrType
+              data={data}
+              setData={setData}
+              column={column}
+              setColumn={setColumn}
+              type="list_attr_type"
+            />
+          )}
           {activeStep === 3 && <Addlisting />}
           {activeStep === 4 && <AddListingMeta />}
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
