@@ -413,6 +413,15 @@ const SingleTransactionModal = ({
                               </p>
                               <p>{singleTrans?.category}</p>
                             </div>
+                            {/* COUNTRY  */}
+                            {singleTrans?.country && (
+                              <div className="flex gap-3">
+                                <p className="font-bold capitalize">
+                                  {t("label_country")}:
+                                </p>
+                                <p>{singleTrans?.country}</p>
+                              </div>
+                            )}
                             {/* CLAIM */}
                             {singleTrans?.category?.toLowerCase() ===
                               "commission" &&
@@ -530,13 +539,6 @@ const SingleTransactionModal = ({
                                 {t("label_email")}:
                               </p>
                               <p>{userData?.userEmail}</p>
-                            </div>
-                            {/* COUNTRY  */}
-                            <div className="flex gap-3">
-                              <p className="font-bold capitalize">
-                                {t("label_country")}:
-                              </p>
-                              <p>{userData?.country}</p>
                             </div>
                           </div>
                         </div>
