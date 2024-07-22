@@ -1153,7 +1153,8 @@
 
 
 
-    "listing_attribute_id" : "listing attribute id"
+    "listing_attribute_id" : "listing attribute id",
+    "thumbnail" : "Thumbnail"
 
   
 } 
