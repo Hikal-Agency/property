@@ -169,10 +169,11 @@ const SingleLead = ({
 
   const handleClose = () => {
     setIsClosing(true);
-    setAddNoteTxt("");
-    setIsVoiceSearchState(false);
-    SpeechRecognition.stopListening();
+
     setTimeout(() => {
+      setAddNoteTxt("");
+      setIsVoiceSearchState(false);
+      SpeechRecognition.stopListening();
       setIsClosing(false);
       handleLeadModelClose();
     }, 1000);
