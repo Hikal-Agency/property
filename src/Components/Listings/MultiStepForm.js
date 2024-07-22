@@ -296,7 +296,7 @@ export default function MultiStepForm() {
               type="list_attr_type"
             />
           )}
-          {activeStep === 3 && <Addlisting />}
+          {activeStep === 3 && <Addlisting data={data} />}
           {activeStep === 4 && <AddListingMeta />}
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button

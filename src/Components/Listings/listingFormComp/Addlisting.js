@@ -6,7 +6,7 @@ import { selectStyles } from "../../../Components/_elements/SelectStyles";
 import { toast } from "react-toastify";
 import axios from "../../../axoisConfig";
 
-const Addlisting = () => {
+const Addlisting = ({ data }) => {
   const {
     darkModeColors,
     currentMode,
@@ -26,10 +26,10 @@ const Addlisting = () => {
   const [listingData, setlistingData] = useState({
     title: "",
     meta_tags_for_listings_id: 2,
-    listing_type_id: 2,
+    listing_type_id: "",
     user_id: 3,
-    listing_attribute_id: 3,
-    listing_arrtibute_type_id: 3,
+    listing_attribute_id: "",
+    listing_arrtibute_type_id: "",
     country_id: 1,
     state_id: 2,
     city_id: 2,
@@ -150,28 +150,32 @@ const Addlisting = () => {
             required
           />
           <Select
-            id="Developer"
-            // value={{
-            //   value: projectData?.developer_id,
-            //   label: projectData?.developer_id
-            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
-            //         ?.developerName || ""
-            //     : t("form_developer_name"),
-            // }}
-            // onChange={(selectedOption) => {
-            //   handleChange({
-            //     target: { name: "developer_id", value: selectedOption.value },
-            //   });
-            // }}
-            // options={developer.map((dev) => ({
-            //   value: dev.id,
-            //   label: dev.developerName,
-            // }))}
+            id="listing_attribute_id"
+            value={{
+              value: listingData?.listing_attribute_id,
+              label: listingData?.listing_attribute_id
+                ? data?.list_attribute?.filter(
+                    (list_type) =>
+                      list_type.id === listingData?.listing_attribute_id
+                  )[0]?.name
+                : t("label_list_attr"),
+            }}
+            onChange={(e) => {
+              setlistingData({
+                ...listingData,
+                listing_attribute_id: e.value,
+              });
+            }}
+            options={data?.list_attribute?.map((list_type) => ({
+              value: list_type.id,
+              label: list_type.name,
+            }))}
             className="w-full"
             placeholder={t("label_list_attr")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
+
           <Select
             id="Developer"
             // value={{
@@ -256,51 +260,58 @@ const Addlisting = () => {
           }}
         >
           <Select
-            id="Developer"
-            // value={{
-            //   value: projectData?.developer_id,
-            //   label: projectData?.developer_id
-            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
-            //         ?.developerName || ""
-            //     : t("form_developer_name"),
-            // }}
-            // onChange={(selectedOption) => {
-            //   handleChange({
-            //     target: { name: "developer_id", value: selectedOption.value },
-            //   });
-            // }}
-            // options={developer.map((dev) => ({
-            //   value: dev.id,
-            //   label: dev.developerName,
-            // }))}
+            id="listing_type_id"
+            value={{
+              value: listingData?.listing_type_id,
+              label: listingData?.listing_type_id
+                ? data?.list_type?.filter(
+                    (list_type) => list_type.id === listingData?.listing_type_id
+                  )[0]?.name
+                : t("label_listing_type"),
+            }}
+            onChange={(e) => {
+              setlistingData({
+                ...listingData,
+                listing_type_id: e.value,
+              });
+            }}
+            options={data?.list_type?.map((list_type) => ({
+              value: list_type.id,
+              label: list_type.name,
+            }))}
             className="w-full"
             placeholder={t("label_listing_type")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
+
           <Select
-            id="Developer"
-            // value={{
-            //   value: projectData?.developer_id,
-            //   label: projectData?.developer_id
-            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
-            //         ?.developerName || ""
-            //     : t("form_developer_name"),
-            // }}
-            // onChange={(selectedOption) => {
-            //   handleChange({
-            //     target: { name: "developer_id", value: selectedOption.value },
-            //   });
-            // }}
-            // options={developer.map((dev) => ({
-            //   value: dev.id,
-            //   label: dev.developerName,
-            // }))}
+            id="listing_arrtibute_type_id"
+            value={{
+              value: listingData?.listing_arrtibute_type_id,
+              label: listingData?.listing_arrtibute_type_id
+                ? data?.list_attr_type?.filter(
+                    (list_type) =>
+                      list_type.id === listingData?.listing_arrtibute_type_id
+                  )[0]?.name
+                : t("label_list_attr_type"),
+            }}
+            onChange={(e) => {
+              setlistingData({
+                ...listingData,
+                listing_arrtibute_type_id: e.value,
+              });
+            }}
+            options={data?.list_attr_type?.map((list_type) => ({
+              value: list_type.id,
+              label: list_type.name,
+            }))}
             className="w-full"
             placeholder={t("label_list_attr_type")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
+
           <Select
             id="Developer"
             // value={{

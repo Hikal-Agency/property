@@ -496,7 +496,7 @@ const AddListingAttrType = ({ data, setData }) => {
                     (list_type) =>
                       list_type.id === listingAttrType?.listing_attribute_id
                   )[0]?.name
-                : t("label_listing_type"),
+                : t("label_list_attr"),
             }}
             onChange={(e) => {
               setListingAttrType({
