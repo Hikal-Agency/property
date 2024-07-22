@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
@@ -27,11 +27,8 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
   console.log("datagrid:: ", data);
   console.log("type:: ", type);
 
-  const FetchData = async () => {
+  const FetchData = useCallback(async () => {
     setLoading(true);
-    // if (page > 1) {
-    //   setbtnloading(true);
-    // }
     let url;
     if (type === "list_type") url = `${BACKEND_URL}/listing-types?page=${page}`;
     if (type === "list_attribute")
@@ -68,7 +65,6 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
         } else if (type === "list_attribute") {
           return {
             lid: row?.id,
-
             id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
             listing_type_id: row?.listing_type_id,
             name: row?.name,
@@ -85,7 +81,6 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
         }
       });
 
-      //   setData({ ...data, list_type: rowsData });
       setData((prevData) => ({
         ...prevData,
         list_type: type === "list_type" ? rowsData : prevData.list_type,
@@ -111,12 +106,13 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
         progress: undefined,
         theme: "light",
       });
+      setLoading(false);
     }
-  };
+  }, [BACKEND_URL, page, pageSize, type, token]);
 
-  useEffect(() => {
-    FetchData();
-  }, [page, pageSize, type]);
+  // useEffect(() => {
+  //   FetchData();
+  // }, [FetchData]);
 
   return (
     <div>
@@ -146,8 +142,8 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
           loading={loading}
           rowsPerPageOptions={[30, 50, 75, 100]}
           pagination
-          // width="auto"
-          getRowHeight={() => "auto"}
+          width="auto"
+          // getRowHeight={() => "auto"}
           paginationMode="server"
           page={page - 1}
           pageSize={pageSize}

@@ -118,7 +118,7 @@ const AddListingAttribute = ({ data, setData }) => {
     },
     // BATHROOM
     {
-      field: "area",
+      field: "bathroom",
       headerName: t("bathroom"),
       headerAlign: "center",
       editable: false,
@@ -547,16 +547,15 @@ const AddListingAttribute = ({ data, setData }) => {
             )}
           </Button>
         </Box>
-
-        <div className=" mt-5">
-          <ListingDataGrid
-            data={data}
-            setData={setData}
-            column={columns}
-            // setColumn={setColumn}
-            type="list_attribute"
-          />
-        </div>
+      </div>
+      <div className=" mt-5">
+        <ListingDataGrid
+          data={data}
+          setData={setData}
+          column={columns}
+          // setColumn={setColumn}
+          type="list_attribute"
+        />
       </div>
     </div>
   );
