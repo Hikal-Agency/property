@@ -6,6 +6,7 @@ import Select from "react-select";
 import axios from "../../../axoisConfig";
 import { toast } from "react-toastify";
 import ListingDataGrid from "../ListingDataGrid";
+import SelectOption from "@material-tailwind/react/components/Select/SelectOption";
 
 const AddListingAttribute = ({ data, setData }) => {
   const {
@@ -25,13 +26,22 @@ const AddListingAttribute = ({ data, setData }) => {
   const [btnLoading, setBtnLoading] = useState(false);
   const [listingAttr, setListingAttr] = useState({
     name: "",
-    listing_type_id: 11,
+    listing_type_id: "",
     area: "",
     bedroom: "",
     bathroom: "",
     garage: "",
     gallery: "",
   });
+
+  console.log("listing attr data:: ", listingAttr);
+
+  console.log(
+    "filterd value of listing type: ",
+    data?.list_type?.filter(
+      (list_type) => list_type.id === listingAttr?.listing_type_id
+    )[0]?.name
+  );
 
   const columns = [
     // id
@@ -471,23 +481,29 @@ const AddListingAttribute = ({ data, setData }) => {
           }}
         >
           <Select
-            id="Developer"
-            // value={{
-            //   value: projectData?.developer_id,
-            //   label: projectData?.developer_id
-            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
-            //         ?.developerName || ""
-            //     : t("form_developer_name"),
-            // }}
-            // onChange={(selectedOption) => {
-            //   handleChange({
-            //     target: { name: "developer_id", value: selectedOption.value },
-            //   });
-            // }}
-            // options={developer.map((dev) => ({
-            //   value: dev.id,
-            //   label: dev.developerName,
-            // }))}
+            id="listing_type_id"
+            value={{
+              value: listingAttr?.listing_type_id,
+              label: listingAttr?.listing_type_id
+                ? data?.list_type?.filter(
+                    (list_type) => list_type.id === listingAttr?.listing_type_id
+                  )[0]?.name
+                : t("label_listing_type"),
+            }}
+            onChange={(e) => {
+              // handleChange({
+              //   target: { name: "developer_id", value: selectedOption.value },
+              // });
+
+              setListingAttr({
+                ...listingAttr,
+                listing_type_id: e.value,
+              });
+            }}
+            options={data?.list_type?.map((list_type) => ({
+              value: list_type.id,
+              label: list_type.name,
+            }))}
             className="w-full"
             placeholder={t("label_listing_type")}
             menuPortalTarget={document.body}
