@@ -25,6 +25,7 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
   const [loading, setLoading] = useState(false);
 
   console.log("datagrid:: ", data);
+  console.log("type:: ", type);
 
   const FetchData = async () => {
     setLoading(true);
@@ -33,6 +34,10 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
     // }
     let url;
     if (type === "list_type") url = `${BACKEND_URL}/listing-types?page=${page}`;
+    if (type === "list_attribute")
+      url = `${BACKEND_URL}/listing-attributes?page=${page}`;
+    if (type === "list_attr_type")
+      url = `${BACKEND_URL}/listing-attribute-types?page=${page}`;
 
     try {
       const listingsData = await axios.get(url, {
@@ -53,12 +58,42 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
         rowsDataArray = listings;
       }
 
-      let rowsData = rowsDataArray?.map((row, index) => ({
-        id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
-        name: row?.name,
-      }));
+      let rowsData = rowsDataArray?.map((row, index) => {
+        if (type === "list_type") {
+          return {
+            lid: row?.id,
+            id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
+            name: row?.name,
+          };
+        } else if (type === "list_attribute") {
+          return {
+            lid: row?.id,
 
-      setData({ ...data, list_type: rowsData });
+            id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
+            listing_type_id: row?.listing_type_id,
+            name: row?.name,
+            area: row?.area,
+            bedroom: row?.bedroom,
+            bathroom: row?.bathroom,
+            garage: row?.garage,
+            gallery: row?.gallery,
+          };
+        } else if (type === "list_attr_type") {
+          // Add your logic for list_attr_type
+        } else {
+          return {};
+        }
+      });
+
+      //   setData({ ...data, list_type: rowsData });
+      setData((prevData) => ({
+        ...prevData,
+        list_type: type === "list_type" ? rowsData : prevData.list_type,
+        list_attribute:
+          type === "list_attribute" ? rowsData : prevData.list_attribute,
+        list_attr_type:
+          type === "list_attr_type" ? rowsData : prevData.list_attr_type,
+      }));
 
       setLoading(false);
       setLastPage(listingsData?.data?.data?.last_page);
@@ -81,7 +116,7 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
 
   useEffect(() => {
     FetchData();
-  }, []);
+  }, [page, pageSize, type]);
 
   return (
     <div>
@@ -94,7 +129,15 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
           disableDensitySelector
           autoHeight
           disableSelectionOnClick
-          rows={data?.list_type}
+          rows={
+            type === "list_type"
+              ? data?.list_type
+              : type === "list_attribute"
+              ? data?.list_attribute
+              : type === "list_attr_type"
+              ? data?.list_attr_type
+              : []
+          }
           columns={column}
           //   columns={columns?.filter((c) =>
           //     hasPermission("users_col_" + c?.field)
@@ -119,16 +162,8 @@ const ListingDataGrid = ({ data, setData, column, setColumn, type }) => {
               showQuickFilter: true,
             },
           }}
-          onPageChange={(newPage) =>
-            setPage(() => ({
-              page: newPage + 1,
-            }))
-          }
-          onPageSizeChange={(newPageSize) =>
-            setPageSize(() => ({
-              pageSize: newPageSize,
-            }))
-          }
+          onPageChange={(newPage) => setPage(newPage + 1)}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           sx={{
             boxShadow: 2,
             "& .MuiDataGrid-cell:hover": {

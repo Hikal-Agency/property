@@ -5,8 +5,9 @@ import { selectStyles } from "../../../Components/_elements/SelectStyles";
 import Select from "react-select";
 import axios from "../../../axoisConfig";
 import { toast } from "react-toastify";
+import ListingDataGrid from "../ListingDataGrid";
 
-const AddListingAttribute = () => {
+const AddListingAttribute = ({ data, setData }) => {
   const {
     darkModeColors,
     currentMode,
@@ -31,6 +32,274 @@ const AddListingAttribute = () => {
     garage: "",
     gallery: "",
   });
+
+  const columns = [
+    // id
+    {
+      field: "id",
+      headerName: t("id"),
+      headerAlign: "center",
+      editable: false,
+      minwidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center ">
+            <p className="text-center capitalize">
+              {cellValues?.formattedValue}
+            </p>
+          </div>
+        );
+      },
+    },
+    // LISTING TYPE ID
+    {
+      field: "listing_type_id",
+      headerName: t("label_listing_type"),
+      headerAlign: "center",
+      editable: false,
+      minwidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    // NAME
+    {
+      field: "name",
+      headerName: t("name"),
+      headerAlign: "center",
+      editable: false,
+      minwidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    // AREA
+    {
+      field: "area",
+      headerName: t("label_area"),
+      headerAlign: "center",
+      editable: false,
+      minwidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    // BEDROOM
+    {
+      field: "bedroom",
+      headerName: t("bedroom"),
+      headerAlign: "center",
+      editable: false,
+      minwidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    // BATHROOM
+    {
+      field: "area",
+      headerName: t("bathroom"),
+      headerAlign: "center",
+      editable: false,
+      minwidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    // GARAGE
+    {
+      field: "garage",
+      headerName: t("garage"),
+      headerAlign: "center",
+      editable: false,
+      minwidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+    // GALLERY
+    {
+      field: "gallery",
+      headerName: t("gallery"),
+      headerAlign: "center",
+      editable: false,
+      minwidth: 100,
+      flex: 1,
+      renderCell: (cellValues) => {
+        return (
+          <div className="w-full flex items-center justify-center">
+            <p className="text-center">{cellValues?.formattedValue}</p>
+          </div>
+        );
+      },
+    },
+
+    // {
+    //   field: "notes",
+    //   headerName: t("label_action"),
+    //   minwidth: 100,
+    //   flex: 1,
+    //   headerAlign: "center",
+    //   sortable: false,
+    //   filterable: false,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="space-x-2 w-full flex items-center justify-start mx-2">
+    //         <p
+    //           style={{ cursor: "pointer" }}
+    //           className={`${
+    //             currentMode === "dark"
+    //               ? "text-[#FFFFFF] bg-[#262626]"
+    //               : "text-[#1C1C1C] bg-[#EEEEEE]"
+    //           } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
+    //         >
+    //           <Tooltip title="Edit User" arrow>
+    //             <button
+    //               className="editUserBtn"
+    //               onClick={() => handleEditModal(cellValues?.id)}
+    //             >
+    //               {/* <Link to={`/updateuser/${cellValues?.id}`}> */}
+    //               <AiOutlineEdit size={16} />
+    //               {/* </Link> */}
+    //             </button>
+    //           </Tooltip>
+    //         </p>
+
+    //         {cellValues?.row?.status === 1 && (
+    //           <>
+    //             {/* SEND CREDIT  */}
+    //             <p
+    //               style={{ cursor: "pointer" }}
+    //               className={`${
+    //                 currentMode === "dark"
+    //                   ? "text-[#FFFFFF] bg-[#262626]"
+    //                   : "text-[#1C1C1C] bg-[#EEEEEE]"
+    //               } hover:bg-yellow-500 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
+    //             >
+    //               <Tooltip title="Share Credits" arrow>
+    //                 <button
+    //                   onClick={() =>
+    //                     setShareCreditsModal({
+    //                       open: true,
+    //                       data: cellValues?.row,
+    //                     })
+    //                   }
+    //                 >
+    //                   {/* <GiTwoCoins size={16} /> */}
+    //                   <RiCoinsFill size={16} />
+    //                 </button>
+    //               </Tooltip>
+    //             </p>
+
+    //             {/* UPDATE ROLE  */}
+    //             {/* {cellValues.row.role !== 1 && (
+    //               hasPermission("role_update") ? (
+    //                 <p
+    //                   style={{ cursor: "pointer" }}
+    //                   className={`${
+    //                     currentMode === "dark"
+    //                       ? "text-[#FFFFFF] bg-[#262626]"
+    //                       : "text-[#1C1C1C] bg-[#EEEEEE]"
+    //                   } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
+    //                 >
+    //                   <Tooltip title="Update Role" arrow>
+    //                     <button onClick={() =>
+    //                       HandlePermissionModel(
+    //                         cellValues?.id,
+    //                         cellValues.row.status,
+    //                         cellValues?.row?.userName,
+    //                         cellValues?.row?.role
+    //                       )
+    //                     }>
+    //                       <BsPersonFillGear size={16} />
+    //                     </button>
+    //                   </Tooltip>
+    //                 </p>
+    //               ) : null
+    //             )} */}
+
+    //             {/* DELETE USER  */}
+    //             {hasPermission("users_delete") ? (
+    //               <>
+    //                 <p
+    //                   style={{ cursor: "pointer" }}
+    //                   className={`${
+    //                     currentMode === "dark"
+    //                       ? "text-[#FFFFFF] bg-[#262626]"
+    //                       : "text-[#1C1C1C] bg-[#EEEEEE]"
+    //                   } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
+    //                 >
+    //                   <Tooltip title="Deactivate User" arrow>
+    //                     <button
+    //                       onClick={() =>
+    //                         handleDelete(
+    //                           cellValues?.id,
+    //                           cellValues.row.status,
+    //                           cellValues?.row?.userName
+    //                         )
+    //                       }
+    //                     >
+    //                       <BsPersonFillSlash size={16} />
+    //                     </button>
+    //                   </Tooltip>
+    //                 </p>
+
+    //                 {/* <Button
+    //                   onClick={() =>
+
+    //                   }
+    //                   className={`editUserBtn ${
+    //                     currentMode === "dark"
+    //                       ? "text-white bg-transparent rounded-md p-1 shadow-none "
+    //                       : "text-black bg-transparent rounded-md p-1 shadow-none "
+    //                   }`}
+    //                 >
+    //                   {currentMode === "dark" ? (
+    //                     <FaUnlock style={{ color: "white" }} size={16} />
+    //                   ) : (
+    //                     <FaUnlock style={{ color: "black" }} size={16} />
+    //                   )}
+    //                 </Button> */}
+    //               </>
+    //             ) : null}
+    //           </>
+    //         )}
+    //       </div>
+    //     );
+    //   },
+    // },
+  ];
 
   const handleChange = (e) => {
     setListingAttr((prevListingAttr) => ({
@@ -278,6 +547,16 @@ const AddListingAttribute = () => {
             )}
           </Button>
         </Box>
+
+        <div className=" mt-5">
+          <ListingDataGrid
+            data={data}
+            setData={setData}
+            column={columns}
+            // setColumn={setColumn}
+            type="list_attribute"
+          />
+        </div>
       </div>
     </div>
   );

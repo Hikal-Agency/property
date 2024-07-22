@@ -28,7 +28,7 @@ const AddListingType = ({ data, setData, column, setColumn }) => {
     // id
     {
       field: "id",
-      headerName: t("label_profession"),
+      headerName: t("id"),
       headerAlign: "center",
       editable: false,
       minwidth: 100,
