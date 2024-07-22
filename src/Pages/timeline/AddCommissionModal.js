@@ -787,7 +787,7 @@ const AddCommissionModal = ({
 
       if (type === "user") {
         const ids = `${newCommData?.salesId},${newCommData?.managerId}`;
-        url = `${BACKEND_URL}/users?title=${title}&ids=${ids}`;
+        url = `${BACKEND_URL}/users?userName=${title}&ids=${ids}`;
       } else {
         url = `${BACKEND_URL}/vendors?vendor_name=${title}`;
       }
