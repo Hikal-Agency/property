@@ -491,10 +491,6 @@ const AddListingAttribute = ({ data, setData }) => {
                 : t("label_listing_type"),
             }}
             onChange={(e) => {
-              // handleChange({
-              //   target: { name: "developer_id", value: selectedOption.value },
-              // });
-
               setListingAttr({
                 ...listingAttr,
                 listing_type_id: e.value,

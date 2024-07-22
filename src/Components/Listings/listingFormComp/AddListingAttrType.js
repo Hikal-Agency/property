@@ -25,7 +25,7 @@ const AddListingAttrType = ({ data, setData }) => {
   const [btnLoading, setBtnLoading] = useState(false);
   const [listingAttrType, setListingAttrType] = useState({
     name: "",
-    listing_attribute_id: 3,
+    listing_attribute_id: "",
     type: "",
     price: "",
     amenities: "",
@@ -488,23 +488,26 @@ const AddListingAttrType = ({ data, setData }) => {
           }}
         >
           <Select
-            id="Developer"
-            // value={{
-            //   value: projectData?.developer_id,
-            //   label: projectData?.developer_id
-            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
-            //         ?.developerName || ""
-            //     : t("form_developer_name"),
-            // }}
-            // onChange={(selectedOption) => {
-            //   handleChange({
-            //     target: { name: "developer_id", value: selectedOption.value },
-            //   });
-            // }}
-            // options={developer.map((dev) => ({
-            //   value: dev.id,
-            //   label: dev.developerName,
-            // }))}
+            id="listing_attribute_id"
+            value={{
+              value: listingAttrType?.listing_attribute_id,
+              label: listingAttrType?.listing_attribute_id
+                ? data?.list_attribute?.filter(
+                    (list_type) =>
+                      list_type.id === listingAttrType?.listing_attribute_id
+                  )[0]?.name
+                : t("label_listing_type"),
+            }}
+            onChange={(e) => {
+              setListingAttrType({
+                ...listingAttrType,
+                listing_attribute_id: e.value,
+              });
+            }}
+            options={data?.list_attribute?.map((list_type) => ({
+              value: list_type.id,
+              label: list_type.name,
+            }))}
             className="w-full"
             placeholder={t("label_list_attr")}
             menuPortalTarget={document.body}
