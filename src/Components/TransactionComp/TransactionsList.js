@@ -131,7 +131,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
       let url = "";
 
       if (type === "user") {
-        url = `${BACKEND_URL}/users?title=${title}`;
+        url = `${BACKEND_URL}/users?userName=${title}`;
       } else {
         url = `${BACKEND_URL}/vendors?vendor_name=${title}`;
       }

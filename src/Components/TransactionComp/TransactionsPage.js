@@ -281,7 +281,7 @@ const TransactionsPage = ({ pathname }) => {
       let url = "";
 
       if (type === "user") {
-        url = `${BACKEND_URL}/users?title=${title}`;
+        url = `${BACKEND_URL}/users?userName=${title}`;
       } else {
         url = `${BACKEND_URL}/vendors?vendor_name=${title}`;
       }
@@ -385,8 +385,9 @@ const TransactionsPage = ({ pathname }) => {
     <div className="flex flex-col gap-5">
       {/* FILTERS */}
       <div
-        className={`fixed top-20 flex flex-col items-end ${isLangRTL(i18n.language) ? "left-0" : "right-0"
-          }`}
+        className={`fixed top-20 flex flex-col items-end ${
+          isLangRTL(i18n.language) ? "left-0" : "right-0"
+        }`}
         style={{
           zIndex: 10,
         }}
@@ -402,10 +403,11 @@ const TransactionsPage = ({ pathname }) => {
             },
             color: "white",
           }}
-          className={`w-fit bg-primary text-white py-2 px-3 ${isLangRTL(i18n.language)
-            ? "left-0 rounded-r-full"
-            : "right-0 rounded-l-full"
-            }`}
+          className={`w-fit bg-primary text-white py-2 px-3 ${
+            isLangRTL(i18n.language)
+              ? "left-0 rounded-r-full"
+              : "right-0 rounded-l-full"
+          }`}
         >
           {open ? (
             <div className="flex items-center">
@@ -419,10 +421,11 @@ const TransactionsPage = ({ pathname }) => {
         </button>
         {open && (
           <div
-            className={`p-2 mx-2 my-2 rounded-xl ${currentMode === "dark"
-              ? "blur-bg-black text-white"
-              : "blur-bg-white text-black"
-              }`}
+            className={`p-2 mx-2 my-2 rounded-xl ${
+              currentMode === "dark"
+                ? "blur-bg-black text-white"
+                : "blur-bg-white text-black"
+            }`}
           >
             <div
               className="overflow-y-scroll hide-scrollbar p-2"
@@ -525,12 +528,12 @@ const TransactionsPage = ({ pathname }) => {
                   sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                    {
-                      right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                      transformOrigin: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                     "& legend": {
                       textAlign: isLangRTL(i18n.language) ? "right" : "left",
                     },
@@ -538,8 +541,9 @@ const TransactionsPage = ({ pathname }) => {
                 >
                   {/* USER */}
                   <FormControl
-                    className={`${currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                     sx={{
                       minWidth: "100%",
                       // border: 1,
@@ -607,8 +611,9 @@ const TransactionsPage = ({ pathname }) => {
                   </FormControl>
                   {/* VENDOR */}
                   <FormControl
-                    className={`${currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                     sx={{
                       minWidth: "100%",
                       // border: 1,
@@ -831,9 +836,10 @@ const TransactionsPage = ({ pathname }) => {
 
       {/* VAT CALCULATIONS */}
       <div
-        className={`w-full flex flex-col gap-5 p-5 ${themeBgImg &&
+        className={`w-full flex flex-col gap-5 p-5 ${
+          themeBgImg &&
           (currentMode === "dark" ? "blur-bg-black" : "blur-bg-white")
-          }`}
+        }`}
       >
         <h3 className="text-primary text-center font-semibold">
           {` ${t("vat")}`}
@@ -849,13 +855,20 @@ const TransactionsPage = ({ pathname }) => {
               <div className="grid grid-cols-2 gap-5">
                 {/* INCOME */}
                 <div
-                  className={`${!themeBgImg &&
+                  className={`${
+                    !themeBgImg &&
                     (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                    } p-5`}
+                  } p-5`}
                 >
-                  <div className={`${themeBgImg ? "bg-primary"
-                    : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                    } p-2 text-center text-white font-semibold w-full text-center mb-4`}>
+                  <div
+                    className={`${
+                      themeBgImg
+                        ? "bg-primary"
+                        : currentMode === "dark"
+                        ? "bg-primary-dark-neu"
+                        : "bg-primary-light-neu"
+                    } p-2 text-center text-white font-semibold w-full text-center mb-4`}
+                  >
                     {vat?.currency}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -877,13 +890,20 @@ const TransactionsPage = ({ pathname }) => {
                 </div>
                 {/* EXPENSE */}
                 <div
-                  className={`${!themeBgImg &&
+                  className={`${
+                    !themeBgImg &&
                     (currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu")
-                    } rounded-b-xl p-5`}
+                  } rounded-b-xl p-5`}
                 >
-                  <div className={`${themeBgImg ? "bg-primary"
-                    : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                    } p-2 text-center text-white font-semibold w-full text-center mb-4`}>
+                  <div
+                    className={`${
+                      themeBgImg
+                        ? "bg-primary"
+                        : currentMode === "dark"
+                        ? "bg-primary-dark-neu"
+                        : "bg-primary-light-neu"
+                    } p-2 text-center text-white font-semibold w-full text-center mb-4`}
+                  >
                     {vat?.currency}
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
