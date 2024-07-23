@@ -25,15 +25,16 @@ const Addlisting = ({ data }) => {
 
   const [btnLoading, setBtnLoading] = useState(false);
   const [countryList, setCountryList] = useState([]);
+  const [userList, setUserList] = useState([]);
+  const [userLoading, setUserLoading] = useState(false);
   const [cityList, setCityList] = useState([]);
   const [stateList, setStateList] = useState([]);
   const [cityLoading, setCityLoading] = useState(false);
 
   const [listingData, setlistingData] = useState({
     title: "",
-    // meta_tags_for_listings_id: 2,
     listing_type_id: "",
-    user_id: 388,
+    user_id: "",
     listing_attribute_id: "",
     listing_arrtibute_type_id: "",
     country_id: "",
@@ -53,22 +54,36 @@ const Addlisting = ({ data }) => {
     }));
   };
 
-  const fetchCountries = () => {
-    axios
-      .get(`${BACKEND_URL}/countries`, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        console.log("countries list : ", result);
-        setCountryList(result?.data?.data?.data);
+  const fetchCountriesNUsers = () => {
+    setUserLoading(true);
+
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      Authorization: "Bearer " + token,
+    };
+
+    const countriesPromise = axios.get(`${BACKEND_URL}/countries`, { headers });
+    const usersPromise = axios.get(`${BACKEND_URL}/users`, { headers });
+
+    Promise.all([countriesPromise, usersPromise])
+      .then(([countriesResult, usersResult]) => {
+        console.log("countries list : ", countriesResult);
+        setCountryList(countriesResult?.data?.data?.data);
+
+        console.log("users list : ", usersResult);
+
+        const users = usersResult?.data?.managers?.data;
+        const filteredUser = users?.filter(
+          (user) => user?.role === 1 || user?.role === 7
+        );
+
+        setUserList(filteredUser);
+        setUserLoading(false);
       })
       .catch((err) => {
         console.error(err);
-        setBtnLoading(false);
-        console.log(err);
+        setUserLoading(false);
+
         const errors = err.response?.data?.errors;
 
         if (errors) {
@@ -84,7 +99,7 @@ const Addlisting = ({ data }) => {
             theme: "light",
           });
         } else {
-          toast.error("Unable to fetch countries", {
+          toast.error("Unable to fetch data", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -97,6 +112,51 @@ const Addlisting = ({ data }) => {
         }
       });
   };
+
+  // const fetchCountriesNUsers = () => {
+  //   axios
+  //     .get(`${BACKEND_URL}/countries`, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((result) => {
+  //       console.log("countries list : ", result);
+  //       setCountryList(result?.data?.data?.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       setBtnLoading(false);
+  //       console.log(err);
+  //       const errors = err.response?.data?.errors;
+
+  //       if (errors) {
+  //         const errorMessages = Object.values(errors).flat().join(" ");
+  //         toast.error(`Errors: ${errorMessages}`, {
+  //           position: "top-right",
+  //           autoClose: 3000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: "light",
+  //         });
+  //       } else {
+  //         toast.error("Unable to fetch countries", {
+  //           position: "top-right",
+  //           autoClose: 3000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: "light",
+  //         });
+  //       }
+  //     });
+  // };
 
   const FetchCitynState = () => {
     setCityLoading(true);
@@ -227,7 +287,7 @@ const Addlisting = ({ data }) => {
   };
 
   useEffect(() => {
-    fetchCountries();
+    fetchCountriesNUsers();
   }, []);
   useEffect(() => {
     if (listingData?.country_id) {
@@ -298,6 +358,31 @@ const Addlisting = ({ data }) => {
           />
 
           <Select
+            id="user_id"
+            value={{
+              value: listingData?.user_id,
+              label: listingData?.user_id
+                ? userList?.find((user) => user.id === listingData?.user_id)
+                    ?.userName || ""
+                : t("user"),
+            }}
+            onChange={(e) => {
+              setlistingData({
+                ...listingData,
+                user_id: e.value,
+              });
+            }}
+            options={userList?.map((user) => ({
+              value: user.id,
+              label: user.userName,
+            }))}
+            isLoading={userLoading}
+            className="w-full"
+            placeholder={t("user")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+          <Select
             id="country_id"
             value={{
               value: listingData?.country_id,
@@ -317,6 +402,7 @@ const Addlisting = ({ data }) => {
               value: cont.id,
               label: cont.name,
             }))}
+            isLoading={userLoading}
             className="w-full"
             placeholder={t("label_country")}
             menuPortalTarget={document.body}
