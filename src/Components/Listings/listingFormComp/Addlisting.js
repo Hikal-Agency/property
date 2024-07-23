@@ -33,7 +33,7 @@ const Addlisting = ({ data }) => {
     title: "",
     // meta_tags_for_listings_id: 2,
     listing_type_id: "",
-    user_id: 3,
+    user_id: 388,
     listing_attribute_id: "",
     listing_arrtibute_type_id: "",
     country_id: "",
@@ -337,6 +337,7 @@ const Addlisting = ({ data }) => {
                 city_id: e.value,
               });
             }}
+            isLoading={cityLoading}
             options={cityList?.map((cont) => ({
               value: cont.id,
               label: cont.name,
@@ -348,17 +349,9 @@ const Addlisting = ({ data }) => {
           />
           <Select
             id="status"
-            value={
-              // {
-              // value: listingData?.value,
-              // label: listingData?.label
-              //   ?
-              listing_status(t)?.find(
-                (status) => status.value === listingData?.status
-              )
-              // : t("status"),
-              // }
-            }
+            value={listing_status(t)?.find(
+              (status) => status.value === listingData?.status
+            )}
             onChange={(e) => {
               setlistingData({
                 ...listingData,
@@ -456,6 +449,7 @@ const Addlisting = ({ data }) => {
                 state_id: e.value,
               });
             }}
+            isLoading={cityLoading}
             options={stateList?.map((cont) => ({
               value: cont.id,
               label: cont.name,

@@ -6,7 +6,7 @@ import {
   FormControlLabel,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useStateContext } from "../../../context/ContextProvider";
 import Select from "react-select";
 import { selectStyles } from "../../../Components/_elements/SelectStyles";
@@ -34,9 +34,11 @@ const AddListingMeta = ({ data, setData }) => {
   const token = localStorage.getItem("auth-token");
 
   const [btnLoading, setBtnLoading] = useState(false);
+  const [listings, setAllListings] = useState([]);
+  const [listingLoading, setListingLoading] = useState(false);
   const [allImages, setAllImages] = useState([]);
   const [listingMeta, setListingMeta] = useState({
-    listing_id: 1,
+    new_listing_id: "",
     slug: "",
     long_description: "",
     year_build_in: "",
@@ -55,273 +57,52 @@ const AddListingMeta = ({ data, setData }) => {
   });
 
   console.log("listingMeta: ", listingMeta);
-  const columns = [
-    // id
-    {
-      field: "id",
-      headerName: t("id"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center ">
-            <p className="text-center capitalize">
-              {cellValues?.formattedValue}
-            </p>
-          </div>
-        );
-      },
-    },
-    // LISTING TYPE ID
-    {
-      field: "listing_type_id",
-      headerName: t("label_listing_type"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // NAME
-    {
-      field: "name",
-      headerName: t("name"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // AREA
-    {
-      field: "area",
-      headerName: t("label_area"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // BEDROOM
-    {
-      field: "bedroom",
-      headerName: t("bedroom"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // BATHROOM
-    {
-      field: "area",
-      headerName: t("bathroom"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // GARAGE
-    {
-      field: "garage",
-      headerName: t("garage"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // GALLERY
-    {
-      field: "gallery",
-      headerName: t("gallery"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
 
-    // {
-    //   field: "notes",
-    //   headerName: t("label_action"),
-    //   minwidth: 100,
-    //   flex: 1,
-    //   headerAlign: "center",
-    //   sortable: false,
-    //   filterable: false,
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div className="space-x-2 w-full flex items-center justify-start mx-2">
-    //         <p
-    //           style={{ cursor: "pointer" }}
-    //           className={`${
-    //             currentMode === "dark"
-    //               ? "text-[#FFFFFF] bg-[#262626]"
-    //               : "text-[#1C1C1C] bg-[#EEEEEE]"
-    //           } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
-    //         >
-    //           <Tooltip title="Edit User" arrow>
-    //             <button
-    //               className="editUserBtn"
-    //               onClick={() => handleEditModal(cellValues?.id)}
-    //             >
-    //               {/* <Link to={`/updateuser/${cellValues?.id}`}> */}
-    //               <AiOutlineEdit size={16} />
-    //               {/* </Link> */}
-    //             </button>
-    //           </Tooltip>
-    //         </p>
+  const fetchListings = () => {
+    setListingLoading(true);
+    axios
+      .get(`${BACKEND_URL}/new-listings`, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        setListingLoading(false);
+        console.log("listings list : ", result);
+        setAllListings(result?.data?.data);
+      })
+      .catch((err) => {
+        setListingLoading(false);
+        console.error("error:: ", err);
+        const errors = err.response?.data?.errors;
 
-    //         {cellValues?.row?.status === 1 && (
-    //           <>
-    //             {/* SEND CREDIT  */}
-    //             <p
-    //               style={{ cursor: "pointer" }}
-    //               className={`${
-    //                 currentMode === "dark"
-    //                   ? "text-[#FFFFFF] bg-[#262626]"
-    //                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-    //               } hover:bg-yellow-500 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
-    //             >
-    //               <Tooltip title="Share Credits" arrow>
-    //                 <button
-    //                   onClick={() =>
-    //                     setShareCreditsModal({
-    //                       open: true,
-    //                       data: cellValues?.row,
-    //                     })
-    //                   }
-    //                 >
-    //                   {/* <GiTwoCoins size={16} /> */}
-    //                   <RiCoinsFill size={16} />
-    //                 </button>
-    //               </Tooltip>
-    //             </p>
-
-    //             {/* UPDATE ROLE  */}
-    //             {/* {cellValues.row.role !== 1 && (
-    //               hasPermission("role_update") ? (
-    //                 <p
-    //                   style={{ cursor: "pointer" }}
-    //                   className={`${
-    //                     currentMode === "dark"
-    //                       ? "text-[#FFFFFF] bg-[#262626]"
-    //                       : "text-[#1C1C1C] bg-[#EEEEEE]"
-    //                   } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
-    //                 >
-    //                   <Tooltip title="Update Role" arrow>
-    //                     <button onClick={() =>
-    //                       HandlePermissionModel(
-    //                         cellValues?.id,
-    //                         cellValues.row.status,
-    //                         cellValues?.row?.userName,
-    //                         cellValues?.row?.role
-    //                       )
-    //                     }>
-    //                       <BsPersonFillGear size={16} />
-    //                     </button>
-    //                   </Tooltip>
-    //                 </p>
-    //               ) : null
-    //             )} */}
-
-    //             {/* DELETE USER  */}
-    //             {hasPermission("users_delete") ? (
-    //               <>
-    //                 <p
-    //                   style={{ cursor: "pointer" }}
-    //                   className={`${
-    //                     currentMode === "dark"
-    //                       ? "text-[#FFFFFF] bg-[#262626]"
-    //                       : "text-[#1C1C1C] bg-[#EEEEEE]"
-    //                   } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
-    //                 >
-    //                   <Tooltip title="Deactivate User" arrow>
-    //                     <button
-    //                       onClick={() =>
-    //                         handleDelete(
-    //                           cellValues?.id,
-    //                           cellValues.row.status,
-    //                           cellValues?.row?.userName
-    //                         )
-    //                       }
-    //                     >
-    //                       <BsPersonFillSlash size={16} />
-    //                     </button>
-    //                   </Tooltip>
-    //                 </p>
-
-    //                 {/* <Button
-    //                   onClick={() =>
-
-    //                   }
-    //                   className={`editUserBtn ${
-    //                     currentMode === "dark"
-    //                       ? "text-white bg-transparent rounded-md p-1 shadow-none "
-    //                       : "text-black bg-transparent rounded-md p-1 shadow-none "
-    //                   }`}
-    //                 >
-    //                   {currentMode === "dark" ? (
-    //                     <FaUnlock style={{ color: "white" }} size={16} />
-    //                   ) : (
-    //                     <FaUnlock style={{ color: "black" }} size={16} />
-    //                   )}
-    //                 </Button> */}
-    //               </>
-    //             ) : null}
-    //           </>
-    //         )}
-    //       </div>
-    //     );
-    //   },
-    // },
-  ];
+        if (errors) {
+          const errorMessages = Object.values(errors).flat().join(" ");
+          toast.error(`Errors: ${errorMessages}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        } else {
+          toast.error("Unable to fetch listings", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
+      });
+  };
 
   const [selectImagesModal, setSelectImagesModal] = useState({
     isOpen: false,
@@ -329,10 +110,20 @@ const AddListingMeta = ({ data, setData }) => {
   });
 
   const handleChange = (e) => {
+    console.log("chekcbox:::", e.target.value);
+
     setListingMeta((prevListingAttr) => ({
       ...prevListingAttr,
       [e.target.id]: e.target.value,
     }));
+  };
+
+  const handleCheckboxChange = (event) => {
+    console.log("checkbox: ", event.target.checked);
+    setListingMeta({
+      ...listingMeta,
+      is_featured: event.target.checked ? 1 : 0,
+    });
   };
 
   const AddListMeta = () => {
@@ -418,6 +209,10 @@ const AddListingMeta = ({ data, setData }) => {
       });
   };
 
+  useEffect(() => {
+    fetchListings();
+  }, []);
+
   return (
     <div className="my-4">
       <h4 className={`text-primary text-center font-semibold pb-5`}>
@@ -439,23 +234,26 @@ const AddListingMeta = ({ data, setData }) => {
           }}
         >
           <Select
-            id="Developer"
-            // value={{
-            //   value: projectData?.developer_id,
-            //   label: projectData?.developer_id
-            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
-            //         ?.developerName || ""
-            //     : t("form_developer_name"),
-            // }}
-            // onChange={(selectedOption) => {
-            //   handleChange({
-            //     target: { name: "developer_id", value: selectedOption.value },
-            //   });
-            // }}
-            // options={developer.map((dev) => ({
-            //   value: dev.id,
-            //   label: dev.developerName,
-            // }))}
+            id="new_listing_id"
+            value={{
+              value: listingMeta?.new_listing_id,
+              label: listingMeta?.new_listing_id
+                ? listings?.find(
+                    (list) => list.id === listingMeta?.new_listing_id
+                  )?.title || ""
+                : t("menu_listings"),
+            }}
+            onChange={(e) => {
+              setListingMeta({
+                ...listingMeta,
+                new_listing_id: e.value,
+              });
+            }}
+            options={listings?.map((list) => ({
+              value: list.id,
+              label: list.title,
+            }))}
+            isLoading={listingLoading}
             className="w-full"
             placeholder={t("menu_listings")}
             menuPortalTarget={document.body}
@@ -477,21 +275,40 @@ const AddListingMeta = ({ data, setData }) => {
             required
           />
 
-          <TextField
-            id="promo_video"
-            type={"text"}
-            label={t("label_promo_video")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
+          <input
+            accept="video/*"
+            style={{ display: "none" }}
+            id="promo-video-file"
+            type="file"
+            name="video"
+            onChange={(e) => {
+              console.log("event of video file: ", e);
+
+              setListingMeta({
+                ...listingMeta,
+                promo_video: e.target.files[0],
+              });
             }}
-            variant="outlined"
-            size="small"
-            value={listingMeta?.promo_video}
-            name="projectLocation"
-            onChange={handleChange}
-            required
           />
+          <label htmlFor="promo-video-file">
+            <Button
+              variant="contained"
+              size="lg"
+              className="bg-main-red-color w-full bg-btn-primary text-white rounded-lg py-3 border-primary font-semibold my-3"
+              style={{
+                fontFamily: fontFam,
+                color: "#ffffff",
+                marginBottom: "10px",
+              }}
+              component="span"
+            >
+              <span>{t("label_promo_video")}</span>
+            </Button>
+            <p className="text-primary mt-2 italic">
+              {listingMeta?.promo_video ? `Promo video selected.` : null}
+            </p>
+          </label>
+
           <TextField
             id="meta_title"
             type={"text"}
@@ -534,7 +351,7 @@ const AddListingMeta = ({ data, setData }) => {
 
               setListingMeta({
                 ...listingMeta,
-                banner: e.target.files,
+                banner: e.target.files[0],
               });
             }}
           />
@@ -652,7 +469,7 @@ const AddListingMeta = ({ data, setData }) => {
             control={
               <Checkbox
                 value={listingMeta?.is_featured}
-                onChange={handleChange}
+                onChange={handleCheckboxChange}
                 checked={listingMeta?.is_featured}
                 name="permissionCheckbox"
                 id="is_featured"
@@ -740,7 +557,7 @@ const AddListingMeta = ({ data, setData }) => {
 
               setListingMeta({
                 ...listingMeta,
-                og_image: e.target.files,
+                og_image: e.target.files[0],
               });
             }}
           />
