@@ -29,7 +29,7 @@ const SearchLeads = () => {
   const [searchTerm, setSearchTerm] = useState(null);
   const [searchResult, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState();
   const [languageModal, setLanguageModal] = useState(false);
 
   const location = useLocation();
