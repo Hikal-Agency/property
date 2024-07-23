@@ -1137,7 +1137,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                         agentAssigned: e,
                       }));
                     }}
-                    placeholder={t("Agent Assigned")}
+                    placeholder={t("agent_assigned")}
                     // className={`mb-5`}
                     menuPortalTarget={document.body}
                     styles={selectStyles(currentMode, primaryColor)}
@@ -1157,7 +1157,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                         managerAssigned: e,
                       }));
                     }}
-                    placeholder={t("Manager Assigned")}
+                    placeholder={t("manager_assigned")}
                     // className={`mb-5`}
                     menuPortalTarget={document.body}
                     styles={selectStyles(currentMode, primaryColor)}
@@ -1177,7 +1177,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                         },
                       });
                     }}
-                    placeholder={t("Lead Source")}
+                    placeholder={t("lead_source")}
                     // className={`mb-5`}
                     menuPortalTarget={document.body}
                     styles={selectStyles(currentMode, primaryColor)}
@@ -1203,7 +1203,7 @@ const Closedeals = ({ pageState, setpageState }) => {
                     id="unit-filter"
                     aria-label="unit filter"
                     type={"number"}
-                    label={t("Unit")}
+                    label={t("unit")}
                     className="w-full"
                     sx={{
                       "&": {
@@ -1315,147 +1315,148 @@ const Closedeals = ({ pageState, setpageState }) => {
                     </LocalizationProvider>
                   </div>
                 </Box>
-
-                <FormControl
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <FormLabel id="demo-controlled-radio-buttons-group">
-                    PDC Status
-                  </FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={filtersData?.pdc_status}
-                    onChange={(e) =>
-                      setFiltersData((filtersData) => ({
-                        ...filtersData,
-                        pdc_status: e?.target?.value,
-                      }))
-                    }
-                    row
+                <div className={`${isLangRTL(i18n?.language) ? "ml-3" : ""}`}>
+                  <FormControl
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    <FormControlLabel
-                      value={1}
-                      control={<Radio />}
-                      label="Marked"
-                    />
-                    <FormControlLabel
-                      value={2}
-                      control={<Radio />}
-                      label="Pending"
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <FormControl
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <FormLabel id="demo-controlled-radio-buttons-group">
-                    SPA Status
-                  </FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={filtersData?.spa_status}
-                    onChange={(e) =>
-                      setFiltersData((filtersData) => ({
-                        ...filtersData,
-                        spa_status: e?.target?.value,
-                      }))
-                    }
-                    row
+                    <FormLabel id="demo-controlled-radio-buttons-group">
+                      {`${t("pdc")} ${t("status")}`}
+                    </FormLabel>
+                    <RadioGroup
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="controlled-radio-buttons-group"
+                      value={filtersData?.pdc_status}
+                      onChange={(e) =>
+                        setFiltersData((filtersData) => ({
+                          ...filtersData,
+                          pdc_status: e?.target?.value,
+                        }))
+                      }
+                      row
+                    >
+                      <FormControlLabel
+                        value={1}
+                        control={<Radio />}
+                        label={t("marked")}
+                      />
+                      <FormControlLabel
+                        value={2}
+                        control={<Radio />}
+                        label={t("pending")}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <FormControl
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    <FormControlLabel
-                      value={1}
-                      control={<Radio />}
-                      label="Marked"
-                    />
-                    <FormControlLabel
-                      value={2}
-                      control={<Radio />}
-                      label="Pending"
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <FormControl
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <FormLabel id="demo-controlled-radio-buttons-group">
-                    Invoice Status
-                  </FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={filtersData?.invoice_status}
-                    onChange={(e) =>
-                      setFiltersData((filtersData) => ({
-                        ...filtersData,
-                        invoice_status: e?.target?.value,
-                      }))
-                    }
-                    row
+                    <FormLabel id="demo-controlled-radio-buttons-group">
+                      {`${t("spa")} ${t("status")}`}
+                    </FormLabel>
+                    <RadioGroup
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="controlled-radio-buttons-group"
+                      value={filtersData?.spa_status}
+                      onChange={(e) =>
+                        setFiltersData((filtersData) => ({
+                          ...filtersData,
+                          spa_status: e?.target?.value,
+                        }))
+                      }
+                      row
+                    >
+                      <FormControlLabel
+                        value={1}
+                        control={<Radio />}
+                        label={t("marked")}
+                      />
+                      <FormControlLabel
+                        value={2}
+                        control={<Radio />}
+                        label={t("pending")}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <FormControl
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    <FormControlLabel
-                      value={1}
-                      control={<Radio />}
-                      label="Marked"
-                    />
-                    <FormControlLabel
-                      value={2}
-                      control={<Radio />}
-                      label="Pending"
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <FormControl
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <FormLabel id="demo-controlled-radio-buttons-group">
-                    Commission Status
-                  </FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={filtersData?.comm_status}
-                    onChange={(e) =>
-                      setFiltersData((filtersData) => ({
-                        ...filtersData,
-                        comm_status: e?.target?.value,
-                      }))
-                    }
-                    row
+                    <FormLabel id="demo-controlled-radio-buttons-group">
+                      {`${t("invoice")} ${t("status")}`}
+                    </FormLabel>
+                    <RadioGroup
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="controlled-radio-buttons-group"
+                      value={filtersData?.invoice_status}
+                      onChange={(e) =>
+                        setFiltersData((filtersData) => ({
+                          ...filtersData,
+                          invoice_status: e?.target?.value,
+                        }))
+                      }
+                      row
+                    >
+                      <FormControlLabel
+                        value={1}
+                        control={<Radio />}
+                        label={t("marked")}
+                      />
+                      <FormControlLabel
+                        value={2}
+                        control={<Radio />}
+                        label={t("pending")}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <FormControl
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    <FormControlLabel
-                      value={1}
-                      control={<Radio />}
-                      label="Marked"
-                    />
-                    <FormControlLabel
-                      value={2}
-                      control={<Radio />}
-                      label="Pending"
-                    />
-                  </RadioGroup>
-                </FormControl>
+                    <FormLabel id="demo-controlled-radio-buttons-group">
+                      {`${t("commission")} ${t("status")}`}
+                    </FormLabel>
+                    <RadioGroup
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="controlled-radio-buttons-group"
+                      value={filtersData?.comm_status}
+                      onChange={(e) =>
+                        setFiltersData((filtersData) => ({
+                          ...filtersData,
+                          comm_status: e?.target?.value,
+                        }))
+                      }
+                      row
+                    >
+                      <FormControlLabel
+                        value={1}
+                        control={<Radio />}
+                        label={t("marked")}
+                      />
+                      <FormControlLabel
+                        value={2}
+                        control={<Radio />}
+                        label={t("pending")}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </div>
 
                 {/* CLEAR BUTTON */}
                 <Button

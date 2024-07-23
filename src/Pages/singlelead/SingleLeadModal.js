@@ -126,10 +126,11 @@ const SingleLeadModal = ({
   const [isClosing, setIsClosing] = useState(false);
   const handleClose = () => {
     setIsClosing(true);
-    setIsVoiceSearchState(false);
-    setAddNoteTxt("");
-    SpeechRecognition.stopListening();
+
     setTimeout(() => {
+      setIsVoiceSearchState(false);
+      setAddNoteTxt("");
+      SpeechRecognition.stopListening();
       setIsClosing(false);
       handleCloseSingleLeadModel();
     }, 1000);
