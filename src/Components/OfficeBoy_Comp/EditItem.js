@@ -198,7 +198,6 @@ const EditItem = ({ editModal, setEditModal, listITems, FetchMenu }) => {
               w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
-            // onClick={handleCloseTimelineModel}
             onClick={handleClose}
             className={`${
               isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
