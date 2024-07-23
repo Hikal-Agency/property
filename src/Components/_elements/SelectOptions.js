@@ -2,22 +2,22 @@ import React from "react";
 
 import { TbFlag3Filled } from "react-icons/tb";
 
-// OWNERS 
+// OWNERS
 export const boss = (t) => [
   {
     id: 102,
     title: "Mr.",
     name: "Mohamed Hikal",
     phone: "+971585556605",
-    email: "hikal@hikalagency.ae"
+    email: "hikal@hikalagency.ae",
   },
   {
     id: 132,
     title: "Mr.",
     name: "Belal Hikal",
     phone: "+971585550775",
-    email: "belal.hikal@hikalproperties.ae"
-  }
+    email: "belal.hikal@hikalproperties.ae",
+  },
 ];
 
 // LEAD CATEGORY
@@ -873,4 +873,10 @@ export const title = () => [
   { value: "mr", label: "Mr" },
   { value: "ms", label: "Ms" },
   { value: "mrs", label: "Mrs" },
+];
+
+// STATUS
+export const listing_status = (t) => [
+  { value: 1, label: t("status_active") },
+  { value: 0, label: t("status_inactive") },
 ];

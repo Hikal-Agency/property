@@ -5,6 +5,7 @@ import Select from "react-select";
 import { selectStyles } from "../../../Components/_elements/SelectStyles";
 import { toast } from "react-toastify";
 import axios from "../../../axoisConfig";
+import { listing_status } from "../../_elements/SelectOptions";
 
 const Addlisting = ({ data }) => {
   const {
@@ -35,12 +36,12 @@ const Addlisting = ({ data }) => {
     user_id: 3,
     listing_attribute_id: "",
     listing_arrtibute_type_id: "",
-    country_id: 1,
+    country_id: "",
     state_id: "",
     city_id: "",
     short_description: "",
-    thumbnail: "",
-    status: 1,
+    thumbnail: "text",
+    status: "",
   });
 
   console.log("listing data :: ", listingData);
@@ -346,23 +347,28 @@ const Addlisting = ({ data }) => {
             styles={selectStyles(currentMode, primaryColor)}
           />
           <Select
-            id="Developer"
-            // value={{
-            //   value: projectData?.developer_id,
-            //   label: projectData?.developer_id
-            //     ? developer.find((dev) => dev.id === projectData?.developer_id)
-            //         ?.developerName || ""
-            //     : t("form_developer_name"),
-            // }}
-            // onChange={(selectedOption) => {
-            //   handleChange({
-            //     target: { name: "developer_id", value: selectedOption.value },
-            //   });
-            // }}
-            // options={developer.map((dev) => ({
-            //   value: dev.id,
-            //   label: dev.developerName,
-            // }))}
+            id="status"
+            value={
+              // {
+              // value: listingData?.value,
+              // label: listingData?.label
+              //   ?
+              listing_status(t)?.find(
+                (status) => status.value === listingData?.status
+              )
+              // : t("status"),
+              // }
+            }
+            onChange={(e) => {
+              setlistingData({
+                ...listingData,
+                status: e.value,
+              });
+            }}
+            options={listing_status(t)?.map((status) => ({
+              value: status.value,
+              label: status.label,
+            }))}
             className="w-full"
             placeholder={t("status")}
             menuPortalTarget={document.body}
@@ -492,7 +498,7 @@ const Addlisting = ({ data }) => {
             }}
           />
 
-          <label htmlFor="list-thumb">
+          {/* <label htmlFor="list-thumb">
             <Button
               variant="contained"
               size="lg"
@@ -511,7 +517,7 @@ const Addlisting = ({ data }) => {
             <p className="text-primary mt-2 italic">
               {listingData?.thumbnail ? `thumbnail selected.` : null}
             </p>
-          </label>
+          </label> */}
 
           <Button
             className={`min-w-fit text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}

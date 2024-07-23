@@ -1154,7 +1154,14 @@
 
 
     "listing_attribute_id" : "listing attribute id",
-    "thumbnail" : "Thumbnail"
+    "thumbnail" : "Thumbnail",
+
+
+
+
+
+
+    "status_inactive" : "Inactive"
 
   
 } 
