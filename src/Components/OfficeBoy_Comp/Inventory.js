@@ -464,6 +464,7 @@ const Inventory = ({ openInventory, setOpenInventory, FetchMenu }) => {
               setEditModal={setEditModal}
               editModal={editModal}
               listITems={listITems}
+              FetchMenu={FetchMenu}
             />
           )}
 

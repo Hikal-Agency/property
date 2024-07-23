@@ -29,7 +29,7 @@ const style = {
   boxShadow: 24,
 };
 
-const EditItem = ({ editModal, setEditModal, listITems }) => {
+const EditItem = ({ editModal, setEditModal, listITems, FetchMenu }) => {
   const [leadNotFound, setLeadNotFound] = useState(false);
   const editITem = editModal;
 
@@ -137,6 +137,8 @@ const EditItem = ({ editModal, setEditModal, listITems }) => {
 
       setLoading(false);
       listITems();
+      FetchMenu();
+
       setEditModal(false);
 
       setITemData({
