@@ -30,7 +30,7 @@ import {
   BsCart4,
   BsQuestionLg,
   BsTools,
-  BsMegaphone
+  BsMegaphone,
 } from "react-icons/bs";
 import { RiVisaLine } from "react-icons/ri";
 import Petty_Cash_Form from "./Petty_Cash_Form";
@@ -198,7 +198,6 @@ const Petty_Cash_Comp = () => {
     moment(b).diff(moment(a))
   );
 
-
   return (
     <div className={`pb-4 px-4`}>
       <TransactionFilters
@@ -223,7 +222,7 @@ const Petty_Cash_Comp = () => {
                   <p className="font-semibold">
                     {country}:
                     <span className="ml-2 font-normal">
-                      {currency}{" "}{amount.toFixed(2)}{" "}
+                      {currency} {amount.toFixed(2)}{" "}
                     </span>
                   </p>
                 </div>
@@ -233,14 +232,15 @@ const Petty_Cash_Comp = () => {
         </div>
       )}
       <div
-        className={`w-full ${themeBgImg
-          ? currentMode === "dark"
-            ? "blur-bg-black"
-            : "blur-bg-white"
-          : currentMode === "dark"
+        className={`w-full ${
+          themeBgImg
+            ? currentMode === "dark"
+              ? "blur-bg-black"
+              : "blur-bg-white"
+            : currentMode === "dark"
             ? "bg-dark-neu"
             : "bg-light-neu"
-          } my-5 p-5`}
+        } my-5 p-5`}
       >
         <Petty_Cash_Form fetchPettyCash={fetchPettyCash} />
       </div>
@@ -250,18 +250,23 @@ const Petty_Cash_Comp = () => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
           }}
-          className={`${themeBgImg ?
-            currentMode === "dark" ? "blur-bg-black" : "blur-bg-light"
-            : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-            } p-4`}
+          className={`${
+            themeBgImg
+              ? currentMode === "dark"
+                ? "blur-bg-black"
+                : "blur-bg-light"
+              : currentMode === "dark"
+              ? "bg-dark-neu"
+              : "bg-light-neu"
+          } p-4`}
         >
           {loading ? (
             <div className="flex items-center justify-center">
@@ -282,9 +287,13 @@ const Petty_Cash_Comp = () => {
                           style={{ transform: "translateX(-50%)" }}
                         ></div>
                         <p
-                          className={`${themeBgImg ? "bg-primary"
-                            : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                            } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
+                          className={`${
+                            themeBgImg
+                              ? "bg-primary"
+                              : currentMode === "dark"
+                              ? "bg-primary-dark-neu"
+                              : "bg-primary-light-neu"
+                          } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
                           style={{ zIndex: 1 }}
                         >
                           {date}
@@ -293,13 +302,11 @@ const Petty_Cash_Comp = () => {
                       <div className="col-span-9 md:col-span-10"></div>
                     </div>
                     {groupedFunds[date]?.map((petty) => (
-                      <div
-                        key={petty?.id}
-                        className="cursor-pointer"
-                      >
+                      <div key={petty?.id} className="cursor-pointer">
                         <div
-                          className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
-                            } grid grid-cols-12 gap-5`}
+                          className={`${
+                            isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                          } grid grid-cols-12 gap-5`}
                         >
                           <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
                             <div
@@ -307,17 +314,24 @@ const Petty_Cash_Comp = () => {
                               style={{ transform: "translateX(-50%)" }}
                             ></div>
                             <div
-                              className={`${themeBgImg
-                                ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
-                                : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-                                } w-fit h-fit p-3`}
+                              className={`${
+                                themeBgImg
+                                  ? currentMode === "dark"
+                                    ? "blur-bg-black border border-[#AAAAAA]"
+                                    : "blur-bg-white border border-[#AAAAAA]"
+                                  : currentMode === "dark"
+                                  ? "bg-dark-neu"
+                                  : "bg-light-neu"
+                              } w-fit h-fit p-3`}
                               style={{ zIndex: 1 }}
                             >
                               <BsCash size={16} color={"#AAAAAA"} />
                             </div>
                           </div>
                           {/* DETAILS */}
-                          <div className={`col-span-9 md:col-span-8 pb-6 flex gap-3 py-4`}>
+                          <div
+                            className={`col-span-9 md:col-span-8 pb-6 flex gap-3 py-4`}
+                          >
                             {deviceType === "mobile" && (
                               <p className={`font-semibold text-green-600`}>
                                 {petty?.currency} {petty?.fund_amount}
@@ -376,18 +390,23 @@ const Petty_Cash_Comp = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
             }}
-            className={`${themeBgImg ?
-              currentMode === "dark" ? "blur-bg-black" : "blur-bg-light"
-              : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-              } p-4`}
+            className={`${
+              themeBgImg
+                ? currentMode === "dark"
+                  ? "blur-bg-black"
+                  : "blur-bg-light"
+                : currentMode === "dark"
+                ? "bg-dark-neu"
+                : "bg-light-neu"
+            } p-4`}
           >
             {loading ? (
               <div className="flex items-center justify-center">
@@ -408,9 +427,13 @@ const Petty_Cash_Comp = () => {
                             style={{ transform: "translateX(-50%)" }}
                           ></div>
                           <p
-                            className={`${themeBgImg ? "bg-primary"
-                              : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                              } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
+                            className={`${
+                              themeBgImg
+                                ? "bg-primary"
+                                : currentMode === "dark"
+                                ? "bg-primary-dark-neu"
+                                : "bg-primary-light-neu"
+                            } mb-4 font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
                             style={{ zIndex: 1 }}
                           >
                             {date}
@@ -425,8 +448,9 @@ const Petty_Cash_Comp = () => {
                           onClick={() => setSingleTransModal(trans)}
                         >
                           <div
-                            className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
-                              } grid grid-cols-12 gap-5`}
+                            className={`${
+                              isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                            } grid grid-cols-12 gap-5`}
                           >
                             <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
                               <div
@@ -434,24 +458,36 @@ const Petty_Cash_Comp = () => {
                                 style={{ transform: "translateX(-50%)" }}
                               ></div>
                               <div
-                                className={`${themeBgImg
-                                  ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
-                                  : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-                                  } w-fit h-fit p-3`}
+                                className={`${
+                                  themeBgImg
+                                    ? currentMode === "dark"
+                                      ? "blur-bg-black border border-[#AAAAAA]"
+                                      : "blur-bg-white border border-[#AAAAAA]"
+                                    : currentMode === "dark"
+                                    ? "bg-dark-neu"
+                                    : "bg-light-neu"
+                                } w-fit h-fit p-3`}
                                 style={{ zIndex: 1 }}
                               >
-                                {trans?.category.toLowerCase() === "commission" ? (
+                                {trans?.category.toLowerCase() ===
+                                "commission" ? (
                                   <BsBuildings size={16} color={"#AAAAAA"} />
-                                ) : trans?.category.toLowerCase() === "salary" ? (
-                                  <BsCalendarCheck size={16} color={"#AAAAAA"} />
-                                ) : trans?.category.toLowerCase() === "purchase" ? (
+                                ) : trans?.category.toLowerCase() ===
+                                  "salary" ? (
+                                  <BsCalendarCheck
+                                    size={16}
+                                    color={"#AAAAAA"}
+                                  />
+                                ) : trans?.category.toLowerCase() ===
+                                  "purchase" ? (
                                   <BsCart4 size={16} color={"#AAAAAA"} />
                                 ) : trans?.category.toLowerCase() === "visa" ? (
                                   <RiVisaLine size={16} color={"#AAAAAA"} />
                                 ) : trans?.category.toLowerCase() ===
                                   "maintenance" ? (
                                   <BsTools size={16} color={"#AAAAAA"} />
-                                ) : trans?.category.toLowerCase() === "borrow" ? (
+                                ) : trans?.category.toLowerCase() ===
+                                  "borrow" ? (
                                   <BsCash size={16} color={"#AAAAAA"} />
                                 ) : trans?.category.toLowerCase() ===
                                   "campaigns" ? (
@@ -470,7 +506,9 @@ const Petty_Cash_Comp = () => {
                                 </div>
                               )}
                               {trans.user_id && (
-                                <div className="flex">{trans.user.userName}</div>
+                                <div className="flex">
+                                  {trans.user.userName}
+                                </div>
                               )}
                               <div className="flex items-center justify-between gap-5">
                                 <div className="flex gap-1 text-sm">
@@ -490,16 +528,19 @@ const Petty_Cash_Comp = () => {
                               {deviceType === "mobile" && (
                                 <div className="flex gap-3">
                                   <p
-                                    className={`font-semibold ${trans?.invoice_type == "Income"
-                                      ? "text-green-600"
-                                      : "text-red-600"
-                                      } `}
+                                    className={`font-semibold ${
+                                      trans?.invoice_type == "Income"
+                                        ? "text-green-600"
+                                        : "text-red-600"
+                                    } `}
                                   >
-                                    {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
+                                    {trans?.invoice_type === "Income"
+                                      ? "+"
+                                      : "-"}{" "}
                                     {trans?.currency}{" "}
                                     {formatNoIntl(trans?.total_amount)}
                                   </p>
-                                  {(trans?.vat !== 0 && trans?.vat !== null) && (
+                                  {trans?.vat !== 0 && trans?.vat !== null && (
                                     <p className="text-sm">
                                       {t("vat")}: {trans?.currency} {trans?.vat}
                                     </p>
@@ -511,20 +552,23 @@ const Petty_Cash_Comp = () => {
                             {deviceType !== "mobile" && (
                               <div className="col-span-3 md:col-span-2 pb-5 flex flex-col items-end gap-2">
                                 <p
-                                  className={`font-semibold ${trans?.invoice_type == "Income"
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                    } text-end `}
+                                  className={`font-semibold ${
+                                    trans?.invoice_type == "Income"
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  } text-end `}
                                 >
                                   {trans?.invoice_type === "Income" ? "+" : "-"}{" "}
                                   {trans?.currency}{" "}
                                   {formatNoIntl(trans?.total_amount)}
                                 </p>
-                                {(trans?.vat !== 0 && trans?.vat !== null && trans?.vat !== "0") && (
-                                  <p className="text-sm text-end">
-                                    {t("vat")}: {trans?.currency} {trans?.vat}
-                                  </p>
-                                )}
+                                {trans?.vat !== 0 &&
+                                  trans?.vat !== null &&
+                                  trans?.vat !== "0" && (
+                                    <p className="text-sm text-end">
+                                      {t("vat")}: {trans?.currency} {trans?.vat}
+                                    </p>
+                                  )}
                               </div>
                             )}
                           </div>
@@ -565,14 +609,15 @@ const Petty_Cash_Comp = () => {
             )}
           </Box>
         </div>
-      </div >
+      </div>
       {singleTransModal && (
         <SingleTransactionModal
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
+          fetchTransactions={fetchPettyCash}
         />
       )}
-    </div >
+    </div>
   );
 };
 
