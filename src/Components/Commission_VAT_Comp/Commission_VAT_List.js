@@ -24,13 +24,10 @@ import {
   BsQuestionLg,
   BsTools,
   BsCash,
-  BsMegaphone
+  BsMegaphone,
 } from "react-icons/bs";
-import {
-  RiVisaLine
-} from "react-icons/ri";
+import { RiVisaLine } from "react-icons/ri";
 import { formatNoIntl } from "../_elements/FormatNoIntl";
-
 
 const Commission_VAT_List = () => {
   const {
@@ -45,7 +42,7 @@ const Commission_VAT_List = () => {
     fontFam,
     isLangRTL,
     i18n,
-    deviceType
+    deviceType,
   } = useStateContext();
 
   const [loading, setloading] = useState(true);
@@ -147,10 +144,10 @@ const Commission_VAT_List = () => {
           sx={{
             ...darkModeColors,
             "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-            {
-              right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-              transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-            },
+              {
+                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+              },
             "& legend": {
               textAlign: isLangRTL(i18n.language) ? "right" : "left",
             },
@@ -159,9 +156,13 @@ const Commission_VAT_List = () => {
         >
           <div className="mb-5">
             <button
-              className={`${themeBgImg ? "bg-primary shadow-md"
-                : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                } p-3 mb-5 rounded-md min-w-[80px] text-white uppercase`}
+              className={`${
+                themeBgImg
+                  ? "bg-primary shadow-md"
+                  : currentMode === "dark"
+                  ? "bg-primary-dark-neu"
+                  : "bg-primary-light-neu"
+              } p-3 mb-5 rounded-md min-w-[80px] text-white uppercase`}
               onClick={clearFilters}
             >
               {t("clear_all")}
@@ -245,9 +246,13 @@ const Commission_VAT_List = () => {
           </LocalizationProvider>
           <div className="mb-5 ">
             <button
-              className={`${themeBgImg ? "bg-primary shadow-md"
-                : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                } p-3 mb-5 rounded-full`}
+              className={`${
+                themeBgImg
+                  ? "bg-primary shadow-md"
+                  : currentMode === "dark"
+                  ? "bg-primary-dark-neu"
+                  : "bg-primary-light-neu"
+              } p-3 mb-5 rounded-full`}
               onClick={() => setPDFModal(true)}
             >
               <BsDownload size={16} color={"#FFFFFF"} />
@@ -266,11 +271,17 @@ const Commission_VAT_List = () => {
             {comm_vat_data && comm_vat_data?.length > 0 ? (
               comm_vat_data?.map((comm_vat) => {
                 return (
-                  <div className={`${themeBgImg ?
-                    currentMode === "dark" ? "blur-bg-black" : "blur-bg-white"
-                    : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-                    } ${themeBgImg && "rounded-xl shadow-md"
-                    } p-5 mb-5`}>
+                  <div
+                    className={`${
+                      themeBgImg
+                        ? currentMode === "dark"
+                          ? "blur-bg-black"
+                          : "blur-bg-white"
+                        : currentMode === "dark"
+                        ? "bg-dark-neu"
+                        : "bg-light-neu"
+                    } ${themeBgImg && "rounded-xl shadow-md"} p-5 mb-5`}
+                  >
                     <h1
                       className={`text-2xl font-bold mx-2 uppercase text-center mb-4`}
                     >
@@ -280,25 +291,28 @@ const Commission_VAT_List = () => {
                       {comm_vat?.vat && comm_vat?.vat?.length > 0 ? (
                         comm_vat?.vat?.map((vat) => (
                           <div
-                            className={`${themeBgImg ?
-                              currentMode === "dark"
-                                ? "blur-bg-black text-white"
-                                : "blur-bg-white text-black"
-                              : currentMode === "dark"
+                            className={`${
+                              themeBgImg
+                                ? currentMode === "dark"
+                                  ? "blur-bg-black text-white"
+                                  : "blur-bg-white text-black"
+                                : currentMode === "dark"
                                 ? "bg-dark-neu text-white"
                                 : "bg-light-neu text-black"
-                              } p-5 rounded-xl flex flex-col items-center justify-center gap-4`}
+                            } p-5 rounded-xl flex flex-col items-center justify-center gap-4`}
                           >
                             <div
-                              className={`w-full p-5 ${themeBgImg
-                                ? currentMode === "dark"
-                                  ? "bg-primary"
-                                  : "bg-primary"
-                                : currentMode === "dark"
+                              className={`w-full p-5 ${
+                                themeBgImg
+                                  ? currentMode === "dark"
+                                    ? "bg-primary"
+                                    : "bg-primary"
+                                  : currentMode === "dark"
                                   ? "bg-primary-dark-neu"
                                   : "bg-primary-light-neu"
-                                } ${themeBgImg && "rounded-xl shadow-md"
-                                } text-white`}
+                              } ${
+                                themeBgImg && "rounded-xl shadow-md"
+                              } text-white`}
                             >
                               <p className={`text-center text-sm mb-2`}>
                                 {t("vat_amount")}
@@ -346,14 +360,15 @@ const Commission_VAT_List = () => {
         {/* transactions list */}
         <Box
           sx={{ darkModeColors }}
-          className={`p-5 ${themeBgImg
-            ? currentMode === "dark"
-              ? "blur-bg-black"
-              : "blur-bg-white"
-            : currentMode === "dark"
+          className={`p-5 ${
+            themeBgImg
+              ? currentMode === "dark"
+                ? "blur-bg-black"
+                : "blur-bg-white"
+              : currentMode === "dark"
               ? "bg-dark-neu"
               : "bg-light-neu"
-            }`}
+          }`}
         >
           {loading ? (
             <div className="flex items-center justify-center">
@@ -370,39 +385,55 @@ const Commission_VAT_List = () => {
                   >
                     {/* DATE */}
                     <p
-                      className={`${themeBgImg ? "bg-primary"
-                        : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                        } font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
+                      className={`${
+                        themeBgImg
+                          ? "bg-primary"
+                          : currentMode === "dark"
+                          ? "bg-primary-dark-neu"
+                          : "bg-primary-light-neu"
+                      } font-semibold text-sm px-2 py-1 text-white rounded-md w-fit`}
                       style={{ zIndex: 1 }}
                     >
                       {trans?.invoice?.date}
                     </p>
                     <div
-                      className={`${isLangRTL(i18n.language) ? "pl-5" : "pr-5"
-                        } grid grid-cols-12 gap-5`}
+                      className={`${
+                        isLangRTL(i18n.language) ? "pl-5" : "pr-5"
+                      } grid grid-cols-12 gap-5`}
                     >
                       <div className="col-span-3 md:col-span-2 w-full flex flex-col items-center relative">
                         <div
-                          className={`${themeBgImg
-                            ? currentMode === "dark" ? "blur-bg-black border border-[#AAAAAA]" : "blur-bg-white border border-[#AAAAAA]"
-                            : currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-                            } w-fit h-fit p-3 mt-5`}
+                          className={`${
+                            themeBgImg
+                              ? currentMode === "dark"
+                                ? "blur-bg-black border border-[#AAAAAA]"
+                                : "blur-bg-white border border-[#AAAAAA]"
+                              : currentMode === "dark"
+                              ? "bg-dark-neu"
+                              : "bg-light-neu"
+                          } w-fit h-fit p-3 mt-5`}
                           style={{ zIndex: 1 }}
                         >
-                          {trans?.invoice?.category.toLowerCase() === "commission" ? (
+                          {trans?.invoice?.category.toLowerCase() ===
+                          "commission" ? (
                             <BsBuildings size={16} color={"#AAAAAA"} />
-                          ) : trans?.invoice?.category.toLowerCase() === "salary" ? (
+                          ) : trans?.invoice?.category.toLowerCase() ===
+                            "salary" ? (
                             <BsCalendarCheck size={16} color={"#AAAAAA"} />
-                          ) : trans?.invoice?.category.toLowerCase() === "purchase" ? (
+                          ) : trans?.invoice?.category.toLowerCase() ===
+                            "purchase" ? (
                             <BsCart4 size={16} color={"#AAAAAA"} />
-                          ) : trans?.invoice?.category.toLowerCase() === "visa" ? (
+                          ) : trans?.invoice?.category.toLowerCase() ===
+                            "visa" ? (
                             <RiVisaLine size={16} color={"#AAAAAA"} />
                           ) : trans?.invoice?.category.toLowerCase() ===
                             "maintenance" ? (
                             <BsTools size={16} color={"#AAAAAA"} />
-                          ) : trans?.invoice?.category.toLowerCase() === "borrow" ? (
+                          ) : trans?.invoice?.category.toLowerCase() ===
+                            "borrow" ? (
                             <BsCash size={16} color={"#AAAAAA"} />
-                          ) : trans?.invoice?.category.toLowerCase() === "campaigns" ? (
+                          ) : trans?.invoice?.category.toLowerCase() ===
+                            "campaigns" ? (
                             <BsMegaphone size={16} color={"#AAAAAA"} />
                           ) : (
                             <BsQuestionLg size={16} color={"#AAAAAA"} />
@@ -441,18 +472,23 @@ const Commission_VAT_List = () => {
                           {deviceType === "mobile" && (
                             <div className="flex flex-col items-end">
                               <p
-                                className={`font-semibold ${trans?.invoice?.invoice_type == "Income"
-                                  ? "text-green-600"
-                                  : "text-red-600"
-                                  } `}
+                                className={`font-semibold ${
+                                  trans?.invoice?.invoice_type == "Income"
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                } `}
                               >
-                                {trans?.invoice?.invoice_type === "Income" ? "+" : "-"}{" "}
+                                {trans?.invoice?.invoice_type === "Income"
+                                  ? "+"
+                                  : "-"}{" "}
                                 {trans?.invoice?.currency}{" "}
                                 {formatNoIntl(trans?.invoice?.total_amount)}
                               </p>
-                              {(trans?.invoice?.vat !== 0 || trans?.invoice?.vat !== null) && (
+                              {(trans?.invoice?.vat !== 0 ||
+                                trans?.invoice?.vat !== null) && (
                                 <p className="text-sm">
-                                  {t("vat")}: {trans?.invoice?.currency} {trans?.invoice?.vat}
+                                  {t("vat")}: {trans?.invoice?.currency}{" "}
+                                  {trans?.invoice?.vat}
                                 </p>
                               )}
                             </div>
@@ -463,20 +499,26 @@ const Commission_VAT_List = () => {
                       {deviceType !== "mobile" && (
                         <div className="col-span-3 md:col-span-2 pb-5 mt-5 flex flex-col items-end text-end gap-2">
                           <p
-                            className={`font-semibold ${trans?.invoice?.invoice_type == "Income"
-                              ? "text-green-600"
-                              : "text-red-600"
-                              } `}
+                            className={`font-semibold ${
+                              trans?.invoice?.invoice_type == "Income"
+                                ? "text-green-600"
+                                : "text-red-600"
+                            } `}
                           >
-                            {trans?.invoice?.invoice_type === "Income" ? "+" : "-"}{" "}
+                            {trans?.invoice?.invoice_type === "Income"
+                              ? "+"
+                              : "-"}{" "}
                             {trans?.invoice?.currency}{" "}
                             {formatNoIntl(trans?.invoice?.total_amount)}
                           </p>
-                          {(trans?.invoice?.vat !== 0 && trans?.invoice?.vat !== null && trans?.invoice?.vat !== "0") && (
-                            <p className="text-sm">
-                              {t("vat")}: {trans?.invoice?.currency} {trans?.invoice?.vat}
-                            </p>
-                          )}
+                          {trans?.invoice?.vat !== 0 &&
+                            trans?.invoice?.vat !== null &&
+                            trans?.invoice?.vat !== "0" && (
+                              <p className="text-sm">
+                                {t("vat")}: {trans?.invoice?.currency}{" "}
+                                {trans?.invoice?.vat}
+                              </p>
+                            )}
                         </div>
                       )}
                     </div>
@@ -490,12 +532,12 @@ const Commission_VAT_List = () => {
             </div>
           )}
         </Box>
-
       </div>
       {singleTransModal && (
         <SingleTransactionModal
           singleTransModal={singleTransModal}
           setSingleTransModal={setSingleTransModal}
+          fetchTransactions={fetchStatements}
         />
       )}
       {pdfModal && (
