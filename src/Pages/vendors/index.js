@@ -72,6 +72,7 @@ const Vendors = ({ isLoading }) => {
     setOpenVendorModal(true);
   };
 
+  console.log("page number in vendors:: ", pageState.page);
   const fetchVendors = async () => {
     setLoading(true);
 
