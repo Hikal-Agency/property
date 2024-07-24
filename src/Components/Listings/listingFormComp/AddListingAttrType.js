@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { useStateContext } from "../../../context/ContextProvider";
-import { Box, Button, CircularProgress, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import { selectStyles } from "../../../Components/_elements/SelectStyles";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import axios from "../../../axoisConfig";
 import ListingDataGrid from "../ListingDataGrid";
+import { BsTrash } from "react-icons/bs";
+import { IoMdClose } from "react-icons/io";
 
 const AddListingAttrType = ({
   data,
@@ -17,6 +27,7 @@ const AddListingAttrType = ({
   total,
   setPage,
   setPageSize,
+  FetchData,
 }) => {
   const {
     darkModeColors,
@@ -33,6 +44,8 @@ const AddListingAttrType = ({
   const token = localStorage.getItem("auth-token");
 
   const [btnLoading, setBtnLoading] = useState(false);
+  const [deleteDialogue, setDeleteDialogue] = useState(false);
+
   const [listingAttrType, setListingAttrType] = useState({
     name: "",
     listing_attribute_id: "",
@@ -117,6 +130,52 @@ const AddListingAttrType = ({
             theme: "light",
           });
         }
+      });
+  };
+
+  const deleteAttrType = (deleteDialogue) => {
+    setBtnLoading(true);
+
+    axios
+      .delete(
+        `${BACKEND_URL}/listing-attribute-types/${deleteDialogue?.lat_id}`,
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+      .then((result) => {
+        setBtnLoading(false);
+        setDeleteDialogue(false);
+
+        toast.success(`${deleteDialogue?.name} deleted successfully.`, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        FetchData();
+      })
+      .catch((err) => {
+        setBtnLoading(false);
+        console.log(err);
+        toast.error("Something Went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
   };
 
@@ -252,140 +311,35 @@ const AddListingAttrType = ({
       },
     },
 
-    // {
-    //   field: "notes",
-    //   headerName: t("label_action"),
-    //   minwidth: 100,
-    //   flex: 1,
-    //   headerAlign: "center",
-    //   sortable: false,
-    //   filterable: false,
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div className="space-x-2 w-full flex items-center justify-start mx-2">
-    //         <p
-    //           style={{ cursor: "pointer" }}
-    //           className={`${
-    //             currentMode === "dark"
-    //               ? "text-[#FFFFFF] bg-[#262626]"
-    //               : "text-[#1C1C1C] bg-[#EEEEEE]"
-    //           } hover:bg-blue-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
-    //         >
-    //           <Tooltip title="Edit User" arrow>
-    //             <button
-    //               className="editUserBtn"
-    //               onClick={() => handleEditModal(cellValues?.id)}
-    //             >
-    //               {/* <Link to={`/updateuser/${cellValues?.id}`}> */}
-    //               <AiOutlineEdit size={16} />
-    //               {/* </Link> */}
-    //             </button>
-    //           </Tooltip>
-    //         </p>
-
-    //         {cellValues?.row?.status === 1 && (
-    //           <>
-    //             {/* SEND CREDIT  */}
-    //             <p
-    //               style={{ cursor: "pointer" }}
-    //               className={`${
-    //                 currentMode === "dark"
-    //                   ? "text-[#FFFFFF] bg-[#262626]"
-    //                   : "text-[#1C1C1C] bg-[#EEEEEE]"
-    //               } hover:bg-yellow-500 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
-    //             >
-    //               <Tooltip title="Share Credits" arrow>
-    //                 <button
-    //                   onClick={() =>
-    //                     setShareCreditsModal({
-    //                       open: true,
-    //                       data: cellValues?.row,
-    //                     })
-    //                   }
-    //                 >
-    //                   {/* <GiTwoCoins size={16} /> */}
-    //                   <RiCoinsFill size={16} />
-    //                 </button>
-    //               </Tooltip>
-    //             </p>
-
-    //             {/* UPDATE ROLE  */}
-    //             {/* {cellValues.row.role !== 1 && (
-    //               hasPermission("role_update") ? (
-    //                 <p
-    //                   style={{ cursor: "pointer" }}
-    //                   className={`${
-    //                     currentMode === "dark"
-    //                       ? "text-[#FFFFFF] bg-[#262626]"
-    //                       : "text-[#1C1C1C] bg-[#EEEEEE]"
-    //                   } hover:bg-green-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
-    //                 >
-    //                   <Tooltip title="Update Role" arrow>
-    //                     <button onClick={() =>
-    //                       HandlePermissionModel(
-    //                         cellValues?.id,
-    //                         cellValues.row.status,
-    //                         cellValues?.row?.userName,
-    //                         cellValues?.row?.role
-    //                       )
-    //                     }>
-    //                       <BsPersonFillGear size={16} />
-    //                     </button>
-    //                   </Tooltip>
-    //                 </p>
-    //               ) : null
-    //             )} */}
-
-    //             {/* DELETE USER  */}
-    //             {hasPermission("users_delete") ? (
-    //               <>
-    //                 <p
-    //                   style={{ cursor: "pointer" }}
-    //                   className={`${
-    //                     currentMode === "dark"
-    //                       ? "text-[#FFFFFF] bg-[#262626]"
-    //                       : "text-[#1C1C1C] bg-[#EEEEEE]"
-    //                   } hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center editUserBtn`}
-    //                 >
-    //                   <Tooltip title="Deactivate User" arrow>
-    //                     <button
-    //                       onClick={() =>
-    //                         handleDelete(
-    //                           cellValues?.id,
-    //                           cellValues.row.status,
-    //                           cellValues?.row?.userName
-    //                         )
-    //                       }
-    //                     >
-    //                       <BsPersonFillSlash size={16} />
-    //                     </button>
-    //                   </Tooltip>
-    //                 </p>
-
-    //                 {/* <Button
-    //                   onClick={() =>
-
-    //                   }
-    //                   className={`editUserBtn ${
-    //                     currentMode === "dark"
-    //                       ? "text-white bg-transparent rounded-md p-1 shadow-none "
-    //                       : "text-black bg-transparent rounded-md p-1 shadow-none "
-    //                   }`}
-    //                 >
-    //                   {currentMode === "dark" ? (
-    //                     <FaUnlock style={{ color: "white" }} size={16} />
-    //                   ) : (
-    //                     <FaUnlock style={{ color: "black" }} size={16} />
-    //                   )}
-    //                 </Button> */}
-    //               </>
-    //             ) : null}
-    //           </>
-    //         )}
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      field: "notes",
+      headerName: t("label_action"),
+      minwidth: 100,
+      flex: 1,
+      headerAlign: "center",
+      sortable: false,
+      filterable: false,
+      renderCell: (cellValues) => {
+        return (
+          <div className="space-x-2 w-full flex items-center justify-center mx-2">
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } editUserBtn hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Delete Attribute type" arrow>
+                <button onClick={() => setDeleteDialogue(cellValues?.row)}>
+                  <BsTrash size={16} />
+                </button>
+              </Tooltip>
+            </p>
+          </div>
+        );
+      },
+    },
   ];
 
   return (
@@ -592,6 +546,83 @@ const AddListingAttrType = ({
             )}
           </Button>
         </Box>
+
+        {deleteDialogue && (
+          <>
+            <Dialog
+              sx={{
+                "& .MuiPaper-root": {
+                  boxShadow: "none !important",
+                },
+                "& .MuiBackdrop-root, & .css-yiavyu-MuiBackdrop-root-MuiDialog-backdrop":
+                  {
+                    // backgroundColor: "rgba(0, 0, 0, 0.6) !important",
+                  },
+              }}
+              open={deleteDialogue}
+              onClose={(e) => setDeleteDialogue(false)}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <IconButton
+                sx={{
+                  position: "absolute",
+                  right: 12,
+                  top: 10,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+                onClick={() => setDeleteDialogue(false)}
+              >
+                <IoMdClose size={18} />
+              </IconButton>
+              <div
+                className={`px-10 py-5 ${
+                  currentMode === "dark"
+                    ? "bg-[#1C1C1C] text-white"
+                    : "bg-white text-black"
+                }`}
+              >
+                <div className="flex flex-col justify-center items-center">
+                  {/* <BsPersonCheck size={50} className="text-primary text-2xl" /> */}
+                  <h1 className="font-semibold pt-3 text-lg text-center">
+                    {t("do_you_really_delete", { DataName: "" })}{" "}
+                    <span className="text-sm bg-gray-500 px-2 py-1 rounded-md font-bold">
+                      {deleteDialogue?.name}
+                    </span>{" "}
+                    ?
+                  </h1>
+                </div>
+                <div className="action buttons mt-5 flex items-center justify-center space-x-2">
+                  <Button
+                    className={` text-white rounded-md p-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none bg-btn-primary shadow-none`}
+                    ripple={true}
+                    size="lg"
+                    onClick={() => deleteAttrType(deleteDialogue)}
+                  >
+                    {btnLoading ? (
+                      <CircularProgress size={16} sx={{ color: "white" }} />
+                    ) : (
+                      <span>{t("confirm")}</span>
+                    )}
+                  </Button>
+
+                  <Button
+                    onClick={() => setDeleteDialogue(false)}
+                    ripple={true}
+                    variant="outlined"
+                    className={`shadow-none p-3 rounded-md text-sm  ${
+                      currentMode === "dark"
+                        ? "text-white border-white"
+                        : "text-black border-black"
+                    }`}
+                  >
+                    {t("cancel")}
+                  </Button>
+                </div>
+              </div>
+            </Dialog>
+          </>
+        )}
       </div>
       <div className=" mt-5">
         <ListingDataGrid
