@@ -205,6 +205,7 @@ const AddListingType = ({
           progress: undefined,
           theme: "light",
         });
+        FetchData();
       })
       .catch((err) => {
         setBtnLoading(false);

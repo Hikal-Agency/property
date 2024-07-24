@@ -325,6 +325,7 @@ const AddListingAttribute = ({
           garage: "",
           gallery: "",
         });
+        FetchData();
       })
       .catch((err) => {
         console.error(err);

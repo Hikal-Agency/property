@@ -99,6 +99,7 @@ const AddListingAttrType = ({
           latitude: "",
           longitude: "",
         });
+        FetchData();
       })
       .catch((err) => {
         console.error(err);
