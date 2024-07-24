@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { useStateContext } from "../../../context/ContextProvider";
-import { Box, Button, CircularProgress, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  TextField,
+} from "@mui/material";
 import { selectStyles } from "../../../Components/_elements/SelectStyles";
 import Select from "react-select";
 import axios from "../../../axoisConfig";
@@ -42,6 +49,14 @@ const AddListingAttribute = ({ data, setData }) => {
       (list_type) => list_type.id === listingAttr?.listing_type_id
     )[0]?.name
   );
+
+  const handleCheckboxChange = (event) => {
+    console.log("checkbox: ", event.target.checked);
+    setListingAttr({
+      ...listingAttr,
+      garage: event.target.checked ? 1 : 0,
+    });
+  };
 
   const columns = [
     // id
@@ -520,7 +535,7 @@ const AddListingAttribute = ({ data, setData }) => {
             onChange={handleChange}
             required
           />
-          <TextField
+          {/* <TextField
             id="garage"
             type={"text"}
             label={t("garage")}
@@ -534,6 +549,23 @@ const AddListingAttribute = ({ data, setData }) => {
             name="area"
             onChange={handleChange}
             required
+          /> */}
+          <FormControlLabel
+            control={
+              <Checkbox
+                value={listingAttr?.garage}
+                onChange={handleCheckboxChange}
+                checked={listingAttr?.garage}
+                name="garage"
+                id="garage"
+                fullWidth
+                inputProps={{ "aria-label": "controlled" }}
+                style={{
+                  color: currentMode === "dark" ? "#fff" : "#000",
+                }}
+              />
+            }
+            label={t("garage")}
           />
 
           <Button

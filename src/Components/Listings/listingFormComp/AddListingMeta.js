@@ -39,7 +39,6 @@ const AddListingMeta = ({ data, setData }) => {
   const [allImages, setAllImages] = useState([]);
   const [listingMeta, setListingMeta] = useState({
     new_listing_id: "",
-    slug: "",
     long_description: "",
     year_build_in: "",
     promo_video: "",
@@ -47,13 +46,9 @@ const AddListingMeta = ({ data, setData }) => {
     meta_title: "",
     meta_keywords: "",
     meta_description: "",
-    og_title: "",
-    og_description: "",
-    json_ld: "1",
-    canonical: "",
+
     banner: "",
     additional_gallery: [],
-    og_image: "",
   });
 
   console.log("listingMeta: ", listingMeta);
@@ -159,7 +154,6 @@ const AddListingMeta = ({ data, setData }) => {
         });
 
         setListingMeta({
-          slug: "",
           long_description: "",
           year_build_in: "",
           promo_video: "",
@@ -167,13 +161,9 @@ const AddListingMeta = ({ data, setData }) => {
           meta_title: "",
           meta_keywords: "",
           meta_description: "",
-          og_title: "",
-          og_description: "",
-          json_ld: "",
-          canonical: "",
+
           banner: "",
           additional_gallery: [],
-          og_image: "",
         });
       })
       .catch((err) => {
@@ -390,21 +380,6 @@ const AddListingMeta = ({ data, setData }) => {
           }}
         >
           <TextField
-            id="slug"
-            type={"text"}
-            label={t("label_slug")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
-            value={listingMeta?.slug}
-            name="area"
-            onChange={handleChange}
-            required
-          />
-          <TextField
             id="meta_description"
             type={"text"}
             label={t("label_meta_desc")}
@@ -430,36 +405,6 @@ const AddListingMeta = ({ data, setData }) => {
             variant="outlined"
             size="small"
             value={listingMeta?.meta_keywords}
-            name="area"
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            id="og_title"
-            type={"text"}
-            label={t("label_og_title")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
-            value={listingMeta?.og_title}
-            name="area"
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            id="og_description"
-            type={"text"}
-            label={t("label_og_desc")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
-            value={listingMeta?.og_description}
             name="area"
             onChange={handleChange}
             required
@@ -542,43 +487,6 @@ const AddListingMeta = ({ data, setData }) => {
               {allImages?.length > 0
                 ? `${allImages?.length} images selected.`
                 : null}
-            </p>
-          </label>
-
-          <input
-            accept="image/*"
-            style={{ display: "none" }}
-            id="og-image-file"
-            type="file"
-            name="picture"
-            // onChange={handleImgUpload}
-            onChange={(e) => {
-              console.log("event of og image: ", e);
-
-              setListingMeta({
-                ...listingMeta,
-                og_image: e.target.files[0],
-              });
-            }}
-          />
-          <label htmlFor="og-image-file">
-            <Button
-              variant="contained"
-              size="lg"
-              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
-              style={{
-                fontFamily: fontFam,
-                color: "#ffffff",
-                marginTop: "20px",
-              }}
-              component="span"
-              // disabled={loading ? true : false}
-              // startIcon={loading ? null : <MdFileUpload />}
-            >
-              <span>{t("label_og_img")}</span>
-            </Button>
-            <p className="text-primary mt-2 italic">
-              {listingMeta?.og_image ? `og image selected.` : null}
             </p>
           </label>
 
