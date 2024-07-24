@@ -41,7 +41,6 @@ const Addlisting = ({ data }) => {
     state_id: "",
     city_id: "",
     short_description: "",
-    thumbnail: "text",
     status: "",
   });
 
@@ -561,43 +560,6 @@ const Addlisting = ({ data }) => {
             onChange={handleChange}
             required
           />
-
-          <input
-            accept="image/*"
-            style={{ display: "none" }}
-            id="list-thumb"
-            type="file"
-            name="picture"
-            onChange={(e) => {
-              console.log("event of og image: ", e);
-
-              setlistingData({
-                ...listingData,
-                thumbnail: e.target.files,
-              });
-            }}
-          />
-
-          {/* <label htmlFor="list-thumb">
-            <Button
-              variant="contained"
-              size="lg"
-              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
-              style={{
-                fontFamily: fontFam,
-                color: "#ffffff",
-                marginTop: "20px",
-              }}
-              component="span"
-              // disabled={loading ? true : false}
-              // startIcon={loading ? null : <MdFileUpload />}
-            >
-              <span>{t("thumbnail")}</span>
-            </Button>
-            <p className="text-primary mt-2 italic">
-              {listingData?.thumbnail ? `thumbnail selected.` : null}
-            </p>
-          </label> */}
 
           <Button
             className={`min-w-fit text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
