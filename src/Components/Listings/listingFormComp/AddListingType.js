@@ -5,7 +5,14 @@ import { toast } from "react-toastify";
 import axios from "../../../axoisConfig";
 import ListingDataGrid from "../ListingDataGrid";
 
-const AddListingType = ({ data, setData, column, setColumn }) => {
+const AddListingType = ({
+  data,
+  setData,
+  column,
+  setColumn,
+  loading,
+  setLoading,
+}) => {
   const {
     darkModeColors,
     currentMode,
@@ -320,6 +327,8 @@ const AddListingType = ({ data, setData, column, setColumn }) => {
           column={columns}
           // setColumn={setColumn}
           type="list_type"
+          loading={loading}
+          setLoading={setLoading}
         />
       </div>
     </div>

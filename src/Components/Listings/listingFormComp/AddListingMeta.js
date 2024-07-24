@@ -18,7 +18,7 @@ import moment from "moment";
 import dayjs from "dayjs";
 import AddImageModal from "../../../Pages/listings/AddImageModal";
 import ListingDataGrid from "../ListingDataGrid";
-const AddListingMeta = ({ data, setData }) => {
+const AddListingMeta = ({ data, setData, loading, setLoading }) => {
   const {
     darkModeColors,
     currentMode,

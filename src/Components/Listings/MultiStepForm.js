@@ -276,6 +276,8 @@ export default function MultiStepForm() {
               column={column}
               setColumn={setColumn}
               type="list_type"
+              loading={loading}
+              setLoading={setLoading}
             />
           )}
           {activeStep === 1 && (
@@ -285,6 +287,8 @@ export default function MultiStepForm() {
               column={column}
               setColumn={setColumn}
               type="list_attr"
+              loading={loading}
+              setLoading={setLoading}
             />
           )}
           {activeStep === 2 && (
@@ -294,6 +298,8 @@ export default function MultiStepForm() {
               column={column}
               setColumn={setColumn}
               type="list_attr_type"
+              loading={loading}
+              setLoading={setLoading}
             />
           )}
           {activeStep === 3 && <Addlisting data={data} />}
