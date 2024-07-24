@@ -28,6 +28,7 @@ const AddListingType = ({
   total,
   setPage,
   setPageSize,
+  FetchData,
 }) => {
   const {
     darkModeColors,
@@ -120,7 +121,7 @@ const AddListingType = ({
 
     axios
       .delete(
-        `${BACKEND_URL}/listing-types/${deleteDialogue?.id}`,
+        `${BACKEND_URL}/listing-types/${deleteDialogue?.lid}`,
 
         {
           headers: {
@@ -143,6 +144,7 @@ const AddListingType = ({
           progress: undefined,
           theme: "light",
         });
+        FetchData();
       })
       .catch((err) => {
         setBtnLoading(false);

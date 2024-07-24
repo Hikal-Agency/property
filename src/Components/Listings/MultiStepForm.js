@@ -167,15 +167,6 @@ export default function MultiStepForm() {
         }
       });
 
-      // setData((prevData) => ({
-      //   ...prevData,
-      //   list_type: type === "list_type" ? rowsData : prevData.list_type,
-      //   list_attribute:
-      //     type === "list_attribute" ? rowsData : prevData.list_attribute,
-      //   list_attr_type:
-      //     type === "list_attr_type" ? rowsData : prevData.list_attr_type,
-      // }));
-
       setData((prevData) => ({
         ...prevData,
         [type]: rowsData,
@@ -283,6 +274,7 @@ export default function MultiStepForm() {
               total={total}
               setPage={setPage}
               setPageSize={setPageSize}
+              FetchData={FetchData}
             />
           )}
           {activeStep === 1 && (
@@ -299,6 +291,7 @@ export default function MultiStepForm() {
               total={total}
               setPage={setPage}
               setPageSize={setPageSize}
+              FetchData={FetchData}
             />
           )}
           {activeStep === 2 && (
@@ -315,6 +308,7 @@ export default function MultiStepForm() {
               total={total}
               setPage={setPage}
               setPageSize={setPageSize}
+              FetchData={FetchData}
             />
           )}
           {activeStep === 3 && <Addlisting data={data} />}
