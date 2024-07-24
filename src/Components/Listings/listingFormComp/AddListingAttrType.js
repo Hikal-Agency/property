@@ -28,7 +28,7 @@ const AddListingAttrType = ({ data, setData }) => {
     listing_attribute_id: "",
     type: "",
     price: "",
-    amenities: "",
+
     near_by: "",
     latitude: "",
     longitude: "",
@@ -71,7 +71,7 @@ const AddListingAttrType = ({ data, setData }) => {
           listing_attribute_id: 3,
           type: "",
           price: "",
-          amenities: "",
+
           near_by: "",
           latitude: "",
           longitude: "",
@@ -177,22 +177,22 @@ const AddListingAttrType = ({ data, setData }) => {
         );
       },
     },
-    // AMENITIES
-    {
-      field: "amenities",
-      headerName: t("form_label_amenities"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
+    // // AMENITIES
+    // {
+    //   field: "amenities",
+    //   headerName: t("form_label_amenities"),
+    //   headerAlign: "center",
+    //   editable: false,
+    //   minwidth: 100,
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="w-full flex items-center justify-center">
+    //         <p className="text-center">{cellValues?.formattedValue}</p>
+    //       </div>
+    //     );
+    //   },
+    // },
     // NEAR BY
     {
       field: "near_by",
@@ -429,7 +429,7 @@ const AddListingAttrType = ({ data, setData }) => {
             required
           />
 
-          <TextField
+          {/* <TextField
             id="amenities"
             type={"text"}
             label={t("form_label_amenities")}
@@ -442,7 +442,7 @@ const AddListingAttrType = ({ data, setData }) => {
             value={listingAttrType?.amenities}
             name="tourLink"
             onChange={handleChange}
-          />
+          /> */}
 
           <TextField
             id="gallery"
