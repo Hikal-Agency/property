@@ -7,7 +7,17 @@ import { toast } from "react-toastify";
 import axios from "../../../axoisConfig";
 import ListingDataGrid from "../ListingDataGrid";
 
-const AddListingAttrType = ({ data, setData, loading, setLoading }) => {
+const AddListingAttrType = ({
+  data,
+  setData,
+  loading,
+  setLoading,
+  page,
+  pageSize,
+  total,
+  setPage,
+  setPageSize,
+}) => {
   const {
     darkModeColors,
     currentMode,
@@ -592,6 +602,11 @@ const AddListingAttrType = ({ data, setData, loading, setLoading }) => {
           type="list_attr_type"
           loading={loading}
           setLoading={setLoading}
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          setPage={setPage}
+          setPageSize={setPageSize}
         />
       </div>
     </div>

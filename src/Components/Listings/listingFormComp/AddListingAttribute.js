@@ -15,7 +15,17 @@ import { toast } from "react-toastify";
 import ListingDataGrid from "../ListingDataGrid";
 import SelectOption from "@material-tailwind/react/components/Select/SelectOption";
 
-const AddListingAttribute = ({ data, setData, loading, setLoading }) => {
+const AddListingAttribute = ({
+  data,
+  setData,
+  loading,
+  setLoading,
+  page,
+  pageSize,
+  total,
+  setPage,
+  setPageSize,
+}) => {
   const {
     darkModeColors,
     currentMode,
@@ -601,6 +611,11 @@ const AddListingAttribute = ({ data, setData, loading, setLoading }) => {
           type="list_attribute"
           loading={loading}
           setLoading={setLoading}
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          setPage={setPage}
+          setPageSize={setPageSize}
         />
       </div>
     </div>

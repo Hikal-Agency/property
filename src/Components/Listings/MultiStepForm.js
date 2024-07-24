@@ -278,6 +278,11 @@ export default function MultiStepForm() {
               type="list_type"
               loading={loading}
               setLoading={setLoading}
+              page={page}
+              pageSize={pageSize}
+              total={total}
+              setPage={setPage}
+              setPageSize={setPageSize}
             />
           )}
           {activeStep === 1 && (
@@ -289,6 +294,11 @@ export default function MultiStepForm() {
               type="list_attr"
               loading={loading}
               setLoading={setLoading}
+              page={page}
+              pageSize={pageSize}
+              total={total}
+              setPage={setPage}
+              setPageSize={setPageSize}
             />
           )}
           {activeStep === 2 && (
@@ -300,6 +310,11 @@ export default function MultiStepForm() {
               type="list_attr_type"
               loading={loading}
               setLoading={setLoading}
+              page={page}
+              pageSize={pageSize}
+              total={total}
+              setPage={setPage}
+              setPageSize={setPageSize}
             />
           )}
           {activeStep === 3 && <Addlisting data={data} />}

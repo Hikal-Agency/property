@@ -13,6 +13,11 @@ const ListingDataGrid = ({
   type,
   loading,
   setLoading,
+  page,
+  pageSize,
+  total,
+  setPage,
+  setPageSize,
 }) => {
   const {
     currentMode,
@@ -27,9 +32,9 @@ const ListingDataGrid = ({
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
   const [last_page, setLastPage] = useState(null);
-  const [total, setTotal] = useState(null);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(null);
+  // const [total, setTotal] = useState(null);
+  // const [page, setPage] = useState(1);
+  // const [pageSize, setPageSize] = useState(null);
 
   console.log("datagrid:: ", data);
   console.log("type:: ", type);

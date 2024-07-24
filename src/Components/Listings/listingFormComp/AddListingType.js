@@ -12,6 +12,11 @@ const AddListingType = ({
   setColumn,
   loading,
   setLoading,
+  page,
+  pageSize,
+  total,
+  setPage,
+  setPageSize,
 }) => {
   const {
     darkModeColors,
@@ -329,6 +334,11 @@ const AddListingType = ({
           type="list_type"
           loading={loading}
           setLoading={setLoading}
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          setPage={setPage}
+          setPageSize={setPageSize}
         />
       </div>
     </div>
