@@ -68,7 +68,6 @@ const ListingDataGrid = ({
           rowsPerPageOptions={[30, 50, 75, 100]}
           pagination
           width="auto"
-          // getRowHeight={() => "auto"}
           paginationMode="server"
           page={page - 1}
           pageSize={pageSize}

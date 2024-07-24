@@ -1161,7 +1161,14 @@
 
 
 
-    "status_inactive" : "Inactive"
+    "status_inactive" : "Inactive",
+
+
+
+
+
+
+    "do_you_really_delete":"Do you really want to delete "
 
   
 } 
