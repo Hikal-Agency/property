@@ -211,17 +211,16 @@ const AddListingType = ({
 
     let method = editData ? "put" : "post";
 
-    // Parameters for PUT request
-    let params = editData ? { params: { name: name } } : {};
+    // // Parameters for PUT request
+    // let params = editData ? { params: { name: name } } : {};
 
-    // Data for POST request
-    let data = editData ? {} : { name: name };
+    // // Data for POST request
+    // let data = editData ? {} : { name: name };
 
     axios({
       method: method,
       url: url,
-      data: data,
-      ...params,
+      data: { name: name },
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: "Bearer " + token,

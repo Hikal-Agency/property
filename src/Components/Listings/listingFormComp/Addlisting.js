@@ -21,6 +21,8 @@ const Addlisting = ({ data }) => {
     fontFam,
   } = useStateContext();
 
+  console.log("all data::: ", data);
+
   const token = localStorage.getItem("auth-token");
 
   const [btnLoading, setBtnLoading] = useState(false);
@@ -336,7 +338,7 @@ const Addlisting = ({ data }) => {
               label: listingData?.listing_attribute_id
                 ? data?.list_attribute?.filter(
                     (list_type) =>
-                      list_type.id === listingData?.listing_attribute_id
+                      list_type.la_id === listingData?.listing_attribute_id
                   )[0]?.name
                 : t("label_list_attr"),
             }}
@@ -347,7 +349,7 @@ const Addlisting = ({ data }) => {
               });
             }}
             options={data?.list_attribute?.map((list_type) => ({
-              value: list_type.id,
+              value: list_type.la_id,
               label: list_type.name,
             }))}
             className="w-full"
@@ -472,7 +474,8 @@ const Addlisting = ({ data }) => {
               value: listingData?.listing_type_id,
               label: listingData?.listing_type_id
                 ? data?.list_type?.filter(
-                    (list_type) => list_type.id === listingData?.listing_type_id
+                    (list_type) =>
+                      list_type.lid === listingData?.listing_type_id
                   )[0]?.name
                 : t("label_listing_type"),
             }}
@@ -483,7 +486,7 @@ const Addlisting = ({ data }) => {
               });
             }}
             options={data?.list_type?.map((list_type) => ({
-              value: list_type.id,
+              value: list_type.lid,
               label: list_type.name,
             }))}
             className="w-full"
@@ -499,7 +502,8 @@ const Addlisting = ({ data }) => {
               label: listingData?.listing_arrtibute_type_id
                 ? data?.list_attr_type?.filter(
                     (list_type) =>
-                      list_type.id === listingData?.listing_arrtibute_type_id
+                      list_type.lat_id ===
+                      listingData?.listing_arrtibute_type_id
                   )[0]?.name
                 : t("label_list_attr_type"),
             }}
@@ -510,7 +514,7 @@ const Addlisting = ({ data }) => {
               });
             }}
             options={data?.list_attr_type?.map((list_type) => ({
-              value: list_type.id,
+              value: list_type.lat_id,
               label: list_type.name,
             }))}
             className="w-full"
