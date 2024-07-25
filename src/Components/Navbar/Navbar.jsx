@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useProSidebar } from "react-pro-sidebar";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import { MdStars } from "react-icons/md";
-
+import { MdStars, MdCurrencyExchange } from "react-icons/md";
 import { Tooltip, Button, Badge } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import Avatar from "@mui/material/Avatar";
@@ -44,6 +43,7 @@ import {
 import "../../styles/animation.css";
 import ColorSchemeMenuItem from "./ColorSchemeMenuItem";
 import SearchLeads from "./SearchLeads";
+import CurrencyConvertor from "./CurrencyConvertor";
 
 const NavButton = ({
   title,
@@ -124,6 +124,7 @@ const Navbar = () => {
   const [isTwoFA, setIsTwoFA] = useState(
     User?.is_2FA_Verified == 0 || !User?.is_2FA_Verified ? false : true
   );
+  const [currencyModal, setCurrencyModal] = useState(false);
   const navigate = useNavigate();
 
   console.log(User, "user");
@@ -457,6 +458,20 @@ const Navbar = () => {
                 <></>
               ),
             ]}
+            {/* Currency Convertor */}
+
+            <Tooltip title={"Currency Convertor"} arrow placement="bottom">
+              <button
+                type="button"
+                onClick={() => setCurrencyModal(true)}
+                className={`relative text-xl rounded-full p-3 hover:bg-light-gray ${
+                  currentMode == "dark" ? "text-white" : "text-black"
+                }`}
+                aria-label={"Currency Convertor"}
+              >
+                <MdCurrencyExchange size={16} />
+              </button>
+            </Tooltip>
 
             {/* MEETINGS  */}
             <NavButton
@@ -1032,6 +1047,22 @@ const Navbar = () => {
 
             {/* search */}
             <SearchLeads />
+
+            {/* currency Convertor */}
+
+            <Tooltip title={"Currency Convertor"} arrow placement="bottom">
+              <button
+                type="button"
+                onClick={() => setCurrencyModal(true)}
+                className={`relative text-xl rounded-full p-3 hover:bg-light-gray ${
+                  currentMode == "dark" ? "text-white" : "text-black"
+                }`}
+                aria-label={"Currency Convertor"}
+              >
+                <MdCurrencyExchange size={16} />
+              </button>
+            </Tooltip>
+
             {/* MEETINGS  */}
             <NavButton
               title="Meetings"
@@ -1528,6 +1559,10 @@ const Navbar = () => {
           </div>
         </div>
       )}
+      <CurrencyConvertor
+        setCurrencyModal={setCurrencyModal}
+        currencyModal={currencyModal}
+      />
     </>
   );
 };

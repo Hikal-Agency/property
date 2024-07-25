@@ -69,6 +69,8 @@ const Closedeals = ({ pageState, setpageState }) => {
     isLangRTL,
     i18n,
     darkModeColors,
+    Managers,
+    SalesPerson,
   } = useStateContext();
   // eslint-disable-next-line
   const [searchText, setSearchText] = useState("");
@@ -79,13 +81,14 @@ const Closedeals = ({ pageState, setpageState }) => {
   const [UpdateLeadModelOpen, setUpdateLeadModelOpen] = useState(false);
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
   const [dealHisotryModel, setDealHistoryModel] = useState(false);
-  const [managers, setManagers] = useState([]);
-  const [agents, setAgents] = useState([]);
+  const [managers, setManagers] = useState(Managers || []);
+  const [agents, setAgents] = useState(SalesPerson || []);
   const handleUpdateLeadModelOpen = () => setUpdateLeadModelOpen(true);
 
   const handleUpdateLeadModelClose = () => {
     setUpdateLeadModelOpen(false);
   };
+
   const [filtersData, setFiltersData] = useState({
     leadSource: null,
     agentAssigned: null,
@@ -99,6 +102,11 @@ const Closedeals = ({ pageState, setpageState }) => {
     invoice_status: "",
     comm_status: "",
   });
+
+  useEffect(() => {
+    setManagers(Managers);
+    setAgents(SalesPerson);
+  }, [Managers, SalesPerson]);
 
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
@@ -878,41 +886,38 @@ const Closedeals = ({ pageState, setpageState }) => {
   };
 
   useEffect(() => {
-    const getManagers = async () => {
-      const token = localStorage?.getItem("auth-token");
-      try {
-        const res = await axios.get(`${BACKEND_URL}/managers`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
-        setManagers(res?.data?.managers);
-        console.log(res, "response of manager");
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const getAgents = async () => {
-      let token = localStorage?.getItem("auth-token");
-      try {
-        const res = await axios.get(`${BACKEND_URL}/agents?isParent=132`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        });
-
-        setAgents(res?.data?.agents?.data);
-        console.log("agents", res?.data?.agents);
-      } catch (error) {
-        console.log("agents can't be fetched error", error);
-      }
-    };
-
-    getManagers();
-    getAgents();
+    // const getManagers = async () => {
+    //   const token = localStorage?.getItem("auth-token");
+    //   try {
+    //     const res = await axios.get(`${BACKEND_URL}/managers`, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: "Bearer " + token,
+    //       },
+    //     });
+    //     setManagers(res?.data?.managers);
+    //     console.log(res, "response of manager");
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // const getAgents = async () => {
+    //   let token = localStorage?.getItem("auth-token");
+    //   try {
+    //     const res = await axios.get(`${BACKEND_URL}/agents?isParent=132`, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: "Bearer " + token,
+    //       },
+    //     });
+    //     setAgents(res?.data?.agents?.data);
+    //     console.log("agents", res?.data?.agents);
+    //   } catch (error) {
+    //     console.log("agents can't be fetched error", error);
+    //   }
+    // };
+    // getManagers();
+    // getAgents();
   }, []);
   const handleDateRange = (newValue, type) => {
     const formattedDate = moment(newValue?.$d).format("YYYY-MM-DD");
@@ -1064,6 +1069,14 @@ const Closedeals = ({ pageState, setpageState }) => {
     filterItems();
   }, [filtersData]);
 
+  let allAgents = [];
+
+  if (User?.role === 1 || User?.role === 2 || User?.role === 8) {
+    allAgents = agents[`manager-${filtersData?.managerAssigned?.value}`];
+  } else {
+    allAgents = agents[`manager-${User?.id}`];
+  }
+
   return (
     <div className="pb-10">
       <div
@@ -1122,27 +1135,6 @@ const Closedeals = ({ pageState, setpageState }) => {
                 {` ${t("btn_filters")}`}
               </h3>
               <div className="flex flex-col w-full mb-4">
-                {/* CATEGORY */}
-                {hasPermission("search_agent_filter") && (
-                  <Select
-                    id="agentAssigned"
-                    options={agents?.map((agent) => ({
-                      value: agent.id,
-                      label: agent.userName,
-                    }))}
-                    value={filtersData?.agentAssigned}
-                    onChange={(e) => {
-                      setFiltersData((filtersData) => ({
-                        ...filtersData,
-                        agentAssigned: e,
-                      }));
-                    }}
-                    placeholder={t("agent_assigned")}
-                    // className={`mb-5`}
-                    menuPortalTarget={document.body}
-                    styles={selectStyles(currentMode, primaryColor)}
-                  />
-                )}
                 {hasPermission("search_manager_filter") && (
                   <Select
                     id="Manager Assigned"
@@ -1155,14 +1147,43 @@ const Closedeals = ({ pageState, setpageState }) => {
                       setFiltersData((filtersData) => ({
                         ...filtersData,
                         managerAssigned: e,
+                        agentAssigned: null,
                       }));
                     }}
-                    placeholder={t("manager_assigned")}
+                    placeholder={t("label_manager")}
                     // className={`mb-5`}
                     menuPortalTarget={document.body}
                     styles={selectStyles(currentMode, primaryColor)}
                   />
                 )}
+                {/* CATEGORY */}
+                {hasPermission("search_agent_filter") && (
+                  <Select
+                    id="agentAssigned"
+                    // options={agents?.map((agent) => ({
+                    //   value: agent.id,
+                    //   label: agent.userName,
+                    // }))}
+                    options={allAgents
+                      ?.filter((agent) => agent.role === 7)
+                      .map((agent) => ({
+                        value: agent?.id,
+                        label: agent?.userName,
+                      }))}
+                    value={filtersData?.agentAssigned}
+                    onChange={(e) => {
+                      setFiltersData((filtersData) => ({
+                        ...filtersData,
+                        agentAssigned: e,
+                      }));
+                    }}
+                    placeholder={t("label_agent")}
+                    // className={`mb-5`}
+                    menuPortalTarget={document.body}
+                    styles={selectStyles(currentMode, primaryColor)}
+                  />
+                )}
+
                 {hasPermission("search_leadSource_filter") && (
                   <Select
                     id="Lead Source"
