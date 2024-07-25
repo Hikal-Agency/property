@@ -10,7 +10,7 @@ import {
   Box,
   FormControl,
   MenuItem,
-  InputAdornment
+  InputAdornment,
 } from "@mui/material";
 import Select from "react-select";
 
@@ -28,9 +28,7 @@ import jsPDF from "jspdf";
 import { fontSize } from "@mui/system";
 import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
-import {
-  BsPercent
-} from "react-icons/bs";
+import { BsPercent } from "react-icons/bs";
 
 const CommissionReqModal = ({
   commReqModal,
@@ -267,6 +265,368 @@ const CommissionReqModal = ({
         });
       });
   };
+
+  // const generatePDF = (data) => {
+  //   console.log("PDF Data:: ", data);
+  //   const doc = new jsPDF({
+  //     format: "a4",
+  //     unit: "mm",
+  //   });
+
+  //   const pageWidth = doc.internal.pageSize.getWidth();
+  //   const pageHeight = doc.internal.pageSize.getHeight();
+  //   const pageCount = doc.internal.getNumberOfPages();
+  //   const paddingX = 15;
+  //   let usedY = 50;
+
+  //   // WATERMARK
+
+  //   const addWatermark = () => {
+  //     const watermarkUrl = "assets/Watermark.png";
+  //     const watermarkWidth = 150;
+  //     const watermarkHeight = 150;
+
+  //     for (let i = 1; i <= pageCount; i++) {
+  //       doc.setPage(i);
+
+  //       // Center the watermark
+  //       const x = (pageWidth - watermarkWidth) / 2; // Centered horizontally
+  //       const y = (pageHeight - watermarkHeight) / 2; // Centered vertically
+
+  //       // Set opacity to 0.1
+  //       doc.setGState(new doc.GState({ opacity: 0.1 }));
+
+  //       // Add the watermark image
+  //       doc.addImage(
+  //         watermarkUrl,
+  //         "PNG",
+  //         x,
+  //         y,
+  //         watermarkWidth,
+  //         watermarkHeight
+  //       );
+
+  //       // Reset opacity to default (1.0) for subsequent content
+  //       doc.setGState(new doc.GState({ opacity: 1.0 }));
+  //     }
+  //   };
+
+  //   addWatermark();
+
+  //   // HEADER
+  //   const addHeader = () => {
+  //     const headerImg = "assets/Header-update.jpg";
+
+  //     for (let i = 1; i <= pageCount; i++) {
+  //       doc.setPage(i);
+  //       const x = 0;
+  //       const y = -3;
+  //       const width = pageWidth;
+  //       const height = 50;
+
+  //       doc.addImage(headerImg, "JPEG", x, y, width, height);
+  //     }
+  //   };
+  //   addHeader();
+
+  //   // FOOTER
+  //   const addFooter = () => {
+  //     const footerImage = "assets/Footer.jpg";
+
+  //     for (let i = 1; i <= pageCount; i++) {
+  //       doc.setPage(i);
+  //       const width = pageWidth;
+  //       const height = 44;
+  //       const x = 0;
+  //       const y = pageHeight - height + 4;
+
+  //       doc.addImage(footerImage, "JPEG", x, y, width, height);
+  //     }
+  //   };
+  //   addFooter();
+
+  //   const addHeading = () => {
+  //     const x = pageWidth / 2;
+  //     const y = 50 - 4;
+  //     doc.setFont("Arial", "bold");
+  //     doc.setFontSize(14);
+  //     doc.text("TAX INVOICE", x, y, null, null, "center");
+  //     const textWidth = doc.getTextWidth("TAX INVOICE");
+  //     const titleY = y + 2;
+  //     doc.setLineWidth(0.5);
+  //     doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
+  //     // DATE
+  //     doc.setFont("Arial", "normal");
+  //     doc.setFontSize(12);
+  //     const dateY = titleY + 4;
+  //     doc.text(
+  //       `Date: ${currentDate}`,
+  //       pageWidth - paddingX,
+  //       dateY,
+  //       null,
+  //       null,
+  //       "right"
+  //     );
+  //     // INVOICE ID
+  //     doc.text(
+  //       `Invoice No.: ${data?.invoice_id}`,
+  //       pageWidth - paddingX,
+  //       dateY + 6,
+  //       null,
+  //       null,
+  //       "right"
+  //     );
+  //     usedY = 54;
+  //   };
+
+  //   const addCompanyDetails = () => {
+  //     // doc.setFont("Arial", "normal");
+  //     // doc.setFontSize(12);
+  //     // doc.text("Company:", 120, 66);
+  //     // doc.text(`${data?.company}`, 120, 73);
+  //     // doc.text(`TRN No: ${data?.company_trn}`, 120, 80);
+  //     // doc.text(` `, 120, 87);
+
+  //     // doc.text("Bill to:", 20, 73);
+  //     // doc.text(`${data?.vendor_name}`, 20, 80);
+  //     // doc.text(`${data?.address}`, 20, 87);
+  //     // doc.text(`TRN No: ${data?.trn}`, 20, 94);
+
+  //     // doc.setDrawColor(0);
+  //     // doc.setLineWidth(0.5);
+  //     // doc.line(20, 101, 190, 101);
+  //     doc.setFont("Arial", "normal");
+  //     doc.setFontSize(12);
+  //     // VENDOR
+  //     doc.text("Bill to: ", paddingX, usedY + 15);
+  //     doc.setFont("Arial", "bold");
+  //     doc.text(`${data?.vendor_name}`, paddingX, usedY + 15 + 6);
+  //     doc.setFont("Arial", "normal");
+
+  //     // doc.text(`${data?.address}`, paddingX, usedY + 15 + 6 + 6);
+
+  //     // const maxWidth = doc.internal.pageSize.getWidth() - 2 * paddingX; // Subtracting padding from both sides
+  //     const maxWidth = 90;
+
+  //     // Split the address text to fit within the specified width
+  //     const addressLines = doc.splitTextToSize(`${data?.address}`, maxWidth);
+
+  //     // Render each line of the address
+  //     let currentY = usedY + 15 + 6 + 6;
+  //     addressLines.forEach((line, index) => {
+  //       doc.text(line, paddingX, currentY + index * 5); // Adjust line spacing as needed (10 units here)
+  //     });
+
+  //     const addressHeight = addressLines.length * 5 + 1; // Total height occupied by the address lines
+  //     const trnY = currentY + addressHeight; // Adjust Y position for the TRN
+
+  //     doc.text(`TRN No: ${data?.trn}`, paddingX, trnY);
+  //     // doc.text(`TRN No: ${data?.trn}`, paddingX, usedY + 15 + 6 + 6 + 6);
+  //     // COMPANY
+  //     doc.text("Company: ", pageWidth / 2 + paddingX, usedY + 15);
+  //     doc.setFont("Arial", "bold");
+  //     doc.text(`${data?.company}`, pageWidth / 2 + paddingX, usedY + 15 + 6);
+  //     doc.setFont("Arial", "normal");
+  //     doc.text(
+  //       `TRN No: ${data?.company_trn}`,
+  //       pageWidth / 2 + paddingX,
+  //       usedY + 15 + 6 + 6
+  //     );
+  //     doc.text(
+  //       `Email: ${data?.company_email}`,
+  //       pageWidth / 2 + paddingX,
+  //       usedY + 15 + 6 + 6 + 6
+  //     );
+  //     doc.text(
+  //       `Telephone: ${data?.company_tele}`,
+  //       pageWidth / 2 + paddingX,
+  //       usedY + 15 + 6 + 6 + 6 + 6
+  //     );
+  //     usedY = 93;
+  //   };
+
+  //   // CLIENT
+  //   const addClientDetails = () => {
+  //     doc.setFont("Arial", "bold");
+  //     doc.setFontSize(12);
+  //     // TABLE
+  //     doc.autoTable({
+  //       startY: usedY + 10,
+  //       head: [["CLIENT NAME", "UNIT NO", "PROJECT NAME"]],
+  //       body: [[`${data?.leadName}`, `${data?.unit}`, `${data?.project}`]],
+  //       theme: "grid",
+  //       headStyles: {
+  //         fillColor: [238, 238, 238],
+  //         textColor: [0, 0, 0],
+  //         fontStyle: "bold",
+  //         halign: "center",
+  //         font: "Arial",
+  //         fontSize: 12,
+  //       },
+  //       bodyStyles: {
+  //         fillColor: null,
+  //         textColor: [0, 0, 0],
+  //         halign: "center",
+  //         font: "Arial",
+  //         fontSize: 12,
+  //       },
+  //       styles: {
+  //         lineWidth: 0.1,
+  //         lineColor: [0, 0, 0],
+  //       },
+  //     });
+
+  //     const clientTableHeight = doc.lastAutoTable.finalY;
+  //     usedY = clientTableHeight || 119;
+  //   };
+  //   // COMMISSION
+  //   const addTable = () => {
+  //     doc.autoTable({
+  //       startY: usedY + 10,
+  //       head: [
+  //         [
+  //           `SALES VALUE (${data?.currency})`,
+  //           "COMMISSION %",
+  //           "NET VALUE BEFORE VAT",
+  //           "VAT VALUE",
+  //           `GROSS VALUE (${data?.currency})`,
+  //         ],
+  //       ],
+  //       body: [
+  //         [
+  //           `${data?.amount}`,
+  //           `${data?.comm_percent}`,
+  //           `${data?.comm_amount}`,
+  //           `${data?.vat}`,
+  //           `${data?.total_amount}`,
+  //         ],
+  //       ],
+  //       theme: "grid",
+  //       headStyles: {
+  //         fillColor: [238, 238, 238],
+  //         textColor: [0, 0, 0],
+  //         fontStyle: "bold",
+  //         halign: "center",
+  //         font: "Arial",
+  //         fontSize: 12,
+  //       },
+  //       bodyStyles: {
+  //         fillColor: null,
+  //         textColor: [0, 0, 0],
+  //         halign: "center",
+  //         font: "Arial",
+  //         fontSize: 12,
+  //       },
+  //       styles: {
+  //         lineWidth: 0.1,
+  //         lineColor: [0, 0, 0],
+  //       },
+  //     });
+
+  //     const tableHeight = doc.lastAutoTable.finalY;
+  //     usedY = tableHeight || 152;
+
+  //     doc.setFont("Arial", "bold");
+  //     doc.text(
+  //       `TOTAL: ${data?.currency} ${data?.total_amount}`,
+  //       pageWidth - paddingX,
+  //       usedY + 6,
+  //       null,
+  //       null,
+  //       "right"
+  //     );
+  //     usedY = usedY + 6;
+  //   };
+
+  //   const addBankDetails = () => {
+  //     doc.setFont("Arial", "normal");
+  //     doc.setFontSize(10);
+  //     doc.text(
+  //       "All cheques payable to the following account.",
+  //       paddingX,
+  //       usedY + 10
+  //     );
+
+  //     doc.autoTable({
+  //       startY: usedY + 10 + 10,
+  //       head: [
+  //         ["Bank Name", `${data?.bank_name}`],
+  //         ["Bank Address", `${data?.bank_address}`],
+  //         ["Bank Account Name", `${data?.bank_acc_name}`],
+  //         ["Account Number", `${data?.bank_acc_no}`],
+  //         ["IBAN", `${data?.bank_iban}`],
+  //         ["SWIFT Code", `${data?.bank_swift_code}`],
+  //       ],
+  //       body: [],
+  //       theme: "grid",
+  //       headStyles: {
+  //         fillColor: null,
+  //         textColor: [0, 0, 0],
+  //         font: "Arial",
+  //         fontSize: 10,
+  //       },
+  //       styles: {
+  //         fontSize: 10,
+  //         lineWidth: 0.1,
+  //         lineColor: [0, 0, 0],
+  //       },
+  //     });
+  //     const bankTableHeight = doc.lastAutoTable.finalY;
+  //     usedY = bankTableHeight;
+  //   };
+
+  //   const addSignatureSection = () => {
+  //     doc.setFont("Arial", "bold");
+  //     doc.setFontSize(10);
+  //     doc.text("Sincerely,", paddingX, usedY + 10);
+  //     doc.text(
+  //       "Mr. MOHAMED MEDHAT FATHY IBRAHIM HIKAL",
+  //       paddingX,
+  //       usedY + 10 + 6
+  //     );
+  //     doc.text("CEO", paddingX, usedY + 10 + 6 + 6);
+  //     doc.text("HIKAL REAL ESTATE L.L.C", paddingX, usedY + 10 + 6 + 6 + 6);
+
+  //     doc.setLineWidth(0.5);
+  //     doc.line(
+  //       150,
+  //       usedY + 10 + 6 + 6 + 6,
+  //       pageWidth - paddingX,
+  //       usedY + 10 + 6 + 6 + 6
+  //     );
+  //     doc.setFont("Arial", "normal");
+  //     doc.setFontSize(10);
+  //     const text = "Authorized Signature";
+  //     const centerX = (150 + pageWidth - paddingX) / 2;
+  //     const textWidth =
+  //       (doc.getStringUnitWidth(text) * doc.internal.getFontSize()) /
+  //       doc.internal.scaleFactor;
+  //     const textX = centerX - textWidth / 2;
+  //     doc.text(text, textX, usedY + 10 + 6 + 6 + 6 + 6);
+  //   };
+
+  //   addHeading();
+  //   addCompanyDetails();
+  //   addClientDetails();
+  //   addTable();
+  //   addBankDetails();
+  //   addSignatureSection();
+
+  //   // Save the PDF as Blob
+  //   const pdfBlob = doc.output("blob");
+
+  //   // Create a Blob URL
+  //   const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+
+  //   console.log("PDF Blob URL: ", pdfBlobUrl);
+
+  //   // Set the PDF URL in the component state
+  //   setPDFUrl(pdfBlobUrl);
+
+  //   doc.save(`${data?.invoice_id} - ${data?.vendor_name}.pdf`);
+  //   return pdfBlob;
+  // };
+
   const generatePDF = (data) => {
     console.log("PDF Data:: ", data);
     const doc = new jsPDF({
@@ -276,40 +636,22 @@ const CommissionReqModal = ({
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    const pageCount = doc.internal.getNumberOfPages();
     const paddingX = 15;
     let usedY = 50;
 
     // WATERMARK
-    // const addWatermark = () => {
-    //   // const watermarkUrl = "assets/pdf-watermark.png";
-    //   const watermarkUrl = "assets/Watermark.png";
-    //   for (let i = 1; i <= pageCount; i++) {
-    //     doc.setPage(i);
-    //     const x = pageWidth / 2 - 150; // Centered horizontally
-    //     const y = pageHeight / 2 - 150; // Centered vertically
-    //     const width = 150;
-    //     const height = 150;
-
-    //     doc.addImage(watermarkUrl, "PNG", x, y, width, height, "", "NONE", 0.1);
-    //   }
-    // };
     const addWatermark = () => {
       const watermarkUrl = "assets/Watermark.png";
       const watermarkWidth = 150;
       const watermarkHeight = 150;
 
-      for (let i = 1; i <= pageCount; i++) {
+      for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
         doc.setPage(i);
 
-        // Center the watermark
-        const x = (pageWidth - watermarkWidth) / 2; // Centered horizontally
-        const y = (pageHeight - watermarkHeight) / 2; // Centered vertically
+        const x = (pageWidth - watermarkWidth) / 2;
+        const y = (pageHeight - watermarkHeight) / 2;
 
-        // Set opacity to 0.1
         doc.setGState(new doc.GState({ opacity: 0.1 }));
-
-        // Add the watermark image
         doc.addImage(
           watermarkUrl,
           "PNG",
@@ -318,106 +660,65 @@ const CommissionReqModal = ({
           watermarkWidth,
           watermarkHeight
         );
-
-        // Reset opacity to default (1.0) for subsequent content
         doc.setGState(new doc.GState({ opacity: 1.0 }));
       }
     };
-
-    addWatermark();
 
     // HEADER
     const addHeader = () => {
       const headerImg = "assets/Header-update.jpg";
 
-      for (let i = 1; i <= pageCount; i++) {
+      for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
         doc.setPage(i);
-        const x = 0;
-        const y = -3;
-        const width = pageWidth;
-        const height = 50;
-
-        doc.addImage(headerImg, "JPEG", x, y, width, height);
+        doc.addImage(headerImg, "JPEG", 0, -3, pageWidth, 50);
       }
     };
-    addHeader();
-    // const addHeader = () => {
-    //   const pageHeight = doc.internal.pageSize.getHeight();
-    //   const pageWidth = doc.internal.pageSize.getWidth();
-
-    //   // Add the header image
-    //   const headerImg = "assets/Header.jpg";
-    //   doc.addImage(
-    //     headerImg,
-    //     "JPEG",
-    //     0,
-    //     0,
-    //     pageWidth,
-    //     50
-    //   );
-    // };
 
     // FOOTER
     const addFooter = () => {
       const footerImage = "assets/Footer.jpg";
 
-      for (let i = 1; i <= pageCount; i++) {
+      for (let i = 1; i <= doc.internal.getNumberOfPages(); i++) {
         doc.setPage(i);
-        const width = pageWidth;
-        const height = 44;
-        const x = 0;
-        const y = pageHeight - height + 4;
-
-        doc.addImage(footerImage, "JPEG", x, y, width, height);
+        doc.addImage(
+          footerImage,
+          "JPEG",
+          0,
+          pageHeight - 44 + 4,
+          pageWidth,
+          44
+        );
       }
     };
-    addFooter();
-    // const addFooter = () => {
-    //   const pageHeight = doc.internal.pageSize.getHeight();
-    //   const pageWidth = doc.internal.pageSize.getWidth();
 
-    //   // Add the footer image
-    //   const footerImage = "assets/Footer.jpg"; // Ensure the path is correct and image is accessible
-    //   const footerHeight = 50; // Adjust height to fit your layout
-
-    //   // Add image covering the footer area
-    //   doc.addImage(
-    //     footerImage,
-    //     "JPEG",
-    //     0,
-    //     pageHeight - footerHeight,
-    //     pageWidth,
-    //     footerHeight
-    //   );
-    // };
-
+    // Main Content
     const addHeading = () => {
-      const x = pageWidth / 2;
-      const y = 50 - 4;
       doc.setFont("Arial", "bold");
       doc.setFontSize(14);
-      doc.text("TAX INVOICE", x, y, null, null, "center");
+      doc.text("TAX INVOICE", pageWidth / 2, 46, null, null, "center");
       const textWidth = doc.getTextWidth("TAX INVOICE");
-      const titleY = y + 2;
       doc.setLineWidth(0.5);
-      doc.line(x - textWidth / 2, titleY, x + textWidth / 2, titleY);
-      // DATE
+      doc.line(
+        pageWidth / 2 - textWidth / 2,
+        48,
+        pageWidth / 2 + textWidth / 2,
+        48
+      );
+
       doc.setFont("Arial", "normal");
       doc.setFontSize(12);
-      const dateY = titleY + 4;
       doc.text(
         `Date: ${currentDate}`,
         pageWidth - paddingX,
-        dateY,
+        52,
         null,
         null,
         "right"
       );
-      // INVOICE ID
       doc.text(
         `Invoice No.: ${data?.invoice_id}`,
         pageWidth - paddingX,
-        dateY + 6,
+        58,
         null,
         null,
         "right"
@@ -426,76 +727,62 @@ const CommissionReqModal = ({
     };
 
     const addCompanyDetails = () => {
-      // doc.setFont("Arial", "normal");
-      // doc.setFontSize(12);
-      // doc.text("Company:", 120, 66);
-      // doc.text(`${data?.company}`, 120, 73);
-      // doc.text(`TRN No: ${data?.company_trn}`, 120, 80);
-      // doc.text(` `, 120, 87);
-
-      // doc.text("Bill to:", 20, 73);
-      // doc.text(`${data?.vendor_name}`, 20, 80);
-      // doc.text(`${data?.address}`, 20, 87);
-      // doc.text(`TRN No: ${data?.trn}`, 20, 94);
-
-      // doc.setDrawColor(0);
-      // doc.setLineWidth(0.5);
-      // doc.line(20, 101, 190, 101);
       doc.setFont("Arial", "normal");
       doc.setFontSize(12);
-      // VENDOR
+
+      // Vendor Details
       doc.text("Bill to: ", paddingX, usedY + 15);
       doc.setFont("Arial", "bold");
-      doc.text(`${data?.vendor_name}`, paddingX, usedY + 15 + 6);
-      doc.setFont("Arial", "normal");
+      const vendorNameLines = doc.splitTextToSize(`${data?.vendor_name}`, 90);
+      vendorNameLines.forEach((line, index) => {
+        doc.text(line, paddingX, usedY + 21 + index * 6);
+      });
+      let currentY = usedY + 21 + vendorNameLines.length * 6;
 
-      // doc.text(`${data?.address}`, paddingX, usedY + 15 + 6 + 6);
-
-      // const maxWidth = doc.internal.pageSize.getWidth() - 2 * paddingX; // Subtracting padding from both sides
-      const maxWidth = 90;
-
-      // Split the address text to fit within the specified width
-      const addressLines = doc.splitTextToSize(`${data?.address}`, maxWidth);
-
-      // Render each line of the address
-      let currentY = usedY + 15 + 6 + 6;
+      const addressLines = doc.splitTextToSize(`${data?.address}`, 90);
       addressLines.forEach((line, index) => {
-        doc.text(line, paddingX, currentY + index * 5); // Adjust line spacing as needed (10 units here)
+        doc.text(line, paddingX, currentY + index * 6);
       });
 
-      const addressHeight = addressLines.length * 5 + 1; // Total height occupied by the address lines
-      const trnY = currentY + addressHeight; // Adjust Y position for the TRN
-
+      const addressHeight = addressLines.length * 6 + 1;
+      const trnY = currentY + addressHeight;
       doc.text(`TRN No: ${data?.trn}`, paddingX, trnY);
-      // doc.text(`TRN No: ${data?.trn}`, paddingX, usedY + 15 + 6 + 6 + 6);
-      // COMPANY
+
+      // Company Details
+      doc.setFont("Arial", "normal");
       doc.text("Company: ", pageWidth / 2 + paddingX, usedY + 15);
       doc.setFont("Arial", "bold");
-      doc.text(`${data?.company}`, pageWidth / 2 + paddingX, usedY + 15 + 6);
+
+      const companyLines = doc.splitTextToSize(`${data?.company}`, 90);
+      companyLines.forEach((line, index) => {
+        doc.text(line, pageWidth / 2 + paddingX, usedY + 21 + index * 6);
+      });
+
+      const companyY = usedY + 21 + companyLines.length * 6;
       doc.setFont("Arial", "normal");
       doc.text(
         `TRN No: ${data?.company_trn}`,
         pageWidth / 2 + paddingX,
-        usedY + 15 + 6 + 6
+        companyY + 6
       );
       doc.text(
         `Email: ${data?.company_email}`,
         pageWidth / 2 + paddingX,
-        usedY + 15 + 6 + 6 + 6
+        companyY + 12
       );
       doc.text(
         `Telephone: ${data?.company_tele}`,
         pageWidth / 2 + paddingX,
-        usedY + 15 + 6 + 6 + 6 + 6
+        companyY + 18
       );
-      usedY = 93;
+
+      usedY = Math.max(trnY, companyY + 18) + 10;
     };
 
-    // CLIENT
     const addClientDetails = () => {
       doc.setFont("Arial", "bold");
       doc.setFontSize(12);
-      // TABLE
+
       doc.autoTable({
         startY: usedY + 10,
         head: [["CLIENT NAME", "UNIT NO", "PROJECT NAME"]],
@@ -525,7 +812,7 @@ const CommissionReqModal = ({
       const clientTableHeight = doc.lastAutoTable.finalY;
       usedY = clientTableHeight || 119;
     };
-    // COMMISSION
+
     const addTable = () => {
       doc.autoTable({
         startY: usedY + 10,
@@ -594,7 +881,7 @@ const CommissionReqModal = ({
       );
 
       doc.autoTable({
-        startY: usedY + 10 + 10,
+        startY: usedY + 20,
         head: [
           ["Bank Name", `${data?.bank_name}`],
           ["Bank Address", `${data?.bank_address}`],
@@ -617,11 +904,20 @@ const CommissionReqModal = ({
           lineColor: [0, 0, 0],
         },
       });
+
       const bankTableHeight = doc.lastAutoTable.finalY;
       usedY = bankTableHeight;
     };
 
     const addSignatureSection = () => {
+      const requiredSpace = 30; // Adjust as needed for the signature section
+
+      if (usedY + requiredSpace > pageHeight - 44) {
+        doc.addPage();
+        usedY = 50; // Start position on new page
+        addWatermark(); // Add watermark to the new page
+      }
+
       doc.setFont("Arial", "bold");
       doc.setFontSize(10);
       doc.text("Sincerely,", paddingX, usedY + 10);
@@ -658,6 +954,10 @@ const CommissionReqModal = ({
     addBankDetails();
     addSignatureSection();
 
+    addWatermark();
+    addHeader();
+    addFooter();
+
     // Save the PDF as Blob
     const pdfBlob = doc.output("blob");
 
@@ -672,6 +972,7 @@ const CommissionReqModal = ({
     doc.save(`${data?.invoice_id} - ${data?.vendor_name}.pdf`);
     return pdfBlob;
   };
+
   useEffect(() => {
     console.log("total changed: ");
     setCommReqData({
@@ -778,18 +1079,21 @@ const CommissionReqModal = ({
       }}
     >
       <div
-        className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-          } ${isClosing
+        className={`${
+          isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+        } ${
+          isClosing
             ? isLangRTL(i18n.language)
               ? "modal-close-left"
               : "modal-close-right"
             : ""
-          } w-[100vw] h-[100vh] flex items-start justify-end`}
+        } w-[100vw] h-[100vh] flex items-start justify-end`}
       >
         <button
           onClick={handleClose}
-          className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-            }
+          className={`${
+            isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+          }
           bg-primary w-fit h-fit p-3 my-4 z-10`}
         >
           <MdClose
@@ -800,13 +1104,15 @@ const CommissionReqModal = ({
         </button>
         <div
           style={style}
-          className={` ${currentMode === "dark"
-            ? "bg-dark text-white"
-            : "bg-light text-black"
-            } ${isLangRTL(i18n.language)
+          className={` ${
+            currentMode === "dark"
+              ? "bg-dark text-white"
+              : "bg-light text-black"
+          } ${
+            isLangRTL(i18n.language)
               ? currentMode === "dark" && " border-primary border-r-2"
               : currentMode === "dark" && " border-primary border-l-2"
-            }
+          }
             p-5 h-[100vh] w-[85vw] overflow-y-scroll 
           `}
         >
@@ -816,9 +1122,7 @@ const CommissionReqModal = ({
             </div>
           ) : (
             <>
-              <HeadingTitle
-                title={t("generate_comm_req")}
-              />
+              <HeadingTitle title={t("generate_comm_req")} />
 
               <div className="grid md:grid-cols-2 sm:grid-cols-1 xl:grid-cols-3 gap-5">
                 {/* PROJECT DETAILS  */}
@@ -826,24 +1130,22 @@ const CommissionReqModal = ({
                   sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                    {
-                      right: isLangRTL(i18n.language)
-                        ? "2.5rem"
-                        : "inherit",
-                      transformOrigin: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                     "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
                     },
                     "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
-                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
-                    }
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830",
+                    },
                   }}
-                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  className={`${
+                    currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                  }
                   p-5`}
                 >
                   <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
@@ -948,24 +1250,22 @@ const CommissionReqModal = ({
                   sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                    {
-                      right: isLangRTL(i18n.language)
-                        ? "2.5rem"
-                        : "inherit",
-                      transformOrigin: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                     "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
                     },
                     "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
-                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
-                    }
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830",
+                    },
                   }}
-                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  className={`${
+                    currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                  }
                   p-5`}
                 >
                   <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
@@ -974,8 +1274,9 @@ const CommissionReqModal = ({
                   <div className="w-full pt-5"></div>
                   {/* VENDORS LIST */}
                   <FormControl
-                    className={`${currentMode === "dark" ? "text-white" : "text-black"
-                      }`}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    }`}
                     sx={{
                       minWidth: "100%",
                       // border: 1,
@@ -1118,24 +1419,22 @@ const CommissionReqModal = ({
                   sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                    {
-                      right: isLangRTL(i18n.language)
-                        ? "2.5rem"
-                        : "inherit",
-                      transformOrigin: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                     "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
                     },
                     "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
-                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
-                    }
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830",
+                    },
                   }}
-                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  className={`${
+                    currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                  }
                   p-5`}
                 >
                   <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
@@ -1163,12 +1462,10 @@ const CommissionReqModal = ({
                         <TextField
                           sx={{
                             "& input": {
-                              color:
-                                currentMode === "dark" ? "white" : "black",
+                              color: currentMode === "dark" ? "white" : "black",
                             },
                             "& .MuiSvgIcon-root": {
-                              color:
-                                currentMode === "dark" ? "white" : "black",
+                              color: currentMode === "dark" ? "white" : "black",
                             },
                             marginBottom: "15px",
                           }}
@@ -1179,7 +1476,7 @@ const CommissionReqModal = ({
                           readOnly={true}
                         />
                       )}
-                    // maxDate={dayjs().startOf("day").toDate()}
+                      // maxDate={dayjs().startOf("day").toDate()}
                     />
                   </LocalizationProvider>
 
@@ -1348,24 +1645,22 @@ const CommissionReqModal = ({
                   sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                    {
-                      right: isLangRTL(i18n.language)
-                        ? "2.5rem"
-                        : "inherit",
-                      transformOrigin: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                     "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
                     },
                     "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
-                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
-                    }
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830",
+                    },
                   }}
-                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  className={`${
+                    currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                  }
                   p-5`}
                 >
                   <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
@@ -1450,24 +1745,22 @@ const CommissionReqModal = ({
                   sx={{
                     ...darkModeColors,
                     "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                    {
-                      right: isLangRTL(i18n.language)
-                        ? "2.5rem"
-                        : "inherit",
-                      transformOrigin: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
-                    },
+                      {
+                        right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                        transformOrigin: isLangRTL(i18n.language)
+                          ? "right"
+                          : "left",
+                      },
                     "& legend": {
-                      textAlign: isLangRTL(i18n.language)
-                        ? "right"
-                        : "left",
+                      textAlign: isLangRTL(i18n.language) ? "right" : "left",
                     },
                     "& .css-10drtbx-MuiButtonBase-root-MuiCheckbox-root": {
-                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830"
-                    }
+                      color: currentMode === "dark" ? "#EEEEEE" : "#2B2830",
+                    },
                   }}
-                  className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"}
+                  className={`${
+                    currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
+                  }
                   p-5`}
                 >
                   <h1 className="text-center text-primary py-2 mb-5 uppercase font-semibold border-b-2 border-primary">
@@ -1591,9 +1884,11 @@ const CommissionReqModal = ({
                   color: "white",
                   fontFamily: fontFam,
                 }}
-                className={`${currentMode === "dark"
-                  ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                  } w-full text-white p-3 my-5 uppercase font-semibold mb-3`}
+                className={`${
+                  currentMode === "dark"
+                    ? "bg-primary-dark-neu"
+                    : "bg-primary-light-neu"
+                } w-full text-white p-3 my-5 uppercase font-semibold mb-3`}
                 onClick={GenerateRequest}
                 disabled={btnloading ? true : false}
               >
