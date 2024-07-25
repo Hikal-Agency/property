@@ -15,6 +15,7 @@ import ListingDataGrid from "../ListingDataGrid";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
+import { FiEdit } from "react-icons/fi";
 
 const AddListingType = ({
   data,
@@ -46,8 +47,16 @@ const AddListingType = ({
 
   const [btnLoading, setBtnLoading] = useState(false);
   const [deleteDialogue, setDeleteDialogue] = useState(false);
+  const [editData, setEditData] = useState(null);
 
-  const [name, setName] = useState("");
+  console.log("edit data::: ", editData);
+
+  const [name, setName] = useState(editData?.name || "");
+
+  const handleEdit = (values) => {
+    setEditData(values);
+    setName(values?.name);
+  };
 
   const columns = [
     // id
@@ -96,6 +105,21 @@ const AddListingType = ({
       renderCell: (cellValues) => {
         return (
           <div className="space-x-2 w-full flex items-center justify-center mx-2">
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Edit List Type" arrow>
+                <button onClick={() => handleEdit(cellValues?.row)}>
+                  <FiEdit size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
             <p
               style={{ cursor: "pointer" }}
               className={`${
@@ -181,30 +205,45 @@ const AddListingType = ({
       return;
     }
 
-    axios
-      .post(
-        `${BACKEND_URL}/listing-types`,
-        { name: name },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
+    let url = editData
+      ? `${BACKEND_URL}/listing-types/${editData?.lid}`
+      : `${BACKEND_URL}/listing-types`;
+
+    let method = editData ? "put" : "post";
+
+    // Parameters for PUT request
+    let params = editData ? { params: { name: name } } : {};
+
+    // Data for POST request
+    let data = editData ? {} : { name: name };
+
+    axios({
+      method: method,
+      url: url,
+      data: data,
+      ...params,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + token,
+      },
+    })
       .then((result) => {
         setBtnLoading(false);
         setName("");
-        toast.success("Listing type added successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        setEditData(null);
+        toast.success(
+          `Listing type ${editData ? "Updated" : "Added"} successfully.`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
         FetchData();
       })
       .catch((err) => {
