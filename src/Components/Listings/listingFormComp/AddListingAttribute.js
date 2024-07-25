@@ -19,6 +19,7 @@ import ListingDataGrid from "../ListingDataGrid";
 import SelectOption from "@material-tailwind/react/components/Select/SelectOption";
 import { IoMdClose } from "react-icons/io";
 import { BsTrash } from "react-icons/bs";
+import { FiEdit } from "react-icons/fi";
 
 const AddListingAttribute = ({
   data,
@@ -56,7 +57,26 @@ const AddListingAttribute = ({
     garage: "",
     gallery: "",
   });
+
+  console.log("listing attr:: ", listingAttr);
   const [deleteDialogue, setDeleteDialogue] = useState(false);
+  const [editData, setEditData] = useState(null);
+
+  console.log("edit data::: ", editData);
+
+  const handleEdit = (values) => {
+    console.log("values ::: ", values);
+    setEditData(values);
+    setListingAttr({
+      name: values?.name,
+      listing_type_id: values?.listing_type_id,
+      area: values?.area,
+      bedroom: values?.bedroom,
+      bathroom: values?.bathroom,
+      garage: values?.garage,
+      gallery: values?.gallery,
+    });
+  };
 
   const deleteListAttr = (deleteDialogue) => {
     setBtnLoading(true);
@@ -270,6 +290,21 @@ const AddListingAttribute = ({
                 currentMode === "dark"
                   ? "text-[#FFFFFF] bg-[#262626]"
                   : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Edit List Attribute" arrow>
+                <button onClick={() => handleEdit(cellValues?.row)}>
+                  <FiEdit size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
               } editUserBtn hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
             >
               <Tooltip title="Delete List Atrribute" arrow>
@@ -294,13 +329,21 @@ const AddListingAttribute = ({
   const AddListAttr = () => {
     setBtnLoading(true);
 
-    axios
-      .post(`${BACKEND_URL}/listing-attributes`, listingAttr, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
+    let url = editData
+      ? `${BACKEND_URL}/listing-attributes/${editData?.la_id}`
+      : `${BACKEND_URL}/listing-attributes`;
+
+    let method = editData ? "put" : "post";
+
+    axios({
+      method: method,
+      url: url,
+      data: listingAttr,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
       .then((result) => {
         console.log("listing attr added : ", result);
         setBtnLoading(false);
@@ -460,7 +503,8 @@ const AddListingAttribute = ({
               value: listingAttr?.listing_type_id,
               label: listingAttr?.listing_type_id
                 ? data?.list_type?.filter(
-                    (list_type) => list_type.id === listingAttr?.listing_type_id
+                    (list_type) =>
+                      list_type.lid === listingAttr?.listing_type_id
                   )[0]?.name
                 : t("label_listing_type"),
             }}
@@ -471,7 +515,7 @@ const AddListingAttribute = ({
               });
             }}
             options={data?.list_type?.map((list_type) => ({
-              value: list_type.id,
+              value: list_type.lid,
               label: list_type.name,
             }))}
             className="w-full"
