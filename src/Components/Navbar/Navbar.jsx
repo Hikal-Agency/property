@@ -1559,10 +1559,12 @@ const Navbar = () => {
           </div>
         </div>
       )}
-      <CurrencyConvertor
-        setCurrencyModal={setCurrencyModal}
-        currencyModal={currencyModal}
-      />
+      {currencyModal && (
+        <CurrencyConvertor
+          setCurrencyModal={setCurrencyModal}
+          currencyModal={currencyModal}
+        />
+      )}
     </>
   );
 };

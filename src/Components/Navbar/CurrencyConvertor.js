@@ -34,8 +34,8 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
     isLangRTL,
   } = useStateContext();
 
-  const [from, setFrom] = useState("usd");
-  const [to, setTo] = useState("pkr");
+  const [from, setFrom] = useState("aed");
+  const [to, setTo] = useState("usd");
   const [amount, setAmount] = useState(0);
   const [convertedAmount, setConvertedAmount] = useState(0);
   const [currencies, options] = useCurrencyInfo(from);
@@ -78,38 +78,35 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
             : currentMode === "dark"
             ? "bg-dark-neu"
             : "bg-light-neu"
-        } p-5 flex flex-col gap-[30px]`}
+        } p-5 flex flex-col gap-[30px] `}
       >
         <div
           style={style}
           className={`w-[calc(100%-20px)] md:w-[50%]  ${
             currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
-          } absolute top-1/2 left-1/2 p-5 rounded-md`}
+          } absolute top-1/2 left-1/2 p-5 rounded-[12px]`}
         >
+          <IconButton
+            sx={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              color: (theme) => theme.palette.grey[500],
+            }}
+            onClick={() => setCurrencyModal(false)}
+          >
+            <IoMdClose size={18} />
+          </IconButton>
           <div className=" flex flex-col gap-[30px] ">
             <h1
               className={`${
                 currentMode === "dark" ? `text-white` : "text-black"
-              } text-center uppercase font-semibold pb-5 text-[30px]`}
+              } text-center uppercase font-semibold pb-5 text-[25px]`}
             >
-              Currency Convertor
+              {t("label_currency")} {t("label_convertor")}
             </h1>
 
             <div className="flex gap-[15px] h-[50px]">
-              <TextField
-                id="from_currency"
-                type={"number"}
-                label="From"
-                className=" w-[80%] text-[16px] font-semibold"
-                variant="outlined"
-                size="medium"
-                required
-                onChange={(e) => {
-                  // setAmount(Number(e?.target?.value));
-                  setAmount(e?.target?.value);
-                }}
-                value={amount}
-              />
               <Select
                 id="fromcurrency"
                 options={options?.map((curr) => ({
@@ -135,18 +132,22 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                   }),
                 }}
               />
-            </div>
-            <div className="flex gap-[15px] h-[50px]">
               <TextField
-                id="to_currency"
+                id="from_currency"
                 type={"number"}
-                label="To"
-                className="w-[80%] text-[16px] font-semibold"
+                label="From"
+                className=" w-[80%] text-[16px] font-semibold"
                 variant="outlined"
                 size="medium"
-                // disabled={true}
-                value={convertedAmount?.toFixed(2)}
+                required
+                onChange={(e) => {
+                  // setAmount(Number(e?.target?.value));
+                  setAmount(e?.target?.value);
+                }}
+                value={amount}
               />
+            </div>
+            <div className="flex gap-[15px] h-[50px]">
               <Select
                 id="to_currency"
                 options={options?.map((curr) => ({
@@ -171,13 +172,23 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                   }),
                 }}
               />
+              <TextField
+                id="to_currency"
+                type={"number"}
+                label="To"
+                className="w-[80%] text-[16px] font-semibold"
+                variant="outlined"
+                size="medium"
+                // disabled={true}
+                value={convertedAmount?.toFixed(2)}
+              />
             </div>
             <div className="w-full flex gap-[15px] ">
               <button
                 onClick={() => convert()}
                 ripple={true}
                 variant="outlined"
-                className={`shadow-none p-3 rounded-md text-[14px] text-center  border-none text-white !w-[80%] ${
+                className={`shadow-none p-3 rounded-md text-[14px] text-center  border-none text-white w-full ${
                   themeBgImg
                     ? "blur-bg-primary"
                     : currentMode === "dark"
@@ -187,7 +198,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
               >
                 Convert from {from?.toUpperCase()} to {to?.toUpperCase()}
               </button>
-              <button
+              {/* <button
                 onClick={() => setCurrencyModal(false)}
                 ripple={true}
                 variant="outlined"
@@ -200,7 +211,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                 } w-full`}
               >
                 Close
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
