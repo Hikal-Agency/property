@@ -14,7 +14,7 @@ import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import Select from "react-select";
 import { selectStyles } from "../_elements/SelectStyles";
-import useCurrencyInfo from "../../utils/currencyConverter";
+import useCurrencyInfo from "../_elements/currencyConverter";
 import { useStateContext } from "../../context/ContextProvider";
 const style = {
   transform: "translate(-50%, -50%)",
@@ -38,11 +38,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
   const [to, setTo] = useState("pkr");
   const [amount, setAmount] = useState(0);
   const [convertedAmount, setConvertedAmount] = useState(0);
-  const currencies = useCurrencyInfo(from);
-
-  console.log(currencies, "currencies");
-
-  const options = Object?.keys(currencies);
+  const [currencies, options] = useCurrencyInfo(from);
 
   const convert = () => {
     setConvertedAmount(amount * currencies[to]);
@@ -118,9 +114,9 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                 id="fromcurrency"
                 options={options?.map((curr) => ({
                   value: curr,
-                  label: curr,
+                  label: curr?.toUpperCase(),
                 }))}
-                value={{ value: from, label: from }}
+                value={{ value: from, label: from?.toUpperCase() }}
                 onChange={(e) => {
                   setFrom(e?.value);
                   setConvertedAmount(0);
@@ -144,7 +140,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
               <TextField
                 id="to_currency"
                 type={"number"}
-                label="From"
+                label="To"
                 className="w-[80%] text-[16px] font-semibold"
                 variant="outlined"
                 size="medium"
@@ -155,9 +151,9 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                 id="to_currency"
                 options={options?.map((curr) => ({
                   value: curr,
-                  label: curr,
+                  label: curr?.toLocaleUpperCase(),
                 }))}
-                value={{ value: to, label: to }}
+                value={{ value: to, label: to?.toUpperCase() }}
                 onChange={(e) => {
                   setTo(e?.value);
                 }}
@@ -189,7 +185,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                     : "bg-primary-light-neu"
                 } w-full`}
               >
-                Convert from {from} to {to}
+                Convert from {from?.toUpperCase()} to {to?.toUpperCase()}
               </button>
               <button
                 onClick={() => setCurrencyModal(false)}
