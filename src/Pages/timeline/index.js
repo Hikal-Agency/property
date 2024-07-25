@@ -5,10 +5,20 @@ import Error from "../Error";
 
 import axios from "../../axoisConfig";
 import { useNavigate } from "react-router-dom";
-import { Backdrop, Modal } from "@mui/material";
+import {
+  Backdrop,
+  Modal,
+  TextField,
+  InputAdornment,
+  CircularProgress,
+} from "@mui/material";
 import { datetimeLong } from "../../Components/_elements/formatDateTime";
-
+import { BsMic, BsMicFill } from "react-icons/bs";
+import LanguageDetectModal from "../../Components/_elements/LanguageDetectModal";
 import { BiBed } from "react-icons/bi";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 import {
   BsTelephone,
   BsBuildings,
@@ -18,9 +28,10 @@ import {
   BsPersonCheck,
   BsFillPersonFill,
   BsChatLeftText,
-  BsCalendarEvent
+  BsCalendarEvent,
 } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
+import { toast } from "react-toastify";
 import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
 const style = {
@@ -40,8 +51,12 @@ const Timeline = ({
     primaryColor,
     t,
     isLangRTL,
-    i18n
+    i18n,
+    darkModeColors,
+    fontFam,
+    User,
   } = useStateContext();
+
   const [leadsCycle, setLeadsCycle] = useState(null);
   const [leadDetails, setLeadDetails] = useState(null);
   const [error404, setError404] = useState(false);
@@ -49,11 +64,64 @@ const Timeline = ({
   const navigate = useNavigate();
 
   const [isClosing, setIsClosing] = useState(false);
+  const [LeadNotesData, setLeadNotesData] = useState(null);
+  const [AddNoteTxt, setAddNoteTxt] = useState("");
+  const [addNoteloading, setaddNoteloading] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [languageModal, setLanguageModal] = useState(false);
+  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
+  const {
+    transcript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition();
+
+  //some comments
+  useEffect(() => {
+    if (isVoiceSearchState && transcript.length > 0) {
+      // setSearchTerm(transcript);
+      setAddNoteTxt(transcript);
+    }
+    console.log(transcript, "transcript");
+  }, [transcript, isVoiceSearchState]);
+
+  useEffect(() => {
+    if (isVoiceSearchState) {
+      resetTranscript();
+      clearSearchInput();
+      startListening();
+    } else {
+      SpeechRecognition.stopListening();
+      console.log(transcript, "transcript...");
+      resetTranscript();
+    }
+  }, [isVoiceSearchState]);
+
+  const clearSearchInput = () => {
+    setAddNoteTxt("");
+    resetTranscript();
+  };
+  useEffect(() => {
+    if (!browserSupportsSpeechRecognition) {
+      console.error("Browser doesn't support speech recognition.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  const startListening = () =>
+    SpeechRecognition.startListening({
+      continuous: true,
+
+      language: language,
+    });
 
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
+      setAddNoteTxt("");
+      setIsVoiceSearchState(false);
+      SpeechRecognition.stopListening();
       handleCloseTimelineModel();
     }, 1000);
   };
@@ -133,6 +201,69 @@ const Timeline = ({
     return grouped;
   }
 
+  const lid = LeadData?.leadId;
+
+  const AddNote = () => {
+    setaddNoteloading(true);
+    SpeechRecognition.stopListening();
+    setIsVoiceSearchState(false);
+    const token = localStorage.getItem("auth-token");
+    const data = {
+      leadId: LeadData?.leadId,
+      leadNote: AddNoteTxt,
+      addedBy: User?.id,
+      // creationDate: moment(new Date()).format("YYYY/MM/DD"),
+      // creationDate: datetimeString,
+    };
+    console.log("Data: ");
+    console.log("Data: ", data);
+    axios
+      .post(`${BACKEND_URL}/leadNotes`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("Result: ");
+        console.log("Result: ", result);
+        setaddNoteloading(false);
+        setAddNoteTxt("");
+        const LeadID = LeadData?.leadId;
+        const token = localStorage.getItem("auth-token");
+        if (!LeadID) {
+          navigate(`/closedeals`);
+          return;
+        }
+        fetchLeadsData(token, LeadID);
+
+        toast.success("Note added Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        // console.log(result);
+      })
+      .catch((err) => {
+        setaddNoteloading(false);
+        console.log(err);
+        toast.error("Soemthing Went Wrong! Please Try Again", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  };
   return (
     <>
       <Modal
@@ -149,20 +280,23 @@ const Timeline = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            }
+          }
         w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseTimelineModel}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-              }
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -174,13 +308,15 @@ const Timeline = ({
 
           <div
             style={style}
-            className={` ${currentMode === "dark"
-              ? "bg-dark text-white"
-              : "bg-light text-black"
-              } ${isLangRTL(i18n.language)
+            className={` ${
+              currentMode === "dark"
+                ? "bg-dark text-white"
+                : "bg-light text-black"
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-              } 
+            } 
              p-4 h-[100vh] w-[85vw] overflow-y-scroll border-primary
             `}
           >
@@ -189,12 +325,11 @@ const Timeline = ({
                 <Error />
               ) : (
                 <div>
-                  <HeadingTitle
-                    title={t("timeline")}
-                  />
+                  <HeadingTitle title={t("timeline")} />
                   <div
-                    className={`${currentMode === "dark" ? "text-white" : "text-black"
-                      } p-4`}
+                    className={`${
+                      currentMode === "dark" ? "text-white" : "text-black"
+                    } p-4`}
                   >
                     <div className="grid sm:grid-cols-12 gap-1">
                       <div className="col-span-12 md:col-span-4 w-full">
@@ -237,7 +372,7 @@ const Timeline = ({
                               </div>
                               {/* EMAIL ADDRESS  */}
                               {leadDetails.leadEmail !== "" &&
-                                leadDetails.leadEmail !== "null" ? (
+                              leadDetails.leadEmail !== "null" ? (
                                 <div className="grid grid-cols-8 gap-3 my-3">
                                   <BsEnvelope size={16} />
                                   <div className="col-span-7">
@@ -277,9 +412,7 @@ const Timeline = ({
                               {/* CREATION DATE  */}
                               <div className="text-sm mb-5">
                                 <p>{t("lead_added_on")}:</p>
-                                <p>
-                                  {datetimeLong(leadDetails.creationDate)}
-                                </p>
+                                <p>{datetimeLong(leadDetails.creationDate)}</p>
                               </div>
                               <div className="text-sm mb-5">
                                 <p>{t("lead_edited_on")}:</p>
@@ -288,6 +421,91 @@ const Timeline = ({
                                     ? "-"
                                     : datetimeLong(leadDetails.lastEdited)}
                                 </p>
+                              </div>
+                              <div className="notes">
+                                <form>
+                                  <TextField
+                                    sx={{
+                                      ...darkModeColors,
+                                      "& input": {
+                                        fontFamily: fontFam,
+                                      },
+                                    }}
+                                    id="note"
+                                    type={"text"}
+                                    label={t("label_note")}
+                                    className="w-full"
+                                    variant="outlined"
+                                    size="small"
+                                    multiline
+                                    minRows={2}
+                                    required
+                                    value={AddNoteTxt}
+                                    onChange={(e) =>
+                                      setAddNoteTxt(e.target.value)
+                                    }
+                                    InputProps={{
+                                      endAdornment: (
+                                        <InputAdornment position="end">
+                                          <div
+                                            // ref={searchContainer}
+                                            className={`${
+                                              isVoiceSearchState
+                                                ? "listening bg-primary"
+                                                : ""
+                                            } ${
+                                              currentMode === "dark"
+                                                ? "text-white"
+                                                : "text-black"
+                                            } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
+                                            onClick={() => {
+                                              if (isVoiceSearchState) {
+                                                setIsVoiceSearchState(false);
+                                              } else {
+                                                setLanguageModal(true);
+                                              }
+                                              console.log("mic is clicked...");
+                                            }}
+                                          >
+                                            {isVoiceSearchState ? (
+                                              <BsMicFill
+                                                id="search_mic"
+                                                size={16}
+                                              />
+                                            ) : (
+                                              <BsMic
+                                                id="search_mic"
+                                                size={16}
+                                              />
+                                            )}
+                                          </div>
+                                        </InputAdornment>
+                                      ),
+                                    }}
+                                  />
+                                  <button
+                                    disabled={addNoteloading ? true : false}
+                                    // type="submit"
+                                    onClick={() => AddNote()}
+                                    className={`${
+                                      currentMode === "dark"
+                                        ? "bg-primary-dark-neu"
+                                        : "bg-primary-light-neu"
+                                    } my-4 disabled:opacity-50 disabled:cursor-not-allowed w-full p-3 text-white text-md font-bold uppercase`}
+                                  >
+                                    {addNoteloading ? (
+                                      <CircularProgress
+                                        sx={{ color: "white" }}
+                                        size={25}
+                                        className="text-white"
+                                      />
+                                    ) : (
+                                      <span>
+                                        {t("add_new_note")?.toUpperCase()}
+                                      </span>
+                                    )}
+                                  </button>
+                                </form>
                               </div>
                             </div>
                           </>
@@ -308,15 +526,19 @@ const Timeline = ({
                                 return (
                                   <>
                                     <div
-                                      className={`${isLangRTL(i18n.language)
-                                        ? "ml-3"
-                                        : "mr-3"
-                                        } col-start-1 col-end-3 md:mx-auto relative`}
+                                      className={`${
+                                        isLangRTL(i18n.language)
+                                          ? "ml-3"
+                                          : "mr-3"
+                                      } col-start-1 col-end-3 md:mx-auto relative`}
                                     >
                                       <div className="h-full w-6 flex items-center justify-center">
                                         <div
-                                          className={`${currentMode === "dark" ? "bg-dark-neu" : "bg-light-neu"
-                                            } h-full rounded-md px-2 py-1 text-sm`}
+                                          className={`${
+                                            currentMode === "dark"
+                                              ? "bg-dark-neu"
+                                              : "bg-light-neu"
+                                          } h-full rounded-md px-2 py-1 text-sm`}
                                           style={{
                                             width: "min-content",
                                             whiteSpace: "nowrap",
@@ -336,21 +558,25 @@ const Timeline = ({
                                           {timeline.leadNote ? (
                                             <>
                                               <div
-                                                className={`${isLangRTL(i18n.language)
-                                                  ? "ml-3"
-                                                  : "mr-3"
-                                                  } col-start-1 col-end-3 md:mx-auto relative`}
+                                                className={`${
+                                                  isLangRTL(i18n.language)
+                                                    ? "ml-3"
+                                                    : "mr-3"
+                                                } col-start-1 col-end-3 md:mx-auto relative`}
                                               >
                                                 <div className="h-full w-6 flex items-center justify-center">
                                                   <div className="h-full w-1 bg-[#AAA] pointer-events-none"></div>
                                                 </div>
                                                 <div
-                                                  className={`${isLangRTL(i18n.language)
-                                                    ? "-mr-2"
-                                                    : "-ml-2"
-                                                    } ${currentMode === "dark"
-                                                      ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                                    } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
+                                                  className={`${
+                                                    isLangRTL(i18n.language)
+                                                      ? "-mr-2"
+                                                      : "-ml-2"
+                                                  } ${
+                                                    currentMode === "dark"
+                                                      ? "bg-primary-dark-neu"
+                                                      : "bg-primary-light-neu"
+                                                  } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
                                                 >
                                                   <BsChatLeftText
                                                     className="text-white"
@@ -359,10 +585,11 @@ const Timeline = ({
                                                 </div>
                                               </div>
                                               <div
-                                                className={`${currentMode === "dark"
-                                                  ? "bg-dark-neu"
-                                                  : "bg-light-neu"
-                                                  } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                className={`${
+                                                  currentMode === "dark"
+                                                    ? "bg-dark-neu"
+                                                    : "bg-light-neu"
+                                                } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
                                               >
                                                 {/* ADDED BY  */}
                                                 <p className="text-sm tracking-wide font-italic justify-end gap-2 flex items-center text-[#AAAAAA]">
@@ -401,292 +628,318 @@ const Timeline = ({
                                               </div>
                                             </>
                                           ) : // MANAGER
-                                            timeline.manager &&
-                                              timeline.manager !== "0" ? (
-                                              <>
-                                                <div
-                                                  className={`${isLangRTL(i18n.language)
+                                          timeline.manager &&
+                                            timeline.manager !== "0" ? (
+                                            <>
+                                              <div
+                                                className={`${
+                                                  isLangRTL(i18n.language)
                                                     ? "ml-3"
                                                     : "mr-3"
-                                                    } col-start-1 col-end-3 md:mx-auto relative`}
-                                                >
-                                                  <div className="h-full w-6 flex items-center justify-center">
-                                                    <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                  </div>
-                                                  <div
-                                                    className={`${isLangRTL(i18n.language)
-                                                      ? "-mr-2"
-                                                      : "-ml-2"
-                                                      } ${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                                      } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
-                                                  >
-                                                    <BsPersonCheck
-                                                      className="text-white"
-                                                      size={16}
-                                                    />
-                                                  </div>
+                                                } col-start-1 col-end-3 md:mx-auto relative`}
+                                              >
+                                                <div className="h-full w-6 flex items-center justify-center">
+                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                 </div>
                                                 <div
-                                                  className={`${currentMode === "dark"
+                                                  className={`${
+                                                    isLangRTL(i18n.language)
+                                                      ? "-mr-2"
+                                                      : "-ml-2"
+                                                  } ${
+                                                    currentMode === "dark"
+                                                      ? "bg-primary-dark-neu"
+                                                      : "bg-primary-light-neu"
+                                                  } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
+                                                >
+                                                  <BsPersonCheck
+                                                    className="text-white"
+                                                    size={16}
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div
+                                                className={`${
+                                                  currentMode === "dark"
                                                     ? "bg-dark-neu"
                                                     : "bg-light-neu"
-                                                    } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                >
-                                                  {/* ADDED BY  */}
-                                                  <p className="text-sm tracking-wide text-[#AAAAAA] font-italic justify-end flex items-center gap-2">
-                                                    <BsFillPersonFill size={12} />
-                                                    {timeline.addedBy}
-                                                  </p>
-                                                  {/* AGENT  */}
-                                                  <p className="font-semibold tracking-wide">
-                                                    {t(
-                                                      "salesmanager_updated_to"
-                                                    )}{" "}
-                                                    <span className="font-bold text-primary">
-                                                      {timeline.manager}
-                                                    </span>
-                                                    .
-                                                  </p>
-                                                  {/* CREATION DATE  */}
-                                                  <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                    {datetimeLong(
-                                                      timeline.CreationDate
-                                                    )}
-                                                  </p>
+                                                } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                              >
+                                                {/* ADDED BY  */}
+                                                <p className="text-sm tracking-wide text-[#AAAAAA] font-italic justify-end flex items-center gap-2">
+                                                  <BsFillPersonFill size={12} />
+                                                  {timeline.addedBy}
+                                                </p>
+                                                {/* AGENT  */}
+                                                <p className="font-semibold tracking-wide">
+                                                  {t("salesmanager_updated_to")}{" "}
+                                                  <span className="font-bold text-primary">
+                                                    {timeline.manager}
+                                                  </span>
+                                                  .
+                                                </p>
+                                                {/* CREATION DATE  */}
+                                                <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                  {datetimeLong(
+                                                    timeline.CreationDate
+                                                  )}
+                                                </p>
+                                              </div>
+                                            </>
+                                          ) : // SALESPERSON
+                                          timeline.agent &&
+                                            timeline.agent !== "0" ? (
+                                            <>
+                                              <div
+                                                className={`${
+                                                  isLangRTL(i18n.language)
+                                                    ? "ml-2"
+                                                    : "mr-2"
+                                                } col-start-1 col-end-3 md:mx-auto relative`}
+                                              >
+                                                <div className="h-full w-6 flex items-center justify-center">
+                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
                                                 </div>
-                                              </>
-                                            ) : // SALESPERSON
-                                              timeline.agent &&
-                                                timeline.agent !== "0" ? (
-                                                <>
-                                                  <div
-                                                    className={`${isLangRTL(i18n.language)
-                                                      ? "ml-2"
-                                                      : "mr-2"
-                                                      } col-start-1 col-end-3 md:mx-auto relative`}
-                                                  >
-                                                    <div className="h-full w-6 flex items-center justify-center">
-                                                      <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                    </div>
-                                                    <div
-                                                      className={`${isLangRTL(i18n.language)
-                                                        ? "-mr-2"
-                                                        : "-ml-2"
-                                                        } ${currentMode === "dark"
-                                                          ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                                        } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
-                                                    >
-                                                      <BsPersonCheck
-                                                        className="text-white"
-                                                        size={16}
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                  <div
-                                                    className={`${currentMode === "dark"
-                                                      ? "bg-dark-neu"
-                                                      : "bg-light-neu"
-                                                      } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                  >
-                                                    {/* ADDED BY  */}
-                                                    <p className="text-sm tracking-wide font-italic gap-2 text-[#AAAAAA] justify-end flex items-center">
-                                                      <BsFillPersonFill size={12} />
-                                                      {timeline.addedBy}
-                                                    </p>
-                                                    {/* AGENT  */}
-                                                    <p className="font-semibold tracking-wide">
-                                                      {t("salesagent_updated_to")}{" "}
-                                                      <span className="font-bold text-primary">
-                                                        {timeline.agent}
-                                                      </span>
-                                                      .
-                                                    </p>
-                                                    {/* CREATION DATE  */}
-                                                    <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                      {datetimeLong(
-                                                        timeline.CreationDate
-                                                      )}
-                                                    </p>
-                                                  </div>
-                                                </>
-                                              ) : // FEEDBACK
-                                                timeline.feedback &&
-                                                  timeline.feedback !== "0" ? (
-                                                  <>
-                                                    <div
-                                                      className={`${isLangRTL(i18n.language)
-                                                        ? "ml-3"
-                                                        : "mr-3"
-                                                        } col-start-1 col-end-3 md:mx-auto relative`}
-                                                    >
-                                                      <div className="h-full w-6 flex items-center justify-center">
-                                                        <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                      </div>
-                                                      <div
-                                                        className={`${isLangRTL(i18n.language)
-                                                          ? "-mr-2"
-                                                          : "-ml-2"
-                                                          } ${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                                          } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
-                                                      >
-                                                        <BsBookmarkCheck
-                                                          className="text-white"
-                                                          size={16}
-                                                        />
-                                                      </div>
-                                                    </div>
-                                                    <div
-                                                      className={`${currentMode === "dark"
-                                                        ? "bg-dark-neu"
-                                                        : "bg-light-neu"
-                                                        } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                    >
-                                                      {/* ADDED BY  */}
-                                                      <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
-                                                        <BsFillPersonFill size={12} />
-                                                        {timeline.addedBy}
-                                                      </p>
-                                                      {/* FEEDBACK  */}
-                                                      <p className="font-semibold tracking-wide">
-                                                        {t("feedback_updated_to")}{" "}
-                                                        <span className="font-bold text-primary">
-                                                          {timeline.feedback}
-                                                        </span>
-                                                        .
-                                                      </p>
-                                                      {/* CREATION DATE  */}
-                                                      <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                        {datetimeLong(
-                                                          timeline.CreationDate
-                                                        )}
-                                                      </p>
-                                                    </div>
-                                                  </>
-                                                ) : // MEETING STATUS
-                                                  timeline.meetingStatus &&
-                                                    timeline.meetingStatus !== "0" ? (
-                                                    <>
-                                                      <div
-                                                        className={`${isLangRTL(i18n.language)
-                                                          ? "ml-3"
-                                                          : "mr-3"
-                                                          } col-start-1 col-end-3 md:mx-auto relative`}
-                                                      >
-                                                        <div className="h-full w-6 flex items-center justify-center">
-                                                          <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                        </div>
-                                                        <div
-                                                          className={`${isLangRTL(i18n.language)
-                                                            ? "-mr-2"
-                                                            : "-ml-2"
-                                                            } ${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                                            } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
-                                                        >
-                                                          <BsCalendarEvent
-                                                            className="text-white"
-                                                            size={16}
-                                                          />
-                                                        </div>
-                                                      </div>
-                                                      <div
-                                                        className={`${currentMode === "dark"
-                                                          ? "bg-dark-neu"
-                                                          : "bg-light-neu"
-                                                          } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                      >
-                                                        {/* ADDED BY  */}
-                                                        <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
-                                                          <BsFillPersonFill size={12} />
-                                                          {timeline.addedBy}
-                                                        </p>
-                                                        {/* FEEDBACK  */}
-                                                        <p className="font-semibold tracking-wide">
-                                                          {t(
-                                                            "meeting_status_updated_to"
-                                                          )}{" "}
-                                                          <span className="font-bold text-primary">
-                                                            {timeline.meetingStatus}
-                                                          </span>
-                                                          .
-                                                        </p>
-                                                        {/* CREATION DATE  */}
-                                                        <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                          {datetimeLong(
-                                                            timeline.CreationDate
-                                                          )}
-                                                        </p>
-                                                      </div>
-                                                    </>
-                                                  ) : // MEETING DATE TIME
-                                                    timeline.meetingDate &&
-                                                      timeline.meetingDate !== "0" ? (
-                                                      <>
-                                                        <div
-                                                          className={`${isLangRTL(i18n.language)
-                                                            ? "ml-3"
-                                                            : "mr-3"
-                                                            } col-start-1 col-end-3 md:mx-auto relative`}
-                                                        >
-                                                          <div className="h-full w-6 flex items-center justify-center">
-                                                            <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
-                                                          </div>
-                                                          <div
-                                                            className={`${isLangRTL(i18n.language)
-                                                              ? "-mr-2"
-                                                              : "-ml-2"
-                                                              } ${currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                                                              } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
-                                                          >
-                                                            <BsCalendarCheck
-                                                              className="text-white"
-                                                              size={16}
-                                                            />
-                                                          </div>
-                                                        </div>
-                                                        <div
-                                                          className={`${currentMode === "dark"
-                                                            ? "bg-dark-neu"
-                                                            : "bg-light-neu"
-                                                            } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
-                                                        // style={{
-                                                        //   transform:
-                                                        //     "translateX(-30px)",
-                                                        // }}
-                                                        >
-                                                          {/* ADDED BY  */}
-                                                          <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
-                                                            <BsFillPersonFill size={12} />
-                                                            {timeline.addedBy}
-                                                          </p>
-                                                          {/* FEEDBACK  */}
-                                                          <p className="font-semibold tracking-wide">
-                                                            {t("meeting_set_to")}{" "}
-                                                            <span className="font-bold text-primary">
-                                                              {!timeline.meetingTime ||
-                                                                timeline.meetingTime ===
-                                                                ""
-                                                                ? ""
-                                                                : `${timeline.meetingTime}, `}{" "}
-                                                              {(timeline.meetingDate ||
-                                                                timeline.meetingDate !==
-                                                                "") &&
-                                                                moment(
-                                                                  timeline.meetingDate
-                                                                ).format("MMMM D, Y")}
-                                                            </span>
-                                                            .
-                                                          </p>
-                                                          {/* CREATION DATE  */}
-                                                          <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
-                                                            {datetimeLong(
-                                                              timeline.CreationDate
-                                                            )}
-                                                          </p>
-                                                        </div>
-                                                      </>
-                                                    ) : (
-                                                      <></>
-                                                    )}
+                                                <div
+                                                  className={`${
+                                                    isLangRTL(i18n.language)
+                                                      ? "-mr-2"
+                                                      : "-ml-2"
+                                                  } ${
+                                                    currentMode === "dark"
+                                                      ? "bg-primary-dark-neu"
+                                                      : "bg-primary-light-neu"
+                                                  } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
+                                                >
+                                                  <BsPersonCheck
+                                                    className="text-white"
+                                                    size={16}
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div
+                                                className={`${
+                                                  currentMode === "dark"
+                                                    ? "bg-dark-neu"
+                                                    : "bg-light-neu"
+                                                } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                              >
+                                                {/* ADDED BY  */}
+                                                <p className="text-sm tracking-wide font-italic gap-2 text-[#AAAAAA] justify-end flex items-center">
+                                                  <BsFillPersonFill size={12} />
+                                                  {timeline.addedBy}
+                                                </p>
+                                                {/* AGENT  */}
+                                                <p className="font-semibold tracking-wide">
+                                                  {t("salesagent_updated_to")}{" "}
+                                                  <span className="font-bold text-primary">
+                                                    {timeline.agent}
+                                                  </span>
+                                                  .
+                                                </p>
+                                                {/* CREATION DATE  */}
+                                                <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                  {datetimeLong(
+                                                    timeline.CreationDate
+                                                  )}
+                                                </p>
+                                              </div>
+                                            </>
+                                          ) : // FEEDBACK
+                                          timeline.feedback &&
+                                            timeline.feedback !== "0" ? (
+                                            <>
+                                              <div
+                                                className={`${
+                                                  isLangRTL(i18n.language)
+                                                    ? "ml-3"
+                                                    : "mr-3"
+                                                } col-start-1 col-end-3 md:mx-auto relative`}
+                                              >
+                                                <div className="h-full w-6 flex items-center justify-center">
+                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                </div>
+                                                <div
+                                                  className={`${
+                                                    isLangRTL(i18n.language)
+                                                      ? "-mr-2"
+                                                      : "-ml-2"
+                                                  } ${
+                                                    currentMode === "dark"
+                                                      ? "bg-primary-dark-neu"
+                                                      : "bg-primary-light-neu"
+                                                  } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
+                                                >
+                                                  <BsBookmarkCheck
+                                                    className="text-white"
+                                                    size={16}
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div
+                                                className={`${
+                                                  currentMode === "dark"
+                                                    ? "bg-dark-neu"
+                                                    : "bg-light-neu"
+                                                } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                              >
+                                                {/* ADDED BY  */}
+                                                <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
+                                                  <BsFillPersonFill size={12} />
+                                                  {timeline.addedBy}
+                                                </p>
+                                                {/* FEEDBACK  */}
+                                                <p className="font-semibold tracking-wide">
+                                                  {t("feedback_updated_to")}{" "}
+                                                  <span className="font-bold text-primary">
+                                                    {timeline.feedback}
+                                                  </span>
+                                                  .
+                                                </p>
+                                                {/* CREATION DATE  */}
+                                                <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                  {datetimeLong(
+                                                    timeline.CreationDate
+                                                  )}
+                                                </p>
+                                              </div>
+                                            </>
+                                          ) : // MEETING STATUS
+                                          timeline.meetingStatus &&
+                                            timeline.meetingStatus !== "0" ? (
+                                            <>
+                                              <div
+                                                className={`${
+                                                  isLangRTL(i18n.language)
+                                                    ? "ml-3"
+                                                    : "mr-3"
+                                                } col-start-1 col-end-3 md:mx-auto relative`}
+                                              >
+                                                <div className="h-full w-6 flex items-center justify-center">
+                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                </div>
+                                                <div
+                                                  className={`${
+                                                    isLangRTL(i18n.language)
+                                                      ? "-mr-2"
+                                                      : "-ml-2"
+                                                  } ${
+                                                    currentMode === "dark"
+                                                      ? "bg-primary-dark-neu"
+                                                      : "bg-primary-light-neu"
+                                                  } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
+                                                >
+                                                  <BsCalendarEvent
+                                                    className="text-white"
+                                                    size={16}
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div
+                                                className={`${
+                                                  currentMode === "dark"
+                                                    ? "bg-dark-neu"
+                                                    : "bg-light-neu"
+                                                } p-4 space-y-3 md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                              >
+                                                {/* ADDED BY  */}
+                                                <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
+                                                  <BsFillPersonFill size={12} />
+                                                  {timeline.addedBy}
+                                                </p>
+                                                {/* FEEDBACK  */}
+                                                <p className="font-semibold tracking-wide">
+                                                  {t(
+                                                    "meeting_status_updated_to"
+                                                  )}{" "}
+                                                  <span className="font-bold text-primary">
+                                                    {timeline.meetingStatus}
+                                                  </span>
+                                                  .
+                                                </p>
+                                                {/* CREATION DATE  */}
+                                                <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                  {datetimeLong(
+                                                    timeline.CreationDate
+                                                  )}
+                                                </p>
+                                              </div>
+                                            </>
+                                          ) : // MEETING DATE TIME
+                                          timeline.meetingDate &&
+                                            timeline.meetingDate !== "0" ? (
+                                            <>
+                                              <div
+                                                className={`${
+                                                  isLangRTL(i18n.language)
+                                                    ? "ml-3"
+                                                    : "mr-3"
+                                                } col-start-1 col-end-3 md:mx-auto relative`}
+                                              >
+                                                <div className="h-full w-6 flex items-center justify-center">
+                                                  <div className="h-full w-1 bg-[#AAAAAA] pointer-events-none"></div>
+                                                </div>
+                                                <div
+                                                  className={`${
+                                                    isLangRTL(i18n.language)
+                                                      ? "-mr-2"
+                                                      : "-ml-2"
+                                                  } ${
+                                                    currentMode === "dark"
+                                                      ? "bg-primary-dark-neu"
+                                                      : "bg-primary-light-neu"
+                                                  } absolute top-1/2 -mt-5 text-center rounded-full p-2`}
+                                                >
+                                                  <BsCalendarCheck
+                                                    className="text-white"
+                                                    size={16}
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div
+                                                className={`${
+                                                  currentMode === "dark"
+                                                    ? "bg-dark-neu"
+                                                    : "bg-light-neu"
+                                                } p-4 space-y-3 rounded-xl shadow-sm card-hover md:col-start-3 col-start-2 col-end-13 my-2 w-full`}
+                                                // style={{
+                                                //   transform:
+                                                //     "translateX(-30px)",
+                                                // }}
+                                              >
+                                                {/* ADDED BY  */}
+                                                <p className="text-sm tracking-wide gap-2 text-[#AAAAAA] font-italic justify-end flex items-center">
+                                                  <BsFillPersonFill size={12} />
+                                                  {timeline.addedBy}
+                                                </p>
+                                                {/* FEEDBACK  */}
+                                                <p className="font-semibold tracking-wide">
+                                                  {t("meeting_set_to")}{" "}
+                                                  <span className="font-bold text-primary">
+                                                    {!timeline.meetingTime ||
+                                                    timeline.meetingTime === ""
+                                                      ? ""
+                                                      : `${timeline.meetingTime}, `}{" "}
+                                                    {(timeline.meetingDate ||
+                                                      timeline.meetingDate !==
+                                                        "") &&
+                                                      moment(
+                                                        timeline.meetingDate
+                                                      ).format("MMMM D, Y")}
+                                                  </span>
+                                                  .
+                                                </p>
+                                                {/* CREATION DATE  */}
+                                                <p className="text-sm tracking-wide uppercase text-[#AAAAAA]">
+                                                  {datetimeLong(
+                                                    timeline.CreationDate
+                                                  )}
+                                                </p>
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <></>
+                                          )}
                                         </div>
                                       );
                                     })}
@@ -705,6 +958,15 @@ const Timeline = ({
           </div>
         </div>
       </Modal>
+      {languageModal && (
+        <LanguageDetectModal
+          setIsVoiceSearchState={setIsVoiceSearchState}
+          setLanguageModal={setLanguageModal}
+          setLanguage={setLanguage}
+          languageModal={languageModal}
+          language={language}
+        />
+      )}
     </>
   );
 };
