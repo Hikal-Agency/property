@@ -103,7 +103,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                 currentMode === "dark" ? `text-white` : "text-black"
               } text-center uppercase font-semibold pb-5 text-[25px]`}
             >
-              {t("label_currency")} {t("label_convertor")}
+              {t("label_currency")} {t("label_converter")}
             </h1>
 
             <div className="flex gap-[15px] h-[50px]">
@@ -143,6 +143,9 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                 onChange={(e) => {
                   // setAmount(Number(e?.target?.value));
                   setAmount(e?.target?.value);
+                  if (convertedAmount) {
+                    setConvertedAmount(0);
+                  }
                 }}
                 value={amount}
               />
