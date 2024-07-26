@@ -348,16 +348,19 @@ const AddListingAttribute = ({
         console.log("listing attr added : ", result);
         setBtnLoading(false);
 
-        toast.success("Listing Attribute added successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success(
+          `Listing Attribute ${editData ? "updated" : "added"}  successfully.`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
 
         setListingAttr({
           name: "",

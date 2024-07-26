@@ -16,6 +16,7 @@ import axios from "../../../axoisConfig";
 import ListingDataGrid from "../ListingDataGrid";
 import { BsTrash } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
+import { FiEdit } from "react-icons/fi";
 
 const AddListingAttrType = ({
   data,
@@ -51,11 +52,11 @@ const AddListingAttrType = ({
     listing_attribute_id: "",
     type: "",
     price: "",
-
     near_by: "",
     latitude: "",
     longitude: "",
   });
+  const [editData, setEditData] = useState(null);
 
   const handleChange = (e) => {
     setListingAttrType((prevListingAttr) => ({
@@ -64,30 +65,57 @@ const AddListingAttrType = ({
     }));
   };
 
+  const handleEdit = (values) => {
+    console.log("values ::: ", values);
+    setEditData(values);
+    setListingAttrType({
+      name: values?.name,
+      listing_attribute_id: values?.listing_attribute_id,
+      type: values?.type,
+      price: values?.price,
+      near_by: values?.near_by,
+      latitude: values?.latitude,
+      longitude: values?.longitude,
+    });
+  };
+
   const AddListAttrType = () => {
     setBtnLoading(true);
 
-    axios
-      .post(`${BACKEND_URL}/listing-attribute-types`, listingAttrType, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
+    let url = editData
+      ? `${BACKEND_URL}/listing-attribute-types/${editData?.lat_id}`
+      : `${BACKEND_URL}/listing-attribute-types`;
+
+    let method = editData ? "put" : "post";
+
+    axios({
+      method: method,
+      url: url,
+      data: listingAttrType,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
       .then((result) => {
         console.log("listing attr added : ", result);
         setBtnLoading(false);
 
-        toast.success("Listing Attribute type added successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success(
+          `Listing Attribute type ${
+            editData ? "updated" : "added"
+          }  successfully.`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
 
         setListingAttrType({
           name: "",
@@ -323,6 +351,21 @@ const AddListingAttrType = ({
       renderCell: (cellValues) => {
         return (
           <div className="space-x-2 w-full flex items-center justify-center mx-2">
+            <p
+              style={{ cursor: "pointer" }}
+              className={`${
+                currentMode === "dark"
+                  ? "text-[#FFFFFF] bg-[#262626]"
+                  : "text-[#1C1C1C] bg-[#EEEEEE]"
+              } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
+            >
+              <Tooltip title="Edit List Attr Type" arrow>
+                <button onClick={() => handleEdit(cellValues?.row)}>
+                  <FiEdit size={16} />
+                </button>
+              </Tooltip>
+            </p>
+
             <p
               style={{ cursor: "pointer" }}
               className={`${
