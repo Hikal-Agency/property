@@ -47,6 +47,7 @@ const NewTransactionForm = ({
 }) => {
   console.log("user list: ", user);
   console.log("visa: ", visa);
+  console.log("add trans data edit::: ", addTransactionData);
   const {
     currentMode,
     darkModeColors,
@@ -63,8 +64,12 @@ const NewTransactionForm = ({
   const searchRef = useRef();
 
   const [btnLoading, setBtnLoading] = useState(false);
-  const [includeVat, setIncludeVat] = useState(false);
-  const [pettyCash, setPettyCash] = useState(false);
+  const [includeVat, setIncludeVat] = useState(
+    addTransactionData?.vat || false
+  );
+  const [pettyCash, setPettyCash] = useState(
+    addTransactionData?.is_petty_cash || false
+  );
   const [updatedField, setUpdatedField] = useState();
   const [imagePreview, setImagePreview] = useState(null);
   const [pdfPreview, setPdfPreview] = useState(null);

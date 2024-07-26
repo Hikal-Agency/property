@@ -941,6 +941,7 @@ const TransactionsPage = ({ pathname }) => {
           vendors={vendors}
           fetchUsers={fetchUsers}
           fetchTransactions={fetchTransactions}
+          fetchVendor={fetchVendor}
         />
       )}
     </div>

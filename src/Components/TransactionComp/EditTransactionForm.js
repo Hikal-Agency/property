@@ -30,11 +30,12 @@ const EditTransactionForm = ({
   openEditModal,
   setOpenEditModal,
   fetchTransactions,
-  user,
-  vendors,
-  loading,
+  // user,
+  // vendors,
+  // loading,
   fetchUsers,
   transData,
+  // fetchVendor,
 }) => {
   const {
     currentMode,
@@ -48,8 +49,14 @@ const EditTransactionForm = ({
     fontFam,
   } = useStateContext();
   const [leadNotFound, setLeadNotFound] = useState(false);
+  const [loading, setloading] = useState(false);
+  const [user, setUser] = useState([]);
+  const [vendors, setVendors] = useState([]);
+  const token = localStorage.getItem("auth-token");
 
   console.log("edit data: ", transData);
+  console.log("user list:: ", user);
+  console.log("vendor list:: ", vendors);
 
   const [addTransactionData, setAddTransactionData] = useState({
     user_id: transData?.user_id || null,
@@ -64,7 +71,55 @@ const EditTransactionForm = ({
     vendor_id: transData?.vendor_id || null,
     category: transData?.category || null,
     image: null,
+    total_amount: transData?.total_amount,
+    vat: transData?.vat,
+    is_petty_cash: transData?.is_petty_cash,
   });
+
+  const fetchVendor = async () => {
+    const vendorUrl = `${BACKEND_URL}/vendors`;
+    const userUrl = `${BACKEND_URL}/users`;
+
+    try {
+      const [vendorResponse, userResponse] = await Promise.all([
+        axios.get(vendorUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+        axios.get(userUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }),
+      ]);
+
+      console.log("vendors list:: ", vendorResponse);
+      console.log("users list:: ", userResponse);
+
+      let usersList = userResponse?.data?.managers?.data;
+
+      usersList?.filter((user) => user?.status === 1);
+
+      setUser(usersList);
+      setVendors(vendorResponse?.data?.data?.data);
+    } catch (error) {
+      setloading(false);
+      console.error("Error fetching data:", error);
+      toast.error("Unable to fetch data", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   const [isClosing, setIsClosing] = useState(false);
   const handleClose = () => {
@@ -79,6 +134,10 @@ const EditTransactionForm = ({
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
+
+  useEffect(() => {
+    fetchVendor();
+  }, []);
 
   return (
     <>
@@ -140,18 +199,6 @@ const EditTransactionForm = ({
                   <Error404 />
                 ) : (
                   <div className="w-full">
-                    {/* <AddTransactionForm
-                      user={user}
-                      vendors={vendors}
-                      loading={loading}
-                      fetchUsers={fetchUsers}
-                      fetchTransactions={fetchTransactions}
-                      addTransactionData={addTransactionData}
-                      setAddTransactionData={setAddTransactionData}
-                      edit={true}
-                      transData={transData}
-                      handleClose={handleClose}
-                    /> */}
                     <NewTransactionForm
                       user={user}
                       vendors={vendors}
