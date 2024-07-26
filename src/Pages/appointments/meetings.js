@@ -6,7 +6,7 @@ import {
   AiOutlineHistory,
 } from "react-icons/ai";
 import { MdOutlineLocationOn } from "react-icons/md";
-import { useEffect, useState, } from "react";
+import { useEffect, useState } from "react";
 import { useStateContext } from "../../context/ContextProvider";
 import TableMeeting from "../../Components/meetings/TableMeeting";
 import { socket } from "../App";
@@ -26,7 +26,7 @@ import ShowLocation from "../../Components/meetings/ShowLocation";
 import Timeline from "../timeline";
 import HeadingTitle from "../../Components/_elements/HeadingTitle";
 
-const Meetings = () => {
+const Meetings = ({ isInLeads, leadId }) => {
   const [loading, setloading] = useState(true);
   const {
     currentMode,
@@ -58,6 +58,13 @@ const Meetings = () => {
     open: false,
     id: null,
   });
+  useEffect(() => {
+    setopenBackDrop(false);
+    setloading(false);
+    const token = localStorage.getItem("auth-token");
+    FetchLeads(token);
+    // eslint-disable-next-line
+  }, [pageState.page, leadId]);
 
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
@@ -69,9 +76,6 @@ const Meetings = () => {
   const handleChange = (event, newValue) => {
     setValue(value === 0 ? 1 : 0);
   };
-
-
-
 
   const handleEditMeeting = ({ row }) => {
     console.log("edit meeting : ");
@@ -91,8 +95,6 @@ const Meetings = () => {
       open: false,
     });
   };
-
-
 
   const showLocation = (mLat, mLong) => {
     setLocationModalOpen(true);
@@ -126,60 +128,117 @@ const Meetings = () => {
       ...old,
       isLoading: true,
     }));
-
     axios
-      .get(`${BACKEND_URL}/meeting/?page=${pageState.page}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      })
+      .get(
+        `${BACKEND_URL}/meeting${isInLeads ? "s" : ""}/?page=${pageState.page}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          params: {
+            leadId: isInLeads ? leadId : null,
+          },
+        }
+      )
       .then((result) => {
         console.log("the meeting leads are ");
         console.log(result.data);
         let rowsDataArray = "";
-        if (result.data.leads.current_page > 1) {
-          const theme_values = Object.values(result.data.leads.data);
-          rowsDataArray = theme_values;
+        if (isInLeads) {
+          if (result.data.meetings.current_page > 1) {
+            const theme_values = Object.values(result.data.meetings.data);
+            rowsDataArray = theme_values;
+          } else {
+            rowsDataArray = result.data.meetings.data;
+          }
         } else {
-          rowsDataArray = result.data.leads.data;
+          if (result.data.leads.current_page > 1) {
+            const theme_values = Object.values(result.data.leads.data);
+            rowsDataArray = theme_values;
+          } else {
+            rowsDataArray = result.data.leads.data;
+          }
         }
+
         console.log("rows array is");
-        console.log(rowsDataArray);
+        console.log(User, "User is here");
 
-        let rowsdata = rowsDataArray.map((row, index) => ({
-          id: pageState.page > 1 ? pageState.page * 15 - 14 + index : index + 1,
-          meetingId: row?.id,
-          leadName: row?.leadName || "-",
-          project: row?.project || "-",
-          enquiryType: row?.enquiryType || "-",
-          leadType: row?.leadType || "-",
-          leadFor: row?.leadFor || "-",
-          leadId: row?.lead_id,
-          meetingDate: row?.meetingDate || "-",
-          meetingBy: row?.userName || "-",
-          meetingTime: row?.meetingTime || "-",
-          meetingStatus: row?.meetingStatus || "-",
-          mLat: row?.mLat,
-          mLong: row?.mLong,
-          meetingLocation: row?.meetingLocation || "-",
-          meetingNote: row?.meetingNote || "No Notes",
-        }));
+        let rowsdata = rowsDataArray.map((row, index) => {
+          if (isInLeads) {
+            return {
+              id:
+                pageState.page > 1
+                  ? pageState.page * 15 - 14 + index
+                  : index + 1,
+              meetingId: row?.id,
+              leadName: row?.leadName || "-",
+              project: row?.project || "-",
+              enquiryType: row?.enquiryType || "-",
+              leadType: row?.leadType || "-",
+              leadFor: row?.leadFor || "-",
+              leadId: row?.leadId,
+              meetingDate: row?.meetingDate || "-",
+              meetingBy: row?.addedBy == User?.id,
+              meetingTime: row?.meetingTime || "-",
+              meetingStatus: row?.meetingStatus || "-",
+              mLat: row?.mLat,
+              mLong: row?.mLong,
+              meetingLocation: row?.meetingLocation || "-",
+              meetingNote: row?.meetingNote || "No Notes",
+            };
+          } else {
+            return {
+              id:
+                pageState.page > 1
+                  ? pageState.page * 15 - 14 + index
+                  : index + 1,
+              meetingId: row?.id,
+              leadName: row?.leadName || "-",
+              project: row?.project || "-",
+              enquiryType: row?.enquiryType || "-",
+              leadType: row?.leadType || "-",
+              leadFor: row?.leadFor || "-",
+              leadId: row?.lead_id,
+              meetingDate: row?.meetingDate || "-",
+              meetingBy: row?.userName || "-",
+              meetingTime: row?.meetingTime || "-",
+              meetingStatus: row?.meetingStatus || "-",
+              mLat: row?.mLat,
+              mLong: row?.mLong,
+              meetingLocation: row?.meetingLocation || "-",
+              meetingNote: row?.meetingNote || "No Notes",
+            };
+          }
+        });
 
-
-
-        setpageState((old) => ({
-          ...old,
-          isLoading: false,
-          data: rowsdata,
-          pageSize: result.data.leads.per_page,
-          gridDataSize: result.data.leads.last_page,
-          total: result.data.leads.total,
-        }));
+        if (isInLeads) {
+          setpageState((old) => ({
+            ...old,
+            isLoading: false,
+            data: rowsdata,
+            pageSize: result.data.meetings.per_page,
+            gridDataSize: result.data.meetings.last_page,
+            total: result.data.meetings.total,
+          }));
+        } else {
+          setpageState((old) => ({
+            ...old,
+            isLoading: false,
+            data: rowsdata,
+            pageSize: result.data.leads.per_page,
+            gridDataSize: result.data.leads.last_page,
+            total: result.data.leads.total,
+          }));
+        }
       })
       .catch((err) => {
         console.log("error occured");
         console.log(err);
+        setpageState((old) => ({
+          ...old,
+          isLoading: false,
+        }));
       });
 
     // fetch meetings that are in future
@@ -189,21 +248,15 @@ const Meetings = () => {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
-      }).then((result) => {
-        console.log("future meetings are ", result)
-        socket.emit("get_all_meetings", result?.data);
-      }).catch((error) => {
-        console.log("error ", error)
       })
+      .then((result) => {
+        console.log("future meetings are ", result);
+        socket.emit("get_all_meetings", result?.data);
+      })
+      .catch((error) => {
+        console.log("error ", error);
+      });
   };
-
-  useEffect(() => {
-    setopenBackDrop(false);
-    setloading(false);
-    const token = localStorage.getItem("auth-token");
-    FetchLeads(token);
-    // eslint-disable-next-line
-  }, [pageState.page]);
 
   // const DataGridStyles = {
   //   "& .MuiButtonBase-root": {
@@ -308,20 +361,22 @@ const Meetings = () => {
               />
             }
           />
-          <Tab
-            icon={
-              <AiOutlineAppstore
-                size={22}
-                style={{
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
-                }}
-              />
-            }
-          />
+          {!isInLeads && (
+            <Tab
+              icon={
+                <AiOutlineAppstore
+                  size={22}
+                  style={{
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  }}
+                />
+              }
+            />
+          )}
         </Tabs>
       </Box>
     );
-  }
+  };
 
   return (
     <>
@@ -330,8 +385,9 @@ const Meetings = () => {
           <Loader />
         ) : (
           <div
-            className={`w-full p-5 mt-2 ${!themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
-              }`}
+            className={`w-full p-5 mt-2 ${
+              !themeBgImg && (currentMode === "dark" ? "bg-dark" : "bg-light")
+            }`}
           >
             <HeadingTitle
               title={t("menu_meetings")}
@@ -354,6 +410,8 @@ const Meetings = () => {
                     setOpenEditModal={setOpenEditModal}
                     setTimelineModelOpen={setTimelineModelOpen}
                     setsingleLeadData={setsingleLeadData}
+                    isInLeads={isInLeads}
+                    leadId={leadId}
                   />
                 </Box>
 
@@ -365,15 +423,17 @@ const Meetings = () => {
                   />
                 )}
               </TabPanel>
-              <TabPanel value={value} index={1}>
-                <GridMeeting
-                  isLoading={loading}
-                  tabValue={tabValue}
-                  setTabValue={setTabValue}
-                  pageState={pageState}
-                  setpageState={setpageState}
-                />
-              </TabPanel>
+              {!isInLeads && (
+                <TabPanel value={value} index={1}>
+                  <GridMeeting
+                    isLoading={loading}
+                    tabValue={tabValue}
+                    setTabValue={setTabValue}
+                    pageState={pageState}
+                    setpageState={setpageState}
+                  />
+                </TabPanel>
+              )}
             </div>
           </div>
         )}

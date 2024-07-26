@@ -48,6 +48,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { BsMic, BsMicFill } from "react-icons/bs";
 import LanguageDetectModal from "../_elements/LanguageDetectModal";
+import Meetings from "../../Pages/appointments/meetings";
 
 const SingleLead = ({
   LeadModelOpen,
@@ -138,14 +139,7 @@ const SingleLead = ({
   const startListening = () =>
     SpeechRecognition.startListening({
       continuous: true,
-      // language:
-      //   i18n?.language == "pk"
-      //     ? "ur"
-      //     : i18n?.language == "cn"
-      //     ? "zh"
-      //     : i18n?.language == "in"
-      //     ? "hi"
-      //     : i18n?.language,
+
       language: language,
     });
 
@@ -1144,6 +1138,12 @@ const SingleLead = ({
                       </Box>
                     </div>
                   </div>
+                </div>
+                <div>
+                  <Meetings
+                    isInLeads
+                    leadId={LeadData?.leadId || LeadData?.id}
+                  />
                 </div>
 
                 {/* EXTERNAL  */}
