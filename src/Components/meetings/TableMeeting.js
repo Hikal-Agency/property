@@ -37,6 +37,8 @@ const TableMeeting = ({
   setOpenEditModal,
   setTimelineModelOpen,
   setsingleLeadData,
+  isInLeads,
+  leadId,
 }) => {
   const [loading, setloading] = useState(true);
   const {
@@ -160,6 +162,7 @@ const TableMeeting = ({
     if (!row?.meetingId) {
       return;
     }
+    alert("I am workign here");
     setOpenEditModal({
       open: true,
       data: row,
@@ -229,7 +232,7 @@ const TableMeeting = ({
     });
     setSearchRows(searchResults);
   };
-  const columns = [
+  let columns = [
     // MEETING DATE
     {
       field: "meetingDate",
@@ -386,23 +389,25 @@ const TableMeeting = ({
             // className="deleteLeadBtn space-x-2 w-full flex items-center justify-center align-center"
             className={`w-full h-full px-1 flex items-center justify-center edit_meeting_btn`}
           >
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#229ed1] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn editBtn`}
-            >
-              <Tooltip title="Edit Meeting here" arrow>
-                <button
-                  className="editBtn"
-                  onClick={() => handleEditMeeting(cellValues)}
-                >
-                  <AiOutlineEdit size={16} />
-                </button>
-              </Tooltip>
-            </p>
+            {(isInLeads ? cellValues?.row?.meetingBy : true) && (
+              <p
+                style={{ cursor: "pointer" }}
+                className={`${
+                  currentMode === "dark"
+                    ? "text-[#FFFFFF] bg-[#262626]"
+                    : "text-[#1C1C1C] bg-[#EEEEEE]"
+                } hover:bg-[#229ed1] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center timelineBtn editBtn`}
+              >
+                <Tooltip title="Edit Meeting here" arrow>
+                  <button
+                    className="editBtn"
+                    onClick={() => handleEditMeeting(cellValues)}
+                  >
+                    <AiOutlineEdit size={16} />
+                  </button>
+                </Tooltip>
+              </p>
+            )}
 
             <p
               style={{ cursor: "pointer" }}
@@ -449,6 +454,19 @@ const TableMeeting = ({
       },
     },
   ];
+
+  const leadsMeetingColumns = [
+    "meetingDate",
+    "meetingTime",
+    "edit",
+    // "meetingBy",
+    "meetingStatus",
+  ];
+  columns = isInLeads
+    ? columns?.filter((column) => {
+        return leadsMeetingColumns?.includes(column?.field);
+      })
+    : columns;
 
   const showLocation = (mLat, mLong) => {
     setLocationModalOpen(true);
