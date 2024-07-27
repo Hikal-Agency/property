@@ -89,7 +89,6 @@ const Meetings = ({ isInLeads, leadId }) => {
       data: row,
     });
   };
-
   const handleMeetingModalClose = () => {
     setOpenEditModal({
       open: false,

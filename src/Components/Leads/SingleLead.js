@@ -50,6 +50,14 @@ import { BsMic, BsMicFill } from "react-icons/bs";
 import LanguageDetectModal from "../_elements/LanguageDetectModal";
 import Meetings from "../../Pages/appointments/meetings";
 
+const areEqual = (prevProps, nextProps) => {
+  console.log(prevProps?.leadId, "lead id");
+  console.log(nextProps?.leadId, "lead id");
+  return prevProps?.leadId == nextProps?.leadId;
+};
+
+const MemoizedMeetings = React.memo(Meetings, areEqual);
+
 const SingleLead = ({
   LeadModelOpen,
   handleLeadModelClose,
@@ -558,7 +566,7 @@ const SingleLead = ({
       setCurrentTime("");
     }
   }, [countryInfo.timezone]);
-
+  // alert("this is the errror in single modal");
   return (
     <>
       <Modal
@@ -1140,7 +1148,7 @@ const SingleLead = ({
                   </div>
                 </div>
                 <div>
-                  <Meetings
+                  <MemoizedMeetings
                     isInLeads
                     leadId={LeadData?.leadId || LeadData?.id}
                   />

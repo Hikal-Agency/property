@@ -25,9 +25,6 @@ import { IoMdSearch } from "react-icons/io";
 // import Loader from "../../Components/Loader";
 import { Tab, Tabs, Tooltip } from "@mui/material";
 import { Box, Pagination } from "@mui/material";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
 
 const TableMeeting = ({
   setpageState,
@@ -53,92 +50,9 @@ const TableMeeting = ({
     themeBgImg,
   } = useStateContext();
   const [meetingNote, setMeetingNote] = useState(null);
-  const [isVoiceSearchState, setIsVoiceSearchState] = useState(false);
   const [searchRows, setSearchRows] = useState(pageState?.data);
   const searchRef = useRef(null);
   const [searchText, setSearchText] = useState("");
-
-  const {
-    transcript,
-    listening,
-    browserSupportsSpeechRecognition,
-    resetTranscript,
-  } = useSpeechRecognition("en");
-
-  useEffect(() => {
-    if (isVoiceSearchState && transcript.length > 0) {
-      // setSearchTerm(transcript);
-      setSearchText(transcript);
-      handleSearchChange({ target: { value: transcript } });
-    }
-    console.log(transcript, "transcript");
-  }, [transcript, isVoiceSearchState]);
-
-  useEffect(() => {
-    if (isVoiceSearchState) {
-      handleSearchChange({ target: { value: "" } });
-      resetTranscript();
-      setSearchText("");
-      startListening();
-    } else {
-      SpeechRecognition.stopListening();
-      console.log(transcript, "transcript...");
-      resetTranscript();
-    }
-  }, [isVoiceSearchState]);
-  useEffect(() => {
-    if (!browserSupportsSpeechRecognition) {
-      console.error("Browser doesn't support speech recognition.");
-    }
-  }, [browserSupportsSpeechRecognition]);
-
-  const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true });
-
-  function CustomToolbar() {
-    useEffect(() => {
-      searchRef?.current?.focus();
-    }, [searchText]);
-
-    return (
-      <GridToolbarContainer>
-        <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarExport
-          slotProps={{
-            tooltip: { title: "Export data" },
-            button: { variant: "outlined" },
-          }}
-        />
-        <Box sx={{ flexGrow: 1 }} />
-        <div className="flex items-center border-b-[1px] border-b-black gap-2">
-          <div>
-            <IoMdSearch size={22} />
-          </div>
-          <input
-            ref={searchRef}
-            type="text"
-            className=" focus:outline-none h-full bg-transparent text-[12px]"
-            placeholder="Search"
-            onChange={handleSearchChange}
-            value={searchText}
-          />
-          <div
-            // ref={searchContainer}
-            className={`${isVoiceSearchState ? "listening bg-primary" : ""} ${
-              currentMode === "dark" ? "text-white" : "text-black"
-            } rounded-full cursor-pointer hover:bg-gray-500 p-1`}
-            onClick={() => {
-              setIsVoiceSearchState(!isVoiceSearchState);
-              console.log("mic is clicked...");
-            }}
-          >
-            {isVoiceSearchState ? <BsMicFill size={16} /> : <BsMic size={16} />}
-          </div>
-        </div>
-      </GridToolbarContainer>
-    );
-  }
 
   const HandleViewTimeline = (params) => {
     setsingleLeadData(params.row);
@@ -162,7 +76,7 @@ const TableMeeting = ({
     if (!row?.meetingId) {
       return;
     }
-    alert("I am workign here");
+
     setOpenEditModal({
       open: true,
       data: row,
