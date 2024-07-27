@@ -241,37 +241,37 @@ const AddListingAttribute = ({
       },
     },
     // GARAGE
-    {
-      field: "garage",
-      headerName: t("garage"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "garage",
+    //   headerName: t("garage"),
+    //   headerAlign: "center",
+    //   editable: false,
+    //   minwidth: 100,
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="w-full flex items-center justify-center">
+    //         <p className="text-center">{cellValues?.formattedValue}</p>
+    //       </div>
+    //     );
+    //   },
+    // },
     // GALLERY
-    {
-      field: "gallery",
-      headerName: t("gallery"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "gallery",
+    //   headerName: t("gallery"),
+    //   headerAlign: "center",
+    //   editable: false,
+    //   minwidth: 100,
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="w-full flex items-center justify-center">
+    //         <p className="text-center">{cellValues?.formattedValue}</p>
+    //       </div>
+    //     );
+    //   },
+    // },
 
     {
       field: "notes",
@@ -472,7 +472,7 @@ const AddListingAttribute = ({
             onChange={handleChange}
           />
 
-          <TextField
+          {/* <TextField
             id="gallery"
             type={"text"}
             label={t("gallery")}
@@ -485,7 +485,7 @@ const AddListingAttribute = ({
             value={listingAttr?.gallery}
             name="tourLink"
             onChange={handleChange}
-          />
+          /> */}
         </Box>
         <Box
           sx={{
@@ -556,7 +556,7 @@ const AddListingAttribute = ({
             onChange={handleChange}
             required
           /> */}
-          <FormControlLabel
+          {/* <FormControlLabel
             control={
               <Checkbox
                 value={listingAttr?.garage}
@@ -572,7 +572,7 @@ const AddListingAttribute = ({
               />
             }
             label={t("garage")}
-          />
+          /> */}
 
           <Button
             className={`min-w-fit text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
