@@ -1490,12 +1490,12 @@ const Sidebarmui = () => {
     },
     // SECONDARY LISTINGS AND BUYERS
     {
-      title: t("menu_secondary"),
+      title: t("menu_listings"),
       icon: <BsBuildings size={18} />,
       pro: false,
       links: [
         {
-          name: t("menu_listings"),
+          name: t("menu_all_listings"),
           icon: <BsTags size={16} />,
           pro: false,
           link: "/secondaryListings",
