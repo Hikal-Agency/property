@@ -46,8 +46,15 @@ import { DatePicker } from "@mui/x-date-pickers";
 import NewTransactionForm from "./NewTransactionForm";
 import { formatNoIntl } from "../_elements/FormatNoIntl";
 
-const TransactionsList = ({ filtersData, visa, callApi }) => {
-  console.log("filters:: ", filtersData);
+const TransactionsList = ({
+  filtersData,
+  visa,
+  callApi,
+  filters,
+  statements,
+}) => {
+  console.log("filter data:: ", filtersData);
+  console.log("filters:: ", filters);
   const {
     currentMode,
     darkModeColors,
@@ -200,6 +207,50 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
         setVAT(response?.data?.vat);
         setMaxPage(response?.data?.data?.last_page);
         setTransactionsData(response?.data?.data?.data);
+      } else if (statements) {
+        if (!filters?.month || !filters?.year) {
+          toast.error("Month and year are required.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setloading(false);
+          return;
+        }
+
+        const params = {
+          month: filters?.month,
+          year: filters?.year,
+        };
+
+        // Conditionally add country and currency if they have values
+        if (filters?.country) {
+          params.country = filters.country;
+        }
+        if (filters?.currency) {
+          params.currency = filters.currency;
+        }
+
+        url = `${BACKEND_URL}/invoices?page=${page}`;
+
+        const response = await axios.get(url, {
+          params: params,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        console.log("transactions list:: ", response);
+
+        setVAT(response?.data?.vat);
+        setMaxPage(response?.data?.data?.last_page);
+        setTransactionsData(response?.data?.data?.data);
       } else {
         url = `${BACKEND_URL}/invoices?page=${page}${queryParams}`;
         const response = await axios.get(url, {
@@ -264,7 +315,7 @@ const TransactionsList = ({ filtersData, visa, callApi }) => {
 
   useEffect(() => {
     fetchTransactions();
-  }, [filtersData, page, "/transactions", callApi]);
+  }, [filtersData, page, "/transactions", callApi, filters]);
 
   return (
     <div>

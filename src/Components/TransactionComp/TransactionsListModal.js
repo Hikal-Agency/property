@@ -20,6 +20,7 @@ const TransactionsListModal = ({
   transactionsListModal,
   fetchCrmClients,
   filters,
+  statements,
 }) => {
   const {
     currentMode,
@@ -130,11 +131,9 @@ const TransactionsListModal = ({
     boxShadow: 24,
   };
 
-  useEffect(() => {
-    fetchTransactions();
-  }, [filters]);
-
-
+  // useEffect(() => {
+  //   fetchTransactions();
+  // }, [filters]);
 
   return (
     <>
@@ -157,20 +156,23 @@ const TransactionsListModal = ({
         }}
       >
         <div
-          className={`${isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
-            } ${isClosing
+          className={`${
+            isLangRTL(i18n.language) ? "modal-open-left" : "modal-open-right"
+          } ${
+            isClosing
               ? isLangRTL(i18n.language)
                 ? "modal-close-left"
                 : "modal-close-right"
               : ""
-            }
+          }
           w-[100vw] h-[100vh] flex items-start justify-end `}
         >
           <button
             // onClick={handleCloseTimelineModel}
             onClick={handleClose}
-            className={`${isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
-              }
+            className={`${
+              isLangRTL(i18n.language) ? "rounded-r-full" : "rounded-l-full"
+            }
             bg-primary w-fit h-fit p-3 my-4 z-10`}
           >
             <MdClose
@@ -182,13 +184,15 @@ const TransactionsListModal = ({
 
           <div
             style={style}
-            className={` ${currentMode === "dark"
-              ? "bg-dark text-white"
-              : "bg-light text-black"
-              } ${isLangRTL(i18n.language)
+            className={` ${
+              currentMode === "dark"
+                ? "bg-dark text-white"
+                : "bg-light text-black"
+            } ${
+              isLangRTL(i18n.language)
                 ? currentMode === "dark" && " border-primary border-r-2"
                 : currentMode === "dark" && " border-primary border-l-2"
-              } p-5 h-[100vh] w-[85vw] overflow-y-scroll `}
+            } p-5 h-[100vh] w-[85vw] overflow-y-scroll `}
           >
             {loading ? (
               <Loader />
@@ -198,23 +202,21 @@ const TransactionsListModal = ({
                   <Error404 />
                 ) : (
                   <div className="w-full">
-                    <HeadingTitle
-                      title={t("transaction_details")}
-                    />
+                    <HeadingTitle title={t("transaction_details")} />
 
                     <div className="p-5">
                       <Box
                         sx={{
                           ...darkModeColors,
                           "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-                          {
-                            right: isLangRTL(i18n.language)
-                              ? "2.5rem"
-                              : "inherit",
-                            transformOrigin: isLangRTL(i18n.language)
-                              ? "right"
-                              : "left",
-                          },
+                            {
+                              right: isLangRTL(i18n.language)
+                                ? "2.5rem"
+                                : "inherit",
+                              transformOrigin: isLangRTL(i18n.language)
+                                ? "right"
+                                : "left",
+                            },
                           "& legend": {
                             textAlign: isLangRTL(i18n.language)
                               ? "right"
@@ -229,7 +231,11 @@ const TransactionsListModal = ({
                           </div>
                         ) : (
                           <div className="">
-                            <TransactionsList filtersData={transactionsData} />
+                            <TransactionsList
+                              filtersData={transactionsData}
+                              statements={statements}
+                              filters={filters}
+                            />
 
                             {/* {transactionsData &&
                               transactionsData?.length > 0 ? (

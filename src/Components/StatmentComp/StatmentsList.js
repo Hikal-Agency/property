@@ -142,10 +142,10 @@ const StatmentsList = () => {
             sx={{
               ...darkModeColors,
               "& .MuiFormLabel-root, .MuiInputLabel-root, .MuiInputLabel-formControl":
-              {
-                right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
-                transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
-              },
+                {
+                  right: isLangRTL(i18n.language) ? "2.5rem" : "inherit",
+                  transformOrigin: isLangRTL(i18n.language) ? "right" : "left",
+                },
               "& legend": {
                 textAlign: isLangRTL(i18n.language) ? "right" : "left",
               },
@@ -232,9 +232,13 @@ const StatmentsList = () => {
               />
             </LocalizationProvider>
             <button
-              className={`${themeBgImg ? "bg-primary shadow-md"
-                : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                } p-3 mt-0 mb-5 rounded-full h-fit w-fit`}
+              className={`${
+                themeBgImg
+                  ? "bg-primary shadow-md"
+                  : currentMode === "dark"
+                  ? "bg-primary-dark-neu"
+                  : "bg-primary-light-neu"
+              } p-3 mt-0 mb-5 rounded-full h-fit w-fit`}
               onClick={() => setPDFModal(true)}
             >
               {" "}
@@ -261,30 +265,33 @@ const StatmentsList = () => {
               return (
                 <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
                   <div
-                    className={`p-5 pb-5 h-fit ${themeBgImg
-                      ? currentMode === "dark"
-                        ? "blur-bg-dark text-white"
-                        : "blur-bg-light text-black"
-                      : currentMode === "dark"
+                    className={`p-5 pb-5 h-fit ${
+                      themeBgImg
+                        ? currentMode === "dark"
+                          ? "blur-bg-dark text-white"
+                          : "blur-bg-light text-black"
+                        : currentMode === "dark"
                         ? "bg-dark-neu text-white"
                         : "bg-light-neu text-black"
-                      }`}
+                    }`}
                   >
                     <div className="flex justify-between items-center gap-4 pb-5">
                       {/* CURRENCY */}
                       <div className="flex gap-2 items-center">
                         <div className="bg-primary h-10 w-1 rounded-full"></div>
-                        <h1
-                          className={`font-semibold uppercase`}
-                        >
+                        <h1 className={`font-semibold uppercase`}>
                           {stats?.currency}
                         </h1>
                       </div>
                       {/* TRANSACTIONS */}
                       <button
-                        className={`${themeBgImg ? "bg-primary shadow-md"
-                          : currentMode === "dark" ? "bg-primary-dark-neu" : "bg-primary-light-neu"
-                          } rounded-md text-white py-2 px-4 w-max uppercase`}
+                        className={`${
+                          themeBgImg
+                            ? "bg-primary shadow-md"
+                            : currentMode === "dark"
+                            ? "bg-primary-dark-neu"
+                            : "bg-primary-light-neu"
+                        } rounded-md text-white py-2 px-4 w-max uppercase`}
                         onClick={() => setTransactionsListModal(true)}
                       >
                         {t("btn_view_transactions")}
@@ -293,14 +300,15 @@ const StatmentsList = () => {
                     <div className="grid grid-cols-2 gap-5 mb-5">
                       {/* INCOME */}
                       <div
-                        className={`w-full p-5 flex flex-col justify-center gap-4 ${themeBgImg
-                          ? currentMode === "dark"
-                            ? "blur-bg-dark shadow-sm"
-                            : "blur-bg-white shadow-sm"
-                          : currentMode === "dark"
+                        className={`w-full p-5 flex flex-col justify-center gap-4 ${
+                          themeBgImg
+                            ? currentMode === "dark"
+                              ? "blur-bg-dark shadow-sm"
+                              : "blur-bg-white shadow-sm"
+                            : currentMode === "dark"
                             ? "bg-dark-neu"
                             : "bg-light-neu"
-                          }`}
+                        }`}
                       >
                         <p className="text-center">{t("income_amount")}</p>
                         <p className={`text-center text-xl font-semibold`}>
@@ -309,14 +317,15 @@ const StatmentsList = () => {
                       </div>
                       {/* EXPENSE */}
                       <div
-                        className={`w-full p-5 flex flex-col justify-center gap-4 ${themeBgImg
-                          ? currentMode === "dark"
-                            ? "blur-bg-dark shadow-sm"
-                            : "blur-bg-white shadow-sm"
-                          : currentMode === "dark"
+                        className={`w-full p-5 flex flex-col justify-center gap-4 ${
+                          themeBgImg
+                            ? currentMode === "dark"
+                              ? "blur-bg-dark shadow-sm"
+                              : "blur-bg-white shadow-sm"
+                            : currentMode === "dark"
                             ? "bg-dark-neu"
                             : "bg-light-neu"
-                          }`}
+                        }`}
                       >
                         <p className="text-center">{t("expense_amount")}</p>
                         <p className={`text-center text-xl font-semibold`}>
@@ -325,28 +334,33 @@ const StatmentsList = () => {
                       </div>
                     </div>
                     <div
-                      className={`text-white ${themeBgImg
-                        ? loss
-                          ? (currentMode === "dark" ? "bg-[#DA1F26] text-white" : "bg-[#f7caca] text-black")
-                          : (currentMode === "dark" ? "bg-[#007c00] text-white" : "bg-[#9fca9d] text-black")
-                        : loss
-                          ? (currentMode === "dark" ? "bg-red-dark-neu" : "bg-red-light-neu")
-                          : (currentMode === "dark" ? "bg-green-dark-neu" : "bg-green-light-neu")
-                        } ${themeBgImg && "rounded-xl shadow-md"
-                        } w-full`}
+                      className={`text-white ${
+                        themeBgImg
+                          ? loss
+                            ? currentMode === "dark"
+                              ? "bg-[#DA1F26] text-white"
+                              : "bg-[#f7caca] text-black"
+                            : currentMode === "dark"
+                            ? "bg-[#007c00] text-white"
+                            : "bg-[#9fca9d] text-black"
+                          : loss
+                          ? currentMode === "dark"
+                            ? "bg-red-dark-neu"
+                            : "bg-red-light-neu"
+                          : currentMode === "dark"
+                          ? "bg-green-dark-neu"
+                          : "bg-green-light-neu"
+                      } ${themeBgImg && "rounded-xl shadow-md"} w-full`}
                     >
                       <div className="flex flex-col items-center justify-center gap-4 p-5 relative">
                         <p className="text-center uppercase">{stats?.output}</p>
-                        <p
-                          className={`text-center text-xl font-bold`}
-                        >
+                        <p className={`text-center text-xl font-bold`}>
                           {stats?.currency} {stats?.profit_loss?.toFixed(2)}
                         </p>
                         <div
-                          className={`absolute text-sm top-0 p-2 ${isLangRTL(i18n.langguage)
-                            ? "left-0"
-                            : "right-0"
-                            }`}
+                          className={`absolute text-sm top-0 p-2 ${
+                            isLangRTL(i18n.langguage) ? "left-0" : "right-0"
+                          }`}
                         >
                           {stats?.percent
                             ? parseFloat(stats?.percent).toFixed(1) + " " + "%"
@@ -357,10 +371,11 @@ const StatmentsList = () => {
                   </div>
                   {/* CHART */}
                   <div
-                    className={`${themeBgImg && currentMode === "dark"
-                      ? "blur-bg-dark"
-                      : "blur-bg-light"
-                      }`}
+                    className={`${
+                      themeBgImg && currentMode === "dark"
+                        ? "blur-bg-dark"
+                        : "blur-bg-light"
+                    }`}
                   >
                     <StatmentsCharts stats={stats} />
                   </div>
@@ -387,6 +402,7 @@ const StatmentsList = () => {
           transactionsListModal={transactionsListModal}
           setTransactionsListModal={setTransactionsListModal}
           filters={filters}
+          statements={true}
         />
       )}
 
