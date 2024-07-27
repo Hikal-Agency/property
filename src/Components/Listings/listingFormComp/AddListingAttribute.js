@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import ListingDataGrid from "../ListingDataGrid";
 import SelectOption from "@material-tailwind/react/components/Select/SelectOption";
 import { IoMdClose } from "react-icons/io";
-import { BsTrash } from "react-icons/bs";
+import { BsDash, BsPlus, BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 
 const AddListingAttribute = ({
@@ -326,6 +326,44 @@ const AddListingAttribute = ({
     }));
   };
 
+  const handleIncrement = (type) => {
+    setListingAttr((prev) => {
+      if (type === "bathroom") {
+        const newQuantity = Math.min((prev.bathroom || 0) + 1, 10);
+        return {
+          ...prev,
+          bathroom: newQuantity,
+        };
+      } else {
+        const newQuantity = Math.min((prev.bedroom || 0) + 1, 10);
+
+        return {
+          ...prev,
+          bedroom: newQuantity,
+        };
+      }
+    });
+  };
+
+  const handleDecrement = (type) => {
+    setListingAttr((prev) => {
+      if (type === "bathroom") {
+        const newQuantity = Math.max((prev.bathroom || 0) - 1, 1);
+        return {
+          ...prev,
+          bathroom: newQuantity,
+        };
+      } else {
+        const newQuantity = Math.max((prev.bedroom || 0) - 1, 1);
+
+        return {
+          ...prev,
+          bedroom: newQuantity,
+        };
+      }
+    });
+  };
+
   const AddListAttr = () => {
     setBtnLoading(true);
 
@@ -458,18 +496,41 @@ const AddListingAttribute = ({
           />
 
           <TextField
+            type="number"
             id="bathroom"
-            type={"text"}
+            name="quantity"
+            placeholder={t("bathroom")}
             label={t("bathroom")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
             value={listingAttr?.bathroom}
-            name="tourLink"
             onChange={handleChange}
+            size="small"
+            className="w-full p-2"
+            // inputProps={{ min: 1, max: 10 }}
+            // helperText={showError && "Quantity should be in limit of 1 - 10"}
+            FormHelperTextProps={{
+              sx: { color: currentMode === "dark" ? "#fff" : "#000" },
+            }}
+            InputProps={{
+              startAdornment: (
+                <IconButton
+                  onClick={() => handleDecrement("bathroom")}
+                  // disabled={orderDetails?.quantity <= 1}
+                >
+                  <BsDash color={"#AAAAAA"} />
+                </IconButton>
+              ),
+              endAdornment: (
+                <IconButton
+                  onClick={() => handleIncrement("bathroom")}
+                  // disabled={orderDetails?.quantity >= 10}
+                >
+                  <BsPlus color={"#AAAAAA"} />
+                </IconButton>
+              ),
+              inputProps: {
+                style: { textAlign: "center" },
+              },
+            }}
           />
 
           {/* <TextField
@@ -526,7 +587,7 @@ const AddListingAttribute = ({
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           />
-          <TextField
+          {/* <TextField
             id="bedroom"
             type={"text"}
             label={t("bedroom")}
@@ -540,6 +601,43 @@ const AddListingAttribute = ({
             name="projectLocation"
             onChange={handleChange}
             required
+          /> */}
+          <TextField
+            type="number"
+            id="bedroom"
+            name="quantity"
+            placeholder={t("bedroom")}
+            label={t("bedroom")}
+            value={listingAttr?.bedroom}
+            onChange={handleChange}
+            size="small"
+            className="w-full p-2"
+            // inputProps={{ min: 1, max: 10 }}
+            // helperText={showError && "Quantity should be in limit of 1 - 10"}
+            FormHelperTextProps={{
+              sx: { color: currentMode === "dark" ? "#fff" : "#000" },
+            }}
+            InputProps={{
+              startAdornment: (
+                <IconButton
+                  onClick={() => handleDecrement("bedroom")}
+                  // disabled={orderDetails?.quantity <= 1}
+                >
+                  <BsDash color={"#AAAAAA"} />
+                </IconButton>
+              ),
+              endAdornment: (
+                <IconButton
+                  onClick={() => handleIncrement("bedroom")}
+                  // disabled={orderDetails?.quantity >= 10}
+                >
+                  <BsPlus color={"#AAAAAA"} />
+                </IconButton>
+              ),
+              inputProps: {
+                style: { textAlign: "center" },
+              },
+            }}
           />
           {/* <TextField
             id="garage"
