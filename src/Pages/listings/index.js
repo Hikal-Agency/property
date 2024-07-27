@@ -101,7 +101,7 @@ const Listings = () => {
     if (page > 1) {
       setbtnloading(true);
     }
-    let url = `${BACKEND_URL}/listings?page=${page}&listing_status=New`;
+    let url = `${BACKEND_URL}/new-listings?page=${page}&listing_status=New`;
     if (filters?.bedrooms) url += `&bedrooms=${filters?.bedrooms}`;
     if (filters?.bathrooms) url += `&bathrooms=${filters?.bathrooms}`;
     if (filters?.property) url += `&property_type=${filters?.property}`;
@@ -121,7 +121,7 @@ const Listings = () => {
       });
 
       console.log("all listings: ", all_listings);
-      let filteredListings = all_listings?.data?.data?.data || [];
+      let filteredListings = all_listings?.data?.data || [];
 
       console.log("sold: ", filters?.sold);
 
@@ -266,7 +266,9 @@ const Listings = () => {
   };
 
   useEffect(() => {
-    SearchListings(token, currentPage);
+    if (searchQuery) {
+      SearchListings(token, currentPage);
+    }
   }, [searchQuery]);
 
   // open listing modal
