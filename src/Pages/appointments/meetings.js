@@ -349,18 +349,19 @@ const Meetings = ({ isInLeads, leadId }) => {
         }}
         className={`rounded-md overflow-hidden`}
       >
-        <Tabs value={value} onClick={handleChange} variant="standard">
-          <Tab
-            icon={
-              <AiOutlineTable
-                size={22}
-                style={{
-                  color: currentMode === "dark" ? "#ffffff" : "#000000",
-                }}
-              />
-            }
-          />
-          {!isInLeads && (
+        {!isInLeads && (
+          <Tabs value={value} onClick={handleChange} variant="standard">
+            <Tab
+              icon={
+                <AiOutlineTable
+                  size={22}
+                  style={{
+                    color: currentMode === "dark" ? "#ffffff" : "#000000",
+                  }}
+                />
+              }
+            />
+            (
             <Tab
               icon={
                 <AiOutlineAppstore
@@ -371,8 +372,9 @@ const Meetings = ({ isInLeads, leadId }) => {
                 />
               }
             />
-          )}
-        </Tabs>
+            )
+          </Tabs>
+        )}
       </Box>
     );
   };
