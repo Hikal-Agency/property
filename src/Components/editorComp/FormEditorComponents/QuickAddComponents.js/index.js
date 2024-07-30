@@ -11,7 +11,7 @@ const GeneralField = ({
   required,
   type,
   onChange,
-  float,
+  value,
 }) => {
   console.log("required", required);
   return (
@@ -31,6 +31,7 @@ const GeneralField = ({
         className="focus:outline-none border w-full text-[14px] p-3 rounded-lg bg-transparent"
         required={required}
         onChange={(e) => onChange(queryKey, e?.target?.value)}
+        value={value}
       />
       <label htmlFor="">{shortLabel}</label>
     </div>
@@ -45,6 +46,7 @@ export const FirstName = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -55,6 +57,7 @@ export const FirstName = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -66,6 +69,7 @@ export const LastName = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -76,6 +80,7 @@ export const LastName = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -87,6 +92,7 @@ export const FullName = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -97,6 +103,7 @@ export const FullName = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -108,6 +115,7 @@ export const Email = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -119,6 +127,7 @@ export const Email = ({
       queryKey={queryKey}
       onChange={onChange}
       type="email"
+      value={value}
     />
   );
 };
@@ -130,6 +139,7 @@ export const Phone = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -141,6 +151,7 @@ export const Phone = ({
       queryKey={queryKey}
       onChange={onChange}
       type="number"
+      value={value}
     />
   );
 };
@@ -152,6 +163,7 @@ export const Address = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -162,6 +174,7 @@ export const Address = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -173,6 +186,7 @@ export const City = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -183,6 +197,7 @@ export const City = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -194,6 +209,7 @@ export const Country = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -204,6 +220,7 @@ export const Country = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -215,6 +232,7 @@ export const State = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -225,6 +243,7 @@ export const State = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -236,6 +255,7 @@ export const PostalCode = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -246,6 +266,7 @@ export const PostalCode = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -257,6 +278,7 @@ export const Organization = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -267,6 +289,7 @@ export const Organization = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -278,6 +301,7 @@ export const Website = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -288,6 +312,7 @@ export const Website = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -309,6 +334,7 @@ export const DateOfBirth = ({
   shortLabel,
   required,
   onChange,
+  value,
 }) => {
   const { darkModeColors, currentMode, User, BACKEND_URL, t } =
     useStateContext();
@@ -322,6 +348,7 @@ export const DateOfBirth = ({
       type="date"
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -334,6 +361,7 @@ export const Image = ({
   onChange,
   placeholder,
   queryKey,
+  value,
 }) => {
   return (
     // <div>
@@ -354,6 +382,7 @@ export const Image = ({
         onChange={(e) => {
           onChange(queryKey, e.target.files[0]);
         }}
+        value={value}
       />
       <label htmlFor="">{shortLabel}</label>
     </div>
@@ -391,6 +420,7 @@ export const Source = ({
   required,
   queryKey,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -401,6 +431,7 @@ export const Source = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };
@@ -412,6 +443,7 @@ export const TandC = ({
   required,
   queryKey,
   onChange,
+  value,
 }) => {
   return (
     <GeneralField
@@ -422,6 +454,7 @@ export const TandC = ({
       required={required}
       queryKey={queryKey}
       onChange={onChange}
+      value={value}
     />
   );
 };

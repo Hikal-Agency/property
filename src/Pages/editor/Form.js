@@ -82,6 +82,18 @@ const Form = () => {
   }, []);
 
   useEffect(() => {
+    const hiddenFields = form?.fields?.filter((field) => {
+      return field.hidden;
+    });
+    hiddenFields?.map((field) => {
+      setFormData((pre) => ({
+        ...pre,
+        [field.queryKey]: field.value,
+      }));
+    });
+  }, [form]);
+
+  useEffect(() => {
     console.log(form, "single form");
   }, [form]);
 
@@ -127,7 +139,6 @@ const Form = () => {
     formDataSub?.append("form_id", formID);
     formDataSub?.append("data", jsonFormData);
     if (image) {
-      alert("this is availabel");
       formDataSub?.append("image", image);
     }
 
@@ -221,6 +232,9 @@ const Form = () => {
             } !rounded-none p-10 h-full flex flex-col gap-4`}
           >
             {form?.fields?.map((comp, index) => {
+              if (comp.hidden) {
+                return null;
+              }
               const Component = components[comp?.component];
               return (
                 <Component

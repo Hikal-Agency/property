@@ -112,6 +112,7 @@ const ViewForm = ({ fields, setViewFormModal, viewFormModal }) => {
                     htmlContent={comp?.html}
                     isDevelopment={false}
                     onChange={() => {}}
+                    value={comp.hidden && comp.value}
                   />
                 );
               })}

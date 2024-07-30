@@ -1144,13 +1144,35 @@
 
   "label_converter": "Converter",
 
-
-
-
-
-
-
-
-
-  "menu_all_listings":"All Listings"
+  "menu_all_listings": "All Listings",
+  "btn_form": "Form",
+  "btn_back": "Back",
+  "btn_preview": "Preview",
+  "btn_integrate": "Integrate",
+  "btn_field": "Field",
+  "label_element": "Element",
+  "label_quick": "Quick",
+  "custom_fields": "Custom Fields",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "btn": "Button",
+  "state": "State",
+  "postal_code": "Postal Code",
+  "org": "Organization",
+  "text": "Text",
+  "image": "Image",
+  "info": "Info",
+  "customized": "Customized",
+  "label": "Label",
+  "placeholder": "Placeholder",
+  "short": "Short",
+  "query_key": "Query Key",
+  "please_input": "Please Input",
+  "field_width": "Field Width",
+  "required": "Required",
+  "hidden": "Hidden",
+  "forms": "Forms",
+  "folder": "Folder",
+  "folders": "Folders",
+  "form_list_para": "Enhance reach with unlimited terms, no coding. Gatheressential into for targeted, personalized content."
 }

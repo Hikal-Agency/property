@@ -31,7 +31,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { maxWidth } from "@mui/system";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import { TiArrowLeft } from "react-icons/ti";
+import { TiArrowLeft, TiArrowRight } from "react-icons/ti";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiSearch } from "react-icons/bi";
 
@@ -57,6 +57,8 @@ const Forms = ({
     themeBgImg,
     t,
     modal,
+    isLangRTL,
+    i18n,
   } = useStateContext();
 
   const [searchRows, setSearchRows] = useState(forms);
@@ -346,8 +348,12 @@ const Forms = ({
                   variant="outlined"
                   className={`shadow-none px-3 rounded-md !py-2 text-sm flex gap-2 !border-gray-400 text-black bg-white`}
                 >
-                  <TiArrowLeft size={16} />
-                  {t("Back")}
+                  {isLangRTL(i18n.language) ? (
+                    <TiArrowRight size={16} />
+                  ) : (
+                    <TiArrowLeft size={16} />
+                  )}
+                  {t("btn_back")}
                 </Button>
                 <Button
                   onClick={() => setFolderDeleteModal(true)}
@@ -355,7 +361,7 @@ const Forms = ({
                   variant="outlined"
                   className={`shadow-none px-3 rounded-md !py-2 text-sm flex gap-2 !border-gray-400 text-black bg-white`}
                 >
-                  {t("Delete Folder")}
+                  {t("btn_delete")} {t("folder")}
                   <MdOutlineDelete size={16} />
                 </Button>
               </>

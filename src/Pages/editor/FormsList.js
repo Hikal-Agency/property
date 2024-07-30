@@ -125,7 +125,7 @@ const FormsList = () => {
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                     >
-                      {t("Forms")}
+                      {t("forms")}
                     </h1>
                   </div>
 
@@ -137,7 +137,7 @@ const FormsList = () => {
                       className={`shadow-none px-3 rounded-lg h-full text-sm flex gap-2 border border-gray-300 text-black bg-white`}
                     >
                       <MdOutlineCreateNewFolder size={16} />
-                      {t("Create Folder")}
+                      {t("create")} {t("folder")}
                     </Button>
                     <Button
                       onClick={() => {
@@ -151,7 +151,7 @@ const FormsList = () => {
                       <div className="h-[16px] grid items-center">
                         <FaPlus size={10} />
                       </div>
-                      {t("Add Form")}
+                      {t("btn_add")} {t("form")}
                     </Button>
                   </div>
                 </div>
@@ -159,8 +159,7 @@ const FormsList = () => {
                   <p
                     className={`text-gray-500 text-[16px] pb-7 xl:w-full sm:w-[65%]`}
                   >
-                    Enhance reach with unlimited terms, no coding. Gather
-                    essential into for targeted, personalized content.
+                    {t("form_list_para")}
                   </p>
                 </div>
               </div>
@@ -176,7 +175,7 @@ const FormsList = () => {
                     }`}
                     onClick={() => setCurrentTab("all_forms")}
                   >
-                    All Forms
+                    {t("all")} {t("forms")}
                   </button>
                   <button
                     className={` ${
@@ -188,7 +187,7 @@ const FormsList = () => {
                     }`}
                     onClick={() => setCurrentTab("folders")}
                   >
-                    Folders
+                    {t("folders")}
                   </button>
                 </div>
                 {/* <div
