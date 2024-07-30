@@ -259,6 +259,23 @@ const ProfilePage = () => {
       .then((result) => {
         console.log("Profile Updated successfull");
         console.log(result);
+        const errors = result?.data;
+
+        if (errors && !errors?.message) {
+          const errorMessages = Object.values(errors).flat().join(" ");
+          toast.error(`Errors: ${errorMessages}`, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setbtnloading(false);
+          return;
+        }
         toast.success("Profile Updated Successfully", {
           position: "top-right",
           autoClose: 3000,
