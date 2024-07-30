@@ -727,13 +727,13 @@ const RenderFeedback = ({ cellValues }) => {
                       {/* BOOKED AMOUNT  */}
                       <TextField
                         id="booked_amount"
-                        type={"number"}
+                        type="number"
                         sx={{
                           "& input": {
                             fontFamily: "Noto Kufi Arabic",
                           },
                         }}
-                        label="Booked Amount "
+                        label="Booked Amount"
                         className="w-full"
                         style={{
                           marginBottom: "10px",
@@ -744,10 +744,16 @@ const RenderFeedback = ({ cellValues }) => {
                         size="small"
                         value={booked_amount}
                         onChange={(e) => {
-                          setBookedAmount(e.target.value);
+                          const value = e.target.value;
+
+                          // Check if the value is a valid integer
+                          if (/^\d*$/.test(value)) {
+                            setBookedAmount(value);
+                          }
                         }}
                         required
                       />
+
                       {/* UNIT  */}
                       <TextField
                         id="unit"
@@ -778,13 +784,13 @@ const RenderFeedback = ({ cellValues }) => {
                       {/* AMOUNT  */}
                       <TextField
                         id="amount"
-                        type={"number"}
+                        type="number"
                         sx={{
                           "& input": {
                             fontFamily: "Noto Kufi Arabic",
                           },
                         }}
-                        label="Selling Amount "
+                        label="Selling Amount"
                         className="w-full"
                         style={{
                           marginBottom: "10px",
@@ -795,13 +801,20 @@ const RenderFeedback = ({ cellValues }) => {
                         size="small"
                         value={otherBookedData?.amount}
                         onChange={(e) => {
-                          setOtherBookedData({
-                            ...otherBookedData,
-                            amount: e.target.value,
-                          });
+                          // Extract the value from the event
+                          const value = e.target.value;
+
+                          // Check if the value is a valid integer
+                          if (/^\d*$/.test(value)) {
+                            setOtherBookedData({
+                              ...otherBookedData,
+                              amount: value,
+                            });
+                          }
                         }}
                         required
                       />
+
                       {/* CURRENCY  */}
                       <Select
                         aria-label="select currency"
