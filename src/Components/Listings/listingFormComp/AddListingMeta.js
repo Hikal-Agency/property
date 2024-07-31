@@ -223,7 +223,7 @@ const AddListingMeta = ({ data, setData, loading, setLoading }) => {
             },
           }}
         >
-          <Select
+          {/* <Select
             id="new_listing_id"
             value={{
               value: listingMeta?.new_listing_id,
@@ -248,7 +248,7 @@ const AddListingMeta = ({ data, setData, loading, setLoading }) => {
             placeholder={t("menu_listings")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
+          /> */}
           <TextField
             id="long_description"
             type={"text"}
@@ -314,7 +314,7 @@ const AddListingMeta = ({ data, setData, loading, setLoading }) => {
             onChange={handleChange}
             required
           />
-          <TextField
+          {/* <TextField
             id="canonical"
             type={"text"}
             label={t("label_cano")}
@@ -328,7 +328,7 @@ const AddListingMeta = ({ data, setData, loading, setLoading }) => {
             name="projectLocation"
             onChange={handleChange}
             required
-          />
+          /> */}
 
           <input
             accept="image/*"
