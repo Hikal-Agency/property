@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import DragItem from "./DragItem.js";
 import { Button } from "@material-tailwind/react";
+import { MdOutlineClose } from "react-icons/md";
 import { useDrop } from "react-dnd";
 import { IoCloseSharp } from "react-icons/io5";
 import { useStateContext } from "../../context/ContextProvider";
@@ -386,6 +387,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
   ]);
   const [selectedComponent, setSelectedComponent] = useState(-1);
   const [isExpandedComponents, setIsExpandedComponents] = useState(false);
+  const [isExpandedFieldControls, setIsExpandedFieldControls] = useState(false);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "component",
@@ -451,7 +453,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
             : currentMode === "dark"
             ? "bg-dark-neu text-white"
             : "bg-light-neu text-black"
-        } flex-1 flex justify-end w-full py-10 px-8 gap-10 relative`}
+        } flex-1 flex justify-end md:justify-center w-full md:py-9 pt-1 px-8 gap-10 relative`}
       >
         {/* {isExpandedComponents ? */}
         {/* ( */}
@@ -477,7 +479,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
         </Box>
         {/* ) : ( */}
         <button
-          className={`bg-primary h-fit w-fit text-white p-4 absolute ${
+          className={`bg-primary h-fit w-fit text-white p-4  absolute ${
             isLangRTL(i18n?.language)
               ? "right-0 rounded-l-2xl"
               : "left-0 rounded-r-2xl"
@@ -490,10 +492,18 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
         <Box
           sx={{
             boxShadow: 2,
-            width: "45%",
+            width: {
+              xs: "100%",
+              sm: "90%",
+              md: "45%",
+            },
             backgroundColor: "white",
             borderRadius: "5px",
             color: isOver ? "green" : undefined,
+            margin: {
+              md: "0px",
+              xs: "36px 0px",
+            },
           }}
           ref={drop}
           onClick={(e) => {
@@ -579,9 +589,17 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
         <Box
           sx={{
             boxShadow: 2,
-            width: "25%",
+            // width: "25%",
             backgroundColor: "white",
             borderRadius: "5px",
+            overflow: "auto",
+            position: "absolute",
+            left: !isLangRTL(i18n.language) ? "auto" : "0px",
+            right: !isLangRTL(i18n?.language) ? "0px" : "auto",
+            width: isExpandedFieldControls ? "270px" : "0px",
+            zIndex: 50,
+            transition: "all 0.5s ease-in-out",
+            height: "80vh",
           }}
         >
           <div
@@ -595,11 +613,19 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                 : ""
             } h-full w-full`}
           >
+            <button aria-label="close components">
+              <MdOutlineClose
+                size={22}
+                className="text-gray-600"
+                onClick={() => setIsExpandedFieldControls(false)}
+              />
+            </button>
             {selectedComponent != -1 &&
               droppedComponents[selectedComponent]?.type != "html" && (
                 <div className="p-2 ">
                   <div className="flex flex-col gap-4">
-                    <TiArrowLeft size={16} />
+                    {/* <TiArrowLeft size={16} /> */}
+
                     {droppedComponents[selectedComponent]?.type == "text" && (
                       <div className="flex flex-col gap-3">
                         <label htmlFor="" className="text-[12px] font-medium">
@@ -824,6 +850,16 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
               )}
           </div>
         </Box>
+        <button
+          className={`bg-primary h-fit w-fit text-white p-4 absolute ${
+            !isLangRTL(i18n?.language)
+              ? "right-0 rounded-l-2xl"
+              : "left-0 rounded-r-2xl"
+          } `}
+          onClick={() => setIsExpandedFieldControls(true)}
+        >
+          {t("btn_field")} {t("landing_page_settings")}
+        </button>
       </div>
     </>
   );

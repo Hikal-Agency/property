@@ -37,7 +37,7 @@ const ConfirmDeleteModal = ({
     >
       <div
         style={style}
-        className={`w-[calc(30%-20px)] md:w-[30%]  ${
+        className={` w-[calc(100%-20px)] md:w-[30%]  ${
           // currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           currentMode === "dark"
             ? "bg-dark-neu text-white"
@@ -53,8 +53,8 @@ const ConfirmDeleteModal = ({
           >
             {message}
             <br />
-            {inFolder && " Warning! All forms will be deleted in this folder"}
-            <span className="text-red-600 ml-3">"{selectedRow?.name}"</span>
+            {inFolder && t("delete_folder_warning")}
+            {/* <span className="text-red-600 ml-3">"{selectedRow?.name}"</span> */}
           </h3>
           <div className="flex justify-end gap-5 items-center">
             <Button

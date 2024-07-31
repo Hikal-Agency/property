@@ -1174,5 +1174,8 @@
   "forms": "Forms",
   "folder": "Folder",
   "folders": "Folders",
-  "form_list_para": "Enhance reach with unlimited terms, no coding. Gatheressential into for targeted, personalized content."
+  "form_list_para": "Enhance reach with unlimited terms, no coding. Gatheressential into for targeted, personalized content.",
+  "delete_folder_warning": " Warning! All forms will be deleted in this folder",
+  "folder_create_message": "To create a form, please ensure that a folder exists. It looks like no folder is currently present. Please create a folder first!",
+  "select_folder_message": "In which folder you want to save your form?"
 }

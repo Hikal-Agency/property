@@ -65,12 +65,12 @@ body {
 /* RED */
 .bg-red-dark-neu {
   border-radius: 10px;
-  background: #DA1F26;
+  background: #da1f26;
   box-shadow: 5px 5px 10px #111111, -5px -5px 10px #444444;
 }
 .bg-red-light-neu {
   border-radius: 10px;
-  background: #DA1F26;
+  background: #da1f26;
   box-shadow: 5px 5px 10px #cccccc, -5px -5px 10px #ffffff;
 }
 
@@ -874,6 +874,14 @@ label[for="bulkImport"] .MuiButtonBase-root {
 }
 
 .closed-datatable .MuiDataGrid-row .MuiDataGrid-cell:last-child {
+  /* min-width: revert !important; */
+  /* max-width: revert !important; */
+  width: 100% !important;
+}
+.forms-datatable
+  .MuiDataGrid-row
+  .MuiDataGrid-cell:last-child
+  .MuiDataGrid-cell:first-child {
   /* min-width: revert !important; */
   /* max-width: revert !important; */
   width: 100% !important;

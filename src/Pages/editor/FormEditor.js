@@ -216,7 +216,7 @@ const FormEditor = ({
       <DndProvider backend={HTML5Backend}>
         <div className="flex flex-col h-full ">
           <header
-            className={`flex items-center justify-between p-5 ${
+            className={`flex sm:flex-row flex-col items-center justify-between p-5 ${
               currentMode == "dark" ? "text-white" : "text-gray-600"
             } border-b`}
           >
@@ -224,7 +224,7 @@ const FormEditor = ({
               onClick={() => setFormEditor(false)}
               ripple={true}
               variant="outlined"
-              className={`shadow-none px-3 rounded-md text-sm flex gap-2 border-none ${
+              className={`shadow-none px-3 rounded-md text-sm self-start flex gap-2 border-none ${
                 themeBgImg
                   ? currentMode === "dark"
                     ? "blur-bg-dark shadow-sm text-white"
@@ -283,6 +283,7 @@ const FormEditor = ({
                 onClick={() => setViewFormModal(true)}
                 ripple={true}
                 variant="outlined"
+                disabled={droppedComponents?.length == 0}
                 className={`shadow-none px-3 rounded-md text-sm border-none flex gap-2${
                   themeBgImg
                     ? currentMode === "dark"
