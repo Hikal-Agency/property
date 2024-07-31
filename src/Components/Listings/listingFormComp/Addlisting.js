@@ -331,7 +331,7 @@ const Addlisting = ({ data }) => {
             onChange={handleChange}
             required
           />
-          <Select
+          {/* <Select
             id="listing_attribute_id"
             value={{
               value: listingData?.listing_attribute_id,
@@ -356,9 +356,9 @@ const Addlisting = ({ data }) => {
             placeholder={t("label_list_attr")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
+          /> */}
 
-          <Select
+          {/* <Select
             id="user_id"
             value={{
               value: listingData?.user_id,
@@ -382,7 +382,7 @@ const Addlisting = ({ data }) => {
             placeholder={t("user")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
+          /> */}
           <Select
             id="country_id"
             value={{
@@ -468,7 +468,7 @@ const Addlisting = ({ data }) => {
             },
           }}
         >
-          <Select
+          {/* <Select
             id="listing_type_id"
             value={{
               value: listingData?.listing_type_id,
@@ -521,10 +521,10 @@ const Addlisting = ({ data }) => {
             placeholder={t("label_list_attr_type")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
+          /> */}
 
           <Select
-            id="Developer"
+            id="state"
             value={{
               value: listingData?.state_id,
               label: listingData?.state_id
@@ -552,7 +552,7 @@ const Addlisting = ({ data }) => {
           <TextField
             id="short_description"
             type={"text"}
-            label={t("description")}
+            label={t("short_description")}
             className="w-full"
             sx={{
               marginBottom: "20px !important",

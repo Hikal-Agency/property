@@ -17,11 +17,12 @@ import {
 } from "./listingFormComp";
 import { toast } from "react-toastify";
 
-const steps = [1, 2, 3, 4, 5];
+const steps = [1, 2, 3, 4];
 
 export default function MultiStepForm() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
+  const [listingIds, setListingIDs] = useState({});
   const [column, setColumn] = useState({
     list_type: [],
     list_attribute: [],
@@ -260,8 +261,7 @@ export default function MultiStepForm() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          {activeStep === 0 && (
-            <AddListingType
+          {/* <AddListingType
               data={data}
               setData={setData}
               column={column}
@@ -275,9 +275,8 @@ export default function MultiStepForm() {
               setPage={setPage}
               setPageSize={setPageSize}
               FetchData={FetchData}
-            />
-          )}
-          {activeStep === 1 && (
+            /> */}
+          {activeStep === 0 && (
             <AddListingAttribute
               data={data}
               setData={setData}
@@ -292,9 +291,11 @@ export default function MultiStepForm() {
               setPage={setPage}
               setPageSize={setPageSize}
               FetchData={FetchData}
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
             />
           )}
-          {activeStep === 2 && (
+          {activeStep === 1 && (
             <AddListingAttrType
               data={data}
               setData={setData}
@@ -309,10 +310,24 @@ export default function MultiStepForm() {
               setPage={setPage}
               setPageSize={setPageSize}
               FetchData={FetchData}
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
             />
           )}
-          {activeStep === 3 && <Addlisting data={data} />}
-          {activeStep === 4 && <AddListingMeta />}
+          {activeStep === 2 && (
+            <Addlisting
+              data={data}
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
+            />
+          )}
+          {activeStep === 3 && (
+            <AddListingMeta
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
+            />
+          )}
+          {/* {activeStep === 4 && } */}
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"

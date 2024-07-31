@@ -20,6 +20,11 @@ import SelectOption from "@material-tailwind/react/components/Select/SelectOptio
 import { IoMdClose } from "react-icons/io";
 import { BsDash, BsPlus, BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
+import {
+  bathroom_options,
+  enquiry_options,
+  property_options,
+} from "../../_elements/SelectOptions";
 
 const AddListingAttribute = ({
   data,
@@ -464,6 +469,25 @@ const AddListingAttribute = ({
             },
           }}
         >
+          {/* PROPERTY TYPE  */}
+          <Select
+            id="listing_type_id"
+            value={property_options(t).find(
+              (option) => option.value === listingAttr?.listing_type_id
+            )}
+            onChange={(e) => {
+              setListingAttr({
+                ...listingAttr,
+                listing_type_id: e.value,
+              });
+            }}
+            options={property_options(t)}
+            placeholder={t("label_listing_type")}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+            required
+          />
           <TextField
             id="name"
             type={"text"}
@@ -496,44 +520,6 @@ const AddListingAttribute = ({
           />
 
           <TextField
-            type="number"
-            id="bathroom"
-            name="quantity"
-            placeholder={t("bathroom")}
-            label={t("bathroom")}
-            value={listingAttr?.bathroom}
-            onChange={handleChange}
-            size="small"
-            className="w-full p-2"
-            // inputProps={{ min: 1, max: 10 }}
-            // helperText={showError && "Quantity should be in limit of 1 - 10"}
-            FormHelperTextProps={{
-              sx: { color: currentMode === "dark" ? "#fff" : "#000" },
-            }}
-            InputProps={{
-              startAdornment: (
-                <IconButton
-                  onClick={() => handleDecrement("bathroom")}
-                  // disabled={orderDetails?.quantity <= 1}
-                >
-                  <BsDash color={"#AAAAAA"} />
-                </IconButton>
-              ),
-              endAdornment: (
-                <IconButton
-                  onClick={() => handleIncrement("bathroom")}
-                  // disabled={orderDetails?.quantity >= 10}
-                >
-                  <BsPlus color={"#AAAAAA"} />
-                </IconButton>
-              ),
-              inputProps: {
-                style: { textAlign: "center" },
-              },
-            }}
-          />
-
-          {/* <TextField
             id="gallery"
             type={"text"}
             label={t("gallery")}
@@ -546,7 +532,7 @@ const AddListingAttribute = ({
             value={listingAttr?.gallery}
             name="tourLink"
             onChange={handleChange}
-          /> */}
+          />
         </Box>
         <Box
           sx={{
@@ -561,7 +547,7 @@ const AddListingAttribute = ({
             },
           }}
         >
-          <Select
+          {/* <Select
             id="listing_type_id"
             value={{
               value: listingAttr?.listing_type_id,
@@ -586,7 +572,7 @@ const AddListingAttribute = ({
             placeholder={t("label_listing_type")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
+          /> */}
           {/* <TextField
             id="bedroom"
             type={"text"}
@@ -602,59 +588,45 @@ const AddListingAttribute = ({
             onChange={handleChange}
             required
           /> */}
-          <TextField
-            type="number"
+          <Select
             id="bedroom"
-            name="quantity"
-            placeholder={t("bedroom")}
-            label={t("bedroom")}
-            value={listingAttr?.bedroom}
-            onChange={handleChange}
-            size="small"
-            className="w-full p-2"
-            // inputProps={{ min: 1, max: 10 }}
-            // helperText={showError && "Quantity should be in limit of 1 - 10"}
-            FormHelperTextProps={{
-              sx: { color: currentMode === "dark" ? "#fff" : "#000" },
+            value={enquiry_options(t).find(
+              (option) => option.value === listingAttr?.bedroom
+            )}
+            onChange={(e) => {
+              setListingAttr({
+                ...listingAttr,
+                bedroom: e.value,
+              });
             }}
-            InputProps={{
-              startAdornment: (
-                <IconButton
-                  onClick={() => handleDecrement("bedroom")}
-                  // disabled={orderDetails?.quantity <= 1}
-                >
-                  <BsDash color={"#AAAAAA"} />
-                </IconButton>
-              ),
-              endAdornment: (
-                <IconButton
-                  onClick={() => handleIncrement("bedroom")}
-                  // disabled={orderDetails?.quantity >= 10}
-                >
-                  <BsPlus color={"#AAAAAA"} />
-                </IconButton>
-              ),
-              inputProps: {
-                style: { textAlign: "center" },
-              },
-            }}
-          />
-          {/* <TextField
-            id="garage"
-            type={"text"}
-            label={t("garage")}
+            options={enquiry_options(t)}
+            placeholder={t("number_of_bedrooms")}
             className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
-            value={listingAttr?.garage}
-            name="area"
-            onChange={handleChange}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
             required
-          /> */}
-          {/* <FormControlLabel
+          />
+
+          <Select
+            id="bathroom"
+            value={bathroom_options(t).find(
+              (option) => option.value === listingAttr?.bathroom
+            )}
+            onChange={(e) => {
+              setListingAttr({
+                ...listingAttr,
+                bathroom: e.value,
+              });
+            }}
+            options={bathroom_options(t)}
+            placeholder={t("number_of_bathrooms")}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+            required
+          />
+
+          <FormControlLabel
             control={
               <Checkbox
                 value={listingAttr?.garage}
@@ -670,7 +642,7 @@ const AddListingAttribute = ({
               />
             }
             label={t("garage")}
-          /> */}
+          />
 
           <Button
             className={`min-w-fit text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
@@ -773,7 +745,7 @@ const AddListingAttribute = ({
           </>
         )}
       </div>
-      <div className=" mt-5">
+      {/* <div className=" mt-5">
         <ListingDataGrid
           data={data}
           setData={setData}
@@ -788,7 +760,7 @@ const AddListingAttribute = ({
           setPage={setPage}
           setPageSize={setPageSize}
         />
-      </div>
+      </div> */}
     </div>
   );
 };
