@@ -10,9 +10,10 @@ import {
 import DraggableComponent from "./DraggableComponent";
 import { MdOutlineClose } from "react-icons/md";
 import { useStateContext } from "../../../context/ContextProvider";
+
 const EditorComonents = ({ components, setIsExpandedComponents }) => {
   const [currentTab, setCurrentTab] = useState("quick_add");
-  const { themeBgImg, currentMode } = useStateContext();
+  const { themeBgImg, currentMode, t } = useStateContext();
   return (
     <div
       className={`${
@@ -26,7 +27,9 @@ const EditorComonents = ({ components, setIsExpandedComponents }) => {
       } !rounded-none`}
     >
       <div className="flex justify-between items-center p-2">
-        <h2 className=" text-[14px] font-medium text-gray-600">Form Element</h2>
+        <h2 className=" text-[14px] font-medium text-gray-600">
+          {t("btn_form")} {t("label_element")}
+        </h2>
         <button aria-label="close components">
           <MdOutlineClose
             size={22}
@@ -59,7 +62,7 @@ const EditorComonents = ({ components, setIsExpandedComponents }) => {
             className="flex-1 text-center py-2 cursor-pointer rounded-md w-full"
             onClick={() => setCurrentTab("quick_add")}
           >
-            Quick Add
+            {t("label_quick")} {t("btn_add")}
           </button>
         </Box>
         <Box
@@ -85,7 +88,7 @@ const EditorComonents = ({ components, setIsExpandedComponents }) => {
             className={`flex-1 text-center py-2 cursor-pointer rounded-md w-full`}
             onClick={() => setCurrentTab("custom_fields")}
           >
-            Custom Fields
+            {t("custom_fields")}
           </button>
         </Box>
       </div>
@@ -93,7 +96,7 @@ const EditorComonents = ({ components, setIsExpandedComponents }) => {
         {currentTab == "quick_add" && (
           <div className="px-3 pb-5 ">
             <h2 className="mt-5 mb-3 font-semibold text-gray-600">
-              Personal Info
+              {t("personal_info")}
             </h2>
             <div className="grid grid-cols-2 w-[180px] gap-3">
               {components?.personalComponents?.map((comp, index) => {
@@ -108,7 +111,7 @@ const EditorComonents = ({ components, setIsExpandedComponents }) => {
               })}
             </div>
             <h2 className="mt-5 mb-3 font-semibold text-gray-600">
-              Contact Info
+              {t("label_contact")} {t("info")}
             </h2>
             <div className="grid grid-cols-2 w-[180px] gap-3">
               {components?.contactComponents?.map((comp, index) => {
@@ -122,7 +125,9 @@ const EditorComonents = ({ components, setIsExpandedComponents }) => {
                 );
               })}
             </div>
-            <h2 className="mt-5 mb-3 font-semibold text-gray-600">Submit</h2>
+            <h2 className="mt-5 mb-3 font-semibold text-gray-600">
+              {t("btn_submit")}
+            </h2>
             <div className="grid grid-cols-2 w-[180px] gap-3">
               {components?.submitComponents?.map((comp, index) => {
                 return (
@@ -135,7 +140,9 @@ const EditorComonents = ({ components, setIsExpandedComponents }) => {
                 );
               })}
             </div>
-            <h2 className="mt-5 mb-3 font-semibold text-gray-600">Address</h2>
+            <h2 className="mt-5 mb-3 font-semibold text-gray-600">
+              {t("form_developer_address")}
+            </h2>
             <div className="grid grid-cols-2 w-[180px] gap-3">
               {components?.addressComponents?.map((comp, index) => {
                 return (
@@ -149,7 +156,7 @@ const EditorComonents = ({ components, setIsExpandedComponents }) => {
               })}
             </div>
             <h2 className="mt-5 mb-3 font-semibold text-gray-600">
-              Customized
+              {t("customized")}
             </h2>
             <div className="grid grid-cols-2 w-[180px] gap-3">
               {components?.customizedComponents?.map((comp, index) => {

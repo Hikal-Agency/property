@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TiArrowLeft } from "react-icons/ti";
+import { TiArrowRight } from "react-icons/ti";
 import { Button } from "@material-tailwind/react";
 import { useStateContext } from "../../context/ContextProvider";
 import { FiEdit2 } from "react-icons/fi";
@@ -118,7 +119,7 @@ const FormEditor = ({
           const newComp = { ...com };
           if (newComp.type == "html") {
             // alert("it is called here");
-            newComp.html = newComp.html?.replace(/=/g, "equalSignH");
+            // newComp.html = newComp.html?.replace(/=/g, "equalSignH");
           }
           return newComp;
         });
@@ -215,7 +216,7 @@ const FormEditor = ({
       <DndProvider backend={HTML5Backend}>
         <div className="flex flex-col h-full ">
           <header
-            className={`flex items-center justify-between p-5 ${
+            className={`flex sm:flex-row flex-col items-center justify-between p-5 ${
               currentMode == "dark" ? "text-white" : "text-gray-600"
             } border-b`}
           >
@@ -223,7 +224,7 @@ const FormEditor = ({
               onClick={() => setFormEditor(false)}
               ripple={true}
               variant="outlined"
-              className={`shadow-none px-3 rounded-md text-sm flex gap-2 border-none ${
+              className={`shadow-none px-3 rounded-md text-sm self-start flex gap-2 border-none ${
                 themeBgImg
                   ? currentMode === "dark"
                     ? "blur-bg-dark shadow-sm text-white"
@@ -233,8 +234,12 @@ const FormEditor = ({
                   : "bg-light-neu text-black"
               } `}
             >
-              <TiArrowLeft size={16} />
-              {t("Back")}
+              {isLangRTL(i18n?.language) ? (
+                <TiArrowRight size={16} />
+              ) : (
+                <TiArrowLeft size={16} />
+              )}
+              {t("btn_back")}
             </Button>
             <h2 className="text-[18px] flex gap-2 items-center">
               {!formNameEditMode && <span>{formName} </span>}
@@ -278,6 +283,7 @@ const FormEditor = ({
                 onClick={() => setViewFormModal(true)}
                 ripple={true}
                 variant="outlined"
+                disabled={droppedComponents?.length == 0}
                 className={`shadow-none px-3 rounded-md text-sm border-none flex gap-2${
                   themeBgImg
                     ? currentMode === "dark"
@@ -288,7 +294,7 @@ const FormEditor = ({
                     : "bg-light-neu text-black"
                 } `}
               >
-                {t("Preview")}
+                {t("btn_preview")}
               </Button>
               <Button
                 onClick={() => setFormIntegrateModal(true)}
@@ -297,7 +303,7 @@ const FormEditor = ({
                 className={`shadow-none px-3 rounded-md text-sm flex gap-2 border-none  text-black bg-transparent`}
                 disabled={!formId}
               >
-                {t("Integrate")}
+                {t("btn_integrate")}
               </Button>
               <Button
                 onClick={() => {

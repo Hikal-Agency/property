@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import DragItem from "./DragItem.js";
 import { Button } from "@material-tailwind/react";
+import { MdOutlineClose } from "react-icons/md";
 import { useDrop } from "react-dnd";
 import { IoCloseSharp } from "react-icons/io5";
 import { useStateContext } from "../../context/ContextProvider";
@@ -52,92 +53,100 @@ import {
   HTMLBlock,
 } from "./FormEditorComponents/QuickAddComponents.js";
 const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
-  const { darkModeColors, currentMode, User, BACKEND_URL, t, themeBgImg } =
-    useStateContext();
+  const {
+    darkModeColors,
+    currentMode,
+    User,
+    BACKEND_URL,
+    t,
+    isLangRTL,
+    i18n,
+    themeBgImg,
+  } = useStateContext();
   const [components, setComponents] = useState({
     // category:"Personal Info",
     personalComponents: [
       {
         icon: <BiRename size={22} />,
-        label: "Full name",
+        label: t("form_developer_fullName"),
         id: 1,
       },
       {
         icon: <BiRename size={22} />,
-        label: "First name",
+        label: t("first_name"),
         id: 2,
       },
       {
         icon: <BiRename size={22} />,
-        label: "Last name",
+        label: t("last_name"),
         id: 3,
       },
       {
         icon: <BsCalendar2Date size={20} />,
-        label: "Date of birth",
+        label: t("label_dob"),
         id: 4,
       },
     ],
     contactComponents: [
       {
         icon: <LiaPhoneSquareSolid size={16} />,
-        label: "Phone",
+        label: t("label_phone"),
         id: 5,
       },
       {
         icon: <MdOutlineMailOutline size={16} />,
-        label: "Email",
+        label: t("support_via_email"),
         id: 6,
       },
     ],
     submitComponents: [
       {
         icon: <RxButton size={16} />,
-        label: "Button",
+        label: t("btn"),
         id: 7,
       },
     ],
     addressComponents: [
       {
         icon: <FaRegAddressCard size={16} />,
-        label: "Address",
+        label: t("form_developer_address"),
         id: 8,
       },
       {
         icon: <PiCityLight size={16} />,
-        label: "City",
+        label: t("label_city"),
         id: 9,
       },
       {
         icon: <MdAccountBalance size={16} />,
-        label: "State",
+        label: t("state"),
         id: 10,
       },
       {
         icon: <GrGlobe size={16} />,
-        label: "Country",
+        label: t("label_country"),
         id: 11,
       },
       {
         icon: <CiSignpostDuo1 size={16} />,
-        label: "Postal Code",
+        label: t("postal_code"),
         id: 12,
       },
       {
         icon: <CgWebsite size={16} />,
-        label: "Website",
+        label: t("source_website"),
         id: 13,
       },
       {
         icon: <GoOrganization size={16} />,
-        label: "Organization",
+        label: t("org"),
         id: 14,
       },
     ],
     customizedComponents: [
       {
         icon: <CiText size={16} />,
-        label: "Text",
+        label: t("text"),
         id: 15,
       },
       {
@@ -147,7 +156,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
       },
       {
         icon: <IoImageOutline size={16} />,
-        label: "Image",
+        label: t("image"),
         id: 17,
       },
       {
@@ -157,7 +166,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
       },
       {
         icon: <GrResources size={16} />,
-        label: "Source",
+        label: t("ticket_filter_source"),
         id: 19,
       },
       {
@@ -171,8 +180,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 1,
       component: FullName,
-      label: "Full Name",
-      placeholder: "Full Name",
+      label: t("form_developer_fullName"),
+      placeholder: t("form_developer_fullName"),
       queryKey: "full_name",
       width: "100",
       shortLabel: "",
@@ -182,8 +191,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 2,
       component: FirstName,
-      label: "First Name",
-      placeholder: "First Name",
+      label: t("first_name"),
+      placeholder: t("first_name"),
       queryKey: "first_name",
       width: "100",
       shortLabel: "",
@@ -193,8 +202,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 3,
       component: LastName,
-      label: "Last Name",
-      placeholder: "Last Name",
+      label: t("last_name"),
+      placeholder: t("last_name"),
       queryKey: "last_name",
       width: "100",
       shortLabel: "",
@@ -204,8 +213,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 4,
       component: DateOfBirth,
-      label: "Date of birth",
-      placeholder: "Date of birth",
+      label: t("label_dob"),
+      placeholder: t("label_dob"),
       queryKey: "date_of_birth",
       width: "100",
       shortLabel: "",
@@ -215,8 +224,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 5,
       component: Phone,
-      label: "Phone",
-      placeholder: "Phone",
+      label: t("label_phone"),
+      placeholder: t("label_phone"),
       queryKey: "phone",
       width: "100",
       shortLabel: "",
@@ -226,8 +235,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 6,
       component: Email,
-      label: "Email",
-      placeholder: "Email",
+      label: t("support_via_email"),
+      placeholder: t("support_via_email"),
       queryKey: "email",
       width: "100",
       shortLabel: "",
@@ -237,8 +246,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 7,
       component: ButtonComp,
-      label: "Submit",
-      placeholder: "",
+      label: t("btn_submit"),
       queryKey: "",
       width: "100",
       url: "",
@@ -248,8 +256,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 8,
       component: Address,
-      label: "Address",
-      placeholder: "Address",
+      label: t("form_developer_address"),
+      placeholder: t("form_developer_address"),
       queryKey: "address",
       width: "100",
       shortLabel: "",
@@ -259,8 +267,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 9,
       component: City,
-      label: "City",
-      placeholder: "City",
+      label: t("label_city"),
+      placeholder: t("label_city"),
       queryKey: "city",
       width: "100",
       shortLabel: "",
@@ -270,8 +278,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 10,
       component: State,
-      label: "State",
-      placeholder: "State",
+      label: t("state"),
+      placeholder: t("state"),
       queryKey: "state",
       width: "100",
       shortLabel: "",
@@ -281,8 +289,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 11,
       component: Country,
-      label: "Country",
-      placeholder: "Country",
+      label: t("label_country"),
+      placeholder: t("label_country"),
       queryKey: "country",
       width: "100",
       shortLabel: "",
@@ -292,8 +300,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 12,
       component: PostalCode,
-      label: "Postal Code",
-      placeholder: "Postal Code",
+      label: t("postal_code"),
+      placeholder: t("postal_code"),
       queryKey: "postal_code",
       width: "100",
       shortLabel: "",
@@ -303,8 +311,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 13,
       component: Website,
-      label: "Website",
-      placeholder: "Website",
+      label: t("source_website"),
+      placeholder: t("source_website"),
       queryKey: "website",
       width: "100",
       shortLabel: "",
@@ -314,8 +322,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 14,
       component: Organization,
-      label: "Organizaion",
-      placeholder: "Organization",
+      label: t("org"),
+      placeholder: t("org"),
       queryKey: "organization",
       width: "100",
       shortLabel: "",
@@ -341,7 +349,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 17,
       component: Image,
-      label: "Upload Image",
+      label: t("button_upload_image"),
       width: "100",
       text: "text",
       type: "upload",
@@ -357,8 +365,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
     {
       id: 19,
       component: Source,
-      label: "Source",
-      placeholder: "Source",
+      label: t("ticket_filter_source"),
+      placeholder: t("ticket_filter_source"),
       queryKey: "source",
       width: "100",
       shortLabel: "",
@@ -379,6 +387,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
   ]);
   const [selectedComponent, setSelectedComponent] = useState(-1);
   const [isExpandedComponents, setIsExpandedComponents] = useState(false);
+  const [isExpandedFieldControls, setIsExpandedFieldControls] = useState(false);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "component",
@@ -398,16 +407,6 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
 
     if (droppedComponent.length > 0) {
       setDroppedComponents((pre) => {
-        // console.log(pre, "available component");
-        // const tempArr = [...pre];
-        // const isAvl = tempArr?.filter((comp) => {
-        //   return comp.queryKey == droppedComponent[0].queryKey;
-        // });
-        // if (isAvl?.length > 0) {
-        //   droppedComponent[0].queryKey = (
-        //     droppedComponent[0]?.label + isAvl?.length
-        //   )?.replace(/\s+/g, "_");
-        // }
         return [...pre, droppedComponent[0]];
       });
     }
@@ -454,7 +453,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
             : currentMode === "dark"
             ? "bg-dark-neu text-white"
             : "bg-light-neu text-black"
-        } flex-1 flex justify-end w-full py-10 px-8 gap-10 relative`}
+        } flex-1 flex justify-end md:justify-center w-full md:py-9 pt-1 px-8 gap-10 relative`}
       >
         {/* {isExpandedComponents ? */}
         {/* ( */}
@@ -467,7 +466,8 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
             height: "80vh",
             overflow: "auto",
             position: "absolute",
-            left: "0px",
+            left: isLangRTL(i18n.language) ? "auto" : "0px",
+            right: isLangRTL(i18n?.language) ? "0px" : "auto",
             zIndex: 50,
             transition: "all 0.5s ease-in-out",
           }}
@@ -479,19 +479,31 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
         </Box>
         {/* ) : ( */}
         <button
-          className="bg-primary h-fit w-fit text-white p-4 absolute left-0 rounded-r-2xl"
+          className={`bg-primary h-fit w-fit text-white p-4  absolute ${
+            isLangRTL(i18n?.language)
+              ? "right-0 rounded-l-2xl"
+              : "left-0 rounded-r-2xl"
+          } `}
           onClick={() => setIsExpandedComponents(true)}
         >
-          Add Field
+          {t("btn_add")} {t("btn_field")}
         </button>
         {/* )} */}
         <Box
           sx={{
             boxShadow: 2,
-            width: "45%",
+            width: {
+              xs: "100%",
+              sm: "90%",
+              md: "45%",
+            },
             backgroundColor: "white",
             borderRadius: "5px",
             color: isOver ? "green" : undefined,
+            margin: {
+              md: "0px",
+              xs: "36px 0px",
+            },
           }}
           ref={drop}
           onClick={(e) => {
@@ -556,7 +568,12 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                       text={comp?.text}
                       float={comp?.float}
                       isDevelopment={true}
-                      onChange={() => {}}
+                      value={comp.hidden && comp.value}
+                      onChange={(query, value) => {
+                        if (comp.hidden) {
+                          elementParamsChangeHandler(value, "value");
+                        }
+                      }}
                       onHTMLChange={(html) =>
                         elementParamsChangeHandler(html, "html")
                       }
@@ -572,9 +589,17 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
         <Box
           sx={{
             boxShadow: 2,
-            width: "25%",
+            // width: "25%",
             backgroundColor: "white",
             borderRadius: "5px",
+            overflow: "auto",
+            position: "absolute",
+            left: !isLangRTL(i18n.language) ? "auto" : "0px",
+            right: !isLangRTL(i18n?.language) ? "0px" : "auto",
+            width: isExpandedFieldControls ? "270px" : "0px",
+            zIndex: 50,
+            transition: "all 0.5s ease-in-out",
+            height: "80vh",
           }}
         >
           <div
@@ -588,15 +613,23 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                 : ""
             } h-full w-full`}
           >
+            <button aria-label="close components">
+              <MdOutlineClose
+                size={22}
+                className="text-gray-600"
+                onClick={() => setIsExpandedFieldControls(false)}
+              />
+            </button>
             {selectedComponent != -1 &&
               droppedComponents[selectedComponent]?.type != "html" && (
                 <div className="p-2 ">
                   <div className="flex flex-col gap-4">
-                    <TiArrowLeft size={16} />
+                    {/* <TiArrowLeft size={16} /> */}
+
                     {droppedComponents[selectedComponent]?.type == "text" && (
                       <div className="flex flex-col gap-3">
                         <label htmlFor="" className="text-[12px] font-medium">
-                          Content
+                          {t("text")}
                         </label>
                         <input
                           type="text"
@@ -617,7 +650,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                     </h3>
                     <div className="flex flex-col gap-3">
                       <label htmlFor="" className="text-[12px] font-medium">
-                        Label
+                        {t("label")}
                       </label>
                       <input
                         type="text"
@@ -636,7 +669,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                       <>
                         <div className="flex flex-col gap-3">
                           <label htmlFor="" className="text-[12px] font-medium">
-                            Placeholder
+                            {t("placeholder")}
                           </label>
                           <input
                             type="text"
@@ -657,12 +690,12 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                         </div>
                         <div className="flex flex-col gap-3">
                           <label htmlFor="" className="text-[12px] font-medium">
-                            Short Label
+                            {t("short")} {t("label")}
                           </label>
                           <input
                             type="text"
                             name=""
-                            placeholder="Please Input"
+                            placeholder={t("please_input")}
                             id=""
                             className="focus:outline-none border w-full text-[12px] p-3 rounded-lg bg-transparent"
                             value={
@@ -678,12 +711,12 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                         </div>
                         <div className="flex flex-col gap-3">
                           <label htmlFor="" className="text-[12px] font-medium">
-                            Query Key
+                            {t("query_key")}
                           </label>
                           <input
                             type="text"
                             name=""
-                            placeholder="Please Input"
+                            placeholder={t("please_input")}
                             id=""
                             value={
                               droppedComponents[selectedComponent]?.queryKey
@@ -694,10 +727,11 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                                 "queryKey"
                               )
                             }
-                            disabled={
-                              droppedComponents[selectedComponent]?.queryKey ==
-                              "upload"
-                            }
+                            // disabled={
+                            //   droppedComponents[selectedComponent]?.queryKey ==
+                            //   "upload"
+                            // }
+                            disabled={true}
                             className="focus:outline-none border w-full text-[12px] p-3 rounded-lg bg-transparent"
                           />
                         </div>
@@ -706,7 +740,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
 
                     <div className="flex flex-col gap-3">
                       <label htmlFor="" className="text-[12px] font-medium">
-                        Field Width
+                        {t("field_width")}
                       </label>
                       <div className="flex border rounded-lg">
                         <input
@@ -780,7 +814,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                             id=""
                             className="bg-transparent"
                             checked={
-                              droppedComponents[selectedComponent]?.isRequired
+                              droppedComponents[selectedComponent]?.required
                             }
                             onChange={(e) => {
                               elementParamsChangeHandler(
@@ -789,15 +823,43 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                               );
                             }}
                           />{" "}
-                          <label htmlFor="">Required</label>
+                          <label htmlFor="">{t("required")}</label>
                         </div>
                       </div>
                     )}
+                    <div className="flex flex-col gap-3">
+                      <div className="flex gap-2">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id=""
+                          className="bg-transparent"
+                          checked={droppedComponents[selectedComponent]?.hidden}
+                          onChange={(e) => {
+                            elementParamsChangeHandler(
+                              e?.target?.checked,
+                              "hidden"
+                            );
+                          }}
+                        />{" "}
+                        <label htmlFor="">{t("hidden")}</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
           </div>
         </Box>
+        <button
+          className={`bg-primary h-fit w-fit text-white p-4 absolute ${
+            !isLangRTL(i18n?.language)
+              ? "right-0 rounded-l-2xl"
+              : "left-0 rounded-r-2xl"
+          } `}
+          onClick={() => setIsExpandedFieldControls(true)}
+        >
+          {t("btn_field")} {t("landing_page_settings")}
+        </button>
       </div>
     </>
   );

@@ -119,7 +119,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                   setConvertedAmount(0);
                 }}
                 menuPortalTarget={document.body}
-                className="w-[20%] !h-full"
+                className="md:w-[20%] w-[30%]  !h-full"
                 styles={{
                   ...selectStyles(currentMode, primaryColor),
                   control: (provided) => ({
@@ -136,7 +136,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                 id="from_currency"
                 type={"number"}
                 label="From"
-                className=" w-[80%] text-[16px] font-semibold"
+                className=" md:w-[80%] w-[70%] text-[16px] font-semibold"
                 variant="outlined"
                 size="medium"
                 required
@@ -161,7 +161,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                 onChange={(e) => {
                   setTo(e?.value);
                 }}
-                className="w-[20%] !h-full"
+                className="md:w-[20%] w-[30%] !h-full"
                 menuPortalTarget={document.body}
                 styles={{
                   ...selectStyles(currentMode, primaryColor),
@@ -179,7 +179,7 @@ const CurrencyConvertor = ({ setCurrencyModal, currencyModal }) => {
                 id="to_currency"
                 type={"number"}
                 label="To"
-                className="w-[80%] text-[16px] font-semibold"
+                className="md:w-[80%] w-[70%] text-[16px] font-semibold"
                 variant="outlined"
                 size="medium"
                 // disabled={true}

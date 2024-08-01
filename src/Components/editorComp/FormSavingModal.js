@@ -54,7 +54,7 @@ const FormSavingModal = ({
       >
         <div
           style={style}
-          className={`w-[calc(30%-20px)] md:w-[30%]  ${
+          className={`w-[calc(100%-20px)] md:w-[30%]  ${
             // currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
             currentMode === "dark"
               ? "bg-dark-neu text-white"
@@ -66,11 +66,10 @@ const FormSavingModal = ({
               currentMode === "dark" ? "text-white" : "text-gray-700"
             } `}
           >
-            In which folder you want to save your form?
+            {t("select_folder_message")}
           </h3>
           <p className="mb-4 text-red-500">
-            {folders?.length === 0 &&
-              "To create a form, please ensure that a folder exists. It looks like no folder is currently present. Please create a folder first!"}
+            {folders?.length === 0 && t("folder_create_message")}
           </p>
 
           <Select

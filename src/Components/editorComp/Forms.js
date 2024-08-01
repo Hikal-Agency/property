@@ -22,6 +22,10 @@ import {
   GridToolbar,
   useGridApiContext,
   useGridSelector,
+  GridToolbarContainer,
+  GridToolbarExport,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -29,11 +33,42 @@ import ViewForm from "./ViewForm";
 import axios from "../../axoisConfig";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { maxWidth } from "@mui/system";
+import { maxWidth, minWidth } from "@mui/system";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-import { TiArrowLeft } from "react-icons/ti";
+import { TiArrowLeft, TiArrowRight } from "react-icons/ti";
 import { MdOutlineDelete } from "react-icons/md";
 import { BiSearch } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
+
+const CustomToolbar = React.memo(({ searchText, handleSearchChange }) => {
+  const { t } = useTranslation();
+
+  return (
+    <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarExport />
+      <Box sx={{ flex: 1 }} />
+      <TextField
+        placeholder={`${t("search")}..`}
+        // ref={searchRef}
+        sx={{ "& input": { borderBottom: "2px solid #ffffff6e" } }}
+        variant="standard"
+        onInput={handleSearchChange}
+        value={searchText}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <IconButton sx={{ padding: 0 }}>
+                <BiSearch size={17} />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+    </GridToolbarContainer>
+  );
+});
 
 const Forms = ({
   forms,
@@ -57,10 +92,13 @@ const Forms = ({
     themeBgImg,
     t,
     modal,
+    isLangRTL,
+    i18n,
   } = useStateContext();
 
   const [searchRows, setSearchRows] = useState(forms);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [searchText, setSearchText] = useState("");
   const [rowMenu, setRowMenu] = useState({
     type: "",
     fields: [],
@@ -70,11 +108,13 @@ const Forms = ({
   const dataTableRef = useRef();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  // const searchRef = useRef(null);
   const open = Boolean(anchorEl);
   const handleClick = (event, row) => {
     setAnchorEl(event.currentTarget);
     setSelectedRow(row);
   };
+
   const handleClose = (e) => {
     if (selectedRow) {
       if (e?.target?.innerText == "Delete") {
@@ -115,7 +155,7 @@ const Forms = ({
       headerName: <div className="px-5">Name</div>,
       headerAlign: "left",
       align: "left",
-      minWidth: 30,
+      minWidth: 200,
       flex: 1,
       renderCell: (params) => {
         return (
@@ -129,7 +169,7 @@ const Forms = ({
       field: "updated_at",
       headerName: "Last Updated",
       headerAlign: "center",
-      minWidth: 30,
+      minWidth: 100,
       flex: 1,
       renderCell: (row) => {
         const updatedDate = new Date(row?.row?.updated_at);
@@ -140,14 +180,14 @@ const Forms = ({
       field: "lastEditedBy",
       headerName: "Updated By",
       headerAlign: "center",
-      minWidth: 30,
+      minWidth: 150,
       flex: 1,
     },
     {
       field: "status",
       headerName: "Status",
       headerAlign: "center",
-      minWidth: 30,
+      minWidth: 70,
       flex: 1,
       renderCell: (row) => {
         console.log(row, "row");
@@ -263,7 +303,49 @@ const Forms = ({
     },
   ];
 
+  // const CustomToolbar = () => {
+  //   const searchRef = useRef(null);
+  //   useEffect(() => {
+  //     searchRef?.current?.focus();
+  //   }, [searchText]);
+  //   return (
+  //     <GridToolbarContainer>
+  //       <GridToolbarColumnsButton />
+  //       <GridToolbarFilterButton />
+  //       <GridToolbarExport />
+  //       <Box
+  //         sx={{
+  //           flex: 1,
+  //         }}
+  //       ></Box>
+  //       <TextField
+  //         placeholder={t("search") + ".."}
+  //         ref={searchRef}
+  //         sx={{
+  //           "& input": {
+  //             borderBottom: "2px solid #ffffff6e",
+  //           },
+  //         }}
+  //         variant="standard"
+  //         // onKeyUp={handleKeyUp}
+  //         onInput={handleSearchChange}
+  //         value={searchText}
+  //         InputProps={{
+  //           startAdornment: (
+  //             <InputAdornment position="start">
+  //               <IconButton sx={{ padding: 0 }}>
+  //                 <BiSearch size={17} />
+  //               </IconButton>
+  //             </InputAdornment>
+  //           ),
+  //         }}
+  //       />
+  //     </GridToolbarContainer>
+  //   );
+  // };
+
   const handleSearchChange = (e) => {
+    setSearchText(e?.target?.value);
     const searchResults = forms?.filter((row) => {
       return (
         row?.name?.toLowerCase().includes(e?.target?.value.toLowerCase()) ||
@@ -320,17 +402,9 @@ const Forms = ({
         <Box
           sx={{
             ...DataGridStyles,
-            // "& .MuiDataGrid-columnHeaders": {
-            //   backgroundColor: "black",
-            //   color: "white",
-            //   width: "100%",
-            // },
-            // "& .MuiDataGrid-footerContainer": {
-            //   borderTop: `0px`,
-            //   borderRadius: "0px 0px 120px 120px",
-            // },
+            width: "100%",
           }}
-          className={`${currentMode}-mode-datatable`}
+          className={`forms-datatable ${currentMode}-mode-datatable`}
         >
           <div
             className={`flex gap-4 justify-end items-center py-8 pr-2 ${
@@ -346,8 +420,12 @@ const Forms = ({
                   variant="outlined"
                   className={`shadow-none px-3 rounded-md !py-2 text-sm flex gap-2 !border-gray-400 text-black bg-white`}
                 >
-                  <TiArrowLeft size={16} />
-                  {t("Back")}
+                  {isLangRTL(i18n.language) ? (
+                    <TiArrowRight size={16} />
+                  ) : (
+                    <TiArrowLeft size={16} />
+                  )}
+                  {t("btn_back")}
                 </Button>
                 <Button
                   onClick={() => setFolderDeleteModal(true)}
@@ -355,73 +433,23 @@ const Forms = ({
                   variant="outlined"
                   className={`shadow-none px-3 rounded-md !py-2 text-sm flex gap-2 !border-gray-400 text-black bg-white`}
                 >
-                  {t("Delete Folder")}
+                  {t("btn_delete")} {t("folder")}
                   <MdOutlineDelete size={16} />
                 </Button>
               </>
             )}
-            {/* <div className="flex items-center border border-gray-400 gap-2 rounded-lg px-3 py-1">
-              <div
-                className={`p-2 pr-3 border-r border-gray-400 ${
-                  currentMode == "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                <GoClock size={16} />
-              </div>
-              <div
-                className={`p-2 ${
-                  currentMode == "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                <FaList size={16} />
-              </div>
-            </div> */}
-            {/* <div className="flex items-center border border-gray-400 gap-2 px-2 py-3 rounded-lg w-[20%]">
-              <div
-                className={`${
-                  currentMode == "dark" ? "text-white" : "text-black"
-                }`}
-              >
-                <CiSearch size={16} />
-              </div>
-              <input
-                type="text"
-                name=""
-                id=""
-                placeholder="Search for forms"
-                className={`focus:outline-none bg-transparent ${
-                  currentMode == "dark" ? "text-white" : "black"
-                }`}
-                onChange={handleSearchChange}
-              />
-            </div> */}
           </div>
           <Box
-            sx={{ ...DataGridStyles, position: "relative", marginBottom: 50 }}
+            sx={{
+              ...DataGridStyles,
+              position: "relative",
+              marginBottom: 50,
+              width: "100%",
+            }}
           >
-            <div className="absolute top-[7px] right-[20px] z-[5]">
-              <TextField
-                placeholder={t("search") + ".."}
-                // ref={searchRef}
-                sx={{
-                  "& input": {
-                    borderBottom: "2px solid #ffffff6e",
-                  },
-                }}
-                variant="standard"
-                // onKeyUp={handleKeyUp}
-                onInput={handleSearchChange}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <IconButton sx={{ padding: 0 }}>
-                        <BiSearch size={17} />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </div>
+            {/* <div className="absolute sm:top-[7px] sm:right-[20px] sm:left-auto sm:mb-0  right-auto left-[20px] top-[40px] mb-4 z-[5]">
+            
+            </div> */}
 
             <DataGrid
               disableDensitySelector
@@ -442,7 +470,14 @@ const Forms = ({
               rowsPerPageOptions={[30, 50, 75, 100]}
               pagination
               components={{
-                Toolbar: GridToolbar,
+                // Toolbar: GridToolbar,
+                Toolbar: CustomToolbar,
+              }}
+              componentsProps={{
+                toolbar: {
+                  searchText: searchText,
+                  handleSearchChange: handleSearchChange,
+                },
               }}
               width="auto"
               paginationMode="server"
@@ -475,7 +510,7 @@ const Forms = ({
           setDeleteConfirmModal={setDeleteConfirmModal}
           handleDelete={handleDeleteForm}
           selectedRow={selectedRow}
-          message="Are you sure want to delete form"
+          message={t("want_to_delete", { DataName: selectedRow?.name })}
         />
       )}
       {folderDeleteModal && folder && (
@@ -484,7 +519,7 @@ const Forms = ({
           setDeleteConfirmModal={setFolderDeleteModal}
           handleDelete={deleteFolder}
           selectedRow={folder}
-          message="Are you sure want to delete folder?"
+          message={t("want_to_delete", { DataName: folder?.name })}
           inFolder
         />
       )}

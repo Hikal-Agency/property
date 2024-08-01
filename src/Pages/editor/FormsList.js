@@ -116,20 +116,25 @@ const FormsList = () => {
           }`}
         >
           {!formEditor && (
-            <div className="mb-10 py-5 px-[4rem]">
+            <div className="mb-10 py-5 px-2 md:px-[4rem] w-full">
               <div className="">
-                <div className="flex items-center justify-between w-full pt-10">
-                  <div className="flex items-center">
+                <div className="flex flex-col md:flex-row items-start justify-between w-full pt-10">
+                  <div className="flex flex-col gap-2 xl:w-fit md:w-[65%] w-fit">
                     <h1
                       className={`text-lg font-semibold uppercase ${
                         currentMode === "dark" ? "text-white" : "text-black"
                       }`}
                     >
-                      {t("Forms")}
+                      {t("forms")}
                     </h1>
+                    <div>
+                      <p className={`text-gray-500 text-[16px] pb-7 `}>
+                        {t("form_list_para")}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex gap-3 items-center">
+                  <div className="flex gap-3 items-center flex-start md:justify-end md:my-0 my-3 w-[250px]">
                     <Button
                       onClick={() => setFolderModal(true)}
                       ripple={true}
@@ -137,7 +142,7 @@ const FormsList = () => {
                       className={`shadow-none px-3 rounded-lg h-full text-sm flex gap-2 border border-gray-300 text-black bg-white`}
                     >
                       <MdOutlineCreateNewFolder size={16} />
-                      {t("Create Folder")}
+                      {t("create")} {t("folder")}
                     </Button>
                     <Button
                       onClick={() => {
@@ -151,17 +156,9 @@ const FormsList = () => {
                       <div className="h-[16px] grid items-center">
                         <FaPlus size={10} />
                       </div>
-                      {t("Add Form")}
+                      {t("btn_add")} {t("form")}
                     </Button>
                   </div>
-                </div>
-                <div>
-                  <p
-                    className={`text-gray-500 text-[16px] pb-7 xl:w-full sm:w-[65%]`}
-                  >
-                    Enhance reach with unlimited terms, no coding. Gather
-                    essential into for targeted, personalized content.
-                  </p>
                 </div>
               </div>
               <div className="w-full flex items-center pb-3 mt-3  flex-col">
@@ -176,7 +173,7 @@ const FormsList = () => {
                     }`}
                     onClick={() => setCurrentTab("all_forms")}
                   >
-                    All Forms
+                    {t("all")} {t("forms")}
                   </button>
                   <button
                     className={` ${
@@ -188,7 +185,7 @@ const FormsList = () => {
                     }`}
                     onClick={() => setCurrentTab("folders")}
                   >
-                    Folders
+                    {t("folders")}
                   </button>
                 </div>
                 {/* <div
@@ -221,7 +218,7 @@ const FormsList = () => {
           {formEditor && (
             <FormEditor
               setFormEditor={setFormEditor}
-              formName={`Hikam Form ${forms.length + 1}`}
+              formName={`Hikal Form ${forms.length + 1}`}
               fetchForms={fetchFormsList}
               formEdit={formEdit}
               loading={foldersLoading}
