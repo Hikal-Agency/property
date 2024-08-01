@@ -26,6 +26,8 @@ export default function MultiStepForm() {
     listing_attribute_id: null,
     listing_type_id: null,
     listing_arrtibute_type_id: null,
+    meta_description: null,
+    new_listing_id: null,
   });
   console.log("listingIDS::: ", listingIds);
   const [column, setColumn] = useState({
@@ -333,6 +335,8 @@ export default function MultiStepForm() {
           )}
           {activeStep === 3 && (
             <AddListingMeta
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
               listingIds={listingIds}
               setListingIDs={setListingIDs}
             />

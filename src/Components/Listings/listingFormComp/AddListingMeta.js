@@ -18,7 +18,14 @@ import moment from "moment";
 import dayjs from "dayjs";
 import AddImageModal from "../../../Pages/listings/AddImageModal";
 import ListingDataGrid from "../ListingDataGrid";
-const AddListingMeta = ({ data, setData, loading, setLoading }) => {
+const AddListingMeta = ({
+  data,
+  setData,
+  loading,
+  setLoading,
+  listingIds,
+  setListingIDs,
+}) => {
   const {
     darkModeColors,
     currentMode,
@@ -38,14 +45,14 @@ const AddListingMeta = ({ data, setData, loading, setLoading }) => {
   const [listingLoading, setListingLoading] = useState(false);
   const [allImages, setAllImages] = useState([]);
   const [listingMeta, setListingMeta] = useState({
-    new_listing_id: "",
+    new_listing_id: listingIds?.new_listing_id,
     long_description: "",
     year_build_in: "",
     promo_video: "",
     is_featured: 0,
     meta_title: "",
     meta_keywords: "",
-    meta_description: "",
+    meta_description: listingIds?.meta_description,
 
     banner: "",
     additional_gallery: [],
@@ -379,7 +386,7 @@ const AddListingMeta = ({ data, setData, loading, setLoading }) => {
             },
           }}
         >
-          <TextField
+          {/* <TextField
             id="meta_description"
             type={"text"}
             label={t("label_meta_desc")}
@@ -393,7 +400,7 @@ const AddListingMeta = ({ data, setData, loading, setLoading }) => {
             name="area"
             onChange={handleChange}
             required
-          />
+          /> */}
           <TextField
             id="meta_keywords"
             type={"text"}
