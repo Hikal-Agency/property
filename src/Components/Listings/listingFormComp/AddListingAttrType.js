@@ -18,7 +18,7 @@ import { BsTrash } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { FiEdit } from "react-icons/fi";
 import ListingLocation from "../../Leads/listings/ListingLocation";
-import { listing_options } from "../../_elements/SelectOptions";
+import { currencies, listing_options } from "../../_elements/SelectOptions";
 
 const AddListingAttrType = ({
   data,
@@ -54,14 +54,16 @@ const AddListingAttrType = ({
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [listingAttrType, setListingAttrType] = useState({
-    name: "",
-    listing_attribute_id: "",
+    listing_attribute_id: listingIds?.listing_attribute_id,
     type: "",
     price: "",
     near_by: "",
     latitude: "",
     longitude: "",
+    currency_type: "AED",
   });
+
+  console.log("listing attr type:: ", listingAttrType);
   const [listingLocation, setListingLocation] = useState({
     lat: 0,
     lng: 0,
@@ -99,17 +101,25 @@ const AddListingAttrType = ({
 
     let method = editData ? "put" : "post";
 
+    const listattrType = {
+      ...listingAttrType,
+      latitude: String(listingLocation?.lat),
+      longitude: String(listingLocation?.lng),
+    };
+
+    console.log("data sending :: ", listattrType);
+
     axios({
       method: method,
       url: url,
-      data: listingAttrType,
+      data: listattrType,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
     })
       .then((result) => {
-        console.log("listing attr added : ", result);
+        console.log("listing attr type added : ", result);
         setBtnLoading(false);
 
         toast.success(
@@ -135,16 +145,15 @@ const AddListingAttrType = ({
         });
 
         setListingAttrType({
-          name: "",
-          listing_attribute_id: 3,
+          ...listingAttrType,
           type: "",
           price: "",
-
+          currency_type: "AED",
           near_by: "",
           latitude: "",
           longitude: "",
         });
-        FetchData();
+        // FetchData();
       })
       .catch((err) => {
         console.error(err);
@@ -456,15 +465,9 @@ const AddListingAttrType = ({
 
           <Select
             id="type"
-            value={{
-              value: listingAttrType?.listing_type_id,
-              label: listingAttrType?.listing_type_id
-                ? listing_options(t)?.filter(
-                    (list_type) =>
-                      list_type.lid === listingAttrType?.listing_type_id
-                  )[0]?.name
-                : t("label_listing_type"),
-            }}
+            value={listing_options(t)?.find(
+              (list_type) => list_type.value === listingAttrType?.type
+            )}
             onChange={(e) => {
               setListingAttrType({
                 ...listingAttrType,
@@ -581,21 +584,42 @@ const AddListingAttrType = ({
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
           /> */}
-          <TextField
-            id="price"
-            type={"text"}
-            label={t("label_price")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
-            value={listingAttrType?.price}
-            name="projectLocation"
-            onChange={handleChange}
-            required
-          />
+          <div className="grid grid-cols-3">
+            <Select
+              id="currency_type"
+              options={currencies(t)?.map((curr) => ({
+                value: curr.value,
+                label: curr.label,
+              }))}
+              value={currencies(t)?.filter(
+                (curr) => curr?.value === listingAttrType?.currency_type
+              )}
+              onChange={(e) => {
+                setListingAttrType({
+                  ...listingAttrType,
+                  currency_type: e.value,
+                });
+              }}
+              placeholder={t("label_currency")}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+            <TextField
+              id="price"
+              type={"text"}
+              label={t("label_price")}
+              className="w-full"
+              sx={{
+                marginBottom: "20px !important",
+              }}
+              variant="outlined"
+              size="small"
+              value={listingAttrType?.price}
+              name="projectLocation"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
           {/* <TextField
             id="longitude"

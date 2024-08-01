@@ -63,8 +63,8 @@ const AddListingAttribute = ({
     area: "",
     bedroom: "",
     bathroom: "",
-    garage: "",
-    gallery: "",
+    // garage: "",
+    // gallery: "",
   });
 
   console.log("listing attr:: ", listingAttr);
@@ -82,8 +82,8 @@ const AddListingAttribute = ({
       area: values?.area,
       bedroom: values?.bedroom,
       bathroom: values?.bathroom,
-      garage: values?.garage,
-      gallery: values?.gallery,
+      // garage: values?.garage,
+      // gallery: values?.gallery,
     });
   };
 
@@ -384,10 +384,10 @@ const AddListingAttribute = ({
           area: "",
           bedroom: "",
           bathroom: "",
-          garage: "",
-          gallery: "",
+          // garage: "",
+          // gallery: "",
         });
-        FetchData();
+        // FetchData();
       })
       .catch((err) => {
         console.error(err);
@@ -499,7 +499,7 @@ const AddListingAttribute = ({
             required
           />
 
-          <TextField
+          {/* <TextField
             id="gallery"
             type={"text"}
             label={t("gallery")}
@@ -512,7 +512,7 @@ const AddListingAttribute = ({
             value={listingAttr?.gallery}
             name="tourLink"
             onChange={handleChange}
-          />
+          /> */}
         </Box>
         <Box
           sx={{
@@ -606,7 +606,7 @@ const AddListingAttribute = ({
             required
           />
 
-          <FormControlLabel
+          {/* <FormControlLabel
             control={
               <Checkbox
                 value={listingAttr?.garage}
@@ -622,7 +622,7 @@ const AddListingAttribute = ({
               />
             }
             label={t("garage")}
-          />
+          /> */}
 
           <Button
             className={`min-w-fit text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
