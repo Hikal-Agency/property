@@ -1177,5 +1177,18 @@
   "form_list_para": "Enhance reach with unlimited terms, no coding. Gatheressential into for targeted, personalized content.",
   "delete_folder_warning": " Warning! All forms will be deleted in this folder",
   "folder_create_message": "To create a form, please ensure that a folder exists. It looks like no folder is currently present. Please create a folder first!",
-  "select_folder_message": "In which folder you want to save your form?"
+  "select_folder_message": "In which folder you want to save your form?",
+
+
+
+  "short_description":"Short Description",
+
+
+
+
+
+
+  "listing_type_rent":"Rent",
+  "listing_type_sell":"Sell",
+  "listing_type_move":"Ready-To-Move"
 }
