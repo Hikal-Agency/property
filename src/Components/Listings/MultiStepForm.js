@@ -54,12 +54,12 @@ export default function MultiStepForm() {
 
   let type =
     activeStep == 0
-      ? "list_type"
-      : activeStep == 1
       ? "list_attribute"
-      : activeStep == 2
-      ? "list_attr_type"
-      : null;
+      : // : activeStep == 1
+        // ? "list_attribute"
+        // : activeStep == 2
+        // ? "list_attr_type"
+        null;
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -106,11 +106,12 @@ export default function MultiStepForm() {
   const FetchData = async () => {
     setLoading(true);
     let url;
-    if (type === "list_type") url = `${BACKEND_URL}/listing-types?page=${page}`;
     if (type === "list_attribute")
-      url = `${BACKEND_URL}/listing-attributes?page=${page}`;
-    if (type === "list_attr_type")
-      url = `${BACKEND_URL}/listing-attribute-types?page=${page}`;
+      url = `${BACKEND_URL}/listing-types?page=${page}`;
+    // if (type === "list_attribute")
+    //   url = `${BACKEND_URL}/listing-attributes?page=${page}`;
+    // if (type === "list_attr_type")
+    //   url = `${BACKEND_URL}/listing-attribute-types?page=${page}`;
 
     try {
       const listingsData = await axios.get(url, {
@@ -132,45 +133,49 @@ export default function MultiStepForm() {
       }
 
       let rowsData = rowsDataArray?.map((row, index) => {
-        if (type === "list_type") {
+        if (type === "list_attribute") {
           return {
             lid: row?.id,
             id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
             name: row?.name,
           };
-        } else if (type === "list_attribute") {
-          return {
-            la_id: row?.id,
-            id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
-            listing_type_id: row?.listing_type_id,
-            name: row?.name,
-            area: row?.area,
-            bedroom: row?.bedroom,
-            bathroom: row?.bathroom,
-            garage: row?.garage,
-            gallery: row?.gallery,
-          };
-        } else if (type === "list_attr_type") {
-          return {
-            lat_id: row?.id,
-            id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
-            listing_attribute_id: row?.listing_attribute_id,
-            name: row?.name,
-            type: row?.type,
-            price: row?.price,
-            amenities: row?.amenities,
-            near_by: row?.near_by,
-            latitude: row?.latitude,
-            longitude: row?.longitude,
-          };
-        } else {
+        }
+        //  else if (type === "list_attribute") {
+        //   return {
+        //     la_id: row?.id,
+        //     id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
+        //     listing_type_id: row?.listing_type_id,
+        //     name: row?.name,
+        //     area: row?.area,
+        //     bedroom: row?.bedroom,
+        //     bathroom: row?.bathroom,
+        //     garage: row?.garage,
+        //     gallery: row?.gallery,
+        //   };
+        // }
+        //  else if (type === "list_attr_type") {
+        //   return {
+        //     lat_id: row?.id,
+        //     id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
+        //     listing_attribute_id: row?.listing_attribute_id,
+        //     name: row?.name,
+        //     type: row?.type,
+        //     price: row?.price,
+        //     amenities: row?.amenities,
+        //     near_by: row?.near_by,
+        //     latitude: row?.latitude,
+        //     longitude: row?.longitude,
+        //   };
+        // }
+        else {
           return {};
         }
       });
 
       setData((prevData) => ({
         ...prevData,
-        [type]: rowsData,
+        // [type]: rowsData,
+        list_type: rowsData,
       }));
 
       setLoading(false);
@@ -195,9 +200,9 @@ export default function MultiStepForm() {
 
   useEffect(() => {
     if (
-      type === "list_type" ||
-      type === "list_attribute" ||
-      type === "list_attr_type"
+      type === "list_attribute"
+      // type === "list_type" ||
+      // type === "list_attr_type"
     )
       FetchData();
   }, [page, pageSize, type]);
@@ -282,7 +287,7 @@ export default function MultiStepForm() {
               setData={setData}
               column={column}
               setColumn={setColumn}
-              type="list_attr"
+              type="list_attribute"
               loading={loading}
               setLoading={setLoading}
               page={page}

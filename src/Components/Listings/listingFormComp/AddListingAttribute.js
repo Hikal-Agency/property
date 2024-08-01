@@ -52,6 +52,8 @@ const AddListingAttribute = ({
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
+  console.log("api data from parent:: ", data);
+
   const [btnLoading, setBtnLoading] = useState(false);
   const [listingAttr, setListingAttr] = useState({
     name: "",
@@ -142,7 +144,7 @@ const AddListingAttribute = ({
     console.log("checkbox: ", event.target.checked);
     setListingAttr({
       ...listingAttr,
-      garage: event.target.checked ? 1 : 0,
+      garage: event.target.checked ? "1" : "0",
     });
   };
 
@@ -331,44 +333,6 @@ const AddListingAttribute = ({
     }));
   };
 
-  const handleIncrement = (type) => {
-    setListingAttr((prev) => {
-      if (type === "bathroom") {
-        const newQuantity = Math.min((prev.bathroom || 0) + 1, 10);
-        return {
-          ...prev,
-          bathroom: newQuantity,
-        };
-      } else {
-        const newQuantity = Math.min((prev.bedroom || 0) + 1, 10);
-
-        return {
-          ...prev,
-          bedroom: newQuantity,
-        };
-      }
-    });
-  };
-
-  const handleDecrement = (type) => {
-    setListingAttr((prev) => {
-      if (type === "bathroom") {
-        const newQuantity = Math.max((prev.bathroom || 0) - 1, 1);
-        return {
-          ...prev,
-          bathroom: newQuantity,
-        };
-      } else {
-        const newQuantity = Math.max((prev.bedroom || 0) - 1, 1);
-
-        return {
-          ...prev,
-          bedroom: newQuantity,
-        };
-      }
-    });
-  };
-
   const AddListAttr = () => {
     setBtnLoading(true);
 
@@ -469,24 +433,31 @@ const AddListingAttribute = ({
             },
           }}
         >
-          {/* PROPERTY TYPE  */}
           <Select
             id="listing_type_id"
-            value={property_options(t).find(
-              (option) => option.value === listingAttr?.listing_type_id
-            )}
+            value={{
+              value: listingAttr?.listing_type_id,
+              label: listingAttr?.listing_type_id
+                ? data?.list_type?.filter(
+                    (list_type) =>
+                      list_type.lid === listingAttr?.listing_type_id
+                  )[0]?.name
+                : t("label_listing_type"),
+            }}
             onChange={(e) => {
               setListingAttr({
                 ...listingAttr,
                 listing_type_id: e.value,
               });
             }}
-            options={property_options(t)}
-            placeholder={t("label_listing_type")}
+            options={data?.list_type?.map((list_type) => ({
+              value: list_type.lid,
+              label: list_type.name,
+            }))}
             className="w-full"
+            placeholder={t("label_listing_type")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-            required
           />
           <TextField
             id="name"
