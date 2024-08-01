@@ -337,8 +337,6 @@ export default function MultiStepForm() {
             <AddListingMeta
               listingIds={listingIds}
               setListingIDs={setListingIDs}
-              listingIds={listingIds}
-              setListingIDs={setListingIDs}
             />
           )}
           {/* {activeStep === 4 && } */}
