@@ -18,6 +18,7 @@ import { BsTrash } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { FiEdit } from "react-icons/fi";
 import ListingLocation from "../../Leads/listings/ListingLocation";
+import { listing_options } from "../../_elements/SelectOptions";
 
 const AddListingAttrType = ({
   data,
@@ -30,6 +31,8 @@ const AddListingAttrType = ({
   setPage,
   setPageSize,
   FetchData,
+  listingIds,
+  setListingIDs,
 }) => {
   const {
     darkModeColors,
@@ -124,6 +127,12 @@ const AddListingAttrType = ({
             theme: "light",
           }
         );
+
+        const attrTypeID = result?.data?.data?.id;
+        setListingIDs({
+          ...listingIds,
+          listing_arrtibute_type_id: attrTypeID,
+        });
 
         setListingAttrType({
           name: "",
@@ -429,7 +438,7 @@ const AddListingAttrType = ({
             onChange={handleChange}
             required
           /> */}
-          <TextField
+          {/* <TextField
             id="type"
             type={"text"}
             label={t("type")}
@@ -443,6 +452,33 @@ const AddListingAttrType = ({
             name="area"
             onChange={handleChange}
             required
+          /> */}
+
+          <Select
+            id="type"
+            value={{
+              value: listingAttrType?.listing_type_id,
+              label: listingAttrType?.listing_type_id
+                ? listing_options(t)?.filter(
+                    (list_type) =>
+                      list_type.lid === listingAttrType?.listing_type_id
+                  )[0]?.name
+                : t("label_listing_type"),
+            }}
+            onChange={(e) => {
+              setListingAttrType({
+                ...listingAttrType,
+                type: e.value,
+              });
+            }}
+            options={listing_options(t)?.map((list_attr_type) => ({
+              value: list_attr_type.value,
+              label: list_attr_type.label,
+            }))}
+            className="w-full"
+            placeholder={t("label_listing_type")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
           />
 
           <TextField

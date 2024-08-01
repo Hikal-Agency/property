@@ -22,7 +22,12 @@ const steps = [1, 2, 3, 4];
 export default function MultiStepForm() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
-  const [listingIds, setListingIDs] = useState({});
+  const [listingIds, setListingIDs] = useState({
+    listing_attribute_id: null,
+    listing_type_id: null,
+    listing_arrtibute_type_id: null,
+  });
+  console.log("listingIDS::: ", listingIds);
   const [column, setColumn] = useState({
     list_type: [],
     list_attribute: [],

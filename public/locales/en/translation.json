@@ -1156,5 +1156,14 @@
 
 
 
-  "short_description":"Short Description"
+  "short_description":"Short Description",
+
+
+
+
+
+
+  "listing_type_rent":"Rent",
+  "listing_type_sell":"Sell",
+  "listing_type_move":"Ready-To-Move"
 }

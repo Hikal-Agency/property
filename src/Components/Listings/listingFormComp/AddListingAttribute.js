@@ -37,6 +37,8 @@ const AddListingAttribute = ({
   setPage,
   setPageSize,
   FetchData,
+  listingIds,
+  setListingIDs,
 }) => {
   const {
     darkModeColors,
@@ -368,6 +370,13 @@ const AddListingAttribute = ({
             theme: "light",
           }
         );
+
+        const attrID = result?.data?.data?.id;
+        setListingIDs({
+          ...listingIds,
+          listing_attribute_id: attrID,
+          listing_type_id: listingAttr?.listing_type_id,
+        });
 
         setListingAttr({
           name: "",
