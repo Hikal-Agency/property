@@ -27,6 +27,7 @@ import EditListingModal from "../../Components/Leads/listings/EditListingCompone
 import SingleImageModal from "./SingleImageModal";
 import SingleDocModal from "./SingleDocModal";
 import usePermission from "../../utils/usePermission";
+import { IoIosVideocam } from "react-icons/io";
 
 const SingleListingsModal = ({
   ListingData,
@@ -142,12 +143,8 @@ const SingleListingsModal = ({
     mapTypeControl: true,
   };
 
-  const latLongString = listData?.latlong;
-  if (latLongString) {
-    const [latValue, longValue] = latLongString.split(",");
-    lat = latValue;
-    long = longValue;
-  }
+  lat = listData?.listing_attribute_type?.latitude;
+  long = listData?.listing_attribute_type?.longitude;
 
   console.log("maps: ", load);
 
@@ -226,27 +223,24 @@ const SingleListingsModal = ({
                   <Error404 />
                 ) : (
                   <div className="w-full">
-                    {/* IMAGES  */}
-                    <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
-                      {listData?.meta_tags_for_listings?.additional_gallery?.map(
-                        (pic) =>
-                          pic?.img_url ? (
-                            <img
-                              onClick={() =>
-                                setSingleImageModal({
-                                  isOpen: true,
-                                  url: pic?.img_url,
-                                  id: pic?.id,
-                                  listingId: listData?.id,
-                                })
-                              }
-                              src={pic?.img_url}
-                              alt={pic?.img_alt}
-                              className="w-auto h-[200px] object-cover m-1 rounded-md"
-                            />
-                          ) : (
-                            <></>
-                          )
+                    {/* BANNER  */}
+                    <div className="w-full  mb-3 ">
+                      {listData?.meta_tags_for_listings?.banner ? (
+                        <img
+                          // onClick={() =>
+                          //   setSingleImageModal({
+                          //     isOpen: true,
+                          //     url: pic?.img_url,
+                          //     id: pic?.id,
+                          //     listingId: listData?.id,
+                          //   })
+                          // }
+                          src={listData?.meta_tags_for_listings?.banner}
+                          alt={"banner"}
+                          className="w-full h-[350px] object-cover m-1 rounded-md"
+                        />
+                      ) : (
+                        <></>
                       )}
                     </div>
 
@@ -268,12 +262,12 @@ const SingleListingsModal = ({
                                   : "text-black"
                               }`}
                               style={{
-                                fontFamily: isArabic(listData?.project)
+                                fontFamily: isArabic(listData?.title)
                                   ? "Noto Kufi Arabic"
                                   : "inherit",
                               }}
                             >
-                              {listData?.project}
+                              {listData?.title}
                             </h1>
                           </div>
                         </div>
@@ -304,29 +298,28 @@ const SingleListingsModal = ({
                               </IconButton>
                             </Tooltip>
 
-                            {/* UPLOAD DOCUMENTS  */}
-                            <Tooltip title="Upload Documents" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectDocumentModal({
-                                    isOpen: true,
-                                    listingId: lid,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsFiles size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip>
+                            {/* WATCH VIDEO  */}
+                            {listData?.meta_tags_for_listings?.promo_video && (
+                              <Tooltip title="Promo Video" arrow>
+                                <IconButton
+                                  onClick={() => {
+                                    window.open(
+                                      listData?.meta_tags_for_listings
+                                        ?.promo_video,
+                                      "_blank"
+                                    );
+                                  }}
+                                  className={`rounded-full bg-btn-primary`}
+                                >
+                                  <IoIosVideocam size={16} color={"#FFFFFF"} />
+                                </IconButton>
+                              </Tooltip>
+                            )}
 
                             <div className="mx-1"></div>
 
                             <div className="border border-primary p-2 font-semibold rounded-md shadow-sm">
-                              {listData?.listing_type === "Off-plan"
-                                ? t("category_off_plan")
-                                : listData?.listing_type === "Secondary"
-                                ? t("category_secondary")
-                                : listData?.listing_type}
+                              {listData?.listing_attribute_type?.type}
                             </div>
                           </div>
                         </div>
@@ -343,7 +336,9 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>{listData?.address} </h6>
+                            <h6>
+                              {listData?.listing_attribute_type?.near_by}{" "}
+                            </h6>
                           </div>
                           {/* Bedrooms  */}
                           <div className="flex gap-3">
@@ -355,11 +350,11 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>{listData?.bedrooms}</h6>
+                            <h6>{listData?.listing_attribute?.bedroom}</h6>
                             <h6>
-                              {listData?.property_type === "null"
+                              {listData?.listing_type === "null"
                                 ? "-"
-                                : listData?.property_type}
+                                : listData?.listing_type?.name}
                             </h6>
                           </div>
                           {/* baths  */}
@@ -373,15 +368,9 @@ const SingleListingsModal = ({
                               }
                             />
                             <h6>
-                              {listData?.bathrooms === "null"
+                              {listData?.listing_attribute?.bathroom === "null"
                                 ? "-"
-                                : listData?.bathrooms}
-                            </h6>
-
-                            <h6>
-                              {listData?.leadFor === "null"
-                                ? "-"
-                                : listData?.leadFor}
+                                : listData?.listing_attribute?.bathroom}
                             </h6>
                           </div>
                         </div>
@@ -405,7 +394,7 @@ const SingleListingsModal = ({
                                   }`}
                                   className="mx-2"
                                 />
-                                {listData?.addedBy_name}
+                                {listData?.user?.name}
                               </p>
                             </div>
                           </div>
@@ -487,10 +476,10 @@ const SingleListingsModal = ({
                                       : "text-[#333333]"
                                   }
                                 />
-                                <h6>{listData?.seller_name}</h6>
+                                <h6>{listData?.user?.name}</h6>
                               </div>
                               {/* SELLER CONTACT  */}
-                              <div className="flex gap-3">
+                              {/* <div className="flex gap-3">
                                 <TbPhone
                                   size={18}
                                   className={
@@ -499,8 +488,8 @@ const SingleListingsModal = ({
                                       : "text-[#333333]"
                                   }
                                 />
-                                <h6>{listData?.seller_contact}</h6>
-                              </div>
+                                <h6>{listData?.user?.phone}</h6>
+                              </div> */}
                               {/* SELLER EMAIL  */}
                               <div className="flex gap-3">
                                 <TbMail
@@ -512,96 +501,37 @@ const SingleListingsModal = ({
                                   }
                                 />
                                 <h6>
-                                  {listData?.seller_email === "null"
+                                  {listData?.user?.email === "null"
                                     ? ""
-                                    : listData?.seller_email}
+                                    : listData?.user?.email}
                                 </h6>
                               </div>
                             </div>
                           </div>
                           <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 ">
-                            <div
-                              className={`${
-                                currentMode === "dark"
-                                  ? "bg-[#000000]"
-                                  : "bg-[#EEEEEE]"
-                              } rounded-xl shadow-sm p-4`}
-                            >
-                              <div className="w-full flex items-center pb-3">
-                                <div
-                                  className={`bg-primary h-10 w-1 rounded-full ${
-                                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
-                                  } my-1`}
-                                ></div>
-                                <h1
-                                  className={`text-lg font-semibold ${
-                                    currentMode === "dark"
-                                      ? "text-white"
-                                      : "text-black"
-                                  }`}
-                                >
-                                  {t("documents")}
-                                </h1>
-                              </div>
-
-                              <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 flex justify-center">
-                                {listData?.documents?.map((l) => {
-                                  return l?.doc_url ? (
-                                    // <div
-                                    //   onClick={() =>
-                                    //     setSingleDocModal({
-                                    //       isOpen: true,
-                                    //       url: l?.doc_url,
-                                    //       id: l?.id,
-                                    //     })
-                                    //   }
-                                    //   className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                    //   // hover:rounded-full hover:shadow-lg
-                                    // >
-                                    //   <div className="w-full text-center ">
-                                    //     <div className="w-full flex justify-center">
-                                    //       <BsFileEarmarkText
-                                    //         size={70}
-                                    //         color={"#AAAAAA"}
-                                    //         className="hover:-mt-1 hover:mb-1"
-                                    //       />
-                                    //     </div>
-                                    //     <div className="my-3">
-                                    //       {l?.doc_name}
-                                    //     </div>
-                                    //   </div>
-                                    // </div>
-                                    <div
-                                      onClick={() => {
-                                        window.open(l?.doc_url, "_blank");
-                                      }}
-                                      className="p-2 flex items-center justify-center hover:cursor-pointer"
-                                    >
-                                      <a
-                                        href={l?.doc_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                      >
-                                        <div className="w-full text-center">
-                                          <div className="w-full flex justify-center">
-                                            <BsFileEarmarkText
-                                              size={70}
-                                              color={"#AAAAAA"}
-                                              className="hover:-mt-1 hover:mb-1"
-                                            />
-                                          </div>
-                                          <div className="my-3">
-                                            {l?.doc_name}
-                                          </div>
-                                        </div>
-                                      </a>
-                                    </div>
-                                  ) : (
-                                    <div className="py-2 text-xs italic text-primary">
-                                      No documents to show
-                                    </div>
-                                  );
-                                })}
+                            {/* IMAGES */}
+                            <div className={` rounded-xl shadow-sm p-4`}>
+                              <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
+                                {listData?.meta_tags_for_listings?.additional_gallery?.map(
+                                  (pic) =>
+                                    pic ? (
+                                      <img
+                                        // onClick={() =>
+                                        //   setSingleImageModal({
+                                        //     isOpen: true,
+                                        //     url: pic?.img_url,
+                                        //     id: pic?.id,
+                                        //     listingId: listData?.id,
+                                        //   })
+                                        // }
+                                        src={pic}
+                                        alt={pic}
+                                        className="w-auto h-[200px] object-cover m-1 rounded-md"
+                                      />
+                                    ) : (
+                                      <></>
+                                    )
+                                )}
                               </div>
                               {/* )} */}
                             </div>
