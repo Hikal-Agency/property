@@ -748,6 +748,7 @@ const RenderFeedback = ({ cellValues }) => {
                         }}
                         required
                       />
+
                       {/* UNIT  */}
                       <TextField
                         id="unit"
@@ -802,6 +803,7 @@ const RenderFeedback = ({ cellValues }) => {
                         }}
                         required
                       />
+
                       {/* CURRENCY  */}
                       <Select
                         aria-label="select currency"

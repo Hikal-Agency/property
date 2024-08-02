@@ -494,6 +494,18 @@ export const listing_options = (t) => [
     value: "Off-plan",
     label: t("category_off_plan"),
   },
+  {
+    value: "rent",
+    label: t("listing_type_rent"),
+  },
+  {
+    value: "sell",
+    label: t("listing_type_sell"),
+  },
+  {
+    value: "ready-to-move",
+    label: t("listing_type_move"),
+  },
 ];
 
 // PROJECT STATUS

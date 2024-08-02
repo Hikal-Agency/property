@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import axios from "../../../axoisConfig";
 import { listing_status } from "../../_elements/SelectOptions";
 
-const Addlisting = ({ data }) => {
+const Addlisting = ({ data, listingIds, setListingIDs }) => {
   const {
     darkModeColors,
     currentMode,
@@ -35,10 +35,9 @@ const Addlisting = ({ data }) => {
 
   const [listingData, setlistingData] = useState({
     title: "",
-    listing_type_id: "",
-    user_id: "",
-    listing_attribute_id: "",
-    listing_arrtibute_type_id: "",
+    listing_type_id: listingIds?.listing_type_id,
+    listing_attribute_id: listingIds?.listing_attribute_id,
+    listing_arrtibute_type_id: listingIds?.listing_arrtibute_type_id,
     country_id: "",
     state_id: "",
     city_id: "",
@@ -55,36 +54,22 @@ const Addlisting = ({ data }) => {
     }));
   };
 
-  const fetchCountriesNUsers = () => {
-    setUserLoading(true);
-
-    const headers = {
-      "Content-Type": "multipart/form-data",
-      Authorization: "Bearer " + token,
-    };
-
-    const countriesPromise = axios.get(`${BACKEND_URL}/countries`, { headers });
-    const usersPromise = axios.get(`${BACKEND_URL}/users`, { headers });
-
-    Promise.all([countriesPromise, usersPromise])
-      .then(([countriesResult, usersResult]) => {
-        console.log("countries list : ", countriesResult);
-        setCountryList(countriesResult?.data?.data?.data);
-
-        console.log("users list : ", usersResult);
-
-        const users = usersResult?.data?.managers?.data;
-        const filteredUser = users?.filter(
-          (user) => user?.role === 1 || user?.role === 7
-        );
-
-        setUserList(filteredUser);
-        setUserLoading(false);
+  const fetchCountries = () => {
+    axios
+      .get(`${BACKEND_URL}/countries`, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((result) => {
+        console.log("countries list : ", result);
+        setCountryList(result?.data?.data?.data);
       })
       .catch((err) => {
         console.error(err);
-        setUserLoading(false);
-
+        setBtnLoading(false);
+        console.log(err);
         const errors = err.response?.data?.errors;
 
         if (errors) {
@@ -100,7 +85,7 @@ const Addlisting = ({ data }) => {
             theme: "light",
           });
         } else {
-          toast.error("Unable to fetch data", {
+          toast.error("Unable to fetch countries", {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -113,51 +98,6 @@ const Addlisting = ({ data }) => {
         }
       });
   };
-
-  // const fetchCountriesNUsers = () => {
-  //   axios
-  //     .get(`${BACKEND_URL}/countries`, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //         Authorization: "Bearer " + token,
-  //       },
-  //     })
-  //     .then((result) => {
-  //       console.log("countries list : ", result);
-  //       setCountryList(result?.data?.data?.data);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       setBtnLoading(false);
-  //       console.log(err);
-  //       const errors = err.response?.data?.errors;
-
-  //       if (errors) {
-  //         const errorMessages = Object.values(errors).flat().join(" ");
-  //         toast.error(`Errors: ${errorMessages}`, {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       } else {
-  //         toast.error("Unable to fetch countries", {
-  //           position: "top-right",
-  //           autoClose: 3000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "light",
-  //         });
-  //       }
-  //     });
-  // };
 
   const FetchCitynState = () => {
     setCityLoading(true);
@@ -243,15 +183,22 @@ const Addlisting = ({ data }) => {
           theme: "light",
         });
 
+        const listingID = result?.data?.data?.id;
+        const shortDesc = result?.data?.data?.short_description;
+        setListingIDs({
+          ...listingIds,
+          new_listing_id: listingID,
+          meta_description: shortDesc,
+        });
+
         setlistingData({
-          name: "",
-          listing_attribute_id: 3,
-          type: "",
-          price: "",
-          amenities: "",
-          near_by: "",
-          latitude: "",
-          longitude: "",
+          ...listingData,
+          title: "",
+          country_id: "",
+          state_id: "",
+          city_id: "",
+          short_description: "",
+          status: "",
         });
       })
       .catch((err) => {
@@ -288,7 +235,7 @@ const Addlisting = ({ data }) => {
   };
 
   useEffect(() => {
-    fetchCountriesNUsers();
+    fetchCountries();
   }, []);
   useEffect(() => {
     if (listingData?.country_id) {
@@ -331,7 +278,7 @@ const Addlisting = ({ data }) => {
             onChange={handleChange}
             required
           />
-          <Select
+          {/* <Select
             id="listing_attribute_id"
             value={{
               value: listingData?.listing_attribute_id,
@@ -356,9 +303,9 @@ const Addlisting = ({ data }) => {
             placeholder={t("label_list_attr")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
+          /> */}
 
-          <Select
+          {/* <Select
             id="user_id"
             value={{
               value: listingData?.user_id,
@@ -382,7 +329,7 @@ const Addlisting = ({ data }) => {
             placeholder={t("user")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
+          /> */}
           <Select
             id="country_id"
             value={{
@@ -468,7 +415,7 @@ const Addlisting = ({ data }) => {
             },
           }}
         >
-          <Select
+          {/* <Select
             id="listing_type_id"
             value={{
               value: listingData?.listing_type_id,
@@ -521,10 +468,10 @@ const Addlisting = ({ data }) => {
             placeholder={t("label_list_attr_type")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
+          /> */}
 
           <Select
-            id="Developer"
+            id="state"
             value={{
               value: listingData?.state_id,
               label: listingData?.state_id
@@ -552,7 +499,7 @@ const Addlisting = ({ data }) => {
           <TextField
             id="short_description"
             type={"text"}
-            label={t("description")}
+            label={t("short_description")}
             className="w-full"
             sx={{
               marginBottom: "20px !important",

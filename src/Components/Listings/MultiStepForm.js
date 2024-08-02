@@ -17,11 +17,19 @@ import {
 } from "./listingFormComp";
 import { toast } from "react-toastify";
 
-const steps = [1, 2, 3, 4, 5];
+const steps = [1, 2, 3, 4];
 
 export default function MultiStepForm() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
+  const [listingIds, setListingIDs] = useState({
+    listing_attribute_id: null,
+    listing_type_id: null,
+    listing_arrtibute_type_id: null,
+    meta_description: null,
+    new_listing_id: null,
+  });
+  console.log("listingIDS::: ", listingIds);
   const [column, setColumn] = useState({
     list_type: [],
     list_attribute: [],
@@ -53,12 +61,12 @@ export default function MultiStepForm() {
 
   let type =
     activeStep == 0
-      ? "list_type"
-      : activeStep == 1
       ? "list_attribute"
-      : activeStep == 2
-      ? "list_attr_type"
-      : null;
+      : // : activeStep == 1
+        // ? "list_attribute"
+        // : activeStep == 2
+        // ? "list_attr_type"
+        null;
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -105,11 +113,12 @@ export default function MultiStepForm() {
   const FetchData = async () => {
     setLoading(true);
     let url;
-    if (type === "list_type") url = `${BACKEND_URL}/listing-types?page=${page}`;
     if (type === "list_attribute")
-      url = `${BACKEND_URL}/listing-attributes?page=${page}`;
-    if (type === "list_attr_type")
-      url = `${BACKEND_URL}/listing-attribute-types?page=${page}`;
+      url = `${BACKEND_URL}/listing-types?page=${page}`;
+    // if (type === "list_attribute")
+    //   url = `${BACKEND_URL}/listing-attributes?page=${page}`;
+    // if (type === "list_attr_type")
+    //   url = `${BACKEND_URL}/listing-attribute-types?page=${page}`;
 
     try {
       const listingsData = await axios.get(url, {
@@ -131,45 +140,49 @@ export default function MultiStepForm() {
       }
 
       let rowsData = rowsDataArray?.map((row, index) => {
-        if (type === "list_type") {
+        if (type === "list_attribute") {
           return {
             lid: row?.id,
             id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
             name: row?.name,
           };
-        } else if (type === "list_attribute") {
-          return {
-            la_id: row?.id,
-            id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
-            listing_type_id: row?.listing_type_id,
-            name: row?.name,
-            area: row?.area,
-            bedroom: row?.bedroom,
-            bathroom: row?.bathroom,
-            garage: row?.garage,
-            gallery: row?.gallery,
-          };
-        } else if (type === "list_attr_type") {
-          return {
-            lat_id: row?.id,
-            id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
-            listing_attribute_id: row?.listing_attribute_id,
-            name: row?.name,
-            type: row?.type,
-            price: row?.price,
-            amenities: row?.amenities,
-            near_by: row?.near_by,
-            latitude: row?.latitude,
-            longitude: row?.longitude,
-          };
-        } else {
+        }
+        //  else if (type === "list_attribute") {
+        //   return {
+        //     la_id: row?.id,
+        //     id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
+        //     listing_type_id: row?.listing_type_id,
+        //     name: row?.name,
+        //     area: row?.area,
+        //     bedroom: row?.bedroom,
+        //     bathroom: row?.bathroom,
+        //     garage: row?.garage,
+        //     gallery: row?.gallery,
+        //   };
+        // }
+        //  else if (type === "list_attr_type") {
+        //   return {
+        //     lat_id: row?.id,
+        //     id: page > 1 ? page * pageSize - (pageSize - 1) + index : index + 1,
+        //     listing_attribute_id: row?.listing_attribute_id,
+        //     name: row?.name,
+        //     type: row?.type,
+        //     price: row?.price,
+        //     amenities: row?.amenities,
+        //     near_by: row?.near_by,
+        //     latitude: row?.latitude,
+        //     longitude: row?.longitude,
+        //   };
+        // }
+        else {
           return {};
         }
       });
 
       setData((prevData) => ({
         ...prevData,
-        [type]: rowsData,
+        // [type]: rowsData,
+        list_type: rowsData,
       }));
 
       setLoading(false);
@@ -194,9 +207,9 @@ export default function MultiStepForm() {
 
   useEffect(() => {
     if (
-      type === "list_type" ||
-      type === "list_attribute" ||
-      type === "list_attr_type"
+      type === "list_attribute"
+      // type === "list_type" ||
+      // type === "list_attr_type"
     )
       FetchData();
   }, [page, pageSize, type]);
@@ -260,8 +273,7 @@ export default function MultiStepForm() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          {activeStep === 0 && (
-            <AddListingType
+          {/* <AddListingType
               data={data}
               setData={setData}
               column={column}
@@ -275,15 +287,14 @@ export default function MultiStepForm() {
               setPage={setPage}
               setPageSize={setPageSize}
               FetchData={FetchData}
-            />
-          )}
-          {activeStep === 1 && (
+            /> */}
+          {activeStep === 0 && (
             <AddListingAttribute
               data={data}
               setData={setData}
               column={column}
               setColumn={setColumn}
-              type="list_attr"
+              type="list_attribute"
               loading={loading}
               setLoading={setLoading}
               page={page}
@@ -292,9 +303,11 @@ export default function MultiStepForm() {
               setPage={setPage}
               setPageSize={setPageSize}
               FetchData={FetchData}
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
             />
           )}
-          {activeStep === 2 && (
+          {activeStep === 1 && (
             <AddListingAttrType
               data={data}
               setData={setData}
@@ -309,10 +322,26 @@ export default function MultiStepForm() {
               setPage={setPage}
               setPageSize={setPageSize}
               FetchData={FetchData}
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
             />
           )}
-          {activeStep === 3 && <Addlisting data={data} />}
-          {activeStep === 4 && <AddListingMeta />}
+          {activeStep === 2 && (
+            <Addlisting
+              data={data}
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
+            />
+          )}
+          {activeStep === 3 && (
+            <AddListingMeta
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
+              listingIds={listingIds}
+              setListingIDs={setListingIDs}
+            />
+          )}
+          {/* {activeStep === 4 && } */}
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"

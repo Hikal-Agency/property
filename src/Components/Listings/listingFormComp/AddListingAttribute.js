@@ -18,8 +18,13 @@ import { toast } from "react-toastify";
 import ListingDataGrid from "../ListingDataGrid";
 import SelectOption from "@material-tailwind/react/components/Select/SelectOption";
 import { IoMdClose } from "react-icons/io";
-import { BsTrash } from "react-icons/bs";
+import { BsDash, BsPlus, BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
+import {
+  bathroom_options,
+  enquiry_options,
+  property_options,
+} from "../../_elements/SelectOptions";
 
 const AddListingAttribute = ({
   data,
@@ -32,6 +37,8 @@ const AddListingAttribute = ({
   setPage,
   setPageSize,
   FetchData,
+  listingIds,
+  setListingIDs,
 }) => {
   const {
     darkModeColors,
@@ -47,6 +54,8 @@ const AddListingAttribute = ({
   } = useStateContext();
   const token = localStorage.getItem("auth-token");
 
+  console.log("api data from parent:: ", data);
+
   const [btnLoading, setBtnLoading] = useState(false);
   const [listingAttr, setListingAttr] = useState({
     name: "",
@@ -54,8 +63,8 @@ const AddListingAttribute = ({
     area: "",
     bedroom: "",
     bathroom: "",
-    garage: "",
-    gallery: "",
+    // garage: "",
+    // gallery: "",
   });
 
   console.log("listing attr:: ", listingAttr);
@@ -73,8 +82,8 @@ const AddListingAttribute = ({
       area: values?.area,
       bedroom: values?.bedroom,
       bathroom: values?.bathroom,
-      garage: values?.garage,
-      gallery: values?.gallery,
+      // garage: values?.garage,
+      // gallery: values?.gallery,
     });
   };
 
@@ -137,7 +146,7 @@ const AddListingAttribute = ({
     console.log("checkbox: ", event.target.checked);
     setListingAttr({
       ...listingAttr,
-      garage: event.target.checked ? 1 : 0,
+      garage: event.target.checked ? "1" : "0",
     });
   };
 
@@ -241,37 +250,37 @@ const AddListingAttribute = ({
       },
     },
     // GARAGE
-    {
-      field: "garage",
-      headerName: t("garage"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "garage",
+    //   headerName: t("garage"),
+    //   headerAlign: "center",
+    //   editable: false,
+    //   minwidth: 100,
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="w-full flex items-center justify-center">
+    //         <p className="text-center">{cellValues?.formattedValue}</p>
+    //       </div>
+    //     );
+    //   },
+    // },
     // GALLERY
-    {
-      field: "gallery",
-      headerName: t("gallery"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "gallery",
+    //   headerName: t("gallery"),
+    //   headerAlign: "center",
+    //   editable: false,
+    //   minwidth: 100,
+    //   flex: 1,
+    //   renderCell: (cellValues) => {
+    //     return (
+    //       <div className="w-full flex items-center justify-center">
+    //         <p className="text-center">{cellValues?.formattedValue}</p>
+    //       </div>
+    //     );
+    //   },
+    // },
 
     {
       field: "notes",
@@ -362,16 +371,23 @@ const AddListingAttribute = ({
           }
         );
 
+        const attrID = result?.data?.data?.id;
+        setListingIDs({
+          ...listingIds,
+          listing_attribute_id: attrID,
+          listing_type_id: listingAttr?.listing_type_id,
+        });
+
         setListingAttr({
           name: "",
           listing_type_id: "",
           area: "",
           bedroom: "",
           bathroom: "",
-          garage: "",
-          gallery: "",
+          // garage: "",
+          // gallery: "",
         });
-        FetchData();
+        // FetchData();
       })
       .catch((err) => {
         console.error(err);
@@ -426,6 +442,32 @@ const AddListingAttribute = ({
             },
           }}
         >
+          <Select
+            id="listing_type_id"
+            value={{
+              value: listingAttr?.listing_type_id,
+              label: listingAttr?.listing_type_id
+                ? data?.list_type?.filter(
+                    (list_type) =>
+                      list_type.lid === listingAttr?.listing_type_id
+                  )[0]?.name
+                : t("label_listing_type"),
+            }}
+            onChange={(e) => {
+              setListingAttr({
+                ...listingAttr,
+                listing_type_id: e.value,
+              });
+            }}
+            options={data?.list_type?.map((list_type) => ({
+              value: list_type.lid,
+              label: list_type.name,
+            }))}
+            className="w-full"
+            placeholder={t("label_listing_type")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
           <TextField
             id="name"
             type={"text"}
@@ -457,22 +499,7 @@ const AddListingAttribute = ({
             required
           />
 
-          <TextField
-            id="bathroom"
-            type={"text"}
-            label={t("bathroom")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
-            value={listingAttr?.bathroom}
-            name="tourLink"
-            onChange={handleChange}
-          />
-
-          <TextField
+          {/* <TextField
             id="gallery"
             type={"text"}
             label={t("gallery")}
@@ -485,7 +512,7 @@ const AddListingAttribute = ({
             value={listingAttr?.gallery}
             name="tourLink"
             onChange={handleChange}
-          />
+          /> */}
         </Box>
         <Box
           sx={{
@@ -500,7 +527,7 @@ const AddListingAttribute = ({
             },
           }}
         >
-          <Select
+          {/* <Select
             id="listing_type_id"
             value={{
               value: listingAttr?.listing_type_id,
@@ -525,8 +552,8 @@ const AddListingAttribute = ({
             placeholder={t("label_listing_type")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
-          <TextField
+          /> */}
+          {/* <TextField
             id="bedroom"
             type={"text"}
             label={t("bedroom")}
@@ -540,23 +567,46 @@ const AddListingAttribute = ({
             name="projectLocation"
             onChange={handleChange}
             required
-          />
-          {/* <TextField
-            id="garage"
-            type={"text"}
-            label={t("garage")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
-            value={listingAttr?.garage}
-            name="area"
-            onChange={handleChange}
-            required
           /> */}
-          <FormControlLabel
+          <Select
+            id="bedroom"
+            value={enquiry_options(t).find(
+              (option) => option.value === listingAttr?.bedroom
+            )}
+            onChange={(e) => {
+              setListingAttr({
+                ...listingAttr,
+                bedroom: e.value,
+              });
+            }}
+            options={enquiry_options(t)}
+            placeholder={t("number_of_bedrooms")}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+            required
+          />
+
+          <Select
+            id="bathroom"
+            value={bathroom_options(t).find(
+              (option) => option.value === listingAttr?.bathroom
+            )}
+            onChange={(e) => {
+              setListingAttr({
+                ...listingAttr,
+                bathroom: e.value,
+              });
+            }}
+            options={bathroom_options(t)}
+            placeholder={t("number_of_bathrooms")}
+            className="w-full"
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+            required
+          />
+
+          {/* <FormControlLabel
             control={
               <Checkbox
                 value={listingAttr?.garage}
@@ -572,7 +622,7 @@ const AddListingAttribute = ({
               />
             }
             label={t("garage")}
-          />
+          /> */}
 
           <Button
             className={`min-w-fit text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
@@ -675,7 +725,7 @@ const AddListingAttribute = ({
           </>
         )}
       </div>
-      <div className=" mt-5">
+      {/* <div className=" mt-5">
         <ListingDataGrid
           data={data}
           setData={setData}
@@ -690,7 +740,7 @@ const AddListingAttribute = ({
           setPage={setPage}
           setPageSize={setPageSize}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

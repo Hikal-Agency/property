@@ -17,6 +17,8 @@ import ListingDataGrid from "../ListingDataGrid";
 import { BsTrash } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { FiEdit } from "react-icons/fi";
+import ListingLocation from "../../Leads/listings/ListingLocation";
+import { currencies, listing_options } from "../../_elements/SelectOptions";
 
 const AddListingAttrType = ({
   data,
@@ -29,6 +31,8 @@ const AddListingAttrType = ({
   setPage,
   setPageSize,
   FetchData,
+  listingIds,
+  setListingIDs,
 }) => {
   const {
     darkModeColors,
@@ -47,14 +51,23 @@ const AddListingAttrType = ({
   const [btnLoading, setBtnLoading] = useState(false);
   const [deleteDialogue, setDeleteDialogue] = useState(false);
 
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
   const [listingAttrType, setListingAttrType] = useState({
-    name: "",
-    listing_attribute_id: "",
+    listing_attribute_id: listingIds?.listing_attribute_id,
     type: "",
     price: "",
     near_by: "",
     latitude: "",
     longitude: "",
+    currency_type: "AED",
+  });
+
+  console.log("listing attr type:: ", listingAttrType);
+  const [listingLocation, setListingLocation] = useState({
+    lat: 0,
+    lng: 0,
+    addressText: "",
   });
   const [editData, setEditData] = useState(null);
 
@@ -88,17 +101,25 @@ const AddListingAttrType = ({
 
     let method = editData ? "put" : "post";
 
+    const listattrType = {
+      ...listingAttrType,
+      latitude: String(listingLocation?.lat),
+      longitude: String(listingLocation?.lng),
+    };
+
+    console.log("data sending :: ", listattrType);
+
     axios({
       method: method,
       url: url,
-      data: listingAttrType,
+      data: listattrType,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
     })
       .then((result) => {
-        console.log("listing attr added : ", result);
+        console.log("listing attr type added : ", result);
         setBtnLoading(false);
 
         toast.success(
@@ -117,17 +138,22 @@ const AddListingAttrType = ({
           }
         );
 
+        const attrTypeID = result?.data?.data?.id;
+        setListingIDs({
+          ...listingIds,
+          listing_arrtibute_type_id: attrTypeID,
+        });
+
         setListingAttrType({
-          name: "",
-          listing_attribute_id: 3,
+          ...listingAttrType,
           type: "",
           price: "",
-
+          currency_type: "AED",
           near_by: "",
           latitude: "",
           longitude: "",
         });
-        FetchData();
+        // FetchData();
       })
       .catch((err) => {
         console.error(err);
@@ -406,7 +432,7 @@ const AddListingAttrType = ({
             },
           }}
         >
-          <TextField
+          {/* <TextField
             id="name"
             type={"text"}
             label={t("name")}
@@ -420,8 +446,8 @@ const AddListingAttrType = ({
             name="projectLocation"
             onChange={handleChange}
             required
-          />
-          <TextField
+          /> */}
+          {/* <TextField
             id="type"
             type={"text"}
             label={t("type")}
@@ -432,6 +458,43 @@ const AddListingAttrType = ({
             variant="outlined"
             size="small"
             value={listingAttrType?.type}
+            name="area"
+            onChange={handleChange}
+            required
+          /> */}
+
+          <Select
+            id="type"
+            value={listing_options(t)?.find(
+              (list_type) => list_type.value === listingAttrType?.type
+            )}
+            onChange={(e) => {
+              setListingAttrType({
+                ...listingAttrType,
+                type: e.value,
+              });
+            }}
+            options={listing_options(t)?.map((list_attr_type) => ({
+              value: list_attr_type.value,
+              label: list_attr_type.label,
+            }))}
+            className="w-full"
+            placeholder={t("label_listing_type")}
+            menuPortalTarget={document.body}
+            styles={selectStyles(currentMode, primaryColor)}
+          />
+
+          <TextField
+            id="near_by"
+            type={"text"}
+            label={t("label_nearby")}
+            className="w-full"
+            sx={{
+              marginBottom: "20px !important",
+            }}
+            variant="outlined"
+            size="small"
+            value={listingAttrType?.near_by}
             name="area"
             onChange={handleChange}
             required
@@ -452,7 +515,7 @@ const AddListingAttrType = ({
             onChange={handleChange}
           /> */}
 
-          <TextField
+          {/* <TextField
             id="gallery"
             type={"text"}
             label={t("gallery")}
@@ -465,9 +528,9 @@ const AddListingAttrType = ({
             value={listingAttrType?.gallery}
             name="tourLink"
             onChange={handleChange}
-          />
+          /> */}
 
-          <TextField
+          {/* <TextField
             id="latitude"
             type={"text"}
             label={t("form_label_lat")}
@@ -480,7 +543,7 @@ const AddListingAttrType = ({
             value={listingAttrType?.latitude}
             name="tourLink"
             onChange={handleChange}
-          />
+          /> */}
         </Box>
         <Box
           sx={{
@@ -495,7 +558,7 @@ const AddListingAttrType = ({
             },
           }}
         >
-          <Select
+          {/* <Select
             id="listing_attribute_id"
             value={{
               value: listingAttrType?.listing_attribute_id,
@@ -520,38 +583,45 @@ const AddListingAttrType = ({
             placeholder={t("label_list_attr")}
             menuPortalTarget={document.body}
             styles={selectStyles(currentMode, primaryColor)}
-          />
-          <TextField
-            id="price"
-            type={"text"}
-            label={t("label_price")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
-            value={listingAttrType?.price}
-            name="projectLocation"
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            id="near_by"
-            type={"text"}
-            label={t("label_nearby")}
-            className="w-full"
-            sx={{
-              marginBottom: "20px !important",
-            }}
-            variant="outlined"
-            size="small"
-            value={listingAttrType?.near_by}
-            name="area"
-            onChange={handleChange}
-            required
-          />
-          <TextField
+          /> */}
+          <div className="grid grid-cols-3">
+            <Select
+              id="currency_type"
+              options={currencies(t)?.map((curr) => ({
+                value: curr.value,
+                label: curr.label,
+              }))}
+              value={currencies(t)?.filter(
+                (curr) => curr?.value === listingAttrType?.currency_type
+              )}
+              onChange={(e) => {
+                setListingAttrType({
+                  ...listingAttrType,
+                  currency_type: e.value,
+                });
+              }}
+              placeholder={t("label_currency")}
+              menuPortalTarget={document.body}
+              styles={selectStyles(currentMode, primaryColor)}
+            />
+            <TextField
+              id="price"
+              type={"text"}
+              label={t("label_price")}
+              className="w-full"
+              sx={{
+                marginBottom: "20px !important",
+              }}
+              variant="outlined"
+              size="small"
+              value={listingAttrType?.price}
+              name="projectLocation"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* <TextField
             id="longitude"
             type={"text"}
             label={t("form_label_long")}
@@ -565,30 +635,7 @@ const AddListingAttrType = ({
             name="area"
             onChange={handleChange}
             required
-          />
-
-          <Button
-            className={`min-w-fit text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
-            ripple={true}
-            style={{
-              fontFamily: fontFam,
-              background: `${primaryColor}`,
-            }}
-            size="lg"
-            type="submit"
-            disabled={btnLoading ? true : false}
-            onClick={AddListAttrType}
-          >
-            {btnLoading ? (
-              <CircularProgress
-                size={20}
-                sx={{ color: "white" }}
-                className="text-white"
-              />
-            ) : (
-              <span className="text-white">{t("submit")}</span>
-            )}
-          </Button>
+          /> */}
         </Box>
 
         {deleteDialogue && (
@@ -668,7 +715,42 @@ const AddListingAttrType = ({
           </>
         )}
       </div>
-      <div className=" mt-5">
+      <Box sx={darkModeColors} className="w-full grid grid-cols-1 gap-5 my-5">
+        <ListingLocation
+          listingLocation={listingLocation}
+          currLocByDefault={true}
+          setListingLocation={setListingLocation}
+          city={city}
+          setCity={setCity}
+          country={country}
+          setCountry={setCountry}
+          required
+        />
+      </Box>
+
+      <Button
+        className={`min-w-fit text-center text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}
+        ripple={true}
+        style={{
+          fontFamily: fontFam,
+          background: `${primaryColor}`,
+        }}
+        size="lg"
+        type="submit"
+        disabled={btnLoading ? true : false}
+        onClick={AddListAttrType}
+      >
+        {btnLoading ? (
+          <CircularProgress
+            size={20}
+            sx={{ color: "white" }}
+            className="text-white"
+          />
+        ) : (
+          <span className="text-white">{t("submit")}</span>
+        )}
+      </Button>
+      {/* <div className=" mt-5">
         <ListingDataGrid
           data={data}
           setData={setData}
@@ -683,7 +765,7 @@ const AddListingAttrType = ({
           setPage={setPage}
           setPageSize={setPageSize}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

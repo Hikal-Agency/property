@@ -21,7 +21,7 @@ import Livelocation from "./location/livelocation";
 import ChangePassword from "./auth/ChangePassword";
 import { useJsApiLoader } from "@react-google-maps/api";
 // import TemplatesList from "./editor/TemplatesList";
-// import FormsList from "./editor/FormsList";
+import FormsList from "./editor/FormsList";
 import TemplatesList from "./editor/TemplatesList";
 import Users from "./users";
 import Offers from "./offers";
@@ -31,7 +31,6 @@ import Clients from "./clients";
 import AgencyUsers from "./clients/agencyUser";
 import Leaderboard from "./leaderboard";
 import { useStateContext } from "../context/ContextProvider";
-
 import Tour360 from "./propertyPortfolio/tour360";
 import PropertyPortfolio from "./propertyPortfolio";
 import ActivityLog from "./activity";
@@ -97,6 +96,9 @@ import MyOrders from "./officeBoy/MyOrders";
 import LiveReminderNotifications, {
   LiveMeetingNotifications,
 } from "../Components/dashboard/LiveReminderNotifications";
+
+// import FieldCustomization from "./fieldCustomizations";
+import Form from "./editor/Form";
 
 const libraries = ["places"];
 
@@ -566,9 +568,13 @@ const routes = [
     path: "*",
     element: <Error />,
   },
+  {
+    path: "/forms",
+    element: <FormsList />,
+  },
   // {
-  //   path: "/forms",
-  //   element: <FormsList />,
+  //   path: "/fieldCustomizations",
+  //   element: <FieldCustomization />,
   // },
 ];
 //no comments
@@ -616,12 +622,14 @@ function App() {
     const pathname = location.pathname;
     if (
       pathname === "/" ||
+      pathname == "/twostepverification" ||
       // pathname === "/auth/signup" ||
       pathname === "/callLogs" ||
       pathname === "/attendance" ||
       pathname === "/fresh-logs" ||
       pathname === "/attendanceLogin" ||
-      pathname.startsWith("/invite")
+      pathname.startsWith("/invite") ||
+      /^\/forms\/[^\/]+$/.test(pathname)
     ) {
       return false;
     } else {
@@ -652,12 +660,14 @@ function App() {
                 <Navbar />
               </div>
             )}
+
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/attendance" element={<RegisterAttendance />} />
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
               <Route path="/invite/:meetingID" element={<MeetInvite />} />
+              <Route path="/forms/:formID" element={<Form />} />
               {routes.map((route, index) => {
                 return (
                   <Route
