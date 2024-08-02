@@ -182,7 +182,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
       component: FullName,
       label: t("form_developer_fullName"),
       placeholder: t("form_developer_fullName"),
-      queryKey: "full_name",
+      queryKey: "leadName",
       width: "100",
       shortLabel: "",
       required: false,
@@ -226,7 +226,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
       component: Phone,
       label: t("label_phone"),
       placeholder: t("label_phone"),
-      queryKey: "phone",
+      queryKey: "leadContact",
       width: "100",
       shortLabel: "",
       required: false,
@@ -237,7 +237,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
       component: Email,
       label: t("support_via_email"),
       placeholder: t("support_via_email"),
-      queryKey: "email",
+      queryKey: "leadEmail",
       width: "100",
       shortLabel: "",
       required: false,
@@ -568,7 +568,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                       text={comp?.text}
                       float={comp?.float}
                       isDevelopment={true}
-                      value={comp.hidden && comp.value}
+                      value={comp.hidden ? comp.value : ""}
                       onChange={(query, value) => {
                         if (comp.hidden) {
                           elementParamsChangeHandler(value, "value");
@@ -727,11 +727,11 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                                 "queryKey"
                               )
                             }
-                            // disabled={
-                            //   droppedComponents[selectedComponent]?.queryKey ==
-                            //   "upload"
-                            // }
-                            disabled={true}
+                            disabled={
+                              droppedComponents[selectedComponent]?.queryKey ==
+                              "upload"
+                            }
+                            // disabled={true}
                             className="focus:outline-none border w-full text-[12px] p-3 rounded-lg bg-transparent"
                           />
                         </div>
@@ -840,6 +840,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                               e?.target?.checked,
                               "hidden"
                             );
+                            elementParamsChangeHandler("", "value");
                           }}
                         />{" "}
                         <label htmlFor="">{t("hidden")}</label>
