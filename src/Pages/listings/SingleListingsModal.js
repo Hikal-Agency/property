@@ -33,6 +33,7 @@ const SingleListingsModal = ({
   handleCloseSingleListingModel,
   singleListingModelOpen,
 }) => {
+  console.log("single listing Data:: ", ListingData);
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
   const [openEdit, setOpenEdit] = useState(false);
@@ -64,7 +65,7 @@ const SingleListingsModal = ({
     isLangRTL,
     i18n,
     User,
-    t
+    t,
   } = useStateContext();
 
   const handleEdit = () => {
@@ -95,7 +96,7 @@ const SingleListingsModal = ({
     try {
       setloading(true);
       const token = localStorage.getItem("auth-token");
-      const listing = await axios.get(`${BACKEND_URL}/listings?id=${lid}`, {
+      const listing = await axios.get(`${BACKEND_URL}/new-listings/${lid}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -103,7 +104,7 @@ const SingleListingsModal = ({
       });
 
       console.log("SINGLE Listings: ", listing);
-      setListingData(listing?.data?.data?.data[0]);
+      setListingData(listing?.data?.data);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -209,7 +210,10 @@ const SingleListingsModal = ({
                 ? "bg-[#1C1C1C] text-white"
                 : "bg-[#FFFFFF] text-black"
             } ${
-              currentMode === "dark" && (isLangRTL(i18n.language) ? "border-primary border-r-2" : "border-primary border-l-2")
+              currentMode === "dark" &&
+              (isLangRTL(i18n.language)
+                ? "border-primary border-r-2"
+                : "border-primary border-l-2")
             }
               p-4 h-[100vh] w-[80vw] overflow-y-scroll
               `}
@@ -224,35 +228,38 @@ const SingleListingsModal = ({
                   <div className="w-full">
                     {/* IMAGES  */}
                     <div className="w-full flex items-center gap-x-1 mb-3 overflow-x-scroll">
-                      {listData?.images?.map((pic) =>
-                        pic?.img_url ? (
-                          <img
-                            onClick={() =>
-                              setSingleImageModal({
-                                isOpen: true,
-                                url: pic?.img_url,
-                                id: pic?.id,
-                                listingId: listData?.id,
-                              })
-                            }
-                            src={pic?.img_url}
-                            alt={pic?.img_alt}
-                            className="w-auto h-[200px] object-cover m-1 rounded-md"
-                          />
-                        ) : (
-                          <></>
-                        )
+                      {listData?.meta_tags_for_listings?.additional_gallery?.map(
+                        (pic) =>
+                          pic?.img_url ? (
+                            <img
+                              onClick={() =>
+                                setSingleImageModal({
+                                  isOpen: true,
+                                  url: pic?.img_url,
+                                  id: pic?.id,
+                                  listingId: listData?.id,
+                                })
+                              }
+                              src={pic?.img_url}
+                              alt={pic?.img_alt}
+                              className="w-auto h-[200px] object-cover m-1 rounded-md"
+                            />
+                          ) : (
+                            <></>
+                          )
                       )}
                     </div>
 
-                    <div
-                      className={`w-full py-5`}
-                    >
+                    <div className={`w-full py-5`}>
                       <div className="grid sm:grid-cols-1 md:grid-cols-2">
                         <div className="w-full p-1">
                           <div className="flex items-center">
-                            <div className={`bg-primary rounded-md text-white p-2 ${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} font-semibold`}>
-                              {listData?.price}
+                            <div
+                              className={`bg-primary rounded-md text-white p-2 ${
+                                isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                              } font-semibold`}
+                            >
+                              {listData?.listing_attribute_type?.price}
                             </div>
                             <h1
                               className={`text-lg font-bold mx-2 ${
@@ -315,11 +322,11 @@ const SingleListingsModal = ({
                             <div className="mx-1"></div>
 
                             <div className="border border-primary p-2 font-semibold rounded-md shadow-sm">
-                              {listData?.listing_type === "Off-plan" 
-                              ? t("category_off_plan") 
-                              : listData?.listing_type === "Secondary"
-                              ? t("category_secondary")
-                              : listData?.listing_type}
+                              {listData?.listing_type === "Off-plan"
+                                ? t("category_off_plan")
+                                : listData?.listing_type === "Secondary"
+                                ? t("category_secondary")
+                                : listData?.listing_type}
                             </div>
                           </div>
                         </div>
@@ -449,13 +456,15 @@ const SingleListingsModal = ({
                     {(listData?.addedBy === User?.id ||
                       hasPermission("seller_details") ||
                       User.role === 1) && (
-                      <div
-                        className={`w-full py-5`}
-                      >
+                      <div className={`w-full py-5`}>
                         <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5">
                           <div className="sm:col-span-1 md:col-span-3 lg:col-span-2">
                             <div className="w-full flex items-center pb-3">
-                              <div className={`bg-primary h-10 w-1 rounded-full ${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} my-1`}></div>
+                              <div
+                                className={`bg-primary h-10 w-1 rounded-full ${
+                                  isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                                } my-1`}
+                              ></div>
                               <h1
                                 className={`text-lg font-semibold ${
                                   currentMode === "dark"
@@ -519,7 +528,11 @@ const SingleListingsModal = ({
                               } rounded-xl shadow-sm p-4`}
                             >
                               <div className="w-full flex items-center pb-3">
-                                <div className={`bg-primary h-10 w-1 rounded-full ${isLangRTL(i18n.language) ? "ml-2" : "mr-2"} my-1`}></div>
+                                <div
+                                  className={`bg-primary h-10 w-1 rounded-full ${
+                                    isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                                  } my-1`}
+                                ></div>
                                 <h1
                                   className={`text-lg font-semibold ${
                                     currentMode === "dark"

@@ -19,7 +19,6 @@ import { IoIosAlert } from "react-icons/io";
 import usePermission from "../../utils/usePermission";
 import SingleListingsModal from "../../Pages/listings/SingleListingsModal";
 
-
 const SecondaryListings = ({
   lastPage,
   listing,
@@ -32,26 +31,22 @@ const SecondaryListings = ({
   setLoading,
 }) => {
   console.log("loading status: ", loading);
-  const { 
-    currentMode, 
-    BACKEND_URL, 
-    t, 
-    themeBgImg,
-    isLangRTL,
-    i18n 
-  } = useStateContext();
+  console.log("listing:: ", listing);
+  const { currentMode, BACKEND_URL, t, themeBgImg, isLangRTL, i18n } =
+    useStateContext();
   const { hasPermission } = usePermission();
   const static_img = "assets/no-image.png";
   const hikalre = "fullLogoRE.png";
   const hikalrewhite = "fullLogoREWhite.png";
   const token = localStorage.getItem("auth-token");
 
-
   const [showOverlay, setShowOverlay] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
   const [openDialogue, setOpenDialogue] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const handleCloseModal = () => setOpenDialogue(false);
+
+  console.log("delte data: ", setOpenDialogue);
 
   const style = {
     transform: "translate(-50%, -50%)",
@@ -74,12 +69,15 @@ const SecondaryListings = ({
     e.preventDefault();
     setBtnLoading(true);
     try {
-      const deleteList = await axios.delete(`${BACKEND_URL}/listings/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const deleteList = await axios.delete(
+        `${BACKEND_URL}/new-listings/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
       console.log("list deleted: ", deleteList);
       toast.success("List deleted successfully.", {
         position: "top-right",
@@ -150,7 +148,6 @@ const SecondaryListings = ({
   return (
     <div className="relative">
       <Box className="p-0">
-
         {loading ? (
           <div className="flex col-span-3 justify-center items-center h-[500px] w-full">
             <CircularProgress />
@@ -164,23 +161,26 @@ const SecondaryListings = ({
                   className={`card-hover relative overflow-hidden offers-page-${
                     listing?.page
                   } ${
-                    !themeBgImg ? (currentMode === "dark"
-                      ? "bg-[#1C1C1C] text-white"
-                      : "bg-[#EEEEEE] text-black")
-                    : (currentMode === "dark"
+                    !themeBgImg
+                      ? currentMode === "dark"
+                        ? "bg-[#1C1C1C] text-white"
+                        : "bg-[#EEEEEE] text-black"
+                      : currentMode === "dark"
                       ? "blur-bg-dark text-white"
-                      : "blur-bg-light text-black")
+                      : "blur-bg-light text-black"
                   } rounded-lg`}
                 >
                   <div className="rounded-md flex flex-col justify-between">
                     <div className="">
-                      {listing?.images.length > 0 ? (
+                      {listing?.meta_tags_for_listings?.banner ? (
                         <img
-                          src={listing?.images[0]?.img_url}
+                          src={listing?.meta_tags_for_listings?.banner}
                           alt="secondary"
                           className="w-full h-[200px] object-cover"
                           onClick={() =>
-                            handleImageClick(listing?.images[0]?.img_url)
+                            handleImageClick(
+                              listing?.meta_tags_for_listings?.banner
+                            )
                           }
                         />
                       ) : (
@@ -192,13 +192,16 @@ const SecondaryListings = ({
                       )}
 
                       <div
-                        className={`absolute top-0 ${isLangRTL(i18n.language) ? "left-0" : "right-0"} p-2`}
+                        className={`absolute top-0 ${
+                          isLangRTL(i18n.language) ? "left-0" : "right-0"
+                        } p-2`}
                       >
                         <div className="flex flex-col gap-2">
                           <Tooltip title="View Property" arrow>
-                            <button 
+                            <button
                               onClick={() => HandleSingleListing(listing?.id)}
-                              className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full">
+                              className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
+                            >
                               <BsListStars size={16} color={"#FFFFFF"} />
                             </button>
                           </Tooltip>
@@ -210,7 +213,7 @@ const SecondaryListings = ({
                                   handleOpenDialogue(
                                     e,
                                     listing?.id,
-                                    listing?.project
+                                    listing?.title
                                   )
                                 }
                               >
@@ -221,7 +224,9 @@ const SecondaryListings = ({
                         </div>
                       </div>
                       <div
-                        className={`absolute top-[200px] ${isLangRTL(i18n.language) ? "left-0" : "right-0"} p-2 rounded-b-full`}
+                        className={`absolute top-[200px] ${
+                          isLangRTL(i18n.language) ? "left-0" : "right-0"
+                        } p-2 rounded-b-full`}
                       >
                         <img
                           src={currentMode === "dark" ? hikalrewhite : hikalre}
@@ -230,7 +235,7 @@ const SecondaryListings = ({
                         />
                       </div>
                     </div>
-                    <div 
+                    <div
                       onClick={() => HandleSingleListing(listing?.id)}
                       className="px-5 py-3"
                     >
@@ -242,8 +247,15 @@ const SecondaryListings = ({
                         } my-2 flex justify-between `}
                         style={{ textTransform: "capitalize" }}
                       >
-                        <span className={`text-lg p-1 rounded-md font-bold ${!themeBgImg ? "text-primary" : "bg-primary text-white"}`}>
-                          {listing?.price || t("label_unavailable")}
+                        <span
+                          className={`text-lg p-1 rounded-md font-bold ${
+                            !themeBgImg
+                              ? "text-primary"
+                              : "bg-primary text-white"
+                          }`}
+                        >
+                          {listing?.listing_attribute_type?.price ||
+                            t("label_unavailable")}
                         </span>
                       </h1>
                       <div
@@ -253,7 +265,8 @@ const SecondaryListings = ({
                             : "text-[#000000]"
                         }  my-2 font-semibold`}
                       >
-                        {listing?.project || `${t("label_project")} ${t("unknown")}`}
+                        {listing?.title ||
+                          `${t("label_project")} ${t("unknown")}`}
                       </div>
                       <div
                         className={`${
@@ -262,40 +275,54 @@ const SecondaryListings = ({
                             : "text-[#000000]"
                         }  my-2`}
                       >
-                        {listing?.address || `${t("label_area")} ${t("unknown")}`}
+                        {`${t("label_area")} ${
+                          listing?.listing_attribute?.area
+                        }` || `${t("label_area")} ${t("unknown")}`}
                       </div>
 
                       <div className="my-2">
                         <div className="flex gap-2 items-center">
-                          <BiBed className={`${
-                            !themeBgImg ? "text-[#AAAAAA]"
-                            : (currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#333333]")
-                            }`} size={20} />
+                          <BiBed
+                            className={`${
+                              !themeBgImg
+                                ? "text-[#AAAAAA]"
+                                : currentMode === "dark"
+                                ? "text-[#CCCCCC]"
+                                : "text-[#333333]"
+                            }`}
+                            size={20}
+                          />
                           <p className="text-start">
                             <span>
-                              {listing?.bedrooms === "null"
+                              {listing?.listing_attribute?.bedroom === "null"
                                 ? "-"
-                                : listing?.bedrooms}
+                                : listing?.listing_attribute?.bedroom}
                             </span>{" "}
                             <span>
-                              {listing?.property_type === "null"
+                              {listing?.listing_type?.name === "null"
                                 ? "-"
-                                : listing?.property_type}
+                                : listing?.listing_type?.name}
                             </span>
                           </p>
                         </div>
                       </div>
                       <div className="my-2 w-full flex items-center justify-between">
                         <div className="flex gap-2 items-center">
-                          <BiBath className={`${
-                            !themeBgImg ? "text-[#AAAAAA]"
-                            : (currentMode === "dark" ? "text-[#CCCCCC]" : "text-[#333333]")
-                            }`} size={20} />
+                          <BiBath
+                            className={`${
+                              !themeBgImg
+                                ? "text-[#AAAAAA]"
+                                : currentMode === "dark"
+                                ? "text-[#CCCCCC]"
+                                : "text-[#333333]"
+                            }`}
+                            size={20}
+                          />
                           <p className="text-start">
                             <span>
-                              {listing?.bathrooms === "null"
+                              {listing?.listing_attribute?.bathroom === "null"
                                 ? "-"
-                                : listing?.bathrooms}
+                                : listing?.listing_attribute?.bathroom}
                             </span>
                           </p>
                         </div>
@@ -320,7 +347,7 @@ const SecondaryListings = ({
             <Button
               disabled={btnloading}
               onClick={() => setCurrentPage((page) => page + 1)}
-              variant="contained" 
+              variant="contained"
               color="error"
             >
               {btnloading ? (
@@ -403,7 +430,9 @@ const SecondaryListings = ({
         {singleListingModelOpen && (
           <SingleListingsModal
             singleListingModelOpen={singleListingModelOpen}
-            handleCloseSingleListingModel={() => setSingleListingModelOpen(false)}
+            handleCloseSingleListingModel={() =>
+              setSingleListingModelOpen(false)
+            }
             ListingData={singleListingData}
           />
         )}
