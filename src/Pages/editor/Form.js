@@ -127,15 +127,15 @@ const Form = () => {
 
     console.log("formData", formData);
     let token = localStorage?.getItem("auth-token");
-    const formDataArray = Object.entries(subFormData).map(([key, value]) => {
-      return { [key]: value };
-    });
+    // const formDataArray = Object.entries(subFormData).map(([key, value]) => {
+    //   return { [key]: value };
+    // });
     // let payload = {
     //   form_id: formID,
     //   data: formDataArray,
     // };
     const formDataSub = new FormData();
-    const jsonFormData = JSON.stringify(formDataArray);
+    const jsonFormData = JSON.stringify([subFormData]);
     formDataSub?.append("form_id", formID);
     formDataSub?.append("data", jsonFormData);
     if (image) {

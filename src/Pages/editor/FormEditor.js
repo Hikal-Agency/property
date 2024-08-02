@@ -91,6 +91,7 @@ const FormEditor = ({
 
   useEffect(() => {
     if (formEdit?.fields?.length > 0) {
+      console.log(formEdit, "formEdit");
       const formEditFieldsR = formEdit?.fields?.map((field) => {
         const newField = { ...field };
         newField.component = components[field?.component];
