@@ -25,6 +25,7 @@ const AddListingMeta = ({
   setLoading,
   listingIds,
   setListingIDs,
+  handleNext,
 }) => {
   const {
     darkModeColors,
@@ -172,6 +173,7 @@ const AddListingMeta = ({
           banner: "",
           additional_gallery: [],
         });
+        handleNext();
       })
       .catch((err) => {
         console.error(err);
@@ -206,9 +208,9 @@ const AddListingMeta = ({
       });
   };
 
-  useEffect(() => {
-    fetchListings();
-  }, []);
+  // useEffect(() => {
+  //   fetchListings();
+  // }, []);
 
   return (
     <div className="my-4">

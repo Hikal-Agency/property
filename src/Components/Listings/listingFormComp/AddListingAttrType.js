@@ -33,6 +33,7 @@ const AddListingAttrType = ({
   FetchData,
   listingIds,
   setListingIDs,
+  handleNext,
 }) => {
   const {
     darkModeColors,
@@ -153,7 +154,7 @@ const AddListingAttrType = ({
           latitude: "",
           longitude: "",
         });
-        // FetchData();
+        handleNext();
       })
       .catch((err) => {
         console.error(err);

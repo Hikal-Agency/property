@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import axios from "../../../axoisConfig";
 import { listing_status } from "../../_elements/SelectOptions";
 
-const Addlisting = ({ data, listingIds, setListingIDs }) => {
+const Addlisting = ({ data, listingIds, setListingIDs, handleNext }) => {
   const {
     darkModeColors,
     currentMode,
@@ -200,6 +200,7 @@ const Addlisting = ({ data, listingIds, setListingIDs }) => {
           short_description: "",
           status: "",
         });
+        handleNext();
       })
       .catch((err) => {
         console.error(err);

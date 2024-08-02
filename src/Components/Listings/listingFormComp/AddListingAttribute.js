@@ -39,6 +39,7 @@ const AddListingAttribute = ({
   FetchData,
   listingIds,
   setListingIDs,
+  handleNext,
 }) => {
   const {
     darkModeColors,
@@ -388,6 +389,7 @@ const AddListingAttribute = ({
           // gallery: "",
         });
         // FetchData();
+        handleNext();
       })
       .catch((err) => {
         console.error(err);

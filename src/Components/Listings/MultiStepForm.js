@@ -280,7 +280,8 @@ export default function MultiStepForm() {
               color: currentMode === "dark" ? "text-white" : "text-black",
             }}
           >
-            All steps completed - you&apos;re finished
+            New List added successfully. Click on reset button to add a new
+            listing.
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Box sx={{ flex: "1 1 auto" }} />
@@ -321,6 +322,7 @@ export default function MultiStepForm() {
               FetchData={FetchData}
               listingIds={listingIds}
               setListingIDs={setListingIDs}
+              handleNext={handleNext}
             />
           )}
           {activeStep === 1 && (
@@ -340,6 +342,7 @@ export default function MultiStepForm() {
               FetchData={FetchData}
               listingIds={listingIds}
               setListingIDs={setListingIDs}
+              handleNext={handleNext}
             />
           )}
           {activeStep === 2 && (
@@ -347,12 +350,14 @@ export default function MultiStepForm() {
               data={data}
               listingIds={listingIds}
               setListingIDs={setListingIDs}
+              handleNext={handleNext}
             />
           )}
           {activeStep === 3 && (
             <AddListingMeta
               listingIds={listingIds}
               setListingIDs={setListingIDs}
+              handleNext={handleNext}
             />
           )}
           {/* {activeStep === 4 && } */}
