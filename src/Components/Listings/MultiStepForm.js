@@ -68,9 +68,7 @@ export default function MultiStepForm() {
         // ? "list_attr_type"
         null;
 
-  const isStepOptional = (step) => {
-    return step === 1;
-  };
+  const isStepOptional = (step) => {};
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -237,7 +235,7 @@ export default function MultiStepForm() {
               <Typography
                 variant="caption"
                 className={`${
-                  currentMode === "dark" ? "text-whtie" : "text-black"
+                  currentMode === "dark" ? "text-white" : "text-black"
                 }`}
               >
                 Optional
@@ -252,10 +250,21 @@ export default function MultiStepForm() {
               <StepLabel
                 {...labelProps}
                 sx={{
-                  color: currentMode === "dark" ? "text-white" : "text-black",
+                  "& .css-1hv8oq8-MuiStepLabel-label .Mui-active": {
+                    color:
+                      currentMode === "dark "
+                        ? "text-white !important"
+                        : "text-black !important",
+                  },
                 }}
               >
-                {label}
+                <span
+                  className={`${
+                    currentMode === "dark" ? "text-white" : "text-dark"
+                  }`}
+                >
+                  {label}
+                </span>
               </StepLabel>
             </Step>
           );
@@ -263,7 +272,14 @@ export default function MultiStepForm() {
       </Stepper>
       {activeStep === steps.length ? (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
+          <Typography
+            sx={{
+              mt: 2,
+              mb: 1,
+
+              color: currentMode === "dark" ? "text-white" : "text-black",
+            }}
+          >
             All steps completed - you&apos;re finished
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
