@@ -46,6 +46,8 @@ const SecondaryListings = ({
   const [btnLoading, setBtnLoading] = useState(false);
   const handleCloseModal = () => setOpenDialogue(false);
 
+  console.log("delte data: ", setOpenDialogue);
+
   const style = {
     transform: "translate(-50%, -50%)",
     boxShadow: 24,
@@ -211,7 +213,7 @@ const SecondaryListings = ({
                                   handleOpenDialogue(
                                     e,
                                     listing?.id,
-                                    listing?.project
+                                    listing?.title
                                   )
                                 }
                               >

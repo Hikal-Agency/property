@@ -162,8 +162,8 @@ const Listings = () => {
         });
       }
       setLoading(false);
-      setLastPage(all_listings?.data?.last_page);
-      setTotal(all_listings?.data?.data?.total);
+      setLastPage(all_listings?.data?.pagination?.last_page);
+      setTotal(all_listings?.data?.pagination?.total);
       setbtnloading(false);
     } catch (error) {
       console.log("listings not fetched. ", error);
