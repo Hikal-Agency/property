@@ -84,7 +84,7 @@ const LanguageDetectModal = ({
     >
       <div
         style={style}
-        className={`w-[calc(30%-20px)] md:w-[30%]  ${
+        className={`w-[calc(100%-20px)] md:w-[30%]  ${
           // currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
           currentMode === "dark"
             ? "bg-dark-neu text-white"

@@ -37,6 +37,7 @@ import {
   Source,
   TandC,
   HTMLBlock,
+  RadioBtn,
 } from "../../Components/editorComp/FormEditorComponents/QuickAddComponents.js";
 import FormSavingModal from "../../Components/editorComp/FormSavingModal.js";
 import FormIntegrateModal from "../../Components/editorComp/IntegrateModal.js";
@@ -61,6 +62,7 @@ const components = {
   Source,
   TandC,
   HTMLBlock,
+  RadioBtn,
 };
 const FormEditor = ({
   setFormEditor,

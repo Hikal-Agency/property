@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import {
+  Backdrop,
+  Modal,
+  // Select,
+} from "@mui/material";
 // import axios from "../../axoisConfig.js";
 import axios from "axios";
 import { useStateContext } from "../../context/ContextProvider";
@@ -25,6 +30,7 @@ import {
   Source,
   TandC,
   HTMLBlock,
+  RadioBtn,
 } from "../../Components/editorComp/FormEditorComponents/QuickAddComponents.js/index.js";
 import Loader from "../../Components/Loader";
 const components = {
@@ -48,9 +54,10 @@ const components = {
   Source,
   TandC,
   HTMLBlock,
+  RadioBtn,
 };
 const Form = () => {
-  const { formID } = useParams();
+  const { formID, formMethod } = useParams();
   const [form, setForm] = useState({});
   const { BACKEND_URL, themeBgImg, currentMode } = useStateContext();
   const [formData, setFormData] = useState({});
@@ -206,9 +213,90 @@ const Form = () => {
       [name]: value,
     }));
   };
-
+  const style = {
+    transform: "translate(-50%, -50%)",
+    boxShadow: 24,
+  };
+  console.log(form, "data in form");
   return loading ? (
     <Loader />
+  ) : formMethod == "popup" ? (
+    <Modal
+      keepMounted
+      open={true}
+      // onClose={() => setLanguageModal(false)}
+      aria-labelledby="keep-mounted-modal-title"
+      aria-describedby="keep-mounted-modal-description"
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500,
+      }}
+    >
+      <div
+        style={style}
+        className={`w-[calc(100%-20px)] md:w-[30%]  ${
+          // currentMode === "dark" ? "bg-[#1c1c1c]" : "bg-white"
+          currentMode === "dark"
+            ? "bg-dark-neu text-white"
+            : "bg-light text-black"
+        } absolute top-1/2 left-1/2 p-5 rounded-md`}
+      >
+        <div className="w-full min-h-[100vh] flex items-center justify-center pb-8">
+          <div
+            className="w-[40%] h-full pt-5 "
+            style={{ boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}
+          >
+            {/* <h1 className="text-[22px] text-center text-gray-700 font-semibold mb-11">
+          {form?.name}
+        </h1> */}
+            <div className="flex flex-col gap-4">
+              <form
+                onSubmit={submitFormHandler}
+                className={`${
+                  themeBgImg
+                    ? currentMode === "dark"
+                      ? "blur-bg-dark shadow-sm text-white"
+                      : ""
+                    : currentMode === "dark"
+                    ? "bg-dark-neu text-white"
+                    : ""
+                } !rounded-none p-10 h-full flex flex-col gap-4`}
+              >
+                {form?.fields?.map((comp, index) => {
+                  if (comp.hidden) {
+                    return null;
+                  }
+                  const Component = components[comp?.component];
+                  return (
+                    <Component
+                      label={comp?.label}
+                      shortLabel={comp?.shortLabel}
+                      placeholder={comp?.placeholder}
+                      queryKey={comp?.queryKey}
+                      width={comp?.width}
+                      url={comp?.url}
+                      required={comp?.required}
+                      text={comp?.text}
+                      htmlContent={comp?.html}
+                      isDevelopment={false}
+                      options={comp?.options}
+                      onChange={
+                        (comp?.type == "field" ||
+                          comp?.type == "upload" ||
+                          comp?.type == "captcha" ||
+                          comp?.type == "radio") &&
+                        handleInputChange
+                      }
+                    />
+                  );
+                })}
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Modal>
   ) : (
     <div className="w-full min-h-[100vh] flex items-center justify-center pb-8">
       <div
@@ -248,10 +336,12 @@ const Form = () => {
                   text={comp?.text}
                   htmlContent={comp?.html}
                   isDevelopment={false}
+                  options={comp?.options}
                   onChange={
                     (comp?.type == "field" ||
                       comp?.type == "upload" ||
-                      comp?.type == "captcha") &&
+                      comp?.type == "captcha" ||
+                      comp?.type == "radio") &&
                     handleInputChange
                   }
                 />

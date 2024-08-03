@@ -7,6 +7,8 @@ import {
   Modal,
   TextField,
 } from "@mui/material";
+import { Select } from "react-select";
+import { IoMdClose } from "react-icons/io";
 import DragItem from "./DragItem.js";
 import { Button } from "@material-tailwind/react";
 import { MdOutlineClose } from "react-icons/md";
@@ -29,7 +31,9 @@ import { GrGlobe, GrResources } from "react-icons/gr";
 import { CgWebsite } from "react-icons/cg";
 import { GoOrganization } from "react-icons/go";
 import { IoCodeSlash, IoImageOutline } from "react-icons/io5";
+import { IoMdRadioButtonOn } from "react-icons/io";
 import captchaIcon from "./FormEditorComponents/assets/captcha.png";
+import { renderStyles } from "../_elements/SelectStyles.jsx";
 import {
   DateOfBirth,
   Email,
@@ -51,6 +55,7 @@ import {
   Source,
   TandC,
   HTMLBlock,
+  RadioBtn,
 } from "./FormEditorComponents/QuickAddComponents.js";
 const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
   const {
@@ -173,6 +178,11 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
         icon: <FaWpforms size={16} />,
         label: "T & C",
         id: 20,
+      },
+      {
+        icon: <IoMdRadioButtonOn size={16} />,
+        label: "Radio Button",
+        id: 21,
       },
     ],
   });
@@ -384,11 +394,34 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
       required: false,
       type: "field",
     },
+    {
+      id: 21,
+      component: RadioBtn,
+      label: "Select Option",
+      queryKey: "option",
+      width: "100",
+      shortLabel: "",
+      required: false,
+      type: "radio",
+      options: [
+        {
+          label: "option 1",
+          value: "option_1",
+        },
+        {
+          label: "option 2",
+          value: "option_2",
+        },
+      ],
+    },
   ]);
   const [selectedComponent, setSelectedComponent] = useState(-1);
   const [isExpandedComponents, setIsExpandedComponents] = useState(false);
   const [isExpandedFieldControls, setIsExpandedFieldControls] = useState(false);
-
+  const [radioOption, setRadioOption] = useState({
+    label: "",
+    value: "",
+  });
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "component",
     drop: (item) => handleDragEnd(item.id),
@@ -578,6 +611,7 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                         elementParamsChangeHandler(html, "html")
                       }
                       htmlContent={comp?.html}
+                      options={comp?.options}
                     />
                   </div>
                 </DragItem>
@@ -665,29 +699,38 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                         className="focus:outline-none border w-full text-[12px] p-3 rounded-lg bg-transparent"
                       />
                     </div>
-                    {droppedComponents[selectedComponent]?.type == "field" && (
+                    {(droppedComponents[selectedComponent]?.type == "field" ||
+                      droppedComponents[selectedComponent]?.type ==
+                        "radio") && (
                       <>
-                        <div className="flex flex-col gap-3">
-                          <label htmlFor="" className="text-[12px] font-medium">
-                            {t("placeholder")}
-                          </label>
-                          <input
-                            type="text"
-                            name=""
-                            placeholder="Enter placeholder for input field"
-                            value={
-                              droppedComponents[selectedComponent]?.placeholder
-                            }
-                            onChange={(e) =>
-                              elementParamsChangeHandler(
-                                e?.target?.value,
-                                "placeholder"
-                              )
-                            }
-                            id=""
-                            className="focus:outline-none border w-full text-[12px] p-3 rounded-lg bg-transparent"
-                          />
-                        </div>
+                        {droppedComponents[selectedComponent]?.type !=
+                          "radio" && (
+                          <div className="flex flex-col gap-3">
+                            <label
+                              htmlFor=""
+                              className="text-[12px] font-medium"
+                            >
+                              {t("placeholder")}
+                            </label>
+                            <input
+                              type="text"
+                              name=""
+                              placeholder="Enter placeholder for input field"
+                              value={
+                                droppedComponents[selectedComponent]
+                                  ?.placeholder
+                              }
+                              onChange={(e) =>
+                                elementParamsChangeHandler(
+                                  e?.target?.value,
+                                  "placeholder"
+                                )
+                              }
+                              id=""
+                              className="focus:outline-none border w-full text-[12px] p-3 rounded-lg bg-transparent"
+                            />
+                          </div>
+                        )}
                         <div className="flex flex-col gap-3">
                           <label htmlFor="" className="text-[12px] font-medium">
                             {t("short")} {t("label")}
@@ -736,6 +779,94 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                           />
                         </div>
                       </>
+                    )}
+                    {droppedComponents[selectedComponent].type == "radio" && (
+                      <div className="flex flex-col gap-3">
+                        <label htmlFor="" className="text-[12px] font-medium">
+                          {t("options")}
+                        </label>
+                        <div className="flex border rounded-lg flex-col py-2">
+                          <div className="flex">
+                            <input
+                              className="focus:outline-none border text-[12px] p-2 rounded-lg bg-transparent mx-1 w-[40%]"
+                              type="text"
+                              placeholder="label"
+                              onChange={(e) => {
+                                setRadioOption((pre) => ({
+                                  ...pre,
+                                  label: e?.target?.value,
+                                }));
+                              }}
+                              value={radioOption?.label}
+                            />
+                            <input
+                              className="focus:outline-none border text-[12px] p-2 rounded-lg bg-transparent mx-1 w-[40%]"
+                              type="text"
+                              placeholder="value"
+                              onChange={(e) => {
+                                setRadioOption((pre) => ({
+                                  ...pre,
+                                  value: e?.target?.value,
+                                }));
+                              }}
+                              value={radioOption?.value}
+                            />
+                            <button
+                              className="w-[20%]"
+                              onClick={() => {
+                                if (
+                                  radioOption.label != "" &&
+                                  radioOption.value != ""
+                                ) {
+                                  setDroppedComponents((pre) => {
+                                    pre[selectedComponent].options = [
+                                      ...pre[selectedComponent].options,
+                                      radioOption,
+                                    ];
+                                    return [...pre];
+                                  });
+                                  setRadioOption({ label: "", value: "" });
+                                }
+                              }}
+                            >
+                              Add
+                            </button>
+                          </div>
+                          <div className="flex flex-col gap-3 mt-2">
+                            {droppedComponents[selectedComponent].options.map(
+                              (option, ind) => {
+                                return (
+                                  <div className="flex gap-2 items-center px-2">
+                                    {" "}
+                                    <div>{option?.label}</div>
+                                    <span
+                                      onClick={() => {
+                                        setDroppedComponents((pre) => {
+                                          pre[selectedComponent].options = pre[
+                                            selectedComponent
+                                          ].options.filter((option, index) => {
+                                            return index != ind;
+                                          });
+                                          return [...pre];
+                                        });
+                                      }}
+                                    >
+                                      <IconButton
+                                        sx={{
+                                          color: (theme) =>
+                                            theme.palette.grey[500],
+                                        }}
+                                      >
+                                        <IoMdClose size={16} />
+                                      </IconButton>
+                                    </span>
+                                  </div>
+                                );
+                              }
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     )}
 
                     <div className="flex flex-col gap-3">
@@ -804,8 +935,9 @@ const MainFormEditor = ({ droppedComponents, setDroppedComponents }) => {
                   </div>
                 } */}
                     {(droppedComponents[selectedComponent]?.type == "field" ||
+                      droppedComponents[selectedComponent]?.type == "upload" ||
                       droppedComponents[selectedComponent]?.type ==
-                        "upload") && (
+                        "radio") && (
                       <div className="flex flex-col gap-3">
                         <div className="flex gap-2">
                           <input

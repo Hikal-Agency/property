@@ -240,7 +240,7 @@ const Forms = ({
               }}
             >
               <MenuItem
-                onClick={(e) => navigate(`/forms/${selectedRow?.id}`)}
+                onClick={(e) => navigate(`/forms/${selectedRow?.id}/inline`)}
                 style={{
                   backgroundColor: isDarkMode ? "#444" : "#fff", // Conditional background color
                   color: isDarkMode ? "#fff" : "#000", // Conditional text color
