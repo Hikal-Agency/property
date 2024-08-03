@@ -227,14 +227,14 @@ const SingleListingsModal = ({
                     <div className="w-full  mb-3 ">
                       {listData?.meta_tags_for_listings?.banner ? (
                         <img
-                          // onClick={() =>
-                          //   setSingleImageModal({
-                          //     isOpen: true,
-                          //     url: pic?.img_url,
-                          //     id: pic?.id,
-                          //     listingId: listData?.id,
-                          //   })
-                          // }
+                          onClick={() =>
+                            setSingleImageModal({
+                              isOpen: true,
+                              url: listData?.meta_tags_for_listings?.banner,
+                              // id: pic?.id,
+                              listingId: listData?.id,
+                            })
+                          }
                           src={listData?.meta_tags_for_listings?.banner}
                           alt={"banner"}
                           className="w-full h-[350px] object-cover m-1 rounded-md"
@@ -516,17 +516,17 @@ const SingleListingsModal = ({
                                   (pic) =>
                                     pic ? (
                                       <img
-                                        // onClick={() =>
-                                        //   setSingleImageModal({
-                                        //     isOpen: true,
-                                        //     url: pic?.img_url,
-                                        //     id: pic?.id,
-                                        //     listingId: listData?.id,
-                                        //   })
-                                        // }
+                                        onClick={() =>
+                                          setSingleImageModal({
+                                            isOpen: true,
+                                            url: pic,
+
+                                            listingId: listData?.id,
+                                          })
+                                        }
                                         src={pic}
                                         alt={pic}
-                                        className="w-auto h-[200px] object-cover m-1 rounded-md"
+                                        className="w-auto h-[200px] object-cover m-1 rounded-md cursor-pointer"
                                       />
                                     ) : (
                                       <></>
@@ -548,6 +548,7 @@ const SingleListingsModal = ({
                     singleImageModal={singleImageModal}
                     handleClose={() => setSingleImageModal({ isOpen: false })}
                     fetchSingleListing={fetchSingleListing}
+                    listing="true"
                   />
                 )}
 

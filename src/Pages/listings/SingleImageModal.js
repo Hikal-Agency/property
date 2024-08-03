@@ -25,6 +25,7 @@ const SingleImageModal = ({
   FetchProperty,
   module,
   closeSingleModal,
+  listing,
 }) => {
   const { BACKEND_URL } = useStateContext();
   const { hasPermission } = usePermission();
@@ -189,7 +190,7 @@ const SingleImageModal = ({
           </button>
           <div className="absolute bottom-4 right-4">
             <div className="flex items-center">
-              {module !== "property" && (
+              {/* {module !== "property" && (
                 <>
                   <button
                     onClick={handleClick}
@@ -204,41 +205,44 @@ const SingleImageModal = ({
                     <GiShare size={19} />
                   </button>
                 </>
-              )}
+              )} */}
 
-              {module === "property" ? (
-                hasPermission("property_delete_img") && (
-                  <button
-                    onClick={handleDelete}
-                    className="text-white bg-primary p-2 rounded-full mx-2"
-                  >
-                    {deleteBtnLoading ? (
-                      <CircularProgress
-                        size={14}
-                        sx={{ color: "white" }}
-                        className="text-white"
-                      />
-                    ) : (
-                      <FiTrash size={19} />
-                    )}
-                  </button>
-                )
-              ) : (
-                <button
-                  onClick={handleDelete}
-                  className="text-white bg-primary p-2 rounded-full mx-2"
-                >
-                  {deleteBtnLoading ? (
-                    <CircularProgress
-                      size={14}
-                      sx={{ color: "white" }}
-                      className="text-white"
-                    />
-                  ) : (
-                    <FiTrash size={19} />
-                  )}
-                </button>
-              )}
+              {
+                module === "property"
+                  ? hasPermission("property_delete_img") && (
+                      <button
+                        onClick={handleDelete}
+                        className="text-white bg-primary p-2 rounded-full mx-2"
+                      >
+                        {deleteBtnLoading ? (
+                          <CircularProgress
+                            size={14}
+                            sx={{ color: "white" }}
+                            className="text-white"
+                          />
+                        ) : (
+                          <FiTrash size={19} />
+                        )}
+                      </button>
+                    )
+                  : null
+                // (
+                //   <button
+                //     onClick={handleDelete}
+                //     className="text-white bg-primary p-2 rounded-full mx-2"
+                //   >
+                //     {deleteBtnLoading ? (
+                //       <CircularProgress
+                //         size={14}
+                //         sx={{ color: "white" }}
+                //         className="text-white"
+                //       />
+                //     ) : (
+                //       <FiTrash size={19} />
+                //     )}
+                //   </button>
+                // )
+              }
 
               <Menu
                 elevation={0}
