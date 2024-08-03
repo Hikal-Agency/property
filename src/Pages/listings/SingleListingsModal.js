@@ -274,17 +274,17 @@ const SingleListingsModal = ({
                         <div className="w-full p-1">
                           <div className="flex items-center gap-2 justify-end">
                             {/* EDIT DETAILS  */}
-                            <Tooltip title="Edit Listing Details" arrow>
+                            {/* <Tooltip title="Edit Listing Details" arrow>
                               <IconButton
                                 className={`rounded-full bg-btn-primary`}
                                 onClick={handleEdit}
                               >
                                 <BsPen size={16} color={"#FFFFFF"} />
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
 
                             {/* UPLOAD PICTURES  */}
-                            <Tooltip title="Upload Pictures" arrow>
+                            {/* <Tooltip title="Upload Pictures" arrow>
                               <IconButton
                                 onClick={() =>
                                   setSelectImagesModal({
@@ -296,7 +296,7 @@ const SingleListingsModal = ({
                               >
                                 <BsImages size={16} color={"#FFFFFF"} />
                               </IconButton>
-                            </Tooltip>
+                            </Tooltip> */}
 
                             {/* WATCH VIDEO  */}
                             {listData?.meta_tags_for_listings?.promo_video && (
