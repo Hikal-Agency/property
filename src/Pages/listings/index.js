@@ -373,7 +373,7 @@ const Listings = () => {
                 />
               )}
             </div>
-            <div className={`flex items-center justify-between`}>
+            <div className={`flex items-center justify-between mt-3`}>
               {/* filters here */}
             </div>
             <SecondaryListings
