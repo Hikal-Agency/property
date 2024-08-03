@@ -629,7 +629,8 @@ function App() {
       pathname === "/fresh-logs" ||
       pathname === "/attendanceLogin" ||
       pathname.startsWith("/invite") ||
-      /^\/forms\/[^\/]+$/.test(pathname)
+      // /^\/forms\/[^\/]+$/.test(pathname)
+      /^\/forms\/[^\/]+(\/[^\/]+)?$/.test(pathname)
     ) {
       return false;
     } else {
@@ -667,7 +668,7 @@ function App() {
               <Route path="/attendanceLogin" element={<AttendanceLogin />} />
               <Route path="/fresh-logs" element={<TodayCallLogs />} />
               <Route path="/invite/:meetingID" element={<MeetInvite />} />
-              <Route path="/forms/:formID" element={<Form />} />
+              <Route path="/forms/:formID/:formMethod" element={<Form />} />
               {routes.map((route, index) => {
                 return (
                   <Route

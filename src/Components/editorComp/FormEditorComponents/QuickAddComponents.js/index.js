@@ -506,3 +506,47 @@ export const HTMLBlock = ({ onHTMLChange, htmlContent, isDevelopment }) => {
     </div>
   );
 };
+
+export const RadioBtn = ({
+  options,
+  label,
+  onChange,
+  shortLabel,
+  queryKey,
+  value,
+  required,
+  width,
+}) => {
+  console.log("options", options);
+  return (
+    <div className="flex flex-col gap-3" style={{ width: `${width}%` }}>
+      <label htmlFor="" className="text-[14px] font-medium">
+        {label}
+        {required && " *"}
+      </label>
+      {options?.map((option) => {
+        return (
+          <>
+            <div className="flex gap-2 items-center">
+              <input
+                type={"radio"}
+                name={queryKey}
+                id={option.label}
+                className="focus:outline-none border  text-[14px] p-3 rounded-lg"
+                required={required}
+                onChange={(e) => {
+                  onChange(queryKey, e.target.value);
+                }}
+                value={option.value}
+                checked={value ? (value == option.value ? true : false) : value}
+              />
+              <label htmlFor={option?.value}>{option?.label}</label>
+            </div>
+          </>
+        );
+      })}
+
+      <label htmlFor="">{shortLabel}</label>
+    </div>
+  );
+};

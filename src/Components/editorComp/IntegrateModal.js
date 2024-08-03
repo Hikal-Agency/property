@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import {
   Backdrop,
@@ -28,6 +28,7 @@ const FormIntegrateModal = ({
 }) => {
   const { darkModeColors, currentMode, User, BACKEND_URL, t, primaryColor } =
     useStateContext();
+  const [method, setMethod] = useState("inline-form");
   const currentURL = window.location.href;
   console.log(currentURL, "current url");
 
@@ -54,7 +55,9 @@ const FormIntegrateModal = ({
   const embeddedCode = `<!-- Form Embed Code -->
          
           <iframe
-      src="${currentURL}/${form_id}"
+      src="${currentURL}/${form_id}${
+    method == "inline-form" ? "/inline" : "/popup"
+  }"
       style="width: 100%; height: 100%; border: none; border-radius: 3px"
       id="inline-zy83GNDUe6vzmVzaiedv"
       data-layout="{'id':'INLINE'}"
@@ -114,12 +117,37 @@ const FormIntegrateModal = ({
             to integrate it into your website or application. Choose one of the
             options below to get started.
           </p>
+          {/* <h2>Step 1 choose one method </h2>
+          <div className="flex gap-4">
+            <div className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="method"
+                id="inline-form"
+                checked={method == "inline-form"}
+                onChange={() => setMethod("inline-form")}
+              />
+              <label htmlFor="inline-form">Inline</label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="method"
+                id="popup"
+                checked={method == "popup"}
+                onChange={() => setMethod("popup")}
+              />
+              <label htmlFor="popup">Popup</label>
+            </div>
+          </div> */}
+
           <h3 className="text-[20px] py-4">Option 1: Embed Code</h3>
           <p className="text-[12px] py-2">
             Embed your form directly into your website with our simple embed
             code. Just copy the code below and paste it into your HTML where you
             want the form to appear.
           </p>
+
           <div className="flex justify-between py-4">
             <h4 className="text-[16px] ">Embed Code:</h4>
             <button onClick={() => copyToClipboard(embeddedCode)}>
@@ -137,7 +165,9 @@ const FormIntegrateModal = ({
             target="blank"
             className="text-blue-500 underline cursor-pointer py-3"
             href={`${currentURL}/${form_id}`}
-          >{`${currentURL}/${form_id}`}</a>
+          >{`${currentURL}/${form_id}${
+            method == "inline-form" ? "/inline" : "/popup"
+          }`}</a>
         </div>
       </div>
     </Modal>
