@@ -227,14 +227,14 @@ const SingleListingsModal = ({
                     <div className="w-full  mb-3 ">
                       {listData?.meta_tags_for_listings?.banner ? (
                         <img
-                          // onClick={() =>
-                          //   setSingleImageModal({
-                          //     isOpen: true,
-                          //     url: pic?.img_url,
-                          //     id: pic?.id,
-                          //     listingId: listData?.id,
-                          //   })
-                          // }
+                          onClick={() =>
+                            setSingleImageModal({
+                              isOpen: true,
+                              url: listData?.meta_tags_for_listings?.banner,
+                              // id: pic?.id,
+                              listingId: listData?.id,
+                            })
+                          }
                           src={listData?.meta_tags_for_listings?.banner}
                           alt={"banner"}
                           className="w-full h-[350px] object-cover m-1 rounded-md"
@@ -326,6 +326,10 @@ const SingleListingsModal = ({
                       </div>
                       <div className="grid sm:grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-5 p-4">
                         <div className="sm:col-span-1 md:col-span-3 lg:col-span-4 space-y-3">
+                          {/* SHORT DESCRIPTION  */}
+                          <div className="flex gap-3 mb-3">
+                            <h6>{listData?.short_description} </h6>
+                          </div>
                           {/* ADDRESS  */}
                           <div className="flex gap-3">
                             <TbCurrentLocation
@@ -442,6 +446,31 @@ const SingleListingsModal = ({
 
                     {/* <div className="bg-primary h-0.5 w-full my-5"></div> */}
 
+                    {listData?.meta_tags_for_listings?.long_description && (
+                      <>
+                        <div className="w-full flex items-center pb-3">
+                          <div
+                            className={`bg-primary h-10 w-1 rounded-full ${
+                              isLangRTL(i18n.language) ? "ml-2" : "mr-2"
+                            } my-1`}
+                          ></div>
+                          <h1
+                            className={`text-lg font-semibold ${
+                              currentMode === "dark"
+                                ? "text-white"
+                                : "text-black"
+                            }`}
+                          >
+                            {t("description")}
+                          </h1>
+                        </div>
+
+                        <p style={{ maxHeight: "200px", overflowY: "auto" }}>
+                          {listData?.meta_tags_for_listings?.long_description}
+                        </p>
+                      </>
+                    )}
+
                     {(listData?.addedBy === User?.id ||
                       hasPermission("seller_details") ||
                       User.role === 1) && (
@@ -516,17 +545,17 @@ const SingleListingsModal = ({
                                   (pic) =>
                                     pic ? (
                                       <img
-                                        // onClick={() =>
-                                        //   setSingleImageModal({
-                                        //     isOpen: true,
-                                        //     url: pic?.img_url,
-                                        //     id: pic?.id,
-                                        //     listingId: listData?.id,
-                                        //   })
-                                        // }
+                                        onClick={() =>
+                                          setSingleImageModal({
+                                            isOpen: true,
+                                            url: pic,
+
+                                            listingId: listData?.id,
+                                          })
+                                        }
                                         src={pic}
                                         alt={pic}
-                                        className="w-auto h-[200px] object-cover m-1 rounded-md"
+                                        className="w-auto h-[200px] object-cover m-1 rounded-md cursor-pointer"
                                       />
                                     ) : (
                                       <></>
@@ -548,6 +577,7 @@ const SingleListingsModal = ({
                     singleImageModal={singleImageModal}
                     handleClose={() => setSingleImageModal({ isOpen: false })}
                     fetchSingleListing={fetchSingleListing}
+                    listing="true"
                   />
                 )}
 
