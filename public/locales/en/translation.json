@@ -1071,7 +1071,6 @@
   "bank_swift_code": "  Swift Code",
   "manager_comm": "Manager Commission",
   "monthly_target": "Monthly Target",
-
   "including_vat": "Including VAT",
   "menu_visa": "Visa",
   "discount": "Discount",
@@ -1080,31 +1079,23 @@
   "tax_invoice": "Tax Invoice",
   "generate_tax_invoice": "Generate Tax Invoice",
   "invoice_id": "Invoice ID",
-
   "receipt_voucher_heading": "Generate Receipt Voucher",
   "label_dev_name": "Developer Name",
   "cheque_details": "Cheque Details",
   "cheque_number": "Cheque Number",
   "cheque_date": "Cheque Date",
-
   "commission_voucher_heading": "Generate Commission Receipt",
   "title": "Title",
-
   "download_statment": "Download Statement",
-
   "menu_petty_cash": "Petty Cash",
   "label_fund_by": "Fund By",
-
   "funds": "Funds",
   "balance": "Balance",
   "bulk_assign": "Bulk Assign",
   "upload_file": "Upload File",
-
   "deal_detail": "Deal Details",
   "update_deal": "Update Deal",
-
   "menu_my_orders": "My Orders",
-
   "heading_listing_type": "Add Listings Type",
   "heading_listing_attr": "Add Listing Attribute",
   "heading_listing_attr_type": "Add Listing Attribute Type",
@@ -1134,16 +1125,11 @@
   "label_og_title": "OG Title",
   "label_og_desc": "OG Description",
   "label_meta_keywords": "Meta Keywords",
-
   "listing_attribute_id": "listing attribute id",
   "thumbnail": "Thumbnail",
-
   "status_inactive": "Inactive",
-
   "do_you_really_delete": "Do you really want to delete ",
-
   "label_converter": "Converter",
-
   "menu_all_listings": "All Listings",
   "btn_form": "Form",
   "btn_back": "Back",
@@ -1178,17 +1164,8 @@
   "delete_folder_warning": " Warning! All forms will be deleted in this folder",
   "folder_create_message": "To create a form, please ensure that a folder exists. It looks like no folder is currently present. Please create a folder first!",
   "select_folder_message": "In which folder you want to save your form?",
-
-
-
-  "short_description":"Short Description",
-
-
-
-
-
-
-  "listing_type_rent":"Rent",
-  "listing_type_sell":"Sell",
-  "listing_type_move":"Ready-To-Move"
+  "short_description": "Short Description",
+  "listing_type_rent": "Rent",
+  "listing_type_sell": "Sell",
+  "listing_type_move": "Ready-To-Move"
 }
