@@ -7,8 +7,13 @@ const Footer = () => {
   return (
     <div
       className={`border-t border-t-1 text-sm border-primary flex justify-between items-center px-5 py-3 ${
-        !themeBgImg ? (currentMode === "dark" ? "bg-black" : "bg-white")
-        : (currentMode === "dark" ? "blur-bg-dark-nr" : "blur-bg-light-nr")
+        !themeBgImg
+          ? currentMode === "dark"
+            ? "bg-black"
+            : "bg-white"
+          : currentMode === "dark"
+          ? "blur-bg-dark-nr"
+          : "blur-bg-light-nr"
       }`}
       style={{
         bottom: 0,
@@ -34,9 +39,11 @@ const Footer = () => {
         </Link>
       </h1>
       <h1
-        className={`${currentMode === "dark" ? "text-white" : "text-[#1c1c1c]"}`}
+        className={`${
+          currentMode === "dark" ? "text-white" : "text-[#1c1c1c]"
+        }`}
       >
-        <span className="font-bold">Version</span> 1.8.0
+        <span className="font-bold">Version</span> 3.3.0
       </h1>
     </div>
   );
