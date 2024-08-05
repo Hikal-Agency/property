@@ -197,14 +197,14 @@ const SecondaryListings = ({
                         } p-2`}
                       >
                         <div className="flex flex-col gap-2">
-                          {/* <Tooltip title="View Property" arrow>
+                          <Tooltip title="View Property" arrow>
                             <button
                               onClick={() => HandleSingleListing(listing?.id)}
                               className="bg-primary hover:bg-black hover:border-white border-2 border-transparent p-2 rounded-full"
                             >
                               <BsListStars size={16} color={"#FFFFFF"} />
                             </button>
-                          </Tooltip> */}
+                          </Tooltip>
                           {hasPermission("delete_listing") && (
                             <Tooltip title="Delete Listing" arrow>
                               <button
