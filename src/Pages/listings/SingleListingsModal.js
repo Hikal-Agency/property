@@ -283,21 +283,6 @@ const SingleListingsModal = ({
                               </IconButton>
                             </Tooltip> */}
 
-                            {/* UPLOAD PICTURES  */}
-                            {/* <Tooltip title="Upload Pictures" arrow>
-                              <IconButton
-                                onClick={() =>
-                                  setSelectImagesModal({
-                                    isOpen: true,
-                                    listingId: lid,
-                                  })
-                                }
-                                className={`rounded-full bg-btn-primary`}
-                              >
-                                <BsImages size={16} color={"#FFFFFF"} />
-                              </IconButton>
-                            </Tooltip> */}
-
                             {/* WATCH VIDEO  */}
                             {listData?.meta_tags_for_listings?.promo_video && (
                               <Tooltip title="Promo Video" arrow>
