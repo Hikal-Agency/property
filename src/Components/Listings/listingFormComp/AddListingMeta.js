@@ -26,6 +26,7 @@ const AddListingMeta = ({
   listingIds,
   setListingIDs,
   handleNext,
+  FetchData,
 }) => {
   const {
     darkModeColors,
@@ -173,6 +174,7 @@ const AddListingMeta = ({
           banner: "",
           additional_gallery: [],
         });
+        FetchData();
         handleNext();
       })
       .catch((err) => {

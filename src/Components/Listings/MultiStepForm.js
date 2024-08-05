@@ -358,6 +358,7 @@ export default function MultiStepForm() {
               listingIds={listingIds}
               setListingIDs={setListingIDs}
               handleNext={handleNext}
+              FetchData={FetchData}
             />
           )}
           {/* {activeStep === 4 && } */}
