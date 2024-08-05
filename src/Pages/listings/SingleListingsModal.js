@@ -507,7 +507,6 @@ const SingleListingsModal = ({
                                 />
                                 <h6>{listData?.user?.name}</h6>
                               </div>
-                              {/* SELLER CONTACT  */}
 
                               {/* SELLER EMAIL  */}
                               <div className="flex gap-3">
