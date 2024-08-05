@@ -298,6 +298,16 @@ const SingleListingsModal = ({
                               </IconButton>
                             </Tooltip> */}
 
+                            <p
+                              className={`${
+                                listData?.status === 1
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              } p-2 font-semibold rounded-md shadow-sm`}
+                            >
+                              {listData?.status === 1 ? "Active" : "Inactive"}
+                            </p>
+
                             {/* WATCH VIDEO  */}
                             {listData?.meta_tags_for_listings?.promo_video && (
                               <Tooltip title="Promo Video" arrow>
@@ -382,6 +392,54 @@ const SingleListingsModal = ({
                         <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
                           <div className="flex items-end justify-end h-full w-full">
                             <div className="text-right">
+                              {/* ADDRESS  */}
+                              <div className="flex gap-3">
+                                <TbCurrentLocation
+                                  size={18}
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-[#EEEEEE]"
+                                      : "text-[#333333]"
+                                  }
+                                />
+                                <h6>
+                                  {listData?.listing_attribute_type?.near_by}{" "}
+                                </h6>
+                              </div>
+                              {/* Bedrooms  */}
+                              <div className="flex gap-3">
+                                <BiBed
+                                  size={18}
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-[#EEEEEE]"
+                                      : "text-[#333333]"
+                                  }
+                                />
+                                <h6>{listData?.listing_attribute?.bedroom}</h6>
+                                <h6>
+                                  {listData?.listing_type === "null"
+                                    ? "-"
+                                    : listData?.listing_type?.name}
+                                </h6>
+                              </div>
+                              {/* baths  */}
+                              <div className="flex gap-3">
+                                <BiBath
+                                  size={18}
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-[#EEEEEE]"
+                                      : "text-[#333333]"
+                                  }
+                                />
+                                <h6>
+                                  {listData?.listing_attribute?.bathroom ===
+                                  "null"
+                                    ? "-"
+                                    : listData?.listing_attribute?.bathroom}
+                                </h6>
+                              </div>
                               <p className="text-sm my-2">
                                 Listing added on{" "}
                                 {moment(listData?.created_at).format(
