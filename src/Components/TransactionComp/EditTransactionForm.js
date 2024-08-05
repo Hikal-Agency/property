@@ -33,7 +33,7 @@ const EditTransactionForm = ({
   // user,
   // vendors,
   // loading,
-  fetchUsers,
+  // fetchUsers,
   transData,
   // fetchVendor,
 }) => {
@@ -50,6 +50,8 @@ const EditTransactionForm = ({
   } = useStateContext();
   const [leadNotFound, setLeadNotFound] = useState(false);
   const [loading, setloading] = useState(false);
+
+  const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState([]);
   const [vendors, setVendors] = useState([]);
   const token = localStorage.getItem("auth-token");
@@ -78,7 +80,9 @@ const EditTransactionForm = ({
 
   const fetchVendor = async () => {
     const vendorUrl = `${BACKEND_URL}/vendors`;
-    const userUrl = `${BACKEND_URL}/users`;
+    const userUrl = transData?.user_id
+      ? `${BACKEND_URL}/users?id=${transData?.user_id}`
+      : `${BACKEND_URL}/users`;
 
     try {
       const [vendorResponse, userResponse] = await Promise.all([
@@ -109,6 +113,47 @@ const EditTransactionForm = ({
       setloading(false);
       console.error("Error fetching data:", error);
       toast.error("Unable to fetch data", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const fetchUsers = async (title, type) => {
+    try {
+      let url = "";
+
+      if (type === "user") {
+        url = `${BACKEND_URL}/users?userName=${title}`;
+      } else {
+        url = `${BACKEND_URL}/vendors?vendor_name=${title}`;
+      }
+
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Users: ", response);
+
+      if (type === "user") {
+        setUser(response?.data?.managers?.data);
+      } else {
+        setVendors(response?.data?.data?.data);
+      }
+
+      setUserLoading(false);
+    } catch (error) {
+      setUserLoading(false);
+      console.log(error);
+      toast.error("Unable to fetch users.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
