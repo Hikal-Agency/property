@@ -233,6 +233,22 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
     }
   };
 
+  const handleClose = () => {
+    setOpenOrderModal({
+      open: false,
+      data: null,
+    });
+    setOrderDetails({
+      itemId: "",
+      quantity: "",
+      suagr: "",
+      currency: "AED",
+      amount: "",
+      notes: "",
+      orderStatus: "",
+    });
+  };
+
   useEffect(() => {
     if (data) {
       setOrderDetails({
@@ -251,12 +267,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
     <Modal
       keepMounted
       open={openOrderModal?.open}
-      onClose={() =>
-        setOpenOrderModal({
-          open: false,
-          data: null,
-        })
-      }
+      onClose={handleClose}
       aria-labelledby="keep-mounted-modal-title"
       aria-describedby="keep-mounted-modal-description"
       closeAfterTransition
@@ -282,13 +293,7 @@ const OrderPlacementModal = ({ openOrderModal, setOpenOrderModal }) => {
             style={{
               zIndex: 9999,
             }}
-            onClick={() => {
-              console.log("clicked:: ", openOrderModal);
-              setOpenOrderModal({
-                open: false,
-                data: null,
-              });
-            }}
+            onClick={handleClose}
           >
             <MdClose size={16} />
           </button>
