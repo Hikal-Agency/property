@@ -508,17 +508,7 @@ const SingleListingsModal = ({
                                 <h6>{listData?.user?.name}</h6>
                               </div>
                               {/* SELLER CONTACT  */}
-                              {/* <div className="flex gap-3">
-                                <TbPhone
-                                  size={18}
-                                  className={
-                                    currentMode === "dark"
-                                      ? "text-[#EEEEEE]"
-                                      : "text-[#333333]"
-                                  }
-                                />
-                                <h6>{listData?.user?.phone}</h6>
-                              </div> */}
+
                               {/* SELLER EMAIL  */}
                               <div className="flex gap-3">
                                 <TbMail
