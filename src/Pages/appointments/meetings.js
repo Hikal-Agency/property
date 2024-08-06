@@ -38,11 +38,12 @@ const Meetings = ({ isInLeads, leadId }) => {
     primaryColor,
     t,
     themeBgImg,
+    getUserById,
   } = useStateContext();
   const [locationModalOpen, setLocationModalOpen] = useState(false);
-  const [meetingNote, setMeetingNote] = useState(null);
   const [meetingLocation, setMeetingLocation] = useState(null);
   const [singleLeadData, setsingleLeadData] = useState({});
+  const [meetingNote, setMeetingNote] = useState(null);
   const [timelineModelOpen, setTimelineModelOpen] = useState(false);
 
   const [tabValue, setTabValue] = useState(0);
@@ -178,7 +179,10 @@ const Meetings = ({ isInLeads, leadId }) => {
               leadFor: row?.leadFor || "-",
               leadId: row?.leadId,
               meetingDate: row?.meetingDate || "-",
-              meetingBy: row?.addedBy == User?.id,
+              meetingBy: {
+                isOwner: row?.addedBy == User?.id,
+                name: getUserById(row?.addedBy)?.userName,
+              },
               meetingTime: row?.meetingTime || "-",
               meetingStatus: row?.meetingStatus || "-",
               mLat: row?.mLat,
@@ -413,6 +417,8 @@ const Meetings = ({ isInLeads, leadId }) => {
                     setsingleLeadData={setsingleLeadData}
                     isInLeads={isInLeads}
                     leadId={leadId}
+                    meetingNote={meetingNote}
+                    setMeetingNote={setMeetingNote}
                   />
                 </Box>
 

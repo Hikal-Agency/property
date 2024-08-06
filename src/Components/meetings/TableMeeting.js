@@ -36,6 +36,8 @@ const TableMeeting = ({
   setsingleLeadData,
   isInLeads,
   leadId,
+  meetingNote,
+  setMeetingNote,
 }) => {
   const [loading, setloading] = useState(true);
   const {
@@ -49,7 +51,7 @@ const TableMeeting = ({
     t,
     themeBgImg,
   } = useStateContext();
-  const [meetingNote, setMeetingNote] = useState(null);
+
   const [searchRows, setSearchRows] = useState(pageState?.data);
   const searchRef = useRef(null);
   const [searchText, setSearchText] = useState("");
@@ -89,6 +91,7 @@ const TableMeeting = ({
       !event.target.closest(".timelineBtn ")
     ) {
       setMeetingNote(params.row.meetingNote);
+      console.log(params.row?.meetingNote, "meeting note");
       setLocationModalOpen(true);
       const { mLat, mLong } = params.row;
       if (!mLat || !mLong) {
@@ -289,6 +292,13 @@ const TableMeeting = ({
       minWidth: 100,
       headerAlign: "center",
       flex: 1,
+      renderCell: (cellValues) => {
+        return isInLeads ? (
+          <div>{cellValues?.row?.meetingBy?.name}</div>
+        ) : (
+          <div>{cellValues?.row?.meetingBy}</div>
+        );
+      },
     },
     // ACTION
     {
@@ -303,7 +313,7 @@ const TableMeeting = ({
             // className="deleteLeadBtn space-x-2 w-full flex items-center justify-center align-center"
             className={`w-full h-full px-1 flex items-center justify-center edit_meeting_btn`}
           >
-            {(isInLeads ? cellValues?.row?.meetingBy : true) && (
+            {(isInLeads ? cellValues?.row?.meetingBy?.isOwner : true) && (
               <p
                 style={{ cursor: "pointer" }}
                 className={`${
@@ -373,7 +383,7 @@ const TableMeeting = ({
     "meetingDate",
     "meetingTime",
     "edit",
-    // "meetingBy",
+    "meetingBy",
     "meetingStatus",
   ];
   columns = isInLeads
