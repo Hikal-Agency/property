@@ -231,7 +231,13 @@ const SearchLeads = () => {
                   : "",
             }}
           >
-            {searchError}
+            <div
+              className={`py-2 ${
+                currentMode === "dark" ? "text-white" : "text-dark"
+              }`}
+            >
+              {searchError}
+            </div>
           </div>
         )}
         {searchResult?.length > 0 && (
