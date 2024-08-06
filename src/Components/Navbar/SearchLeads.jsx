@@ -31,6 +31,7 @@ const SearchLeads = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const [language, setLanguage] = useState();
   const [languageModal, setLanguageModal] = useState(false);
+  const [searchError, setSearchError] = useState("");
 
   const location = useLocation();
 
@@ -113,6 +114,9 @@ const SearchLeads = () => {
         console.log("settted:::::: ");
         setSearchResults(postSearch?.data);
       }
+      if (!postSearch?.success) {
+        setSearchError(postSearch?.message);
+      }
 
       setSearchLoading(false);
       console.log("search result: ", postSearch);
@@ -147,6 +151,7 @@ const SearchLeads = () => {
               "click element"
             );
             clearSearchInput();
+            setSearchError("");
           }
         }
       }
@@ -206,6 +211,29 @@ const SearchLeads = () => {
             <MdMic color={"#AAAAAA"} size={18} />
           </div> */}
         </Box>
+        {searchError && (
+          <div
+            className={`absolute rounded shadow mt-1 p-3 w-[190px] ${
+              currentMode === "dark" ? "bg-[#292828]" : "bg-white"
+            }`}
+            style={{
+              overflow:
+                searchResult != null
+                  ? searchResult?.data?.length > 10
+                    ? "auto"
+                    : "visible"
+                  : "",
+              maxHeight:
+                searchResult != null
+                  ? searchResult?.data?.length > 10
+                    ? "200px"
+                    : "auto"
+                  : "",
+            }}
+          >
+            {searchError}
+          </div>
+        )}
         {searchResult?.length > 0 && (
           <div
             className={`absolute rounded shadow mt-1 p-3 w-[190px] ${

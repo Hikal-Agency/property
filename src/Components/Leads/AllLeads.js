@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Button as MuiButton,
@@ -34,16 +35,6 @@ import AddMeetLink from "../liveleads/AddMeetLink";
 import Timeline from "../../Pages/timeline";
 import { pageStyles, selectBgStyles } from "../_elements/SelectStyles";
 import { feedback_options } from "../_elements/SelectOptions";
-
-import {
-  DataGrid,
-  gridPageCountSelector,
-  gridPageSelector,
-  GridToolbar,
-  useGridApiContext,
-  useGridSelector,
-} from "@mui/x-data-grid";
-
 import { BsShuffle, BsTrash, BsAlarm } from "react-icons/bs";
 import { TbFileImport } from "react-icons/tb";
 import { RiMailSendLine } from "react-icons/ri";
@@ -56,14 +47,179 @@ import ColdcallFiles from "./ColdcallFiles";
 import { renderSourceIcons } from "../_elements/SourceIconsDataGrid";
 import { renderOTPIcons } from "../_elements/OTPIconsDataGrid";
 import SourceByProject from "../_elements/SourceByProject";
-
+import {
+  DataGrid,
+  gridPageCountSelector,
+  gridPageSelector,
+  GridToolbar,
+  useGridApiContext,
+  useGridSelector,
+  GridToolbarContainer,
+  GridToolbarExport,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+} from "@mui/x-data-grid";
 const bulkUpdateBtnStyles = {
-  position: "absolute",
-  top: "10.5px",
-  zIndex: "500",
-  transform: "translateX(-50%)",
-  fontWeight: "500",
+  // position: "absolute",
+  // top: "10.5px",
+  // zIndex: "500",
+  // transform: "translateX(-50%)",
+  // fontWeight: "500",
 };
+const CustomToolbar = React.memo(
+  ({
+    hasPermission,
+    isLangRTL,
+    handleClickBulkUpdate,
+    handleClickBulkDelete,
+    bulkImportRef,
+    i18n,
+    handleKeyUp,
+    handleSearch,
+    searchRef,
+    handleBulkImport,
+    User,
+    selectedRows,
+    t,
+  }) => {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarExport />
+
+        {selectedRows?.length > 0 && hasPermission("leads_bulk_update") && (
+          <MuiButton
+            size="small"
+            sx={{
+              ...bulkUpdateBtnStyles,
+              // left:
+              //   User?.role === 1
+              //     ? isLangRTL(i18n?.language)
+              //       ? "auto"
+              //       : "340px"
+              //     : isLangRTL(i18n?.language)
+              //     ? "auto"
+              //     : "250px",
+              // right:
+              //   User?.role === 1
+              //     ? isLangRTL(i18n?.language)
+              //       ? "235px"
+              //       : "auto"
+              //     : isLangRTL(i18n?.language)
+              //     ? "135px"
+              //     : "auto",
+              // zIndex: "5 !important",
+            }}
+            variant="text"
+            onClick={handleClickBulkUpdate}
+          >
+            <AiFillEdit size={20} />{" "}
+            <span style={{ paddingLeft: "5px" }}>{t("table_bulk_update")}</span>
+          </MuiButton>
+        )}
+        {selectedRows?.length > 0 && hasPermission("leads_bulk_delete") && (
+          <MuiButton
+            size="small"
+            sx={{
+              ...bulkUpdateBtnStyles,
+              // left:
+              //   User?.role === 1
+              //     ? isLangRTL(i18n?.language)
+              //       ? "auto"
+              //       : "455px"
+              //     : isLangRTL(i18n?.language)
+              //     ? "auto"
+              //     : "355px",
+              // right:
+              //   User?.role == 1
+              //     ? isLangRTL(i18n?.language)
+              //       ? "335px"
+              //       : "auto"
+              //     : isLangRTL(i18n?.language)
+              //     ? "235px"
+              //     : "auto",
+              // zIndex: "5 !important",
+            }}
+            variant="text"
+            onClick={handleClickBulkDelete}
+          >
+            <BsTrash size={18} />{" "}
+            <span style={{ paddingLeft: "5px" }}>{t("table_bulk_delete")}</span>
+          </MuiButton>
+        )}
+        <label htmlFor="bulkImport">
+          <MuiButton
+            onClick={() => bulkImportRef.current.click()}
+            size="small"
+            sx={{
+              ...bulkUpdateBtnStyles,
+              // left:
+              //   User?.role === 1
+              //     ? isLangRTL(i18n?.language)
+              //       ? "auto"
+              //       : "230px"
+              //     : isLangRTL(i18n?.language)
+              //     ? "auto"
+              //     : "150px",
+
+              // right:
+              //   User?.role == 1
+              //     ? isLangRTL(i18n?.language)
+              //       ? "140px"
+              //       : "auto"
+              //     : isLangRTL(i18n?.language)
+              //     ? "40px"
+              //     : "auto",
+            }}
+            variant="text"
+          >
+            <TbFileImport size={18} />{" "}
+            <span style={{ paddingLeft: "5px" }}>{t("table_bulk_import")}</span>
+          </MuiButton>
+        </label>
+        <input
+          type="file"
+          style={{ display: "none" }}
+          ref={bulkImportRef}
+          onInput={handleBulkImport}
+          id="bulkImport"
+        />
+
+        <Box sx={{ flex: 1 }} />
+        <div
+        // style={{ zIndex: "5 !important" }}
+        // className={`absolute top-[7px] ${
+        //   isLangRTL(i18n.language) ? "left-[10px]" : "right-[10px]"
+        // } z-[2]`}
+        >
+          <TextField
+            aria-label="search leads"
+            placeholder={t("search")}
+            ref={searchRef}
+            sx={{
+              "& input": {
+                borderBottom: "1px solid #777777",
+              },
+            }}
+            variant="standard"
+            onKeyUp={handleKeyUp}
+            onInput={handleSearch}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton aria-label="search icon" sx={{ padding: 0 }}>
+                    <ImSearch size={16} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
+      </GridToolbarContainer>
+    );
+  }
+);
 
 const AllLeads = ({
   lead_type,
@@ -211,7 +367,7 @@ const AllLeads = ({
   };
 
   const handleKeyUp = (e) => {
-    if (searchRef.current.querySelector("input").value) {
+    if (searchRef.current?.querySelector("input").value) {
       if (e.key === "Enter" || e.keyCode === 13) {
         // setpageState((oldPageState) => ({...oldPageState, page: 1}));
         FetchSearchedLeads(token, e.target.value);
@@ -1674,12 +1830,17 @@ const AllLeads = ({
 
   useEffect(() => {
     setpageState((oldPageState) => ({ ...oldPageState, page: 1 }));
-    searchRef.current.querySelector("input").value = "";
+    if (searchRef.current) {
+      searchRef.current.querySelector("input").value = "";
+    }
   }, [lead_type, lead_origin]);
 
   useEffect(() => {
-    if (searchRef.current.querySelector("input").value) {
-      FetchSearchedLeads(token, searchRef.current.querySelector("input").value);
+    if (searchRef.current?.querySelector("input").value) {
+      FetchSearchedLeads(
+        token,
+        searchRef.current?.querySelector("input").value
+      );
     } else {
       if (pageState?.page > 0) {
         FetchLeads(token);
@@ -2435,7 +2596,7 @@ const AllLeads = ({
           }}
           className={`${currentMode}-mode-datatable`}
         >
-          {selectedRows.length > 0 && hasPermission("leads_bulk_update") && (
+          {/* {selectedRows.length > 0 && hasPermission("leads_bulk_update") && (
             <MuiButton
               size="small"
               sx={{
@@ -2567,7 +2728,7 @@ const AllLeads = ({
                 ),
               }}
             />
-          </div>
+          </div> */}
 
           <div style={{ position: "relative" }}>
             <DataGrid
@@ -2626,7 +2787,8 @@ const AllLeads = ({
                 items: filt,
               }}
               components={{
-                Toolbar: GridToolbar,
+                // Toolbar: GridToolbar,
+                Toolbar: CustomToolbar,
                 Pagination: CustomPagination,
               }}
               disableColumnFilter
@@ -2635,6 +2797,20 @@ const AllLeads = ({
                   showQuickFilter: false,
                   printOptions: { disableToolbarButton: User?.role !== 1 },
                   csvOptions: { disableToolbarButton: User?.role !== 1 },
+
+                  hasPermission: hasPermission,
+                  isLangRTL: isLangRTL,
+                  handleClickBulkUpdate: handleClickBulkUpdate,
+                  handleClickBulkDelete: handleClickBulkDelete,
+                  bulkImportRef: bulkImportRef,
+                  i18n: i18n,
+                  handleKeyUp: handleKeyUp,
+                  handleSearch: handleSearch,
+                  searchRef: searchRef,
+                  handleBulkImport: handleBulkImport,
+                  User: User,
+                  selectedRows: selectedRows,
+                  t: t,
                 },
               }}
               sx={{
