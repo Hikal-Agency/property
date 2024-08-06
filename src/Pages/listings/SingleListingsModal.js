@@ -28,6 +28,7 @@ import SingleImageModal from "./SingleImageModal";
 import SingleDocModal from "./SingleDocModal";
 import usePermission from "../../utils/usePermission";
 import { IoIosVideocam } from "react-icons/io";
+import UpdateListModal from "./UpdateListModal";
 
 const SingleListingsModal = ({
   ListingData,
@@ -37,7 +38,11 @@ const SingleListingsModal = ({
   console.log("single listing Data:: ", ListingData);
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
-  const [openEdit, setOpenEdit] = useState(false);
+  const [openEdit, setOpenEdit] = useState({
+    open: false,
+    data: null,
+    type: null,
+  });
   const [leadNotFound, setLeadNotFound] = useState(false);
   const { hasPermission } = usePermission();
   const [singleImageModal, setSingleImageModal] = useState({
@@ -69,8 +74,8 @@ const SingleListingsModal = ({
     t,
   } = useStateContext();
 
-  const handleEdit = () => {
-    setOpenEdit(listData);
+  const handleEdit = (type) => {
+    setOpenEdit({ open: true, data: listData, type: type });
   };
 
   const [isClosing, setIsClosing] = useState(false);
@@ -269,6 +274,14 @@ const SingleListingsModal = ({
                             >
                               {listData?.title}
                             </h1>
+                            <Tooltip title="Edit Listing Details" arrow>
+                              <IconButton
+                                className={`rounded-full bg-btn-primary`}
+                                onClick={() => handleEdit("main")}
+                              >
+                                <BsPen size={16} color={"#FFFFFF"} />
+                              </IconButton>
+                            </Tooltip>
                           </div>
                         </div>
                         <div className="w-full p-1">
@@ -652,14 +665,22 @@ const SingleListingsModal = ({
                     }
                   />
                 )}
-                {openEdit && (
+                {openEdit?.open && (
+                  <UpdateListModal
+                    openEdit={openEdit}
+                    setOpenEdit={setOpenEdit}
+                    fetchSingleListing={fetchSingleListing}
+                    handleClose={() => setOpenEdit(false)}
+                  />
+                )}
+                {/* {openEdit && (
                   <EditListingModal
                     setOpenEdit={setOpenEdit}
                     openEdit={openEdit}
                     fetchSingleListing={fetchSingleListing}
                     handleClose={() => setOpenEdit(false)}
                   />
-                )}
+                )} */}
               </>
             )}
           </div>
