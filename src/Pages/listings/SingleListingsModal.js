@@ -13,7 +13,7 @@ import { load } from "../App";
 
 import { BiBed, BiBath } from "react-icons/bi";
 import { BsImages, BsFiles, BsPen, BsFileEarmarkText } from "react-icons/bs";
-import { FaUserPlus } from "react-icons/fa";
+import { FaCity, FaGlobe, FaMap, FaUserPlus } from "react-icons/fa";
 import { MdLocationPin, MdClose } from "react-icons/md";
 import {
   TbCurrentLocation,
@@ -340,9 +340,9 @@ const SingleListingsModal = ({
                           <div className="flex gap-3 mb-3">
                             <h6>{listData?.short_description} </h6>
                           </div>
-                          {/* ADDRESS  */}
+                          {/* COUNTRY  */}
                           <div className="flex gap-3">
-                            <TbCurrentLocation
+                            <FaGlobe
                               size={18}
                               className={
                                 currentMode === "dark"
@@ -350,13 +350,11 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>
-                              {listData?.listing_attribute_type?.near_by}{" "}
-                            </h6>
+                            <h6>{listData?.country} </h6>
                           </div>
-                          {/* Bedrooms  */}
+                          {/* STATE  */}
                           <div className="flex gap-3">
-                            <BiBed
+                            <FaMap
                               size={18}
                               className={
                                 currentMode === "dark"
@@ -364,16 +362,11 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>{listData?.listing_attribute?.bedroom}</h6>
-                            <h6>
-                              {listData?.listing_type === "null"
-                                ? "-"
-                                : listData?.listing_type?.name}
-                            </h6>
+                            <h6>{listData?.state}</h6>
                           </div>
-                          {/* baths  */}
+                          {/* CITY  */}
                           <div className="flex gap-3">
-                            <BiBath
+                            <FaCity
                               size={18}
                               className={
                                 currentMode === "dark"
@@ -381,19 +374,15 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>
-                              {listData?.listing_attribute?.bathroom === "null"
-                                ? "-"
-                                : listData?.listing_attribute?.bathroom}
-                            </h6>
+                            <h6>{listData?.city}</h6>
                           </div>
                         </div>
 
-                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
-                          <div className="flex items-end justify-end h-full w-full">
+                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right gap-5 mb-5">
+                          <div className="flex items-end justify-end h-full w-full ">
                             <div className="text-right">
                               {/* ADDRESS  */}
-                              <div className="flex gap-3">
+                              <div className="flex gap-3 mb-3">
                                 <TbCurrentLocation
                                   size={18}
                                   className={
@@ -407,7 +396,7 @@ const SingleListingsModal = ({
                                 </h6>
                               </div>
                               {/* Bedrooms  */}
-                              <div className="flex gap-3">
+                              <div className="flex gap-3 mb-3">
                                 <BiBed
                                   size={18}
                                   className={
@@ -424,7 +413,7 @@ const SingleListingsModal = ({
                                 </h6>
                               </div>
                               {/* baths  */}
-                              <div className="flex gap-3">
+                              <div className="flex gap-3 mb-3">
                                 <BiBath
                                   size={18}
                                   className={
@@ -440,7 +429,7 @@ const SingleListingsModal = ({
                                     : listData?.listing_attribute?.bathroom}
                                 </h6>
                               </div>
-                              <p className="text-sm my-2">
+                              <p className="text-sm my-3">
                                 Listing added on{" "}
                                 {moment(listData?.created_at).format(
                                   "YYYY-MM-DD HH:MM"
