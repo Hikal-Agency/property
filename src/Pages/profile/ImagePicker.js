@@ -23,7 +23,8 @@ const style = {
 };
 
 const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
-  const { BACKEND_URL, currentMode, setUser, ReFetchProfile } = useStateContext();
+  const { BACKEND_URL, currentMode, setUser, ReFetchProfile } =
+    useStateContext();
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -74,7 +75,15 @@ const ImagePicker = ({ imagePickerModal, setImagePickerModal }) => {
         maxSizeMB: 1,
         maxWidthOrHeight: 1920,
       };
-      const img = await imageCompression(imageFile, options);
+      // const img = await imageCompression(imageFile, options);
+      const compressedImage = await imageCompression(imageFile, options);
+
+      // Ensure the compressed image retains the correct file properties
+      const img = new File([compressedImage], imageFile.name, {
+        type: imageFile.type,
+      });
+      // const img = imageFile;
+      console.log("file image", img);
       imageData.append("image", img);
       setbtnloading(true);
       const result = await axios.post(
