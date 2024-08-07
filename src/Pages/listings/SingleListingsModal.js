@@ -236,7 +236,6 @@ const SingleListingsModal = ({
                             setSingleImageModal({
                               isOpen: true,
                               url: listData?.meta_tags_for_listings?.banner,
-                              // id: pic?.id,
                               listingId: listData?.id,
                             })
                           }
@@ -410,7 +409,7 @@ const SingleListingsModal = ({
                               </div>
                               {/* Bedrooms  */}
                               <div className="flex items-center gap-3 mb-3">
-                                <Tooltip title="Edit Listing Details" arrow>
+                                <Tooltip title="Edit attribute " arrow>
                                   <IconButton
                                     className={`rounded-full bg-btn-primary`}
                                     onClick={() => handleEdit("list_attr")}
@@ -479,7 +478,7 @@ const SingleListingsModal = ({
                     {listData?.latlong === null || listData?.latlong === "" ? (
                       <></>
                     ) : (
-                      <div className="w-full h-[50vh] border border-primary">
+                      <div className="w-full h-[50vh] border border-primary relative">
                         {!load?.isLoaded ? (
                           <div>Your map is loading...</div>
                         ) : (
@@ -509,6 +508,16 @@ const SingleListingsModal = ({
                             />
                           </GoogleMap>
                         )}
+                        <div className="absolute top-0 right-1">
+                          <Tooltip title="Edit attrbiute type" arrow>
+                            <IconButton
+                              className={`rounded-full bg-btn-primary`}
+                              onClick={() => handleEdit("list_attr_type")}
+                            >
+                              <BsPen size={16} color={"#FFFFFF"} />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
                       </div>
                     )}
 

@@ -6,6 +6,7 @@ import HeadingTitle from "../../Components/_elements/HeadingTitle";
 import {
   Addlisting,
   AddListingAttribute,
+  AddListingAttrType,
 } from "../../Components/Listings/listingFormComp";
 import { toast } from "react-toastify";
 import axios from "../../axoisConfig";
@@ -161,7 +162,6 @@ const UpdateListModal = ({ openEdit, fetchSingleListing, handleClose }) => {
               </div>
               {type === "main" ? (
                 <Addlisting
-                  data={data}
                   loading={loading}
                   listData={listData}
                   handleClose={handleClose}
@@ -171,6 +171,14 @@ const UpdateListModal = ({ openEdit, fetchSingleListing, handleClose }) => {
               ) : type === "list_attr" ? (
                 <AddListingAttribute
                   data={data}
+                  loading={loading}
+                  listData={listData}
+                  handleClose={handleClose}
+                  fetchSingleListing={fetchSingleListing}
+                  edit={"edit"}
+                />
+              ) : type === "list_attr_type" ? (
+                <AddListingAttrType
                   loading={loading}
                   listData={listData}
                   handleClose={handleClose}
