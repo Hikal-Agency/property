@@ -7,7 +7,14 @@ import { toast } from "react-toastify";
 import axios from "../../../axoisConfig";
 import { listing_status } from "../../_elements/SelectOptions";
 
-const Addlisting = ({ data, listingIds, setListingIDs, handleNext }) => {
+const Addlisting = ({
+  listData,
+  listingIds,
+  setListingIDs,
+  handleNext,
+  edit,
+  handleClose,
+}) => {
   const {
     darkModeColors,
     currentMode,
@@ -21,7 +28,7 @@ const Addlisting = ({ data, listingIds, setListingIDs, handleNext }) => {
     fontFam,
   } = useStateContext();
 
-  console.log("all data::: ", data);
+  console.log("list data::: ", listData);
 
   const token = localStorage.getItem("auth-token");
 
@@ -34,15 +41,21 @@ const Addlisting = ({ data, listingIds, setListingIDs, handleNext }) => {
   const [cityLoading, setCityLoading] = useState(false);
 
   const [listingData, setlistingData] = useState({
-    title: "",
-    listing_type_id: listingIds?.listing_type_id,
-    listing_attribute_id: listingIds?.listing_attribute_id,
-    listing_arrtibute_type_id: listingIds?.listing_arrtibute_type_id,
-    country_id: "",
-    state_id: "",
-    city_id: "",
-    short_description: "",
-    status: "",
+    title: listData?.title || "",
+    listing_type_id: edit
+      ? listData?.listing_type?.id
+      : listingIds?.listing_type_id,
+    listing_attribute_id: edit
+      ? listData?.listing_attribute?.id
+      : listingIds?.listing_attribute_id,
+    listing_arrtibute_type_id: edit
+      ? listData?.listing_attribute_type?.id
+      : listingIds?.listing_arrtibute_type_id,
+    country_id: listData?.country || "",
+    state_id: listData?.state || "",
+    city_id: listData?.city || "",
+    short_description: listData?.short_description || "",
+    status: listData?.status || "",
   });
 
   console.log("listing data :: ", listingData);
@@ -161,8 +174,12 @@ const Addlisting = ({ data, listingIds, setListingIDs, handleNext }) => {
   const AddListings = () => {
     setBtnLoading(true);
 
+    let url = edit
+      ? `${BACKEND_URL}/new-listings/${listData?.id}`
+      : `${BACKEND_URL}/new-listings`;
+
     axios
-      .post(`${BACKEND_URL}/new-listings`, listingData, {
+      .post(url, listingData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
@@ -172,16 +189,24 @@ const Addlisting = ({ data, listingIds, setListingIDs, handleNext }) => {
         console.log("listing  added : ", result);
         setBtnLoading(false);
 
-        toast.success("New List added successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success(
+          ` List ${edit ? "updated" : "added"} added successfully.`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+
+        if (edit) {
+          handleClose();
+          return;
+        }
 
         const listingID = result?.data?.data?.id;
         const shortDesc = result?.data?.data?.short_description;
@@ -239,6 +264,7 @@ const Addlisting = ({ data, listingIds, setListingIDs, handleNext }) => {
     fetchCountries();
   }, []);
   useEffect(() => {
+    if (edit) return;
     if (listingData?.country_id) {
       FetchCitynState();
     }

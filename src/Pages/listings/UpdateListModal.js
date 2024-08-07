@@ -1,10 +1,16 @@
 import { MdClose } from "react-icons/md";
 import { useStateContext } from "../../context/ContextProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Backdrop, Modal } from "@mui/material";
 import HeadingTitle from "../../Components/_elements/HeadingTitle";
+import {
+  Addlisting,
+  AddListingAttribute,
+} from "../../Components/Listings/listingFormComp";
+import { toast } from "react-toastify";
+import axios from "../../axoisConfig";
 
-const UpdateListModal = ({ openEdit, fetchSingleLissting, handleClose }) => {
+const UpdateListModal = ({ openEdit, fetchSingleListing, handleClose }) => {
   const {
     currentMode,
     setopenBackDrop,
@@ -15,12 +21,79 @@ const UpdateListModal = ({ openEdit, fetchSingleLissting, handleClose }) => {
     User,
     t,
   } = useStateContext();
-  const data = openEdit?.data;
+  const listData = openEdit?.data;
+  const type = openEdit?.type;
   const style = {
     transform: "translate(0%, 0%)",
     boxShadow: 24,
   };
   const [isClosing, setIsClosing] = useState(false);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState([]);
+
+  const token = localStorage.getItem("auth-token");
+
+  const FetchData = async () => {
+    setLoading(true);
+    let url;
+    if (type === "main") url = `${BACKEND_URL}/listing-types`;
+
+    try {
+      const listingsData = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log("all listings: ", listingsData);
+      let listings = listingsData?.data?.data?.data || [];
+
+      let rowsDataArray = "";
+      if (listingsData?.data?.data?.current_page > 1) {
+        const theme_values = Object.values(listings);
+        rowsDataArray = theme_values;
+      } else {
+        rowsDataArray = listings;
+      }
+
+      let rowsData = rowsDataArray?.map((row, index) => {
+        if (type === "main") {
+          return {
+            lid: row?.id,
+            id: row?.id,
+            name: row?.name,
+          };
+        } else {
+          return {};
+        }
+      });
+
+      setData((prevData) => ({
+        ...prevData,
+        list_type: rowsData,
+      }));
+
+      setLoading(false);
+    } catch (error) {
+      console.log("listings not fetched. ", error);
+      toast.error("Unable to fetch list type.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (type === "main") FetchData();
+  }, [type]);
 
   return (
     <>
@@ -84,8 +157,27 @@ const UpdateListModal = ({ openEdit, fetchSingleLissting, handleClose }) => {
           >
             <>
               <div className="w-full">
-                <HeadingTitle title={data?.title} />
+                <HeadingTitle title={listData?.title} />
               </div>
+              {type === "main" ? (
+                <Addlisting
+                  data={data}
+                  loading={loading}
+                  listData={listData}
+                  handleClose={handleClose}
+                  fetchSingleListing={fetchSingleListing}
+                  edit={"edit"}
+                />
+              ) : (
+                <AddListingAttribute
+                  data={data}
+                  loading={loading}
+                  listData={listData}
+                  handleClose={handleClose}
+                  fetchSingleListing={fetchSingleListing}
+                  edit={"edit"}
+                />
+              )}
             </>
           </div>
         </div>
