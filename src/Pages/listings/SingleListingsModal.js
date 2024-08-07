@@ -409,7 +409,15 @@ const SingleListingsModal = ({
                                 </h6>
                               </div>
                               {/* Bedrooms  */}
-                              <div className="flex gap-3 mb-3">
+                              <div className="flex items-center gap-3 mb-3">
+                                <Tooltip title="Edit Listing Details" arrow>
+                                  <IconButton
+                                    className={`rounded-full bg-btn-primary`}
+                                    onClick={() => handleEdit("list_attr")}
+                                  >
+                                    <BsPen size={10} color={"#FFFFFF"} />
+                                  </IconButton>
+                                </Tooltip>
                                 <BiBed
                                   size={18}
                                   className={

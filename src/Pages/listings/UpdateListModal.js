@@ -36,7 +36,7 @@ const UpdateListModal = ({ openEdit, fetchSingleListing, handleClose }) => {
   const FetchData = async () => {
     setLoading(true);
     let url;
-    if (type === "main") url = `${BACKEND_URL}/listing-types`;
+    if (type === "list_attr") url = `${BACKEND_URL}/listing-types`;
 
     try {
       const listingsData = await axios.get(url, {
@@ -58,7 +58,7 @@ const UpdateListModal = ({ openEdit, fetchSingleListing, handleClose }) => {
       }
 
       let rowsData = rowsDataArray?.map((row, index) => {
-        if (type === "main") {
+        if (type === "list_attr") {
           return {
             lid: row?.id,
             id: row?.id,
@@ -92,7 +92,7 @@ const UpdateListModal = ({ openEdit, fetchSingleListing, handleClose }) => {
   };
 
   useEffect(() => {
-    if (type === "main") FetchData();
+    if (type === "list_attr") FetchData();
   }, [type]);
 
   return (
@@ -168,7 +168,7 @@ const UpdateListModal = ({ openEdit, fetchSingleListing, handleClose }) => {
                   fetchSingleListing={fetchSingleListing}
                   edit={"edit"}
                 />
-              ) : (
+              ) : type === "list_attr" ? (
                 <AddListingAttribute
                   data={data}
                   loading={loading}
@@ -177,7 +177,7 @@ const UpdateListModal = ({ openEdit, fetchSingleListing, handleClose }) => {
                   fetchSingleListing={fetchSingleListing}
                   edit={"edit"}
                 />
-              )}
+              ) : null}
             </>
           </div>
         </div>

@@ -40,7 +40,10 @@ const AddListingAttribute = ({
   listingIds,
   setListingIDs,
   handleNext,
+  listData,
   edit,
+  handleClose,
+  fetchSingleListing,
 }) => {
   const {
     darkModeColors,
@@ -60,11 +63,11 @@ const AddListingAttribute = ({
 
   const [btnLoading, setBtnLoading] = useState(false);
   const [listingAttr, setListingAttr] = useState({
-    name: "",
-    listing_type_id: "",
-    area: "",
-    bedroom: "",
-    bathroom: "",
+    name: listData?.listing_attribute?.name || "",
+    listing_type_id: listData?.listing_type?.id || "",
+    area: listData?.listing_attribute?.area || "",
+    bedroom: listData?.listing_attribute?.bedroom || "",
+    bathroom: listData?.listing_attribute?.bathroom || "",
   });
 
   console.log("listing attr:: ", listingAttr);
@@ -153,11 +156,11 @@ const AddListingAttribute = ({
   const AddListAttr = () => {
     setBtnLoading(true);
 
-    let url = editData
-      ? `${BACKEND_URL}/listing-attributes/${editData?.la_id}`
+    let url = edit
+      ? `${BACKEND_URL}/listing-attributes/${listData?.listing_attribute?.id}`
       : `${BACKEND_URL}/listing-attributes`;
 
-    let method = editData ? "put" : "post";
+    let method = edit ? "put" : "post";
 
     axios({
       method: method,
@@ -173,7 +176,7 @@ const AddListingAttribute = ({
         setBtnLoading(false);
 
         toast.success(
-          `Listing Attribute ${editData ? "updated" : "added"}  successfully.`,
+          `Listing Attribute ${edit ? "updated" : "added"}  successfully.`,
           {
             position: "top-right",
             autoClose: 3000,
@@ -185,6 +188,12 @@ const AddListingAttribute = ({
             theme: "light",
           }
         );
+
+        if (edit) {
+          handleClose();
+          fetchSingleListing();
+          return;
+        }
 
         const attrID = result?.data?.data?.id;
         setListingIDs({
