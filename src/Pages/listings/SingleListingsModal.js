@@ -245,7 +245,7 @@ const SingleListingsModal = ({
                             className="w-full h-[350px] object-cover m-1 rounded-md"
                           />
                           <div className="absolute top-0 right-1">
-                            <Tooltip title="Edit listing meta" arrow>
+                            <Tooltip title="Edit Banner" arrow>
                               <IconButton
                                 className={`rounded-full bg-btn-primary`}
                                 onClick={() => handleEdit("list_meta")}
@@ -552,6 +552,14 @@ const SingleListingsModal = ({
                           >
                             {t("description")}
                           </h1>
+                          <Tooltip title="Edit listing meta" arrow>
+                            <IconButton
+                              className={`rounded-full bg-btn-primary`}
+                              onClick={() => handleEdit("list_meta")}
+                            >
+                              <BsPen size={16} color={"#FFFFFF"} />
+                            </IconButton>
+                          </Tooltip>
                         </div>
 
                         <p style={{ maxHeight: "200px", overflowY: "auto" }}>

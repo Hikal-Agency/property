@@ -14,6 +14,7 @@ const Addlisting = ({
   handleNext,
   edit,
   handleClose,
+  fetchSingleListing,
 }) => {
   const {
     darkModeColors,
@@ -51,9 +52,9 @@ const Addlisting = ({
     listing_arrtibute_type_id: edit
       ? listData?.listing_attribute_type?.id
       : listingIds?.listing_arrtibute_type_id,
-    country_id: listData?.country || "",
-    state_id: listData?.state || "",
-    city_id: listData?.city || "",
+    country_id: listData?.country?.id || "",
+    state_id: listData?.state?.id || "",
+    city_id: listData?.city?.id || "",
     short_description: listData?.short_description || "",
     status: listData?.status || "",
   });
@@ -178,13 +179,17 @@ const Addlisting = ({
       ? `${BACKEND_URL}/new-listings/${listData?.id}`
       : `${BACKEND_URL}/new-listings`;
 
-    axios
-      .post(url, listingData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
+    let method = edit ? "put" : "post";
+
+    axios({
+      method: method,
+      url: url,
+      data: listingData,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
       .then((result) => {
         console.log("listing  added : ", result);
         setBtnLoading(false);
@@ -205,6 +210,8 @@ const Addlisting = ({
 
         if (edit) {
           handleClose();
+          fetchSingleListing();
+
           return;
         }
 
@@ -264,7 +271,6 @@ const Addlisting = ({
     fetchCountries();
   }, []);
   useEffect(() => {
-    if (edit) return;
     if (listingData?.country_id) {
       FetchCitynState();
     }
