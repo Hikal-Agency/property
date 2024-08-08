@@ -27,6 +27,10 @@ const AddListingMeta = ({
   setListingIDs,
   handleNext,
   FetchData,
+  edit,
+  handleClose,
+  fetchSingleListing,
+  listData,
 }) => {
   const {
     darkModeColors,
@@ -47,66 +51,22 @@ const AddListingMeta = ({
   const [listingLoading, setListingLoading] = useState(false);
   const [allImages, setAllImages] = useState([]);
   const [listingMeta, setListingMeta] = useState({
-    new_listing_id: listingIds?.new_listing_id,
-    long_description: "",
-    year_build_in: "",
-    promo_video: "",
-    is_featured: 0,
-    meta_title: "",
-    meta_keywords: "",
-    meta_description: listingIds?.meta_description,
-
-    banner: "",
-    additional_gallery: [],
+    new_listing_id: edit ? listData?.id : listingIds?.new_listing_id,
+    long_description: listData?.meta_tags_for_listings?.long_description || "",
+    year_build_in: listData?.meta_tags_for_listings?.year_build_in || "",
+    promo_video: listData?.meta_tags_for_listings?.promo_video || "",
+    is_featured: listData?.meta_tags_for_listings?.is_featured || 0,
+    meta_title: listData?.meta_tags_for_listings?.meta_title || "",
+    meta_keywords: listData?.meta_tags_for_listings?.meta_keywords || "",
+    meta_description:
+      listData?.meta_tags_for_listings?.meta_description ||
+      listingIds?.meta_description,
+    banner: listData?.meta_tags_for_listings?.banner || "",
+    additional_gallery:
+      listData?.meta_tags_for_listings?.additional_gallery || [],
   });
 
   console.log("listingMeta: ", listingMeta);
-
-  const fetchListings = () => {
-    setListingLoading(true);
-    axios
-      .get(`${BACKEND_URL}/new-listings`, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((result) => {
-        setListingLoading(false);
-        console.log("listings list : ", result);
-        setAllListings(result?.data?.data);
-      })
-      .catch((err) => {
-        setListingLoading(false);
-        console.error("error:: ", err);
-        const errors = err.response?.data?.errors;
-
-        if (errors) {
-          const errorMessages = Object.values(errors).flat().join(" ");
-          toast.error(`Errors: ${errorMessages}`, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        } else {
-          toast.error("Unable to fetch listings", {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      });
-  };
 
   const [selectImagesModal, setSelectImagesModal] = useState({
     isOpen: false,
@@ -133,34 +93,63 @@ const AddListingMeta = ({
   const AddListMeta = () => {
     setBtnLoading(true);
 
-    const listingMetaData = {
-      ...listingMeta,
-      additional_gallery: allImages,
-    };
+    let listingMetaData;
+    if (edit) {
+      listingMetaData = {
+        new_listing_id: edit ? listData?.id : listingIds?.new_listing_id,
+        long_description:
+          listData?.meta_tags_for_listings?.long_description || "",
+        year_build_in: listData?.meta_tags_for_listings?.year_build_in || "",
+        is_featured: listData?.meta_tags_for_listings?.is_featured || 0,
+        meta_title: listData?.meta_tags_for_listings?.meta_title || "",
+        meta_keywords: listData?.meta_tags_for_listings?.meta_keywords || "",
+        meta_description:
+          listData?.meta_tags_for_listings?.meta_description ||
+          listingIds?.meta_description,
+      };
+    } else {
+      listingMetaData = {
+        ...listingMeta,
+        additional_gallery: allImages,
+      };
+    }
 
     console.log("sending meta data:: ", listingMetaData);
 
+    let url = edit
+      ? `${BACKEND_URL}/meta-tags-for-listings/${listData?.meta_tags_for_listings?.id}`
+      : `${BACKEND_URL}/meta-tags-for-listings`;
+
     axios
-      .post(`${BACKEND_URL}/meta-tags-for-listings`, listingMetaData, {
+      .post(url, listingMetaData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + token,
         },
       })
       .then((result) => {
-        console.log("listing ,eta added : ", result);
+        console.log("listing meta added : ", result);
         setBtnLoading(false);
 
-        toast.success("Listing Meta added successfully.", {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success(
+          `Listing Meta ${edit ? "updated" : "added"} successfully.`,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+
+        if (edit) {
+          handleClose();
+          fetchSingleListing();
+          return;
+        }
 
         setListingMeta({
           long_description: "",
@@ -276,39 +265,43 @@ const AddListingMeta = ({
             required
           />
 
-          <input
-            accept="video/*"
-            style={{ display: "none" }}
-            id="promo-video-file"
-            type="file"
-            name="video"
-            onChange={(e) => {
-              console.log("event of video file: ", e);
+          {edit ? null : (
+            <>
+              <input
+                accept="video/*"
+                style={{ display: "none" }}
+                id="promo-video-file"
+                type="file"
+                name="video"
+                onChange={(e) => {
+                  console.log("event of video file: ", e);
 
-              setListingMeta({
-                ...listingMeta,
-                promo_video: e.target.files[0],
-              });
-            }}
-          />
-          <label htmlFor="promo-video-file">
-            <Button
-              variant="contained"
-              size="lg"
-              className="bg-main-red-color w-full bg-btn-primary text-white rounded-lg py-3 border-primary font-semibold my-3"
-              style={{
-                fontFamily: fontFam,
-                color: "#ffffff",
-                marginBottom: "10px",
-              }}
-              component="span"
-            >
-              <span>{t("label_promo_video")}</span>
-            </Button>
-            <p className="text-primary mt-2 italic">
-              {listingMeta?.promo_video ? `Promo video selected.` : null}
-            </p>
-          </label>
+                  setListingMeta({
+                    ...listingMeta,
+                    promo_video: e.target.files[0],
+                  });
+                }}
+              />
+              <label htmlFor="promo-video-file">
+                <Button
+                  variant="contained"
+                  size="lg"
+                  className="bg-main-red-color w-full bg-btn-primary text-white rounded-lg py-3 border-primary font-semibold my-3"
+                  style={{
+                    fontFamily: fontFam,
+                    color: "#ffffff",
+                    marginBottom: "10px",
+                  }}
+                  component="span"
+                >
+                  <span>{t("label_promo_video")}</span>
+                </Button>
+                <p className="text-primary mt-2 italic">
+                  {listingMeta?.promo_video ? `Promo video selected.` : null}
+                </p>
+              </label>
+            </>
+          )}
 
           <TextField
             id="meta_title"
@@ -341,41 +334,45 @@ const AddListingMeta = ({
             required
           /> */}
 
-          <input
-            accept="image/*"
-            style={{ display: "none" }}
-            id="banner-image-file"
-            type="file"
-            name="picture"
-            onChange={(e) => {
-              console.log("event of og image: ", e);
+          {edit ? null : (
+            <>
+              <input
+                accept="image/*"
+                style={{ display: "none" }}
+                id="banner-image-file"
+                type="file"
+                name="picture"
+                onChange={(e) => {
+                  console.log("event of og image: ", e);
 
-              setListingMeta({
-                ...listingMeta,
-                banner: e.target.files[0],
-              });
-            }}
-          />
-          <label htmlFor="banner-image-file">
-            <Button
-              variant="contained"
-              size="lg"
-              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
-              style={{
-                fontFamily: fontFam,
-                color: "#ffffff",
-                marginTop: "20px",
-              }}
-              component="span"
-              // disabled={loading ? true : false}
-              // startIcon={loading ? null : <MdFileUpload />}
-            >
-              <span>{t("label_banner")}</span>
-            </Button>
-            <p className="text-primary mt-2 italic">
-              {listingMeta?.banner ? `banner image selected.` : null}
-            </p>
-          </label>
+                  setListingMeta({
+                    ...listingMeta,
+                    banner: e.target.files[0],
+                  });
+                }}
+              />
+              <label htmlFor="banner-image-file">
+                <Button
+                  variant="contained"
+                  size="lg"
+                  className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
+                  style={{
+                    fontFamily: fontFam,
+                    color: "#ffffff",
+                    marginTop: "20px",
+                  }}
+                  component="span"
+                  // disabled={loading ? true : false}
+                  // startIcon={loading ? null : <MdFileUpload />}
+                >
+                  <span>{t("label_banner")}</span>
+                </Button>
+                <p className="text-primary mt-2 italic">
+                  {listingMeta?.banner ? `banner image selected.` : null}
+                </p>
+              </label>
+            </>
+          )}
         </Box>
         <Box
           sx={{
@@ -472,34 +469,38 @@ const AddListingMeta = ({
             />
           </LocalizationProvider>
 
-          <label htmlFor="contained-button-file">
-            <Button
-              variant="contained"
-              size="lg"
-              className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
-              onClick={() =>
-                setSelectImagesModal({
-                  isOpen: true,
-                  gallery: true,
-                })
-              }
-              style={{
-                fontFamily: fontFam,
-                color: "#ffffff",
-                marginTop: "20px",
-              }}
-              component="span"
-              // disabled={loading ? true : false}
-              // startIcon={loading ? null : <MdFileUpload />}
-            >
-              <span>{t("label_additional_images")}</span>
-            </Button>
-            <p className="text-primary mt-2 italic">
-              {allImages?.length > 0
-                ? `${allImages?.length} images selected.`
-                : null}
-            </p>
-          </label>
+          {edit ? null : (
+            <>
+              <label htmlFor="contained-button-file">
+                <Button
+                  variant="contained"
+                  size="lg"
+                  className="bg-main-red-color w-full bg-btn-primary  text-white rounded-lg py-3 border-primary font-semibold my-3 "
+                  onClick={() =>
+                    setSelectImagesModal({
+                      isOpen: true,
+                      gallery: true,
+                    })
+                  }
+                  style={{
+                    fontFamily: fontFam,
+                    color: "#ffffff",
+                    marginTop: "20px",
+                  }}
+                  component="span"
+                  // disabled={loading ? true : false}
+                  // startIcon={loading ? null : <MdFileUpload />}
+                >
+                  <span>{t("label_additional_images")}</span>
+                </Button>
+                <p className="text-primary mt-2 italic">
+                  {allImages?.length > 0
+                    ? `${allImages?.length} images selected.`
+                    : null}
+                </p>
+              </label>
+            </>
+          )}
 
           <Button
             className={`min-w-fit text-white rounded-md py-3 font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-none`}

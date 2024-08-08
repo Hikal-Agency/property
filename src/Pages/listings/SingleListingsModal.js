@@ -229,20 +229,32 @@ const SingleListingsModal = ({
                 ) : (
                   <div className="w-full">
                     {/* BANNER  */}
-                    <div className="w-full  mb-3 ">
+                    <div className="w-full  mb-3  relative">
                       {listData?.meta_tags_for_listings?.banner ? (
-                        <img
-                          onClick={() =>
-                            setSingleImageModal({
-                              isOpen: true,
-                              url: listData?.meta_tags_for_listings?.banner,
-                              listingId: listData?.id,
-                            })
-                          }
-                          src={listData?.meta_tags_for_listings?.banner}
-                          alt={"banner"}
-                          className="w-full h-[350px] object-cover m-1 rounded-md"
-                        />
+                        <>
+                          <img
+                            onClick={() =>
+                              setSingleImageModal({
+                                isOpen: true,
+                                url: listData?.meta_tags_for_listings?.banner,
+                                listingId: listData?.id,
+                              })
+                            }
+                            src={listData?.meta_tags_for_listings?.banner}
+                            alt={"banner"}
+                            className="w-full h-[350px] object-cover m-1 rounded-md"
+                          />
+                          <div className="absolute top-0 right-1">
+                            <Tooltip title="Edit listing meta" arrow>
+                              <IconButton
+                                className={`rounded-full bg-btn-primary`}
+                                onClick={() => handleEdit("list_meta")}
+                              >
+                                <BsPen size={16} color={"#FFFFFF"} />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        </>
                       ) : (
                         <></>
                       )}
@@ -362,7 +374,7 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>{listData?.country} </h6>
+                            <h6>{listData?.country?.name} </h6>
                           </div>
                           {/* STATE  */}
                           <div className="flex gap-3">
@@ -374,7 +386,7 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>{listData?.state}</h6>
+                            <h6>{listData?.state?.name}</h6>
                           </div>
                           {/* CITY  */}
                           <div className="flex gap-3">
@@ -386,7 +398,7 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>{listData?.city}</h6>
+                            <h6>{listData?.city?.name}</h6>
                           </div>
                         </div>
 
