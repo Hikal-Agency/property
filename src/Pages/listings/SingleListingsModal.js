@@ -13,7 +13,7 @@ import { load } from "../App";
 
 import { BiBed, BiBath } from "react-icons/bi";
 import { BsImages, BsFiles, BsPen, BsFileEarmarkText } from "react-icons/bs";
-import { FaUserPlus } from "react-icons/fa";
+import { FaCity, FaGlobe, FaMap, FaUserPlus } from "react-icons/fa";
 import { MdLocationPin, MdClose } from "react-icons/md";
 import {
   TbCurrentLocation,
@@ -28,6 +28,7 @@ import SingleImageModal from "./SingleImageModal";
 import SingleDocModal from "./SingleDocModal";
 import usePermission from "../../utils/usePermission";
 import { IoIosVideocam } from "react-icons/io";
+import UpdateListModal from "./UpdateListModal";
 
 const SingleListingsModal = ({
   ListingData,
@@ -37,7 +38,11 @@ const SingleListingsModal = ({
   console.log("single listing Data:: ", ListingData);
   const [loading, setloading] = useState(true);
   const [listData, setListingData] = useState({});
-  const [openEdit, setOpenEdit] = useState(false);
+  const [openEdit, setOpenEdit] = useState({
+    open: false,
+    data: null,
+    type: null,
+  });
   const [leadNotFound, setLeadNotFound] = useState(false);
   const { hasPermission } = usePermission();
   const [singleImageModal, setSingleImageModal] = useState({
@@ -69,8 +74,8 @@ const SingleListingsModal = ({
     t,
   } = useStateContext();
 
-  const handleEdit = () => {
-    setOpenEdit(listData);
+  const handleEdit = (type) => {
+    setOpenEdit({ open: true, data: listData, type: type });
   };
 
   const [isClosing, setIsClosing] = useState(false);
@@ -224,21 +229,32 @@ const SingleListingsModal = ({
                 ) : (
                   <div className="w-full">
                     {/* BANNER  */}
-                    <div className="w-full  mb-3 ">
+                    <div className="w-full  mb-3  relative">
                       {listData?.meta_tags_for_listings?.banner ? (
-                        <img
-                          onClick={() =>
-                            setSingleImageModal({
-                              isOpen: true,
-                              url: listData?.meta_tags_for_listings?.banner,
-                              // id: pic?.id,
-                              listingId: listData?.id,
-                            })
-                          }
-                          src={listData?.meta_tags_for_listings?.banner}
-                          alt={"banner"}
-                          className="w-full h-[350px] object-cover m-1 rounded-md"
-                        />
+                        <>
+                          <img
+                            onClick={() =>
+                              setSingleImageModal({
+                                isOpen: true,
+                                url: listData?.meta_tags_for_listings?.banner,
+                                listingId: listData?.id,
+                              })
+                            }
+                            src={listData?.meta_tags_for_listings?.banner}
+                            alt={"banner"}
+                            className="w-full h-[350px] object-cover m-1 rounded-md"
+                          />
+                          <div className="absolute top-0 right-1">
+                            <Tooltip title="Edit Banner" arrow>
+                              <IconButton
+                                className={`rounded-full bg-btn-primary`}
+                                onClick={() => handleEdit("list_meta")}
+                              >
+                                <BsPen size={16} color={"#FFFFFF"} />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        </>
                       ) : (
                         <></>
                       )}
@@ -269,6 +285,14 @@ const SingleListingsModal = ({
                             >
                               {listData?.title}
                             </h1>
+                            <Tooltip title="Edit Listing Details" arrow>
+                              <IconButton
+                                className={`rounded-full bg-btn-primary`}
+                                onClick={() => handleEdit("main")}
+                              >
+                                <BsPen size={16} color={"#FFFFFF"} />
+                              </IconButton>
+                            </Tooltip>
                           </div>
                         </div>
                         <div className="w-full p-1">
@@ -282,6 +306,16 @@ const SingleListingsModal = ({
                                 <BsPen size={16} color={"#FFFFFF"} />
                               </IconButton>
                             </Tooltip> */}
+
+                            <p
+                              className={`${
+                                listData?.status === 1
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              } p-2 font-semibold rounded-md shadow-sm`}
+                            >
+                              {listData?.status === 1 ? "Active" : "Inactive"}
+                            </p>
 
                             {/* WATCH VIDEO  */}
                             {listData?.meta_tags_for_listings?.promo_video && (
@@ -315,9 +349,9 @@ const SingleListingsModal = ({
                           <div className="flex gap-3 mb-3">
                             <h6>{listData?.short_description} </h6>
                           </div>
-                          {/* ADDRESS  */}
+                          {/* COUNTRY  */}
                           <div className="flex gap-3">
-                            <TbCurrentLocation
+                            <FaGlobe
                               size={18}
                               className={
                                 currentMode === "dark"
@@ -325,13 +359,11 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>
-                              {listData?.listing_attribute_type?.near_by}{" "}
-                            </h6>
+                            <h6>{listData?.country?.name} </h6>
                           </div>
-                          {/* Bedrooms  */}
+                          {/* STATE  */}
                           <div className="flex gap-3">
-                            <BiBed
+                            <FaMap
                               size={18}
                               className={
                                 currentMode === "dark"
@@ -339,16 +371,11 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>{listData?.listing_attribute?.bedroom}</h6>
-                            <h6>
-                              {listData?.listing_type === "null"
-                                ? "-"
-                                : listData?.listing_type?.name}
-                            </h6>
+                            <h6>{listData?.state?.name}</h6>
                           </div>
-                          {/* baths  */}
+                          {/* CITY  */}
                           <div className="flex gap-3">
-                            <BiBath
+                            <FaCity
                               size={18}
                               className={
                                 currentMode === "dark"
@@ -356,18 +383,70 @@ const SingleListingsModal = ({
                                   : "text-[#333333]"
                               }
                             />
-                            <h6>
-                              {listData?.listing_attribute?.bathroom === "null"
-                                ? "-"
-                                : listData?.listing_attribute?.bathroom}
-                            </h6>
+                            <h6>{listData?.city?.name}</h6>
                           </div>
                         </div>
 
-                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right">
-                          <div className="flex items-end justify-end h-full w-full">
+                        <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 space-y-2 text-right gap-5 mb-5">
+                          <div className="flex items-end justify-end h-full w-full ">
                             <div className="text-right">
-                              <p className="text-sm my-2">
+                              {/* ADDRESS  */}
+                              <div className="flex gap-3 mb-3">
+                                <TbCurrentLocation
+                                  size={18}
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-[#EEEEEE]"
+                                      : "text-[#333333]"
+                                  }
+                                />
+                                <h6>
+                                  {listData?.listing_attribute_type?.near_by}{" "}
+                                </h6>
+                              </div>
+                              {/* Bedrooms  */}
+                              <div className="flex items-center gap-3 mb-3">
+                                <Tooltip title="Edit attribute " arrow>
+                                  <IconButton
+                                    className={`rounded-full bg-btn-primary`}
+                                    onClick={() => handleEdit("list_attr")}
+                                  >
+                                    <BsPen size={10} color={"#FFFFFF"} />
+                                  </IconButton>
+                                </Tooltip>
+                                <BiBed
+                                  size={18}
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-[#EEEEEE]"
+                                      : "text-[#333333]"
+                                  }
+                                />
+                                <h6>{listData?.listing_attribute?.bedroom}</h6>
+                                <h6>
+                                  {listData?.listing_type === "null"
+                                    ? "-"
+                                    : listData?.listing_type?.name}
+                                </h6>
+                              </div>
+                              {/* baths  */}
+                              <div className="flex gap-3 mb-3">
+                                <BiBath
+                                  size={18}
+                                  className={
+                                    currentMode === "dark"
+                                      ? "text-[#EEEEEE]"
+                                      : "text-[#333333]"
+                                  }
+                                />
+                                <h6>
+                                  {listData?.listing_attribute?.bathroom ===
+                                  "null"
+                                    ? "-"
+                                    : listData?.listing_attribute?.bathroom}
+                                </h6>
+                              </div>
+                              <p className="text-sm my-3">
                                 Listing added on{" "}
                                 {moment(listData?.created_at).format(
                                   "YYYY-MM-DD HH:MM"
@@ -396,7 +475,7 @@ const SingleListingsModal = ({
                     {listData?.latlong === null || listData?.latlong === "" ? (
                       <></>
                     ) : (
-                      <div className="w-full h-[50vh] border border-primary">
+                      <div className="w-full h-[50vh] border border-primary relative">
                         {!load?.isLoaded ? (
                           <div>Your map is loading...</div>
                         ) : (
@@ -426,6 +505,16 @@ const SingleListingsModal = ({
                             />
                           </GoogleMap>
                         )}
+                        <div className="absolute top-0 right-1">
+                          <Tooltip title="Edit attrbiute type" arrow>
+                            <IconButton
+                              className={`rounded-full bg-btn-primary`}
+                              onClick={() => handleEdit("list_attr_type")}
+                            >
+                              <BsPen size={16} color={"#FFFFFF"} />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
                       </div>
                     )}
 
@@ -448,6 +537,14 @@ const SingleListingsModal = ({
                           >
                             {t("description")}
                           </h1>
+                          <Tooltip title="Edit listing meta" arrow>
+                            <IconButton
+                              className={`rounded-full bg-btn-primary ml-3`}
+                              onClick={() => handleEdit("list_meta")}
+                            >
+                              <BsPen size={16} color={"#FFFFFF"} />
+                            </IconButton>
+                          </Tooltip>
                         </div>
 
                         <p style={{ maxHeight: "200px", overflowY: "auto" }}>
@@ -579,14 +676,22 @@ const SingleListingsModal = ({
                     }
                   />
                 )}
-                {openEdit && (
+                {openEdit?.open && (
+                  <UpdateListModal
+                    openEdit={openEdit}
+                    setOpenEdit={setOpenEdit}
+                    fetchSingleListing={fetchSingleListing}
+                    handleClose={() => setOpenEdit(false)}
+                  />
+                )}
+                {/* {openEdit && (
                   <EditListingModal
                     setOpenEdit={setOpenEdit}
                     openEdit={openEdit}
                     fetchSingleListing={fetchSingleListing}
                     handleClose={() => setOpenEdit(false)}
                   />
-                )}
+                )} */}
               </>
             )}
           </div>

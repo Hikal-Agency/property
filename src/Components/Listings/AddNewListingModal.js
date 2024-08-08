@@ -44,6 +44,7 @@ const AddNewListingModal = ({
   LeadData,
   setListingModalOpen,
   handleCloseListingModal,
+  FetchListings,
 }) => {
   console.log("set listing modal open: ", setListingModalOpen);
   const {
@@ -125,7 +126,7 @@ const AddNewListingModal = ({
             <HeadingTitle title={t("btn_add_new_listing")} />
 
             <div className={`w-full p-4`}>
-              <MultiStepForm />
+              <MultiStepForm FetchListings={FetchListings} />
             </div>
 
             {/* <Box

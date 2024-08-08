@@ -34,6 +34,10 @@ const AddListingAttrType = ({
   listingIds,
   setListingIDs,
   handleNext,
+  edit,
+  fetchSingleListing,
+  handleClose,
+  listData,
 }) => {
   const {
     darkModeColors,
@@ -55,12 +59,14 @@ const AddListingAttrType = ({
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [listingAttrType, setListingAttrType] = useState({
-    listing_attribute_id: listingIds?.listing_attribute_id,
-    type: "",
-    price: "",
-    near_by: "",
-    latitude: "",
-    longitude: "",
+    listing_attribute_id: edit
+      ? listData?.listing_attribute?.id
+      : listingIds?.listing_attribute_id,
+    type: listData?.listing_attribute_type?.type || "",
+    price: listData?.listing_attribute_type?.price || "",
+    near_by: listData?.listing_attribute_type?.near_by || "",
+    latitude: listData?.listing_attribute_type?.latitude || "",
+    longitude: listData?.listing_attribute_type?.longitude || "",
     currency_type: "AED",
   });
 
@@ -96,11 +102,11 @@ const AddListingAttrType = ({
   const AddListAttrType = () => {
     setBtnLoading(true);
 
-    let url = editData
-      ? `${BACKEND_URL}/listing-attribute-types/${editData?.lat_id}`
+    let url = edit
+      ? `${BACKEND_URL}/listing-attribute-types/${listData?.listing_attribute_type?.id}`
       : `${BACKEND_URL}/listing-attribute-types`;
 
-    let method = editData ? "put" : "post";
+    let method = edit ? "put" : "post";
 
     const listattrType = {
       ...listingAttrType,
@@ -124,9 +130,7 @@ const AddListingAttrType = ({
         setBtnLoading(false);
 
         toast.success(
-          `Listing Attribute type ${
-            editData ? "updated" : "added"
-          }  successfully.`,
+          `Listing Attribute type ${edit ? "updated" : "added"}  successfully.`,
           {
             position: "top-right",
             autoClose: 3000,
@@ -138,6 +142,12 @@ const AddListingAttrType = ({
             theme: "light",
           }
         );
+
+        if (edit) {
+          handleClose();
+          fetchSingleListing();
+          return;
+        }
 
         const attrTypeID = result?.data?.data?.id;
         setListingIDs({

@@ -40,6 +40,10 @@ const AddListingAttribute = ({
   listingIds,
   setListingIDs,
   handleNext,
+  listData,
+  edit,
+  handleClose,
+  fetchSingleListing,
 }) => {
   const {
     darkModeColors,
@@ -59,13 +63,11 @@ const AddListingAttribute = ({
 
   const [btnLoading, setBtnLoading] = useState(false);
   const [listingAttr, setListingAttr] = useState({
-    name: "",
-    listing_type_id: "",
-    area: "",
-    bedroom: "",
-    bathroom: "",
-    // garage: "",
-    // gallery: "",
+    name: listData?.listing_attribute?.name || "",
+    listing_type_id: listData?.listing_type?.id || "",
+    area: listData?.listing_attribute?.area || "",
+    bedroom: listData?.listing_attribute?.bedroom || "",
+    bathroom: listData?.listing_attribute?.bathroom || "",
   });
 
   console.log("listing attr:: ", listingAttr);
@@ -136,13 +138,6 @@ const AddListingAttribute = ({
 
   console.log("listing attr data:: ", listingAttr);
 
-  console.log(
-    "filterd value of listing type: ",
-    data?.list_type?.filter(
-      (list_type) => list_type.id === listingAttr?.listing_type_id
-    )[0]?.name
-  );
-
   const handleCheckboxChange = (event) => {
     console.log("checkbox: ", event.target.checked);
     setListingAttr({
@@ -150,184 +145,6 @@ const AddListingAttribute = ({
       garage: event.target.checked ? "1" : "0",
     });
   };
-
-  const columns = [
-    // id
-    {
-      field: "id",
-      headerName: t("id"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center ">
-            <p className="text-center capitalize">
-              {cellValues?.formattedValue}
-            </p>
-          </div>
-        );
-      },
-    },
-    // LISTING TYPE ID
-    {
-      field: "listing_type_id",
-      headerName: t("label_listing_type"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // NAME
-    {
-      field: "name",
-      headerName: t("name"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // AREA
-    {
-      field: "area",
-      headerName: t("label_area"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // BEDROOM
-    {
-      field: "bedroom",
-      headerName: t("bedroom"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // BATHROOM
-    {
-      field: "bathroom",
-      headerName: t("bathroom"),
-      headerAlign: "center",
-      editable: false,
-      minwidth: 100,
-      flex: 1,
-      renderCell: (cellValues) => {
-        return (
-          <div className="w-full flex items-center justify-center">
-            <p className="text-center">{cellValues?.formattedValue}</p>
-          </div>
-        );
-      },
-    },
-    // GARAGE
-    // {
-    //   field: "garage",
-    //   headerName: t("garage"),
-    //   headerAlign: "center",
-    //   editable: false,
-    //   minwidth: 100,
-    //   flex: 1,
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div className="w-full flex items-center justify-center">
-    //         <p className="text-center">{cellValues?.formattedValue}</p>
-    //       </div>
-    //     );
-    //   },
-    // },
-    // GALLERY
-    // {
-    //   field: "gallery",
-    //   headerName: t("gallery"),
-    //   headerAlign: "center",
-    //   editable: false,
-    //   minwidth: 100,
-    //   flex: 1,
-    //   renderCell: (cellValues) => {
-    //     return (
-    //       <div className="w-full flex items-center justify-center">
-    //         <p className="text-center">{cellValues?.formattedValue}</p>
-    //       </div>
-    //     );
-    //   },
-    // },
-
-    {
-      field: "notes",
-      headerName: t("label_action"),
-      minwidth: 100,
-      flex: 1,
-      headerAlign: "center",
-      sortable: false,
-      filterable: false,
-      renderCell: (cellValues) => {
-        return (
-          <div className="space-x-2 w-full flex items-center justify-center mx-2">
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } hover:bg-[#229eca] hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-            >
-              <Tooltip title="Edit List Attribute" arrow>
-                <button onClick={() => handleEdit(cellValues?.row)}>
-                  <FiEdit size={16} />
-                </button>
-              </Tooltip>
-            </p>
-
-            <p
-              style={{ cursor: "pointer" }}
-              className={`${
-                currentMode === "dark"
-                  ? "text-[#FFFFFF] bg-[#262626]"
-                  : "text-[#1C1C1C] bg-[#EEEEEE]"
-              } editUserBtn hover:bg-red-600 hover:text-white rounded-full shadow-none p-1.5 mr-1 flex items-center`}
-            >
-              <Tooltip title="Delete List Atrribute" arrow>
-                <button onClick={() => setDeleteDialogue(cellValues?.row)}>
-                  <BsTrash size={16} />
-                </button>
-              </Tooltip>
-            </p>
-          </div>
-        );
-      },
-    },
-  ];
 
   const handleChange = (e) => {
     setListingAttr((prevListingAttr) => ({
@@ -339,11 +156,11 @@ const AddListingAttribute = ({
   const AddListAttr = () => {
     setBtnLoading(true);
 
-    let url = editData
-      ? `${BACKEND_URL}/listing-attributes/${editData?.la_id}`
+    let url = edit
+      ? `${BACKEND_URL}/listing-attributes/${listData?.listing_attribute?.id}`
       : `${BACKEND_URL}/listing-attributes`;
 
-    let method = editData ? "put" : "post";
+    let method = edit ? "put" : "post";
 
     axios({
       method: method,
@@ -359,7 +176,7 @@ const AddListingAttribute = ({
         setBtnLoading(false);
 
         toast.success(
-          `Listing Attribute ${editData ? "updated" : "added"}  successfully.`,
+          `Listing Attribute ${edit ? "updated" : "added"}  successfully.`,
           {
             position: "top-right",
             autoClose: 3000,
@@ -371,6 +188,12 @@ const AddListingAttribute = ({
             theme: "light",
           }
         );
+
+        if (edit) {
+          handleClose();
+          fetchSingleListing();
+          return;
+        }
 
         const attrID = result?.data?.data?.id;
         setListingIDs({

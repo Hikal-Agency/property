@@ -370,6 +370,7 @@ const Listings = () => {
                   // LeadData={LeadData}
                   handleCloseListingModal={handleCloseListingModal}
                   setListingModalOpen={setListingModalOpen}
+                  FetchListings={FetchListings}
                 />
               )}
             </div>
