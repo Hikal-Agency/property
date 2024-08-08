@@ -554,7 +554,7 @@ const SingleListingsModal = ({
                           </h1>
                           <Tooltip title="Edit listing meta" arrow>
                             <IconButton
-                              className={`rounded-full bg-btn-primary`}
+                              className={`rounded-full bg-btn-primary ml-3`}
                               onClick={() => handleEdit("list_meta")}
                             >
                               <BsPen size={16} color={"#FFFFFF"} />

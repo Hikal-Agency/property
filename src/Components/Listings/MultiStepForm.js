@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 
 const steps = [1, 2, 3, 4];
 
-export default function MultiStepForm() {
+export default function MultiStepForm({ FetchListings }) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [listingIds, setListingIDs] = useState({
@@ -359,6 +359,7 @@ export default function MultiStepForm() {
               setListingIDs={setListingIDs}
               handleNext={handleNext}
               FetchData={FetchData}
+              FetchListings={FetchListings}
             />
           )}
           {/* {activeStep === 4 && } */}

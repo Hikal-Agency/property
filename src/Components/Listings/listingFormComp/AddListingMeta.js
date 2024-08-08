@@ -31,6 +31,7 @@ const AddListingMeta = ({
   handleClose,
   fetchSingleListing,
   listData,
+  FetchListings,
 }) => {
   const {
     darkModeColors,
@@ -97,15 +98,12 @@ const AddListingMeta = ({
     if (edit) {
       listingMetaData = {
         new_listing_id: edit ? listData?.id : listingIds?.new_listing_id,
-        long_description:
-          listData?.meta_tags_for_listings?.long_description || "",
-        year_build_in: listData?.meta_tags_for_listings?.year_build_in || "",
-        is_featured: listData?.meta_tags_for_listings?.is_featured || 0,
-        meta_title: listData?.meta_tags_for_listings?.meta_title || "",
-        meta_keywords: listData?.meta_tags_for_listings?.meta_keywords || "",
-        meta_description:
-          listData?.meta_tags_for_listings?.meta_description ||
-          listingIds?.meta_description,
+        long_description: listingMeta?.long_description,
+        year_build_in: listingMeta?.year_build_in,
+        is_featured: listingMeta?.is_featured,
+        meta_title: listingMeta?.meta_title,
+        meta_keywords: listingMeta?.meta_keywords,
+        meta_description: listingMeta?.meta_description,
       };
     } else {
       listingMetaData = {
@@ -163,7 +161,8 @@ const AddListingMeta = ({
           banner: "",
           additional_gallery: [],
         });
-        FetchData();
+        // FetchData();
+        FetchListings();
         handleNext();
       })
       .catch((err) => {
@@ -464,7 +463,7 @@ const AddListingMeta = ({
                   }}
                 />
               )}
-              minDate={dayjs().startOf("day").toDate()}
+              // minDate={dayjs().startOf("day").toDate()}
               InputProps={{ required: true }}
             />
           </LocalizationProvider>
