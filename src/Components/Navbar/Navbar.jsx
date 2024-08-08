@@ -135,6 +135,19 @@ const Navbar = () => {
     );
   }, [User]);
 
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (e.target.closest(".navbar-menu-backdrop")) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   const updateTwoFAStatus = async (isVerified) => {
     try {
       await axios.post(

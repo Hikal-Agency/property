@@ -41,29 +41,93 @@ import {
 } from "../../Components/editorComp/FormEditorComponents/QuickAddComponents.js";
 import FormSavingModal from "../../Components/editorComp/FormSavingModal.js";
 import FormIntegrateModal from "../../Components/editorComp/IntegrateModal.js";
-const components = {
-  DateOfBirth,
-  Email,
-  FirstName,
-  FullName,
-  LastName,
-  Phone,
-  ButtonComp,
-  Address,
-  City,
-  Country,
-  State,
-  PostalCode,
-  Website,
-  Organization,
-  Text,
-  Image,
-  Captcha,
-  Source,
-  TandC,
-  HTMLBlock,
-  RadioBtn,
-};
+
+const components = [
+  {
+    id: 1,
+    component: FullName,
+  },
+  {
+    id: 2,
+    component: FirstName,
+  },
+  {
+    id: 3,
+    component: LastName,
+  },
+  {
+    id: 4,
+    component: DateOfBirth,
+  },
+  {
+    id: 5,
+    component: Phone,
+  },
+  {
+    id: 6,
+    component: Email,
+  },
+  {
+    id: 7,
+    component: ButtonComp,
+  },
+  {
+    id: 8,
+    component: Address,
+  },
+  {
+    id: 9,
+    component: City,
+  },
+  {
+    id: 10,
+    component: State,
+  },
+  {
+    id: 11,
+    component: Country,
+  },
+  {
+    id: 12,
+    component: PostalCode,
+  },
+  {
+    id: 13,
+    component: Website,
+  },
+  {
+    id: 14,
+    component: Organization,
+  },
+  {
+    id: 15,
+    component: Text,
+  },
+  {
+    id: 16,
+    component: HTMLBlock,
+  },
+  {
+    id: 17,
+    component: Image,
+  },
+  {
+    id: 18,
+    component: Captcha,
+  },
+  {
+    id: 19,
+    component: Source,
+  },
+  {
+    id: 20,
+    component: TandC,
+  },
+  {
+    id: 21,
+    component: RadioBtn,
+  },
+];
 const FormEditor = ({
   setFormEditor,
   formName: defaultFormName,
@@ -96,7 +160,9 @@ const FormEditor = ({
       console.log(formEdit, "formEdit");
       const formEditFieldsR = formEdit?.fields?.map((field) => {
         const newField = { ...field };
-        newField.component = components[field?.component];
+        newField.component = components.find(
+          (comp) => comp?.id == field?.id
+        ).component;
         return newField;
       });
       setFormId(formEdit?.id);
